@@ -333,8 +333,8 @@ var input =
 
 ]  
 
-output = [];
-
+//output = [];
+/*
 var originObject = {};  // hash map
 for (var i=0;i <input.length;i++){
 	//output[i] = [];
@@ -355,10 +355,10 @@ for (var i=0;i <input.length;i++){
 
 		}
 	}
-}
+}*/
 
 var count = 0;
-var arr = [];
+/*var arr = [];
 for (var j in originObject){
 	var obj = {};
 	obj.newName = j;
@@ -383,7 +383,50 @@ arr.forEach(function(d,i){
 		d.Origin = index;
 	})
 })
+*/
 
 
+var clone = {};
+for ( key in  input[0]){
+   clone[key] = [];
+}
+var output = input;
+input.forEach(function (d){
+    for ( key in d){
+        if (clone[key].find(function(it){return it.key == [d[key]];}) == undefined){
+            clone[key].push({'key': d[key]});
+            //clone[key][d[key]].val = [];
+            //clone[key][d[key]].val.push(d);
+            //clone[key][d[key]].key = d[key];
+        }/*else {
+            clone[key][d[key]].val.push(d);
+        }*/
+    }
+});
 
-var obj = {};
+
+for (key in clone){
+   clone[key].sort(function(a,b){
+      if (a.key < b.key)
+         return -1;
+       else
+          return 1;});
+
+
+   clone[key].forEach(function(d,i){
+      if (d.key == null)
+         d.newindex = 0;
+      else if (isNaN(parseFloat(d.key) )){
+         d.newindex = i;
+      }else{
+         d.newindex = parseFloat(d.key);
+      }
+   });
+}
+
+// output with replaced number
+output.forEach(function (d,i){
+    for ( k in d){
+        output[i][k] = clone[k].find(function(it){return it.key == output[i][k]}).newindex;
+    }
+});
