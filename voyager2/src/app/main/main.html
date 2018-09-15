@@ -33,18 +33,34 @@
         </div>
         <h3>Biplot</h3>
         <bi-plot></bi-plot>
-        <h3>Fields</h3>
-        <schema-list field-defs="Dataset.schema.fieldSchemas"
-          order-by="Dataset.fieldOrder"
-          show-count="true"
-          filter-manager="FilterManager"
-          show-add="true"
-        ></schema-list>
-        <h3>Wildcards</h3>
-        <schema-list field-defs="Wildcards.list"
-          show-add="true"
-          show-drop="true"
-        ></schema-list>
+        <h3>Guideplot</h3>
+        <guide-plot></guide-plot>
+        <div class=" hflex full-width">
+          <h3>Fields</h3>
+          <div class="header-drop active">
+            <i class="fa fa-caret-down droplist" ng-click=" fieldShow = !fieldShow"></i>
+          </div>
+        </div>
+        <div ng-show="fieldShow">
+          <schema-list field-defs="Dataset.schema.fieldSchemas"
+            order-by="Dataset.fieldOrder"
+            show-count="true"
+            filter-manager="FilterManager"
+            show-add="true"
+          ></schema-list>
+        </div>
+        <div class=" hflex full-width">
+          <h3>Wildcards</h3>
+          <div class="header-drop active">
+            <i class="fa fa-caret-down droplist" ng-click=" WildcardsShow = !WildcardsShow"></i>
+          </div>
+        </div>
+        <div ng-show="WildcardsShow">
+          <schema-list field-defs="Wildcards.list"
+            show-add="true"
+            show-drop="true"
+          ></schema-list>
+        </div>
         <div id="footer">
           <ul class="menu">
             <span ng-show="consts.debug">

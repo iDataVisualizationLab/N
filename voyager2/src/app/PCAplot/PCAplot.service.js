@@ -1,29 +1,10 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name voyager2.Biplot
- * @description
- * # Biplot
- * Service in the voyager2.
- */
 angular.module('voyager2')
 // TODO: rename to Query once it's complete independent from Polestar
-    .service('Biplot', function(Dataset,Config,Pills) {
-        function instantiate() {
-            return {
-                data: Dataset.data,
-                config: Config.config
-            };
-        }
-        var Biplot = {
-            /** @type {Object} verbose spec edited by the UI */
-            biplot: null,
-            data:null
-
-        };
-
-        Biplot.plot =function(Dataset) {
+    .factory('PCAplot', function(Dataset,Pills,NotifyingService) {
+        var PCAplot = {};
+        PCAplot.plot =function(Dataset) {
             d3.selectAll('.background-biplot')
                 .style('fill','#ffffff')
                 .attr('width',$('.biplot').width())
@@ -31,7 +12,7 @@ angular.module('voyager2')
             // Biplot.data;
             d3.selectAll('g').remove();
             var data = Dataset.data;
-            if (typeof data !=="undefined" ) {
+            if (typeof data !=='undefined' ) {
                 //d3.selectAll('.biplot').append("g");
                 var margin = {top: 5, right: 5, bottom: 5, left: 5};
                 var width = $('.biplot').width() - margin.left - margin.right;
@@ -42,7 +23,6 @@ angular.module('voyager2')
                 var x = d3.scale.linear().range([width, 0]); // switch to match how R biplot shows it
                 var y = d3.scale.linear().range([height, 0]);
                 var rdot = 3;
-
 
 
                 var svg = d3.select("svg")
@@ -59,7 +39,7 @@ angular.module('voyager2')
                 console.log(brand_names);
                 matrix = pca.scale(matrix,true,true);
 
-                var pc = pca.pca(matrix,2)
+                var pc = pca.pca(matrix,2);
 
                 var A = pc[0];  // this is the U matrix from SVD
                 var B = pc[1];  // this is the dV matrix from SVD
@@ -67,7 +47,8 @@ angular.module('voyager2')
                 A.forEach(function(d){maxxy=Math.max(maxxy,Math.abs(d[0]),Math.abs(d[1]));});
                 x.domain([-maxxy,maxxy]).nice();
                 y.domain([-maxxy,maxxy]).nice();
-
+                //x.domain([-3.5,3.5]).nice();
+                //y.domain([-3.5,3.5]).nice();
                 data.map(function(d,i){
                     label: d[brand_names[0]],
                         d.pc1 = A[i][0];
@@ -108,27 +89,6 @@ angular.module('voyager2')
                 });
 
 
-
-
-                var legend = svg.selectAll(".legend")
-                    .data(color.domain())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-                legend.append("rect")
-                    .attr("x", width - 18)
-                    .attr("width", 18)
-                    .attr("height", 18)
-                    .style("fill", color);
-
-                legend.append("text")
-                    .attr("x", width - 24)
-                    .attr("y", 9)
-                    .attr("dy", ".35em")
-                    .style("text-anchor", "end")
-                    .text(function(d) { return d; });
-
                 svg.selectAll(".dot")
                     .data(data)
                     .enter().append("circle")
@@ -162,20 +122,117 @@ angular.module('voyager2')
                     .attr("class", "label-brand")
                     .attr("x", function(d) { return x(d.pc1) + 10; })
                     .attr("y", function(d) { return y(d.pc2) + 0; })
-                    .text(function(d) { return d['brand']})
+                    .text(function(d) { return d['brand']});
+                var deltaX, deltaY;
+
+                var bi = d3.selectAll(".biplot");
+                var temp_drag;
+                var current_field;
 
 
-                svg.selectAll(".line")
+                var dragHandler = d3.behavior.drag()
+                    .on("dragstart", function (d) {
+
+                        var proIwant = d3.selectAll("schema-list-item")
+                            .data(Dataset.schema.fieldSchemas)
+                            .filter(function(it){
+                                if (it.field == d.brand){
+                                    current_field = it;
+                                    return true;}
+                                else
+                                    return false})
+                            .select('div');
+                        //.attr ('class','schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty ui-droppable-active drop-active');
+                        var pill = {
+                            field: current_field.field,
+                            title: current_field.title,
+                            type: current_field.type,
+                            aggregate: current_field.aggregate
+                        };
+                        Pills.dragStart(pill, null);
+                        // NotifyingService.notify();
+                        var ori = proIwant.select('span').html();
+                        //console.log(ori);
+                        /* temp_drag = proIwant.select('span').select(function() {
+                             return this.parentNode.insertBefore(this.cloneNode(true), this.nextSibling);
+                         });*/
+                        temp_drag = d3.select('bi-plot').append('span').html(ori);
+                        temp_drag.attr("class",'pill draggable full-width no-right-margin field-info ng-pristine ng-untouched ng-valid ng-isolate-scope ui-draggable ui-draggable-handle ng-empty ui-draggable-dragging')
+                            .style("position","absolute")
+                            .style("z-index",'9999')
+                            .style("left",function(){return ((d3.event.x||d3.event.pageX)) + "px"})
+                            .style("top",function(){var con = (d3.event.y||d3.event.pageY) +100;
+                                return con + "px"});
+                        d3.selectAll('.field-drop')
+                            .attr("class","field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty ui-dropable-active drop-active ");
+                        NotifyingService.notify();
+                        // NotifyingService.notify();
+                        //console.log($(proIwant[0]));
+                        //$(proIwant[0]).trigger("mousedown");
+                        //$(proIwant[0]).trigger('DOMContentLoaded');
+                        //$(proIwant[0]).trigger('blur');
+                    })
+                    .on("drag", function (d) {
+                        temp_drag
+                            .style("left",function(){return d3.event.x + "px"})
+                            .style("top",function(){return (d3.event.y+100) + "px"});
+
+                    })
+                    .on("dragend", function (d) {
+                        var proIwant = d3.selectAll("schema-list-item")
+                            .data(Dataset.schema.fieldSchemas)
+                            .filter(function(it){return it.field == d.brand;})
+                            .select('div')
+                            .attr ('class','schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty');
+
+                        Pills.dragStop;
+
+                        var pos = temp_drag.node().getBoundingClientRect();
+                        temp_drag.remove();
+                        var tem_group = d3.selectAll(".shelf-group");
+                        tem_group = tem_group[0];
+                        var tem_group = tem_group.filter(function(d,i){var pos_g = d.getBoundingClientRect();
+                            return (pos_g.top<pos.top&&pos_g.bottom>pos.top&&pos_g.left<pos.left&&pos_g.right>pos.left)});
+
+                        try{
+                            var chan = $(tem_group[0]).attr('channel-id').replace(/'/g,"");
+                            console.log(chan);
+                            if (chan!=null){
+                                Pills.set(chan, current_field);
+                                Pills.listener.dragDrop(chan);
+                                //.update(Spec.spec);
+                            }}catch(e){}
+                        NotifyingService.notify();
+                        d3.selectAll("div [d3-over='true']")
+                            .attr('d3-over','false');
+
+
+                        //var event = new Event('submit');  // (*)
+                        //$(d3.select('.schema')[0]).dispatchEvent(event);
+                        d3.selectAll('.field-drop')
+                            .attr("class","field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty");
+                    });
+                var listitem = svg.selectAll(".line")
                     .data(brands)
                     .enter().append("line")
-                    .attr("class", "square")
+                    .attr("class", "line square draggable")
                     .attr('x1', function(d) { return x(-d.pc1);})
                     .attr('y1', function(d) { return y(-d.pc2); })
                     .attr("x2", function(d) { return x(d.pc1); })
                     .attr("y2", function(d) { return y(d.pc2); })
                     .style("stroke", function(d) { return color(d['brand']); })
+                    .style("stroke-width", '3px')
                     .on('mouseover', onMouseOverBrand)
-                    .on('mouseleave', onMouseLeave);
+                    .on('mouseleave', onMouseLeave)
+                    .on("dblclick", function(d) {
+                        var proIwant = d3.selectAll("schema-list-item")
+                            .data(Dataset.schema.fieldSchemas)
+                            .filter(function(it){return it.field == d.brand})
+                            .select('div')
+                            .select('span');
+                        $(proIwant[0]).trigger("dblclick");
+                    })
+                    .call(dragHandler);
                 var tip = d3.tip()
                     .attr('class', 'd3-tip')
                     .offset([10, 20])
@@ -196,7 +253,7 @@ angular.module('voyager2')
 
                         return str;
                     });
-
+                //dragHandler(svg.selectAll(".line"));
                 svg.call(tip);
                 // draw line from the attribute a perpendicular to each brand b
                 function onMouseOverAttribute(a,j) {
@@ -217,7 +274,7 @@ angular.module('voyager2')
                         .attr('y1', function(b,i) { return y(a.pc2); return y1; })
                         .attr('x2', function(b,i) { return x(b.D.x); return x2; })
                         .attr('y2', function(b,i) { return y(b.D.y); return y2; })
-                        .style("stroke", function(d) { return "#ffffff"});
+                        .style("stroke", function(d) { return "#ff6f2b"});
 
                     delete a.D;
                     var tipText = d3.entries(a);
@@ -329,35 +386,7 @@ angular.module('voyager2')
                     return matrix;
                     //return output.map(function(d){return Object.keys(d).map(function(i){return d[i]})});
                 }
-            }};
-        Biplot.reset = function(hard) {
-            var biplot = instantiate();
-            //spec.transform.filter = FilterManager.reset(null, hard);
-            Biplot.biplot = biplot;
-            Biplot.plot(Dataset);
-        };
-
-        Biplot.update = function() {
-            Biplot.data = Dataset.data;
-            Biplot.plot(Dataset,Biplot);
-            return Biplot;
-        };
-
-
-
-        Pills.listener = {
-            update: function() {
-                return Biplot.update();
-            },
-            reset: function() {
-                Biplot.reset();
             }
-        };
-
-        Biplot.reset();
-        Dataset.onUpdate.push(function() {
-            Biplot.reset(true);
-        });
-        Dataset.update(Dataset.dataset).then(Biplot.plot( Dataset));
-        return Biplot;
+        return PCAplot};
+        return PCAplot;
     });

@@ -174,3 +174,30 @@ null-filter-directive {
   top: 100%;
   left: 0;
 }
+
+
+.header-drop .droplist {
+  visibility: hidden;
+  flex-shrink:0;
+  // visibility: hidden;
+  border-radius: 3px;
+  margin: 0px 3px 5px;
+  padding: 2px 3px;
+}
+
+.header-drop.active {
+  color: white;
+  cursor: pointer;
+  .droplist {
+    visibility: visible;
+  }
+}
+.header-drop.active:hover .droplist{
+    color: black;
+    background-color: #999;
+  }
+
+.header-drop.drop-enabled .fa.droplist {
+    background-color: #bbb;
+    color: white;
+  }

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('voyager2')
-  .controller('MainCtrl', function($scope, $document, Spec, Dataset, Wildcards,  Config, consts, Chronicle, Logger, Bookmarks, Modals, FilterManager,NotifyingService) {
+  .controller('MainCtrl', function($scope, $document, Spec, Dataset, Wildcards,  Config, consts, Chronicle, Logger, Bookmarks, Modals, FilterManager,NotifyingService,PCAplot) {
     $scope.Spec = Spec;
+    $scope.PCAplot= PCAplot;
     $scope.Dataset = Dataset;
     $scope.Wildcards = Wildcards;
     $scope.Config = Config;
@@ -14,6 +15,10 @@ angular.module('voyager2')
     $scope.embedded = !!consts.embeddedData;
     //  $scope.Biplot = Biplot;
     $scope.hideExplore = false;
+    $scope.fieldShow = false;
+    $scope.WildcardsShow = false;
+
+
       $scope.fieldAdd = function(fieldDef) {
           Pills.add(fieldDef);
       };
