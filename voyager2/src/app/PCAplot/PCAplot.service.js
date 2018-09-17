@@ -49,6 +49,7 @@ angular.module('voyager2')
 
                 var A = pc[0];  // this is the U matrix from SVD
                 var B = pc[1];  // this is the dV matrix from SVD
+                var chosenPC = pc[2];   // this is the most value of PCA
                 var maxxy = 0;
                 A.forEach(function(d){maxxy=Math.max(maxxy,Math.abs(d[0]),Math.abs(d[1]));});
                 x.domain([-maxxy,maxxy]).nice();
@@ -58,15 +59,15 @@ angular.module('voyager2')
                 scale_axis = maxxy/scale_axis;
                 data.map(function(d,i){
                     label: d[brand_names[0]],
-                        d.pc1 = A[i][0];
-                    d.pc2 = A[i][1];
+                        d.pc1 = A[i][chosenPC[0]];
+                    d.pc2 = A[i][chosenPC[1]];
                 });
                 var brands = brand_names
                     .map(function(key, i) {
                         return {
                             brand: key,
-                            pc1: B[i][0]*scale_axis,
-                            pc2: B[i][1]*scale_axis
+                            pc1: B[i][chosenPC[0]]*scale_axis,
+                            pc2: B[i][chosenPC[1]]*scale_axis
                         }
                     });
                 // console.log(brands);
@@ -419,13 +420,15 @@ angular.module('voyager2')
         return PCAplot};
         PCAplot.estimate = function(PCAresult) {
             // choose main axis
-            var result =  PCAresult.filter(function(d,i){return i<4;})
-                .map(function (d) {
-                    return d['brand'];
-                });
+            var pca1_max = PCAresult.sort(function(a,b){
+                return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
+            var pca2_max = PCAresult.sort(function(a,b){
+                return Math.abs(a.pc2)<Math.abs(b.pc2)?1:-1})[0]['brand'];
+            pca1_max = [pca1_max, 'bar'];
+            pca2_max = [pca1_max, 'box'];
             // update to guideplot
-          PCAplot.axismain =  result;
-          console.log(result);
+          PCAplot.axismain =  [pca1_max,pca2_max];
+            console.log([pca1_max,pca2_max]);
         };
 
         PCAplot.plotguide = function (svg,fieldname,type){
@@ -444,7 +447,7 @@ angular.module('voyager2')
 
             // init for all
 
-            var margin = {top: 5, right: 5, bottom: 20, left: 30};
+            var margin = {top: 20, right: 5, bottom: 20, left: 30};
             var width =$(svg[0]).width() - margin.left - margin.right;
             var height = $(svg[0]).height() - margin.top - margin.bottom;
 
@@ -455,71 +458,88 @@ angular.module('voyager2')
                 .attr('class','axis');
             var plot_g = g.append('g')
                 .attr('class','plot');
-            // bar
-            var formatCount = d3.format(",.0f");
-            var max = d3.max(data);
-            var min = d3.min(data);
-            var x = d3.scale.linear()
-                .domain([min, max])
-                .range([0,width]); // switch to match how R biplot shows it
 
-            // Generate a histogram using twenty uniformly-spaced bins.
-            var databin = d3.layout.histogram()(data);
+            switch (type) {
+                case 'bar':
+                    // bar
+                    var formatCount = d3.format(",.0f");
+                    var max = d3.max(data);
+                    var min = d3.min(data);
+                    var x = d3.scale.linear()
+                        .domain([min, max])
+                        .range([0, width]); // switch to match how R biplot shows it
 
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom")
-                .ticks(databin.length);
+                    // Generate a histogram using twenty uniformly-spaced bins.
+                    var databin = d3.layout.histogram()(data);
 
-            var yMax = d3.max(databin, function(d){return d.length});
-            var yMin = d3.min(databin, function(d){return d.length});
-            var y = d3.scale.linear()
-                .domain([yMin, yMax+1])
-                .range([height, 0]);
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
-            var yAxis_grid = d3.svg.axis()
-                .scale(y)
-                .orient("right")
-                .tickSize(width);
+                    var xAxis = d3.svg.axis()
+                        .scale(x)
+                        .orient("bottom")
+                        .ticks(databin.length);
 
-
-            var bar = plot_g.selectAll(".bar")
-                .data(databin)
-                .enter().append("g")
-                .attr("class", "bar")
-                .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-
-            bar.append("rect")
-                .attr("x", 1)
-                .attr("width", (x(databin[0].dx) - x(0)) - 1)
-                .attr("height", function(d) { return height - y(d.y); })
-                .attr("fill", function(d) { return "steelblue" });
-
-            /*bar.append("text")
-                .attr("dy", ".75em")
-                .attr("y", -12)
-                .attr("x", (x(data[0].dx) - x(0)) / 2)
-                .attr("text-anchor", "middle")
-                .text(function(d) { return formatCount(d.y); });*/
-
-            axis_g.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+                    var yMax = d3.max(databin, function (d) {
+                        return d.length
+                    });
+                    var yMin = d3.min(databin, function (d) {
+                        return d.length
+                    });
+                    var y = d3.scale.linear()
+                        .domain([yMin, yMax])
+                        .range([height, 0]);
+                    var yAxis = d3.svg.axis()
+                        .scale(y)
+                        .orient("left");
+                    var yAxis_grid = d3.svg.axis()
+                        .scale(y)
+                        .orient("right")
+                        .tickSize(width);
 
 
-            var g_y = axis_g.append("g")
-                .attr("class", "y axis")
-                //.attr("transform", "translate("+margin.left+",0)")
-                .call(yAxis);
-            var g_y_grid = axis_g.append("g")
-                .attr("class", "y axis_grid")
-                //.attr("transform", "translate("+margin.left+",0)")
-                .call(yAxis_grid);
-            g_y_grid.selectAll('.tick text').remove();
-            g_y_grid.selectAll('path').remove();
+                    var bar = plot_g.selectAll(".bar")
+                        .data(databin)
+                        .enter().append("g")
+                        .attr("class", "bar")
+                        .attr("transform", function (d) {
+                            return "translate(" + x(d.x) + "," + y(d.y) + ")";
+                        });
+
+                    bar.append("rect")
+                        .attr("x", 1)
+                        .attr("width", (x(databin[0].dx) - x(0)) - 1)
+                        .attr("height", function (d) {
+                            return height - y(d.y);
+                        })
+                        .attr("fill", function (d) {
+                            return "steelblue"
+                        });
+
+                    /*bar.append("text")
+                        .attr("dy", ".75em")
+                        .attr("y", -12)
+                        .attr("x", (x(data[0].dx) - x(0)) / 2)
+                        .attr("text-anchor", "middle")
+                        .text(function(d) { return formatCount(d.y); });*/
+
+                    axis_g.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis);
+
+
+                    var g_y = axis_g.append("g")
+                        .attr("class", "y axis")
+                        //.attr("transform", "translate("+margin.left+",0)")
+                        .call(yAxis);
+                    var g_y_grid = axis_g.append("g")
+                        .attr("class", "y axis_grid")
+                        //.attr("transform", "translate("+margin.left+",0)")
+                        .call(yAxis_grid);
+                    g_y_grid.selectAll('.tick text').remove();
+                    g_y_grid.selectAll('path').remove();
+                case 'box':
+                case 'area':
+                case 'dash':
+            }
 
         };
 

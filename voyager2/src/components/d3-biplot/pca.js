@@ -388,7 +388,13 @@ var PCA = function(){
     var prod = trunc(sub(pcXV,pcUdS), 1e-12);
     var zero = zeros(prod.length, prod[0].length);
     console.assert(same(prod,zero), 'svd and eig ways must be the same.');
-
-    return [pcUdS,V] ;
+    var twomost = [0,1];
+    for (i in USV.S) {
+      if (USV.S[i]>=USV.S[twomost[0]])
+          twomost[0] = parseInt(i);
+      else if (USV.S[i]>=USV.S[twomost[1]])
+          twomost[1] = parseInt(i);
+    }
+    return [pcUdS,V,twomost] ;
   }
 };

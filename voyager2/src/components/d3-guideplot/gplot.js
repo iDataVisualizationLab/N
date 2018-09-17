@@ -13,7 +13,7 @@ angular.module('voyager2')
                 d3.select(element[0]).select('svg')
                     .attr('width',element.width())
                     .attr('height',element.height());
-                PCAplot.plotguide(d3.select(element[0]).select('svg'), scope.pcaDef,'bar');
+                PCAplot.plotguide(d3.select(element[0]).select('svg'), scope.pcaDef[0],scope.pcaDef[1]);
             },
             controller: function ($scope) {
                 console.log("me");
