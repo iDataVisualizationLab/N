@@ -76,7 +76,8 @@ var PCA = function(){
 
   function div(x,y){
     console.assert(x.length == y.length, 'dim(x) == dim(y)');
-    return d3.zip(x,y).map(function(v){ return v[1]!=0?v[0]/(v[1]):0; });
+    return d3.zip(x,y).map(function(v){ return v[1]!=0 ? v[0]/(v[1]): 0; });
+
   }
 
   function scale(X, center, scale){
@@ -381,7 +382,7 @@ var PCA = function(){
     var V = USV.V;
 
     // T = X*V = U*S
-    var pcXV = dot(X,V)
+    var pcXV = dot(X,V);
     var pcUdS = dot(U,S);
 
     var prod = trunc(sub(pcXV,pcUdS), 1e-12);

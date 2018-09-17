@@ -3,14 +3,15 @@
 angular.module('voyager2')
 // TODO: rename to Query once it's complete independent from Polestar
     .factory('PCAplot', function(Dataset,Pills,NotifyingService) {
-        var PCAplot = {};
+        var PCAplot = {
+            axismain: [],
+            dataencde: null,
+        };
+        PCAplot.axismain = [];
         PCAplot.plot =function(Dataset) {
-            d3.selectAll('.background-biplot')
-                .style('fill','#ffffff')
-                .attr('width',$('.biplot').width())
-                .attr('height',$('.biplot').width());
+            d3.select('#bi-plot').selectAll('g').remove();
+
             // Biplot.data;
-            d3.selectAll('g').remove();
             var data = Dataset.data;
             if (typeof data !=='undefined' ) {
                 //d3.selectAll('.biplot').append("g");
@@ -25,30 +26,36 @@ angular.module('voyager2')
                 var rdot = 3;
 
 
-                var svg = d3.select("svg")
+                var svg_main = d3.select("#bi-plot")
                     .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
+                    .attr("height", height + margin.top + margin.bottom);
+                var svg = svg_main.append("g")
+                    .attr("id","bi-plot-g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                var g_axis = svg.append("g")
+                    .attr("id","bi-plot-axis");
+                var g_point = svg.append("g")
+                    .attr("id","bi-plot-point");
                 var brand_names = Object.keys(data[0]);  // first row of data file ["ATTRIBUTE", "BRAND A", "BRAND B", "BRAND C", ...]
 
                 var inputdata = Array.from(data);
                 var matrix = data2Num(inputdata);
 
                 var pca = new PCA();
-                console.log(brand_names);
+                // console.log(brand_names);
                 matrix = pca.scale(matrix,true,true);
 
                 var pc = pca.pca(matrix,2);
 
                 var A = pc[0];  // this is the U matrix from SVD
                 var B = pc[1];  // this is the dV matrix from SVD
-                var maxxy=0;
+                var maxxy = 0;
                 A.forEach(function(d){maxxy=Math.max(maxxy,Math.abs(d[0]),Math.abs(d[1]));});
                 x.domain([-maxxy,maxxy]).nice();
                 y.domain([-maxxy,maxxy]).nice();
-                //x.domain([-3.5,3.5]).nice();
-                //y.domain([-3.5,3.5]).nice();
+                var scale_axis = 0;
+                B.forEach(function(i){scale_axis = Math.max(scale_axis,Math.sqrt(i[0]*i[0] + i[1]*i[1]))});
+                scale_axis = maxxy/scale_axis;
                 data.map(function(d,i){
                     label: d[brand_names[0]],
                         d.pc1 = A[i][0];
@@ -58,11 +65,11 @@ angular.module('voyager2')
                     .map(function(key, i) {
                         return {
                             brand: key,
-                            pc1: B[i][0]*4,
-                            pc2: B[i][1]*4
+                            pc1: B[i][0]*scale_axis,
+                            pc2: B[i][1]*scale_axis
                         }
                     });
-
+                // console.log(brands);
                 function rotate(x,y, dtheta) {
 
                     var r = Math.sqrt(x*x + y*y);
@@ -76,10 +83,11 @@ angular.module('voyager2')
                 }
 
 
-                data.map(function(d) {
+                data.map(function(d,i) {
                     var xy = rotate(d.pc1, d.pc2, angle);
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
+                    d.vector = matrix[i];
                 });
 
                 brands.map(function(d) {
@@ -87,9 +95,10 @@ angular.module('voyager2')
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
                 });
-
-
-                svg.selectAll(".dot")
+                //update to calculate
+                PCAplot.estimate(brands);
+                // draw
+                g_point.selectAll(".dot")
                     .data(data)
                     .enter().append("circle")
                     .attr("class", "dot")
@@ -102,26 +111,27 @@ angular.module('voyager2')
                     .on('mouseover', onMouseOverAttribute)
                     .on('mouseleave', onMouseLeave);
 
-                svg.selectAll("circle.brand")
+                g_axis.selectAll("circle.brand")
                     .data(brands)
                     .enter().append("rect")
                     .attr("class", "square")
-                    .attr("width", 7)
-                    .attr('height',7)
-                    .attr("x", function(d) { return x(d.pc1)-3.5; })
-                    .attr("y", function(d) { return y(d.pc2)-3.5; })
+                    .attr("width", 5)
+                    .attr('height',5)
+                    .attr("x", function(d) { return x(d.pc1)-2.5; })
+                    .attr("y", function(d) { return y(d.pc2)-2.5; })
                     .style("fill", function(d) {
                         return color(d['brand']); })
                     .on('mouseover', onMouseOverBrand)
                     .on('mouseleave', onMouseLeave);
 
 
-                svg.selectAll("text.brand")
+                g_axis.selectAll("text.brand")
                     .data(brands)
                     .enter().append("text")
                     .attr("class", "label-brand")
                     .attr("x", function(d) { return x(d.pc1) + 10; })
                     .attr("y", function(d) { return y(d.pc2) + 0; })
+                    .attr("visibility","hidden")
                     .text(function(d) { return d['brand']});
                 var deltaX, deltaY;
 
@@ -212,16 +222,17 @@ angular.module('voyager2')
                         d3.selectAll('.field-drop')
                             .attr("class","field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty");
                     });
-                var listitem = svg.selectAll(".line")
+
+                var listitem = g_axis.selectAll(".line")
                     .data(brands)
                     .enter().append("line")
                     .attr("class", "line square draggable")
-                    .attr('x1', function(d) { return x(-d.pc1);})
-                    .attr('y1', function(d) { return y(-d.pc2); })
+                    .attr('x1', function(d) { return x(0)})//x(-d.pc1);})
+                    .attr('y1', function(d) { return x(0)})//y(-d.pc2); })
                     .attr("x2", function(d) { return x(d.pc1); })
                     .attr("y2", function(d) { return y(d.pc2); })
                     .style("stroke", function(d) { return color(d['brand']); })
-                    .style("stroke-width", '3px')
+                    .style("stroke-width", '1px')
                     .on('mouseover', onMouseOverBrand)
                     .on('mouseleave', onMouseLeave)
                     .on("dblclick", function(d) {
@@ -260,7 +271,8 @@ angular.module('voyager2')
                     brands.forEach(function(b, idx) {
                         var A = { x: 0, y:0 };
                         var B = { x: b.pc1,  y: b.pc2 };
-                        var C = { x: a.pc1,  y: a.pc2 };
+                        //var C = { x: a.pc1,  y: a.pc2 };
+                        var C = { x: a.vector[idx],  y: a.vector[idx] };
 
                         b.D = getSpPoint(A,B,C);
                     });
@@ -278,7 +290,7 @@ angular.module('voyager2')
 
                     delete a.D;
                     var tipText = d3.entries(a);
-                    tip.show(tipText, a);
+                    tip.show(tipText, "");
                 }
 
 // draw line from the brand axis a perpendicular to each attribute b
@@ -287,14 +299,16 @@ angular.module('voyager2')
                     data.forEach(function(a, idx) {
                         var A = { x: 0, y:0 };
                         var B = { x: b.pc1,  y: b.pc2 };
-                        var C = { x: a.pc1,  y: a.pc2 };
+                        //var C = { x: a.pc1,  y: a.pc2 };
+                        var C = { x: a.vector[j],  y: a.vector[j] };
 
                         a.D = getSpPoint(A,B,C);
                     });
 
-                    svg.selectAll('.tracer')
+                    var tracer = svg.selectAll('.tracer')
                         .data(data)
-                        .enter()
+                        .enter();
+                    tracer
                         .append('line')
                         .attr('class', 'tracer')
                         .attr('x1', function(a,i) { return x(a.D.x);  })
@@ -303,14 +317,25 @@ angular.module('voyager2')
                         .attr('y2', function(a,i) { return y(a.pc2); })
                         .style("stroke", function(d) { return "#aaa"});
 
-                    var tipText = data.map(function(d) {
+                    tracer
+                        .append('circle')
+                        .attr('class', 'tracer-c')
+                        .attr('cx', function(a,i) { return x(a.D.x);  })
+                        .attr('cy', function(a,i) { return y(a.D.y);  })
+                        .attr('r',5)
+                        .style("fill", function(d) { return "#ff6f2b"})
+                        .style("fill-opacity", 0.1);
+
+                    /*var tipText = data.map(function(d) {
                         return {key: d[brand_names[0]], value: d[b['brand']] }
-                    })
+                    });*/
+                    var tipText ="";
                     tip.show(tipText, b.brand);
                 }
 
                 function onMouseLeave(b,j) {
-                    svg.selectAll('.tracer').remove()
+                    svg.selectAll('.tracer').remove();
+                    svg.selectAll('.tracer-c').remove();
                     tip.hide();
                 }
 
@@ -331,7 +356,9 @@ angular.module('voyager2')
                 function getSpPoint(A,B,C){
                     var x1=A.x, y1=A.y, x2=B.x, y2=B.y, x3=C.x, y3=C.y;
                     var px = x2-x1, py = y2-y1, dAB = px*px + py*py;
-                    var u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
+                    // var u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
+                    //var x = x1 + u * px, y = y1 + u * py;
+                    var u = x3*scale_axis/dAB;
                     var x = x1 + u * px, y = y1 + u * py;
                     return {x:x, y:y}; //this is D
                 }
@@ -386,7 +413,117 @@ angular.module('voyager2')
                     return matrix;
                     //return output.map(function(d){return Object.keys(d).map(function(i){return d[i]})});
                 }
+
+                PCAplot.dataencde = data;
             }
         return PCAplot};
+        PCAplot.estimate = function(PCAresult) {
+            // choose main axis
+            var result =  PCAresult.filter(function(d,i){return i<4;})
+                .map(function (d) {
+                    return d['brand'];
+                });
+            // update to guideplot
+          PCAplot.axismain =  result;
+          console.log(result);
+        };
+
+        PCAplot.plotguide = function (svg,fieldname,type){
+            svg.selectAll('g').remove();
+            var brands = Object.keys(this.dataencde[0]);
+            var index = 0;
+            for ( var i in brands){
+                if (brands[i] == fieldname) {
+                    index = i;
+                    break;
+                }
+            }
+            var data = this.dataencde.map(function(d){
+                return d.vector[index];
+            });
+
+            // init for all
+
+            var margin = {top: 5, right: 5, bottom: 20, left: 30};
+            var width =$(svg[0]).width() - margin.left - margin.right;
+            var height = $(svg[0]).height() - margin.top - margin.bottom;
+
+
+            var g = svg.append('g')
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+            var axis_g = g.append('g')
+                .attr('class','axis');
+            var plot_g = g.append('g')
+                .attr('class','plot');
+            // bar
+            var formatCount = d3.format(",.0f");
+            var max = d3.max(data);
+            var min = d3.min(data);
+            var x = d3.scale.linear()
+                .domain([min, max])
+                .range([0,width]); // switch to match how R biplot shows it
+
+            // Generate a histogram using twenty uniformly-spaced bins.
+            var databin = d3.layout.histogram()(data);
+
+            var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                .ticks(databin.length);
+
+            var yMax = d3.max(databin, function(d){return d.length});
+            var yMin = d3.min(databin, function(d){return d.length});
+            var y = d3.scale.linear()
+                .domain([yMin, yMax+1])
+                .range([height, 0]);
+            var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left");
+            var yAxis_grid = d3.svg.axis()
+                .scale(y)
+                .orient("right")
+                .tickSize(width);
+
+
+            var bar = plot_g.selectAll(".bar")
+                .data(databin)
+                .enter().append("g")
+                .attr("class", "bar")
+                .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+            bar.append("rect")
+                .attr("x", 1)
+                .attr("width", (x(databin[0].dx) - x(0)) - 1)
+                .attr("height", function(d) { return height - y(d.y); })
+                .attr("fill", function(d) { return "steelblue" });
+
+            /*bar.append("text")
+                .attr("dy", ".75em")
+                .attr("y", -12)
+                .attr("x", (x(data[0].dx) - x(0)) / 2)
+                .attr("text-anchor", "middle")
+                .text(function(d) { return formatCount(d.y); });*/
+
+            axis_g.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+
+            var g_y = axis_g.append("g")
+                .attr("class", "y axis")
+                //.attr("transform", "translate("+margin.left+",0)")
+                .call(yAxis);
+            var g_y_grid = axis_g.append("g")
+                .attr("class", "y axis_grid")
+                //.attr("transform", "translate("+margin.left+",0)")
+                .call(yAxis_grid);
+            g_y_grid.selectAll('.tick text').remove();
+            g_y_grid.selectAll('path').remove();
+
+        };
+
+
+
         return PCAplot;
     });

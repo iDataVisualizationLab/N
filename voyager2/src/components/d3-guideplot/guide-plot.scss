@@ -1,0 +1,28 @@
+.gplotSvg {
+    min-width:0px;
+    max-with:0;
+}
+
+.guideplot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.gplot {
+    background-color: white;
+    //min-width:250px;
+    margin: 2px;
+    max-width: 185px;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+.tick text {
+    font-size: 10px;
+}
+.tick line{
+    stroke: #b9b9b9;
+
+}
