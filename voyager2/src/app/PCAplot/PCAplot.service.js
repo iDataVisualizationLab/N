@@ -449,19 +449,24 @@ angular.module('voyager2')
             // choose main axis
             var pca1_max = PCAresult.sort(function(a,b){
                 return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
-            var pca2_max = PCAresult.sort(function(a,b){
-                return Math.abs(a.pc2)<Math.abs(b.pc2)?1:-1})[0]['brand'];
+            PCAresult.sort(function(a,b){
+                return Math.abs(a.pc2)<Math.abs(b.pc2)?1:-1});
+            var pca2_max = PCAresult[0]['brand']!=pca1_max?PCAresult[0]['brand']:PCAresult[1]['brand'];
 
-            var objec1 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca1_max})[0];
-            var objec2 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca2_max})[0];
-            var pca1_maxd = [pca1_max, 'bar'];
-            var pca2_maxd = [pca1_max, 'box'];
+            var object1 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca1_max})[0];
+            var object2 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca2_max})[0];
+            //var pca1_maxd = [pca1_max, 'bar'];
+            //var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
-          PCAplot.axismain =  [pca1_maxd,pca2_maxd];
+          //PCAplot.axismain =  [pca1_maxd,pca2_maxd];
+            drawGuideplot(object1,'dash');
+            drawGuideplot(object2,'area');
+        };
 
+        function drawGuideplot (object,type) {
             var spec = spec = _.cloneDeep(instantiate() || PCAplot.spec);
             //spec.data = Dataset.dataset;
-            spec.config= {
+            spec.config = {
                 cell: {
                     width: 200,
                     height: 100,
@@ -475,22 +480,41 @@ angular.module('voyager2')
                 overlay: {line: false},
                 scale: {useRawDomain: true}
             };
-            barplot(spec);
-            var query  = getQuery(spec);
+            switch (type) {
+                case 'bar': barplot(spec, object); break;
+                case 'dash': dashplot(spec, object); break;
+                case 'area': areaplot(spec, object); break;
+            }
+            var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
             PCAplot.query = output.query;
             var topItem = output.result.getTopSpecQueryModel();
             PCAplot.chart = Chart.getChart(topItem);
             PCAplot.charts.push(PCAplot.chart);
-            // PCAplot.alternatives = Alternatives.getHistograms(null, PCAplot.chart, null);
-            function barplot() {
-                spec.mark = "bar";
-                spec.encoding = {
-                    y: {bin: {}, field: objec1.field, type: objec1.type},
-                    x: {aggregate: "count", field: "*", type: objec1.type}
-                };
-            }
-        };
+        }
+        // PCAplot.alternatives = Alternatives.getHistograms(null, PCAplot.chart, null);
+        function barplot(spec,object) {
+            spec.mark = "bar";
+            spec.encoding = {
+                y: {bin: {}, field: object.field, type: object.type},
+                x: {aggregate: "count", field: "*", type: object.type}
+            };
+        }
+
+        function dashplot(spec,object) {
+            spec.mark = "tick";
+            spec.encoding = {
+                x: {field: object.field, type: object.type}
+            };
+        }
+
+        function areaplot(spec,object) {
+            spec.mark = "area";
+            spec.encoding = {
+                x: {bin: {}, field: object.field, type: object.type},
+                y: {aggregate: "count", field: "*", type: object.type}
+            };
+        }
 
         PCAplot.plotguide = function (svg,fieldname,type){
             svg.selectAll('g').remove();
