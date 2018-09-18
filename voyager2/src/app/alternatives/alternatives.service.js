@@ -54,6 +54,8 @@ angular.module('voyager2')
       ];
     }
 
+
+
     function getAlternatives(query, chart, topItem) {
       var isAggregate = cql.query.spec.isAggregate(query.spec);
 

@@ -34,6 +34,25 @@
         <h3>Biplot</h3>
         <bi-plot></bi-plot>
         <h3>Guideplot</h3>
+        <vl-plot-group
+                ng-if="PCAplot.chart"
+                class="wrapped-vl-plot-group card"
+                ng-repeat="chart in PCAplot.charts"
+                chart="chart"
+                show-bookmark="true"
+                show-debug="false"
+                show-select="true"
+                show-axis-prop="true"
+                show-sort="false"
+                show-transpose="false"
+                enable-pills-preview="true"
+                always-scrollable="true"
+                overflow="true"
+                show-label="true"
+                tooltip="true"
+                toggle-shelf="true"
+        ></vl-plot-group>
+
         <guide-plot pca-defs ="PCAplot.axismain">
         </guide-plot>
         <div class=" hflex full-width">

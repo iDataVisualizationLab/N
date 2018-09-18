@@ -2,17 +2,44 @@
 
 angular.module('voyager2')
 // TODO: rename to Query once it's complete independent from Polestar
-    .factory('PCAplot', function(Dataset,Pills,NotifyingService) {
+    .factory('PCAplot', function(ANY,Dataset,_, vg, vl, cql, ZSchema, consts,FilterManager ,Pills,NotifyingService,Alternatives,Chart,Config,Schema,util) {
+        var keys =  _.keys(Schema.schema.definitions.Encoding.properties).concat([ANY+0]);
+        function instantiate() {
+            return {
+                data: Config.data,
+                transform: {
+                },
+                mark: 'bar',
+                encoding: keys.reduce(function(e, c) {
+                    e[c] = {};
+                    return e;
+                }, {}),
+                config: Config.config,
+                groupBy: 'auto',
+                autoAddCount: false
+            };
+        }
+
         var PCAplot = {
             axismain: [],
             dataencde: null,
+            alternatives: [],
+            autoGroupBy: null,
+            spec: null,
+            firstrun:true,
+            chart:null,
+            charts:[],
+
         };
         PCAplot.axismain = [];
-        PCAplot.plot =function(Dataset) {
+        PCAplot.plot =function(data) {
+            if (!Object.keys(Config.data).length){return PCAplot;}
+            if (!PCAplot.firstrun && (Dataset.currentDataset[Object.keys(Config.data)[0]]==Config.data[Object.keys(Config.data)[0]])) {return PCAplot;}
+            PCAplot.firstrun = false;
             d3.select('#bi-plot').selectAll('g').remove();
 
             // Biplot.data;
-            var data = Dataset.data;
+            //var data = Dataset.data);
             if (typeof data !=='undefined' ) {
                 //d3.selectAll('.biplot').append("g");
                 var margin = {top: 5, right: 5, bottom: 5, left: 5};
@@ -424,11 +451,45 @@ angular.module('voyager2')
                 return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
             var pca2_max = PCAresult.sort(function(a,b){
                 return Math.abs(a.pc2)<Math.abs(b.pc2)?1:-1})[0]['brand'];
-            pca1_max = [pca1_max, 'bar'];
-            pca2_max = [pca1_max, 'box'];
+
+            var objec1 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca1_max})[0];
+            var objec2 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca2_max})[0];
+            var pca1_maxd = [pca1_max, 'bar'];
+            var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
-          PCAplot.axismain =  [pca1_max,pca2_max];
-            console.log([pca1_max,pca2_max]);
+          PCAplot.axismain =  [pca1_maxd,pca2_maxd];
+
+            var spec = spec = _.cloneDeep(instantiate() || PCAplot.spec);
+            //spec.data = Dataset.dataset;
+            spec.config= {
+                cell: {
+                    width: 200,
+                    height: 100,
+                },
+                facet: {
+                    cell: {
+                        width: 150,
+                        height: 150
+                    }
+                },
+                overlay: {line: false},
+                scale: {useRawDomain: true}
+            };
+            barplot(spec);
+            var query  = getQuery(spec);
+            var output = cql.query(query, Dataset.schema);
+            PCAplot.query = output.query;
+            var topItem = output.result.getTopSpecQueryModel();
+            PCAplot.chart = Chart.getChart(topItem);
+            PCAplot.charts.push(PCAplot.chart);
+            // PCAplot.alternatives = Alternatives.getHistograms(null, PCAplot.chart, null);
+            function barplot() {
+                spec.mark = "bar";
+                spec.encoding = {
+                    y: {bin: {}, field: objec1.field, type: objec1.type},
+                    x: {aggregate: "count", field: "*", type: objec1.type}
+                };
+            }
         };
 
         PCAplot.plotguide = function (svg,fieldname,type){
@@ -537,6 +598,7 @@ angular.module('voyager2')
                     g_y_grid.selectAll('.tick text').remove();
                     g_y_grid.selectAll('path').remove();
                 case 'box':
+
                 case 'area':
                 case 'dash':
             }
@@ -545,5 +607,136 @@ angular.module('voyager2')
 
 
 
+        function getQuery(spec, convertFilter /*HACK */) {
+            var specQuery = getSpecQuery(spec, convertFilter);
+
+            var hasAnyField = false, hasAnyFn = false, hasAnyChannel = false;
+
+            for (var i = 0; i < specQuery.encodings.length; i++) {
+                var encQ = specQuery.encodings[i];
+                if (encQ.autoCount === false) continue;
+
+                if (cql.enumSpec.isEnumSpec(encQ.field)) {
+                    hasAnyField = true;
+                }
+
+                if (cql.enumSpec.isEnumSpec(encQ.aggregate) ||
+                    cql.enumSpec.isEnumSpec(encQ.bin) ||
+                    cql.enumSpec.isEnumSpec(encQ.timeUnit)) {
+                    hasAnyFn = true;
+                }
+
+                if (cql.enumSpec.isEnumSpec(encQ.channel)) {
+                    hasAnyChannel = true;
+                }
+            }
+
+            /* jshint ignore:start */
+            var groupBy = spec.groupBy;
+
+            if (spec.groupBy === 'auto') {
+                groupBy = PCAplot.autoGroupBy = hasAnyField ?
+                    (hasAnyFn ? 'fieldTransform' : 'field') :
+                    'encoding';
+            }
+
+            return {
+                spec: specQuery,
+                groupBy: groupBy,
+                orderBy: ['fieldOrder', 'aggregationQuality', 'effectiveness'],
+                chooseBy: ['aggregationQuality', 'effectiveness'],
+                config: {
+                    omitTableWithOcclusion: false,
+                    autoAddCount: (hasAnyField || hasAnyFn || hasAnyChannel) && spec.autoAddCount
+                }
+            };
+            /* jshint ignore:end */
+        }
+
+        function getSpecQuery(spec, convertFilter /*HACK*/) {
+            if (convertFilter) {
+                spec = util.duplicate(spec);
+
+
+                // HACK convert filter manager to proper filter spec
+                if (spec.transform && spec.transform.filter) {
+                    delete spec.transform.filter;
+                }
+
+                var filter = FilterManager.getVlFilter();
+                if (filter) {
+                    spec.transform = spec.transform || {};
+                    spec.transform.filter = filter;
+                }
+            }
+
+            return {
+                data: Config.data,
+                mark: spec.mark === ANY ? '?' : spec.mark,
+
+                // TODO: support transform enumeration
+                transform: spec.transform,
+                encodings: vg.util.keys(spec.encoding).reduce(function(encodings, channelId) {
+                    var encQ = vg.util.extend(
+                        // Add channel
+                        { channel: Pills.isAnyChannel(channelId) ? '?' : channelId },
+                        // Field Def
+                        spec.encoding[channelId],
+                        // Remove Title
+                        {title: undefined}
+                    );
+
+                    if (cql.enumSpec.isEnumSpec(encQ.field)) {
+                        // replace the name so we should it's the field from this channelId
+                        encQ.field = {
+                            name: 'f' + channelId,
+                            enum: encQ.field.enum
+                        };
+                    }
+
+                    encodings.push(encQ);
+                    return encodings;
+                }, []),
+                config: spec.config
+            };
+        }
+        PCAplot.parseSpec = function(newSpec) {
+            // TODO: revise this
+            PCAplot.spec = parse(newSpec);
+        };
+        function parse(spec) {
+            var oldSpec = util.duplicate(spec);
+            var oldFilter = null;
+
+            if (oldSpec) {
+                // Store oldFilter, copy oldSpec that exclude transform.filter
+                oldFilter = (oldSpec.transform || {}).filter;
+                var transform = _.omit(oldSpec.transform || {}, 'filter');
+                oldSpec = _.omit(oldSpec, 'transform');
+                if (transform) {
+                    oldSpec.transform = transform;
+                }
+            }
+
+            var newSpec = vl.util.mergeDeep(instantiate(), oldSpec);
+
+            // This is not Vega-Lite filter object, but rather our FilterModel
+            newSpec.transform.filter = FilterManager.reset(oldFilter);
+
+            return newSpec;
+        }
+        PCAplot.reset = function(hard) {
+            var spec = instantiate();
+            spec.transform.filter = FilterManager.reset(null, hard);
+            PCAplot.spec = spec;
+            PCAplot.firstrun =true;
+            PCAplot.charts.length = 0;
+            //PCAplot.plot(Dataset.data);
+        };
+        PCAplot.reset();
+        Dataset.onUpdate.push(function() {
+            PCAplot.reset(true);
+            //PCAplot.plot(Dataset.data);
+        });
         return PCAplot;
     });

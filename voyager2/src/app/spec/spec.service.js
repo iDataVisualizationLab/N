@@ -10,7 +10,7 @@
 angular.module('voyager2')
   // TODO: rename to Query once it's complete independent from Polestar
   .service('Spec', function(ANY, _, vg, vl, cql, util, ZSchema, consts,NotifyingService,
-      Alerts, Alternatives, Chart, Config, Dataset, Logger, Pills, Schema, Wildcards, FilterManager,PCAplot) {
+      Alerts, Alternatives, Chart, Config, Dataset, Logger, Pills, Schema, Wildcards, FilterManager, PCAplot) {
 
     var keys =  _.keys(Schema.schema.definitions.Encoding.properties).concat([ANY+0]);
 
@@ -123,6 +123,7 @@ angular.module('voyager2')
      * Takes a full spec, validates it and then rebuilds all members of the chart object.
      */
     Spec.update = function(spec) {
+
       spec = _.cloneDeep(spec || Spec.spec);
 
 
@@ -172,7 +173,7 @@ angular.module('voyager2')
       //   });
       // } else {
         vg.util.extend(spec.config, Config.small());
-
+        //PCAplot.Config = Config;
         if (!Dataset.schema) { return Spec; }
 
         var query = Spec.cleanQuery = getQuery(spec);
@@ -556,6 +557,7 @@ angular.module('voyager2')
       preview: Spec.preview,
       previewQuery: Spec.previewQuery,
       update: function(spec) {
+        var PCA = PCAplot.plot(Dataset.data);
         return Spec.update(spec);
       },
       reset: function() {
@@ -629,7 +631,8 @@ angular.module('voyager2')
     Spec.reset();
     Dataset.onUpdate.push(function() {
       Spec.reset(true);
-        PCAplot.plot(Dataset);
+        //PCAplot.plot(Dataset);
+        //PCAplot.Config = Config;
     });
 
     return Spec;

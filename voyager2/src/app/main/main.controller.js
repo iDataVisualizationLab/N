@@ -3,7 +3,7 @@
 angular.module('voyager2')
   .controller('MainCtrl', function($scope, $document, Spec, Dataset, Wildcards,  Config, consts, Chronicle, Logger, Bookmarks, Modals, FilterManager,NotifyingService,PCAplot) {
     $scope.Spec = Spec;
-    $scope.PCAplot= PCAplot;
+
     $scope.Dataset = Dataset;
     $scope.Wildcards = Wildcards;
     $scope.Config = Config;
@@ -17,7 +17,7 @@ angular.module('voyager2')
     $scope.hideExplore = false;
     $scope.fieldShow = false;
     $scope.WildcardsShow = false;
-
+      $scope.PCAplot= PCAplot;
 
       $scope.fieldAdd = function(fieldDef) {
           Pills.add(fieldDef);
@@ -64,7 +64,8 @@ angular.module('voyager2')
       $scope.setAlternativeType(null, true);
     });
 
-      $scope.$watch('Spec');
+     $scope.$watch('Spec');
+      $scope.$watch('PCAplot');
 
     // undo/redo support
     $scope.canUndo = false;
@@ -99,13 +100,17 @@ angular.module('voyager2')
     // initialize undo after we have a dataset
     Dataset.update(Dataset.dataset).then(function() {
       Config.updateDataset(Dataset.dataset);
-
+        console.log(Config);
       if (consts.initialSpec) {
           Spec.parseSpec(consts.initialSpec);
+          PCAplot.parseSpec(consts.initialSpec);
       }
+      // PCAplot.plot(Dataset.data);
       //Biplot.data = Dataset.data;
       $scope.chron = Chronicle.record('Spec.spec', $scope, true,
         ['Dataset.dataset', 'Config.config', 'FilterManager.filterIndex']);
+      // $scope.chron = Chronicle.record('PCAplot.spec', $scope, true,
+      //      ['Dataset.dataset', 'Config.config', 'FilterManager.filterIndex']);
       $scope.canUndoRedo = function() {
         $scope.canUndo = $scope.chron.canUndo();
         $scope.canRedo = $scope.chron.canRedo();
