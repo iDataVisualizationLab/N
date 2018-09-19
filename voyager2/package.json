@@ -84,5 +84,8 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "glup": "^1.0.14"
   }
 }

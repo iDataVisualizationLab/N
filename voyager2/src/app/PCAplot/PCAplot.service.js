@@ -459,8 +459,10 @@ angular.module('voyager2')
             //var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
           //PCAplot.axismain =  [pca1_maxd,pca2_maxd];
-            drawGuideplot(object1,'dash');
-            drawGuideplot(object2,'area');
+            drawGuideplot(object1,'area');
+            drawGuideplot(object2,'dash');
+            drawGuideplot(object2,'bar');
+            drawGuideplot(object2,'boxplot');
         };
 
         function drawGuideplot (object,type) {
@@ -484,6 +486,7 @@ angular.module('voyager2')
                 case 'bar': barplot(spec, object); break;
                 case 'dash': dashplot(spec, object); break;
                 case 'area': areaplot(spec, object); break;
+                case 'boxplot': boxplot(spec, object); break;
             }
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
@@ -513,6 +516,12 @@ angular.module('voyager2')
             spec.encoding = {
                 x: {bin: {}, field: object.field, type: object.type},
                 y: {aggregate: "count", field: "*", type: object.type}
+            };
+        }
+        function boxplot(spec,object) {
+            spec.mark = "boxplot";
+            spec.encoding = {
+                x: { field: object.field, type: object.type}
             };
         }
 
