@@ -71,12 +71,12 @@
       <file leaf-file-name="vlui.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="5541" column="25" lean-forward="true" selection-start-line="5541" selection-start-column="25" selection-end-line="5541" selection-end-column="25" />
+            <state relative-caret-position="112">
+              <caret line="5573" column="56" lean-forward="false" selection-start-line="5573" selection-start-column="56" selection-end-line="5573" selection-end-column="56" />
               <folding>
-                <marker date="1537325720060" expanded="true" signature="127922:127929" ph="×" />
-                <marker date="1537325720060" expanded="true" signature="137741:137757" ph="..." />
-                <marker date="1537325720060" expanded="true" signature="146795:146806" ph="..." />
+                <marker date="1537377991358" expanded="true" signature="127922:127929" ph="×" />
+                <marker date="1537377991358" expanded="true" signature="137741:137757" ph="..." />
+                <marker date="1537377991358" expanded="true" signature="146795:146806" ph="..." />
               </folding>
             </state>
           </provider>
@@ -117,7 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>chart</find>
       <find>push</find>
       <find>tick</find>
       <find>parsePathMark</find>
@@ -147,6 +146,7 @@
       <find>vega</find>
       <find>boxplot</find>
       <find>scope.chart.fieldSet.map(function(d){return d.field})</find>
+      <find>conso</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -573,12 +573,12 @@
       <workItem from="1536769374007" duration="25397000" />
       <workItem from="1536857290744" duration="59507000" />
       <workItem from="1537031623199" duration="93323000" />
-      <workItem from="1537312968821" duration="12395000" />
+      <workItem from="1537312968821" duration="15456000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250894000" />
+    <option name="totallyTimeSpent" value="253955000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1393" y="52" width="1174" height="889" extended-state="0" />
@@ -593,7 +593,7 @@
       <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27648115" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25763017" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -650,12 +650,6 @@
           <url>file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/services/chart/chart.service.js</url>
           <line>14</line>
           <option name="timeStamp" value="233" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js</url>
-          <line>5539</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="257" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -1918,12 +1912,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="5541" column="25" lean-forward="true" selection-start-line="5541" selection-start-column="25" selection-end-line="5541" selection-end-column="25" />
+        <state relative-caret-position="112">
+          <caret line="5573" column="56" lean-forward="false" selection-start-line="5573" selection-start-column="56" selection-end-line="5573" selection-end-column="56" />
           <folding>
-            <marker date="1537325720060" expanded="true" signature="127922:127929" ph="×" />
-            <marker date="1537325720060" expanded="true" signature="137741:137757" ph="..." />
-            <marker date="1537325720060" expanded="true" signature="146795:146806" ph="..." />
+            <marker date="1537377991358" expanded="true" signature="127922:127929" ph="×" />
+            <marker date="1537377991358" expanded="true" signature="137741:137757" ph="..." />
+            <marker date="1537377991358" expanded="true" signature="146795:146806" ph="..." />
           </folding>
         </state>
       </provider>
