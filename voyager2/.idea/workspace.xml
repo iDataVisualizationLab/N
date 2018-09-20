@@ -51,8 +51,8 @@
       <file leaf-file-name="vlplot.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplot/vlplot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="862">
-              <caret line="319" column="23" lean-forward="true" selection-start-line="319" selection-start-column="23" selection-end-line="319" selection-end-column="23" />
+            <state relative-caret-position="199">
+              <caret line="331" column="12" lean-forward="false" selection-start-line="331" selection-start-column="12" selection-end-line="331" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -62,11 +62,11 @@
         <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="173">
-              <caret line="5548" column="63" lean-forward="false" selection-start-line="5548" selection-start-column="63" selection-end-line="5548" selection-end-column="63" />
+              <caret line="5546" column="49" lean-forward="true" selection-start-line="5546" selection-start-column="49" selection-end-line="5546" selection-end-column="49" />
               <folding>
-                <marker date="1537411810417" expanded="true" signature="127922:127929" ph="×" />
-                <marker date="1537411810417" expanded="true" signature="137741:137757" ph="..." />
-                <marker date="1537411810417" expanded="true" signature="146795:146806" ph="..." />
+                <marker date="1537464930972" expanded="true" signature="127922:127929" ph="×" />
+                <marker date="1537464930972" expanded="true" signature="137741:137757" ph="..." />
+                <marker date="1537464930972" expanded="true" signature="146795:146806" ph="..." />
               </folding>
             </state>
           </provider>
@@ -146,10 +146,10 @@
       <find>boxplo</find>
       <find>boxplot</find>
       <find>margin.left</find>
-      <find>vega</find>
+      <find>barplo</find>
       <find>scope.chart.fieldSet.map(function(d){return d.field})</find>
       <find>.box</find>
-      <find>barplo</find>
+      <find>vega</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -223,8 +223,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="524" />
-    <option name="y" value="60" />
+    <option name="x" value="1365" />
+    <option name="y" value="48" />
     <option name="width" value="1174" />
     <option name="height" value="889" />
   </component>
@@ -576,15 +576,15 @@
       <workItem from="1536769374007" duration="25397000" />
       <workItem from="1536857290744" duration="59507000" />
       <workItem from="1537031623199" duration="93323000" />
-      <workItem from="1537312968821" duration="46231000" />
+      <workItem from="1537312968821" duration="47158000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="284730000" />
+    <option name="totallyTimeSpent" value="285657000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="524" y="60" width="1174" height="889" extended-state="0" />
+    <frame x="1365" y="48" width="1174" height="889" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -1912,11 +1912,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplot/vlplot.js">
+    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="862">
-          <caret line="319" column="23" lean-forward="true" selection-start-line="319" selection-start-column="23" selection-end-line="319" selection-end-column="23" />
-          <folding />
+        <state relative-caret-position="204">
+          <caret line="471" column="46" lean-forward="true" selection-start-line="471" selection-start-column="46" selection-end-line="471" selection-end-column="46" />
+          <folding>
+            <element signature="e#4403#4733#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1930,24 +1932,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplot/vlplot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="471" column="46" lean-forward="true" selection-start-line="471" selection-start-column="46" selection-end-line="471" selection-end-column="46" />
-          <folding>
-            <element signature="e#4403#4733#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="199">
+          <caret line="331" column="12" lean-forward="false" selection-start-line="331" selection-start-column="12" selection-end-line="331" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="173">
-          <caret line="5548" column="63" lean-forward="false" selection-start-line="5548" selection-start-column="63" selection-end-line="5548" selection-end-column="63" />
+          <caret line="5546" column="49" lean-forward="true" selection-start-line="5546" selection-start-column="49" selection-end-line="5546" selection-end-column="49" />
           <folding>
-            <marker date="1537411810417" expanded="true" signature="127922:127929" ph="×" />
-            <marker date="1537411810417" expanded="true" signature="137741:137757" ph="..." />
-            <marker date="1537411810417" expanded="true" signature="146795:146806" ph="..." />
+            <marker date="1537464930972" expanded="true" signature="127922:127929" ph="×" />
+            <marker date="1537464930972" expanded="true" signature="137741:137757" ph="..." />
+            <marker date="1537464930972" expanded="true" signature="146795:146806" ph="..." />
           </folding>
         </state>
       </provider>
