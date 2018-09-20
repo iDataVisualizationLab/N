@@ -206,3 +206,23 @@ null-filter-directive {
   background-color: white;
 }
 
+.boxplot{
+  font: 10px sans-serif;
+}
+
+.boxplot line,
+.boxplot rect,
+.boxplot circle {
+  fill: steelblue;
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.boxplot .center {
+  stroke-dasharray: 3,3;
+}
+
+.boxplot .outliers circle{
+  fill: none;
+  stroke: #000;
+}

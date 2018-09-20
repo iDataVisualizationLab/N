@@ -447,22 +447,31 @@ angular.module('voyager2')
         return PCAplot};
         PCAplot.estimate = function(PCAresult) {
             // choose main axis
+            var recomen = [];
             var pca1_max = PCAresult.sort(function(a,b){
                 return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
             PCAresult.sort(function(a,b){
                 return Math.abs(a.pc2)<Math.abs(b.pc2)?1:-1});
             var pca2_max = PCAresult[0]['brand']!=pca1_max?PCAresult[0]['brand']:PCAresult[1]['brand'];
-
-            var object1 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca1_max})[0];
-            var object2 = Dataset.schema.fieldSchemas.filter(function(d){return d.field == pca2_max})[0];
+            recomen.push(pca1_max);
+            recomen.push(pca2_max);
+            Dataset.schema.fieldSchemas.sort((a,b)=>
+                Math.abs(a.stats.modeskew)>Math.abs(b.stats.modeskew)?-1:1)
+            var mostskew = Dataset.schema.fieldSchemas.filter(d => {
+                    var r = false;
+                    recomen.forEach(e=>{r |= (e!=d)})
+                return r;})[0];
+            var object1 = Dataset.schema.fieldSchema(pca1_max);
+            var object2 = Dataset.schema.fieldSchema(pca2_max);
+            var object3 = Dataset.schema.fieldSchemas.filter(function(d){return d.field === pca2_max})[0];
             //var pca1_maxd = [pca1_max, 'bar'];
             //var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
           //PCAplot.axismain =  [pca1_maxd,pca2_maxd];
-            drawGuideplot(object1,'area');
-            drawGuideplot(object2,'dash');
+            drawGuideplot(object1,'dash');
+            drawGuideplot(mostskew,'boxplot');
+            drawGuideplot(object2,'area');
             drawGuideplot(object2,'bar');
-            drawGuideplot(object2,'boxplot');
         };
 
         function drawGuideplot (object,type) {
@@ -479,7 +488,7 @@ angular.module('voyager2')
                         height: 150
                     }
                 },
-                overlay: {line: false},
+                overlay: {line: true},
                 scale: {useRawDomain: true}
             };
             switch (type) {
@@ -499,8 +508,8 @@ angular.module('voyager2')
         function barplot(spec,object) {
             spec.mark = "bar";
             spec.encoding = {
-                y: {bin: {}, field: object.field, type: object.type},
-                x: {aggregate: "count", field: "*", type: object.type}
+                x: {bin: {}, field: object.field, type: object.type},
+                y: {aggregate: "count", field: "*", type: object.type}
             };
         }
 
