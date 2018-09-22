@@ -47,7 +47,7 @@ null-filter-directive {
 }
 
 .pane.data-pane {
-  width: 400px;
+  width: 300px;
   flex-shrink: 0;
 
   .add-wildcard {
@@ -225,4 +225,16 @@ null-filter-directive {
 .boxplot .outliers circle{
   fill: none;
   stroke: #000;
+}
+.tips {
+  pointer-events: none;
+}
+
+.guideplot {
+  max-height:70px;
+}
+
+.scroll-y-nox {
+
+  height: 380px;
 }

@@ -45,7 +45,6 @@ angular.module('voyager2', [
     'ngOrderObjectBy',
     'angular-google-analytics'])
   .constant('_', window._)
-  .constant('vl', window.vl)
   .constant('vg', window.vg)
   .constant('cql', window.cql)
   .constant('ZSchema', window.ZSchema)

@@ -21,7 +21,6 @@ angular.module('voyager2')
         }
 
         var PCAplot = {
-            axismain: [],
             dataencde: null,
             alternatives: [],
             autoGroupBy: null,
@@ -29,9 +28,8 @@ angular.module('voyager2')
             firstrun:true,
             chart:null,
             charts:[],
-
+            axismain: [],
         };
-        PCAplot.axismain = [];
         PCAplot.plot =function(data) {
             if (!Object.keys(Config.data).length){return PCAplot;}
             if (!PCAplot.firstrun && (Dataset.currentDataset[Object.keys(Config.data)[0]]==Config.data[Object.keys(Config.data)[0]])) {return PCAplot;}
@@ -273,7 +271,7 @@ angular.module('voyager2')
                     })
                     .call(dragHandler);
                 var tip = d3.tip()
-                    .attr('class', 'd3-tip')
+                    .attr('class', 'd3-tip tips ')
                     .offset([10, 20])
                     .direction('e')
                     .html(function(values,title) {
@@ -299,8 +297,8 @@ angular.module('voyager2')
                     brands.forEach(function(b, idx) {
                         var A = { x: 0, y:0 };
                         var B = { x: b.pc1,  y: b.pc2 };
-                        //var C = { x: a.pc1,  y: a.pc2 };
-                        var C = { x: a.vector[idx],  y: a.vector[idx] };
+                        var C = { x: a.pc1,  y: a.pc2 };
+                        //var C = { x: a.vector[idx],  y: a.vector[idx] };
 
                         b.D = getSpPoint(A,B,C);
                     });
@@ -309,7 +307,7 @@ angular.module('voyager2')
                         .data(brands)
                         .enter()
                         .append('line')
-                        .attr('class', 'tracer')
+                        .attr('class', 'tracer tips')
                         .attr('x1', function(b,i) { return x(a.pc1); return x1; })
                         .attr('y1', function(b,i) { return y(a.pc2); return y1; })
                         .attr('x2', function(b,i) { return x(b.D.x); return x2; })
@@ -327,8 +325,8 @@ angular.module('voyager2')
                     data.forEach(function(a, idx) {
                         var A = { x: 0, y:0 };
                         var B = { x: b.pc1,  y: b.pc2 };
-                        //var C = { x: a.pc1,  y: a.pc2 };
-                        var C = { x: a.vector[j],  y: a.vector[j] };
+                        var C = { x: a.pc1,  y: a.pc2 };
+                        // var C = { x: a.vector[j],  y: a.vector[j] };
 
                         a.D = getSpPoint(A,B,C);
                     });
@@ -338,7 +336,7 @@ angular.module('voyager2')
                         .enter();
                     tracer
                         .append('line')
-                        .attr('class', 'tracer')
+                        .attr('class', 'tracer tips')
                         .attr('x1', function(a,i) { return x(a.D.x);  })
                         .attr('y1', function(a,i) { return y(a.D.y);  })
                         .attr('x2', function(a,i) { return x(a.pc1);  })
@@ -347,7 +345,7 @@ angular.module('voyager2')
 
                     tracer
                         .append('circle')
-                        .attr('class', 'tracer-c')
+                        .attr('class', 'tracer-c tips')
                         .attr('cx', function(a,i) { return x(a.D.x);  })
                         .attr('cy', function(a,i) { return y(a.D.y);  })
                         .attr('r',5)
@@ -384,9 +382,9 @@ angular.module('voyager2')
                 function getSpPoint(A,B,C){
                     var x1=A.x, y1=A.y, x2=B.x, y2=B.y, x3=C.x, y3=C.y;
                     var px = x2-x1, py = y2-y1, dAB = px*px + py*py;
-                    // var u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
-                    //var x = x1 + u * px, y = y1 + u * py;
-                    var u = x3*scale_axis/dAB;
+                    var u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
+                    var x = x1 + u * px, y = y1 + u * py;
+                   // var u = x3*scale_axis/dAB;
                     var x = x1 + u * px, y = y1 + u * py;
                     return {x:x, y:y}; //this is D
                 }
@@ -467,7 +465,8 @@ angular.module('voyager2')
             //var pca1_maxd = [pca1_max, 'bar'];
             //var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
-          //PCAplot.axismain =  [pca1_maxd,pca2_maxd];
+            console.log(object1);
+            PCAplot.axismain =  [object1,object2,object3];
             drawGuideplot(object1,'dash');
             drawGuideplot(mostskew,'boxplot');
             drawGuideplot(object2,'area');
@@ -480,13 +479,12 @@ angular.module('voyager2')
             spec.config = {
                 cell: {
                     width: 200,
-                    height: 100,
+                    height: 30,
                 },
-                facet: {
-                    cell: {
-                        width: 150,
-                        height: 150
-                    }
+                axis: {
+                    grid: false,
+                    ticks: false,
+                    titleOffset: 20
                 },
                 overlay: {line: true},
                 scale: {useRawDomain: true}
@@ -534,118 +532,6 @@ angular.module('voyager2')
             };
         }
 
-        PCAplot.plotguide = function (svg,fieldname,type){
-            svg.selectAll('g').remove();
-            var brands = Object.keys(this.dataencde[0]);
-            var index = 0;
-            for ( var i in brands){
-                if (brands[i] == fieldname) {
-                    index = i;
-                    break;
-                }
-            }
-            var data = this.dataencde.map(function(d){
-                return d.vector[index];
-            });
-
-            // init for all
-
-            var margin = {top: 20, right: 5, bottom: 20, left: 30};
-            var width =$(svg[0]).width() - margin.left - margin.right;
-            var height = $(svg[0]).height() - margin.top - margin.bottom;
-
-
-            var g = svg.append('g')
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
-            var axis_g = g.append('g')
-                .attr('class','axis');
-            var plot_g = g.append('g')
-                .attr('class','plot');
-
-            switch (type) {
-                case 'bar':
-                    // bar
-                    var formatCount = d3.format(",.0f");
-                    var max = d3.max(data);
-                    var min = d3.min(data);
-                    var x = d3.scale.linear()
-                        .domain([min, max])
-                        .range([0, width]); // switch to match how R biplot shows it
-
-                    // Generate a histogram using twenty uniformly-spaced bins.
-                    var databin = d3.layout.histogram()(data);
-
-                    var xAxis = d3.svg.axis()
-                        .scale(x)
-                        .orient("bottom")
-                        .ticks(databin.length);
-
-                    var yMax = d3.max(databin, function (d) {
-                        return d.length
-                    });
-                    var yMin = d3.min(databin, function (d) {
-                        return d.length
-                    });
-                    var y = d3.scale.linear()
-                        .domain([yMin, yMax])
-                        .range([height, 0]);
-                    var yAxis = d3.svg.axis()
-                        .scale(y)
-                        .orient("left");
-                    var yAxis_grid = d3.svg.axis()
-                        .scale(y)
-                        .orient("right")
-                        .tickSize(width);
-
-
-                    var bar = plot_g.selectAll(".bar")
-                        .data(databin)
-                        .enter().append("g")
-                        .attr("class", "bar")
-                        .attr("transform", function (d) {
-                            return "translate(" + x(d.x) + "," + y(d.y) + ")";
-                        });
-
-                    bar.append("rect")
-                        .attr("x", 1)
-                        .attr("width", (x(databin[0].dx) - x(0)) - 1)
-                        .attr("height", function (d) {
-                            return height - y(d.y);
-                        })
-                        .attr("fill", function (d) {
-                            return "steelblue"
-                        });
-
-                    /*bar.append("text")
-                        .attr("dy", ".75em")
-                        .attr("y", -12)
-                        .attr("x", (x(data[0].dx) - x(0)) / 2)
-                        .attr("text-anchor", "middle")
-                        .text(function(d) { return formatCount(d.y); });*/
-
-                    axis_g.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(xAxis);
-
-
-                    var g_y = axis_g.append("g")
-                        .attr("class", "y axis")
-                        //.attr("transform", "translate("+margin.left+",0)")
-                        .call(yAxis);
-                    var g_y_grid = axis_g.append("g")
-                        .attr("class", "y axis_grid")
-                        //.attr("transform", "translate("+margin.left+",0)")
-                        .call(yAxis_grid);
-                    g_y_grid.selectAll('.tick text').remove();
-                    g_y_grid.selectAll('path').remove();
-                case 'box':
-
-                case 'area':
-                case 'dash':
-            }
-
-        };
 
 
 

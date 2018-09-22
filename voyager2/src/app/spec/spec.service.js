@@ -87,7 +87,7 @@ angular.module('voyager2')
     function parse(spec) {
       var oldSpec = util.duplicate(spec);
       var oldFilter = null;
-
+      delete oldSpec.config.cell;
       if (oldSpec) {
         // Store oldFilter, copy oldSpec that exclude transform.filter
         oldFilter = (oldSpec.transform || {}).filter;
@@ -533,9 +533,11 @@ angular.module('voyager2')
       select: function(spec) {
         var specQuery = getSpecQuery(spec);
         specQuery.mark = '?';
-
+       var copyspec =  util.duplicate(specQuery);
+       delete copyspec.config.cell;
+        console.log(copyspec);
         var query = {
-          spec: specQuery,
+          spec: copyspec,
           chooseBy: 'effectiveness'
         };
         var output = cql.query(query, Dataset.schema);
@@ -544,6 +546,7 @@ angular.module('voyager2')
         if (result.getTopSpecQueryModel().getMark() === spec.mark) {
           // make a copy and replace mark with '?'
           spec = util.duplicate(spec);
+          //delete spec.config.cell;
           spec.mark = ANY;
         }
         Spec.parseSpec(spec);

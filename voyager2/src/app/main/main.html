@@ -21,7 +21,7 @@
     <alert-messages></alert-messages>
   </div>
   <div class="hflex full-width main-panel grow-1">
-    <div class="pane data-pane noselect">
+    <div class="pane data-pane noselect ">
       <div class="card no-top-margin data-card abs-100">
         <div class="sidebar-header" ng-if="!embedded">
           <h2>Data</h2>
@@ -33,65 +33,66 @@
         </div>
         <h3>Biplot</h3>
         <bi-plot></bi-plot>
-        <h3>Guideplot</h3>
-        <vl-plot-group
-                ng-if="PCAplot.chart"
-                class="main-vl-plot-group card"
-                ng-repeat="chart in PCAplot.charts"
-                chart="chart"
-                show-bookmark="true"
-                show-debug="false"
-                show-select="true"
-                show-axis-prop="true"
-                show-sort="false"
-                show-transpose="false"
-                enable-pills-preview="true"
-                always-scrollable="true"
-                overflow="true"
-                show-label="true"
-                tooltip="true"
-                toggle-shelf="true"
-        ></vl-plot-group>
+        <div class = "scroll-y-nox scroll-y">
+          <h3>Guideplot</h3>
 
-        <guide-plot pca-defs ="PCAplot.axismain">
-        </guide-plot>
-        <div class=" hflex full-width">
-          <h3>Fields</h3>
-          <div class="header-drop active">
-            <i class="fa fa-caret-down droplist" ng-click=" fieldShow = !fieldShow"></i>
+          <vl-plot-group
+                  ng-if="PCAplot.chart"
+                  class="main-vl-plot-group card no-shrink guideplot"
+                  ng-repeat="chart in PCAplot.charts"
+                  chart="chart"
+                  show-bookmark="false"
+                  show-debug="false"
+                  show-select="true"
+                  show-axis-prop="false"
+                  show-sort="false"
+                  show-transpose="false"
+                  enable-pills-preview="true"
+                  always-scrollable="false"
+                  overflow="false"
+                  show-label="false"
+                  tooltip="true"
+                  toggle-shelf="false"
+                  style ={max-height:80px}
+          ></vl-plot-group>
+          <div class=" hflex full-width">
+            <h3>Fields</h3>
+            <div class="header-drop active">
+              <i class="fa fa-caret-down droplist" ng-click=" fieldShow = !fieldShow"></i>
+            </div>
           </div>
-        </div>
-        <div ng-show="fieldShow">
-          <schema-list field-defs="Dataset.schema.fieldSchemas"
-            order-by="Dataset.fieldOrder"
-            show-count="true"
-            filter-manager="FilterManager"
-            show-add="true"
-          ></schema-list>
-        </div>
-        <div class=" hflex full-width">
-          <h3>Wildcards</h3>
-          <div class="header-drop active">
-            <i class="fa fa-caret-down droplist" ng-click=" WildcardsShow = !WildcardsShow"></i>
+          <div ng-show="fieldShow">
+            <schema-list field-defs="Dataset.schema.fieldSchemas"
+              order-by="Dataset.fieldOrder"
+              show-count="true"
+              filter-manager="FilterManager"
+              show-add="true"
+            ></schema-list>
           </div>
-        </div>
-        <div ng-show="WildcardsShow">
-          <schema-list field-defs="Wildcards.list"
-            show-add="true"
-            show-drop="true"
-          ></schema-list>
-        </div>
-        <div id="footer">
-          <ul class="menu">
-            <span ng-show="consts.debug">
-              <li>
-                <a class="debug" ng-click="showDevPanel = !showDevPanel">Debug</a>
-              </li>
-              <li>
-                <a ng-href="{{ {spec:Spec.chart.vlSpec} | reportUrl }}" target="_blank" class="debug">Report an issue</a>
-              </li>
-            </span>
-          </ul>
+          <div class=" hflex full-width">
+            <h3>Wildcards</h3>
+            <div class="header-drop active">
+              <i class="fa fa-caret-down droplist" ng-click=" WildcardsShow = !WildcardsShow"></i>
+            </div>
+          </div>
+          <div ng-show="WildcardsShow">
+            <schema-list field-defs="Wildcards.list"
+              show-add="true"
+              show-drop="true"
+            ></schema-list>
+          </div>
+          <div id="footer">
+            <ul class="menu">
+              <span ng-show="consts.debug">
+                <li>
+                  <a class="debug" ng-click="showDevPanel = !showDevPanel">Debug</a>
+                </li>
+                <li>
+                  <a ng-href="{{ {spec:Spec.chart.vlSpec} | reportUrl }}" target="_blank" class="debug">Report an issue</a>
+                </li>
+              </span>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -117,7 +118,11 @@
       <div class="vis-pane-container abs-100"
           ng-class="{'scroll-y': !hideExplore || !Spec.isSpecific, 'no-scroll-y': hideExplore && Spec.isSpecific}"
         >
-        <div class="specified-vis-pane vflex card no-top-margin"
+
+        <slide-graph> </slide-graph>
+
+
+        <div class="specified-vis-pane vflex card"
              ng-if="Spec.isSpecific"
              ng-class="{expand: hideExplore, 'no-scroll-y': hideExplore}"
           >
@@ -166,6 +171,10 @@
               </select>
             </label>-->
           </div>
+          <h2>
+            Guide plot<span ng-show="PCAplot.charts.length>1">s</span>
+          </h2>
+
           <h2>
             Specified View<span ng-show="Spec.charts.length>1">s</span>
           </h2>
