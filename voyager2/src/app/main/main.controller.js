@@ -17,7 +17,7 @@ angular.module('voyager2')
     $scope.hideExplore = false;
     $scope.fieldShow = false;
     $scope.WildcardsShow = false;
-      $scope.PCAplot= PCAplot;
+    $scope.PCAplot= PCAplot;
 
       $scope.fieldAdd = function(fieldDef) {
           Pills.add(fieldDef);

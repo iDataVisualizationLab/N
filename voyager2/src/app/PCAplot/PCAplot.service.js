@@ -2,7 +2,7 @@
 
 angular.module('voyager2')
 // TODO: rename to Query once it's complete independent from Polestar
-    .factory('PCAplot', function(ANY,Dataset,_, vg, vl, cql, ZSchema, consts,FilterManager ,Pills,NotifyingService,Alternatives,Chart,Config,Schema,util) {
+    .factory('PCAplot', function(ANY,Dataset,_, vg, vl, cql, ZSchema, consts,FilterManager ,Pills,NotifyingService,Alternatives,Chart,Config,Schema,util,GuidePill) {
         var keys =  _.keys(Schema.schema.definitions.Encoding.properties).concat([ANY+0]);
         function instantiate() {
             return {
@@ -29,6 +29,7 @@ angular.module('voyager2')
             chart:null,
             charts:[],
             axismain: [],
+            prop:null,
         };
         PCAplot.plot =function(data) {
             if (!Object.keys(Config.data).length){return PCAplot;}
@@ -232,7 +233,7 @@ angular.module('voyager2')
 
                         try{
                             var chan = $(tem_group[0]).attr('channel-id').replace(/'/g,"");
-                            console.log(chan);
+                            // console.log(chan);
                             if (chan!=null){
                                 Pills.set(chan, current_field);
                                 Pills.listener.dragDrop(chan);
@@ -445,6 +446,14 @@ angular.module('voyager2')
         return PCAplot};
         PCAplot.estimate = function(PCAresult) {
             // choose main axis
+            Dataset.schema.fieldSchemas.forEach(function(d){
+                var pca = PCAresult.find(function (it){return (it['brand']==d.field)});
+                d.extrastat = {
+                    pc1:pca.pc1,
+                    pc2:pca.pc2,
+                    outlier: 1,
+                };
+            });
             var recomen = [];
             var pca1_max = PCAresult.sort(function(a,b){
                 return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
@@ -465,12 +474,12 @@ angular.module('voyager2')
             //var pca1_maxd = [pca1_max, 'bar'];
             //var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
-            console.log(object1);
+            // console.log(object1);
             PCAplot.axismain =  [object1,object2,object3];
-            drawGuideplot(object1,'dash');
-            drawGuideplot(mostskew,'boxplot');
-            drawGuideplot(object2,'area');
-            drawGuideplot(object2,'bar');
+            drawGuideplot(object1,'outlier');
+            drawGuideplot(mostskew,'skew');
+            drawGuideplot(object1,'PCA1');
+            drawGuideplot(object2,'PCA2');
         };
 
         function drawGuideplot (object,type) {
@@ -490,6 +499,58 @@ angular.module('voyager2')
                 scale: {useRawDomain: true}
             };
             switch (type) {
+                case 'PCA1': barplot(spec, object); break;
+                case 'outlier': dashplot(spec, object); break;
+                case 'PCA2': areaplot(spec, object); break;
+                case 'skew': boxplot(spec, object); break;
+            }
+            var query = getQuery(spec);
+            var output = cql.query(query, Dataset.schema);
+            PCAplot.query = output.query;
+            var topItem = output.result.getTopSpecQueryModel();
+            PCAplot.chart = Chart.getChart(topItem);
+            PCAplot.chart.prop = {
+                mspec:spec,
+                mark: type2mark(type),
+                ranking: getranking(type),
+                plot: drawGuideexplore
+            };
+            PCAplot.chart.guideon = function(prop){
+                //console.log(prop);
+                prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
+                    .map(d=>prop.plot(d,prop.mark,prop.mspec) );
+                PCAplot.updateguide(prop);
+            };
+            PCAplot.charts.push(PCAplot.chart);
+        }
+        function type2mark (type){
+            switch (type) {
+                case 'PCA1': return "bar"; break;
+                case 'outlier': return "dash"; break;
+                case 'PCA2': return "area"; break;
+                case 'skew': return "boxplot"; break;
+            }
+        }
+        function getranking(type){
+            switch (type) {
+                case 'PCA1': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
+                    break;
+                case'skew': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
+                    break;
+                case'PCA2': return function (a,b){return Math.abs(a.extrastat.pc2) < Math.abs(b.extrastat.pc2) ? 1:-1};
+                    break;
+                case'outlier': return function (a,b){return Math.abs(a.stats.modeskew)>Math.abs(b.stats.modeskew)?1:-1};
+                    break;
+            }
+        }
+        var drawGuideexplore = function (object,type,mspec) {
+            var spec = _.cloneDeep(mspec);
+            //spec.data = Dataset.dataset;
+            spec.config = {
+                overlay: {line: true},
+                scale: {useRawDomain: true}
+            };
+            switch (type) {
                 case 'bar': barplot(spec, object); break;
                 case 'dash': dashplot(spec, object); break;
                 case 'area': areaplot(spec, object); break;
@@ -497,12 +558,11 @@ angular.module('voyager2')
             }
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
-            PCAplot.query = output.query;
             var topItem = output.result.getTopSpecQueryModel();
-            PCAplot.chart = Chart.getChart(topItem);
-            PCAplot.charts.push(PCAplot.chart);
-        }
+            return Chart.getChart(topItem);
+        };
         // PCAplot.alternatives = Alternatives.getHistograms(null, PCAplot.chart, null);
+
         function barplot(spec,object) {
             spec.mark = "bar";
             spec.encoding = {
@@ -652,7 +712,17 @@ angular.module('voyager2')
             newSpec.transform.filter = FilterManager.reset(oldFilter);
 
             return newSpec;
-        }
+        };
+
+        PCAplot.exploreguide= function() {
+                PCAplot
+        };
+
+        PCAplot.updateguide= function(prop) {
+            prop = _.cloneDeep(prop || PCAplot.prop);
+            prop.mspec.config={};
+            PCAplot.prop = prop;
+        };
         PCAplot.reset = function(hard) {
             var spec = instantiate();
             spec.transform.filter = FilterManager.reset(null, hard);

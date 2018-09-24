@@ -40,6 +40,7 @@
                   ng-if="PCAplot.chart"
                   class="main-vl-plot-group card no-shrink guideplot"
                   ng-repeat="chart in PCAplot.charts"
+                  ng-dblclick="chart.guideon(chart.prop)"
                   chart="chart"
                   show-bookmark="false"
                   show-debug="false"
@@ -119,7 +120,10 @@
           ng-class="{'scroll-y': !hideExplore || !Spec.isSpecific, 'no-scroll-y': hideExplore && Spec.isSpecific}"
         >
 
-        <slide-graph> </slide-graph>
+        <slide-graph
+                ng-if = "PCAplot.prop"
+                charts = "PCAplot.prop.charts"
+        ></slide-graph>
 
 
         <div class="specified-vis-pane vflex card"

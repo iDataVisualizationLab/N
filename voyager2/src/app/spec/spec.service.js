@@ -87,7 +87,7 @@ angular.module('voyager2')
     function parse(spec) {
       var oldSpec = util.duplicate(spec);
       var oldFilter = null;
-      delete oldSpec.config.cell;
+
       if (oldSpec) {
         // Store oldFilter, copy oldSpec that exclude transform.filter
         oldFilter = (oldSpec.transform || {}).filter;
