@@ -12,7 +12,7 @@ angular.module('voyager2')
             link: function postLink(scope,element) {
                 var pos = 0;
                 var itemCount = scope.charts.length;
-                var items = d3.select(".items");
+                var items = d3.select(".items-slider");
                 //scope.PCAplot = PCAplot;
                 // console.log (scope.charts);
                 function setTransform() {

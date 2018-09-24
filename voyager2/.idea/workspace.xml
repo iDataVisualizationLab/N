@@ -31,8 +31,8 @@
       <file leaf-file-name="slide-graph.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="31" column="20" lean-forward="false" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="43" />
+            <state relative-caret-position="102">
+              <caret line="9" column="37" lean-forward="true" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -41,11 +41,11 @@
       <file leaf-file-name="slide-graph.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="30" lean-forward="false" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+            <state relative-caret-position="136">
+              <caret line="8" column="30" lean-forward="true" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
               <folding>
                 <element signature="e#153#160#1" expanded="true" />
-                <element signature="e#453#460#1" expanded="true" />
+                <element signature="e#460#467#1" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -64,28 +64,28 @@
       <file leaf-file-name="slide-graph.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="65" column="3" lean-forward="true" selection-start-line="65" selection-start-column="1" selection-end-line="65" selection-end-column="5" />
+            <state relative-caret-position="201">
+              <caret line="72" column="3" lean-forward="false" selection-start-line="72" selection-start-column="3" selection-end-line="72" selection-end-column="3" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="slide-com.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="slide-com.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-com.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="3" column="23" lean-forward="false" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+            <state relative-caret-position="135">
+              <caret line="8" column="37" lean-forward="true" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PCAplot.service.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PCAplot.service.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="527" column="30" lean-forward="false" selection-start-line="527" selection-start-column="30" selection-end-line="527" selection-end-column="30" />
+            <state relative-caret-position="220">
+              <caret line="528" column="43" lean-forward="false" selection-start-line="528" selection-start-column="43" selection-end-line="528" selection-end-column="43" />
               <folding>
                 <element signature="e#4404#4734#0" expanded="false" />
                 <element signature="e#25723#25951#0" expanded="false" />
@@ -99,8 +99,8 @@
       <file leaf-file-name="vlui.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="6434" column="4" lean-forward="false" selection-start-line="6434" selection-start-column="4" selection-end-line="6434" selection-end-column="4" />
+            <state relative-caret-position="177">
+              <caret line="5570" column="65" lean-forward="true" selection-start-line="5570" selection-start-column="65" selection-end-line="5570" selection-end-column="65" />
               <folding>
                 <marker date="1537668894985" expanded="true" signature="127922:127929" ph="×" />
                 <marker date="1537668894985" expanded="true" signature="137741:137757" ph="..." />
@@ -136,8 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>abs-100</find>
-      <find>ng-model</find>
       <find>PCAplot.cha</find>
       <find>PCAplot.char</find>
       <find>isAnyChannel</find>
@@ -166,6 +164,8 @@
       <find>slide</find>
       <find>boxplot</find>
       <find>console.log</find>
+      <find>items</find>
+      <find>formatNum</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -223,8 +223,8 @@
         <option value="$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js" />
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.html" />
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js" />
-        <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss" />
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-com.html" />
+        <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss" />
       </list>
     </option>
   </component>
@@ -549,12 +549,12 @@
       <workItem from="1537031623199" duration="93323000" />
       <workItem from="1537312968821" duration="57031000" />
       <workItem from="1537479048987" duration="1000" />
-      <workItem from="1537480127851" duration="59003000" />
+      <workItem from="1537480127851" duration="61851000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="354534000" />
+    <option name="totallyTimeSpent" value="357382000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1285" y="103" width="1089" height="889" extended-state="0" />
@@ -1044,37 +1044,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="6434" column="4" lean-forward="false" selection-start-line="6434" selection-start-column="4" selection-end-line="6434" selection-end-column="4" />
-          <folding>
-            <marker date="1537668894985" expanded="true" signature="127922:127929" ph="×" />
-            <marker date="1537668894985" expanded="true" signature="137741:137757" ph="..." />
-            <marker date="1537668894985" expanded="true" signature="146795:146806" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
           <caret line="633" column="4" lean-forward="false" selection-start-line="633" selection-start-column="4" selection-end-line="633" selection-end-column="4" />
           <folding>
             <element signature="e#16627#16743#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="527" column="30" lean-forward="false" selection-start-line="527" selection-start-column="30" selection-end-line="527" selection-end-column="30" />
-          <folding>
-            <element signature="e#4404#4734#0" expanded="false" />
-            <element signature="e#25723#25951#0" expanded="false" />
-            <element signature="e#25992#26140#0" expanded="false" />
-            <element signature="e#26449#26601#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1087,38 +1062,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="30" lean-forward="false" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
-          <folding>
-            <element signature="e#153#160#1" expanded="true" />
-            <element signature="e#453#460#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="31" column="20" lean-forward="false" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="65" column="3" lean-forward="true" selection-start-line="65" selection-start-column="1" selection-end-line="65" selection-end-column="5" />
+        <state relative-caret-position="102">
+          <caret line="9" column="37" lean-forward="true" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-com.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="3" column="23" lean-forward="false" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+        <state relative-caret-position="135">
+          <caret line="8" column="37" lean-forward="true" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="30" lean-forward="true" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+          <folding>
+            <element signature="e#153#160#1" expanded="true" />
+            <element signature="e#460#467#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="72" column="3" lean-forward="false" selection-start-line="72" selection-start-column="3" selection-end-line="72" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="5570" column="65" lean-forward="true" selection-start-line="5570" selection-start-column="65" selection-end-line="5570" selection-end-column="65" />
+          <folding>
+            <marker date="1537668894985" expanded="true" signature="127922:127929" ph="×" />
+            <marker date="1537668894985" expanded="true" signature="137741:137757" ph="..." />
+            <marker date="1537668894985" expanded="true" signature="146795:146806" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="528" column="43" lean-forward="false" selection-start-line="528" selection-start-column="43" selection-end-line="528" selection-end-column="43" />
+          <folding>
+            <element signature="e#4404#4734#0" expanded="false" />
+            <element signature="e#25723#25951#0" expanded="false" />
+            <element signature="e#25992#26140#0" expanded="false" />
+            <element signature="e#26449#26601#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

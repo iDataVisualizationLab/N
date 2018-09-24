@@ -31,7 +31,7 @@
   align-items: stretch;
   width: 100%;
   margin: auto;
-  justify-content: center
+  padding: 0;
 }
 
 .butSlider{
@@ -44,7 +44,6 @@
   outline: none;
   opacity: 0.5;
   transition: opacity 300ms ease-out;
-
   &:hover{
     opacity: 1;
   }
@@ -55,17 +54,23 @@
   overflow: hidden;
 }
 
-.items{
+.items-slider{
   list-style-type: none;
   white-space: nowrap;
   font-size: 0;
   line-height: 0;
+  padding: 0;
   transition: transform 1s ease-in-out;
 }
 
 .item{
+
   display: inline-block;
   width: 100%;
+
+  &:nth-child(2) {
+    color: #fff;
+  }
 }
 @keyframes appearing {
   from {
