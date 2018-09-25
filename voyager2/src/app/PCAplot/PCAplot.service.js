@@ -547,7 +547,7 @@ angular.module('voyager2')
                 case 'PCA1': return "bar"; break;
                 case 'outlier': return "tick"; break;
                 case 'PCA2': return "area"; break;
-                case 'skew': return "boxplot"; break;
+                case 'skewness': return "boxplot"; break;
             }
         }
         function getranking(type){

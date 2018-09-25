@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="guideMenu.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="guideMenu.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guideMenu.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="219">
-              <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+              <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
               <folding>
                 <element signature="n#style#0;n#vl-plot-group#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -82,16 +82,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PCAplot.service.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PCAplot.service.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="522" column="43" lean-forward="false" selection-start-line="522" selection-start-column="43" selection-end-line="522" selection-end-column="43" />
+            <state relative-caret-position="140">
+              <caret line="480" column="42" lean-forward="true" selection-start-line="480" selection-start-column="42" selection-end-line="480" selection-end-column="42" />
               <folding>
                 <element signature="e#4404#4734#0" expanded="false" />
-                <element signature="e#26467#26695#0" expanded="false" />
-                <element signature="e#26736#26884#0" expanded="false" />
-                <element signature="e#27193#27345#0" expanded="false" />
+                <element signature="e#26471#26699#0" expanded="false" />
+                <element signature="e#26740#26888#0" expanded="false" />
+                <element signature="e#27197#27349#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -115,7 +115,6 @@
       <find>card vflex</find>
       <find>marks</find>
       <find>Guide</find>
-      <find>skew</find>
       <find>dash</find>
       <find>boxplot</find>
       <find>chartsSlide</find>
@@ -131,6 +130,7 @@
       <find>guide plot</find>
       <find>config.axis</find>
       <find>drawGuideexplore</find>
+      <find>skew</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -185,11 +185,11 @@
         <option value="$PROJECT_DIR$/src/app/main/main.controller.js" />
         <option value="$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.js" />
         <option value="$PROJECT_DIR$/src/components/guidemenu/guidemenu.scss" />
-        <option value="$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js" />
         <option value="$PROJECT_DIR$/src/app/main/main.html" />
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js" />
         <option value="$PROJECT_DIR$/src/components/guidemenu/guiMenu.js" />
         <option value="$PROJECT_DIR$/src/components/guidemenu/guideMenu.html" />
+        <option value="$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js" />
       </list>
     </option>
   </component>
@@ -216,9 +216,9 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1552" />
-    <option name="y" value="81" />
-    <option name="width" value="984" />
+    <option name="x" value="1207" />
+    <option name="y" value="93" />
+    <option name="width" value="1234" />
     <option name="height" value="889" />
   </component>
   <component name="ProjectView">
@@ -247,6 +247,19 @@
               <item name="voyager2" type="b2602c69:ProjectViewProjectNode" />
               <item name="voyager2" type="462c0819:PsiDirectoryNode" />
               <item name="bower_components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voyager2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voyager2" type="462c0819:PsiDirectoryNode" />
+              <item name="bower_components" type="462c0819:PsiDirectoryNode" />
+              <item name="angular-tooltips" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voyager2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voyager2" type="462c0819:PsiDirectoryNode" />
+              <item name="bower_components" type="462c0819:PsiDirectoryNode" />
+              <item name="angular-tooltips" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="voyager2" type="b2602c69:ProjectViewProjectNode" />
@@ -500,16 +513,15 @@
       <workItem from="1537031623199" duration="93323000" />
       <workItem from="1537312968821" duration="57031000" />
       <workItem from="1537479048987" duration="1000" />
-      <workItem from="1537480127851" duration="101775000" />
+      <workItem from="1537480127851" duration="103051000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="397306000" />
+    <option name="totallyTimeSpent" value="398582000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1552" y="81" width="984" height="889" extended-state="0" />
-    <editor active="true" />
+    <frame x="1207" y="93" width="1234" height="889" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -520,7 +532,7 @@
       <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31709957" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24957411" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1002,19 +1014,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="522" column="43" lean-forward="false" selection-start-line="522" selection-start-column="43" selection-end-line="522" selection-end-column="43" />
-          <folding>
-            <element signature="e#4404#4734#0" expanded="false" />
-            <element signature="e#26467#26695#0" expanded="false" />
-            <element signature="e#26736#26884#0" expanded="false" />
-            <element signature="e#27193#27345#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
@@ -1048,9 +1047,22 @@
     <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guideMenu.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
-          <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+          <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
           <folding>
             <element signature="n#style#0;n#vl-plot-group#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="480" column="42" lean-forward="true" selection-start-line="480" selection-start-column="42" selection-end-line="480" selection-end-column="42" />
+          <folding>
+            <element signature="e#4404#4734#0" expanded="false" />
+            <element signature="e#26471#26699#0" expanded="false" />
+            <element signature="e#26740#26888#0" expanded="false" />
+            <element signature="e#27197#27349#0" expanded="false" />
           </folding>
         </state>
       </provider>
