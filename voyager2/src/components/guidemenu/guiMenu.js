@@ -13,8 +13,12 @@ angular.module('voyager2')
                 $scope.marks = ['point', 'tick', 'bar', 'line', 'area', 'text','boxplot'];
                 $scope.props = ['PCA1', 'skewness', 'outlier', 'PCA2'];
                 $scope.typeChange =function (){};
+                $scope.previewSlider = function (index){
+                    $scope.prop.pos =index;
+                    //console.log($scope.prop.pos);
+                };
                 $scope.markChange =function (){
-                    console.log ($scope.prop.mark);
+                    //console.log ($scope.prop.mark);
                 };
                 var specWatcher = $scope.$watch('prop', function(spec) {
 

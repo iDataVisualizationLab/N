@@ -15,10 +15,9 @@
         <div class="scroll-y">
             <vl-plot-group
                     ng-if="prop.previewcharts"
-                    class="main-vl-plot-group card no-shrink guideplot"
+                    class="main-vl-plot-group card"
                     ng-repeat="chart in prop.previewcharts"
-                    ng-dblclick="previewSlider()"
-                    limit = 10
+                    ng-click="previewSlider($index)"
                     chart="chart"
                     show-bookmark="false"
                     show-debug="false"

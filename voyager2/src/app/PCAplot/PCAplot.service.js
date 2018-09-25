@@ -537,7 +537,7 @@ angular.module('voyager2')
                         scale: {useRawDomain: true}
                     };
                     return thum;});
-                console.log(prop.previewcharts);
+                prop.pos = 0;
                 PCAplot.updateguide(prop);
             };
             PCAplot.charts.push(PCAplot.chart);
