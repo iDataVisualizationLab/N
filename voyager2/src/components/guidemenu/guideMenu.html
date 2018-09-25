@@ -1,0 +1,34 @@
+<div class = "contain">
+    <h2>You just select</h2>
+    <div>
+        <select class="typeselect"  ng-model="PCAplot.type"
+                ng-options="type for type in props"
+                ng-change="typeChange()">
+        </select>
+        <select class="markselect" ng-model="spec.mark"
+                ng-options="type for type in marks"
+                ng-change="markChange()"></select>
+    </div>
+    <vl-plot-group
+            ng-if="PCAplot.chart"
+            class="main-vl-plot-group card no-shrink guideplot"
+            ng-repeat="chart in PCAplot.charts"
+            ng-dblclick="chart.guideon(chart.prop)"
+            limit = 10
+            chart="chart"
+            show-bookmark="false"
+            show-debug="false"
+            show-select="true"
+            show-axis-prop="false"
+            show-sort="false"
+            show-transpose="false"
+            enable-pills-preview="true"
+            always-scrollable="false"
+            overflow="false"
+            show-label="false"
+            tooltip="true"
+            toggle-shelf="false"
+            style ={max-height:80px}
+    ></vl-plot-group>
+
+</div>

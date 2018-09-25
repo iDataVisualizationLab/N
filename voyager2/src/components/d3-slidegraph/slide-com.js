@@ -10,6 +10,7 @@ angular.module('voyager2')
             },
 
             link: function postLink(scope, element) {
+                // console.log(element.height());
         //GuidePill.get();
                 // console.log(scope.chart);
                 // d3.selectAll('.background-guideplot')
@@ -17,6 +18,7 @@ angular.module('voyager2')
                 //     .attr('width', $('.guideplot').width())
                 //     .attr('height', $('.guideplot').height());
                 //$scope.idplot = "gplot"+$scope.pcdDef;
+
             }
         }
     });

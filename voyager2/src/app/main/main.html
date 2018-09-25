@@ -34,7 +34,7 @@
         <h3>Biplot</h3>
         <bi-plot></bi-plot>
         <div class = "scroll-y-nox scroll-y">
-          <h3>Guideplot</h3>
+          <h3>Guide plot</h3>
 
           <vl-plot-group
                   ng-if="PCAplot.chart"
@@ -97,7 +97,7 @@
         </div>
       </div>
     </div>
-    <div class="pane encoding-pane">
+    <div class="pane encoding-pane" ng-hide = "PCAplot.prop || !showEncoding">
       <!-- true shelf -->
       <shelves
         spec="Spec.spec"
@@ -250,6 +250,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="pane guidemenu" ng-if="showExtraGuide||PCAplot.prop">
+      <guide-menu></guide-menu>
     </div>
   </div>
 

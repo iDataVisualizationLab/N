@@ -18,7 +18,8 @@ angular.module('voyager2')
     $scope.fieldShow = false;
     $scope.WildcardsShow = false;
     $scope.PCAplot= PCAplot;
-
+    $scope.showEncoding = true;
+    $scope.showExtraGuide = false;
       $scope.fieldAdd = function(fieldDef) {
           Pills.add(fieldDef);
       };
@@ -64,7 +65,6 @@ angular.module('voyager2')
       $scope.setAlternativeType(null, true);
     });
 
-     $scope.$watch('Spec');
       $scope.$watch('PCAplot');
 
     // undo/redo support

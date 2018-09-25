@@ -1,0 +1,14 @@
+.pane.guidemenu {
+  flex-shrink: 0;
+  min-width: 235px;
+  background-color: #364a8e;
+
+  .contain {
+    margin: 5px;
+    flex:1;
+    flex-direction: row;
+  }
+  h2 {
+    color: white;
+  }
+}

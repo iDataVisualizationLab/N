@@ -376,7 +376,7 @@ var PCA = function(){
   }
 
   function pca(X,npc){
-    var USV = svd(X);
+      var USV = svd(X);
     var U = USV.U;
     var S = diag(USV.S);
     var V = USV.V;
