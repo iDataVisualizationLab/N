@@ -1,14 +1,33 @@
 .pane.guidemenu {
-  flex-shrink: 0;
-  min-width: 235px;
+  max-width: 235px;
   background-color: #364a8e;
-
   .contain {
+    display: flex;
+    flex-direction: column;
     margin: 5px;
-    flex:1;
-    flex-direction: row;
+    height: calc(100% - 10px);
+  }
+  .headermenu{
+    height: 50px;
+    padding: 20px;
   }
   h2 {
     color: white;
   }
+  .vl-plot {
+    min-width: 80px;
+  }
+  .guideplot {
+    align-items: center;
+  }
+  .thum {
+    display: flex;
+    flex: 1;
+    min-height: 0px;
+  }
+  .scroll-y {
+    flex: 1;
+    overflow: auto;
+  }
 }
+

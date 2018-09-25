@@ -17,8 +17,8 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/main/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="57" column="27" lean-forward="false" selection-start-line="38" selection-start-column="10" selection-end-line="57" selection-end-column="27" />
+            <state relative-caret-position="190">
+              <caret line="254" column="31" lean-forward="true" selection-start-line="254" selection-start-column="31" selection-end-line="254" selection-end-column="31" />
               <folding>
                 <element signature="n#div#2;n#div#1;n#div#0;n#!!top" expanded="false" />
                 <element signature="n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#!!top" expanded="false" />
@@ -30,42 +30,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shelves.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="42" column="55" lean-forward="true" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="shelves.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="21" column="20" lean-forward="false" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="guiMenu.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guiMenu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="guideMenu.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guideMenu.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="14" column="32" lean-forward="false" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="306">
+              <caret line="30" column="35" lean-forward="false" selection-start-line="30" selection-start-column="35" selection-end-line="30" selection-end-column="35" />
+              <folding>
+                <element signature="n#style#0;n#vl-plot-group#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,49 +45,46 @@
       <file leaf-file-name="guidemenu.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guidemenu.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="16" lean-forward="false" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+            <state relative-caret-position="119">
+              <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="slide-graph.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js">
+      <file leaf-file-name="PCAplot.service.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="35" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+            <state relative-caret-position="249">
+              <caret line="533" column="43" lean-forward="true" selection-start-line="533" selection-start-column="43" selection-end-line="533" selection-end-column="43" />
+              <folding>
+                <element signature="e#4404#4734#0" expanded="false" />
+                <element signature="e#26486#26714#0" expanded="false" />
+                <element signature="e#26755#26903#0" expanded="false" />
+                <element signature="e#27212#27364#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vega.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/vega/vega.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="199">
+              <caret line="15150" column="11" lean-forward="false" selection-start-line="15150" selection-start-column="0" selection-end-line="15150" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.controller.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/app/main/main.controller.js">
+      <file leaf-file-name="spec.service.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="67" column="28" lean-forward="false" selection-start-line="67" selection-start-column="28" selection-end-line="67" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="slide-graph.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="39" column="2" lean-forward="false" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="slide-com.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-com.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="13" lean-forward="false" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="18" />
-              <folding />
+            <state relative-caret-position="118">
+              <caret line="633" column="4" lean-forward="false" selection-start-line="633" selection-start-column="4" selection-end-line="633" selection-end-column="4" />
+              <folding>
+                <element signature="e#16627#16743#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -124,20 +93,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>'Pills'</find>
-      <find>db</find>
-      <find>chart</find>
-      <find>estim</find>
-      <find>guide</find>
-      <find>prop</find>
-      <find>update</find>
-      <find>PC1</find>
-      <find>.pc1</find>
-      <find>con</find>
-      <find>boxplot</find>
-      <find>console.log</find>
-      <find>bar</find>
-      <find>formatNum</find>
       <find>items</find>
       <find>slide</find>
       <find>vis-</find>
@@ -153,7 +108,21 @@
       <find>card vflex</find>
       <find>marks</find>
       <find>Guide</find>
+      <find>skew</find>
+      <find>dash</find>
+      <find>boxplot</find>
+      <find>chartsSlide</find>
+      <find>prop</find>
       <find>Guideplot</find>
+      <find>axis</find>
+      <find>axis.tickL</find>
+      <find>axis.tick</find>
+      <find>config.axis</find>
+      <find>init</find>
+      <find>limit</find>
+      <find>guidem</find>
+      <find>markChange</find>
+      <find>drawGuideexplore</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -176,7 +145,6 @@
         <option value="$PROJECT_DIR$/src/components/d3-biplot/bi-plot.html" />
         <option value="$PROJECT_DIR$/src/components/d3-guideplot/guide-plot.scss" />
         <option value="$PROJECT_DIR$/src/components/d3-guideplot/gplot.html" />
-        <option value="$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.js" />
         <option value="$PROJECT_DIR$/src/components/d3-guideplot/guide-plot.html" />
         <option value="$PROJECT_DIR$/src/components/d3-guideplot/gplot.js" />
         <option value="$PROJECT_DIR$/src/components/d3-guideplot/box-plot.js" />
@@ -199,7 +167,6 @@
         <option value="$PROJECT_DIR$/src/app/index.js" />
         <option value="$PROJECT_DIR$/src/app/PCAplot/guidepill.js" />
         <option value="$PROJECT_DIR$/src/app/spec/spec.service.js" />
-        <option value="$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js" />
         <option value="$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js" />
         <option value="$PROJECT_DIR$/src/app/index.scss" />
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.html" />
@@ -209,9 +176,11 @@
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.scss" />
         <option value="$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js" />
         <option value="$PROJECT_DIR$/src/app/main/main.controller.js" />
-        <option value="$PROJECT_DIR$/src/components/guidemenu/guidemenu.scss" />
+        <option value="$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.js" />
         <option value="$PROJECT_DIR$/src/components/guidemenu/guiMenu.js" />
+        <option value="$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js" />
         <option value="$PROJECT_DIR$/src/app/main/main.html" />
+        <option value="$PROJECT_DIR$/src/components/guidemenu/guidemenu.scss" />
         <option value="$PROJECT_DIR$/src/components/guidemenu/guideMenu.html" />
       </list>
     </option>
@@ -239,8 +208,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1214" />
-    <option name="y" value="79" />
+    <option name="x" value="1552" />
+    <option name="y" value="81" />
     <option name="width" value="984" />
     <option name="height" value="889" />
   </component>
@@ -559,15 +528,15 @@
       <workItem from="1537031623199" duration="93323000" />
       <workItem from="1537312968821" duration="57031000" />
       <workItem from="1537479048987" duration="1000" />
-      <workItem from="1537480127851" duration="85850000" />
+      <workItem from="1537480127851" duration="97629000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="381381000" />
+    <option name="totallyTimeSpent" value="393160000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1214" y="79" width="984" height="889" extended-state="0" />
+    <frame x="1552" y="81" width="984" height="889" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -575,7 +544,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2668428" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32496697" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -584,7 +553,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4927345" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40367964" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -674,12 +643,6 @@
           <option name="timeStamp" value="278" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js</url>
-          <line>521</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="286" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js</url>
           <line>20</line>
           <properties lambdaOrdinal="-1" />
@@ -695,7 +658,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="293" />
+      <option name="time" value="296" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -870,14 +833,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgrouplist/vlplotgrouplist.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="14" column="47" lean-forward="true" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgroup/vlplotgroup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -910,26 +865,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgrouplist/vlplotgrouplist.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="83" lean-forward="false" selection-start-line="3" selection-start-column="78" selection-end-line="3" selection-end-column="83" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="101">
           <caret line="13" column="6" lean-forward="false" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega/vega.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4030">
-          <caret line="16306" column="22" lean-forward="false" selection-start-line="16306" selection-start-column="19" selection-end-line="16306" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -965,51 +904,6 @@
         <state relative-caret-position="175">
           <caret line="304" column="1" lean-forward="false" selection-start-line="304" selection-start-column="1" selection-end-line="304" selection-end-column="1" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgroup/vlplotgroup.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2652">
-          <caret line="156" column="7" lean-forward="false" selection-start-line="156" selection-start-column="7" selection-end-line="156" selection-end-column="7" />
-          <folding>
-            <marker date="1536538278005" expanded="true" signature="550:897" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="6434" column="4" lean-forward="false" selection-start-line="6434" selection-start-column="4" selection-end-line="6434" selection-end-column="4" />
-          <folding>
-            <marker date="1537668894985" expanded="true" signature="127922:127929" ph="×" />
-            <marker date="1537668894985" expanded="true" signature="137741:137757" ph="..." />
-            <marker date="1537668894985" expanded="true" signature="146795:146806" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="633" column="4" lean-forward="false" selection-start-line="633" selection-start-column="4" selection-end-line="633" selection-end-column="4" />
-          <folding>
-            <element signature="e#16627#16743#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="521" column="16" lean-forward="false" selection-start-line="521" selection-start-column="16" selection-end-line="521" selection-end-column="16" />
-          <folding>
-            <element signature="e#4404#4734#0" expanded="false" />
-            <element signature="e#25723#25951#0" expanded="false" />
-            <element signature="e#25992#26140#0" expanded="false" />
-            <element signature="e#26449#26601#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1053,14 +947,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/main/main.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="67" column="28" lean-forward="false" selection-start-line="67" selection-start-column="28" selection-end-line="67" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1071,48 +957,88 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-graph.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="35" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+        <state relative-caret-position="272">
+          <caret line="16" column="55" lean-forward="false" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guidemenu.scss">
+    <entry file="file://$PROJECT_DIR$/src/app/main/main.controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="16" lean-forward="false" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+        <state relative-caret-position="425">
+          <caret line="67" column="28" lean-forward="false" selection-start-line="67" selection-start-column="28" selection-end-line="67" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="21" column="20" lean-forward="false" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="42" column="55" lean-forward="true" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="55" />
+        <state relative-caret-position="323">
+          <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="67" selection-end-line="25" selection-end-column="71" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guiMenu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+        <state relative-caret-position="153">
+          <caret line="9" column="14" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/vlui.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="6434" column="4" lean-forward="false" selection-start-line="6434" selection-start-column="4" selection-end-line="6434" selection-end-column="4" />
+          <folding>
+            <marker date="1537668894985" expanded="true" signature="127922:127929" ph="×" />
+            <marker date="1537668894985" expanded="true" signature="137741:137757" ph="..." />
+            <marker date="1537668894985" expanded="true" signature="146795:146806" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="633" column="4" lean-forward="false" selection-start-line="633" selection-start-column="4" selection-end-line="633" selection-end-column="4" />
+          <folding>
+            <element signature="e#16627#16743#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega/vega.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="15150" column="11" lean-forward="false" selection-start-line="15150" selection-start-column="0" selection-end-line="15150" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgroup/vlplotgroup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="34" column="38" lean-forward="false" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
+          <folding>
+            <marker date="1536538278005" expanded="true" signature="550:897" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgrouplist/vlplotgrouplist.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="26" lean-forward="true" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/main/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="57" column="27" lean-forward="false" selection-start-line="38" selection-start-column="10" selection-end-line="57" selection-end-column="27" />
+        <state relative-caret-position="190">
+          <caret line="254" column="31" lean-forward="true" selection-start-line="254" selection-start-column="31" selection-end-line="254" selection-end-column="31" />
           <folding>
             <element signature="n#div#2;n#div#1;n#div#0;n#!!top" expanded="false" />
             <element signature="n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#!!top" expanded="false" />
@@ -1123,11 +1049,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/shelves/shelves.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="47" column="20" lean-forward="false" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/vega-lite-ui/src/components/vlplotgrouplist/vlplotgrouplist.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="32" column="2" lean-forward="true" selection-start-line="32" selection-start-column="2" selection-end-line="36" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="533" column="43" lean-forward="true" selection-start-line="533" selection-start-column="43" selection-end-line="533" selection-end-column="43" />
+          <folding>
+            <element signature="e#4404#4734#0" expanded="false" />
+            <element signature="e#26486#26714#0" expanded="false" />
+            <element signature="e#26755#26903#0" expanded="false" />
+            <element signature="e#27212#27364#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guidemenu.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/guidemenu/guideMenu.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="14" column="32" lean-forward="false" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
-          <folding />
+        <state relative-caret-position="306">
+          <caret line="30" column="35" lean-forward="false" selection-start-line="30" selection-start-column="35" selection-end-line="30" selection-end-column="35" />
+          <folding>
+            <element signature="n#style#0;n#vl-plot-group#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

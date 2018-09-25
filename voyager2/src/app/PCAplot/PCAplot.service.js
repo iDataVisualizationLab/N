@@ -477,7 +477,7 @@ angular.module('voyager2')
             // console.log(object1);
             PCAplot.axismain =  [object1,object2,object3];
             drawGuideplot(object1,'outlier');
-            drawGuideplot(mostskew,'skew');
+            drawGuideplot(mostskew,'skewness');
             drawGuideplot(object1,'PCA1');
             drawGuideplot(object2,'PCA2');
         };
@@ -502,7 +502,7 @@ angular.module('voyager2')
                 case 'PCA1': barplot(spec, object); break;
                 case 'outlier': dashplot(spec, object); break;
                 case 'PCA2': areaplot(spec, object); break;
-                case 'skew': boxplot(spec, object); break;
+                case 'skewness': boxplot(spec, object); break;
             }
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
@@ -511,6 +511,7 @@ angular.module('voyager2')
             PCAplot.chart = Chart.getChart(topItem);
             PCAplot.chart.prop = {
                 mspec:spec,
+                type: type,
                 mark: type2mark(type),
                 ranking: getranking(type),
                 plot: drawGuideexplore
@@ -519,6 +520,24 @@ angular.module('voyager2')
                 //console.log(prop);
                 prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
                     .map(d=>prop.plot(d,prop.mark,prop.mspec) );
+                prop.previewcharts = prop.charts.map(d=> {
+                    var thum =_.cloneDeep(d);
+                    thum.vlSpec.config = {
+                        cell: {
+                            width: 100,
+                            height: 30,
+                        },
+                        axis: {
+                            grid: false,
+                            ticks: false,
+                            labels: false,
+                            titleOffset: 20
+                        },
+                        overlay: {line: true},
+                        scale: {useRawDomain: true}
+                    };
+                    return thum;});
+                console.log(prop.previewcharts);
                 PCAplot.updateguide(prop);
             };
             PCAplot.charts.push(PCAplot.chart);
@@ -526,7 +545,7 @@ angular.module('voyager2')
         function type2mark (type){
             switch (type) {
                 case 'PCA1': return "bar"; break;
-                case 'outlier': return "dash"; break;
+                case 'outlier': return "tick"; break;
                 case 'PCA2': return "area"; break;
                 case 'skew': return "boxplot"; break;
             }
@@ -535,7 +554,7 @@ angular.module('voyager2')
             switch (type) {
                 case 'PCA1': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
                     break;
-                case'skew': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
+                case'skewness': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
                     break;
                 case'PCA2': return function (a,b){return Math.abs(a.extrastat.pc2) < Math.abs(b.extrastat.pc2) ? 1:-1};
                     break;
@@ -552,7 +571,7 @@ angular.module('voyager2')
             };
             switch (type) {
                 case 'bar': barplot(spec, object); break;
-                case 'dash': dashplot(spec, object); break;
+                case 'tick': dashplot(spec, object); break;
                 case 'area': areaplot(spec, object); break;
                 case 'boxplot': boxplot(spec, object); break;
             }
@@ -729,6 +748,8 @@ angular.module('voyager2')
             PCAplot.spec = spec;
             PCAplot.firstrun =true;
             PCAplot.charts.length = 0;
+            PCAplot.chart=null;
+            PCAplot.prop=null;
             //PCAplot.plot(Dataset.data);
         };
         PCAplot.reset();
