@@ -209,6 +209,7 @@ angular.module('voyager2')
           Spec.chart = null;
         }
       // }
+        console.log(Spec.alternatives);
       return Spec;
     };
 

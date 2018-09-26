@@ -170,15 +170,8 @@ angular.module('voyager2')
                 var dragHandler = d3.behavior.drag()
                     .on("dragstart", function (d) {
 
-                        var proIwant = d3.selectAll("schema-list-item")
-                            .data(Dataset.schema.fieldSchemas)
-                            .filter(function(it){
-                                if (it.field == d.brand){
-                                    current_field = it;
-                                    return true;}
-                                else
-                                    return false})
-                            .select('div');
+                        current_field = Dataset.schema.fieldSchema(d.brand);
+                        var proIwant = d3.selectAll($("[id='"+d.brand+"']")).select('div')
                         //.attr ('class','schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty ui-droppable-active drop-active');
                         var pill = {
                             field: current_field.field,
@@ -223,6 +216,7 @@ angular.module('voyager2')
                             .attr ('class','schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty');
 
                         Pills.dragStop;
+                        Pills.dragStop;
 
                         var pos = temp_drag.node().getBoundingClientRect();
                         temp_drag.remove();
@@ -263,11 +257,8 @@ angular.module('voyager2')
                     .on('mouseover', onMouseOverBrand)
                     .on('mouseleave', onMouseLeave)
                     .on("dblclick", function(d) {
-                        var proIwant = d3.selectAll("schema-list-item")
-                            .data(Dataset.schema.fieldSchemas)
-                            .filter(function(it){return it.field == d.brand})
-                            .select('div')
-                            .select('span');
+                        var proIwant = d3.selectAll($("[id='"+d.brand+"']"))
+                            .select('div').select('span');
                         $(proIwant[0]).trigger("dblclick");
                     })
                     .call(dragHandler);
@@ -604,6 +595,7 @@ angular.module('voyager2')
                 overlay: {line: true},
                 scale: {useRawDomain: true}
             };
+
             switch (type) {
                 case 'bar': barplot(spec, object); break;
                 case 'tick': dashplot(spec, object); break;

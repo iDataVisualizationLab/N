@@ -8,6 +8,7 @@ angular.module('voyager2')
             scope: {
                 prop: '=',
                 initialLimit: '<',
+                priority:'<',
             },
             replace: true,
             controller: function($scope, PCAplot) {
