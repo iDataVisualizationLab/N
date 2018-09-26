@@ -253,9 +253,11 @@
       </div>
     </div>
 
-    <div class="pane guidemenu grow-1" ng-if="showExtraGuide||PCAplot.prop">
+    <div class="pane guidemenu grow-1"
+         ng-if="showExtraGuide||PCAplot.prop">
       <guide-menu
-      prop="PCAplot.prop">
+      prop="PCAplot.prop"
+      initial-limit="5">
       </guide-menu>
     </div>
   </div>

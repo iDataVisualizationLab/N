@@ -7,18 +7,22 @@ angular.module('voyager2')
             restrict: 'E',
             scope: {
                 prop: '=',
+                initialLimit: '<',
             },
             replace: true,
-            controller: function($scope, util, vl, Config, Dataset, Logger, Pills) {
-                $scope.marks = ['point', 'tick', 'bar', 'line', 'area', 'text','boxplot'];
+            controller: function($scope, PCAplot) {
+                $scope.limit = $scope.initialLimit || 4;
+                $scope.marks = ['tick', 'bar','area','boxplot'];
                 $scope.props = ['PCA1', 'skewness', 'outlier', 'PCA2'];
-                $scope.typeChange =function (){};
+                $scope.typeChange =function (){
+                    PCAplot.updateSpec($scope.prop);
+                };
                 $scope.previewSlider = function (index){
                     $scope.prop.pos =index;
                     //console.log($scope.prop.pos);
                 };
                 $scope.markChange =function (){
-                    //console.log ($scope.prop.mark);
+                    PCAplot.updateSpec($scope.prop);
                 };
                 var specWatcher = $scope.$watch('prop', function(spec) {
 

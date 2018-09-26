@@ -516,6 +516,7 @@ angular.module('voyager2')
                 ranking: getranking(type),
                 plot: drawGuideexplore
             };
+
             PCAplot.chart.guideon = function(prop){
                 //console.log(prop);
                 prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
@@ -542,6 +543,40 @@ angular.module('voyager2')
             };
             PCAplot.charts.push(PCAplot.chart);
         }
+
+        PCAplot.updateSpec = function(prop){
+            var nprop = prop = _.cloneDeep(prop);
+            nprop.ranking = getranking(prop.type);
+            console.log(nprop.mspec);
+            switch (prop.mark) {
+                case 'bar': barplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
+                case 'tick': dashplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
+                case 'area': areaplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
+                case 'boxplot': boxplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
+            }
+            nprop.charts = Dataset.schema.fieldSchemas.sort(nprop.ranking)
+                .map(d=>drawGuideexplore(d,nprop.mark,nprop.mspec) );
+            nprop.previewcharts = nprop.charts.map(d=> {
+                var thum =_.cloneDeep(d);
+                thum.vlSpec.config = {
+                    cell: {
+                        width: 100,
+                        height: 30,
+                    },
+                    axis: {
+                        grid: false,
+                        ticks: false,
+                        labels: false,
+                        titleOffset: 20
+                    },
+                    overlay: {line: true},
+                    scale: {useRawDomain: true}
+                };
+                return thum;});
+            nprop.pos = 0;
+            PCAplot.updateguide(nprop);
+        };
+
         function type2mark (type){
             switch (type) {
                 case 'PCA1': return "bar"; break;
@@ -554,7 +589,7 @@ angular.module('voyager2')
             switch (type) {
                 case 'PCA1': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
                     break;
-                case'skewness': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
+                case'skewness': return function (a,b){return Math.abs(a.extrastat.modeskew) < Math.abs(b.extrastat.modeskew) ? 1:-1};
                     break;
                 case'PCA2': return function (a,b){return Math.abs(a.extrastat.pc2) < Math.abs(b.extrastat.pc2) ? 1:-1};
                     break;
@@ -575,6 +610,7 @@ angular.module('voyager2')
                 case 'area': areaplot(spec, object); break;
                 case 'boxplot': boxplot(spec, object); break;
             }
+
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
             var topItem = output.result.getTopSpecQueryModel();
