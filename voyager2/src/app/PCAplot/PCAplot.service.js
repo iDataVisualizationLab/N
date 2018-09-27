@@ -31,7 +31,8 @@ angular.module('voyager2')
             axismain: [],
             prop:null,
         };
-        PCAplot.plot =function(data) {
+        PCAplot.plotscag = function (data){};
+        PCAplot.plot =function(data,dimention) {
             if (!Object.keys(Config.data).length){return PCAplot;}
             if (!PCAplot.firstrun && (Dataset.currentDataset[Object.keys(Config.data)[0]]==Config.data[Object.keys(Config.data)[0]])) {return PCAplot;}
             PCAplot.firstrun = false;
@@ -107,17 +108,7 @@ angular.module('voyager2')
                         }
                     });
                 // console.log(brands);
-                function rotate(x,y, dtheta) {
 
-                    var r = Math.sqrt(x*x + y*y);
-                    var theta = Math.atan(y/x);
-                    if (x<0) theta += Math.PI;
-
-                    return {
-                        x: r * Math.cos(theta + dtheta),
-                        y: r * Math.sin(theta + dtheta)
-                    }
-                }
 
 
                 data.map(function(d,i) {
@@ -132,10 +123,87 @@ angular.module('voyager2')
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
                     d.outlier = outlier[i];
+                    d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;
                 });
                 //update to calculate
-                PCAplot.estimate(brands);
+                PCAplot.estimate(brands,dimention);
                 // draw
+                var onMouseOverAttribute = function (a,j) {
+                    brands.forEach(function(b, idx) {
+                        var A = { x: 0, y:0 };
+                        var B = { x: b.pc1,  y: b.pc2 };
+                        var C = { x: a.pc1,  y: a.pc2 };
+                        //var C = { x: a.vector[idx],  y: a.vector[idx] };
+
+                        b.D = getSpPoint(A,B,C);
+                    });
+
+                    svg.selectAll('.tracer')
+                        .data(brands)
+                        .enter()
+                        .append('line')
+                        .attr('class', 'tracer tips')
+                        .attr('x1', function(b,i) { return x(a.pc1); return x1; })
+                        .attr('y1', function(b,i) { return y(a.pc2); return y1; })
+                        .attr('x2', function(b,i) { return x(b.D.x); return x2; })
+                        .attr('y2', function(b,i) { return y(b.D.y); return y2; })
+                        .style("stroke", function(d) { return "#ff6f2b"});
+
+                    delete a.D;
+                    var ca = _.cloneDeep(a);
+                    delete ca.pc1;
+                    delete ca.pc2;
+                    delete ca.vector;
+                    var tipText = d3.entries(ca);
+                    console.log(a);
+                    tip.show(tipText, "");
+                };
+
+// draw line from the brand axis a perpendicular to each attribute b
+                var onMouseOverBrand = function(b,j) {
+
+                    data.forEach(function(a, idx) {
+                        var A = { x: 0, y:0 };
+                        var B = { x: b.pc1,  y: b.pc2 };
+                        var C = { x: a.pc1,  y: a.pc2 };
+                        // var C = { x: a.vector[j],  y: a.vector[j] };
+
+                        a.D = getSpPoint(A,B,C);
+                    });
+
+                    var tracer = svg.selectAll('.tracer')
+                        .data(data)
+                        .enter();
+                    tracer
+                        .append('line')
+                        .attr('class', 'tracer tips')
+                        .attr('x1', function(a,i) { return x(a.D.x);  })
+                        .attr('y1', function(a,i) { return y(a.D.y);  })
+                        .attr('x2', function(a,i) { return x(a.pc1);  })
+                        .attr('y2', function(a,i) { return y(a.pc2); })
+                        .style("stroke", function(d) { return "#aaa"});
+
+                    tracer
+                        .append('circle')
+                        .attr('class', 'tracer-c tips')
+                        .attr('cx', function(a,i) { return x(a.D.x);  })
+                        .attr('cy', function(a,i) { return y(a.D.y);  })
+                        .attr('r',5)
+                        .style("fill", function(d) { return "#ff6f2b"})
+                        .style("fill-opacity", 0.1);
+
+                    /*var tipText = data.map(function(d) {
+                        return {key: d[brand_names[0]], value: d[b['brand']] }
+                    });*/
+                    var tipText ="";
+                    tip.show(tipText, b.brand);
+                };
+
+                var onMouseLeave = function (b,j) {
+                    svg.selectAll('.tracer').remove();
+                    svg.selectAll('.tracer-c').remove();
+                    tip.hide();
+                };
                 g_point.selectAll(".dot")
                     .data(data)
                     .enter().append("circle")
@@ -176,7 +244,6 @@ angular.module('voyager2')
                 var bi = d3.selectAll(".biplot");
                 var temp_drag;
                 var current_field;
-
 
                 var dragHandler = d3.behavior.drag()
                     .on("dragstart", function (d) {
@@ -295,78 +362,6 @@ angular.module('voyager2')
                     });
                 //dragHandler(svg.selectAll(".line"));
                 svg.call(tip);
-                // draw line from the attribute a perpendicular to each brand b
-                function onMouseOverAttribute(a,j) {
-                    brands.forEach(function(b, idx) {
-                        var A = { x: 0, y:0 };
-                        var B = { x: b.pc1,  y: b.pc2 };
-                        var C = { x: a.pc1,  y: a.pc2 };
-                        //var C = { x: a.vector[idx],  y: a.vector[idx] };
-
-                        b.D = getSpPoint(A,B,C);
-                    });
-
-                    svg.selectAll('.tracer')
-                        .data(brands)
-                        .enter()
-                        .append('line')
-                        .attr('class', 'tracer tips')
-                        .attr('x1', function(b,i) { return x(a.pc1); return x1; })
-                        .attr('y1', function(b,i) { return y(a.pc2); return y1; })
-                        .attr('x2', function(b,i) { return x(b.D.x); return x2; })
-                        .attr('y2', function(b,i) { return y(b.D.y); return y2; })
-                        .style("stroke", function(d) { return "#ff6f2b"});
-
-                    delete a.D;
-                    var tipText = d3.entries(a);
-                    tip.show(tipText, "");
-                }
-
-// draw line from the brand axis a perpendicular to each attribute b
-                function onMouseOverBrand(b,j) {
-
-                    data.forEach(function(a, idx) {
-                        var A = { x: 0, y:0 };
-                        var B = { x: b.pc1,  y: b.pc2 };
-                        var C = { x: a.pc1,  y: a.pc2 };
-                        // var C = { x: a.vector[j],  y: a.vector[j] };
-
-                        a.D = getSpPoint(A,B,C);
-                    });
-
-                    var tracer = svg.selectAll('.tracer')
-                        .data(data)
-                        .enter();
-                    tracer
-                        .append('line')
-                        .attr('class', 'tracer tips')
-                        .attr('x1', function(a,i) { return x(a.D.x);  })
-                        .attr('y1', function(a,i) { return y(a.D.y);  })
-                        .attr('x2', function(a,i) { return x(a.pc1);  })
-                        .attr('y2', function(a,i) { return y(a.pc2); })
-                        .style("stroke", function(d) { return "#aaa"});
-
-                    tracer
-                        .append('circle')
-                        .attr('class', 'tracer-c tips')
-                        .attr('cx', function(a,i) { return x(a.D.x);  })
-                        .attr('cy', function(a,i) { return y(a.D.y);  })
-                        .attr('r',5)
-                        .style("fill", function(d) { return "#ff6f2b"})
-                        .style("fill-opacity", 0.1);
-
-                    /*var tipText = data.map(function(d) {
-                        return {key: d[brand_names[0]], value: d[b['brand']] }
-                    });*/
-                    var tipText ="";
-                    tip.show(tipText, b.brand);
-                }
-
-                function onMouseLeave(b,j) {
-                    svg.selectAll('.tracer').remove();
-                    svg.selectAll('.tracer-c').remove();
-                    tip.hide();
-                }
 
 
 
@@ -397,7 +392,17 @@ angular.module('voyager2')
                 PCAplot.dataencde = data;
             }
         return PCAplot};
+        function rotate(x,y, dtheta) {
 
+            var r = Math.sqrt(x*x + y*y);
+            var theta = Math.atan(y/x);
+            if (x<0) theta += Math.PI;
+
+            return {
+                x: r * Math.cos(theta + dtheta),
+                y: r * Math.sin(theta + dtheta)
+            }
+        }
         function data2Num (input){
             var clone = {};
             for ( var key in  input[0]){
@@ -475,7 +480,8 @@ angular.module('voyager2')
                     recomen.forEach(e=>{r |= (e!=d)})
                 return r;})[0];
             Dataset.schema.fieldSchemas.sort((a,b)=>
-                Math.abs(a.stats.outlier)>Math.abs(b.stats.outlier)?-1:1);
+                (a.extrastat.outlier)>(b.extrastat.outlier)?-1:1);
+            // console.log(Dataset.schema.fieldSchemas);
             var mostoutlie = Dataset.schema.fieldSchemas.filter(d => {
                 var r = false;
                 recomen.forEach(e=>{r |= (e!=d)})
@@ -560,7 +566,6 @@ angular.module('voyager2')
         PCAplot.updateSpec = function(prop){
             var nprop = prop = _.cloneDeep(prop);
             nprop.ranking = getranking(prop.type);
-            console.log(nprop.mspec);
             switch (prop.mark) {
                 case 'bar': barplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'tick': dashplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
@@ -602,11 +607,11 @@ angular.module('voyager2')
             switch (type) {
                 case 'PCA1': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
                     break;
-                case'skewness': return function (a,b){return Math.abs(a.extrastat.modeskew) < Math.abs(b.extrastat.modeskew) ? 1:-1};
+                case'skewness': return function (a,b){return Math.abs(a.stats.modeskew) < Math.abs(b.stats.modeskew) ? 1:-1};
                     break;
                 case'PCA2': return function (a,b){return Math.abs(a.extrastat.pc2) < Math.abs(b.extrastat.pc2) ? 1:-1};
                     break;
-                case'outlier': return function (a,b){return a.stats.outlier>b.stats.outlier?1:-1};
+                case'outlier': return function (a,b){return a.extrastat.outlier < b.extrastat.outlier? 1:-1};
                     break;
             }
         }

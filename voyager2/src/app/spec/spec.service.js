@@ -562,7 +562,6 @@ angular.module('voyager2')
       preview: Spec.preview,
       previewQuery: Spec.previewQuery,
       update: function(spec) {
-      var PCA = PCAplot.plot(Dataset.data);
         var dim = 0;
         var fields = [];
         for (var key in spec.encoding) {
@@ -571,6 +570,7 @@ angular.module('voyager2')
                 fields.push(spec.encoding[key].field);
             }
         }
+        var PCA = PCAplot.plot(Dataset.data,dim);
         if( dim==1)
           PCAplot.calscagnotic(fields);
         if (dim==2){

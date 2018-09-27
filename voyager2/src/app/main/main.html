@@ -114,7 +114,7 @@
         support-any="true"
       ></shelves>
     </div>
-    <button ng-show = "PCAplot.prop && !showEncoding" ng-click = "showEncoding=!showEncoding">Click me</button>
+    <button class="toggleEncoding" ng-show = "PCAplot.prop" ng-click = "showEncoding=!showEncoding"></button>
     <div class="pane vis-pane">
       <div class="vis-pane-container abs-100"
           ng-class="{'scroll-y': !hideExplore || !Spec.isSpecific, 'no-scroll-y': hideExplore && Spec.isSpecific}"

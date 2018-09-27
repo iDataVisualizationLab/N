@@ -5526,12 +5526,12 @@ angular.module('vlui')
                       var labels = true; // show the text labels beside individual boxplots?
                       // my zone \(=o=)\
                       var margin = {top: 5, right: 20, bottom: 50, left: 20};
-                      var  width = $(old_canvas[0]).width() - margin.left - margin.right;
-                      var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
-
+                      var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
+                      //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
+                      var height = $(boxplotdiv[0]).parent().parent()[0].offsetHeight - margin.top - margin.bottom;
+                      old_canvas.remove();
                       var min = Infinity,
                           max = -Infinity;
-                      old_canvas.remove;
                       var svg = boxplotdiv.append('svg')
                           .attr("width",width + margin.left + margin.right)
                           .attr("height",height + margin.top + margin.bottom)
@@ -5561,14 +5561,14 @@ angular.module('vlui')
                          unique.sort(function(a,b){return formatNum(a)-formatNum(b)});
                          while (formatNum(unique[++i]) < q1 - iqr);
                          while (formatNum(unique[--j]) > q3 + iqr);
-                         it.stats.q1iqr = formatNum(unique[i]);
-                         it.stats.q3iqr = formatNum(unique[j]);
+                         it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
+                         it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);
                        });
 
                       // the y-axis
                       var y = d3.scale.ordinal()
                           .domain( data.map(function(d) { return d.field } ) )
-                          .rangeRoundBands([height,0], 0.7, 0.3);
+                          .rangeRoundBands([height,0]);
 
 
                       // the x-axis
@@ -5579,7 +5579,8 @@ angular.module('vlui')
                       var xAxis = d3.svg.axis()
                           .scale(x)
                           .orient("bottom");
-
+                      if (!spec.marks[0].axes[0].ticks)
+                          xAxis.ticks(0);
                       var yAxis = d3.svg.axis()
                           .scale(y)
                           .orient("left");
@@ -5654,7 +5655,12 @@ angular.module('vlui')
                       svg.append("g")
                           .attr("class", "x axis")
                           .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
-                          .call(xAxis);
+                          .call(xAxis)
+                          .append('text')
+                          .attr("text-anchor", "middle")
+                          .text(spec.marks[0].axes[0].title)
+                          .style("font-weight",'bold' )
+                          .attr("transform", "translate("+ (width/2) +","+(spec.marks[0].axes[0].titleOffset ? spec.marks[0].axes[0].titleOffset:30)+")");
 
 
 
