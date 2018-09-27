@@ -5515,23 +5515,23 @@ angular.module('vlui')
                 var endChart = new Date().getTime();
                 console.log('parse spec', (endParse-start), 'charting', (endChart-endParse), shorthand);
                 //replace boxplot
-                  var boxplotdiv = d3.selectAll("#vis-" + scope.visId);
+                  var boxplotdiv = d3.selectAll("#vis-" + scope.visId).selectAll('.vega');
                   boxplotdiv.selectAll('svg').remove();
                   if (scope.chart.vlSpec.mark == "boxplot") {
 
-                      boxplotdiv.selectAll('div').remove();
+                      var old_canvas = boxplotdiv.selectAll('canvas');
 
 
                       // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
                       var labels = true; // show the text labels beside individual boxplots?
                       // my zone \(=o=)\
                       var margin = {top: 5, right: 20, bottom: 50, left: 20};
-                      var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
-                      var height = 150 - margin.top - margin.bottom;
+                      var  width = $(old_canvas[0]).width() - margin.left - margin.right;
+                      var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
 
                       var min = Infinity,
                           max = -Infinity;
-
+                      old_canvas.remove;
                       var svg = boxplotdiv.append('svg')
                           .attr("width",width + margin.left + margin.right)
                           .attr("height",height + margin.top + margin.bottom)

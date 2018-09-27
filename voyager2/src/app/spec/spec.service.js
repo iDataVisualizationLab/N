@@ -209,7 +209,7 @@ angular.module('voyager2')
           Spec.chart = null;
         }
       // }
-        console.log(Spec.alternatives);
+        //console.log(Spec.alternatives);
       return Spec;
     };
 
@@ -536,7 +536,7 @@ angular.module('voyager2')
         specQuery.mark = '?';
        var copyspec =  util.duplicate(specQuery);
        delete copyspec.config.cell;
-        console.log(copyspec);
+        //console.log(copyspec);
         var query = {
           spec: copyspec,
           chooseBy: 'effectiveness'
@@ -551,6 +551,7 @@ angular.module('voyager2')
           spec.mark = ANY;
         }
         Spec.parseSpec(spec);
+
       },
       selectQuery: function(query) {
         Spec.spec = parseQuery(query);
@@ -561,7 +562,34 @@ angular.module('voyager2')
       preview: Spec.preview,
       previewQuery: Spec.previewQuery,
       update: function(spec) {
-        var PCA = PCAplot.plot(Dataset.data);
+      var PCA = PCAplot.plot(Dataset.data);
+        var dim = 0;
+        var fields = [];
+        for (var key in spec.encoding) {
+            if (spec.encoding[key].field!= undefined && spec.encoding[key].field != "*") {
+                dim++;
+                fields.push(spec.encoding[key].field);
+            }
+        }
+        if( dim==1)
+          PCAplot.calscagnotic(fields);
+        if (dim==2){
+            PCAplot.calscagnotic(fields);
+            console.log("HEREEEEEEE!");
+            var scag = Dataset.schema.fieldSchema(fields[0]).scag[fields[1]];
+            //console.log(Dataset.schema.fieldSchema(fields[0]).scag);
+            //console.log("0. Bin size: " + scag.binSize + "x" + scag.binSize + " bins" + ", num of bins: " + scag.bins.length);
+            console.log("1. Outlying score: " + scag.outlyingScore + ", outlying edge cut point: " + scag.outlyingUpperBound);
+            console.log("2. Skewed score: " + scag.skewedScore);
+            console.log("3. Sparse score: " + scag.sparseScore);
+            console.log("4. Clumpy score: " + scag.clumpyScore);
+            console.log("5. Striated score: " + scag.striatedScore);
+            console.log("6. Convex score: " + scag.convexScore);
+            console.log("7. Skinny score: " + scag.skinnyScore);
+            console.log("8. Stringy score: " + scag.stringyScore);
+            console.log("9. Monotonic score: " + scag.monotonicScore);
+
+        }
         return Spec.update(spec);
       },
       reset: function() {

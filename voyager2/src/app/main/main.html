@@ -97,7 +97,7 @@
         </div>
       </div>
     </div>
-    <div class="pane encoding-pane" ng-hide = "PCAplot.prop || !showEncoding">
+    <div class="pane encoding-pane" ng-hide = "PCAplot.prop && !showEncoding">
       <!-- true shelf -->
       <shelves
         spec="Spec.spec"
@@ -114,7 +114,7 @@
         support-any="true"
       ></shelves>
     </div>
-
+    <button ng-show = "PCAplot.prop && !showEncoding" ng-click = "showEncoding=!showEncoding">Click me</button>
     <div class="pane vis-pane">
       <div class="vis-pane-container abs-100"
           ng-class="{'scroll-y': !hideExplore || !Spec.isSpecific, 'no-scroll-y': hideExplore && Spec.isSpecific}"
@@ -257,7 +257,7 @@
          ng-if="showExtraGuide||PCAplot.prop">
       <guide-menu
       prop="PCAplot.prop"
-      priority="3000"
+      priority="2"
       initial-limit="5">
       </guide-menu>
     </div>

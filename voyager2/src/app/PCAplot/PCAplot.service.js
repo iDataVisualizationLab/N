@@ -67,6 +67,16 @@ angular.module('voyager2')
                 var inputdata = Array.from(data);
                 var matrix = data2Num(inputdata);
 
+                var outlier = brand_names.map((d,i) =>{
+                    var outlier= 0,
+                        row = matrix.map(r => r[i]),
+                        q1 = ss.quantile(row,0.25),
+                        q3 = ss.quantile(row,0.75),
+                        iqr = (q3-q1)*1.5;
+                    row.forEach(e => {if ((e < q1 - iqr)||(e > q3 + iqr)) outlier++;});
+                    return outlier;
+                });
+
                 var pca = new PCA();
                 // console.log(brand_names);
                 matrix = pca.scale(matrix,true,true);
@@ -117,10 +127,11 @@ angular.module('voyager2')
                     d.vector = matrix[i];
                 });
 
-                brands.map(function(d) {
+                brands.map(function(d,i) {
                     var xy = rotate(d.pc1, d.pc2, angle);
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
+                    d.outlier = outlier[i];
                 });
                 //update to calculate
                 PCAplot.estimate(brands);
@@ -381,70 +392,74 @@ angular.module('voyager2')
                     return {x:x, y:y}; //this is D
                 }
 
-                function data2Num (input){
-                    var clone = {};
-                    for ( var key in  input[0]){
-                        clone[key] = [];
-                    }
-                    var output=  Array.from(input);
-                    input.forEach(function (d){
-                        for ( var key in d){
-                            if (clone[key].find(function(it){return it.key == [d[key]];}) == undefined){
-                                clone[key].push({'key': d[key]});
-                            }
-                        }
-                    });
 
-
-                    for (var key in clone){
-                        clone[key].sort(function(a,b){
-                            if (a.key < b.key)
-                                return -1;
-                            else
-                                return 1;});
-
-
-                        clone[key].forEach(function(d,i){
-                            if (d.key == null)
-                                d.newindex = 0;
-                            else if (isNaN(parseFloat(d.key) )){
-                                d.newindex = i;
-                            }else{
-                                d.newindex = parseFloat(d.key);
-                            }
-                        });
-                    }
-
-
-// output with replaced number
-                    /*output.forEach(function (d,i){
-                        for ( var k in d){
-                            output[i][k] = clone[k].find(function(it){return it.key == output[i][k]}).newindex;
-                        }
-                    });*/
-
-                    var matrix = input.map(function (d,i){
-                        return Object.keys(d).map(function(k){
-                            return clone[k].find(function(it){return it.key == output[i][k]}).newindex;
-                        });
-                    });
-                    return matrix;
-                    //return output.map(function(d){return Object.keys(d).map(function(i){return d[i]})});
-                }
 
                 PCAplot.dataencde = data;
             }
         return PCAplot};
+
+        function data2Num (input){
+            var clone = {};
+            for ( var key in  input[0]){
+                clone[key] = [];
+            }
+            var output=  Array.from(input);
+            input.forEach(function (d){
+                for ( var key in d){
+                    if (clone[key].find(function(it){return it.key == [d[key]];}) == undefined){
+                        clone[key].push({'key': d[key]});
+                    }
+                }
+            });
+
+
+            for (var key in clone){
+                clone[key].sort(function(a,b){
+                    if (a.key < b.key)
+                        return -1;
+                    else
+                        return 1;});
+
+
+                clone[key].forEach(function(d,i){
+                    if (d.key == null)
+                        d.newindex = 0;
+                    else if (isNaN(parseFloat(d.key) )){
+                        d.newindex = i;
+                    }else{
+                        d.newindex = parseFloat(d.key);
+                    }
+                });
+            }
+
+
+// output with replaced number
+            /*output.forEach(function (d,i){
+                for ( var k in d){
+                    output[i][k] = clone[k].find(function(it){return it.key == output[i][k]}).newindex;
+                }
+            });*/
+
+            var matrix = input.map(function (d,i){
+                return Object.keys(d).map(function(k){
+                    return clone[k].find(function(it){return it.key == output[i][k]}).newindex;
+                });
+            });
+            return matrix;
+            //return output.map(function(d){return Object.keys(d).map(function(i){return d[i]})});
+        }
+
         PCAplot.estimate = function(PCAresult) {
             // choose main axis
             Dataset.schema.fieldSchemas.forEach(function(d){
                 var pca = PCAresult.find(function (it){return (it['brand']==d.field)});
                 d.extrastat = {
-                    pc1:pca.pc1,
-                    pc2:pca.pc2,
-                    outlier: 1,
+                    pc1: pca.pc1,
+                    pc2: pca.pc2,
+                    outlier: pca.outlier,
                 };
             });
+
             var recomen = [];
             var pca1_max = PCAresult.sort(function(a,b){
                 return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
@@ -454,23 +469,30 @@ angular.module('voyager2')
             recomen.push(pca1_max);
             recomen.push(pca2_max);
             Dataset.schema.fieldSchemas.sort((a,b)=>
-                Math.abs(a.stats.modeskew)>Math.abs(b.stats.modeskew)?-1:1)
+                Math.abs(a.stats.modeskew)>Math.abs(b.stats.modeskew)?-1:1);
             var mostskew = Dataset.schema.fieldSchemas.filter(d => {
                     var r = false;
                     recomen.forEach(e=>{r |= (e!=d)})
                 return r;})[0];
+            Dataset.schema.fieldSchemas.sort((a,b)=>
+                Math.abs(a.stats.outlier)>Math.abs(b.stats.outlier)?-1:1);
+            var mostoutlie = Dataset.schema.fieldSchemas.filter(d => {
+                var r = false;
+                recomen.forEach(e=>{r |= (e!=d)})
+                return r;})[0];
             var object1 = Dataset.schema.fieldSchema(pca1_max);
             var object2 = Dataset.schema.fieldSchema(pca2_max);
-            var object3 = Dataset.schema.fieldSchemas.filter(function(d){return d.field === pca2_max})[0];
+
+
             //var pca1_maxd = [pca1_max, 'bar'];
             //var pca2_maxd = [pca1_max, 'box'];
             // update to guideplot
             // console.log(object1);
-            PCAplot.axismain =  [object1,object2,object3];
-            drawGuideplot(object1,'outlier');
-            drawGuideplot(mostskew,'skewness');
+            //PCAplot.axismain =  [object1,object2,object3];
             drawGuideplot(object1,'PCA1');
             drawGuideplot(object2,'PCA2');
+            drawGuideplot(mostskew,'skewness');
+            drawGuideplot(mostoutlie,'outlier');
         };
 
         function drawGuideplot (object,type) {
@@ -490,10 +512,10 @@ angular.module('voyager2')
                 scale: {useRawDomain: true}
             };
             switch (type) {
-                case 'PCA1': barplot(spec, object); break;
-                case 'outlier': dashplot(spec, object); break;
+                case 'PCA1': dashplot(spec, object); break;
+                case 'outlier': boxplot(spec, object); break;
                 case 'PCA2': areaplot(spec, object); break;
-                case 'skewness': boxplot(spec, object); break;
+                case 'skewness': barplot(spec, object); break;
             }
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
@@ -570,10 +592,10 @@ angular.module('voyager2')
 
         function type2mark (type){
             switch (type) {
-                case 'PCA1': return "bar"; break;
-                case 'outlier': return "tick"; break;
-                case 'PCA2': return "area"; break;
-                case 'skewness': return "boxplot"; break;
+                case 'PCA1': return 'tick';
+                case 'outlier': return 'boxplot';
+                case 'PCA2': return 'area';
+                case 'skewness': return 'bar';
             }
         }
         function getranking(type){
@@ -584,7 +606,7 @@ angular.module('voyager2')
                     break;
                 case'PCA2': return function (a,b){return Math.abs(a.extrastat.pc2) < Math.abs(b.extrastat.pc2) ? 1:-1};
                     break;
-                case'outlier': return function (a,b){return Math.abs(a.stats.modeskew)>Math.abs(b.stats.modeskew)?1:-1};
+                case'outlier': return function (a,b){return a.stats.outlier>b.stats.outlier?1:-1};
                     break;
             }
         }
@@ -613,9 +635,14 @@ angular.module('voyager2')
         function barplot(spec,object) {
             spec.mark = "bar";
             spec.encoding = {
-                x: {bin: {}, field: object.field, type: object.type},
-                y: {aggregate: "count", field: "*", type: object.type}
+                x: {field: object.field, type: object.type},
+                y: {aggregate: "count", field: "*"}
             };
+            if (object.type==="quantitative"){
+                spec.encoding.x.bin ={};
+                spec.encoding.y.type = object.type;
+            }
+            //console.log(spec);
         }
 
         function dashplot(spec,object) {
@@ -761,15 +788,61 @@ angular.module('voyager2')
             return newSpec;
         };
 
-        PCAplot.exploreguide= function() {
-                PCAplot
-        };
+
 
         PCAplot.updateguide= function(prop) {
             prop = _.cloneDeep(prop || PCAplot.prop);
             prop.mspec.config={};
             PCAplot.prop = prop;
         };
+
+        function scagnoticscore (field1,field2){
+            var matrix = Dataset.data.map(d=>[d[field1],d[field2]]);
+            try {
+                var scag = scagnostics(matrix,'leader',20);
+                return {
+                    'outlyingScore': scag.outlyingScore,
+                    'skewedScore': scag.skewedScore,
+                    'sparseScore':scag.sparseScore,
+                    'clumpyScore':scag.clumpyScore,
+                    'striatedScore':scag.striatedScore,
+                    'convexScore':scag.convexScore,
+                    'skinnyScore':scag.skinnyScore,
+                    'stringyScore':scag.stringyScore,
+                    'monotonicScore':scag.monotonicScore,
+                    'invalid':0}
+            }catch(e){
+                return {
+                    'outlyingScore': 0,
+                    'skewedScore': 0,
+                    'sparseScore':0,
+                    'clumpyScore':0,
+                    'striatedScore':0,
+                    'convexScore':0,
+                    'skinnyScore':0,
+                    'stringyScore':0,
+                    'monotonicScore':0,
+                    'invalid':1
+                };
+            }
+        }
+
+        PCAplot.calscagnotic = function (primfield){
+            primfield.forEach(selectedfield => {
+            Dataset.schema.fieldSchemas.forEach(function(d){
+                if ((d.field!==selectedfield) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
+                    let scag = scagnoticscore(selectedfield,d.field);
+                    if (d.scag === undefined)
+                        d.scag = {};
+                    d.scag[selectedfield] = scag;
+                    if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
+                        Dataset.schema.fieldSchema(selectedfield).scag ={};
+                    Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
+                }
+            })});
+           //console.log (Dataset.schema.fieldSchema(primfield[0]));
+        };
+
         PCAplot.reset = function(hard) {
             var spec = instantiate();
             spec.transform.filter = FilterManager.reset(null, hard);

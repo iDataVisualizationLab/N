@@ -40,14 +40,7 @@ angular.module('voyager2')
 
                 scope.$on('$destroy', function() {
                     console.log('guideplot destroyed');
-                    if (view) {
-                        destroyView();
-                    }
-
-                    if (hoverPromise) {
-                        $timeout.cancel(hoverPromise);
-
-                    }
+                    scope.charts = null;
                 });
             }
         }

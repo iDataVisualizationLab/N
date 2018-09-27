@@ -18,7 +18,7 @@ angular.module('voyager2')
     $scope.fieldShow = false;
     $scope.WildcardsShow = false;
     $scope.PCAplot= PCAplot;
-    $scope.showEncoding = true;
+    $scope.showEncoding = false;
     $scope.showExtraGuide = false;
       $scope.fieldAdd = function(fieldDef) {
           Pills.add(fieldDef);
