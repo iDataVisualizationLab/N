@@ -31,12 +31,12 @@ angular.module('voyager2')
             axismain: [],
             prop:null,
         };
-        PCAplot.plotscag = function (data){};
+        //PCAplot.updateplot = function (data){};
         PCAplot.plot =function(data,dimention) {
             if (!Object.keys(Config.data).length){return PCAplot;}
             if (!PCAplot.firstrun && (Dataset.currentDataset[Object.keys(Config.data)[0]]==Config.data[Object.keys(Config.data)[0]])) {return PCAplot;}
             PCAplot.firstrun = false;
-            d3.select('#bi-plot').selectAll('g').remove();
+            // d3.select('#bi-plot').selectAll('g').remove();
 
             // Biplot.data;
             //var data = Dataset.data);
@@ -56,13 +56,10 @@ angular.module('voyager2')
                 var svg_main = d3.select("#bi-plot")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom);
-                var svg = svg_main.append("g")
-                    .attr("id","bi-plot-g")
+                var svg = svg_main.select("#bi-plot-g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-                var g_axis = svg.append("g")
-                    .attr("id","bi-plot-axis");
-                var g_point = svg.append("g")
-                    .attr("id","bi-plot-point");
+                var g_axis = svg.select("#bi-plot-axis");
+                var g_point = svg.select("#bi-plot-point");
                 var brand_names = Object.keys(data[0]);  // first row of data file ["ATTRIBUTE", "BRAND A", "BRAND B", "BRAND C", ...]
 
                 var inputdata = Array.from(data);
@@ -128,7 +125,7 @@ angular.module('voyager2')
                 //update to calculate
                 PCAplot.estimate(brands,dimention);
                 // draw
-                var onMouseOverAttribute = function (a,j) {
+                let onMouseOverAttribute = function (a,j) {
                     brands.forEach(function(b, idx) {
                         var A = { x: 0, y:0 };
                         var B = { x: b.pc1,  y: b.pc2 };
@@ -160,7 +157,7 @@ angular.module('voyager2')
                 };
 
 // draw line from the brand axis a perpendicular to each attribute b
-                var onMouseOverBrand = function(b,j) {
+                let onMouseOverBrand = function(b,j) {
 
                     data.forEach(function(a, idx) {
                         var A = { x: 0, y:0 };
@@ -199,13 +196,22 @@ angular.module('voyager2')
                     tip.show(tipText, b.brand);
                 };
 
-                var onMouseLeave = function (b,j) {
+                let onMouseLeave = function (b,j) {
                     svg.selectAll('.tracer').remove();
                     svg.selectAll('.tracer-c').remove();
                     tip.hide();
                 };
-                g_point.selectAll(".dot")
+                let point = g_point.selectAll(".dot")
                     .data(data)
+                    .attr("cx", function(d) { return x(d.pc1); })
+                    .attr("cy", function(d) { return y(d.pc2); })
+                    .style("fill", function(d) {
+                        return '#161616'; })
+                    .style("fill-opacity",0.4)
+                    .on('mouseover', onMouseOverAttribute)
+                    .on('mouseleave', onMouseLeave);
+                point.exit().remove();
+                point
                     .enter().append("circle")
                     .attr("class", "dot")
                     .attr("r", rdot)
@@ -217,31 +223,35 @@ angular.module('voyager2')
                     .on('mouseover', onMouseOverAttribute)
                     .on('mouseleave', onMouseLeave);
 
-                g_axis.selectAll("circle.brand")
+                let circlebrand = g_axis.selectAll(".circle_brand")
                     .data(brands)
+                    .attr("x", function(d) { return x(d.pc1)-2.5; })
+                    .attr("y", function(d) { return y(d.pc2)-2.5; })
+                    .style("fill", function(d) {
+                        return color(d['brand']); });
+                circlebrand.exit().remove();
+                circlebrand
                     .enter().append("rect")
-                    .attr("class", "square")
+                    .attr("class", "circle_brand")
                     .attr("width", 5)
                     .attr('height',5)
                     .attr("x", function(d) { return x(d.pc1)-2.5; })
                     .attr("y", function(d) { return y(d.pc2)-2.5; })
                     .style("fill", function(d) {
-                        return color(d['brand']); })
-                    .on('mouseover', onMouseOverBrand)
-                    .on('mouseleave', onMouseLeave);
+                        return color(d['brand']); });
 
 
-                g_axis.selectAll("text.brand")
+                /*g_axis.selectAll("text.brand")
                     .data(brands)
                     .enter().append("text")
                     .attr("class", "label-brand")
                     .attr("x", function(d) { return x(d.pc1) + 10; })
                     .attr("y", function(d) { return y(d.pc2) + 0; })
                     .attr("visibility","hidden")
-                    .text(function(d) { return d['brand']});
-                var deltaX, deltaY;
+                    .text(function(d) { return d['brand']});*/
+                //var deltaX, deltaY;
 
-                var bi = d3.selectAll(".biplot");
+                //var bi = d3.selectAll(".biplot");
                 var temp_drag;
                 var current_field;
 
@@ -324,6 +334,22 @@ angular.module('voyager2')
 
                 var listitem = g_axis.selectAll(".line")
                     .data(brands)
+                    .attr('x1', function(d) { return x(0)})//x(-d.pc1);})
+                    .attr('y1', function(d) { return x(0)})//y(-d.pc2); })
+                    .attr("x2", function(d) { return x(d.pc1); })
+                    .attr("y2", function(d) { return y(d.pc2); })
+                    .style("stroke", function(d) { return color(d['brand']); })
+                    .style("stroke-width", '1px')
+                    .on('mouseover', onMouseOverBrand)
+                    .on('mouseleave', onMouseLeave)
+                    .on("dblclick", function(d) {
+                        var proIwant = d3.selectAll($("[id='"+d.brand+"']"))
+                            .select('div').select('span');
+                        $(proIwant[0]).trigger("dblclick");
+                    })
+                    .call(dragHandler);
+                listitem.exit().remove();
+                listitem
                     .enter().append("line")
                     .attr("class", "line square draggable")
                     .attr('x1', function(d) { return x(0)})//x(-d.pc1);})
@@ -377,21 +403,20 @@ angular.module('voyager2')
                     .text(function(d,i) { return d.type})*/
 
 
-                function getSpPoint(A,B,C){
-                    var x1=A.x, y1=A.y, x2=B.x, y2=B.y, x3=C.x, y3=C.y;
-                    var px = x2-x1, py = y2-y1, dAB = px*px + py*py;
-                    var u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
-                    var x = x1 + u * px, y = y1 + u * py;
-                   // var u = x3*scale_axis/dAB;
-                    var x = x1 + u * px, y = y1 + u * py;
-                    return {x:x, y:y}; //this is D
-                }
-
 
 
                 PCAplot.dataencde = data;
             }
         return PCAplot};
+        function getSpPoint(A,B,C){
+            var x1=A.x, y1=A.y, x2=B.x, y2=B.y, x3=C.x, y3=C.y;
+            var px = x2-x1, py = y2-y1, dAB = px*px + py*py;
+            var u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
+            var x = x1 + u * px, y = y1 + u * py;
+            // var u = x3*scale_axis/dAB;
+            var x = x1 + u * px, y = y1 + u * py;
+            return {x:x, y:y}; //this is D
+        }
         function rotate(x,y, dtheta) {
 
             var r = Math.sqrt(x*x + y*y);
@@ -454,51 +479,63 @@ angular.module('voyager2')
             //return output.map(function(d){return Object.keys(d).map(function(i){return d[i]})});
         }
 
-        PCAplot.estimate = function(PCAresult) {
+        PCAplot.estimate = function(PCAresult,dim) {
             // choose main axis
-            Dataset.schema.fieldSchemas.forEach(function(d){
-                var pca = PCAresult.find(function (it){return (it['brand']==d.field)});
-                d.extrastat = {
-                    pc1: pca.pc1,
-                    pc2: pca.pc2,
-                    outlier: pca.outlier,
-                };
-            });
+            if (dim==0) {
+                Dataset.schema.fieldSchemas.forEach(function (d) {
+                    var pca = PCAresult.find(function (it) {
+                        return (it['brand'] == d.field)
+                    });
+                    d.extrastat = {
+                        pc1: pca.pc1,
+                        pc2: pca.pc2,
+                        outlier: pca.outlier,
+                    };
+                });
 
-            var recomen = [];
-            var pca1_max = PCAresult.sort(function(a,b){
-                return Math.abs(a.pc1)<Math.abs(b.pc1)?1:-1})[0]['brand'];
-            PCAresult.sort(function(a,b){
-                return Math.abs(a.pc2)<Math.abs(b.pc2)?1:-1});
-            var pca2_max = PCAresult[0]['brand']!=pca1_max?PCAresult[0]['brand']:PCAresult[1]['brand'];
-            recomen.push(pca1_max);
-            recomen.push(pca2_max);
-            Dataset.schema.fieldSchemas.sort((a,b)=>
-                Math.abs(a.stats.modeskew)>Math.abs(b.stats.modeskew)?-1:1);
-            var mostskew = Dataset.schema.fieldSchemas.filter(d => {
+                var recomen = [];
+                var pca1_max = PCAresult.sort(function (a, b) {
+                    return Math.abs(a.pc1) < Math.abs(b.pc1) ? 1 : -1
+                })[0]['brand'];
+                PCAresult.sort(function (a, b) {
+                    return Math.abs(a.pc2) < Math.abs(b.pc2) ? 1 : -1
+                });
+                var pca2_max = PCAresult[0]['brand'] != pca1_max ? PCAresult[0]['brand'] : PCAresult[1]['brand'];
+                recomen.push(pca1_max);
+                recomen.push(pca2_max);
+                Dataset.schema.fieldSchemas.sort((a, b) =>
+                    Math.abs(a.stats.modeskew) > Math.abs(b.stats.modeskew) ? -1 : 1);
+                var mostskew = Dataset.schema.fieldSchemas.filter(d => {
                     var r = false;
-                    recomen.forEach(e=>{r |= (e!=d)})
-                return r;})[0];
-            Dataset.schema.fieldSchemas.sort((a,b)=>
-                (a.extrastat.outlier)>(b.extrastat.outlier)?-1:1);
-            // console.log(Dataset.schema.fieldSchemas);
-            var mostoutlie = Dataset.schema.fieldSchemas.filter(d => {
-                var r = false;
-                recomen.forEach(e=>{r |= (e!=d)})
-                return r;})[0];
-            var object1 = Dataset.schema.fieldSchema(pca1_max);
-            var object2 = Dataset.schema.fieldSchema(pca2_max);
+                    recomen.forEach(e => {
+                        r |= (e != d)
+                    })
+                    return r;
+                })[0];
+                Dataset.schema.fieldSchemas.sort((a, b) =>
+                    (a.extrastat.outlier) > (b.extrastat.outlier) ? -1 : 1);
+                // console.log(Dataset.schema.fieldSchemas);
+                var mostoutlie = Dataset.schema.fieldSchemas.filter(d => {
+                    var r = false;
+                    recomen.forEach(e => {
+                        r |= (e != d)
+                    })
+                    return r;
+                })[0];
+                var object1 = Dataset.schema.fieldSchema(pca1_max);
+                var object2 = Dataset.schema.fieldSchema(pca2_max);
 
 
-            //var pca1_maxd = [pca1_max, 'bar'];
-            //var pca2_maxd = [pca1_max, 'box'];
-            // update to guideplot
-            // console.log(object1);
-            //PCAplot.axismain =  [object1,object2,object3];
-            drawGuideplot(object1,'PCA1');
-            drawGuideplot(object2,'PCA2');
-            drawGuideplot(mostskew,'skewness');
-            drawGuideplot(mostoutlie,'outlier');
+                //var pca1_maxd = [pca1_max, 'bar'];
+                //var pca2_maxd = [pca1_max, 'box'];
+                // update to guideplot
+                // console.log(object1);
+                //PCAplot.axismain =  [object1,object2,object3];
+                drawGuideplot(object1, 'PCA1');
+                drawGuideplot(object2, 'PCA2');
+                drawGuideplot(mostskew, 'skewness');
+                drawGuideplot(mostoutlie, 'outlier');
+            }
         };
 
         function drawGuideplot (object,type) {
