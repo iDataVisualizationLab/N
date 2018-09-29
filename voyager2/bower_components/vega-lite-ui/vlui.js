@@ -5634,7 +5634,7 @@
                                             .attr("transform", function(d) { return "translate(" +  0  + "," +  y.rangeBand(d.field)/2+ ")"; })
                                             .selectAll(".circle")
                                             .data(function(d) {return Object.keys(d.stats.unique)
-                                            .filter(it=>it<(d.stats.q1iqr)||it>d.stats.q3iqr)})
+                                            .filter(function(it){return it<(d.stats.q1iqr)||it>d.stats.q3iqr})})
                                             .enter()
                                             .append("circle")
                                             .attr("cx", function(d) {return x(d)})

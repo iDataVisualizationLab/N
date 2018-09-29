@@ -11,7 +11,7 @@ $fa-font-path: "../../bower_components/fontawesome/fonts";
 $iron: #ccc;
 
 #logo {
-  background: url("../assets/images/logo.png") center no-repeat;
+  background: url("../assets/images/logov2.png") center no-repeat;
   background-size: contain;
   display: block;
   width: 176px;
@@ -42,7 +42,7 @@ null-filter-directive {
   width: 235px;
   flex-shrink: 0;
   .card {
-    background-color: #E2E9F3;
+    background-color: #e2e0ff;
   }
 }
 
@@ -54,7 +54,7 @@ null-filter-directive {
     a {
       color: #95a4b9;
       &:hover {
-        color: #c9d9f1;
+        color: #e505fa;
       }
     }
   }
@@ -62,7 +62,7 @@ null-filter-directive {
 
 .pane.encoding-pane, .pane.vis-pane {
   h2, h3 {
-    color: #38425D;
+    color: #3f1952;
   }
 }
 
@@ -95,7 +95,7 @@ null-filter-directive {
 }
 
 .queried-vis-pane {
-  background: #d1eaec;
+  background: #f80094;
   // background: hsla(186,80%,95%,0.4);
   flex-grow: 1;
 }
@@ -213,7 +213,7 @@ null-filter-directive {
 .boxplot line,
 .boxplot rect,
 .boxplot circle {
-  fill: steelblue;
+  fill: #4682b4;
   stroke: #000;
   stroke-width: 1px;
 }
@@ -241,7 +241,15 @@ null-filter-directive {
 
 .toggleEncoding {
   opacity: 0.5;
-  color: #e2e9f3;
+  color: #eaddf3;
   padding: 0;
   border: none;
+}
+
+.iDVL-logo {
+  background: url("../assets/images/iDVL.png") center no-repeat;
+  display: block;
+  background-size: 40px 28px;
+  width: 40px;
+  height: 28px;
 }

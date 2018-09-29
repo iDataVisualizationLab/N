@@ -3,9 +3,9 @@ $pill-radius: 3px;
 $pill-height: 20px;
 $pill-min-width: 150px;
 $text-color: #212121;
-$link-color: #38425D;
+$link-color: #4c425d;
 $link-hover-color: #72757B;
-$background-color: #E2E9F3;
+$background-color: #c9cdf7;
 
 html {
   height: 100%;
@@ -17,7 +17,7 @@ body{
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color: #E2E9F3;
+  background-color: #ecebff;
   font-size: 12px;
   line-height: 18px;
 }
@@ -35,7 +35,7 @@ a:hover {
 }
 
 .top-card a {
-  color: #38425D;
+  color: #4f445d;
 }
 
 .top-card a:hover {
@@ -418,7 +418,7 @@ h4 {
   .current-dataset {
     color: white;
   }
-  background-color: #38425D;
+  background-color: #31224c;
 
   #footer {
     a {
@@ -453,7 +453,7 @@ h4 {
 }
 
 .data-load {
-  background-color: #30374A;
+  background-color: #31224c;
   padding:0;
   margin:0;
 }
@@ -561,7 +561,7 @@ h4 {
     }
 
     &.selected {
-      background-color: #eef0f7;
+      background-color: #f2f4fb;
       border: 1px solid #aeb8d4;
       border-radius: 3px;
     }
@@ -699,7 +699,7 @@ $text-color: #212121;
   height: 22px;
 
   &.any {
-    background-color: hsla(185,80%,29%,0.4);
+    background-color: hsla(152, 33%, 59%, 0.4);
   }
 
   .shelf-label {
@@ -750,11 +750,11 @@ $text-color: #212121;
   }
 
   .field-drop.drop-active {
-    border: 1px dashed #4CAF50;
+    border: 1px dashed #f7e779;
 
-    background-color: #C8E6C9;
+    background-color: #f7e779;
     .placeholder {
-      background-color: #C8E6C9;
+      background-color: #faea85;
       color: $text-color;
     }
     .field-info {
@@ -941,22 +941,22 @@ $any-hover-color: #666;
 
 .field-info, .field-info.selected, .field-info.unselected, .field-info.pill {
   &.any {
-    background-color: rgb(216,250,251);
+    background-color: #78eab5;
     opacity: 0.8;
   }
   &.enumerated-field {
-    background-color: rgba(216,250,251,0.7);
+    background-color: rgba(249, 222, 251, 0.7);
     opacity: 0.8;
   }
 
   &.enumerated-channel {
-    border: 1px dashed hsla(185,80%,29%,0.2);
+    border: 1px dashed hsla(303, 86%, 28%, 0.2);
     opacity: 0.8;
   }
 }
 
 .field-info.pill {
-  background-color: hsla(0,0%,93%,0.8);
+  background-color: hsla(0, 0%, 98%, 0.8);
   font-weight: 500;
 }
 
@@ -970,7 +970,7 @@ $any-hover-color: #666;
 .field-info.highlighted.enumerated-channel,
 .field-list-item:hover .field-info {
   border-style: solid;
-  background-color: #c6e5ff;
+  background-color: #e8caff;
   font-weight: 500;
 
   .field-func, .field-count{
@@ -1019,7 +1019,7 @@ $any-hover-color: #666;
   }
 
   .select-all:hover {
-    color: #006bb3;
+    color: #7100b3;
   }
 
   .selected-status {
@@ -1065,7 +1065,7 @@ $any-hover-color: #666;
   flex-direction: column;
 }
 
-$filter-drop-color: hsla(215,41%,80%,1);
+$filter-drop-color: hsl(277, 36%, 82%);
 
 .filter-drop {
   font-size: 11px;
@@ -1078,8 +1078,8 @@ $filter-drop-color: hsla(215,41%,80%,1);
   &.drop-active {
     visibility: visible;
     color: $text-color;
-    border: 1px dashed #4CAF50;
-    background-color: #C8E6C9;
+    border: 1px dashed #afaf4e;
+    background-color: #e6e6ca;
   }
 
 }
@@ -1108,7 +1108,7 @@ quantitative-filter {
   // slider body
   .ngrs-range-slider {
     .ngrs-join {
-      background-color: rgba(31, 119, 180, 0.8);
+      background-color: rgba(116, 28, 180, 0.8);
       background-image: none;
     }
 
@@ -1127,7 +1127,7 @@ quantitative-filter {
   // slider labels
   .ngrs-range-slider {
     .ngrs-value {
-      color: rgba(31, 119, 180, 0.8);
+      color: rgba(143, 24, 180, 0.8);
       font-size: 11px;
       text-align: center;
     }
@@ -1135,7 +1135,7 @@ quantitative-filter {
   .ngrs-range-slider.ngrs-handle-min-down,
   .ngrs-range-slider.ngrs-handle-max-down {
     .ngrs-value {
-      color: rgba(31, 119, 180, 1);
+      color: rgba(143, 24, 180, 1);
     }
   }
 
@@ -1241,10 +1241,10 @@ label.func-label.field-func.single-column {
   visibility: hidden;
   font-size: 11px;
   border-radius: 3px;
-  border: 1px dashed #8ebdc7;
+  border: 1px dashed #bb9dc7;
 
   padding: 0 0.5em;
-  background-color: rgba(187,243,255,0.9);
+  background-color: rgba(222, 210, 255, 0.9);
   height: $pill-height - 2px;
   line-height: $pill-height - 2px;
   box-sizing: border-box;
@@ -1271,9 +1271,9 @@ label {
 
 .schema-list-item.drop-active .field-info {
   box-sizing: border-box;
-  border: 1px dashed #4CAF50;
+  border: 1px dashed #AE43AF;
 
-  background-color: #C8E6C9;
+  background-color: #e3e6c5;
 }
 
 .remove-action {
