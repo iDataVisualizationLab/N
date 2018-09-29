@@ -1,5 +1,5 @@
 'use strict';
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
     .directive('slideCom', function(){
         //template: "<svg id =\'bi-plot\' width=\'100%\' class=\"\"></svg>",
         return {

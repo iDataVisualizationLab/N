@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .controller('MainCtrl', function($scope, $document, Spec, Dataset, Wildcards,  Config, consts, Chronicle, Logger, Bookmarks, Modals, FilterManager,NotifyingService,PCAplot) {
     $scope.Spec = Spec;
 

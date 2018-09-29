@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc service
- * @name voyager2.Spec
+ * @name pcagnosticsviz.Spec
  * @description
  * # Spec
- * Service in the voyager2.
+ * Service in the pcagnosticsviz.
  */
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   // TODO: rename to Query once it's complete independent from Polestar
   .service('Spec', function(ANY, _, vg, vl, cql, util, ZSchema, consts,NotifyingService,
       Alerts, Alternatives, Chart, Config, Dataset, Logger, Pills, Schema, Wildcards, FilterManager, PCAplot) {
@@ -678,7 +678,7 @@ angular.module('voyager2')
 
     return Spec;
   });
-angular.module('voyager2').factory('NotifyingService', function($rootScope) {
+angular.module('pcagnosticsviz').factory('NotifyingService', function($rootScope) {
     return {
         subscribe: function(scope, callback) {
             var handler = $rootScope.$on('notifying-service-event', callback);

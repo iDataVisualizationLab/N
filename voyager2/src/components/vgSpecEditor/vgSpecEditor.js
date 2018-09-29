@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .directive('vgSpecEditor', function(Spec) {
     return {
       templateUrl: 'components/vgSpecEditor/vgSpecEditor.html',

@@ -1,18 +1,18 @@
 # Voyager 2 (OLDER ANGULAR VERSION)
 
-Voyager2 is Tableau-style User Interface for visual analysis with support for partial specification, building on top
+pcagnosticsviz is Tableau-style User Interface for visual analysis with support for partial specification, building on top
 of [Vega-Lite](https://github.com/vega/vega-lite) and [CompassQL](https://github.com/vega/compassql). 
 
 **This project hosts an older prototype of Voyager 2.  The newer version of Voyager 2 in React.js is hosted at https://github.com/vega/voyager.**
 Please subscribe to our [mailing list](https://groups.google.com/forum/#!forum/data-voyager) to follow our updates.**
 
 
-Feedbacks are also welcomed. If you find a bug or have a feature request, please [create an issue](https://github.com/uwdata/voyager2/issues/new).
+Feedbacks are also welcomed. If you find a bug or have a feature request, please [create an issue](https://github.com/uwdata/pcagnosticsviz/issues/new).
 
 
 ## Team
 
-Voyager2's development is led by Kanit Wongsuphasawat and Jeffrey Heer at the University of Washington [Interactive Data Lab](http://idl.cs.washington.edu), in collaboration with [UW eScience Institute](http://escience.washington.edu/) and [Tableau Research](http://research.tableau.com)
+pcagnosticsviz's development is led by Kanit Wongsuphasawat and Jeffrey Heer at the University of Washington [Interactive Data Lab](http://idl.cs.washington.edu), in collaboration with [UW eScience Institute](http://escience.washington.edu/) and [Tableau Research](http://research.tableau.com)
 
 ## Setup Instruction
 
@@ -23,7 +23,7 @@ Make sure you have node.js. (We recommend using [homebrew](http://brew.sh) and s
 `cd` into your local clone of the repository, and install all the npm and bower dependencies (bower will auto-run when npm finishes):
 
 ```sh
-cd voyager2
+cd pcagnosticsviz
 npm install
 ```
 
@@ -50,7 +50,7 @@ All source code are under `src/`
 - `src/data/` contains all data that we use in the application
 - `src/vendor` contains
 
-@kanitw created [`gulp/gen.js`](https://github.com/uwdata/voyager2/blob/master/gulp/gen.js) for help generating angular components.
+@kanitw created [`gulp/gen.js`](https://github.com/uwdata/pcagnosticsviz/blob/master/gulp/gen.js) for help generating angular components.
 For example, you can run `gulp gen -d directiveName` and this would create all relevant files including the javascript file, the template file, the stylesheet file and the test spec.
 
 #### Coding Style
@@ -68,7 +68,7 @@ Managing front-end dependencies with [Bower](http://bower.io) requires the `bowe
 npm install -g bower
 ```
 
-This project depends on [Datalib](https://github.com/vega/datalib) for data processing, [Vega-Lite](https://github.com/vega/vega-lite) as a formal model for visualization, and [Vega-Lite-ui](https://github.com/vega/vega-lite-ui), which contains shared components between Voyager2 and Voyager.
+This project depends on [Datalib](https://github.com/vega/datalib) for data processing, [Vega-Lite](https://github.com/vega/vega-lite) as a formal model for visualization, and [Vega-Lite-ui](https://github.com/vega/vega-lite-ui), which contains shared components between pcagnosticsviz and Voyager.
 
 If you plan to make changes to these dependencies and observe the changes without publishing / copying compiled libraries all the time, use [`bower link`](https://oncletom.io/2013/live-development-bower-component/).
 

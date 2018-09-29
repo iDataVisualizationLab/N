@@ -4,9 +4,9 @@
 
 describe('Directive: cqlQueryEditor', function() {
   // load the directive's module
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
-  beforeEach(module('voyager2', function($provide) {
+  beforeEach(module('pcagnosticsviz', function($provide) {
     $provide.constant('vl', vl); // vl is loaded by karma
 
     $provide.value('Spec', {cleanQuery: {}});

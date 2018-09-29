@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .directive('lyraExport', function() {
     return {
       template: '<a href="#" class="command" ng-click="export()">Export to lyra</a>',

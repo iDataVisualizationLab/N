@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .service('Alternatives', function (ANY, vl, cql, util, Chart, Dataset) {
     var Alternatives = {
       alternativeEncodings: alternativeEncodings,

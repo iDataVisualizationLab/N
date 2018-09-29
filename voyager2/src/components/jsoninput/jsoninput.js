@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .directive('jsonInput', function(JSON3) {
     return {
       restrict: 'A',

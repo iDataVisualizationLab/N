@@ -87,7 +87,7 @@ angular.module('vlui')
       FILTER_CLEAR: {category:'FILTER', id: 'FILTER_CLEAR', level: service.levels.INFO},
 
       // Voyager 2
-      SPEC_SELECT: {category:'VOYAGER2', id: 'SPEC_SELECT', level: service.levels.INFO},
+      SPEC_SELECT: {category:'pcagnosticsviz', id: 'SPEC_SELECT', level: service.levels.INFO},
 
       // Alternatives
       SET_ALTERNATIVES_TYPE: {category:'ALTERNATIVES', id: 'SET_ALTERNATIVES_TYPE', level: service.levels.INFO},

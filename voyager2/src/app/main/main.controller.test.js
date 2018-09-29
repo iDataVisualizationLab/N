@@ -3,7 +3,7 @@
 describe('controllers', function() {
   var scope;
 
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
   beforeEach(inject(function($rootScope) {
     scope = $rootScope.$new();

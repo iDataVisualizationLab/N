@@ -37,7 +37,7 @@ angular.module('vlui')
 
         /* vlplotgroup specific */
 
-        /** Set of fieldDefs for showing field info.  For Voyager2, this might be just a subset of fields that are ambiguous. */
+        /** Set of fieldDefs for showing field info.  For pcagnosticsviz, this might be just a subset of fields that are ambiguous. */
         fieldSet: '<',
         showFilterInfo: '<',
 

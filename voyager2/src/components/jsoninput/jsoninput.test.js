@@ -3,7 +3,7 @@
 describe('Directive: jsonInput', function() {
 
   // load the directive's module
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
   var element,
     scope;

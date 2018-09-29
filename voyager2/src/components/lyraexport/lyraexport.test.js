@@ -3,9 +3,9 @@
 describe('Directive: lyraExport', function() {
 
   // load the directive's module
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
-  beforeEach(module('voyager2', function($provide) {
+  beforeEach(module('pcagnosticsviz', function($provide) {
     var mock = {
       vgSpec: {}
     };

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .directive('cqlQueryEditor', function(Spec) {
     return {
       templateUrl: 'components/cqlQueryEditor/cqlQueryEditor.html',

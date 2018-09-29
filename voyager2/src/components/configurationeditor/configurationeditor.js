@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   .directive('configurationEditor', function() {
     return {
       templateUrl: 'components/configurationeditor/configurationeditor.html',

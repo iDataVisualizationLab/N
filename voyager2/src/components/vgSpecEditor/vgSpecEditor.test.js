@@ -5,9 +5,9 @@
 describe('Directive: vgSpecEditor', function() {
 
   // load the directive's module
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
-  beforeEach(module('voyager2', function($provide) {
+  beforeEach(module('pcagnosticsviz', function($provide) {
     $provide.constant('vl', vl); // vl is loaded by karma
 
     // mock directive (trodrigues's answer in http://stackoverflow.com/questions/17533052)
@@ -19,7 +19,7 @@ describe('Directive: vgSpecEditor', function() {
   var element,
     scope;
 
-  beforeEach(module('voyager2', function($provide) {
+  beforeEach(module('pcagnosticsviz', function($provide) {
     var mock = {
       vgSpec: {}
     };

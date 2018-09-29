@@ -4,7 +4,7 @@
 describe('Service: Wildcards', function() {
 
   // load the service's module
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
   // instantiate service
   var Wildcards;

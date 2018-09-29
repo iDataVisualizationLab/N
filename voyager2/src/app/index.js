@@ -33,7 +33,7 @@
 'use strict';
 /* globals window */
 
-angular.module('voyager2', [
+angular.module('pcagnosticsviz', [
     'vlui',
     'ngSanitize',
     'ngTouch',
@@ -55,7 +55,7 @@ angular.module('voyager2', [
   .constant('jsondiffpatch', window.jsondiffpatch)
   .config(function(consts) {
     window.vg.util.extend(consts, {
-      appId: 'voyager2',
+      appId: 'pcagnosticsviz',
       // set this if you want to load app with a specific spec
       initialSpec: window.initialSpec || undefined,
       debugInList: false,
@@ -74,10 +74,10 @@ angular.module('voyager2', [
     });
   })
   .config(function(localStorageServiceProvider) {
-    localStorageServiceProvider.setPrefix('voyager2');
+    localStorageServiceProvider.setPrefix('pcagnosticsviz');
   })
   .config(function (AnalyticsProvider, consts) {
     if (consts.embeddedData) return;
     AnalyticsProvider
-      .setAccount({ tracker: 'UA-44428446-4', name: 'voyager2', trackEvent: true });
+      .setAccount({ tracker: 'UA-44428446-4', name: 'pcagnosticsviz', trackEvent: true });
   });

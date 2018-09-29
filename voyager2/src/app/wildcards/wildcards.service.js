@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
   // TODO: rename to Query once it's complete independent from Polestar
   .service('Wildcards', function(ANY, vl, cql, Dataset, Alerts) {
     var Wildcards = {

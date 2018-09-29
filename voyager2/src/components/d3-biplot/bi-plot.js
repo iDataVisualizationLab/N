@@ -1,5 +1,5 @@
 'use strict'
-angular.module('voyager2')
+angular.module('pcagnosticsviz')
     .component('biPlot', {
             //template: "<svg id =\'bi-plot\' width=\'100%\' class=\"\"></svg>",
         templateUrl: 'components/d3-biplot/bi-plot.html',

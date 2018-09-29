@@ -3,12 +3,12 @@
 describe('Directive: nullFilterDirective', function () {
 
   // load the directive's module
-  beforeEach(module('voyager2'));
+  beforeEach(module('pcagnosticsviz'));
 
   var element,
     scope;
 
-  beforeEach(module('voyager2', function($provide) {
+  beforeEach(module('pcagnosticsviz', function($provide) {
     $provide.value('Dataset', {});
     $provide.value('Spec', {});
   }));
