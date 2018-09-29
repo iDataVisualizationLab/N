@@ -28,20 +28,22 @@ angular.module('voyager2')
             firstrun:true,
             chart:null,
             charts:[],
-            axismain: [],
+            mainfield: null,
             prop:null,
         };
         //PCAplot.updateplot = function (data){};
-        PCAplot.plot =function(data,dimention) {
+        PCAplot.plot =function(dataor,dimension) {
             if (!Object.keys(Config.data).length){return PCAplot;}
             if (!PCAplot.firstrun && (Dataset.currentDataset[Object.keys(Config.data)[0]]==Config.data[Object.keys(Config.data)[0]])) {return PCAplot;}
+            console.log("PLOT!!!!");
             PCAplot.firstrun = false;
             // d3.select('#bi-plot').selectAll('g').remove();
 
             // Biplot.data;
             //var data = Dataset.data);
-            if (typeof data !=='undefined' ) {
+            if (typeof dataor !=='undefined' ) {
                 //d3.selectAll('.biplot').append("g");
+                var data=_.cloneDeep(dataor);
                 var margin = {top: 5, right: 5, bottom: 5, left: 5};
                 var width = $('.biplot').width() - margin.left - margin.right;
                 var height = $('.biplot').width() - margin.top - margin.bottom;
@@ -60,20 +62,32 @@ angular.module('voyager2')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                 var g_axis = svg.select("#bi-plot-axis");
                 var g_point = svg.select("#bi-plot-point");
-                var brand_names = Object.keys(data[0]);  // first row of data file ["ATTRIBUTE", "BRAND A", "BRAND B", "BRAND C", ...]
+                var idlabel =null,
+                    brand_names = [],
+                    matrix = [],
+                    outlier = [];
+                if (dimension ==0){
+                    brand_names = Object.keys(data[0]);
+                    matrix = data2Num(data);
 
-                var inputdata = Array.from(data);
-                var matrix = data2Num(inputdata);
+                    let outlier = brand_names.map((d,i) =>{
+                        let outlier= 0,
+                            row = matrix.map(r => r[i]),
+                            q1 = ss.quantile(row,0.25),
+                            q3 = ss.quantile(row,0.75),
+                            iqr = (q3-q1)*1.5;
+                        row.forEach(e => {if ((e < q1 - iqr)||(e > q3 + iqr)) outlier++;});
+                        return outlier;
+                    });}
+                else{
+                    idlabel = Object.keys(data);
+                    brand_names = Object.keys(data[idlabel[0]]);
+                    data = d3.values(data);
+                    matrix = data.map(d => d3.values(d));
+                }
 
-                var outlier = brand_names.map((d,i) =>{
-                    var outlier= 0,
-                        row = matrix.map(r => r[i]),
-                        q1 = ss.quantile(row,0.25),
-                        q3 = ss.quantile(row,0.75),
-                        iqr = (q3-q1)*1.5;
-                    row.forEach(e => {if ((e < q1 - iqr)||(e > q3 + iqr)) outlier++;});
-                    return outlier;
-                });
+
+
 
                 var pca = new PCA();
                 // console.log(brand_names);
@@ -119,11 +133,12 @@ angular.module('voyager2')
                     var xy = rotate(d.pc1, d.pc2, angle);
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
+                    if (dimension==0){
                     d.outlier = outlier[i];
-                    d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;
+                    d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;}
                 });
                 //update to calculate
-                PCAplot.estimate(brands,dimention);
+                PCAplot.estimate(brands,dimension);
                 // draw
                 let onMouseOverAttribute = function (a,j) {
                     brands.forEach(function(b, idx) {
@@ -842,6 +857,7 @@ angular.module('voyager2')
             var matrix = Dataset.data.map(d=>[d[field1],d[field2]]);
             try {
                 var scag = scagnostics(matrix,'leader',20);
+                if (!isNaN(scag.skinnyScore))
                 return {
                     'outlyingScore': scag.outlyingScore,
                     'skewedScore': scag.skewedScore,
@@ -851,8 +867,19 @@ angular.module('voyager2')
                     'convexScore':scag.convexScore,
                     'skinnyScore':scag.skinnyScore,
                     'stringyScore':scag.stringyScore,
-                    'monotonicScore':scag.monotonicScore,
-                    'invalid':0}
+                    'monotonicScore':scag.monotonicScore};
+                else return {
+                    'outlyingScore': 0,
+                    'skewedScore': 0,
+                    'sparseScore':0,
+                    'clumpyScore':0,
+                    'striatedScore':0,
+                    'convexScore':0,
+                    'skinnyScore':0,
+                    'stringyScore':0,
+                    'monotonicScore':0
+                };
+
             }catch(e){
                 return {
                     'outlyingScore': 0,
@@ -863,8 +890,7 @@ angular.module('voyager2')
                     'convexScore':0,
                     'skinnyScore':0,
                     'stringyScore':0,
-                    'monotonicScore':0,
-                    'invalid':1
+                    'monotonicScore':0
                 };
             }
         }

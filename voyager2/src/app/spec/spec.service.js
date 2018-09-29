@@ -570,9 +570,13 @@ angular.module('voyager2')
                 fields.push(spec.encoding[key].field);
             }
         }
-        var PCA = PCAplot.plot(Dataset.data,dim);
-        if( dim==1)
-          PCAplot.calscagnotic(fields);
+        var data;
+        if (dim==0)
+            data = Dataset.data;
+        if( dim==1) {
+            PCAplot.calscagnotic(fields);
+            data = Dataset.schema.fieldSchema(fields[0]).scag;
+        }
         if (dim==2){
             PCAplot.calscagnotic(fields);
             console.log("HEREEEEEEE!");
@@ -590,6 +594,12 @@ angular.module('voyager2')
             console.log("9. Monotonic score: " + scag.monotonicScore);
 
         }
+
+        if (PCAplot.mainfield != fields[0]){
+          PCAplot.firstrun = true;
+          PCAplot.mainfield = fields[0];
+        }
+        PCAplot.plot(data,dim);
         return Spec.update(spec);
       },
       reset: function() {
@@ -663,8 +673,7 @@ angular.module('voyager2')
     Spec.reset();
     Dataset.onUpdate.push(function() {
       Spec.reset(true);
-        //PCAplot.plot(Dataset);
-        //PCAplot.Config = Config;
+
     });
 
     return Spec;
