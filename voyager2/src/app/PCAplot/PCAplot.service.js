@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('voyager2')
-// TODO: rename to Query once it's complete independent from Polestar
+// TODO: rename to Query once it's compvare independent from Polestar
     .factory('PCAplot', function(ANY,Dataset,_, vg, vl, cql, ZSchema, consts,FilterManager ,Pills,NotifyingService,Alternatives,Chart,Config,Schema,util,GuidePill) {
         var keys =  _.keys(Schema.schema.definitions.Encoding.properties).concat([ANY+0]);
         function instantiate() {
@@ -66,24 +66,24 @@ angular.module('voyager2')
                     brand_names = [],
                     matrix = [],
                     outlier = [];
-                if (dimension ==0){
+                if (dimension ===0){
                     brand_names = Object.keys(data[0]);
                     matrix = data2Num(data);
 
-                    let outlier = brand_names.map((d,i) =>{
-                        let outlier= 0,
-                            row = matrix.map(r => r[i]),
+                    var outlier = brand_names.map(function(d,i) {
+                        var outlier= 0,
+                            row = matrix.map(function(r) {return r[i]}),
                             q1 = ss.quantile(row,0.25),
                             q3 = ss.quantile(row,0.75),
                             iqr = (q3-q1)*1.5;
-                        row.forEach(e => {if ((e < q1 - iqr)||(e > q3 + iqr)) outlier++;});
+                        row.forEach(function(e)  {if ((e < q1 - iqr)||(e > q3 + iqr)) outlier++;});
                         return outlier;
                     });}
                 else{
                     idlabel = Object.keys(data);
                     brand_names = Object.keys(data[idlabel[0]]);
                     data = d3.values(data);
-                    matrix = data.map(d => d3.values(d));
+                    matrix = data.map(function(d) {return d3.values(d)});
                 }
 
 
@@ -133,14 +133,14 @@ angular.module('voyager2')
                     var xy = rotate(d.pc1, d.pc2, angle);
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
-                    if (dimension==0){
-                    d.outlier = outlier[i];
-                    d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;}
+                    if (dimension===0){
+                        d.outlier = outlier[i];
+                        d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;}
                 });
                 //update to calculate
                 PCAplot.estimate(brands,dimension);
                 // draw
-                let onMouseOverAttribute = function (a,j) {
+                var onMouseOverAttribute = function (a,j) {
                     brands.forEach(function(b, idx) {
                         var A = { x: 0, y:0 };
                         var B = { x: b.pc1,  y: b.pc2 };
@@ -172,7 +172,7 @@ angular.module('voyager2')
                 };
 
 // draw line from the brand axis a perpendicular to each attribute b
-                let onMouseOverBrand = function(b,j) {
+                var onMouseOverBrand = function(b,j) {
 
                     data.forEach(function(a, idx) {
                         var A = { x: 0, y:0 };
@@ -211,12 +211,12 @@ angular.module('voyager2')
                     tip.show(tipText, b.brand);
                 };
 
-                let onMouseLeave = function (b,j) {
+                var onMouseLeave = function (b,j) {
                     svg.selectAll('.tracer').remove();
                     svg.selectAll('.tracer-c').remove();
                     tip.hide();
                 };
-                let point = g_point.selectAll(".dot")
+                var point = g_point.selectAll(".dot")
                     .data(data)
                     .attr("cx", function(d) { return x(d.pc1); })
                     .attr("cy", function(d) { return y(d.pc2); })
@@ -238,7 +238,7 @@ angular.module('voyager2')
                     .on('mouseover', onMouseOverAttribute)
                     .on('mouseleave', onMouseLeave);
 
-                let circlebrand = g_axis.selectAll(".circle_brand")
+                var circlebrand = g_axis.selectAll(".circle_brand")
                     .data(brands)
                     .attr("x", function(d) { return x(d.pc1)-2.5; })
                     .attr("y", function(d) { return y(d.pc2)-2.5; })
@@ -422,7 +422,7 @@ angular.module('voyager2')
 
                 PCAplot.dataencde = data;
             }
-        return PCAplot};
+            return PCAplot};
         function getSpPoint(A,B,C){
             var x1=A.x, y1=A.y, x2=B.x, y2=B.y, x3=C.x, y3=C.y;
             var px = x2-x1, py = y2-y1, dAB = px*px + py*py;
@@ -518,23 +518,23 @@ angular.module('voyager2')
                 var pca2_max = PCAresult[0]['brand'] != pca1_max ? PCAresult[0]['brand'] : PCAresult[1]['brand'];
                 recomen.push(pca1_max);
                 recomen.push(pca2_max);
-                Dataset.schema.fieldSchemas.sort((a, b) =>
-                    Math.abs(a.stats.modeskew) > Math.abs(b.stats.modeskew) ? -1 : 1);
-                var mostskew = Dataset.schema.fieldSchemas.filter(d => {
+                Dataset.schema.fieldSchemas.sort(function (a, b) {
+                    Math.abs(a.stats.modeskew) > Math.abs(b.stats.modeskew) ? -1 : 1});
+                var mostskew = Dataset.schema.fieldSchemas.filter(function(d)  {
                     var r = false;
-                    recomen.forEach(e => {
+                    recomen.forEach(function(e)  {
                         r |= (e != d)
-                    })
+                    });
                     return r;
                 })[0];
-                Dataset.schema.fieldSchemas.sort((a, b) =>
-                    (a.extrastat.outlier) > (b.extrastat.outlier) ? -1 : 1);
+                Dataset.schema.fieldSchemas.sort(function(a, b) {return
+                    (a.extrastat.outlier) > (b.extrastat.outlier) ? -1 : 1});
                 // console.log(Dataset.schema.fieldSchemas);
-                var mostoutlie = Dataset.schema.fieldSchemas.filter(d => {
+                var mostoutlie = Dataset.schema.fieldSchemas.filter(function(d)  {
                     var r = false;
-                    recomen.forEach(e => {
-                        r |= (e != d)
-                    })
+                    recomen.forEach(function(e)  {
+                        r |= (e != d);
+                    });
                     return r;
                 })[0];
                 var object1 = Dataset.schema.fieldSchema(pca1_max);
@@ -591,13 +591,13 @@ angular.module('voyager2')
             PCAplot.chart.guideon = function(prop){
                 //console.log(prop);
                 prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
-                    .map(d=>prop.plot(d,prop.mark,prop.mspec) );
-                prop.previewcharts = prop.charts.map(d=> {
+                    .map(function(d){return prop.plot(d,prop.mark,prop.mspec) });
+                prop.previewcharts = prop.charts.map(function (d) {
                     var thum =_.cloneDeep(d);
                     thum.vlSpec.config = {
                         cell: {
                             width: 100,
-                            height: 30,
+                            height: 30
                         },
                         axis: {
                             grid: false,
@@ -625,13 +625,13 @@ angular.module('voyager2')
                 case 'boxplot': boxplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
             }
             nprop.charts = Dataset.schema.fieldSchemas.sort(nprop.ranking)
-                .map(d=>drawGuideexplore(d,nprop.mark,nprop.mspec) );
-            nprop.previewcharts = nprop.charts.map(d=> {
+                .map(function(d) {return drawGuideexplore(d,nprop.mark,nprop.mspec) });
+            nprop.previewcharts = nprop.charts.map(function(d) {
                 var thum =_.cloneDeep(d);
                 thum.vlSpec.config = {
                     cell: {
                         width: 100,
-                        height: 30,
+                        height: 30
                     },
                     axis: {
                         grid: false,
@@ -843,7 +843,7 @@ angular.module('voyager2')
             newSpec.transform.filter = FilterManager.reset(oldFilter);
 
             return newSpec;
-        };
+        }
 
 
 
@@ -854,20 +854,20 @@ angular.module('voyager2')
         };
 
         function scagnoticscore (field1,field2){
-            var matrix = Dataset.data.map(d=>[d[field1],d[field2]]);
+            var matrix = Dataset.data.map(function(d){return [d[field1],d[field2]]});
             try {
                 var scag = scagnostics(matrix,'leader',20);
                 if (!isNaN(scag.skinnyScore))
-                return {
-                    'outlyingScore': scag.outlyingScore,
-                    'skewedScore': scag.skewedScore,
-                    'sparseScore':scag.sparseScore,
-                    'clumpyScore':scag.clumpyScore,
-                    'striatedScore':scag.striatedScore,
-                    'convexScore':scag.convexScore,
-                    'skinnyScore':scag.skinnyScore,
-                    'stringyScore':scag.stringyScore,
-                    'monotonicScore':scag.monotonicScore};
+                    return {
+                        'outlyingScore': scag.outlyingScore,
+                        'skewedScore': scag.skewedScore,
+                        'sparseScore':scag.sparseScore,
+                        'clumpyScore':scag.clumpyScore,
+                        'striatedScore':scag.striatedScore,
+                        'convexScore':scag.convexScore,
+                        'skinnyScore':scag.skinnyScore,
+                        'stringyScore':scag.stringyScore,
+                        'monotonicScore':scag.monotonicScore};
                 else return {
                     'outlyingScore': 0,
                     'skewedScore': 0,
@@ -896,19 +896,19 @@ angular.module('voyager2')
         }
 
         PCAplot.calscagnotic = function (primfield){
-            primfield.forEach(selectedfield => {
-            Dataset.schema.fieldSchemas.forEach(function(d){
-                if ((d.field!==selectedfield) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
-                    let scag = scagnoticscore(selectedfield,d.field);
-                    if (d.scag === undefined)
-                        d.scag = {};
-                    d.scag[selectedfield] = scag;
-                    if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
-                        Dataset.schema.fieldSchema(selectedfield).scag ={};
-                    Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
-                }
-            })});
-           //console.log (Dataset.schema.fieldSchema(primfield[0]));
+            primfield.forEach(function(selectedfield) {
+                Dataset.schema.fieldSchemas.forEach(function(d){
+                    if ((d.field!==selectedfield) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
+                        var scag = scagnoticscore(selectedfield,d.field);
+                        if (d.scag === undefined)
+                            d.scag = {};
+                        d.scag[selectedfield] = scag;
+                        if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
+                            Dataset.schema.fieldSchema(selectedfield).scag ={};
+                        Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
+                    }
+                })});
+            //console.log (Dataset.schema.fieldSchema(primfield[0]));
         };
 
         PCAplot.reset = function(hard) {
