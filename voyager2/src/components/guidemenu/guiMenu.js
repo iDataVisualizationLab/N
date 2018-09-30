@@ -9,12 +9,14 @@ angular.module('pcagnosticsviz')
                 prop: '=',
                 initialLimit: '<',
                 priority:'<',
+                marks: '<',
+                props: '<'
             },
             replace: true,
             controller: function($scope, PCAplot) {
                 $scope.limit = $scope.initialLimit || 4;
-                $scope.marks = ['tick', 'bar','area','boxplot'];
-                $scope.props = ['PCA1', 'skewness', 'outlier', 'PCA2'];
+                //$scope.marks = ['tick', 'bar','area','boxplot'];
+                //$scope.props = ['PCA1', 'skewness', 'outlier', 'PCA2'];
                 $scope.typeChange =function (){
                     PCAplot.updateSpec($scope.prop);
                 };

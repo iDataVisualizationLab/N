@@ -562,6 +562,8 @@ angular.module('pcagnosticsviz')
       preview: Spec.preview,
       previewQuery: Spec.previewQuery,
       update: function(spec) {
+        try {PCAplot.calscagnotic(Dataset.schema.fieldSchemas.map(function(d){return d.field}));}
+        catch(e){}
         var dim = 0;
         var fields = [];
         for (var key in spec.encoding) {
@@ -574,11 +576,14 @@ angular.module('pcagnosticsviz')
         if (dim==0)
             data = Dataset.data;
         if( dim==1) {
-            PCAplot.calscagnotic(fields);
-            data = Dataset.schema.fieldSchema(fields[0]).scag;
+            //PCAplot.calscagnotic(fields);
+            data = Dataset.schema.fieldSchemas.map(function(d){
+              var tem = {field: d.field};
+              tem[d.field] = d.scag;
+              return tem;});
         }
         if (dim==2){
-            PCAplot.calscagnotic(fields);
+            // PCAplot.calscagnotic(fields);
             console.log("HEREEEEEEE!");
             var scag = Dataset.schema.fieldSchema(fields[0]).scag[fields[1]];
             //console.log(Dataset.schema.fieldSchema(fields[0]).scag);
@@ -595,9 +600,11 @@ angular.module('pcagnosticsviz')
 
         }
 
-        if (PCAplot.mainfield != fields[0]){
+        //if (PCAplot.mainfield != fields[0]){
+         if (PCAplot.dim != dim){
           PCAplot.firstrun = true;
-          PCAplot.mainfield = fields[0];
+          //PCAplot.mainfield = fields[0];
+             PCAplot.dim = dim;
         }
         PCAplot.plot(data,dim);
         return Spec.update(spec);

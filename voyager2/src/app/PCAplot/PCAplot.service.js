@@ -30,6 +30,8 @@ angular.module('pcagnosticsviz')
             charts:[],
             mainfield: null,
             prop:null,
+            dim: null,
+            dataref:null,
         };
         //PCAplot.updateplot = function (data){};
         PCAplot.plot =function(dataor,dimension) {
@@ -44,16 +46,22 @@ angular.module('pcagnosticsviz')
             if (typeof dataor !=='undefined' ) {
                 //d3.selectAll('.biplot').append("g");
                 var data=_.cloneDeep(dataor);
-                var margin = {top: 5, right: 5, bottom: 5, left: 5};
+                var margin = {top: 20, right: 20, bottom: 20, left: 20};
                 var width = $('.biplot').width() - margin.left - margin.right;
                 var height = $('.biplot').width() - margin.top - margin.bottom;
                 var angle = Math.PI * 0;
 //var color = d3.scaleOrdinal(d3.schemeCategory10);
                 var color = d3.scale.category10();
-                var x = d3.scale.linear().range([width, 0]); // switch to match how R biplot shows it
+                var x = d3.scale.linear().range([0, width]); // switch to match how R biplot shows it
                 var y = d3.scale.linear().range([height, 0]);
                 var rdot = 3;
-
+                // sub space
+                var submarign = {top: 5, right: 5, bottom: 5, left: 5};
+                var subgSize = {
+                    w:(40-submarign.left - submarign.right),
+                    h:(40- submarign.top - submarign.bottom),};
+                var subx = d3.scale.linear().range([submarign.left,subgSize.w+submarign.left]).domain([0,1]).nice(); // switch to match how R biplot shows it
+                var suby = d3.scale.linear().range([subgSize.h+submarign.top, submarign.top]).domain([0,1]).nice();
 
                 var svg_main = d3.select("#bi-plot")
                     .attr("width", width + margin.left + margin.right)
@@ -62,7 +70,7 @@ angular.module('pcagnosticsviz')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                 var g_axis = svg.select("#bi-plot-axis");
                 var g_point = svg.select("#bi-plot-point");
-                var idlabel =null,
+                var idlabel =[],
                     brand_names = [],
                     matrix = [],
                     outlier = [];
@@ -80,9 +88,19 @@ angular.module('pcagnosticsviz')
                         return outlier;
                     });}
                 else{
-                    idlabel = Object.keys(data);
-                    brand_names = Object.keys(data[idlabel[0]]);
-                    data = d3.values(data);
+                    var newdata=[];
+                    data.forEach(function(d){
+                        for (var e in d[d.field]) {
+                            idlabel.push([d.field,e]);
+                            newdata.push(d[d.field][e]);
+                        }
+                    });
+
+                    data = newdata; // for overview 2D
+                    // idlabel = Object.keys(data);
+                    //brand_names = Object.keys(data[idlabel[0]]);
+                    brand_names = Object.keys(data[0]);
+                    // data = d3.values(data);
                     matrix = data.map(function(d) {return d3.values(d)});
                 }
 
@@ -98,24 +116,51 @@ angular.module('pcagnosticsviz')
                 var A = pc[0];  // this is the U matrix from SVD
                 var B = pc[1];  // this is the dV matrix from SVD
                 var chosenPC = pc[2];   // this is the most value of PCA
-                var maxxy = 0;
-                A.forEach(function(d){maxxy=Math.max(maxxy,Math.abs(d[0]),Math.abs(d[1]));});
-                x.domain([-maxxy,maxxy]).nice();
-                y.domain([-maxxy,maxxy]).nice();
-                var scale_axis = 0;
-                B.forEach(function(i){scale_axis = Math.max(scale_axis,Math.sqrt(i[0]*i[0] + i[1]*i[1]))});
-                scale_axis = maxxy/scale_axis;
                 data.map(function(d,i){
-                    label: d[brand_names[0]],
                         d.pc1 = A[i][chosenPC[0]];
                     d.pc2 = A[i][chosenPC[1]];
                 });
+                var dataref = null;
+                if (dimension ==1) {
+                    data.forEach(function(d,i){d.label = idlabel[i]});
+                    dataref = data;
+                    data = brand_names.map(function(d){
+                        return data.sort(function(a,b){
+                            return a[d]<b[d]?1:-1;
+                        })[0];
+                    });
+                }
+                var maxxy = [-Infinity,-Infinity];
+                var minxy = [Infinity,Infinity];
+                //A.forEach(function(d){maxxy=Math.max(maxxy,Math.abs(d[0]),Math.abs(d[1]));});
+                maxxy = maxxy.map(function(d,i){
+                    return d3.max(data.map(function(e){
+                        return e['pc'+(i+1)];
+                    }));
+                });
+                minxy = minxy.map(function(d,i){
+                    return d3.min(data.map(function(e){
+                        return e['pc'+(i+1)];
+                    }));
+                });
+                var maxxyall = [0,0];
+                maxxyall = maxxyall.map(function(d,i){
+                    return Math.max(Math.abs(minxy[i]),Math.abs(maxxy[i]));
+                });
+                // x.domain([-maxxyall]).nice();
+                // y.domain([minxy[1],maxxy[1]]).nice();
+                x.domain([-maxxyall[0],maxxyall[0]]).nice();
+                y.domain([-maxxyall[1],maxxyall[1]]).nice();
+                var scale_axis = 0;
+                B.forEach(function(i){scale_axis = Math.max(scale_axis,Math.sqrt(i[0]*i[0] + i[1]*i[1]))});
+                var scale_axisx = maxxyall[0]/scale_axis;
+                var scale_axisy = maxxyall[1]/scale_axis;
                 var brands = brand_names
                     .map(function(key, i) {
                         return {
                             brand: key,
-                            pc1: B[i][chosenPC[0]]*scale_axis,
-                            pc2: B[i][chosenPC[1]]*scale_axis
+                            pc1: B[i][chosenPC[0]]*scale_axisx,
+                            pc2: B[i][chosenPC[1]]*scale_axisy,
                         }
                     });
                 // console.log(brands);
@@ -138,7 +183,7 @@ angular.module('pcagnosticsviz')
                         d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;}
                 });
                 //update to calculate
-                PCAplot.estimate(brands,dimension);
+                PCAplot.estimate(brands,dimension,dataref);
                 // draw
                 var onMouseOverAttribute = function (a,j) {
                     brands.forEach(function(b, idx) {
@@ -167,7 +212,7 @@ angular.module('pcagnosticsviz')
                     delete ca.pc2;
                     delete ca.vector;
                     var tipText = d3.entries(ca);
-                    console.log(a);
+                    // console.log(a);
                     tip.show(tipText, "");
                 };
 
@@ -216,27 +261,93 @@ angular.module('pcagnosticsviz')
                     svg.selectAll('.tracer-c').remove();
                     tip.hide();
                 };
-                var point = g_point.selectAll(".dot")
-                    .data(data)
-                    .attr("cx", function(d) { return x(d.pc1); })
-                    .attr("cy", function(d) { return y(d.pc2); })
-                    .style("fill", function(d) {
-                        return '#161616'; })
-                    .style("fill-opacity",0.4)
-                    .on('mouseover', onMouseOverAttribute)
-                    .on('mouseleave', onMouseLeave);
-                point.exit().remove();
-                point
-                    .enter().append("circle")
-                    .attr("class", "dot")
-                    .attr("r", rdot)
-                    .attr("cx", function(d) { return x(d.pc1); })
-                    .attr("cy", function(d) { return y(d.pc2); })
-                    .style("fill", function(d) {
-                        return '#161616'; })
-                    .style("fill-opacity",0.4)
-                    .on('mouseover', onMouseOverAttribute)
-                    .on('mouseleave', onMouseLeave);
+                if (dimension===0) {
+                    g_point.selectAll(".subgraph").remove();
+                    var point = g_point.selectAll(".dot")
+                        .data(data)
+                        .attr("cx", function (d) {
+                            return x(d.pc1);
+                        })
+                        .attr("cy", function (d) {
+                            return y(d.pc2);
+                        })
+                        .style("fill", function (d) {
+                            return '#161616';
+                        })
+                        .style("fill-opacity", 0.4)
+                        .on('mouseover', onMouseOverAttribute)
+                        .on('mouseleave', onMouseLeave);
+                    point.exit().remove();
+                    point
+                        .enter().append("circle")
+                        .attr("class", "dot")
+                        .attr("r", rdot)
+                        .attr("cx", function (d) {
+                            return x(d.pc1);
+                        })
+                        .attr("cy", function (d) {
+                            return y(d.pc2);
+                        })
+                        .style("fill", function (d) {
+                            return '#161616';
+                        })
+                        .style("fill-opacity", 0.4)
+                        .on('mouseover', onMouseOverAttribute)
+                        .on('mouseleave', onMouseLeave);
+                }else {
+                    g_point.selectAll(".dot").remove();
+                    var subplot =g_point.selectAll(".subgraph")
+                        .data(data)
+                        .attr("class", "subgraph")
+                        .attr('transform',function(d){return "translate(" + (x(d.pc1)-(subgSize.w+submarign.left + submarign.right)/2) + "," + (y(d.pc2)-(subgSize.h+submarign.top + submarign.bottom)/2) + ")"})
+                        .on('mouseover', onMouseOverAttribute)
+                        .on('mouseleave', onMouseLeave);
+                    subplot.exit().remove();
+                    var subinside = subplot
+                        .enter().append("g")
+                        .attr("class", "subgraph")
+                        .attr('transform',function(d){return "translate(" + (x(d.pc1)-(subgSize.w+submarign.left + submarign.right)/2) + "," + (y(d.pc2)-(subgSize.h+submarign.top + submarign.bottom)/2) + ")"})
+                        .on('mouseover', onMouseOverAttribute)
+                        .on('mouseleave', onMouseLeave);
+                    subinside.append("rect")
+                        .attr("class","backgroundSub")
+                        .attr("width",subgSize.w+submarign.left + submarign.right)
+                        .attr("height",subgSize.h+submarign.top + submarign.bottom);
+                    var subpoint = subplot.selectAll(".point")
+                        .data(function(d){
+                            //var datapoint = Dataset.data.map(function(it){return [it[PCAplot.mainfield],it[d.label]]});
+                            var datapoint = Dataset.data.map(function(it){return [it[d.label[0]],it[d.label[1]]]});
+                            var datax = datapoint.map(function(d){return d[0]});
+                            var datay = datapoint.map(function(d){return d[1]});
+                            var maxx = d3.max(datax);
+                            var minx = d3.min(datax);
+                            var maxy = d3.max(datay);
+                            var miny = d3.min(datay);
+                            datapoint.forEach(function(d){
+                                d[0] = (d[0]-minx)/(maxx-minx);
+                                d[1] = (d[1]-miny)/(maxy-miny);});
+                            return datapoint;})
+                        .attr("cx", function (d) {
+                            return subx(d[0]);
+                        })
+                        .attr("cy", function (d) {
+                            return suby(d[1]);
+                        });
+                    subpoint.exit().remove();
+                    subpoint    .enter()
+                        .append("circle")
+                        .attr("class", "point")
+                        .attr("r", 1)
+                        .attr("cx", function (d) {
+                            return subx(d[0]);
+                        })
+                        .attr("cy", function (d) {
+                            return suby(d[1]);
+                        })
+                        .style("fill", function (d) {
+                            return '#161616';
+                        });
+                }
 
                 var circlebrand = g_axis.selectAll(".circle_brand")
                     .data(brands)
@@ -356,13 +467,24 @@ angular.module('pcagnosticsviz')
                     .style("stroke", function(d) { return color(d['brand']); })
                     .style("stroke-width", '1px')
                     .on('mouseover', onMouseOverBrand)
-                    .on('mouseleave', onMouseLeave)
-                    .on("dblclick", function(d) {
-                        var proIwant = d3.selectAll($("[id='"+d.brand+"']"))
-                            .select('div').select('span');
-                        $(proIwant[0]).trigger("dblclick");
-                    })
-                    .call(dragHandler);
+                    .on('mouseleave', onMouseLeave);
+                if (dimension == 0) {
+                    listitem
+                        .on("dblclick", function (d) {
+                            var proIwant = d3.selectAll($("[id='" + d.brand + "']"))
+                                .select('div').select('span');
+                            $(proIwant[0]).trigger("dblclick");
+                        })
+                        .call(dragHandler);
+                }else {
+                    listitem
+                        .on("dblclick", function (d) {
+                            // to do
+                        })
+                        .on("dragstart",null)
+                        .on("drag",null)
+                        .on("dragend",null);
+                }
                 listitem.exit().remove();
                 listitem
                     .enter().append("line")
@@ -374,13 +496,23 @@ angular.module('pcagnosticsviz')
                     .style("stroke", function(d) { return color(d['brand']); })
                     .style("stroke-width", '1px')
                     .on('mouseover', onMouseOverBrand)
-                    .on('mouseleave', onMouseLeave)
-                    .on("dblclick", function(d) {
+                    .on('mouseleave', onMouseLeave);
+                if (dimension == 0) {
+                    listitem.on("dblclick", function(d) {
                         var proIwant = d3.selectAll($("[id='"+d.brand+"']"))
                             .select('div').select('span');
                         $(proIwant[0]).trigger("dblclick");
                     })
                     .call(dragHandler);
+                } else{
+                    listitem
+                        .on("dblclick", function (d) {
+                            // to do
+                        })
+                        .on("dragstart",null)
+                        .on("drag",null)
+                        .on("dragend",null);
+                }
                 var tip = d3.tip()
                     .attr('class', 'd3-tip tips ')
                     .offset([10, 20])
@@ -494,9 +626,12 @@ angular.module('pcagnosticsviz')
             //return output.map(function(d){return Object.keys(d).map(function(i){return d[i]})});
         }
 
-        PCAplot.estimate = function(PCAresult,dim) {
+        PCAplot.estimate = function(PCAresult,dim,dataref) {
             // choose main axis
             if (dim==0) {
+                PCAplot.types = ['PCA1','PCA2', 'skewness', 'outlier'];
+                PCAplot.marks = ['tick','area','bar','boxplot',];
+                PCAplot.charts.length=0;
                 Dataset.schema.fieldSchemas.forEach(function (d) {
                     var pca = PCAresult.find(function (it) {
                         return (it['brand'] == d.field)
@@ -551,9 +686,37 @@ angular.module('pcagnosticsviz')
                 drawGuideplot(mostskew, 'skewness');
                 drawGuideplot(mostoutlie, 'outlier');
             }
+            else {
+                PCAplot.types = PCAresult.map(function(d){return d.brand});
+                PCAplot.marks = ['point',];
+                PCAplot.charts.length=0;
+                PCAplot.dataref = dataref.map(function(d){
+                    return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
+                        scag: d,};
+                    });
+                var objects = {};
+                PCAresult.forEach(function(brand){
+                    var type = brand.brand;
+                    var topitem = dataref.sort(function (a,b){
+                        return a[type]<b[type]?1:-1;
+                    })[0].label;
+                    if (objects[topitem[0]] === undefined || objects[topitem[0]][topitem[1]]=== undefined){
+                        objects[topitem[0]] = {}||objects[topitem[0]];
+                        var newobs =  {
+                            type: type,
+                            fieldDefs:[Dataset.schema.fieldSchema(topitem[0]),Dataset.schema.fieldSchema(topitem[1])],};
+                        objects[topitem[0]][topitem[1]] = newobs;
+                        drawGuideplot(newobs.fieldDefs, type,PCAplot.dataref);
+                    }
+                });
+
+
+            }
         };
 
-        function drawGuideplot (object,type) {
+        function drawGuideplot (object,type,dataref) {
+            if (dataref == undefined)
+                dataref = Dataset.schema.fieldSchemas;
             var spec = spec = _.cloneDeep(instantiate() || PCAplot.spec);
             //spec.data = Dataset.dataset;
             spec.config = {
@@ -569,12 +732,7 @@ angular.module('pcagnosticsviz')
                 overlay: {line: true},
                 scale: {useRawDomain: true}
             };
-            switch (type) {
-                case 'PCA1': dashplot(spec, object); break;
-                case 'outlier': boxplot(spec, object); break;
-                case 'PCA2': areaplot(spec, object); break;
-                case 'skewness': barplot(spec, object); break;
-            }
+            mark2plot (type2mark(type),spec,object);
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
             PCAplot.query = output.query;
@@ -590,8 +748,9 @@ angular.module('pcagnosticsviz')
 
             PCAplot.chart.guideon = function(prop){
                 //console.log(prop);
-                prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
-                    .map(function(d){return prop.plot(d,prop.mark,prop.mspec) });
+                //prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
+                prop.charts = dataref.sort(prop.ranking)
+                    .map(function(d){return prop.plot((d.fieldDefs||d ),prop.mark,prop.mspec) });
                 prop.previewcharts = prop.charts.map(function (d) {
                     var thum =_.cloneDeep(d);
                     thum.vlSpec.config = {
@@ -615,15 +774,26 @@ angular.module('pcagnosticsviz')
             PCAplot.charts.push(PCAplot.chart);
         }
 
+        function mark2plot (mark,spec,object){
+            switch (mark) {
+                case 'bar': barplot(spec, object); break;
+                case 'tick': dashplot(spec, object); break;
+                case 'area': areaplot(spec, object); break;
+                case 'boxplot': boxplot(spec, object); break;
+                case 'point': pointplot(spec, object); break; // 2D
+            }
+        }
+
         PCAplot.updateSpec = function(prop){
             var nprop = prop = _.cloneDeep(prop);
             nprop.ranking = getranking(prop.type);
-            switch (prop.mark) {
+            mark2plot (prop.mark,nprop.mspec,Dataset.schema.fieldSchemas[0]);
+            /*switch (prop.mark) {
                 case 'bar': barplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'tick': dashplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'area': areaplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'boxplot': boxplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
-            }
+            }*/
             nprop.charts = Dataset.schema.fieldSchemas.sort(nprop.ranking)
                 .map(function(d) {return drawGuideexplore(d,nprop.mark,nprop.mspec) });
             nprop.previewcharts = nprop.charts.map(function(d) {
@@ -653,6 +823,7 @@ angular.module('pcagnosticsviz')
                 case 'outlier': return 'boxplot';
                 case 'PCA2': return 'area';
                 case 'skewness': return 'bar';
+                default: return 'point';
             }
         }
         function getranking(type){
@@ -665,6 +836,8 @@ angular.module('pcagnosticsviz')
                     break;
                 case'outlier': return function (a,b){return a.extrastat.outlier < b.extrastat.outlier? 1:-1};
                     break;
+                default: return function (a,b){return (a.scag[type] < b.scag[type]) ? 1:-1};
+                    break;
             }
         }
         var drawGuideexplore = function (object,type,mspec) {
@@ -675,12 +848,13 @@ angular.module('pcagnosticsviz')
                 scale: {useRawDomain: true}
             };
 
-            switch (type) {
+            mark2plot(type,spec,object);
+            /*switch (type) {
                 case 'bar': barplot(spec, object); break;
                 case 'tick': dashplot(spec, object); break;
                 case 'area': areaplot(spec, object); break;
                 case 'boxplot': boxplot(spec, object); break;
-            }
+            }*/
 
             var query = getQuery(spec);
             var output = cql.query(query, Dataset.schema);
@@ -720,6 +894,14 @@ angular.module('pcagnosticsviz')
             spec.mark = "boxplot";
             spec.encoding = {
                 x: { field: object.field, type: object.type}
+            };
+        }
+
+        function pointplot(spec,objects) {
+            spec.mark = "point";
+            spec.encoding = {
+                x: { field: objects[0].field, type: objects[0].type},
+                y: { field: objects[1].field, type: objects[1].type},
             };
         }
 
@@ -896,13 +1078,25 @@ angular.module('pcagnosticsviz')
         }
 
         PCAplot.calscagnotic = function (primfield){
-            primfield.forEach(function(selectedfield) {
+            /*primfield.forEach(function(selectedfield) {
                 Dataset.schema.fieldSchemas.forEach(function(d){
                     if ((d.field!==selectedfield) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
                         var scag = scagnoticscore(selectedfield,d.field);
                         if (d.scag === undefined)
                             d.scag = {};
                         d.scag[selectedfield] = scag;
+                        if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
+                            Dataset.schema.fieldSchema(selectedfield).scag ={};
+                        Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
+                    }
+                })});*/
+            primfield.forEach(function(selectedfield) {
+                Dataset.schema.fieldSchemas.forEach(function(d){
+                    if ((d.field!==selectedfield) && (Dataset.schema._fieldSchemaIndex[selectedfield].scag==undefined||Dataset.schema._fieldSchemaIndex[selectedfield].scag[d.field] ===undefined) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
+                        var scag = scagnoticscore(selectedfield,d.field);
+                        /*if (d.scag === undefined)
+                            d.scag = {};
+                        d.scag[selectedfield] = scag;*/
                         if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
                             Dataset.schema.fieldSchema(selectedfield).scag ={};
                         Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
