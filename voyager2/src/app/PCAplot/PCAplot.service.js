@@ -32,6 +32,7 @@ angular.module('pcagnosticsviz')
             prop:null,
             dim: null,
             dataref:null,
+            limit: 10,
         };
         var support =[{
             types : ['PCA1','PCA2', 'skewness', 'outlier'],

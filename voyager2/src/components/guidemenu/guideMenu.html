@@ -16,7 +16,7 @@
             <vl-plot-group
                     ng-if="prop.previewcharts"
                     class="main-vl-plot-group card menuitem"
-                    ng-repeat="chart in prop.previewcharts"
+                    ng-repeat="chart in prop.previewcharts| limitTo: limit"
                     ng-click="previewSlider($index)"
                     chart="chart"
                     show-bookmark="false"
@@ -33,6 +33,11 @@
                     toggle-shelf="false"
                     priority="priority * $index"
             ></vl-plot-group>
+            <a ng-click="increaseLimit()">
+                <div class="vis-list-more" ng-show="limit < prop.previewcharts.length">
+                    Load more...
+                </div>
+            </a>
         </div>
     </div>
 </div>

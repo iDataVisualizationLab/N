@@ -10,15 +10,17 @@ angular.module('pcagnosticsviz')
                 initialLimit: '<',
                 priority:'<',
                 marks: '<',
-                props: '<'
+                props: '<',
+                limit:'='
             },
             replace: true,
             controller: function($scope, PCAplot) {
-                $scope.limit = $scope.initialLimit || 4;
+                $scope.limit = $scope.initialLimit || 10;
                 //$scope.marks = ['tick', 'bar','area','boxplot'];
                 //$scope.props = ['PCA1', 'skewness', 'outlier', 'PCA2'];
                 $scope.typeChange =function (){
                     PCAplot.updateSpec($scope.prop);
+                    $scope.limit = $scope.initialLimit || 10;
                 };
                 $scope.previewSlider = function (index){
                     $scope.prop.pos =index;
@@ -26,6 +28,7 @@ angular.module('pcagnosticsviz')
                 };
                 $scope.markChange =function (){
                     PCAplot.updateSpec($scope.prop);
+                    $scope.limit = $scope.initialLimit || 10;
                 };
                 var specWatcher = $scope.$watch('prop', function(spec) {
 
@@ -33,6 +36,9 @@ angular.module('pcagnosticsviz')
 
                 }, true); //, true /* watch equality rather than reference */);
 
+                $scope.increaseLimit = function () {
+                    $scope.limit += 4;
+                };
 
                 $scope.$on('$destroy', function() {
                     // Clean up watcher

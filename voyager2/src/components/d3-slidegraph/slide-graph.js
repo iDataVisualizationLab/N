@@ -8,7 +8,8 @@ angular.module('pcagnosticsviz')
             scope: {
                 charts: '<', // Two-way
                 pos: '=',
-                postSelectAction: '&'
+                postSelectAction: '&',
+                limit: '='
             },
             link: function postLink(scope,element) {
 
@@ -28,13 +29,13 @@ angular.module('pcagnosticsviz')
                 scope.prev = function() {
 
                     scope.pos = Math.max(scope.pos - 1, 0);
-
                     setTransform();
                 };
 
                 scope.next = function () {
-
                     scope.pos = Math.min(scope.pos + 1, itemCount - 1);
+                    if (scope.pos > scope.limit-1)
+                        scope.limit = scope.pos+2;
                     setTransform();
                 };
 

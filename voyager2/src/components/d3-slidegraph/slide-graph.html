@@ -5,7 +5,7 @@
         <div class ="scroller">
             <ul class="items-slider">
                 <slide-com
-                ng-repeat = "chart in  charts"
+                ng-repeat = "chart in  charts | limitTo: limit"
                 chart="chart">
                 </slide-com>
             </ul>

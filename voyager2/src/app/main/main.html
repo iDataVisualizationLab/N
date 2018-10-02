@@ -34,7 +34,7 @@
         <h3>Biplot</h3>
         <bi-plot></bi-plot>
         <div class = "scroll-y-nox scroll-y">
-          <h3>Guided plot</h3>
+          <h3>Guided plots</h3>
 
           <vl-plot-group
                   ng-if="PCAplot.chart"
@@ -124,6 +124,7 @@
                 ng-if = "PCAplot.prop"
                 charts = "PCAplot.prop.charts"
                 pos = "PCAplot.prop.pos"
+                limit = "PCAplot.limit"
         ></slide-graph>
 
 
@@ -260,7 +261,8 @@
       priority="2"
       marks ="PCAplot.marks"
       props ="PCAplot.types"
-      initial-limit="5">
+      initial-limit="10"
+      limit = "PCAplot.limit">
       </guide-menu>
     </div>
   </div>
