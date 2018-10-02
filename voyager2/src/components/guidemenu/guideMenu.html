@@ -15,7 +15,7 @@
         <div class="scroll-y">
             <vl-plot-group
                     ng-if="prop.previewcharts"
-                    class="main-vl-plot-group card"
+                    class="main-vl-plot-group card menuitem"
                     ng-repeat="chart in prop.previewcharts"
                     ng-click="previewSlider($index)"
                     chart="chart"
@@ -32,7 +32,6 @@
                     tooltip="true"
                     toggle-shelf="false"
                     priority="priority * $index"
-                    style ={max-height:80px}
             ></vl-plot-group>
         </div>
     </div>

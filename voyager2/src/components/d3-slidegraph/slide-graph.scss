@@ -37,6 +37,7 @@
 }
 
 .scroller{
+
   height: 320px;
   overflow: hidden;
   flex:1;
@@ -68,4 +69,65 @@
        height: auto;
        opacity: 1;
    }
+}
+.hexagon {
+
+  stroke: #000;
+
+  strokels-width: 0.5px;
+
+}
+
+
+
+.triangles {
+
+  fill: none;
+
+  stroke: black;
+
+  stroke-width: 0.5px;
+
+}
+
+
+
+.links {
+
+  stroke: #000;
+
+}
+
+
+
+.sites {
+
+  fill: #000;
+
+  stroke: #fff;
+
+}
+
+
+
+.triangles .primary {
+
+  stroke: #fff;
+
+}
+
+
+
+.sites :first-child {
+
+  fill: #fff;
+
+}
+
+
+
+path {
+
+  opacity: 0.8
+
 }

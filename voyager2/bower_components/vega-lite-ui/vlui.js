@@ -5473,7 +5473,568 @@
 
                             var start = new Date().getTime();
                             // render if still a part of the list
-                            vg.parse.spec(spec, function(error, chart) {
+                            switch (scope.chart.vlSpec.mark){
+                                case "boxplot":
+                                var plotor = d3.selectAll("#vis-" + scope.visId);
+
+                                var boxplotdiv = plotor.select('.vega');
+                                if (boxplotdiv[0][0]==null)
+                                    boxplotdiv = plotor.append('div')
+                                        .attr('class','vega')
+                                        .style('position','relative');
+                                boxplotdiv.selectAll('svg').remove();
+
+                                // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
+                                var labels = true; // show the text labels beside individual boxplots?
+                                // my zone \(=o=)\
+                                var margin = {top: 5, right: 20, bottom: 50, left: 20};
+                                var titleOffset = spec.marks[0].axes[0].titleOffset||30;
+                                margin.bottom += (titleOffset==30?30:0);
+                                var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
+                                //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
+                                var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
+                                // old_canvas.remove();
+                                var min = Infinity,
+                                    max = -Infinity;
+                                var svg = boxplotdiv.append('svg')
+                                    .attr("width",width + margin.left + margin.right)
+                                    .attr("height",height + margin.top + margin.bottom)
+                                    .attr("class", "boxplot")
+                                    .append("g")
+                                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                                svg_d3 = boxplotdiv.selectAll('svg');
+                                var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
+                                var data = fieldset.map(function(d){
+                                    return Dataset.schema.fieldSchema(d);
+                                });
+                                //console.log("myevent");
+                                //console.log(data[0].stats);
+                                var formatNum = function(n){
+                                    return (!isNaN(parseFloat(n)) ? parseFloat(n):n.length);
+                                };
+                                //check min max
+                                data.forEach(function(it){
+                                    min = it.stats.min<min?it.stats.min:min;
+                                    max = it.stats.max>max?it.stats.max:max;
+                                    var  q1 = it.stats.q1,
+                                        q3 = it.stats.q3,
+                                        iqr = (q3-q1)*1.5,
+                                        unique = Object.keys(it.stats.unique),
+                                        i = -1,
+                                        j = unique.length;
+                                    unique.sort(function(a,b){return formatNum(a)-formatNum(b)});
+                                    while (formatNum(unique[++i]) < q1 - iqr);
+                                    while (formatNum(unique[--j]) > q3 + iqr);
+                                    it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
+                                    it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);
+                                });
+
+                                // the y-axis
+                                var y = d3.scale.ordinal()
+                                    .domain( data.map(function(d) { return d.field } ) )
+                                    .rangeRoundBands([height,0]);
+
+
+                                // the x-axis
+                                var x = d3.scale.linear()
+                                    .domain([min, max])
+                                    .range([0,width]);
+
+                                var xAxis = d3.svg.axis()
+                                    .scale(x)
+                                    .orient("bottom");
+                                if (!spec.marks[0].axes[0].ticks)
+                                    xAxis.ticks(0);
+                                var yAxis = d3.svg.axis()
+                                    .scale(y)
+                                    .orient("left");
+
+                                // calculate outliner base on 1.5 q3-q1
+                                //var outliner = d.stats.unique ;
+                                // draw box
+                                var boxs = svg.selectAll('.boxplot')
+                                    .data(data)
+                                    .enter().append('g')
+                                    .attr("transform", function(d) { return "translate(" +  0  + "," +  (y(d.field))+ ")"; } );
+
+                                boxs.append('line')
+                                    .attr('class','center')
+                                    .attr('y1',function(d){return y.rangeBand(d.field)/2})
+                                    .attr('x1',function(d){return x(d.stats.q1iqr)})
+                                    .attr('y2',function(d){return y.rangeBand(d.field)/2})
+                                    .attr('x2',function(d){return x(d.stats.q3iqr)})
+                                    .style('opacity',1);
+                                boxs.append('rect')
+                                    .attr('class','box_quan')
+                                    .attr('y',function(d){return 0})
+                                    .attr('x',function(d){return x(d.stats.q1)})
+                                    .attr('height',function(d){return y.rangeBand(d.field)})
+                                    .attr('width',function(d){return Math.abs(x(d.stats.q1)-x(d.stats.q3))});
+                                boxs.append('line')
+                                    .attr('class','median')
+                                    .attr('y1',function(d){return 0})
+                                    .attr('x1',function(d){return x(d.stats.median)})
+                                    .attr('y2',function(d){return y.rangeBand(d.field)})
+                                    .attr('x2',function(d){return x(d.stats.median)})
+                                    .style('opacity',1);
+                                boxs.append('line')
+                                    .attr('class','whisker')
+                                    .attr('y1',function(d){return y.rangeBand(d.field)/4})
+                                    .attr('x1',function(d){return x(d.stats.q1iqr)})
+                                    .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
+                                    .attr('x2',function(d){return x(d.stats.q1iqr)})
+                                    .style('opacity',1);
+                                boxs.append('line')
+                                    .attr('class','whisker')
+                                    .attr('y1',function(d){return y.rangeBand(d.field)/4})
+                                    .attr('x1',function(d){return x(d.stats.q3iqr)})
+                                    .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
+                                    .attr('x2',function(d){return x(d.stats.q3iqr)})
+                                    .style('opacity',1);
+                                // outliers
+
+                                boxs.append('g')
+                                    .attr('class','outliers')
+                                    .attr("transform", function(d) { return "translate(" +  0  + "," +  y.rangeBand(d.field)/2+ ")"; })
+                                    .selectAll(".circle")
+                                    .data(function(d) {return Object.keys(d.stats.unique)
+                                        .filter(function(it){return it<(d.stats.q1iqr)||it>d.stats.q3iqr})})
+                                    .enter()
+                                    .append("circle")
+                                    .attr("cx", function(d) {return x(d)})
+                                    .attr("cy",0)
+                                    .attr('r',3);
+                                // draw y axis
+                                /*svg.append("g")
+                  .attr("class", "y axis")
+                  .call(yAxis)
+                  .selectAll("text")
+                  .attr("y", -20)
+                  .attr("x", 0)
+                  .style("font-size",'11px')
+                  .style("font-weight",'bold')
+                  .attr("transform", "rotate(-90)")
+                  .style("text-anchor", "middle");*/
+                                // draw x axis
+                                svg.append("g")
+                                    .attr("class", "x axis")
+                                    .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
+                                    .call(xAxis)
+                                    .append('text')
+                                    .attr("text-anchor", "middle")
+                                    .text(spec.marks[0].axes[0].title)
+                                    .style("font-weight",'bold' )
+                                    .attr("transform", "translate("+ (width/2) +","+titleOffset+")");
+                                Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                                    list: scope.listTitle
+                                });
+                                rescaleIfEnable();
+                                renderQueueNextPromise = $timeout(renderQueueNext, 1);
+                                return;
+                                case "hexagon":
+                                    var plotor = d3.selectAll("#vis-" + scope.visId);
+
+                                    var boxplotdiv = plotor.select('.vega');
+                                    if (boxplotdiv[0][0]==null)
+                                        boxplotdiv = plotor.append('div')
+                                            .attr('class','vega')
+                                            .style('position','relative');
+                                    boxplotdiv.selectAll('svg').remove();
+
+                                    // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
+                                    var labels = true; // show the text labels beside individual boxplots?
+                                    // my zone \(=o=)\
+                                    var margin = {top: 5, right: 5, bottom: 35, left: 20};
+                                    var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
+                                    //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
+                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
+                                    var scalem = Math.min(width,height);
+                                    margin.top = margin.top + (height-scalem)/2;
+                                    margin.bottom = margin.bottom + (height-scalem)/2;
+                                    margin.left = margin.left + (width-scalem)/2;
+                                    margin.right = margin.right + (width-scalem)/2;
+                                    width = scalem;
+                                    height = scalem;
+
+                                    //draw
+                                    var min = Infinity,
+                                        max = -Infinity;
+                                    var g = boxplotdiv.append('svg')
+                                        .attr("width",width + margin.left + margin.right)
+                                        .attr("height",height + margin.top + margin.bottom)
+                                        .attr("class", "hexagon-graph")
+                                        .append("g")
+                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                                    //runtGraph
+                                    svg_d3 = boxplotdiv.selectAll('svg');
+                                    var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
+                                    var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
+                                    //console.log("myevent");
+                                    //console.log(data[0].stats);
+
+                                    //check min max
+                                    // console.log(fieldset);
+                                    // console.log(points);
+                                    try{
+                                    var scag = scagnostics(points, 'hexagon');
+                                    //console.log(scag.bins);
+                                    // the y-axis
+                                    var scaleY = d3.scale.linear()
+                                        .domain([0,1])
+                                        .range([height,0]);
+
+
+                                    // the x-axis
+                                    var scaleX = d3.scale.linear()
+                                        .domain([0,1])
+                                        .range([0,width]);
+
+                                    /*var color = d3.scale.linear()
+                                        .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
+                                        .range(["grey", "steelblue"])
+                                        .interpolate(d3.interpolateHcl);*/
+                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("grey", "steelblue"))
+                                            .domain(d3v4.extent(scag.bins.map(function(b) {return b.length})));
+
+                                    var bins = g.append("g")
+                                        .attr("class", "hexagon")
+                                        .selectAll("path")
+                                        .data(scag.bins)
+                                        .enter().append("path")
+                                        .attr("d", scag.binner.hexagon(scaleX(scag.binRadius)))
+                                        .attr("transform", function (d) {
+                                            return "translate(" + scaleX(d.x) + "," + scaleY(d.y) + ")";
+                                        })
+                                        .attr("fill", function(d) {return color(d.length)});
+
+                                    var xAxis = d3.svg.axis()
+                                        .scale(scaleX)
+                                        .orient("bottom");
+
+                                        xAxis.ticks(0);
+                                    var yAxis = d3.svg.axis()
+                                        .scale(scaleY)
+                                        .orient("left");
+                                        yAxis.ticks(0);
+
+                                    // draw y axis
+                                    g.append("g")
+                                          .attr("class", "y axis")
+                                          .call(yAxis)
+                                        .append('text')
+                                        .text(spec.marks[0].axes[1].title)
+                                        .attr("text-anchor", "middle")
+                                        .attr("transform", "translate("+-10+","+height/2+") rotate(-90)")
+                                        .style("font-weight",'bold' );
+                                    // draw x axis
+                                    g.append("g")
+                                        .attr("class", "x axis")
+                                        .attr("transform", "translate(0," + (height) + ")")
+                                        .call(xAxis)
+                                        .append('text')
+                                        .attr("text-anchor", "middle")
+                                        .text(spec.marks[0].axes[0].title)
+                                        .attr("transform", "translate("+ (width/2) +","+21+")")
+                                        .style("font-weight",'bold' );
+                                        /*var drawTriangle = function (triangle) {
+
+                                            triangle.attr("d", function(d){return  "M" + d.map(function(p) {return [scaleX(p[0]), scaleY(p[1])]}).join("L") + "Z"});
+                                        };
+                                        var triangulations = g.append("g")
+                                            .attr("class", "triangles")
+                                            .selectAll("path")
+                                            .data(scag.triangleCoordinates)
+                                            .enter()
+                                            .append("path")
+                                            .call(drawTriangle);*/
+
+
+                                    Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                                        list: scope.listTitle
+                                    });
+                                    rescaleIfEnable();}catch(e){}
+                                    renderQueueNextPromise = $timeout(renderQueueNext, 1);
+                                    return;
+                                case"leader":
+                                    var plotor = d3.selectAll("#vis-" + scope.visId);
+
+                                    var boxplotdiv = plotor.select('.vega');
+                                    if (boxplotdiv[0][0]==null)
+                                        boxplotdiv = plotor.append('div')
+                                            .attr('class','vega')
+                                            .style('position','relative');
+                                    boxplotdiv.selectAll('svg').remove();
+
+                                    // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
+                                    //var labels = true; // show the text labels beside individual boxplots?
+                                    // my zone \(=o=)\
+                                    var margin = {top: 5, right: 5, bottom: 35, left: 20};
+                                    var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
+                                    //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
+                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
+                                    var scalem = Math.min(width,height);
+                                    margin.top = margin.top + (height-scalem)/2;
+                                    margin.bottom = margin.bottom + (height-scalem)/2;
+                                    margin.left = margin.left + (width-scalem)/2;
+                                    margin.right = margin.right + (width-scalem)/2;
+                                    width = scalem;
+                                    height = scalem;
+
+                                    //draw
+                                    var min = Infinity,
+                                        max = -Infinity;
+                                    var g = boxplotdiv.append('svg')
+                                        .attr("width",width + margin.left + margin.right)
+                                        .attr("height",height + margin.top + margin.bottom)
+                                        .attr("class", "leader-graph")
+                                        .append("g")
+                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                                    //runtGraph
+                                    svg_d3 = boxplotdiv.selectAll('svg');
+                                    var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
+                                    var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
+                                    //console.log("myevent");
+                                    //console.log(data[0].stats);
+
+                                    //check min max
+                                    //console.log(fieldset);
+                                    //console.log(points);
+                                    try{
+                                        var dataPointRadius = 4;
+                                        var scag = scagnostics(points, 'leader');
+                                        //console.log(scag.bins);
+                                        // the y-axis
+                                        var scaleY = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([height,0]);
+
+
+                                        // the x-axis
+                                        var scaleX = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([0,width]);
+
+                                        var color = d3.scale.linear()
+                                            .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
+                                            .range(["steelblue",'red'])
+                                            .interpolate(d3.interpolateHcl);
+                                        var distance = function(a, b){
+                                            var dx = a[0] - b[0],
+                                                dy = a[1] - b[1];
+                                            return Math.round(Math.sqrt((dx * dx) + (dy * dy))*Math.pow(10, 10))/Math.pow(10, 10);
+                                        };
+                                        var bins = g.append("g")
+                                            .attr("class", "leader")
+                                            .selectAll("circle")
+                                            .data(scag.bins)
+                                            .enter().append("circle")
+                                            // .attr("r", scaleX(scag.binRadius))
+                                            .attr("r", function(d)  {
+                                                var distances = d.map(function(p){return distance([d.x, d.y], p)});
+                                                var radius = d3.max(distances);
+                                                return radius === 0 ? dataPointRadius : scaleX(radius);
+                                            })
+                                            .attr("cx", function(d){return scaleX(d.x)})
+                                            .attr("cy", function(d){return scaleY(d.y)})
+                                            .attr("fill", "none")
+                                            .attr("stroke", function(d){return color(d.length)})
+                                            .attr("stroke-width", 1);
+
+                                        var xAxis = d3.svg.axis()
+                                            .scale(scaleX)
+                                            .orient("bottom");
+
+                                        xAxis.ticks(0);
+                                        var yAxis = d3.svg.axis()
+                                            .scale(scaleY)
+                                            .orient("left");
+                                        yAxis.ticks(0);
+
+                                        // draw y axis
+                                        g.append("g")
+                                            .attr("class", "y axis")
+                                            .call(yAxis)
+                                            .append('text')
+                                            .text(spec.marks[0].axes[1].title)
+                                            .attr("text-anchor", "middle")
+                                            .attr("transform", "translate("+-10+","+height/2+") rotate(-90)")
+                                            .style("font-weight",'bold' );
+                                        // draw x axis
+                                        g.append("g")
+                                            .attr("class", "x axis")
+                                            .attr("transform", "translate(0," + (height) + ")")
+                                            .call(xAxis)
+                                            .append('text')
+                                            .attr("text-anchor", "middle")
+                                            .text(spec.marks[0].axes[0].title)
+                                            .attr("transform", "translate("+ (width/2) +","+21+")")
+                                            .style("font-weight",'bold' );
+
+
+                                        Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                                            list: scope.listTitle
+                                        });
+                                        rescaleIfEnable();}catch(e){}
+                                    renderQueueNextPromise = $timeout(renderQueueNext, 1);
+                                    return;
+                                case "contour":
+                                    var plotor = d3.selectAll("#vis-" + scope.visId);
+
+                                    var boxplotdiv = plotor.select('.vega');
+                                    if (boxplotdiv[0][0]==null)
+                                        boxplotdiv = plotor.append('div')
+                                            .attr('class','vega')
+                                            .style('position','relative');
+                                    boxplotdiv.selectAll('svg').remove();
+
+                                    // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
+                                    var labels = true; // show the text labels beside individual boxplots?
+                                    // my zone \(=o=)\
+                                    var margin = {top: 5, right: 20, bottom: 50, left: 20};
+                                    var titleOffset = spec.marks[0].axes[0].titleOffset||30;
+                                    margin.bottom += (titleOffset==30?30:0);
+                                    var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
+                                    //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
+                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
+                                    // old_canvas.remove();
+                                    var min = Infinity,
+                                        max = -Infinity;
+                                    var svg = boxplotdiv.append('svg')
+                                        .attr("width",width + margin.left + margin.right)
+                                        .attr("height",height + margin.top + margin.bottom)
+                                        .attr("class", "boxplot")
+                                        .append("g")
+                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                                    svg_d3 = boxplotdiv.selectAll('svg');
+                                    var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
+                                    var data = fieldset.map(function(d){
+                                        return Dataset.schema.fieldSchema(d);
+                                    });
+                                    //console.log("myevent");
+                                    //console.log(data[0].stats);
+                                    var formatNum = function(n){
+                                        return (!isNaN(parseFloat(n)) ? parseFloat(n):n.length);
+                                    };
+                                    //check min max
+                                    data.forEach(function(it){
+                                        min = it.stats.min<min?it.stats.min:min;
+                                        max = it.stats.max>max?it.stats.max:max;
+                                        var  q1 = it.stats.q1,
+                                            q3 = it.stats.q3,
+                                            iqr = (q3-q1)*1.5,
+                                            unique = Object.keys(it.stats.unique),
+                                            i = -1,
+                                            j = unique.length;
+                                        unique.sort(function(a,b){return formatNum(a)-formatNum(b)});
+                                        while (formatNum(unique[++i]) < q1 - iqr);
+                                        while (formatNum(unique[--j]) > q3 + iqr);
+                                        it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
+                                        it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);
+                                    });
+
+                                    // the y-axis
+                                    var y = d3.scale.ordinal()
+                                        .domain( data.map(function(d) { return d.field } ) )
+                                        .rangeRoundBands([height,0]);
+
+
+                                    // the x-axis
+                                    var x = d3.scale.linear()
+                                        .domain([min, max])
+                                        .range([0,width]);
+
+                                    var xAxis = d3.svg.axis()
+                                        .scale(x)
+                                        .orient("bottom");
+                                    if (!spec.marks[0].axes[0].ticks)
+                                        xAxis.ticks(0);
+                                    var yAxis = d3.svg.axis()
+                                        .scale(y)
+                                        .orient("left");
+
+                                    // calculate outliner base on 1.5 q3-q1
+                                    //var outliner = d.stats.unique ;
+                                    // draw box
+                                    var boxs = svg.selectAll('.boxplot')
+                                        .data(data)
+                                        .enter().append('g')
+                                        .attr("transform", function(d) { return "translate(" +  0  + "," +  (y(d.field))+ ")"; } );
+
+                                    boxs.append('line')
+                                        .attr('class','center')
+                                        .attr('y1',function(d){return y.rangeBand(d.field)/2})
+                                        .attr('x1',function(d){return x(d.stats.q1iqr)})
+                                        .attr('y2',function(d){return y.rangeBand(d.field)/2})
+                                        .attr('x2',function(d){return x(d.stats.q3iqr)})
+                                        .style('opacity',1);
+                                    boxs.append('rect')
+                                        .attr('class','box_quan')
+                                        .attr('y',function(d){return 0})
+                                        .attr('x',function(d){return x(d.stats.q1)})
+                                        .attr('height',function(d){return y.rangeBand(d.field)})
+                                        .attr('width',function(d){return Math.abs(x(d.stats.q1)-x(d.stats.q3))});
+                                    boxs.append('line')
+                                        .attr('class','median')
+                                        .attr('y1',function(d){return 0})
+                                        .attr('x1',function(d){return x(d.stats.median)})
+                                        .attr('y2',function(d){return y.rangeBand(d.field)})
+                                        .attr('x2',function(d){return x(d.stats.median)})
+                                        .style('opacity',1);
+                                    boxs.append('line')
+                                        .attr('class','whisker')
+                                        .attr('y1',function(d){return y.rangeBand(d.field)/4})
+                                        .attr('x1',function(d){return x(d.stats.q1iqr)})
+                                        .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
+                                        .attr('x2',function(d){return x(d.stats.q1iqr)})
+                                        .style('opacity',1);
+                                    boxs.append('line')
+                                        .attr('class','whisker')
+                                        .attr('y1',function(d){return y.rangeBand(d.field)/4})
+                                        .attr('x1',function(d){return x(d.stats.q3iqr)})
+                                        .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
+                                        .attr('x2',function(d){return x(d.stats.q3iqr)})
+                                        .style('opacity',1);
+                                    // outliers
+
+                                    boxs.append('g')
+                                        .attr('class','outliers')
+                                        .attr("transform", function(d) { return "translate(" +  0  + "," +  y.rangeBand(d.field)/2+ ")"; })
+                                        .selectAll(".circle")
+                                        .data(function(d) {return Object.keys(d.stats.unique)
+                                            .filter(function(it){return it<(d.stats.q1iqr)||it>d.stats.q3iqr})})
+                                        .enter()
+                                        .append("circle")
+                                        .attr("cx", function(d) {return x(d)})
+                                        .attr("cy",0)
+                                        .attr('r',3);
+                                    // draw y axis
+                                    /*svg.append("g")
+                      .attr("class", "y axis")
+                      .call(yAxis)
+                      .selectAll("text")
+                      .attr("y", -20)
+                      .attr("x", 0)
+                      .style("font-size",'11px')
+                      .style("font-weight",'bold')
+                      .attr("transform", "rotate(-90)")
+                      .style("text-anchor", "middle");*/
+                                    // draw x axis
+                                    svg.append("g")
+                                        .attr("class", "x axis")
+                                        .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
+                                        .call(xAxis)
+                                        .append('text')
+                                        .attr("text-anchor", "middle")
+                                        .text(spec.marks[0].axes[0].title)
+                                        .style("font-weight",'bold' )
+                                        .attr("transform", "translate("+ (width/2) +","+titleOffset+")");
+                                    Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                                        list: scope.listTitle
+                                    });
+                                    rescaleIfEnable();
+                                    renderQueueNextPromise = $timeout(renderQueueNext, 1);
+                                    return;
+                                default: vg.parse.spec(spec, function(error, chart) {
                                 if (error) {
                                     console.error('error', error);
                                     renderQueueNextPromise = $timeout(renderQueueNext, 1);
@@ -5513,158 +6074,9 @@
                                     rescaleIfEnable();
 
                                     var endChart = new Date().getTime();
-                                    console.log('parse spec', (endParse-start), 'charting', (endChart-endParse), shorthand);
+                                    // console.log('parse spec', (endParse-start), 'charting', (endChart-endParse), shorthand);
                                     //replace boxplot
-                                    var boxplotdiv = d3.selectAll("#vis-" + scope.visId).selectAll('.vega');
-                                    boxplotdiv.selectAll('svg').remove();
-                                    if (scope.chart.vlSpec.mark == "boxplot") {
 
-                                        var old_canvas = boxplotdiv.selectAll('canvas');
-
-
-                                        // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
-                                        var labels = true; // show the text labels beside individual boxplots?
-                                        // my zone \(=o=)\
-                                        var margin = {top: 5, right: 20, bottom: 50, left: 20};
-                                        var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
-                                        //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
-                                        var height = $(boxplotdiv[0]).parent().parent()[0].offsetHeight - margin.top - margin.bottom;
-                                        old_canvas.remove();
-                                        var min = Infinity,
-                                            max = -Infinity;
-                                        var svg = boxplotdiv.append('svg')
-                                            .attr("width",width + margin.left + margin.right)
-                                            .attr("height",height + margin.top + margin.bottom)
-                                            .attr("class", "boxplot")
-                                            .append("g")
-                                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-                                        svg_d3 = boxplotdiv.selectAll('svg');
-                                        var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
-                                        var data = fieldset.map(function(d){
-                                            return Dataset.schema.fieldSchema(d);
-                                        });
-                                        //console.log("myevent");
-                                        //console.log(data[0].stats);
-                                        var formatNum = function(n){
-                                            return (!isNaN(parseFloat(n)) ? parseFloat(n):n.length);
-                                        };
-                                        //check min max
-                                        data.forEach(function(it){
-                                            min = it.stats.min<min?it.stats.min:min;
-                                            max = it.stats.max>max?it.stats.max:max;
-                                            var  q1 = it.stats.q1,
-                                                q3 = it.stats.q3,
-                                                iqr = (q3-q1)*1.5,
-                                                unique = Object.keys(it.stats.unique),
-                                                i = -1,
-                                                j = unique.length;
-                                            unique.sort(function(a,b){return formatNum(a)-formatNum(b)});
-                                            while (formatNum(unique[++i]) < q1 - iqr);
-                                            while (formatNum(unique[--j]) > q3 + iqr);
-                                            it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
-                                            it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);
-                                        });
-
-                                        // the y-axis
-                                        var y = d3.scale.ordinal()
-                                            .domain( data.map(function(d) { return d.field } ) )
-                                            .rangeRoundBands([height,0]);
-
-
-                                        // the x-axis
-                                        var x = d3.scale.linear()
-                                            .domain([min, max])
-                                            .range([0,width]);
-
-                                        var xAxis = d3.svg.axis()
-                                            .scale(x)
-                                            .orient("bottom");
-                                        if (!spec.marks[0].axes[0].ticks)
-                                            xAxis.ticks(0);
-                                        var yAxis = d3.svg.axis()
-                                            .scale(y)
-                                            .orient("left");
-
-                                        // calculate outliner base on 1.5 q3-q1
-                                        //var outliner = d.stats.unique ;
-                                        // draw box
-                                        var boxs = svg.selectAll('.boxplot')
-                                            .data(data)
-                                            .enter().append('g')
-                                            .attr("transform", function(d) { return "translate(" +  0  + "," +  (y(d.field)-margin.top)+ ")"; } );
-
-                                        boxs.append('line')
-                                            .attr('class','center')
-                                            .attr('y1',function(d){return y.rangeBand(d.field)/2})
-                                            .attr('x1',function(d){return x(d.stats.q1iqr)})
-                                            .attr('y2',function(d){return y.rangeBand(d.field)/2})
-                                            .attr('x2',function(d){return x(d.stats.q3iqr)})
-                                            .style('opacity',1);
-                                        boxs.append('rect')
-                                            .attr('class','box_quan')
-                                            .attr('y',function(d){return 0})
-                                            .attr('x',function(d){return x(d.stats.q1)})
-                                            .attr('height',function(d){return y.rangeBand(d.field)})
-                                            .attr('width',function(d){return Math.abs(x(d.stats.q1)-x(d.stats.q3))});
-                                        boxs.append('line')
-                                            .attr('class','median')
-                                            .attr('y1',function(d){return 0})
-                                            .attr('x1',function(d){return x(d.stats.median)})
-                                            .attr('y2',function(d){return y.rangeBand(d.field)})
-                                            .attr('x2',function(d){return x(d.stats.median)})
-                                            .style('opacity',1);
-                                        boxs.append('line')
-                                            .attr('class','whisker')
-                                            .attr('y1',function(d){return y.rangeBand(d.field)/4})
-                                            .attr('x1',function(d){return x(d.stats.q1iqr)})
-                                            .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
-                                            .attr('x2',function(d){return x(d.stats.q1iqr)})
-                                            .style('opacity',1);
-                                        boxs.append('line')
-                                            .attr('class','whisker')
-                                            .attr('y1',function(d){return y.rangeBand(d.field)/4})
-                                            .attr('x1',function(d){return x(d.stats.q3iqr)})
-                                            .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
-                                            .attr('x2',function(d){return x(d.stats.q3iqr)})
-                                            .style('opacity',1);
-                                        // outliers
-
-                                        boxs.append('g')
-                                            .attr('class','outliers')
-                                            .attr("transform", function(d) { return "translate(" +  0  + "," +  y.rangeBand(d.field)/2+ ")"; })
-                                            .selectAll(".circle")
-                                            .data(function(d) {return Object.keys(d.stats.unique)
-                                            .filter(function(it){return it<(d.stats.q1iqr)||it>d.stats.q3iqr})})
-                                            .enter()
-                                            .append("circle")
-                                            .attr("cx", function(d) {return x(d)})
-                                            .attr("cy",0)
-                                            .attr('r',3);
-                                        // draw y axis
-                                        /*svg.append("g")
-                          .attr("class", "y axis")
-                          .call(yAxis)
-                          .selectAll("text")
-                          .attr("y", -20)
-                          .attr("x", 0)
-                          .style("font-size",'11px')
-                          .style("font-weight",'bold')
-                          .attr("transform", "rotate(-90)")
-                          .style("text-anchor", "middle");*/
-                                        // draw x axis
-                                        svg.append("g")
-                                            .attr("class", "x axis")
-                                            .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
-                                            .call(xAxis)
-                                            .append('text')
-                                            .attr("text-anchor", "middle")
-                                            .text(spec.marks[0].axes[0].title)
-                                            .style("font-weight",'bold' )
-                                            .attr("transform", "translate("+ (width/2) +","+(spec.marks[0].axes[0].titleOffset ? spec.marks[0].axes[0].titleOffset:30)+")");
-
-
-
-                                    }
                                     if (scope.tooltip) {
                                         // use vega-tooltip
                                         tooltip = vl.tooltip(view, scope.chart.vlSpec, {
@@ -5679,7 +6091,7 @@
                                     renderQueueNextPromise = $timeout(renderQueueNext, 1);
                                 }
 
-                            });
+                            });}
                         }
 
                         if (!rendering) { // if no instance is being render -- rendering now

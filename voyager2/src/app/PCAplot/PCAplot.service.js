@@ -252,8 +252,12 @@ angular.module('pcagnosticsviz')
                     /*var tipText = data.map(function(d) {
                         return {key: d[brand_names[0]], value: d[b['brand']] }
                     });*/
-                    var tipText ="";
-                    tip.show(tipText, b.brand);
+
+                    // call tip
+                    /*var tipText ="";
+                    tip.show(tipText, b.brand);*/
+
+                    //add tip to head
                 };
 
                 var onMouseLeave = function (b,j) {
@@ -688,7 +692,7 @@ angular.module('pcagnosticsviz')
             }
             else {
                 PCAplot.types = PCAresult.map(function(d){return d.brand});
-                PCAplot.marks = ['point',];
+                PCAplot.marks = ['point','hexagon','leader','contour'];
                 PCAplot.charts.length=0;
                 PCAplot.dataref = dataref.map(function(d){
                     return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
@@ -781,21 +785,27 @@ angular.module('pcagnosticsviz')
                 case 'area': areaplot(spec, object); break;
                 case 'boxplot': boxplot(spec, object); break;
                 case 'point': pointplot(spec, object); break; // 2D
+                case 'hexagon': pointplot(spec, object,'hexagon'); break;
+                case 'leader': pointplot(spec, object,'leader'); break;
+                case 'contour': pointplot(spec, object,'contour'); break;
             }
         }
 
         PCAplot.updateSpec = function(prop){
             var nprop = prop = _.cloneDeep(prop);
             nprop.ranking = getranking(prop.type);
-            mark2plot (prop.mark,nprop.mspec,Dataset.schema.fieldSchemas[0]);
+            mark2plot (prop.mark,nprop.mspec,Dataset.schema.fieldSchemas.slice(0,PCAplot.dim+1));
             /*switch (prop.mark) {
                 case 'bar': barplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'tick': dashplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'area': areaplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'boxplot': boxplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
             }*/
-            nprop.charts = Dataset.schema.fieldSchemas.sort(nprop.ranking)
-                .map(function(d) {return drawGuideexplore(d,nprop.mark,nprop.mspec) });
+            nprop.charts.length = 0;
+            var dataref = PCAplot.dim?PCAplot.dataref:Dataset.schema.fieldSchemas;
+            nprop.charts = dataref.sort(nprop.ranking)
+                .map(function(d) {return drawGuideexplore((d.fieldDefs||d),nprop.mark,nprop.mspec) });
+            while (nprop[nprop.length-1])
             nprop.previewcharts = nprop.charts.map(function(d) {
                 var thum =_.cloneDeep(d);
                 thum.vlSpec.config = {
@@ -818,11 +828,16 @@ angular.module('pcagnosticsviz')
         };
 
         function type2mark (type){
+            console.log(type);
             switch (type) {
                 case 'PCA1': return 'tick';
                 case 'outlier': return 'boxplot';
                 case 'PCA2': return 'area';
                 case 'skewness': return 'bar';
+                case 'outlyingScore': return 'hexagon';
+                case 'spaseScore': return 'leader';
+                case 'convexScore': return 'contour';
+                //case 'outlying SC'
                 default: return 'point';
             }
         }
@@ -897,8 +912,8 @@ angular.module('pcagnosticsviz')
             };
         }
 
-        function pointplot(spec,objects) {
-            spec.mark = "point";
+        function pointplot(spec,objects,extramark) {
+            spec.mark = extramark||"point";
             spec.encoding = {
                 x: { field: objects[0].field, type: objects[0].type},
                 y: { field: objects[1].field, type: objects[1].type},

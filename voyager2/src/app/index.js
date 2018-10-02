@@ -79,5 +79,5 @@ angular.module('pcagnosticsviz', [
   .config(function (AnalyticsProvider, consts) {
     if (consts.embeddedData) return;
     AnalyticsProvider
-      .setAccount({ tracker: 'UA-44428446-4', name: 'pcagnosticsviz', trackEvent: true });
+      .setAccount({ tracker: 'UA-44428446-4', name: 'pcagnosticsviz', trackEvent: false });
   });

@@ -1798,7 +1798,8 @@ function getSupportedMark(channel) {
         case exports.COLUMN:
             return {
                 point: true, tick: true, rule: true, circle: true, square: true,
-                bar: true, line: true, area: true, text: true, boxplot:true
+                bar: true, line: true, area: true, text: true,
+                boxplot:true, hexagon:true, leader:true, contour:true,
             };
         case exports.X2:
         case exports.Y2:
@@ -2367,6 +2368,9 @@ function orient(mark, encoding, markConfig) {
         case mark_1.CIRCLE:
         case mark_1.SQUARE:
         case mark_1.TEXT:
+        case mark_1.HEXAGON:
+        case mark_1.LEADER:
+        case mark_1.CONTOUR:
             return undefined;
     }
     var xIsMeasure = fielddef_1.isMeasure(encoding.x) || fielddef_1.isMeasure(encoding.x2);
@@ -4723,6 +4727,9 @@ var util_1 = require('../../util');
 var area_1 = require('./area');
 var bar_1 = require('./bar');
 var boxplot_1 = require('./boxplot');
+var hexagon_1 = require('./hexagon');
+var leader_1 = require('./leader');
+var contour_1 = require('./contour');
 var common_1 = require('../common');
 var line_1 = require('./line');
 var point_1 = require('./point');
@@ -4740,6 +4747,9 @@ var markCompiler = {
     circle: point_1.circle,
     square: point_1.square,
     boxplot: boxplot_1.boxplot,
+    hexagon: hexagon_1.hexagon,
+    leader: leader_1.leader,
+    contour: contour_1.contour,
 };
 function parseMark(model) {
     if (util_1.contains([mark_1.LINE, mark_1.AREA], model.mark())) {
@@ -4920,7 +4930,7 @@ function stackTransform(model, stackFields) {
     return transform;
 }
 
-},{"../../channel":14,"../../config":47,"../../encoding":50,"../../fielddef":52,"../../mark":55,"../../scale":56,"../../util":64,"../common":16,"./area":36,"./bar":37,"./boxplot":68,"./line":38,"./point":40,"./rule":41,"./text":42,"./tick":43}],40:[function(require,module,exports){
+},{"../../channel":14,"../../config":47,"../../encoding":50,"../../fielddef":52,"../../mark":55,"../../scale":56,"../../util":64,"../common":16,"./area":36,"./bar":37,"./boxplot":68,"./hexagon":69,"./leader":70,"./contour":71,"./line":38,"./point":40,"./rule":41,"./text":42,"./tick":43}],40:[function(require,module,exports){
 "use strict";
 var channel_1 = require('../../channel');
 var fielddef_1 = require('../../fielddef');
@@ -6706,6 +6716,9 @@ exports.defaultLegendConfig = {
     Mark[Mark["SQUARE"] = 'square'] = "SQUARE";
     Mark[Mark["ERRORBAR"] = 'errorBar'] = "ERRORBAR";
     Mark[Mark["BOXPLOT"] = 'boxplot'] = "BOXPLOT";
+    Mark[Mark["HEXAGON"] = 'hexagon'] = "HEXAGON";
+    Mark[Mark["LEADER"] = 'leader'] = "LEADER";
+    Mark[Mark["CONTOUR"] = 'contour'] = "CONTOUR";
 })(exports.Mark || (exports.Mark = {}));
 var Mark = exports.Mark;
 exports.AREA = Mark.AREA;
@@ -6719,7 +6732,10 @@ exports.CIRCLE = Mark.CIRCLE;
 exports.SQUARE = Mark.SQUARE;
 exports.ERRORBAR = Mark.ERRORBAR;
 exports.BOXPLOT = Mark.BOXPLOT;
-exports.PRIMITIVE_MARKS = [exports.AREA, exports.BAR, exports.LINE, exports.POINT, exports.TEXT, exports.TICK, exports.RULE, exports.CIRCLE, exports.SQUARE, exports.BOXPLOT];
+exports.HEXAGON = Mark.HEXAGON;
+exports.LEADER = Mark.LEADER;
+exports.CONTOUR = Mark.CONTOUR;
+exports.PRIMITIVE_MARKS = [exports.AREA, exports.BAR, exports.LINE, exports.POINT, exports.TEXT, exports.TICK, exports.RULE, exports.CIRCLE, exports.SQUARE, exports.BOXPLOT,exports.HEXAGON,exports.LEADER,exports.CONTOUR];
 
 },{}],56:[function(require,module,exports){
 "use strict";
@@ -7863,6 +7879,7 @@ exports.isDataRefDomain = isDataRefDomain;
                 common_1.applyColorAndOpacity(p, model);
                 return p;
             }
+            //boxplot.properties = properties;
             boxplot.properties = properties;
             function sizeValue(model, channel) {
                 var fieldDef = model.fieldDef(channel_1.SIZE);
@@ -7884,6 +7901,708 @@ exports.isDataRefDomain = isDataRefDomain;
             }
             boxplot.labels = labels;
         })(boxplot = exports.boxplot || (exports.boxplot = {}));
+
+    },{"../../channel":14,"../../config":47,"../../fielddef":52,"../../scale":56,"../common":16}],69:[function(require,module,exports){
+        "use strict";
+        var channel_1 = require('../../channel');
+        var config_1 = require('../../config');
+        var fielddef_1 = require('../../fielddef');
+        var scale_1 = require('../../scale');
+        var common_1 = require('../common');
+        var hexagon;
+        (function (hexagon) {
+            function markType() {
+                return 'rect';
+            }
+            hexagon.markType = markType;
+            function properties(model) {
+                var p = {};
+                var orient = model.config().mark.orient;
+                var stack = model.stack();
+                var xFieldDef = model.encoding().x;
+                var x2FieldDef = model.encoding().x2;
+                var xIsMeasure = fielddef_1.isMeasure(xFieldDef) || fielddef_1.isMeasure(x2FieldDef);
+                if (stack && channel_1.X === stack.fieldChannel) {
+                    p.x = {
+                        scale: model.scaleName(channel_1.X),
+                        field: model.field(channel_1.X, { suffix: 'start' })
+                    };
+                    p.x2 = {
+                        scale: model.scaleName(channel_1.X),
+                        field: model.field(channel_1.X, { suffix: 'end' })
+                    };
+                }
+                else if (xIsMeasure) {
+                    if (orient === config_1.Orient.HORIZONTAL) {
+                        if (model.has(channel_1.X)) {
+                            p.x = {
+                                scale: model.scaleName(channel_1.X),
+                                field: model.field(channel_1.X)
+                            };
+                        }
+                        else {
+                            p.x = {
+                                scale: model.scaleName(channel_1.X),
+                                value: 0
+                            };
+                        }
+                        if (model.has(channel_1.X2)) {
+                            p.x2 = {
+                                scale: model.scaleName(channel_1.X),
+                                field: model.field(channel_1.X2)
+                            };
+                        }
+                        else {
+                            if (model.scale(channel_1.X).type === scale_1.ScaleType.LOG) {
+                                p.x2 = { value: 0 };
+                            }
+                            else {
+                                p.x2 = {
+                                    scale: model.scaleName(channel_1.X),
+                                    value: 0
+                                };
+                            }
+                        }
+                    }
+                    else {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X)
+                        };
+                        p.width = { value: sizeValue(model, channel_1.X) };
+                    }
+                }
+                else if (model.fieldDef(channel_1.X).bin) {
+                    if (model.has(channel_1.SIZE) && orient !== config_1.Orient.HORIZONTAL) {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'mid' })
+                        };
+                        p.width = {
+                            scale: model.scaleName(channel_1.SIZE),
+                            field: model.field(channel_1.SIZE)
+                        };
+                    }
+                    else {
+                        p.x = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'start' }),
+                            offset: 1
+                        };
+                        p.x2 = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'end' })
+                        };
+                    }
+                }
+                else {
+                    if (model.has(channel_1.X)) {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X)
+                        };
+                    }
+                    else {
+                        p.x = { value: 0, offset: 2 };
+                    }
+                    p.width = model.has(channel_1.SIZE) && orient !== config_1.Orient.HORIZONTAL ? {
+                        scale: model.scaleName(channel_1.SIZE),
+                        field: model.field(channel_1.SIZE)
+                    } : {
+                        value: sizeValue(model, (channel_1.X))
+                    };
+                }
+                var yFieldDef = model.encoding().y;
+                var y2FieldDef = model.encoding().y2;
+                var yIsMeasure = fielddef_1.isMeasure(yFieldDef) || fielddef_1.isMeasure(y2FieldDef);
+                if (stack && channel_1.Y === stack.fieldChannel) {
+                    p.y = {
+                        scale: model.scaleName(channel_1.Y),
+                        field: model.field(channel_1.Y, { suffix: 'start' })
+                    };
+                    p.y2 = {
+                        scale: model.scaleName(channel_1.Y),
+                        field: model.field(channel_1.Y, { suffix: 'end' })
+                    };
+                }
+                else if (yIsMeasure) {
+                    if (orient !== config_1.Orient.HORIZONTAL) {
+                        if (model.has(channel_1.Y)) {
+                            p.y = {
+                                scale: model.scaleName(channel_1.Y),
+                                field: model.field(channel_1.Y)
+                            };
+                        }
+                        else {
+                            p.y = {
+                                scale: model.scaleName(channel_1.Y),
+                                value: 0
+                            };
+                        }
+                        if (model.has(channel_1.Y2)) {
+                            p.y2 = {
+                                scale: model.scaleName(channel_1.Y),
+                                field: model.field(channel_1.Y2)
+                            };
+                        }
+                        else {
+                            if (model.scale(channel_1.Y).type === scale_1.ScaleType.LOG) {
+                                p.y2 = {
+                                    field: { group: 'height' }
+                                };
+                            }
+                            else {
+                                p.y2 = {
+                                    scale: model.scaleName(channel_1.Y),
+                                    value: 0
+                                };
+                            }
+                        }
+                    }
+                    else {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y)
+                        };
+                        p.height = { value: sizeValue(model, channel_1.Y) };
+                    }
+                }
+                else if (model.fieldDef(channel_1.Y).bin) {
+                    if (model.has(channel_1.SIZE) && orient === config_1.Orient.HORIZONTAL) {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'mid' })
+                        };
+                        p.height = {
+                            scale: model.scaleName(channel_1.SIZE),
+                            field: model.field(channel_1.SIZE)
+                        };
+                    }
+                    else {
+                        p.y = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'start' })
+                        };
+                        p.y2 = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'end' }),
+                            offset: 1
+                        };
+                    }
+                }
+                else {
+                    if (model.has(channel_1.Y)) {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y)
+                        };
+                    }
+                    else {
+                        p.y2 = {
+                            field: { group: 'height' },
+                            offset: -1
+                        };
+                    }
+                    p.height = model.has(channel_1.SIZE) && orient === config_1.Orient.HORIZONTAL ? {
+                        scale: model.scaleName(channel_1.SIZE),
+                        field: model.field(channel_1.SIZE)
+                    } : {
+                        value: sizeValue(model, channel_1.Y)
+                    };
+                }
+                common_1.applyColorAndOpacity(p, model);
+                return p;
+            }
+            //boxplot.properties = properties;
+            hexagon.properties = properties;
+            function sizeValue(model, channel) {
+                var fieldDef = model.fieldDef(channel_1.SIZE);
+                if (fieldDef && fieldDef.value !== undefined) {
+                    return fieldDef.value;
+                }
+                var markConfig = model.config().mark;
+                if (markConfig.barSize) {
+                    return markConfig.barSize;
+                }
+                return model.isOrdinalScale(channel) ?
+                    model.scale(channel).bandSize - 1 :
+                    !model.has(channel) ?
+                        model.config().scale.bandSize - 1 :
+                        markConfig.barThinSize;
+            }
+            function labels(model) {
+                return undefined;
+            }
+            hexagon.labels = labels;
+        })(hexagon = exports.hexagon || (exports.hexagon = {}));
+
+    },{"../../channel":14,"../../config":47,"../../fielddef":52,"../../scale":56,"../common":16}],70:[function(require,module,exports){
+        "use strict";
+        var channel_1 = require('../../channel');
+        var config_1 = require('../../config');
+        var fielddef_1 = require('../../fielddef');
+        var scale_1 = require('../../scale');
+        var common_1 = require('../common');
+        var leader;
+        (function (leader) {
+            function markType() {
+                return 'rect';
+            }
+            leader.markType = markType;
+            function properties(model) {
+                var p = {};
+                var orient = model.config().mark.orient;
+                var stack = model.stack();
+                var xFieldDef = model.encoding().x;
+                var x2FieldDef = model.encoding().x2;
+                var xIsMeasure = fielddef_1.isMeasure(xFieldDef) || fielddef_1.isMeasure(x2FieldDef);
+                if (stack && channel_1.X === stack.fieldChannel) {
+                    p.x = {
+                        scale: model.scaleName(channel_1.X),
+                        field: model.field(channel_1.X, { suffix: 'start' })
+                    };
+                    p.x2 = {
+                        scale: model.scaleName(channel_1.X),
+                        field: model.field(channel_1.X, { suffix: 'end' })
+                    };
+                }
+                else if (xIsMeasure) {
+                    if (orient === config_1.Orient.HORIZONTAL) {
+                        if (model.has(channel_1.X)) {
+                            p.x = {
+                                scale: model.scaleName(channel_1.X),
+                                field: model.field(channel_1.X)
+                            };
+                        }
+                        else {
+                            p.x = {
+                                scale: model.scaleName(channel_1.X),
+                                value: 0
+                            };
+                        }
+                        if (model.has(channel_1.X2)) {
+                            p.x2 = {
+                                scale: model.scaleName(channel_1.X),
+                                field: model.field(channel_1.X2)
+                            };
+                        }
+                        else {
+                            if (model.scale(channel_1.X).type === scale_1.ScaleType.LOG) {
+                                p.x2 = { value: 0 };
+                            }
+                            else {
+                                p.x2 = {
+                                    scale: model.scaleName(channel_1.X),
+                                    value: 0
+                                };
+                            }
+                        }
+                    }
+                    else {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X)
+                        };
+                        p.width = { value: sizeValue(model, channel_1.X) };
+                    }
+                }
+                else if (model.fieldDef(channel_1.X).bin) {
+                    if (model.has(channel_1.SIZE) && orient !== config_1.Orient.HORIZONTAL) {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'mid' })
+                        };
+                        p.width = {
+                            scale: model.scaleName(channel_1.SIZE),
+                            field: model.field(channel_1.SIZE)
+                        };
+                    }
+                    else {
+                        p.x = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'start' }),
+                            offset: 1
+                        };
+                        p.x2 = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'end' })
+                        };
+                    }
+                }
+                else {
+                    if (model.has(channel_1.X)) {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X)
+                        };
+                    }
+                    else {
+                        p.x = { value: 0, offset: 2 };
+                    }
+                    p.width = model.has(channel_1.SIZE) && orient !== config_1.Orient.HORIZONTAL ? {
+                        scale: model.scaleName(channel_1.SIZE),
+                        field: model.field(channel_1.SIZE)
+                    } : {
+                        value: sizeValue(model, (channel_1.X))
+                    };
+                }
+                var yFieldDef = model.encoding().y;
+                var y2FieldDef = model.encoding().y2;
+                var yIsMeasure = fielddef_1.isMeasure(yFieldDef) || fielddef_1.isMeasure(y2FieldDef);
+                if (stack && channel_1.Y === stack.fieldChannel) {
+                    p.y = {
+                        scale: model.scaleName(channel_1.Y),
+                        field: model.field(channel_1.Y, { suffix: 'start' })
+                    };
+                    p.y2 = {
+                        scale: model.scaleName(channel_1.Y),
+                        field: model.field(channel_1.Y, { suffix: 'end' })
+                    };
+                }
+                else if (yIsMeasure) {
+                    if (orient !== config_1.Orient.HORIZONTAL) {
+                        if (model.has(channel_1.Y)) {
+                            p.y = {
+                                scale: model.scaleName(channel_1.Y),
+                                field: model.field(channel_1.Y)
+                            };
+                        }
+                        else {
+                            p.y = {
+                                scale: model.scaleName(channel_1.Y),
+                                value: 0
+                            };
+                        }
+                        if (model.has(channel_1.Y2)) {
+                            p.y2 = {
+                                scale: model.scaleName(channel_1.Y),
+                                field: model.field(channel_1.Y2)
+                            };
+                        }
+                        else {
+                            if (model.scale(channel_1.Y).type === scale_1.ScaleType.LOG) {
+                                p.y2 = {
+                                    field: { group: 'height' }
+                                };
+                            }
+                            else {
+                                p.y2 = {
+                                    scale: model.scaleName(channel_1.Y),
+                                    value: 0
+                                };
+                            }
+                        }
+                    }
+                    else {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y)
+                        };
+                        p.height = { value: sizeValue(model, channel_1.Y) };
+                    }
+                }
+                else if (model.fieldDef(channel_1.Y).bin) {
+                    if (model.has(channel_1.SIZE) && orient === config_1.Orient.HORIZONTAL) {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'mid' })
+                        };
+                        p.height = {
+                            scale: model.scaleName(channel_1.SIZE),
+                            field: model.field(channel_1.SIZE)
+                        };
+                    }
+                    else {
+                        p.y = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'start' })
+                        };
+                        p.y2 = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'end' }),
+                            offset: 1
+                        };
+                    }
+                }
+                else {
+                    if (model.has(channel_1.Y)) {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y)
+                        };
+                    }
+                    else {
+                        p.y2 = {
+                            field: { group: 'height' },
+                            offset: -1
+                        };
+                    }
+                    p.height = model.has(channel_1.SIZE) && orient === config_1.Orient.HORIZONTAL ? {
+                        scale: model.scaleName(channel_1.SIZE),
+                        field: model.field(channel_1.SIZE)
+                    } : {
+                        value: sizeValue(model, channel_1.Y)
+                    };
+                }
+                common_1.applyColorAndOpacity(p, model);
+                return p;
+            }
+            //leader.properties = properties;
+            leader.properties = properties;
+            function sizeValue(model, channel) {
+                var fieldDef = model.fieldDef(channel_1.SIZE);
+                if (fieldDef && fieldDef.value !== undefined) {
+                    return fieldDef.value;
+                }
+                var markConfig = model.config().mark;
+                if (markConfig.barSize) {
+                    return markConfig.barSize;
+                }
+                return model.isOrdinalScale(channel) ?
+                    model.scale(channel).bandSize - 1 :
+                    !model.has(channel) ?
+                        model.config().scale.bandSize - 1 :
+                        markConfig.barThinSize;
+            }
+            function labels(model) {
+                return undefined;
+            }
+            leader.labels = labels;
+        })(leader = exports.leader || (exports.leader = {}));
+
+    },{"../../channel":14,"../../config":47,"../../fielddef":52,"../../scale":56,"../common":16}],71:[function(require,module,exports){
+        "use strict";
+        var channel_1 = require('../../channel');
+        var config_1 = require('../../config');
+        var fielddef_1 = require('../../fielddef');
+        var scale_1 = require('../../scale');
+        var common_1 = require('../common');
+        var contour;
+        (function (contour) {
+            function markType() {
+                return 'rect';
+            }
+            contour.markType = markType;
+            function properties(model) {
+                var p = {};
+                var orient = model.config().mark.orient;
+                var stack = model.stack();
+                var xFieldDef = model.encoding().x;
+                var x2FieldDef = model.encoding().x2;
+                var xIsMeasure = fielddef_1.isMeasure(xFieldDef) || fielddef_1.isMeasure(x2FieldDef);
+                if (stack && channel_1.X === stack.fieldChannel) {
+                    p.x = {
+                        scale: model.scaleName(channel_1.X),
+                        field: model.field(channel_1.X, { suffix: 'start' })
+                    };
+                    p.x2 = {
+                        scale: model.scaleName(channel_1.X),
+                        field: model.field(channel_1.X, { suffix: 'end' })
+                    };
+                }
+                else if (xIsMeasure) {
+                    if (orient === config_1.Orient.HORIZONTAL) {
+                        if (model.has(channel_1.X)) {
+                            p.x = {
+                                scale: model.scaleName(channel_1.X),
+                                field: model.field(channel_1.X)
+                            };
+                        }
+                        else {
+                            p.x = {
+                                scale: model.scaleName(channel_1.X),
+                                value: 0
+                            };
+                        }
+                        if (model.has(channel_1.X2)) {
+                            p.x2 = {
+                                scale: model.scaleName(channel_1.X),
+                                field: model.field(channel_1.X2)
+                            };
+                        }
+                        else {
+                            if (model.scale(channel_1.X).type === scale_1.ScaleType.LOG) {
+                                p.x2 = { value: 0 };
+                            }
+                            else {
+                                p.x2 = {
+                                    scale: model.scaleName(channel_1.X),
+                                    value: 0
+                                };
+                            }
+                        }
+                    }
+                    else {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X)
+                        };
+                        p.width = { value: sizeValue(model, channel_1.X) };
+                    }
+                }
+                else if (model.fieldDef(channel_1.X).bin) {
+                    if (model.has(channel_1.SIZE) && orient !== config_1.Orient.HORIZONTAL) {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'mid' })
+                        };
+                        p.width = {
+                            scale: model.scaleName(channel_1.SIZE),
+                            field: model.field(channel_1.SIZE)
+                        };
+                    }
+                    else {
+                        p.x = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'start' }),
+                            offset: 1
+                        };
+                        p.x2 = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X, { binSuffix: 'end' })
+                        };
+                    }
+                }
+                else {
+                    if (model.has(channel_1.X)) {
+                        p.xc = {
+                            scale: model.scaleName(channel_1.X),
+                            field: model.field(channel_1.X)
+                        };
+                    }
+                    else {
+                        p.x = { value: 0, offset: 2 };
+                    }
+                    p.width = model.has(channel_1.SIZE) && orient !== config_1.Orient.HORIZONTAL ? {
+                        scale: model.scaleName(channel_1.SIZE),
+                        field: model.field(channel_1.SIZE)
+                    } : {
+                        value: sizeValue(model, (channel_1.X))
+                    };
+                }
+                var yFieldDef = model.encoding().y;
+                var y2FieldDef = model.encoding().y2;
+                var yIsMeasure = fielddef_1.isMeasure(yFieldDef) || fielddef_1.isMeasure(y2FieldDef);
+                if (stack && channel_1.Y === stack.fieldChannel) {
+                    p.y = {
+                        scale: model.scaleName(channel_1.Y),
+                        field: model.field(channel_1.Y, { suffix: 'start' })
+                    };
+                    p.y2 = {
+                        scale: model.scaleName(channel_1.Y),
+                        field: model.field(channel_1.Y, { suffix: 'end' })
+                    };
+                }
+                else if (yIsMeasure) {
+                    if (orient !== config_1.Orient.HORIZONTAL) {
+                        if (model.has(channel_1.Y)) {
+                            p.y = {
+                                scale: model.scaleName(channel_1.Y),
+                                field: model.field(channel_1.Y)
+                            };
+                        }
+                        else {
+                            p.y = {
+                                scale: model.scaleName(channel_1.Y),
+                                value: 0
+                            };
+                        }
+                        if (model.has(channel_1.Y2)) {
+                            p.y2 = {
+                                scale: model.scaleName(channel_1.Y),
+                                field: model.field(channel_1.Y2)
+                            };
+                        }
+                        else {
+                            if (model.scale(channel_1.Y).type === scale_1.ScaleType.LOG) {
+                                p.y2 = {
+                                    field: { group: 'height' }
+                                };
+                            }
+                            else {
+                                p.y2 = {
+                                    scale: model.scaleName(channel_1.Y),
+                                    value: 0
+                                };
+                            }
+                        }
+                    }
+                    else {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y)
+                        };
+                        p.height = { value: sizeValue(model, channel_1.Y) };
+                    }
+                }
+                else if (model.fieldDef(channel_1.Y).bin) {
+                    if (model.has(channel_1.SIZE) && orient === config_1.Orient.HORIZONTAL) {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'mid' })
+                        };
+                        p.height = {
+                            scale: model.scaleName(channel_1.SIZE),
+                            field: model.field(channel_1.SIZE)
+                        };
+                    }
+                    else {
+                        p.y = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'start' })
+                        };
+                        p.y2 = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y, { binSuffix: 'end' }),
+                            offset: 1
+                        };
+                    }
+                }
+                else {
+                    if (model.has(channel_1.Y)) {
+                        p.yc = {
+                            scale: model.scaleName(channel_1.Y),
+                            field: model.field(channel_1.Y)
+                        };
+                    }
+                    else {
+                        p.y2 = {
+                            field: { group: 'height' },
+                            offset: -1
+                        };
+                    }
+                    p.height = model.has(channel_1.SIZE) && orient === config_1.Orient.HORIZONTAL ? {
+                        scale: model.scaleName(channel_1.SIZE),
+                        field: model.field(channel_1.SIZE)
+                    } : {
+                        value: sizeValue(model, channel_1.Y)
+                    };
+                }
+                common_1.applyColorAndOpacity(p, model);
+                return p;
+            }
+            //boxplot.properties = properties;
+            contour.properties = properties;
+            function sizeValue(model, channel) {
+                var fieldDef = model.fieldDef(channel_1.SIZE);
+                if (fieldDef && fieldDef.value !== undefined) {
+                    return fieldDef.value;
+                }
+                var markConfig = model.config().mark;
+                if (markConfig.barSize) {
+                    return markConfig.barSize;
+                }
+                return model.isOrdinalScale(channel) ?
+                    model.scale(channel).bandSize - 1 :
+                    !model.has(channel) ?
+                        model.config().scale.bandSize - 1 :
+                        markConfig.barThinSize;
+            }
+            function labels(model) {
+                return undefined;
+            }
+            contour.labels = labels;
+        })(contour = exports.contour || (exports.contour = {}));
 
     },{"../../channel":14,"../../config":47,"../../fielddef":52,"../../scale":56,"../common":16}],67:[function(require,module,exports){
 "use strict";
