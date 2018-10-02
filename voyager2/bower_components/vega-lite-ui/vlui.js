@@ -5605,16 +5605,7 @@
                                     .attr("cy",0)
                                     .attr('r',3);
                                 // draw y axis
-                                /*svg.append("g")
-                  .attr("class", "y axis")
-                  .call(yAxis)
-                  .selectAll("text")
-                  .attr("y", -20)
-                  .attr("x", 0)
-                  .style("font-size",'11px')
-                  .style("font-weight",'bold')
-                  .attr("transform", "rotate(-90)")
-                  .style("text-anchor", "middle");*/
+
                                 // draw x axis
                                 svg.append("g")
                                     .attr("class", "x axis")
@@ -5639,7 +5630,7 @@
                                         boxplotdiv = plotor.append('div')
                                             .attr('class','vega')
                                             .style('position','relative');
-                                    boxplotdiv.selectAll('svg').remove();
+                                    boxplotdiv.selectAll('*').remove();
 
                                     // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
                                     var labels = true; // show the text labels beside individual boxplots?
@@ -5693,7 +5684,7 @@
                                         .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
                                         .range(["grey", "steelblue"])
                                         .interpolate(d3.interpolateHcl);*/
-                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("grey", "steelblue"))
+                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("steelblue", "tomato"))
                                             .domain(d3v4.extent(scag.bins.map(function(b) {return b.length})));
 
                                     var bins = g.append("g")
@@ -5736,17 +5727,7 @@
                                         .text(spec.marks[0].axes[0].title)
                                         .attr("transform", "translate("+ (width/2) +","+21+")")
                                         .style("font-weight",'bold' );
-                                        /*var drawTriangle = function (triangle) {
 
-                                            triangle.attr("d", function(d){return  "M" + d.map(function(p) {return [scaleX(p[0]), scaleY(p[1])]}).join("L") + "Z"});
-                                        };
-                                        var triangulations = g.append("g")
-                                            .attr("class", "triangles")
-                                            .selectAll("path")
-                                            .data(scag.triangleCoordinates)
-                                            .enter()
-                                            .append("path")
-                                            .call(drawTriangle);*/
 
 
                                     Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
@@ -5763,7 +5744,7 @@
                                         boxplotdiv = plotor.append('div')
                                             .attr('class','vega')
                                             .style('position','relative');
-                                    boxplotdiv.selectAll('svg').remove();
+                                    boxplotdiv.selectAll('*').remove();
 
                                     // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
                                     //var labels = true; // show the text labels beside individual boxplots?
@@ -5793,12 +5774,7 @@
                                     svg_d3 = boxplotdiv.selectAll('svg');
                                     var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
                                     var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
-                                    //console.log("myevent");
-                                    //console.log(data[0].stats);
 
-                                    //check min max
-                                    //console.log(fieldset);
-                                    //console.log(points);
                                     try{
                                         var dataPointRadius = 4;
                                         var scag = scagnostics(points, 'leader');
@@ -5885,153 +5861,89 @@
                                         boxplotdiv = plotor.append('div')
                                             .attr('class','vega')
                                             .style('position','relative');
-                                    boxplotdiv.selectAll('svg').remove();
+                                    boxplotdiv.selectAll('*').remove();
 
                                     // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
-                                    var labels = true; // show the text labels beside individual boxplots?
+                                    //var labels = true; // show the text labels beside individual boxplots?
                                     // my zone \(=o=)\
-                                    var margin = {top: 5, right: 20, bottom: 50, left: 20};
-                                    var titleOffset = spec.marks[0].axes[0].titleOffset||30;
-                                    margin.bottom += (titleOffset==30?30:0);
-                                    var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
+
+                                    var  width = $(boxplotdiv[0]).width() ;
                                     //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
-                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
-                                    // old_canvas.remove();
-                                    var min = Infinity,
-                                        max = -Infinity;
-                                    var svg = boxplotdiv.append('svg')
-                                        .attr("width",width + margin.left + margin.right)
-                                        .attr("height",height + margin.top + margin.bottom)
-                                        .attr("class", "boxplot")
-                                        .append("g")
-                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-                                    svg_d3 = boxplotdiv.selectAll('svg');
+                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) -$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true) ;//||width/3;
+                                    var scalem = Math.min(width,height);
+                                    width = scalem;
+                                    height = scalem;
+
+                                    //draw
+                                    boxplotdiv.append('div')
+                                        .style("width",width+'px' )
+                                        .style("height",height +'px')
+                                        .attr("class", "contour-graph")
+                                        .attr("id", "contour"+scope.visId);
+
                                     var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
-                                    var data = fieldset.map(function(d){
-                                        return Dataset.schema.fieldSchema(d);
-                                    });
-                                    //console.log("myevent");
-                                    //console.log(data[0].stats);
-                                    var formatNum = function(n){
-                                        return (!isNaN(parseFloat(n)) ? parseFloat(n):n.length);
-                                    };
-                                    //check min max
-                                    data.forEach(function(it){
-                                        min = it.stats.min<min?it.stats.min:min;
-                                        max = it.stats.max>max?it.stats.max:max;
-                                        var  q1 = it.stats.q1,
-                                            q3 = it.stats.q3,
-                                            iqr = (q3-q1)*1.5,
-                                            unique = Object.keys(it.stats.unique),
-                                            i = -1,
-                                            j = unique.length;
-                                        unique.sort(function(a,b){return formatNum(a)-formatNum(b)});
-                                        while (formatNum(unique[++i]) < q1 - iqr);
-                                        while (formatNum(unique[--j]) > q3 + iqr);
-                                        it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
-                                        it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);
-                                    });
+                                    var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
+                                    var scag = scagnostics(points, 'leader');
+                                    try{
+                                        var plotType = 'contour';
 
-                                    // the y-axis
-                                    var y = d3.scale.ordinal()
-                                        .domain( data.map(function(d) { return d.field } ) )
-                                        .rangeRoundBands([height,0]);
+                                        var plotMargins = {
+                                            l: 20,
+                                            r: 10,
+                                            t: 10,
+                                            b: 20,
+                                            pad: 0,
+                                            autoexpand: false
+                                        };
 
+                                        var contourData = [{
+                                            x: [],
+                                            y: [],
+                                            z: [],
+                                            type: plotType,
+                                            showscale: true,
+                                            colorscale: 'Jet',
+                                            line: {
+                                                smoothing: 0.5,
+                                                color: 'rgba(0, 0, 0,0)'
+                                            },
+                                            colorbar: {
+                                                tickfont: {
+                                                    color: 'white'
+                                                }
+                                            },
+                                            connectgaps: true,
+                                        }];
 
-                                    // the x-axis
-                                    var x = d3.scale.linear()
-                                        .domain([min, max])
-                                        .range([0,width]);
+                                        scag.bins.forEach(function(d){
+                                            contourData[0].x.push(d.x);
+                                            contourData[0].y.push(d.y);
+                                            contourData[0].z.push(d.length);
+                                        });
+                                        var contourLayout = {
+                                            paper_bgcolor: 'rgba(0,0,0,0)',
+                                            plot_bgcolor: 'rgba(0,0,0,0)',
+                                            margin: plotMargins,
+                                            font: {
+                                                size: 11,
+                                            },
+                                            yaxis:{
+                                                title: fieldset[1],
+                                                ticks:'',
+                                                showticklabels: false,
+                                            },
+                                            xaxis:{
+                                                title: fieldset[0],
+                                                ticks:'',
+                                                showticklabels: false,
+                                            },
+                                        };
+                                        Plotly.newPlot('contour' + scope.visId, contourData, contourLayout,{displayModeBar: spec.displayModeBar});
 
-                                    var xAxis = d3.svg.axis()
-                                        .scale(x)
-                                        .orient("bottom");
-                                    if (!spec.marks[0].axes[0].ticks)
-                                        xAxis.ticks(0);
-                                    var yAxis = d3.svg.axis()
-                                        .scale(y)
-                                        .orient("left");
-
-                                    // calculate outliner base on 1.5 q3-q1
-                                    //var outliner = d.stats.unique ;
-                                    // draw box
-                                    var boxs = svg.selectAll('.boxplot')
-                                        .data(data)
-                                        .enter().append('g')
-                                        .attr("transform", function(d) { return "translate(" +  0  + "," +  (y(d.field))+ ")"; } );
-
-                                    boxs.append('line')
-                                        .attr('class','center')
-                                        .attr('y1',function(d){return y.rangeBand(d.field)/2})
-                                        .attr('x1',function(d){return x(d.stats.q1iqr)})
-                                        .attr('y2',function(d){return y.rangeBand(d.field)/2})
-                                        .attr('x2',function(d){return x(d.stats.q3iqr)})
-                                        .style('opacity',1);
-                                    boxs.append('rect')
-                                        .attr('class','box_quan')
-                                        .attr('y',function(d){return 0})
-                                        .attr('x',function(d){return x(d.stats.q1)})
-                                        .attr('height',function(d){return y.rangeBand(d.field)})
-                                        .attr('width',function(d){return Math.abs(x(d.stats.q1)-x(d.stats.q3))});
-                                    boxs.append('line')
-                                        .attr('class','median')
-                                        .attr('y1',function(d){return 0})
-                                        .attr('x1',function(d){return x(d.stats.median)})
-                                        .attr('y2',function(d){return y.rangeBand(d.field)})
-                                        .attr('x2',function(d){return x(d.stats.median)})
-                                        .style('opacity',1);
-                                    boxs.append('line')
-                                        .attr('class','whisker')
-                                        .attr('y1',function(d){return y.rangeBand(d.field)/4})
-                                        .attr('x1',function(d){return x(d.stats.q1iqr)})
-                                        .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
-                                        .attr('x2',function(d){return x(d.stats.q1iqr)})
-                                        .style('opacity',1);
-                                    boxs.append('line')
-                                        .attr('class','whisker')
-                                        .attr('y1',function(d){return y.rangeBand(d.field)/4})
-                                        .attr('x1',function(d){return x(d.stats.q3iqr)})
-                                        .attr('y2',function(d){return y.rangeBand(d.field)*3/4})
-                                        .attr('x2',function(d){return x(d.stats.q3iqr)})
-                                        .style('opacity',1);
-                                    // outliers
-
-                                    boxs.append('g')
-                                        .attr('class','outliers')
-                                        .attr("transform", function(d) { return "translate(" +  0  + "," +  y.rangeBand(d.field)/2+ ")"; })
-                                        .selectAll(".circle")
-                                        .data(function(d) {return Object.keys(d.stats.unique)
-                                            .filter(function(it){return it<(d.stats.q1iqr)||it>d.stats.q3iqr})})
-                                        .enter()
-                                        .append("circle")
-                                        .attr("cx", function(d) {return x(d)})
-                                        .attr("cy",0)
-                                        .attr('r',3);
-                                    // draw y axis
-                                    /*svg.append("g")
-                      .attr("class", "y axis")
-                      .call(yAxis)
-                      .selectAll("text")
-                      .attr("y", -20)
-                      .attr("x", 0)
-                      .style("font-size",'11px')
-                      .style("font-weight",'bold')
-                      .attr("transform", "rotate(-90)")
-                      .style("text-anchor", "middle");*/
-                                    // draw x axis
-                                    svg.append("g")
-                                        .attr("class", "x axis")
-                                        .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
-                                        .call(xAxis)
-                                        .append('text')
-                                        .attr("text-anchor", "middle")
-                                        .text(spec.marks[0].axes[0].title)
-                                        .style("font-weight",'bold' )
-                                        .attr("transform", "translate("+ (width/2) +","+titleOffset+")");
-                                    Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
-                                        list: scope.listTitle
-                                    });
-                                    rescaleIfEnable();
+                                        Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                                            list: scope.listTitle
+                                        });
+                                        rescaleIfEnable();}catch(e){}
                                     renderQueueNextPromise = $timeout(renderQueueNext, 1);
                                     return;
                                 default: vg.parse.spec(spec, function(error, chart) {

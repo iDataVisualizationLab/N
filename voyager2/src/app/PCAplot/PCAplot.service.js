@@ -33,6 +33,13 @@ angular.module('pcagnosticsviz')
             dim: null,
             dataref:null,
         };
+        var support =[{
+            types : ['PCA1','PCA2', 'skewness', 'outlier'],
+        marks : ['tick','area','bar','boxplot'],
+        }, {
+            types : ['outlyingScore','skewedScore','sparseScore','clumpyScore','striatedScore','convexScore','skinnyScore','stringyScore','monotonicScore'],
+            marks :['point','hexagon','leader','contour'],
+        }];
         //PCAplot.updateplot = function (data){};
         PCAplot.plot =function(dataor,dimension) {
             if (!Object.keys(Config.data).length){return PCAplot;}
@@ -633,8 +640,7 @@ angular.module('pcagnosticsviz')
         PCAplot.estimate = function(PCAresult,dim,dataref) {
             // choose main axis
             if (dim==0) {
-                PCAplot.types = ['PCA1','PCA2', 'skewness', 'outlier'];
-                PCAplot.marks = ['tick','area','bar','boxplot',];
+
                 PCAplot.charts.length=0;
                 Dataset.schema.fieldSchemas.forEach(function (d) {
                     var pca = PCAresult.find(function (it) {
@@ -679,27 +685,19 @@ angular.module('pcagnosticsviz')
                 var object1 = Dataset.schema.fieldSchema(pca1_max);
                 var object2 = Dataset.schema.fieldSchema(pca2_max);
 
-
-                //var pca1_maxd = [pca1_max, 'bar'];
-                //var pca2_maxd = [pca1_max, 'box'];
-                // update to guideplot
-                // console.log(object1);
-                //PCAplot.axismain =  [object1,object2,object3];
                 drawGuideplot(object1, 'PCA1');
                 drawGuideplot(object2, 'PCA2');
                 drawGuideplot(mostskew, 'skewness');
                 drawGuideplot(mostoutlie, 'outlier');
             }
             else {
-                PCAplot.types = PCAresult.map(function(d){return d.brand});
-                PCAplot.marks = ['point','hexagon','leader','contour'];
                 PCAplot.charts.length=0;
                 PCAplot.dataref = dataref.map(function(d){
                     return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
                         scag: d,};
                     });
                 var objects = {};
-                PCAresult.forEach(function(brand){
+                var tops = PCAresult.map(function(brand){
                     var type = brand.brand;
                     var topitem = dataref.sort(function (a,b){
                         return a[type]<b[type]?1:-1;
@@ -710,9 +708,18 @@ angular.module('pcagnosticsviz')
                             type: type,
                             fieldDefs:[Dataset.schema.fieldSchema(topitem[0]),Dataset.schema.fieldSchema(topitem[1])],};
                         objects[topitem[0]][topitem[1]] = newobs;
-                        drawGuideplot(newobs.fieldDefs, type,PCAplot.dataref);
+                        return {fields: newobs.fieldDefs,
+                            type: type,
+                            dataref: PCAplot.dataref,
+                        score: dataref[0][type]};
                     }
                 });
+                tops.sort(function(a,b){
+                    return a.score<b.score?1:-1;
+                });
+                console.log(tops.length>4?4:tops.length);
+                for (var d = 0; d < (tops.length>4?4:tops.length); d++)
+                    drawGuideplot(tops[d].fields, tops[d].type,PCAplot.dataref);
 
 
             }
@@ -745,14 +752,16 @@ angular.module('pcagnosticsviz')
             PCAplot.chart.prop = {
                 mspec:spec,
                 type: type,
-                mark: type2mark(type),
+                mark: spec.mark,
                 ranking: getranking(type),
-                plot: drawGuideexplore
-            };
+                plot: drawGuideexplore,
+                dim: PCAplot.dim,            };
 
             PCAplot.chart.guideon = function(prop){
                 //console.log(prop);
                 //prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
+                PCAplot.types =  support[PCAplot.dim].types;
+                PCAplot.marks = support[PCAplot.dim].marks;
                 prop.charts = dataref.sort(prop.ranking)
                     .map(function(d){return prop.plot((d.fieldDefs||d ),prop.mark,prop.mspec) });
                 prop.previewcharts = prop.charts.map(function (d) {
@@ -770,6 +779,9 @@ angular.module('pcagnosticsviz')
                         },
                         overlay: {line: true},
                         scale: {useRawDomain: true}
+                    };
+                    thum.vlSpec.model ={
+                        displayModeBar: false,
                     };
                     return thum;});
                 prop.pos = 0;
@@ -792,9 +804,11 @@ angular.module('pcagnosticsviz')
         }
 
         PCAplot.updateSpec = function(prop){
-            var nprop = prop = _.cloneDeep(prop);
+            PCAplot.types =  support[prop.dim].types;
+            PCAplot.marks = support[prop.dim].marks;
+            var nprop = _.cloneDeep(prop);
             nprop.ranking = getranking(prop.type);
-            mark2plot (prop.mark,nprop.mspec,Dataset.schema.fieldSchemas.slice(0,PCAplot.dim+1));
+            mark2plot (prop.mark,nprop.mspec,Dataset.schema.fieldSchemas.slice(0,prop.dim+1));
             /*switch (prop.mark) {
                 case 'bar': barplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
                 case 'tick': dashplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
@@ -802,10 +816,10 @@ angular.module('pcagnosticsviz')
                 case 'boxplot': boxplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
             }*/
             nprop.charts.length = 0;
-            var dataref = PCAplot.dim?PCAplot.dataref:Dataset.schema.fieldSchemas;
+            var dataref = nprop.dim?PCAplot.dataref:Dataset.schema.fieldSchemas;
             nprop.charts = dataref.sort(nprop.ranking)
                 .map(function(d) {return drawGuideexplore((d.fieldDefs||d),nprop.mark,nprop.mspec) });
-            while (nprop[nprop.length-1])
+            //while (nprop[nprop.length-1])
             nprop.previewcharts = nprop.charts.map(function(d) {
                 var thum =_.cloneDeep(d);
                 thum.vlSpec.config = {
@@ -822,21 +836,32 @@ angular.module('pcagnosticsviz')
                     overlay: {line: true},
                     scale: {useRawDomain: true}
                 };
+                thum.vlSpec.model ={
+                    displayModeBar: false,
+                };
                 return thum;});
             nprop.pos = 0;
             PCAplot.updateguide(nprop);
         };
-
+        var ran = 0;
         function type2mark (type){
-            console.log(type);
             switch (type) {
                 case 'PCA1': return 'tick';
                 case 'outlier': return 'boxplot';
                 case 'PCA2': return 'area';
                 case 'skewness': return 'bar';
-                case 'outlyingScore': return 'hexagon';
-                case 'spaseScore': return 'leader';
-                case 'convexScore': return 'contour';
+
+                case 'outlyingScore':
+                case 'spaseScore':
+                case 'convexScore':
+                case 'skewedScore':
+                case 'clumpyScore':
+                case 'striatedScore':
+                case 'skinnyScore':
+                case 'stringyScore':
+                case 'monotonicScore':
+                    ran = ran>2?0:(ran+1);
+                    return support[1].marks[ran];
                 //case 'outlying SC'
                 default: return 'point';
             }
@@ -1047,6 +1072,7 @@ angular.module('pcagnosticsviz')
         PCAplot.updateguide= function(prop) {
             prop = _.cloneDeep(prop || PCAplot.prop);
             prop.mspec.config={};
+            delete prop.mspec.model;
             PCAplot.prop = prop;
         };
 
