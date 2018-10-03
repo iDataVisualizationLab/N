@@ -13,9 +13,7 @@
             <a class="command" ng-click="chron.redo()" ng-class="{disabled: !canRedo}"><i class="fa fa-repeat"></i> Redo</a>
           </div>
         </div>
-        <div class="absolute-top-right">
-          <a href="http://www.myweb.ttu.edu/tnhondan/iDVL/" target="_blank" class="iDVL-logo"></a>
-        </div>
+
       </div>
     </div>
     <alert-messages></alert-messages>
@@ -40,6 +38,7 @@
                   ng-if="PCAplot.chart"
                   class="main-vl-plot-group card no-shrink guideplot"
                   ng-repeat="chart in PCAplot.charts"
+                  ng-class="{square: PCAplot.dim}"
                   ng-dblclick="chart.guideon(chart.prop)"
                   chart="chart"
                   show-bookmark="false"
@@ -54,7 +53,7 @@
                   show-label="false"
                   tooltip="true"
                   toggle-shelf="false"
-                  style ={max-height:80px}
+
           ></vl-plot-group>
           <div class=" hflex full-width">
             <h3>Fields</h3>

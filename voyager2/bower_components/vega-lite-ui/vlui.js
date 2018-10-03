@@ -5482,7 +5482,7 @@
                                     boxplotdiv = plotor.append('div')
                                         .attr('class','vega')
                                         .style('position','relative');
-                                boxplotdiv.selectAll('svg').remove();
+                                boxplotdiv.selectAll('*').remove();
 
                                 // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
                                 var labels = true; // show the text labels beside individual boxplots?
@@ -5504,10 +5504,13 @@
                                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                                 svg_d3 = boxplotdiv.selectAll('svg');
                                 var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
-                                var data = fieldset.map(function(d){
-                                    return Dataset.schema.fieldSchema(d);
+                                var data =[];
+                                fieldset.forEach(function(d){
+                                    var current = Dataset.schema.fieldSchema(d);
+                                    if (current!= undefined)
+                                        data.push(current);
                                 });
-                                //console.log("myevent");
+                                // console.log(data);
                                 //console.log(data[0].stats);
                                 var formatNum = function(n){
                                     return (!isNaN(parseFloat(n)) ? parseFloat(n):n.length);
@@ -5684,7 +5687,7 @@
                                         .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
                                         .range(["grey", "steelblue"])
                                         .interpolate(d3.interpolateHcl);*/
-                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("steelblue", "tomato"))
+                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("white","steelblue"))
                                             .domain(d3v4.extent(scag.bins.map(function(b) {return b.length})));
 
                                     var bins = g.append("g")
@@ -5776,7 +5779,7 @@
                                     var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
 
                                     try{
-                                        var dataPointRadius = 4;
+                                        var dataPointRadius = 2;
                                         var scag = scagnostics(points, 'leader');
                                         //console.log(scag.bins);
                                         // the y-axis
@@ -5869,14 +5872,17 @@
 
                                     var  width = $(boxplotdiv[0]).width() ;
                                     //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
-                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) -$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true) ;//||width/3;
+                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)
+                                        ||(parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)
+                                        -parseInt($(boxplotdiv[0]).parent().parent().parent() .parent().css('margin-top'),10)
+                                        -parseInt($(boxplotdiv[0]).parent().parent().parent() .parent().css('margin-bottom'),10))) -$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true)||0 ;//||width/3;
                                     var scalem = Math.min(width,height);
                                     width = scalem;
-                                    height = scalem;
+                                    //height = scalem;
 
                                     //draw
                                     boxplotdiv.append('div')
-                                        .style("width",width+'px' )
+                                        //.style("width",width+'px' )
                                         .style("height",height +'px')
                                         .attr("class", "contour-graph")
                                         .attr("id", "contour"+scope.visId);
@@ -5884,12 +5890,14 @@
                                     var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
                                     var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
                                     var scag = scagnostics(points, 'leader');
+                                    var config = scope.chart.vlSpec.config;
+                                    var small = (config.colorbar != undefined?config.colorbar:true);
                                     try{
                                         var plotType = 'contour';
 
                                         var plotMargins = {
                                             l: 20,
-                                            r: 10,
+                                            r: (config.colorbar == undefined)?80:5,
                                             t: 10,
                                             b: 20,
                                             pad: 0,
@@ -5901,19 +5909,22 @@
                                             y: [],
                                             z: [],
                                             type: plotType,
-                                            showscale: true,
-                                            colorscale: 'Jet',
+                                            colorscale: [[0, 'rgb(255,255,255)'], [1, 'steelblue']],
                                             line: {
                                                 smoothing: 0.5,
                                                 color: 'rgba(0, 0, 0,0)'
                                             },
-                                            colorbar: {
-                                                tickfont: {
-                                                    color: 'white'
-                                                }
-                                            },
                                             connectgaps: true,
+                                            showscale: small,
+                                            colorbar: {
+                                                thickness: 10,
+                                                thicknessmode: 'pixels',
+                                                len: 0.9,
+                                                lenmode: 'fraction',
+                                                outlinewidth: 0
+                                            }
                                         }];
+                                       //if (scope.chart.vlSpec.config.colorbar)
 
                                         scag.bins.forEach(function(d){
                                             contourData[0].x.push(d.x);
@@ -5928,17 +5939,17 @@
                                                 size: 11,
                                             },
                                             yaxis:{
-                                                title: fieldset[1],
+                                                title: "<b>"+fieldset[1]+"<b>",
                                                 ticks:'',
                                                 showticklabels: false,
                                             },
                                             xaxis:{
-                                                title: fieldset[0],
+                                                title: "<b>"+fieldset[0]+"<b>",
                                                 ticks:'',
                                                 showticklabels: false,
-                                            },
+                                            }
                                         };
-                                        Plotly.newPlot('contour' + scope.visId, contourData, contourLayout,{displayModeBar: spec.displayModeBar});
+                                        Plotly.newPlot('contour' + scope.visId, contourData, contourLayout,{displayModeBar: (config.displayModeBar == undefined),staticPlot: (config.staticPlot != undefined)});
 
                                         Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
                                             list: scope.listTitle

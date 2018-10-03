@@ -601,7 +601,7 @@ angular.module('pcagnosticsviz')
         }
 
         //if (PCAplot.mainfield != fields[0]){
-         if (PCAplot.dim != dim){
+         if (PCAplot.dim != dim && dim <2){
           PCAplot.firstrun = true;
           //PCAplot.mainfield = fields[0];
              PCAplot.dim = dim;

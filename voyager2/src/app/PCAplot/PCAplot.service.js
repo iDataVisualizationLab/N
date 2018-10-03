@@ -641,7 +641,6 @@ angular.module('pcagnosticsviz')
         PCAplot.estimate = function(PCAresult,dim,dataref) {
             // choose main axis
             if (dim==0) {
-
                 PCAplot.charts.length=0;
                 Dataset.schema.fieldSchemas.forEach(function (d) {
                     var pca = PCAresult.find(function (it) {
@@ -693,6 +692,8 @@ angular.module('pcagnosticsviz')
             }
             else {
                 PCAplot.charts.length=0;
+
+
                 PCAplot.dataref = dataref.map(function(d){
                     return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
                         scag: d,};
@@ -718,7 +719,7 @@ angular.module('pcagnosticsviz')
                 tops.sort(function(a,b){
                     return a.score<b.score?1:-1;
                 });
-                console.log(tops.length>4?4:tops.length);
+                //console.log(tops.length>4?4:tops.length);
                 for (var d = 0; d < (tops.length>4?4:tops.length); d++)
                     drawGuideplot(tops[d].fields, tops[d].type,PCAplot.dataref);
 
@@ -733,8 +734,8 @@ angular.module('pcagnosticsviz')
             //spec.data = Dataset.dataset;
             spec.config = {
                 cell: {
-                    width: 200,
-                    height: 30,
+                    width: PCAplot.dim?100:200,
+                    height: PCAplot.dim?100:30,
                 },
                 axis: {
                     grid: false,
@@ -750,13 +751,16 @@ angular.module('pcagnosticsviz')
             PCAplot.query = output.query;
             var topItem = output.result.getTopSpecQueryModel();
             PCAplot.chart = Chart.getChart(topItem);
+            PCAplot.chart.vlSpec.config.displayModeBar = false;
+            PCAplot.chart.vlSpec.config.colorbar = false;
+            PCAplot.chart.vlSpec.config.staticPlot= true;
             PCAplot.chart.prop = {
                 mspec:spec,
                 type: type,
                 mark: spec.mark,
                 ranking: getranking(type),
                 plot: drawGuideexplore,
-                dim: PCAplot.dim,            };
+                dim: PCAplot.dim,};
 
             PCAplot.chart.guideon = function(prop){
                 //console.log(prop);
@@ -770,7 +774,7 @@ angular.module('pcagnosticsviz')
                     thum.vlSpec.config = {
                         cell: {
                             width: 100,
-                            height: 30
+                            height: prop.dim?100:30
                         },
                         axis: {
                             grid: false,
@@ -779,13 +783,13 @@ angular.module('pcagnosticsviz')
                             titleOffset: 20
                         },
                         overlay: {line: true},
-                        scale: {useRawDomain: true}
-                    };
-                    thum.vlSpec.model ={
+                        scale: {useRawDomain: true},
                         displayModeBar: false,
+                        colorbar: false
                     };
                     return thum;});
                 prop.pos = 0;
+                PCAplot.limit = 10;
                 PCAplot.updateguide(prop);
             };
             PCAplot.charts.push(PCAplot.chart);
@@ -810,12 +814,6 @@ angular.module('pcagnosticsviz')
             var nprop = _.cloneDeep(prop);
             nprop.ranking = getranking(prop.type);
             mark2plot (prop.mark,nprop.mspec,Dataset.schema.fieldSchemas.slice(0,prop.dim+1));
-            /*switch (prop.mark) {
-                case 'bar': barplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
-                case 'tick': dashplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
-                case 'area': areaplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
-                case 'boxplot': boxplot(nprop.mspec, Dataset.schema.fieldSchemas[0]); break;
-            }*/
             nprop.charts.length = 0;
             var dataref = nprop.dim?PCAplot.dataref:Dataset.schema.fieldSchemas;
             nprop.charts = dataref.sort(nprop.ranking)
@@ -826,7 +824,7 @@ angular.module('pcagnosticsviz')
                 thum.vlSpec.config = {
                     cell: {
                         width: 100,
-                        height: 30
+                        height: nprop.dim?100:30
                     },
                     axis: {
                         grid: false,
@@ -835,11 +833,11 @@ angular.module('pcagnosticsviz')
                         titleOffset: 20
                     },
                     overlay: {line: true},
-                    scale: {useRawDomain: true}
-                };
-                thum.vlSpec.model ={
+                    scale: {useRawDomain: true},
                     displayModeBar: false,
+                    colorbar: false,
                 };
+
                 return thum;});
             nprop.pos = 0;
             PCAplot.updateguide(nprop);
@@ -861,8 +859,9 @@ angular.module('pcagnosticsviz')
                 case 'skinnyScore':
                 case 'stringyScore':
                 case 'monotonicScore':
+                    var mark = support[1].marks[ran];
                     ran = ran>2?0:(ran+1);
-                    return support[1].marks[ran];
+                    return mark;
                 //case 'outlying SC'
                 default: return 'point';
             }
@@ -1073,7 +1072,7 @@ angular.module('pcagnosticsviz')
         PCAplot.updateguide= function(prop) {
             prop = _.cloneDeep(prop || PCAplot.prop);
             prop.mspec.config={};
-            delete prop.mspec.model;
+            // delete prop.mspec.model;
             PCAplot.prop = prop;
         };
 

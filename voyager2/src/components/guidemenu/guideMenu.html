@@ -15,7 +15,8 @@
         <div class="scroll-y">
             <vl-plot-group
                     ng-if="prop.previewcharts"
-                    class="main-vl-plot-group card menuitem"
+                    class="main-vl-plot-group card guideplot"
+                    ng-class="{'square':prop.dim}"
                     ng-repeat="chart in prop.previewcharts| limitTo: limit"
                     ng-click="previewSlider($index)"
                     chart="chart"

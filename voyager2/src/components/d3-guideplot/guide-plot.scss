@@ -4,10 +4,16 @@
 }
 
 .guideplot {
+    max-height:70px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
+.guideplot.square {
+    max-height:140px;
+    height:140px;
+}
+
 .gplot {
     background-color: white;
     //min-width:250px;
