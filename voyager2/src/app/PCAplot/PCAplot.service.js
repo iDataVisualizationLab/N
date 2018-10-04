@@ -68,8 +68,8 @@ angular.module('pcagnosticsviz')
                 var subgSize = {
                     w:(40-submarign.left - submarign.right),
                     h:(40- submarign.top - submarign.bottom),};
-                var subx = d3.scale.linear().range([submarign.left,subgSize.w+submarign.left]).domain([0,1]).nice(); // switch to match how R biplot shows it
-                var suby = d3.scale.linear().range([subgSize.h+submarign.top, submarign.top]).domain([0,1]).nice();
+                var subx = d3.scale.linear().range([submarign.left,subgSize.w+submarign.left]).domain([0,1]); // switch to match how R biplot shows it
+                var suby = d3.scale.linear().range([submarign.top+subgSize.h, submarign.top]).domain([0,1]);
 
                 var svg_main = d3.select("#bi-plot")
                     .attr("width", width + margin.left + margin.right)
@@ -99,17 +99,19 @@ angular.module('pcagnosticsviz')
                     var newdata=[];
                     data.forEach(function(d){
                         for (var e in d[d.field]) {
+                            if (d[d.field][e].invalid!=1){
                             idlabel.push([d.field,e]);
-                            newdata.push(d[d.field][e]);
+                            newdata.push(d[d.field][e]);}
                         }
                     });
-
-                    data = newdata; // for overview 2D
+                    idlabel
+                    data = newdata.filter(function(d){return !d.invalid}); // for overview 2D
                     // idlabel = Object.keys(data);
                     //brand_names = Object.keys(data[idlabel[0]]);
                     brand_names = Object.keys(data[0]);
                     // data = d3.values(data);
                     matrix = data.map(function(d) {return d3.values(d)});
+                    //console.log(data);
                 }
 
 
@@ -131,12 +133,16 @@ angular.module('pcagnosticsviz')
                 var dataref = null;
                 if (dimension ==1) {
                     data.forEach(function(d,i){d.label = idlabel[i]});
-                    dataref = data;
+                    dataref = _.cloneDeep(data);
                     data = brand_names.map(function(d){
-                        return data.sort(function(a,b){
+                        var top =data.sort(function(a,b){
                             return a[d]<b[d]?1:-1;
                         })[0];
-                    });
+                        if (top[d]>0.65) {
+                            top.feature = d;
+                            return top;
+                        }
+                    }).filter(function (d){return d!=undefined;});
                 }
                 var maxxy = [-Infinity,-Infinity];
                 var minxy = [Infinity,Infinity];
@@ -225,6 +231,12 @@ angular.module('pcagnosticsviz')
                 };
 
 // draw line from the brand axis a perpendicular to each attribute b
+                var legendtop = svg.selectAll('.legendtop').data([''])
+                    .enter().append('text')
+                    .text(function(d){return d})
+                    .attr('text-anchor', 'end')
+                    .attr('y',height+margin.bottom/2)
+                    .attr('x',width);
                 var onMouseOverBrand = function(b,j) {
 
                     data.forEach(function(a, idx) {
@@ -256,7 +268,7 @@ angular.module('pcagnosticsviz')
                         .attr('r',5)
                         .style("fill", function(d) { return "#ff6f2b"})
                         .style("fill-opacity", 0.1);
-
+                    legendtop.data([b.brand]).text(function(d){return d;});
                     /*var tipText = data.map(function(d) {
                         return {key: d[brand_names[0]], value: d[b['brand']] }
                     });*/
@@ -272,6 +284,7 @@ angular.module('pcagnosticsviz')
                     svg.selectAll('.tracer').remove();
                     svg.selectAll('.tracer-c').remove();
                     tip.hide();
+                    legendtop.data(['']).text(function(d){return d;});
                 };
                 if (dimension===0) {
                     g_point.selectAll(".subgraph").remove();
@@ -324,7 +337,9 @@ angular.module('pcagnosticsviz')
                     subinside.append("rect")
                         .attr("class","backgroundSub")
                         .attr("width",subgSize.w+submarign.left + submarign.right)
-                        .attr("height",subgSize.h+submarign.top + submarign.bottom);
+                        .attr("height",subgSize.h+submarign.top + submarign.bottom)
+                        .attr("x",0)
+                        .attr("y",0);
                     var subpoint = subplot.selectAll(".point")
                         .data(function(d){
                             //var datapoint = Dataset.data.map(function(it){return [it[PCAplot.mainfield],it[d.label]]});
@@ -358,7 +373,9 @@ angular.module('pcagnosticsviz')
                         })
                         .style("fill", function (d) {
                             return '#161616';
-                        });
+                        })
+
+                        .style('opacity',0.5);
                 }
 
                 var circlebrand = g_axis.selectAll(".circle_brand")
@@ -545,25 +562,98 @@ angular.module('pcagnosticsviz')
 
                         return str;
                     });
-                //dragHandler(svg.selectAll(".line"));
                 svg.call(tip);
+                g_axis.selectAll('.place-label').remove();
+                if(PCAplot.dim) {
+                    var axis = g_axis.node();
+                    axis.parentNode.appendChild(axis);
 
+                    var arrangeLabels = function () {
+                        var move = 1;
+                        while (move > 0) {
+                            move = 0;
+                            g_axis.selectAll(".place-label")
+                                .each(function () {
+                                    var that = this,
+                                        a = this.getBoundingClientRect();
+                                    g_axis.selectAll(".place-label")
+                                        .each(function () {
+                                            if (this != that) {
+                                                var b = this.getBoundingClientRect();
+                                                if ((Math.abs(a.left - b.left) * 2 < (a.width + b.width)) &&
+                                                    (Math.abs(a.top - b.top) * 2 < (a.height + b.height))) {
+                                                    // overlap, move labels
+                                                    var dx = (Math.max(0, a.right - b.left) +
+                                                        Math.min(0, a.left - b.right)) * 0.01,
+                                                        dy = (Math.max(0, a.bottom - b.top) +
+                                                            Math.min(0, a.top - b.bottom)) * 0.02,
+                                                        tt = d3.transform(d3.select(this).attr("transform")),
+                                                        to = d3.transform(d3.select(that).attr("transform"));
+                                                    move += Math.abs(dx) + Math.abs(dy);
 
+                                                    to.translate = [to.translate[0] + dx, to.translate[1] + dy];
+                                                    tt.translate = [tt.translate[0] - dx, tt.translate[1] - dy];
+                                                    d3.select(this).attr("transform", "translate(" + tt.translate + ")");
+                                                    d3.select(that).attr("transform", "translate(" + to.translate + ")");
+                                                    a = this.getBoundingClientRect();
+                                                }
+                                            }
+                                        });
+                                });
+                        }
+                    }
 
+                    var foci = [],
+                        labels = [];
 
+                    // Store the projected coordinates of the places for the foci and the labels
+                    brands.forEach(function (d, i) {
+                        var shifty = y(d.pc2);
+                        shifty += (d.pc2 < 0) ? 15 : -5;
+                        // foci.push({x: x(d.pc1), y: shifty});
+                        labels.push({x: x(d.pc1), y: shifty, label: d.brand, anchor: (d.pc1 < 0 ? 'end' : 'start')});
+                    });
 
+                    var placeLabels = g_axis.selectAll('.place-label')
+                        .data(labels)
+                        .enter()
+                        .append('text')
+                        .attr('class', 'place-label')
+                        .attr('text-anchor', function (d) {
+                            return d.anchor
+                        })
+                        .attr('x', function (d) {
+                            return d.x;
+                        })
+                        .attr('y', function (d) {
+                            return d.y;
+                        })
+                        .text(function (d) {
+                            return d.label.replace("Score", "");
+                        })
+                        .style("fill", function (d) {
+                            return color(d.label);
+                        })
+                        .style("font-weight", "bold");
 
-                /*svg.selectAll("text.attr")
-                    .data(data)
-                    .enter().append("text")
-                    .attr("class", "label-attr")
-                    .attr("x", function(d,i ) { return x(d.pc1)+4 ; })
-                    .attr("y", function(d ,i) { return y(d.pc2) + (label_offset[d.type]||0); })
-                    .text(function(d,i) { return d.type})*/
+                    /*force.on("tick", function(e) {
+                         var k = .1 * e.alpha;
+                         labels.forEach(function(o, j) {
+                             // The change in the position is proportional to the distance
+                             // between the label and the corresponding place (foci)
+                             o.y += (foci[j].y - o.y) * k;
+                             o.x += (foci[j].x - o.x) * k;
+                         });
 
+                         // Update the position of the text element
+                         g_axis.selectAll("text.place-label")
+                             .attr("x", function(d) { return d.x; })
+                             .attr("y", function(d) { return d.y; });
+                     });
 
-
-
+                     force.start();*/
+                    arrangeLabels();
+                }
                 PCAplot.dataencde = data;
             }
             return PCAplot};
@@ -926,9 +1016,15 @@ angular.module('pcagnosticsviz')
         function areaplot(spec,object) {
             spec.mark = "area";
             spec.encoding = {
-                x: {bin: {}, field: object.field, type: object.type},
-                y: {aggregate: "count", field: "*", type: object.type}
+                x: {field: object.field, type: object.type},
+                y: {aggregate: "count", field: "*"}
             };
+            if (object.type==="quantitative"){
+                spec.encoding.x.bin ={};
+                spec.encoding.y.type = object.type;
+            }else if(object.primitiveType ==="string"){
+                spec.encoding.y.type = "quantitative";
+            }
         }
         function boxplot(spec,object) {
             spec.mark = "boxplot";
@@ -1079,7 +1175,7 @@ angular.module('pcagnosticsviz')
         function scagnoticscore (field1,field2){
             var matrix = Dataset.data.map(function(d){return [d[field1],d[field2]]});
             try {
-                var scag = scagnostics(matrix,'leader',20);
+                var scag = scagnostics(matrix,'leader',40);
                 if (!isNaN(scag.skinnyScore))
                     return {
                         'outlyingScore': scag.outlyingScore,
@@ -1090,7 +1186,7 @@ angular.module('pcagnosticsviz')
                         'convexScore':scag.convexScore,
                         'skinnyScore':scag.skinnyScore,
                         'stringyScore':scag.stringyScore,
-                        'monotonicScore':scag.monotonicScore};
+                        'monotonicScore':scag.monotonicScore,};
                 else return {
                     'outlyingScore': 0,
                     'skewedScore': 0,
@@ -1100,7 +1196,8 @@ angular.module('pcagnosticsviz')
                     'convexScore':0,
                     'skinnyScore':0,
                     'stringyScore':0,
-                    'monotonicScore':0
+                    'monotonicScore':0,
+                    invalid:1,
                 };
 
             }catch(e){
@@ -1113,24 +1210,13 @@ angular.module('pcagnosticsviz')
                     'convexScore':0,
                     'skinnyScore':0,
                     'stringyScore':0,
-                    'monotonicScore':0
+                    'monotonicScore':0,
+                    invalid:1,
                 };
             }
         }
 
         PCAplot.calscagnotic = function (primfield){
-            /*primfield.forEach(function(selectedfield) {
-                Dataset.schema.fieldSchemas.forEach(function(d){
-                    if ((d.field!==selectedfield) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
-                        var scag = scagnoticscore(selectedfield,d.field);
-                        if (d.scag === undefined)
-                            d.scag = {};
-                        d.scag[selectedfield] = scag;
-                        if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
-                            Dataset.schema.fieldSchema(selectedfield).scag ={};
-                        Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
-                    }
-                })});*/
             primfield.forEach(function(selectedfield) {
                 Dataset.schema.fieldSchemas.forEach(function(d){
                     if ((d.field!==selectedfield) && (Dataset.schema._fieldSchemaIndex[selectedfield].scag==undefined||Dataset.schema._fieldSchemaIndex[selectedfield].scag[d.field] ===undefined) && (d.scag ===undefined ||(d.scag[selectedfield]===undefined))){
@@ -1141,6 +1227,7 @@ angular.module('pcagnosticsviz')
                         if (Dataset.schema.fieldSchema(selectedfield).scag === undefined)
                             Dataset.schema.fieldSchema(selectedfield).scag ={};
                         Dataset.schema.fieldSchema(selectedfield).scag[d.field] = scag;
+                        // console.log(selectedfield+" "+d.field);
                     }
                 })});
             //console.log (Dataset.schema.fieldSchema(primfield[0]));

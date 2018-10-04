@@ -5651,8 +5651,7 @@
                                     height = scalem;
 
                                     //draw
-                                    var min = Infinity,
-                                        max = -Infinity;
+
                                     var g = boxplotdiv.append('svg')
                                         .attr("width",width + margin.left + margin.right)
                                         .attr("height",height + margin.top + margin.bottom)
@@ -5670,7 +5669,7 @@
                                     // console.log(fieldset);
                                     // console.log(points);
                                     try{
-                                    var scag = scagnostics(points, 'hexagon');
+                                    var scag = scagnostics(points, 'hexagon',20);
                                     //console.log(scag.bins);
                                     // the y-axis
                                     var scaleY = d3.scale.linear()
@@ -5687,9 +5686,8 @@
                                         .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
                                         .range(["grey", "steelblue"])
                                         .interpolate(d3.interpolateHcl);*/
-                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("white","steelblue"))
+                                        var color=   d3v4.scaleSequential(d3v4.interpolateLab("white",'#2f5597'))
                                             .domain(d3v4.extent(scag.bins.map(function(b) {return b.length})));
-
                                     var bins = g.append("g")
                                         .attr("class", "hexagon")
                                         .selectAll("path")
@@ -5780,7 +5778,7 @@
 
                                     try{
                                         var dataPointRadius = 2;
-                                        var scag = scagnostics(points, 'leader');
+                                        var scag = scagnostics(points, 'leader',20);
                                         //console.log(scag.bins);
                                         // the y-axis
                                         var scaleY = d3.scale.linear()
@@ -5795,7 +5793,7 @@
 
                                         var color = d3.scale.linear()
                                             .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
-                                            .range(["steelblue",'red'])
+                                            .range(["white",'#2f5597'])
                                             .interpolate(d3.interpolateHcl);
                                         var distance = function(a, b){
                                             var dx = a[0] - b[0],
@@ -5803,7 +5801,7 @@
                                             return Math.round(Math.sqrt((dx * dx) + (dy * dy))*Math.pow(10, 10))/Math.pow(10, 10);
                                         };
                                         var bins = g.append("g")
-                                            .attr("class", "leader")
+                                            .attr("class", "leader",20)
                                             .selectAll("circle")
                                             .data(scag.bins)
                                             .enter().append("circle")
@@ -5815,8 +5813,8 @@
                                             })
                                             .attr("cx", function(d){return scaleX(d.x)})
                                             .attr("cy", function(d){return scaleY(d.y)})
-                                            .attr("fill", "none")
-                                            .attr("stroke", function(d){return color(d.length)})
+                                            .attr("fill", function(d){return color(d.length)})
+                                            .attr("stroke", "#2f5597")
                                             .attr("stroke-width", 1);
 
                                         var xAxis = d3.svg.axis()
@@ -5877,7 +5875,7 @@
                                         -parseInt($(boxplotdiv[0]).parent().parent().parent() .parent().css('margin-top'),10)
                                         -parseInt($(boxplotdiv[0]).parent().parent().parent() .parent().css('margin-bottom'),10))) -$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true)||0 ;//||width/3;
                                     var scalem = Math.min(width,height);
-                                    width = scalem;
+                                    //width = scalem;
                                     //height = scalem;
 
                                     //draw
@@ -5889,27 +5887,39 @@
 
                                     var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
                                     var points =  Dataset.data.map(function(d){return [d[fieldset[0]],d[fieldset[1]]]});
-                                    var scag = scagnostics(points, 'leader');
+                                    var scag = scagnostics(points, 'leader',20);
                                     var config = scope.chart.vlSpec.config;
                                     var small = (config.colorbar != undefined?config.colorbar:true);
                                     try{
                                         var plotType = 'contour';
 
                                         var plotMargins = {
-                                            l: 20,
-                                            r: (config.colorbar == undefined)?80:5,
-                                            t: 10,
-                                            b: 20,
+                                            l: 20+(width-scalem)/2,
+                                            r: (config.colorbar == undefined)?80:5+(width-scalem)/2,
+                                            t: 10+(height-scalem)/2,
+                                            b: 20+(height-scalem)/2,
                                             pad: 0,
                                             autoexpand: false
                                         };
-
+                                        var color = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range(["white",'#2f5597'])
+                                            ;//.interpolate(d3.interpolateHcl);
+                                        var level = 8;
+                                        var colorlevel = d3.scale.linear()
+                                            .domain([0,level-1])
+                                            .range([0,1]);
+                                        var colorscale = [[colorlevel(0),color(colorlevel(0))],
+                                            [colorlevel(1),color(colorlevel(0))]];
+                                        for (var i =1; i<(level-1);i++){
+                                            colorscale.push ([colorlevel(i),color(colorlevel(i))]);
+                                            colorscale.push ([colorlevel(i+1),color(colorlevel(i))]);
+                                        }
+                                        // console.log(colorscale);
                                         var contourData = [{
-                                            x: [],
-                                            y: [],
-                                            z: [],
+
                                             type: plotType,
-                                            colorscale: [[0, 'rgb(255,255,255)'], [1, 'steelblue']],
+                                            colorscale: colorscale,
                                             line: {
                                                 smoothing: 0.5,
                                                 color: 'rgba(0, 0, 0,0)'
@@ -5926,15 +5936,31 @@
                                         }];
                                        //if (scope.chart.vlSpec.config.colorbar)
 
-                                        scag.bins.forEach(function(d){
-                                            contourData[0].x.push(d.x);
-                                            contourData[0].y.push(d.y);
-                                            contourData[0].z.push(d.length);
-                                        });
+
+                                        var datax = scag.bins.map(function(d){return {x:d.x,y:d.y,z:d.length}});
+                                        datax.sort(function(a,b){return a.x<b.x?-1:1});
+                                        var datay = scag.bins.map(function(d){return {x:d.x,y:d.y,z:d.length}});
+                                        datay.sort(function(a,b){return a.y<b.y?-1:1});
+                                        var gridx = [];
+                                        datax.forEach(function(d){
+                                            if (d.x!=gridx[gridx.length-1])
+                                                gridx.push(d.x)});
+                                        var gridy = [];
+                                        datay.forEach(function(d){
+                                            if (d.y!=gridy[gridy.length-1])
+                                                gridy.push(d.y)});
+                                        var matrix = gridy.map(function(gy){
+                                            return gridx.map(function(gx){
+                                                var item = datax.filter(function(d){return (d.x==gx)&&(d.y==gy)})[0];
+                                                return item==undefined?0:item.z;})});
+                                            contourData[0].x = gridx;
+                                            contourData[0].y = gridy;
+                                            contourData[0].z = matrix;
                                         var contourLayout = {
                                             paper_bgcolor: 'rgba(0,0,0,0)',
                                             plot_bgcolor: 'rgba(0,0,0,0)',
                                             margin: plotMargins,
+                                            width: scalem+plotMargins.l,
                                             font: {
                                                 size: 11,
                                             },
@@ -5942,11 +5968,17 @@
                                                 title: "<b>"+fieldset[1]+"<b>",
                                                 ticks:'',
                                                 showticklabels: false,
+                                                titlefont: {
+                                                    size: 11,
+                                                },
                                             },
                                             xaxis:{
                                                 title: "<b>"+fieldset[0]+"<b>",
                                                 ticks:'',
                                                 showticklabels: false,
+                                                titlefont: {
+                                                    size: 11,
+                                                },
                                             }
                                         };
                                         Plotly.newPlot('contour' + scope.visId, contourData, contourLayout,{displayModeBar: (config.displayModeBar == undefined),staticPlot: (config.staticPlot != undefined)});

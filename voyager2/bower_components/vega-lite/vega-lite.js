@@ -6189,8 +6189,9 @@ exports.defaultOverlayConfig = {
 };
 exports.defaultMarkConfig = {
     color: '#4682b4',
+    fill: '#4682b4',
     shape: Shape.CIRCLE,
-    strokeWidth: 2,
+    strokeWidth: 1,
     size: 30,
     barThinSize: 2,
     ruleSize: 1,
