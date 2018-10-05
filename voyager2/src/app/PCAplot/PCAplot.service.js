@@ -30,16 +30,20 @@ angular.module('pcagnosticsviz')
             charts:[],
             mainfield: null,
             prop:null,
-            dim: null,
+            dim: 0,
             dataref:null,
             limit: 10,
         };
+        PCAplot.mark2plot = mark2plot;
         var support =[{
             types : ['PCA1','PCA2', 'skewness', 'outlier'],
         marks : ['tick','area','bar','boxplot'],
         }, {
             types : ['outlyingScore','skewedScore','sparseScore','clumpyScore','striatedScore','convexScore','skinnyScore','stringyScore','monotonicScore'],
             marks :['point','hexagon','leader','contour'],
+        }, {
+            types : ['com'],
+            marks :['scatter3D'],
         }];
         //PCAplot.updateplot = function (data){};
         PCAplot.plot =function(dataor,dimension) {
@@ -92,7 +96,18 @@ angular.module('pcagnosticsviz')
                             q1 = ss.quantile(row,0.25),
                             q3 = ss.quantile(row,0.75),
                             iqr = (q3-q1)*1.5;
-                        row.forEach(function(e)  {if ((e < q1 - iqr)||(e > q3 + iqr)) outlier++;});
+                            //iqr = Dataset.schema.fieldSchema(d).stats.stdev*1.35;
+                        Dataset.schema.fieldSchema(d).stats.q1 = q1;
+                        Dataset.schema.fieldSchema(d).stats.q3 = q3;
+                        Dataset.schema.fieldSchema(d).stats.q1iqr = Math.max(q1-iqr,ss.min(row));
+                        Dataset.schema.fieldSchema(d).stats.q3iqr = Math.min(q3+iqr,ss.max(row));
+                        Dataset.schema.fieldSchema(d).stats.iqr=iqr;
+                        //console.log(Dataset.schema.fieldSchema(d).stats);
+                        row.forEach(function(e)  {
+                            if ((e < q1 - 2*iqr)||(e > q3 + 2*iqr))
+                                outlier +=10;
+                            else if ((e < q1 - iqr)||(e > q3 + iqr))
+                                outlier = outlier+1;});
                         return outlier;
                     });}
                 else{
@@ -104,7 +119,6 @@ angular.module('pcagnosticsviz')
                             newdata.push(d[d.field][e]);}
                         }
                     });
-                    idlabel
                     data = newdata.filter(function(d){return !d.invalid}); // for overview 2D
                     // idlabel = Object.keys(data);
                     //brand_names = Object.keys(data[idlabel[0]]);
@@ -762,8 +776,8 @@ angular.module('pcagnosticsviz')
                     });
                     return r;
                 })[0];
-                Dataset.schema.fieldSchemas.sort(function(a, b) {return
-                    (a.extrastat.outlier) > (b.extrastat.outlier) ? -1 : 1});
+                Dataset.schema.fieldSchemas.sort(function(a, b) {
+                    return ((a.extrastat.outlier) <(b.extrastat.outlier)) ? 1 : -1});
                 // console.log(Dataset.schema.fieldSchemas);
                 var mostoutlie = Dataset.schema.fieldSchemas.filter(function(d)  {
                     var r = false;
@@ -816,7 +830,19 @@ angular.module('pcagnosticsviz')
 
             }
         };
-
+        function mark2plot (mark,spec,object){
+            switch (mark) {
+                case 'bar': barplot(spec, object); break;
+                case 'tick': dashplot(spec, object); break;
+                case 'area': areaplot(spec, object); break;
+                case 'boxplot': boxplot(spec, object); break;
+                case 'point': pointplot(spec, object); break; // 2D
+                case 'hexagon': pointplot(spec, object,'hexagon'); break;
+                case 'leader': pointplot(spec, object,'leader'); break;
+                case 'contour': pointplot(spec, object,'contour'); break;
+                case 'scatter3D': scatterplot(spec,object); break
+            }
+        }
         function drawGuideplot (object,type,dataref) {
             if (dataref == undefined)
                 dataref = Dataset.schema.fieldSchemas;
@@ -850,13 +876,14 @@ angular.module('pcagnosticsviz')
                 mark: spec.mark,
                 ranking: getranking(type),
                 plot: drawGuideexplore,
-                dim: PCAplot.dim,};
+                dim: PCAplot.dim};
 
             PCAplot.chart.guideon = function(prop){
                 //console.log(prop);
                 //prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
                 PCAplot.types =  support[PCAplot.dim].types;
                 PCAplot.marks = support[PCAplot.dim].marks;
+                // PCAplot.spec = mspec;
                 prop.charts = dataref.sort(prop.ranking)
                     .map(function(d){return prop.plot((d.fieldDefs||d ),prop.mark,prop.mspec) });
                 prop.previewcharts = prop.charts.map(function (d) {
@@ -880,23 +907,323 @@ angular.module('pcagnosticsviz')
                     return thum;});
                 prop.pos = 0;
                 PCAplot.limit = 10;
-                PCAplot.updateguide(prop);
-            };
-            PCAplot.charts.push(PCAplot.chart);
-        }
 
-        function mark2plot (mark,spec,object){
-            switch (mark) {
-                case 'bar': barplot(spec, object); break;
-                case 'tick': dashplot(spec, object); break;
-                case 'area': areaplot(spec, object); break;
-                case 'boxplot': boxplot(spec, object); break;
-                case 'point': pointplot(spec, object); break; // 2D
-                case 'hexagon': pointplot(spec, object,'hexagon'); break;
-                case 'leader': pointplot(spec, object,'leader'); break;
-                case 'contour': pointplot(spec, object,'contour'); break;
+
+                PCAplot.updateguide(prop);
+                var data = [];
+                var datarefn = [];
+                if (PCAplot.dataref == null){
+                    var idlabel=[];
+                    data = dataref.map(function(d){
+                        var tem = {field: d.field};
+                        tem[d.field] = d.scag;
+                        return tem;});
+                    var newdata=[];
+                    data.forEach(function(d){
+                        for (var e in d[d.field]) {
+                            if (d[d.field][e].invalid!=1){
+                                idlabel.push([d.field,e]);
+                                newdata.push(d[d.field][e]);}
+                        }
+                    });
+                    data = newdata.filter(function(d){return !d.invalid});
+                    data.forEach(function(d,i){d.label = idlabel[i]});
+                    datarefn = _.cloneDeep(data);
+                    PCAplot.dataref = datarefn.map(function(d){
+                        return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
+                            scag: d,};
+                    });
+                }
+                var fieldsets = PCAplot.prop.charts [0].fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&& d!="*"});
+                if (prop.dim==0){
+                    var possible = PCAplot.dataref.filter(function (d){
+                        var ff= true;
+                        var f=false;
+                        fieldsets.forEach(function(it){
+                            d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
+                            ff=ff&&f;})
+                        return ff;});
+                    if (possible.length!=0) {
+                        var topitem = support[prop.dim + 1].types.map(function (d) {
+                            return possible.sort(function (a, b) {
+                                return a[d] < b[d] ? 1 : -1
+                            })[0];
+                        });
+                        var unique = [];
+                        var uniquetype = [];
+                        topitem.forEach(function (d, i) {
+                            if (unique.filter(function (u) {
+                                    return u == d;
+                                }).length == 0) {
+                                unique.push(d);
+                                uniquetype.push(support[prop.dim + 1].types[i]);
+                            }
+                        });
+                        var charts = uniquetype.map(function (d, i) {
+                            return {v: unique[i], type: d}
+                        })
+                            .map(function (d) {
+                                var spec = {};
+                                //spec.data = Dataset.dataset;
+                                spec.config = {
+                                    /*cell: {
+                                        width: PCAplot.dim?100:200,
+                                        height: PCAplot.dim?100:30,
+                                    },*/
+                                    axis: {
+                                        grid: false,
+                                        ticks: false,
+                                        titleOffset: 20
+                                    },
+                                    overlay: {line: true},
+                                    scale: {useRawDomain: true}
+                                };
+                                //mark2plot (type2mark(d.type),spec,d.v.fieldDefs);
+                                mark2plot(mark2mark(prop.mark, PCAplot.dim), spec, d.v.fieldDefs);
+                                var query = getQuery(spec);
+                                var output = cql.query(query, Dataset.schema);
+                                PCAplot.query = output.query;
+                                var topItem = output.result.getTopSpecQueryModel();
+                                return Chart.getChart(topItem);
+
+                            });
+                        PCAplot.alternatives = [{'charts': charts}];
+                    }else{
+                        PCAplot.alternatives.length=0;}
+                }else if (prop.dim>0) {
+                    var possible = PCAplot.dataref.filter(function (d){
+                        var ff= false;
+                        var f=false;
+                        fieldsets.forEach(function(it){
+                            d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
+                            ff=ff||f;});
+                        return ff;});
+                    possible = possible.filter(function (d){
+                        var ff= true;
+                        var f=false;
+                        fieldsets.forEach(function(it){
+                            d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
+                            ff=ff&&f;});
+                        return !ff;});
+                    var topitem = support[1].types.map(function (d) {
+                        return possible.sort(function (a, b) {
+                            return (a[d] < b[d]) ? 1 : -1;
+                        })[0];
+                    });
+                    var unique = [];
+                    var uniquetype = [];
+                    topitem.forEach(function (d, i) {
+                        if (unique.filter(function (u) {
+                                return u == d;
+                            }).length == 0) {
+                            unique.push(d);
+                            uniquetype.push(support[prop.dim + 1].types[0]);
+                        }
+                    });
+                    unique.forEach(function(d){
+                        var newf = fieldsets.map(function(f){
+                            return Dataset.schema.fieldSchema(f);});
+                        Array.prototype.push.apply(newf,d.fieldDefs.filter(function(fe){
+                            var ff = true;
+                            fieldsets.forEach(function(fs){ff=ff&&fs!=fe.field});
+                            return ff;
+                        }));
+                        d.fieldDefs=newf});
+                    var charts = uniquetype.map(function (d, i) {
+                        return {v: unique[i], type: d}
+                    })
+                        .map(function (d) {
+                            var spec = {};
+                            //spec.data = Dataset.dataset;
+                            spec.config = {
+                                /*cell: {
+                                    width: PCAplot.dim?100:200,
+                                    height: PCAplot.dim?100:30,
+                                },*/
+                                axis: {
+                                    grid: false,
+                                    ticks: false,
+                                    titleOffset: 20
+                                },
+                                overlay: {line: true},
+                                scale: {useRawDomain: true}
+                            };
+                            //mark2plot (type2mark(d.type),spec,d.v.fieldDefs);
+                            mark2plot(mark2mark(prop.mark, PCAplot.dim), spec, d.v.fieldDefs);
+                            var query = getQuery(spec);
+                            var output = cql.query(query, Dataset.schema);
+                            PCAplot.query = output.query;
+                            var topItem = output.result.getTopSpecQueryModel();
+                            return Chart.getChart(topItem);
+
+                        });
+                    PCAplot.alternatives = [{'charts': charts}];
+                }else{
+                    PCAplot.alternatives.length=0;}
+                }
+                PCAplot.charts.push(PCAplot.chart);
+        };
+
+        PCAplot.alternativeupdate = function(mspec){
+            if (PCAplot.dataref == null){
+                var data = [];
+                var datarefn = [];
+                var idlabel=[];
+                data = PCAplot.dataref.map(function(d){
+                    var tem = {field: d.field};
+                    tem[d.field] = d.scag;
+                    return tem;});
+                var newdata=[];
+                data.forEach(function(d){
+                    for (var e in d[d.field]) {
+                        if (d[d.field][e].invalid!=1){
+                            idlabel.push([d.field,e]);
+                            newdata.push(d[d.field][e]);}
+                    }
+                });
+                data = newdata.filter(function(d){return !d.invalid});
+                data.forEach(function(d,i){d.label = idlabel[i]});
+                datarefn = _.cloneDeep(data);
+                PCAplot.dataref = datarefn.map(function(d){
+                    return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
+                        scag: d,};
+                });
             }
-        }
+            var fieldsets = mspec.fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&&d!="*"});
+            if (fieldsets.length<2) {
+                var possible = PCAplot.dataref.filter(function (d) {
+                    var ff = true;
+                    var f = false;
+                    fieldsets.forEach(function (it) {
+                        d.fieldDefs.forEach(function (m) {
+                            f = (f || (m.field == it));
+                        })
+                        ff = ff && f;
+                    })
+                    return ff;
+                });
+                if (possible.length != 0) {
+                    var topitem = support[PCAplot.dim + 1].types.map(function (d) {
+                        return possible.sort(function (a, b) {
+                            return a[d] < b[d] ? 1 : -1
+                        })[0];
+                    });
+                    var unique = [];
+                    var uniquetype = [];
+                    topitem.forEach(function (d, i) {
+                        if (unique.filter(function (u) {
+                                return u == d;
+                            }).length == 0) {
+                            unique.push(d);
+                            uniquetype.push(support[PCAplot.dim + 1].types[i]);
+                        }
+                    });
+                    var charts = uniquetype.map(function (d, i) {
+                        return {v: unique[i], type: d}
+                    })
+                        .map(function (d) {
+                            var spec = {};
+                            //spec.data = Dataset.dataset;
+                            spec.config = {
+                                /*cell: {
+                                    width: PCAplot.dim?100:200,
+                                    height: PCAplot.dim?100:30,
+                                },*/
+                                axis: {
+                                    grid: false,
+                                    ticks: false,
+                                    titleOffset: 20
+                                },
+                                overlay: {line: true},
+                                scale: {useRawDomain: true}
+                            };
+                            //mark2plot (type2mark(d.type),spec,d.v.fieldDefs);
+                            mark2plot(mark2mark(mspec.vlSpec.mark, PCAplot.dim), spec, d.v.fieldDefs);
+                            var query = getQuery(spec);
+                            var output = cql.query(query, Dataset.schema);
+                            PCAplot.query = output.query;
+                            var topItem = output.result.getTopSpecQueryModel();
+                            return Chart.getChart(topItem);
+
+                        });
+                    PCAplot.alternatives = [{'charts': charts}];
+                }
+                else {
+                    PCAplot.alternatives.length = 0;
+                }
+            }
+            else if (fieldsets.length>1) {
+            var possible = PCAplot.dataref.filter(function (d){
+                var ff= false;
+                var f=false;
+                fieldsets.forEach(function(it){
+                    d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
+                    ff=ff||f;});
+                return ff;});
+            possible = possible.filter(function (d){
+                var ff= true;
+                var f=false;
+                fieldsets.forEach(function(it){
+                    d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
+                    ff=ff&&f;});
+                return !ff;});
+            var topitem = support[1].types.map(function (d) {
+                return possible.sort(function (a, b) {
+                    return (a[d] < b[d]) ? 1 : -1;
+                })[0];
+            });
+            var unique = [];
+            var uniquetype = [];
+            topitem.forEach(function (d, i) {
+                if (unique.filter(function (u) {
+                        return u == d;
+                    }).length == 0) {
+                    unique.push(d);
+                    uniquetype.push(support[fieldsets.length].types[0]);
+                }
+            });
+            unique.forEach(function(d){
+                var newf = fieldsets.map(function(f){
+                    return Dataset.schema.fieldSchema(f);});
+                Array.prototype.push.apply(newf,d.fieldDefs.filter(function(fe){
+                    var ff = true;
+                    fieldsets.forEach(function(fs){ff=ff&&fs!=fe.field});
+                    return ff;
+                }));
+                d.fieldDefs=newf});
+            var charts = uniquetype.map(function (d, i) {
+                return {v: unique[i], type: d}
+            })
+                .map(function (d) {
+                    var spec = {};
+                    //spec.data = Dataset.dataset;
+                    spec.config = {
+                        /*cell: {
+                            width: PCAplot.dim?100:200,
+                            height: PCAplot.dim?100:30,
+                        },*/
+                        axis: {
+                            grid: false,
+                            ticks: false,
+                            titleOffset: 20
+                        },
+                        overlay: {line: true},
+                        scale: {useRawDomain: true}
+                    };
+                    //mark2plot (type2mark(d.type),spec,d.v.fieldDefs);
+                    mark2plot(mark2mark(mspec.vlSpec.mark, PCAplot.dim), spec, d.v.fieldDefs);
+                    var query = getQuery(spec);
+                    var output = cql.query(query, Dataset.schema);
+                    PCAplot.query = output.query;
+                    var topItem = output.result.getTopSpecQueryModel();
+                    return Chart.getChart(topItem);
+
+                });
+            PCAplot.alternatives = [{'charts': charts}];
+            }else{
+                PCAplot.alternatives.length=0;}
+
+        };
 
         PCAplot.updateSpec = function(prop){
             PCAplot.types =  support[prop.dim].types;
@@ -933,6 +1260,13 @@ angular.module('pcagnosticsviz')
             PCAplot.updateguide(nprop);
         };
         var ran = 0;
+        function mark2mark(oldmark,dim){
+            var pos = 0;
+            support[dim].marks.forEach(function(d,i){
+                if (d==oldmark){
+                    pos= i; return ;}});
+            return support[dim+1].marks[pos];
+        }
         function type2mark (type){
             switch (type) {
                 case 'PCA1': return 'tick';
@@ -953,9 +1287,12 @@ angular.module('pcagnosticsviz')
                     ran = ran>2?0:(ran+1);
                     return mark;
                 //case 'outlying SC'
+                case 'com':
+                    return 'scatter3D'
                 default: return 'point';
             }
         }
+
         function getranking(type){
             switch (type) {
                 case 'PCA1': return function (a,b){return Math.abs(a.extrastat.pc1) < Math.abs(b.extrastat.pc1) ? 1:-1};
@@ -1002,6 +1339,11 @@ angular.module('pcagnosticsviz')
             if (object.type==="quantitative"){
                 spec.encoding.x.bin ={};
                 spec.encoding.y.type = object.type;
+            }else if(object.primitiveType ==="string"){
+                spec.encoding.y.type = "quantitative";
+            }else if (object.type==="temporal"){
+                spec.encoding.x.bin ={};
+                spec.encoding.y.type = "quantitative";
             }
             //console.log(spec);
         }
@@ -1022,7 +1364,7 @@ angular.module('pcagnosticsviz')
             if (object.type==="quantitative"){
                 spec.encoding.x.bin ={};
                 spec.encoding.y.type = object.type;
-            }else if(object.primitiveType ==="string"){
+            }else if(object.primitiveType ==="string"||object.type==="temporal"||object.primitiveType ==="integer"){
                 spec.encoding.y.type = "quantitative";
             }
         }
@@ -1041,6 +1383,15 @@ angular.module('pcagnosticsviz')
             };
         }
 
+        function scatterplot(spec,objects){
+            spec.mark = "scatter3D";
+
+            spec.encoding = {
+                x: { field: objects[0].field, type: objects[0].type},
+                y: { field: objects[1].field, type: objects[1].type},
+                x2: { field: objects[2].field, type: objects[2].type},
+            };
+        }
 
 
 
@@ -1163,8 +1514,6 @@ angular.module('pcagnosticsviz')
             return newSpec;
         }
 
-
-
         PCAplot.updateguide= function(prop) {
             prop = _.cloneDeep(prop || PCAplot.prop);
             prop.mspec.config={};
@@ -1233,6 +1582,10 @@ angular.module('pcagnosticsviz')
             //console.log (Dataset.schema.fieldSchema(primfield[0]));
         };
 
+        PCAplot.updateAlternative= function (prop,dataref){
+
+
+        };
         PCAplot.reset = function(hard) {
             var spec = instantiate();
             spec.transform.filter = FilterManager.reset(null, hard);
@@ -1241,6 +1594,8 @@ angular.module('pcagnosticsviz')
             PCAplot.charts.length = 0;
             PCAplot.chart=null;
             PCAplot.prop=null;
+            PCAplot.alternatives=[];
+
             //PCAplot.plot(Dataset.data);
         };
         PCAplot.reset();

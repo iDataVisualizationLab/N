@@ -5519,7 +5519,7 @@
                                 data.forEach(function(it){
                                     min = it.stats.min<min?it.stats.min:min;
                                     max = it.stats.max>max?it.stats.max:max;
-                                    var  q1 = it.stats.q1,
+                                    /*var  q1 = it.stats.q1,
                                         q3 = it.stats.q3,
                                         iqr = (q3-q1)*1.5,
                                         unique = Object.keys(it.stats.unique),
@@ -5529,7 +5529,7 @@
                                     while (formatNum(unique[++i]) < q1 - iqr);
                                     while (formatNum(unique[--j]) > q3 + iqr);
                                     it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
-                                    it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);
+                                    it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);*/
                                 });
 
                                 // the y-axis
@@ -5606,7 +5606,18 @@
                                     .append("circle")
                                     .attr("cx", function(d) {return x(d)})
                                     .attr("cy",0)
-                                    .attr('r',3);
+                                    .attr('r',2);
+                                    boxs.append('g')
+                                        .attr('class','outliersfar')
+                                        .attr("transform", function(d) { return "translate(" +  0  + "," +  y.rangeBand(d.field)/2+ ")"; })
+                                        .selectAll(".circle")
+                                        .data(function(d) {return Object.keys(d.stats.unique)
+                                            .filter(function(it){return it<(d.stats.q1iqr-d.stats.iqr)||it>(d.stats.q3iqr+d.stats.iqr)})})
+                                        .enter()
+                                        .append("circle")
+                                        .attr("cx", function(d) {return x(d)})
+                                        .attr("cy",0)
+                                        .attr('r',3);
                                 // draw y axis
 
                                 // draw x axis
@@ -5763,8 +5774,7 @@
                                     height = scalem;
 
                                     //draw
-                                    var min = Infinity,
-                                        max = -Infinity;
+
                                     var g = boxplotdiv.append('svg')
                                         .attr("width",width + margin.left + margin.right)
                                         .attr("height",height + margin.top + margin.bottom)
@@ -5982,6 +5992,171 @@
                                             }
                                         };
                                         Plotly.newPlot('contour' + scope.visId, contourData, contourLayout,{displayModeBar: (config.displayModeBar == undefined),staticPlot: (config.staticPlot != undefined)});
+
+                                        Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                                            list: scope.listTitle
+                                        });
+                                        rescaleIfEnable();}catch(e){}
+                                    renderQueueNextPromise = $timeout(renderQueueNext, 1);
+                                    return;
+                                case "scatter3D":
+                                    var plotor = d3.selectAll("#vis-" + scope.visId);
+
+                                    var boxplotdiv = plotor.select('.vega');
+                                    if (boxplotdiv[0][0]==null)
+                                        boxplotdiv = plotor.append('div')
+                                            .attr('class','vega')
+                                            .style('position','relative');
+                                    boxplotdiv.selectAll('*').remove();
+
+                                    // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
+                                    //var labels = true; // show the text labels beside individual boxplots?
+                                    // my zone \(=o=)\
+
+                                    var  width = $(boxplotdiv[0]).width() ;
+                                    //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
+                                    var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)
+                                        ||(parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)
+                                            -parseInt($(boxplotdiv[0]).parent().parent().parent() .parent().css('margin-top'),10)
+                                            -parseInt($(boxplotdiv[0]).parent().parent().parent() .parent().css('margin-bottom'),10))) -$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true)||0 ;//||width/3;
+                                    var scalem = Math.min(width,height);
+                                    //width = scalem;
+                                    //height = scalem;
+
+                                    //draw
+                                    boxplotdiv.append('div')
+                                    //.style("width",width+'px' )
+                                        .style("height",height +'px')
+                                        .attr("class", "3Dscatter-graph")
+                                        .attr("id", "3Dscatter"+scope.visId);
+
+                                    var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
+                                    // to do
+                                    var points =  Dataset.data.map(function(d){
+                                        var point = [d[fieldset[0]],d[fieldset[1]]];
+                                        point.data = {'x': d[fieldset[0]], 'y': d[fieldset[1]], 'z': d[fieldset[2]]};
+                                    return point;});
+                                    var scag = scagnostics(points, 'leader',20);
+                                    // to do
+                                    var config = scope.chart.vlSpec.config;
+                                    var small = (config.colorbar != undefined?config.colorbar:true);
+                                    try{
+                                        var plotType = 'scatter3d';
+
+                                        var plotMargins = {
+                                            l: 20+(width-scalem)/2,
+                                            r: (config.colorbar == undefined)?80:5+(width-scalem)/2,
+                                            t: 10+(height-scalem)/2,
+                                            b: 20+(height-scalem)/2,
+                                            pad: 10,
+                                            autoexpand: true
+                                        };
+                                        var color = d3.scale.linear()
+                                            .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
+                                            .range([0.5,1]);
+                                        var  dataPointRadius =2;
+                                        var distance = function(a, b){
+                                            var dx = a[0] - b[0],
+                                                dy = a[1] - b[1];
+                                            return Math.round(Math.sqrt((dx * dx) + (dy * dy))*Math.pow(10, 10))/Math.pow(10, 10)};
+                                        var minz= Infinity;
+                                        var maxz= -Infinity;
+                                        scag.bins.forEach(function(d){
+                                            var z = 0;
+                                            d.forEach(function(i){ z = z+i.data.z;});
+                                            z = z/d.length;
+                                            d.z =z;
+                                            minz = Math.min(minz,z);
+                                            maxz = Math.max(maxz,z);});
+                                        var scalez = d3.scale.linear()
+                                            .domain([minz,maxz])
+                                            .range([0,1]);
+                                        /*var scatterData = scag.bins.map(function(d){
+
+                                            var distances = d.map(function(p){return distance([d.x, d.y], p)});
+                                            var radius = d3.max(distances);
+                                            return {
+                                                x: [d.x],
+                                                y: [d.y],
+                                                z: [scalez(d.z)],
+                                                size: (radius === 0 ? dataPointRadius : scaleX(radius)),
+                                                type: plotType,
+                                                color: color(d.length),
+                                                marker: {
+                                                    line: {
+                                                        color: 'rgba(217, 217, 217, 0.14)',
+                                                        width: 0.5},
+                                                    opacity: 0.8,
+                                                },
+                                                showscale: small,
+                                                showlegend: false,
+                                            }
+                                        });*/
+                                        var scatterData = [
+                                            {
+                                                x:[],
+                                                y:[],
+                                                z:[],
+                                                type: plotType,
+                                                mode: "markers",
+                                                //color: color(d.length),
+                                                marker: {
+                                                    size: [],
+                                                    // color: color(d.length)
+                                                    line: {
+                                                        color: 'rgba(217, 217, 217, 0.14)',
+                                                        width: 0.5
+                                                    },
+                                                    opacity: [],
+                                                },
+                                                showscale: small,
+                                                showlegend: false,
+                                            }];
+                                        var scaleX = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([0,width]);
+                                        scag.bins.forEach(function(d){
+                                            var distances = d.map(function(p){return distance([d.x, d.y], p)});
+                                            var radius = d3.max(distances);
+                                            scatterData[0].x.push(d.x);
+                                            scatterData[0].y.push(d.y);
+                                            scatterData[0].z.push(d.z);
+                                            scatterData[0].marker.size.push (radius === 0 ? dataPointRadius : scaleXradius);
+                                            scatterData[0].marker.opacity.push (color(d.length));
+                                           });
+                                        var scatterLayout = {
+                                            paper_bgcolor: 'rgba(0,0,0,0)',
+                                            plot_bgcolor: 'rgba(0,0,0,0)',
+                                            margin: plotMargins,
+                                            width: scalem+plotMargins.l,
+                                            scene:{
+                                                yaxis:{
+                                                    title: fieldset[1],
+                                                    /*ticks:'',
+                                                    showticklabels: false,
+                                                    titlefont: {
+                                                        size: 11,
+                                                    },*/
+                                                },
+                                                xaxis:{
+                                                    title: fieldset[0],
+                                                    /*ticks:'',
+                                                    showticklabels: false,
+                                                    titlefont: {
+                                                        size: 11,
+                                                    },*/
+                                                },
+                                                zaxis:{
+                                                    title: fieldset[2],
+                                                    /*ticks:'',
+                                                    showticklabels: false,
+                                                    titlefont: {
+                                                        size: 11,
+                                                    },*/
+                                                }
+                                            }
+                                        };
+                                        Plotly.newPlot('3Dscatter' + scope.visId, scatterData, scatterLayout,{displayModeBar: (config.displayModeBar == undefined),staticPlot: (config.staticPlot != undefined)});
 
                                         Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
                                             list: scope.listTitle

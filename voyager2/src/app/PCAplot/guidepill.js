@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('vlui')
-    .service('GuidePill', ['ANY' , function (ANY) {
+    .service('GuidePill', ['Dataset' , function (Dataset,PCAplot) {
         var GuidePill = {
             // Functions
 
@@ -35,12 +35,7 @@ angular.module('vlui')
         });
 
 
-        /**
-         * Set a fieldDef of a pill of a given channelId
-         * @param channelId channel id of the pill to be updated
-         * @param fieldDef fieldDef to to be updated
-         * @param update whether to propagate change to the channel update listener
-         */
+
         function set(type) {
             return
         }

@@ -12,7 +12,8 @@ export enum Mark {
 BOXPLOT = 'boxplot' as any,
   HEXAGON = 'hexagon' as any,
 LEADER = 'leader' as any,
-CONTOUR  = 'contour' as any
+CONTOUR  = 'contour' as any,
+SCATTER3D  = 'scatter3D' as any
 }
 
 export const AREA = Mark.AREA;

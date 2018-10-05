@@ -3,7 +3,7 @@ import {Config, Orient, MarkConfig} from '../config';
 import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, TEXT,BOXPLOT,HEXAGON,LEADER,CONTOUR, Mark} from '../mark';
+import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, TEXT,BOXPLOT,HEXAGON,LEADER,CONTOUR,SCATTER3D, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**

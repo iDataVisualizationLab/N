@@ -85,7 +85,8 @@
         </div>
       </div>
     </div>
-    <div class="pane encoding-pane" ng-hide = "PCAplot.prop && !showEncoding">
+    <!--<div class="pane encoding-pane" ng-hide = "PCAplot.prop && !showEncoding">-->
+    <div class="pane encoding-pane" ng-hide = "true">
       <!-- true shelf -->
       <shelves
         spec="Spec.spec"
@@ -116,96 +117,11 @@
         ></slide-graph>
 
 
-        <div class="specified-vis-pane vflex card"
-             ng-if="Spec.isSpecific"
-             ng-class="{expand: hideExplore, 'no-scroll-y': hideExplore}"
-          >
-          <h2>Specified View</h2>
-          <vl-plot-group
-            ng-if="!Spec.isEmptyPlot && Spec.chart"
-            class="main-vl-plot-group card"
-            ng-class="{'no-scroll-y': hideExplore}"
-            chart="Spec.chart"
-            show-bookmark="true"
-            show-debug="true"
-            show-axis-prop="true"
-            show-sort="true"
-            show-transpose="true"
 
-            always-scrollable="hideExplore"
-            overflow="true"
-            show-label="true"
-            tooltip="true"
-            toggle-shelf="true"
-          ></vl-plot-group>
-          <div ng-if="Spec.isEmptyPlot">
-            No specified visualization yet.  Start exploring by dragging a field to
-            encoding pane on the left or examining univariate summaries below.
-          </div>
-        </div>
-        <div class="queried-vis-pane no-top-margin card" ng-if="!Spec.isSpecific">
-          <div class="right">
-            <span>
-              ({{Spec.groupByLabel[Spec.autoGroupBy]}})
-            </span>
-            <span style="display: inline-block; width: 10px">&nbsp;</span>
-            <label>
-              <input type="checkbox" ng-model="Spec.spec.autoAddCount" ng-change="autoAddCountChanged()"/>
-              Auto-Add Count
-            </label>
-            <!--<span style="display: inline-block; width: 10px">&nbsp;</span>-->
-            <!--<label>
-              Clustering:
-              <select ng-model="Spec.spec.groupBy"
-                ng-change="groupByChanged()">
-                <option value="auto">Auto ({{Spec.groupByLabel[Spec.autoGroupBy]}})</option>
-                <option value="field">{{Spec.groupByLabel.field}}</option>
-                <option value="fieldTransform">{{Spec.groupByLabel.fieldTransform}}</option>
-                <option value="encoding">{{Spec.groupByLabel.encoding}}</option>
-              </select>
-            </label>-->
-          </div>
-          <h2>
-            Guide plot<span ng-show="PCAplot.charts.length>1">s</span>
-          </h2>
-
-          <h2>
-            Specified View<span ng-show="Spec.charts.length>1">s</span>
-          </h2>
-          <!--<div class="description">
-            Here are some recommended visualizations that matches your specification in the encoding pane.
-          </div>-->
-          <vl-plot-group-list
-            ng-if="Spec.charts"
-            charts="Spec.charts"
-            enable-pills-preview="true"
-            priority="1000"
-            list-title="'Results'"
-            hide-list-title="true"
-            post-select-action="scrollToTop()"
-            initial-limit="12"
-          >
-          </vl-plot-group-list>
-          <div ng-if="!Spec.charts">
-            No visualizations satisfy your encoding specification.
-            You might want to undo last change or further modify the specification.
-          </div>
-        </div>
         <div class="alternatives-pane card" ng-class="{collapse: hideExplore}" ng-if="Spec.isSpecific">
           <div class="alternatives-header">
             <div class="right alternatives-jump">
-              <a ng-if="!hideExplore && Spec.alternatives.length > 1"
-                 ng-click="setAlternativeType(null)"
-                 ng-class="{active: alternativeType===null}">
-                All
-              </a>
-              <a ng-repeat="alternative in Spec.alternatives"
-                ng-if="alternative.charts.length"
-                ng-click="$parent.setAlternativeType(alternative.type);"
-                md-parent-scope="this"
-                ng-class="{active: $parent.alternativeType === alternative.type}">
-                {{alternative.title}}
-              </a>
+
               <a class="toggle-hide-explore" ng-click="toggleHideExplore()">
                 <span ng-show="hideExplore">
                   Show
@@ -224,23 +140,149 @@
               Here are refinement to your visualization that you might want to consider.
             </div>-->
             <vl-plot-group-list
-              ng-repeat="alternative in Spec.alternatives"
-              ng-if="alternative.charts.length > 0 && (!$parent.alternativeType || $parent.alternativeType === alternative.type)"
-              id="alternatives-{{alternative.type}}"
-              list-title="alternative.title"
-              charts="alternative.charts"
-              enable-pills-preview="true"
-              priority="$index * 1000"
-              initial-limit="alternative.limit || null"
-              post-select-action="$parent.scrollToTop()"
-              show-query-select="true"
-              query="alternative.query"
+                    ng-repeat="alternative in PCAplot.alternatives"
+                    ng-if="alternative.charts.length > 0 && (!$parent.alternativeType || $parent.alternativeType === alternative.type)"
+                    id="alternatives-{{alternative.type}}"
+                    list-title="alternative.title"
+                    charts="alternative.charts"
+                    enable-pills-preview="true"
+                    priority="$index * 1000"
+                    initial-limit="alternative.limit || null"
+                    post-select-action="$parent.scrollToTop()"
+                    show-query-select="true"
+                    query="alternative.query"
             >
             </vl-plot-group-list>
           </div>
         </div>
       </div>
     </div>
+
+        <!--<div class="specified-vis-pane vflex card"-->
+             <!--ng-if="Spec.isSpecific"-->
+             <!--ng-class="{expand: hideExplore, 'no-scroll-y': hideExplore}"-->
+          <!--&gt;-->
+          <!--<h2>Specified View</h2>-->
+          <!--<vl-plot-group-->
+            <!--ng-if="!Spec.isEmptyPlot && Spec.chart"-->
+            <!--class="main-vl-plot-group card"-->
+            <!--ng-class="{'no-scroll-y': hideExplore}"-->
+            <!--chart="Spec.chart"-->
+            <!--show-bookmark="true"-->
+            <!--show-debug="true"-->
+            <!--show-axis-prop="true"-->
+            <!--show-sort="true"-->
+            <!--show-transpose="true"-->
+
+            <!--always-scrollable="hideExplore"-->
+            <!--overflow="true"-->
+            <!--show-label="true"-->
+            <!--tooltip="true"-->
+            <!--toggle-shelf="true"-->
+          <!--&gt;</vl-plot-group>-->
+          <!--<div ng-if="Spec.isEmptyPlot">-->
+            <!--No specified visualization yet.  Start exploring by dragging a field to-->
+            <!--encoding pane on the left or examining univariate summaries below.-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="queried-vis-pane no-top-margin card" ng-if="!Spec.isSpecific">-->
+          <!--<div class="right">-->
+            <!--<span>-->
+              <!--({{Spec.groupByLabel[Spec.autoGroupBy]}})-->
+            <!--</span>-->
+            <!--<span style="display: inline-block; width: 10px">&nbsp;</span>-->
+            <!--<label>-->
+              <!--<input type="checkbox" ng-model="Spec.spec.autoAddCount" ng-change="autoAddCountChanged()"/>-->
+              <!--Auto-Add Count-->
+            <!--</label>-->
+            <!--&lt;!&ndash;<span style="display: inline-block; width: 10px">&nbsp;</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;<label>-->
+              <!--Clustering:-->
+              <!--<select ng-model="Spec.spec.groupBy"-->
+                <!--ng-change="groupByChanged()">-->
+                <!--<option value="auto">Auto ({{Spec.groupByLabel[Spec.autoGroupBy]}})</option>-->
+                <!--<option value="field">{{Spec.groupByLabel.field}}</option>-->
+                <!--<option value="fieldTransform">{{Spec.groupByLabel.fieldTransform}}</option>-->
+                <!--<option value="encoding">{{Spec.groupByLabel.encoding}}</option>-->
+              <!--</select>-->
+            <!--</label>&ndash;&gt;-->
+          <!--</div>-->
+          <!--<h2>-->
+            <!--Guide plot<span ng-show="PCAplot.charts.length>1">s</span>-->
+          <!--</h2>-->
+
+          <!--<h2>-->
+            <!--Specified View<span ng-show="Spec.charts.length>1">s</span>-->
+          <!--</h2>-->
+          <!--&lt;!&ndash;<div class="description">-->
+            <!--Here are some recommended visualizations that matches your specification in the encoding pane.-->
+          <!--</div>&ndash;&gt;-->
+          <!--<vl-plot-group-list-->
+            <!--ng-if="Spec.charts"-->
+            <!--charts="Spec.charts"-->
+            <!--enable-pills-preview="true"-->
+            <!--priority="1000"-->
+            <!--list-title="'Results'"-->
+            <!--hide-list-title="true"-->
+            <!--post-select-action="scrollToTop()"-->
+            <!--initial-limit="12"-->
+          <!--&gt;-->
+          <!--</vl-plot-group-list>-->
+          <!--<div ng-if="!Spec.charts">-->
+            <!--No visualizations satisfy your encoding specification.-->
+            <!--You might want to undo last change or further modify the specification.-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="alternatives-pane card" ng-class="{collapse: hideExplore}" ng-if="Spec.isSpecific">-->
+          <!--<div class="alternatives-header">-->
+            <!--<div class="right alternatives-jump">-->
+              <!--<a ng-if="!hideExplore && Spec.alternatives.length > 1"-->
+                 <!--ng-click="setAlternativeType(null)"-->
+                 <!--ng-class="{active: alternativeType===null}">-->
+                <!--All-->
+              <!--</a>-->
+              <!--<a ng-repeat="alternative in Spec.alternatives"-->
+                <!--ng-if="alternative.charts.length"-->
+                <!--ng-click="$parent.setAlternativeType(alternative.type);"-->
+                <!--md-parent-scope="this"-->
+                <!--ng-class="{active: $parent.alternativeType === alternative.type}">-->
+                <!--{{alternative.title}}-->
+              <!--</a>-->
+              <!--<a class="toggle-hide-explore" ng-click="toggleHideExplore()">-->
+                <!--<span ng-show="hideExplore">-->
+                  <!--Show-->
+                  <!--<i class="fa fa-toggle-up"></i>-->
+                <!--</span>-->
+                <!--<span ng-show="!hideExplore">-->
+                  <!--Hide-->
+                  <!--<i class="fa fa-toggle-down"></i>-->
+                <!--</span>-->
+              <!--</a>-->
+            <!--</div>-->
+            <!--<h2>Related Views</h2>-->
+          <!--</div>-->
+          <!--<div class="alternatives-content" ng-if="!hideExplore">-->
+            <!--&lt;!&ndash;<div class="description">-->
+              <!--Here are refinement to your visualization that you might want to consider.-->
+            <!--</div>&ndash;&gt;-->
+            <!--<vl-plot-group-list-->
+              <!--ng-repeat="alternative in Spec.alternatives"-->
+              <!--ng-if="alternative.charts.length > 0 && (!$parent.alternativeType || $parent.alternativeType === alternative.type)"-->
+              <!--id="alternatives-{{alternative.type}}"-->
+              <!--list-title="alternative.title"-->
+              <!--charts="alternative.charts"-->
+              <!--enable-pills-preview="true"-->
+              <!--priority="$index * 1000"-->
+              <!--initial-limit="alternative.limit || null"-->
+              <!--post-select-action="$parent.scrollToTop()"-->
+              <!--show-query-select="true"-->
+              <!--query="alternative.query"-->
+            <!--&gt;-->
+            <!--</vl-plot-group-list>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
     <div class="pane guidemenu grow-1"
          ng-if="showExtraGuide||PCAplot.prop">
