@@ -5487,12 +5487,14 @@
                                 // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
                                 var labels = true; // show the text labels beside individual boxplots?
                                 // my zone \(=o=)\
-                                var margin = {top: 5, right: 20, bottom: 50, left: 20};
+                                var margin = {top: 10, right: 20, bottom: 50, left: 20};
                                 var titleOffset = spec.marks[0].axes[0].titleOffset||30;
                                 margin.bottom += (titleOffset==30?30:0);
                                 var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
                                 //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
                                 var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
+                                    height = Math.min(height,100);
+                                    width = Math.min(width,200);
                                 // old_canvas.remove();
                                 var min = Infinity,
                                     max = -Infinity;
@@ -5519,17 +5521,6 @@
                                 data.forEach(function(it){
                                     min = it.stats.min<min?it.stats.min:min;
                                     max = it.stats.max>max?it.stats.max:max;
-                                    /*var  q1 = it.stats.q1,
-                                        q3 = it.stats.q3,
-                                        iqr = (q3-q1)*1.5,
-                                        unique = Object.keys(it.stats.unique),
-                                        i = -1,
-                                        j = unique.length;
-                                    unique.sort(function(a,b){return formatNum(a)-formatNum(b)});
-                                    while (formatNum(unique[++i]) < q1 - iqr);
-                                    while (formatNum(unique[--j]) > q3 + iqr);
-                                    it.stats.q1iqr = Math.max(formatNum(unique[i]),it.stats.min);
-                                    it.stats.q3iqr = Math.min(formatNum(unique[j]),it.stats.max);*/
                                 });
 
                                 // the y-axis
@@ -5680,6 +5671,12 @@
                                     // console.log(fieldset);
                                     // console.log(points);
                                     try{
+                                        var scaleXv = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([fieldDefs[0].stats.min,fieldDefs[0].stats.max]);
+                                        var scaleYv = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([fieldDefs[1].stats.min,fieldDefs[1].stats.max]);
                                     var scag = scagnostics(points, 'hexagon',20);
                                     //console.log(scag.bins);
                                     // the y-axis
@@ -5925,6 +5922,13 @@
                                             colorscale.push ([colorlevel(i),color(colorlevel(i))]);
                                             colorscale.push ([colorlevel(i+1),color(colorlevel(i))]);
                                         }
+                                        var fieldDefs =fieldset.map(function(d){return Dataset.schema.fieldSchema(d)});
+                                        var scaleX = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([fieldDefs[0].stats.min,fieldDefs[0].stats.max]);
+                                        var scaleY = d3.scale.linear()
+                                            .domain([0,1])
+                                            .range([fieldDefs[1].stats.min,fieldDefs[1].stats.max]);
                                         // console.log(colorscale);
                                         var contourData = [{
 
@@ -5953,15 +5957,15 @@
                                         datay.sort(function(a,b){return a.y<b.y?-1:1});
                                         var gridx = [];
                                         datax.forEach(function(d){
-                                            if (d.x!=gridx[gridx.length-1])
-                                                gridx.push(d.x)});
+                                            if (scaleX(d.x)!=gridx[gridx.length-1])
+                                                gridx.push(scaleX(d.x))});
                                         var gridy = [];
                                         datay.forEach(function(d){
-                                            if (d.y!=gridy[gridy.length-1])
-                                                gridy.push(d.y)});
+                                            if (scaleY(d.y)!=gridy[gridy.length-1])
+                                                gridy.push(scaleY(d.y))});
                                         var matrix = gridy.map(function(gy){
                                             return gridx.map(function(gx){
-                                                var item = datax.filter(function(d){return (d.x==gx)&&(d.y==gy)})[0];
+                                                var item = datax.filter(function(d){return (scaleX(d.x)==gx)&&(scaleY(d.y)==gy)})[0];
                                                 return item==undefined?0:item.z;})});
                                             contourData[0].x = gridx;
                                             contourData[0].y = gridy;
@@ -6031,6 +6035,13 @@
                                         .attr("id", "3Dscatter"+scope.visId);
 
                                     var fieldset = scope.chart.fieldSet.map(function(d){return d.field});
+                                    var fieldDefs =fieldset.map(function(d){return Dataset.schema.fieldSchema(d)});
+                                    var scaleX = d3.scale.linear()
+                                        .domain([0,1])
+                                        .range([fieldDefs[0].stats.min,fieldDefs[0].stats.max]);
+                                    var scaleY = d3.scale.linear()
+                                        .domain([0,1])
+                                        .range([fieldDefs[1].stats.min,fieldDefs[1].stats.max]);
                                     // to do
                                     var points =  Dataset.data.map(function(d){
                                         var point = [d[fieldset[0]],d[fieldset[1]]];
@@ -6044,16 +6055,17 @@
                                         var plotType = 'scatter3d';
 
                                         var plotMargins = {
-                                            l: 20+(width-scalem)/2,
-                                            r: (config.colorbar == undefined)?80:5+(width-scalem)/2,
-                                            t: 10+(height-scalem)/2,
-                                            b: 20+(height-scalem)/2,
+                                            l: 0,
+                                            r: 0,
+                                            t: 0,
+                                            b: 0,
                                             pad: 10,
                                             autoexpand: true
                                         };
                                         var color = d3.scale.linear()
                                             .domain(d3.extent(scag.bins.map(function(b) {return b.length})))
-                                            .range([0.5,1]);
+                                            .range(["steelbule",'#2f5597'])
+                                        .interpolate(d3.interpolateHcl);
                                         var  dataPointRadius =2;
                                         var distance = function(a, b){
                                             var dx = a[0] - b[0],
@@ -6107,22 +6119,22 @@
                                                         color: 'rgba(217, 217, 217, 0.14)',
                                                         width: 0.5
                                                     },
-                                                    opacity: [],
+                                                    color: [],
                                                 },
                                                 showscale: small,
                                                 showlegend: false,
                                             }];
-                                        var scaleX = d3.scale.linear()
+                                        var scaleXs = d3.scale.linear()
                                             .domain([0,1])
                                             .range([0,width]);
                                         scag.bins.forEach(function(d){
                                             var distances = d.map(function(p){return distance([d.x, d.y], p)});
                                             var radius = d3.max(distances);
-                                            scatterData[0].x.push(d.x);
-                                            scatterData[0].y.push(d.y);
+                                            scatterData[0].x.push(scaleX(d.x));
+                                            scatterData[0].y.push(scaleY(d.y));
                                             scatterData[0].z.push(d.z);
-                                            scatterData[0].marker.size.push (radius === 0 ? dataPointRadius : scaleXradius);
-                                            scatterData[0].marker.opacity.push (color(d.length));
+                                            scatterData[0].marker.size.push ((radius === 0 ? dataPointRadius : scaleXs(radius))*3);
+                                            scatterData[0].marker.color.push (color(d.length));
                                            });
                                         var scatterLayout = {
                                             paper_bgcolor: 'rgba(0,0,0,0)',
@@ -6133,26 +6145,26 @@
                                                 yaxis:{
                                                     title: fieldset[1],
                                                     /*ticks:'',
-                                                    showticklabels: false,
+                                                    showticklabels: false,*/
                                                     titlefont: {
                                                         size: 11,
-                                                    },*/
+                                                    },
                                                 },
                                                 xaxis:{
                                                     title: fieldset[0],
                                                     /*ticks:'',
-                                                    showticklabels: false,
+                                                    showticklabels: false,*/
                                                     titlefont: {
                                                         size: 11,
-                                                    },*/
+                                                    },
                                                 },
                                                 zaxis:{
                                                     title: fieldset[2],
                                                     /*ticks:'',
-                                                    showticklabels: false,
+                                                    showticklabels: false,*/
                                                     titlefont: {
                                                         size: 11,
-                                                    },*/
+                                                    },
                                                 }
                                             }
                                         };

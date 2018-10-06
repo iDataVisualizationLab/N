@@ -49,7 +49,7 @@ angular.module('pcagnosticsviz')
         PCAplot.plot =function(dataor,dimension) {
             if (!Object.keys(Config.data).length){return PCAplot;}
             if (!PCAplot.firstrun && (Dataset.currentDataset[Object.keys(Config.data)[0]]==Config.data[Object.keys(Config.data)[0]])) {return PCAplot;}
-            console.log("PLOT!!!!");
+            //console.log("PLOT!!!!");
             PCAplot.firstrun = false;
             // d3.select('#bi-plot').selectAll('g').remove();
 
@@ -95,7 +95,7 @@ angular.module('pcagnosticsviz')
                             row = matrix.map(function(r) {return r[i]}),
                             q1 = ss.quantile(row,0.25),
                             q3 = ss.quantile(row,0.75),
-                            iqr = (q3-q1)*1.5;
+                            iqr = (q3-q1)*3;
                             //iqr = Dataset.schema.fieldSchema(d).stats.stdev*1.35;
                         Dataset.schema.fieldSchema(d).stats.q1 = q1;
                         Dataset.schema.fieldSchema(d).stats.q3 = q3;
@@ -888,6 +888,7 @@ angular.module('pcagnosticsviz')
                     .map(function(d){return prop.plot((d.fieldDefs||d ),prop.mark,prop.mspec) });
                 prop.previewcharts = prop.charts.map(function (d) {
                     var thum =_.cloneDeep(d);
+                    // console.log(d);
                     thum.vlSpec.config = {
                         cell: {
                             width: 100,
@@ -895,7 +896,7 @@ angular.module('pcagnosticsviz')
                         },
                         axis: {
                             grid: false,
-                            ticks: false,
+                            //ticks: false,
                             labels: false,
                             titleOffset: 20
                         },
@@ -904,6 +905,9 @@ angular.module('pcagnosticsviz')
                         displayModeBar: false,
                         colorbar: false
                     };
+                    if (d.fieldSet[0].type!="temporal"){
+                        thum.vlSpec.config.axis.ticks = false;
+                    }
                     return thum;});
                 prop.pos = 0;
                 PCAplot.limit = 10;
@@ -1007,7 +1011,7 @@ angular.module('pcagnosticsviz')
                         return !ff;});
                     var topitem = support[1].types.map(function (d) {
                         return possible.sort(function (a, b) {
-                            return (a[d] < b[d]) ? 1 : -1;
+                            return (a.scag[d] < b.scag[d]) ? 1 : -1;
                         })[0];
                     });
                     var unique = [];
@@ -1105,7 +1109,7 @@ angular.module('pcagnosticsviz')
                 if (possible.length != 0) {
                     var topitem = support[PCAplot.dim + 1].types.map(function (d) {
                         return possible.sort(function (a, b) {
-                            return a[d] < b[d] ? 1 : -1
+                            return (a.scag[d] < b.scag[d]) ? 1 : -1;
                         })[0];
                     });
                     var unique = [];
@@ -1245,7 +1249,7 @@ angular.module('pcagnosticsviz')
                     },
                     axis: {
                         grid: false,
-                        ticks: false,
+                        // ticks: false,
                         labels: false,
                         titleOffset: 20
                     },
@@ -1254,7 +1258,9 @@ angular.module('pcagnosticsviz')
                     displayModeBar: false,
                     colorbar: false,
                 };
-
+                if (d.fieldSet[0].type!="temporal"){
+                    thum.vlSpec.config.axis.ticks = false;
+                }
                 return thum;});
             nprop.pos = 0;
             PCAplot.updateguide(nprop);
@@ -1265,7 +1271,7 @@ angular.module('pcagnosticsviz')
             support[dim].marks.forEach(function(d,i){
                 if (d==oldmark){
                     pos= i; return ;}});
-            return support[dim+1].marks[pos];
+            return support[dim+1].marks[pos>support[dim+1].marks.length-1?support[dim+1].marks.length-1:pos];
         }
         function type2mark (type){
             switch (type) {
@@ -1343,6 +1349,8 @@ angular.module('pcagnosticsviz')
                 spec.encoding.y.type = "quantitative";
             }else if (object.type==="temporal"){
                 spec.encoding.x.bin ={};
+                //spec.encoding.x.type = "ordinal";
+                spec.encoding.x.timeUnit = "year";
                 spec.encoding.y.type = "quantitative";
             }
             //console.log(spec);
@@ -1381,6 +1389,7 @@ angular.module('pcagnosticsviz')
                 x: { field: objects[0].field, type: objects[0].type},
                 y: { field: objects[1].field, type: objects[1].type},
             };
+            spec.config.mark= {"filled": true, "opacity":1};
         }
 
         function scatterplot(spec,objects){

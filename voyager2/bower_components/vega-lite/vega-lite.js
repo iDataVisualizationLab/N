@@ -6195,7 +6195,7 @@ exports.defaultMarkConfig = {
     fill: '#4682b4',
     shape: Shape.CIRCLE,
     strokeWidth: 1,
-    size: 30,
+    size: 10,
     barThinSize: 2,
     ruleSize: 1,
     tickThickness: 1,
