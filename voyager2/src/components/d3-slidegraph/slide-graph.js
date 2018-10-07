@@ -1,6 +1,6 @@
 'use strict';
 angular.module('pcagnosticsviz')
-    .directive('slideGraph', function(PCAplot){
+    .directive('slideGraph', function(PCAplot,Spec,Pills){
         //template: "<svg id =\'bi-plot\' width=\'100%\' class=\"\"></svg>",
         return {
             templateUrl: 'components/d3-slidegraph/slide-graph.html',
@@ -24,7 +24,9 @@ angular.module('pcagnosticsviz')
 
                 scope.$watch("pos",function(){
                     setTransform();
-                    PCAplot.alternativeupdate( scope.charts[scope.pos]);
+                    //PCAplot.alternativeupdate( scope.charts[scope.pos]);
+                    PCAplot.mspec = scope.charts[scope.pos];
+                    Pills.select(scope.charts[scope.pos].vlSpec);
                 },true);
 
                 scope.prev = function() {

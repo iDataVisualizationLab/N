@@ -29,10 +29,10 @@
             <span class="dataset-name">{{Dataset.currentDataset.name}}</span>
           </div>
         </div>
-        <h3>Biplot</h3>
+        <h3>Overview</h3>
         <bi-plot></bi-plot>
         <div class = "scroll-y-nox scroll-y">
-          <h3>Guided plots</h3>
+          <h3>Exemplar</h3>
 
           <vl-plot-group
                   ng-if="PCAplot.chart"
@@ -133,7 +133,7 @@
                 </span>
               </a>
             </div>
-            <h2>Related Views</h2>
+            <h2>Expanded views</h2>
           </div>
           <div class="alternatives-content" ng-if="!hideExplore">
             <!--<div class="description">

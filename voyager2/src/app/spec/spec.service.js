@@ -189,7 +189,7 @@ angular.module('pcagnosticsviz')
         Spec.alternatives = [];
 
 
-        if (Spec.isSpecific || Spec.isEmptyPlot) {
+        /*if (Spec.isSpecific || Spec.isEmptyPlot) {
           Spec.chart = Chart.getChart(topItem);
           Spec.charts = null;
 
@@ -207,6 +207,11 @@ angular.module('pcagnosticsviz')
         } else {
           Spec.charts = null;
           Spec.chart = null;
+        }*/
+        if (Spec.isSpecific) {
+            /*PCAplot.alternativeupdate(Spec.spec);*/
+            Spec.charts = null;
+            Spec.chart = null;
         }
       // }
         //console.log(Spec.alternatives);
@@ -572,6 +577,7 @@ angular.module('pcagnosticsviz')
                 fields.push(spec.encoding[key].field);
             }
         }
+        dim = (dim<1)?0:(dim-1);
         var data;
         if (dim==0)
             data = Dataset.data;
@@ -582,23 +588,6 @@ angular.module('pcagnosticsviz')
               tem[d.field] = d.scag;
               return tem;});
         }
-        if (dim==2){
-            // PCAplot.calscagnotic(fields);
-            console.log("HEREEEEEEE!");
-            var scag = Dataset.schema.fieldSchema(fields[0]).scag[fields[1]];
-            //console.log(Dataset.schema.fieldSchema(fields[0]).scag);
-            //console.log("0. Bin size: " + scag.binSize + "x" + scag.binSize + " bins" + ", num of bins: " + scag.bins.length);
-            console.log("1. Outlying score: " + scag.outlyingScore + ", outlying edge cut point: " + scag.outlyingUpperBound);
-            console.log("2. Skewed score: " + scag.skewedScore);
-            console.log("3. Sparse score: " + scag.sparseScore);
-            console.log("4. Clumpy score: " + scag.clumpyScore);
-            console.log("5. Striated score: " + scag.striatedScore);
-            console.log("6. Convex score: " + scag.convexScore);
-            console.log("7. Skinny score: " + scag.skinnyScore);
-            console.log("8. Stringy score: " + scag.stringyScore);
-            console.log("9. Monotonic score: " + scag.monotonicScore);
-
-        }
 
         //if (PCAplot.mainfield != fields[0]){
          if (PCAplot.dim != dim && dim <2){
@@ -607,6 +596,9 @@ angular.module('pcagnosticsviz')
              PCAplot.dim = dim;
         }
         PCAplot.plot(data,dim);
+        console.log(dim);
+
+        if (PCAplot.mspec!=null) PCAplot.alternativeupdate();
         return Spec.update(spec);
       },
       reset: function() {

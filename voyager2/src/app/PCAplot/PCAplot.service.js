@@ -33,6 +33,7 @@ angular.module('pcagnosticsviz')
             dim: 0,
             dataref:null,
             limit: 10,
+            mspec:null,
         };
         PCAplot.mark2plot = mark2plot;
         var support =[{
@@ -43,7 +44,7 @@ angular.module('pcagnosticsviz')
             marks :['point','hexagon','leader','contour'],
         }, {
             types : ['com'],
-            marks :['scatter3D'],
+            marks :['scatter3D','radar'],
         }];
         //PCAplot.updateplot = function (data){};
         PCAplot.plot =function(dataor,dimension) {
@@ -56,6 +57,7 @@ angular.module('pcagnosticsviz')
             // Biplot.data;
             //var data = Dataset.data);
             if (typeof dataor !=='undefined' ) {
+                PCAplot.data = [Dataset.schema.fieldSchemas,PCAplot.dataref];
                 //d3.selectAll('.biplot').append("g");
                 var data=_.cloneDeep(dataor);
                 var margin = {top: 20, right: 20, bottom: 20, left: 20};
@@ -122,7 +124,7 @@ angular.module('pcagnosticsviz')
                     data = newdata.filter(function(d){return !d.invalid}); // for overview 2D
                     // idlabel = Object.keys(data);
                     //brand_names = Object.keys(data[idlabel[0]]);
-                    brand_names = Object.keys(data[0]);
+                    brand_names = Object.keys(data[0]).filter(function(d){return d!="label";});
                     // data = d3.values(data);
                     matrix = data.map(function(d) {return d3.values(d)});
                     //console.log(data);
@@ -840,7 +842,8 @@ angular.module('pcagnosticsviz')
                 case 'hexagon': pointplot(spec, object,'hexagon'); break;
                 case 'leader': pointplot(spec, object,'leader'); break;
                 case 'contour': pointplot(spec, object,'contour'); break;
-                case 'scatter3D': scatterplot(spec,object); break
+                case 'scatter3D': scatterplot(spec,object); break;
+                case 'radar': radarplot(spec,object); break;
             }
         }
         function drawGuideplot (object,type,dataref) {
@@ -916,7 +919,7 @@ angular.module('pcagnosticsviz')
                 PCAplot.updateguide(prop);
                 var data = [];
                 var datarefn = [];
-                if (PCAplot.dataref == null){
+                if (PCAplot.dataref.length ==0|| PCAplot.dataref== null){
                     var idlabel=[];
                     data = dataref.map(function(d){
                         var tem = {field: d.field};
@@ -1069,7 +1072,8 @@ angular.module('pcagnosticsviz')
         };
 
         PCAplot.alternativeupdate = function(mspec){
-            if (PCAplot.dataref == null){
+            mspec = _.cloneDeep(mspec || PCAplot.mspec);
+            if (PCAplot.dataref.length ==0|| PCAplot.dataref== null){
                 var data = [];
                 var datarefn = [];
                 var idlabel=[];
@@ -1093,6 +1097,7 @@ angular.module('pcagnosticsviz')
                         scag: d,};
                 });
             }
+            //var fieldsets = mspec.fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&&d!="*"});
             var fieldsets = mspec.fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&&d!="*"});
             if (fieldsets.length<2) {
                 var possible = PCAplot.dataref.filter(function (d) {
@@ -1200,12 +1205,9 @@ angular.module('pcagnosticsviz')
             })
                 .map(function (d) {
                     var spec = {};
-                    //spec.data = Dataset.dataset;
+
                     spec.config = {
-                        /*cell: {
-                            width: PCAplot.dim?100:200,
-                            height: PCAplot.dim?100:30,
-                        },*/
+
                         axis: {
                             grid: false,
                             ticks: false,
@@ -1295,6 +1297,7 @@ angular.module('pcagnosticsviz')
                 //case 'outlying SC'
                 case 'com':
                     return 'scatter3D'
+
                 default: return 'point';
             }
         }
@@ -1401,7 +1404,10 @@ angular.module('pcagnosticsviz')
                 x2: { field: objects[2].field, type: objects[2].type},
             };
         }
-
+        function radarplot(spec,objects){
+            spec.mark = "radard";
+            spec.layer = objects.map(function(o){return {encoding:{x: { field: o.field, type: o.type}}}});
+        }
 
 
         function getQuery(spec, convertFilter /*HACK */) {
@@ -1604,6 +1610,8 @@ angular.module('pcagnosticsviz')
             PCAplot.chart=null;
             PCAplot.prop=null;
             PCAplot.alternatives=[];
+            PCAplot.dataref = [];
+            PCAplot.mspec = null;
 
             //PCAplot.plot(Dataset.data);
         };
