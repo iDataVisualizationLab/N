@@ -1,0 +1,28 @@
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #333;
+}
+
+.d3-tip {
+  pointer-events: none;
+  background-color: white;
+}
+.d3-tip table {
+  font-size: small;
+  border-radius: 10px;
+  border-collapse: collapse;
+}
+.d3-tip table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.d3-tip table th {
+  background-color: #153488;
+  color: white;
+}
+.d3-tip table th, .d3-tip table td {
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  padding: 5px;
+}
+
+/*# sourceMappingURL=main.css.map */
