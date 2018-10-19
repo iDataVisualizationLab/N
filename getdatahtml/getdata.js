@@ -92,9 +92,13 @@ var source = "reuters";
 // var time = 1539356002000;
 // var time =1538423562000;
 // var time =1537363447000;
-var time =1533746739000;
+// var time =1533746739000;
+// var time =1532525019000;
+// var time = 1530428400000;
+// var time = 1529514032000;
+var time = 1528213179000;
 (async function loop() {
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 200; i++) {
         let url = "https://www.reuters.com/assets/jsonWireNews?endTime="+time;
         fetch(url).then(function(webresponse) {
             if(webresponse.ok) {
@@ -119,7 +123,7 @@ var time =1533746739000;
             }
         });
 
-        await delay(Math.random() * 10000+5000);
+        await delay(Math.random() * 3000+2000);
     }
     // var a = document.createElement("a");
     // var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));

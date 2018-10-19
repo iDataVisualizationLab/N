@@ -1,4 +1,10 @@
-var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
+// var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
+var categoriesgroup ={  "PRODUCT":["PRODUCT","LAW","EVENT"],
+                        "PERSON":["PERSON"],
+                        "NATION":["LOC","GPE"], // ORG merge GPE
+                        "ORG":["ORG"],
+                        "NUMBER": ["MONEY","PERCENT","ORDINAL"]};
+var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
 var TermwDay,
@@ -11,6 +17,10 @@ var x = d3.scalePoint();
 var wscale = 0.1;
 var timeline;
 var svgHeight = 2000;
+var mainconfig = {
+    renderpic: false,
+    wstep: 10,
+};
 var wordTip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -18,7 +28,7 @@ var wordTip = d3.tip()
         var str = '';
         str += "<table>";
         str += "<tr>";
-        str += '<th colspan="2">' + (d.text||d.key) + ' : ' + (d.frequency||d.value.articlenum) + '</th>';
+        str += '<th colspan="2">' + (d.text||d.key) + ' : ' + (d.frequency||d.value.articlenum) + "-" + outputFormat(d.data[0].time) +'</th>';
         // if(d.key==undefined)
         //     str += '<h4>' + outputFormat(d.data[0].time) + '</h4>';
         str + "</tr>";
@@ -466,6 +476,7 @@ function wordCloud(selector,config) {
 function ready (error, data){
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
+    width = Math.max(width,mainconfig.wstep*);
     var height = svgHeight - margin.bottom - margin.top;
 
     // parse the date / time
@@ -494,7 +505,7 @@ function ready (error, data){
     myWordCloud = wordCloud('#tagCloud',configwc);
     if (error) throw error;
     // format the data
-    data =data.filter(d=>d.source=="reuters");
+    //data =data.filter(d=>d.source=="reuters");
     data.forEach(function(d) {
         if(d.source !== "reuters")
             d.time = parseTime(d.time);
@@ -534,7 +545,8 @@ function ready (error, data){
             .attr("preserveAspectRatio", "none")
             .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
             .attr("xlink:href", function (d) {
-                return d.urlToImage;});
+                return mainconfig.renderpic? d.urlToImage:"";
+            });
 
     pic.on("error", function(){
         let el = d3.select(this);
@@ -560,8 +572,8 @@ function ready (error, data){
     circles.on("mouseover", d=>wordTip.show(d))
         .on("mouseout", ()=>wordTip.hide());
     //.attr("fill",d => "url(#"+d.time+")");
-    simulation.nodes(ArticleDay)
-        .on('tick',ticked);
+    simulation.nodes(ArticleDay);
+        //.on('tick',ticked);
     // Add the X Axis
     timeline.append("g")
         .attr("class", "axis")
@@ -595,18 +607,7 @@ function ready (error, data){
 function handledata(data){
     data.sort((a,b)=> a.time-b.time);
     var termscollection = blacklist(data);
-    // var termscollection = [];
-    // data.forEach(d=>{
-    //     d.keywords.filter(w => {
-    //         var key = false;
-    //         categories.forEach(c=> key = key || w.term)
-    //         return key;}).forEach( w => {
-    //         var e = w;
-    //         e.time = d.time;
-    //         e.title = d.title;
-    //         termscollection.push(w)});
-    // });
-    // data.sort((a,b)=> a.time-b.time);
+
     //sort out term for 1 article
 
     var nested_data = d3.nest()
@@ -697,18 +698,24 @@ function fillData(endDate, startDate) {
 }
 
 function blacklist(data){
-    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters"];
+    categories = Object.keys(categoriesgroup);
+    var categoriesmap = {};
+    for ( k in categoriesgroup)
+        categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
+    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU"];
     var termscollection = [];
     data.forEach(d=>{
         d.keywords.filter(w => {
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            categories.forEach(c=> key = key || ((blackw.find(d=>d==w.term)== undefined)));
+            key = key || ((blackw.find(d=>d==w.term)== undefined));
             return key;}).forEach( w => {
-            var e = w;
-            e.time = d.time;
-            e.title = d.title;
-            termscollection.push(w)});
+                w.maincategory = w.category;
+                w.category = categoriesmap[w.category]||w.category;
+                var e = w;
+                e.time = d.time;
+                e.title = d.title;
+                termscollection.push(w)});
     });
 
     return termscollection;
