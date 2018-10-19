@@ -19,8 +19,10 @@ var timeline;
 var svgHeight = 2000;
 var mainconfig = {
     renderpic: false,
-    wstep: 10,
+    wstep: 50,
 };
+var startDate;
+var endDate;
 var wordTip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -408,10 +410,13 @@ function wordCloud(selector,config) {
             // var max = 0;
             // var min = 0;
             var img = wimg.selectAll('.stackimg')
-                .data(d=>d.data)
+                .data(d => d.data)
                     .enter()
+                .append('a')
+                .attr("xlink:href",d => d.url)
+                .attr('class','stackimg')
                     .append('rect')
-                    .attr('class','stackimg')
+                    //.attr('class','stackimg')
                     // .attr('d', area)
                     //.style('fill', prevColor)
                     .attr("fill",d => "url(#"+d.time+")")
@@ -474,9 +479,19 @@ function wordCloud(selector,config) {
     }
 }
 function ready (error, data){
+    if (error) throw error;
+    // format the data
+    //data =data.filter(d=>d.source=="reuters");
+    data.forEach(function(d) {
+        if(d.source !== "reuters")
+            d.time = parseTime(d.time);
+    });
+    handledata(data);
+
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
-    width = Math.max(width,mainconfig.wstep*);
+    var numDays = Math.floor((new Date(endDate) - new Date(startDate))/1000/60/60/24);
+    width = Math.max(width,mainconfig.wstep*numDays);
     var height = svgHeight - margin.bottom - margin.top;
 
     // parse the date / time
@@ -503,14 +518,7 @@ function ready (error, data){
         .attr("height", height*(1-wscale));
     var configwc = {width: width,height: height*(1-wscale)};
     myWordCloud = wordCloud('#tagCloud',configwc);
-    if (error) throw error;
-    // format the data
-    //data =data.filter(d=>d.source=="reuters");
-    data.forEach(function(d) {
-        if(d.source !== "reuters")
-            d.time = parseTime(d.time);
-    });
-    handledata(data);
+
     myWordCloud.update(TermwDay);
     // Scale the range of the data
     //x.domain(d3.extent(data, function(d) { return d.time; }));
@@ -570,7 +578,7 @@ function ready (error, data){
         .attr("r",d=> rcscale(d.value.articlenum))
         .attr("fill","lightblue");
     circles.on("mouseover", d=>wordTip.show(d))
-        .on("mouseout", ()=>wordTip.hide());
+        .on("mouseout", () => wordTip.hide());
     //.attr("fill",d => "url(#"+d.time+")");
     simulation.nodes(ArticleDay);
         //.on('tick',ticked);
@@ -637,7 +645,7 @@ function handledata(data){
         categories.forEach( topic =>
         {
             var w = d.values.filter(wf => wf.key == topic)[0];
-            if (w != undefined) {
+            if (w !== undefined) {
                 words[w.key] = w.values.map(
                     text => {
                         return {
@@ -698,6 +706,7 @@ function fillData(endDate, startDate) {
 }
 
 function blacklist(data){
+    var numterm =0;
     categories = Object.keys(categoriesgroup);
     var categoriesmap = {};
     for ( k in categoriesgroup)
@@ -706,9 +715,10 @@ function blacklist(data){
     var termscollection = [];
     data.forEach(d=>{
         d.keywords.filter(w => {
+            numterm++;
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || ((blackw.find(d=>d==w.term)== undefined));
+            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
             return key;}).forEach( w => {
                 w.maincategory = w.category;
                 w.category = categoriesmap[w.category]||w.category;
@@ -717,6 +727,7 @@ function blacklist(data){
                 e.title = d.title;
                 termscollection.push(w)});
     });
-
+    console.log("#org terms: " +numterm);
+    console.log("#terms: " +termscollection.length);
     return termscollection;
 }

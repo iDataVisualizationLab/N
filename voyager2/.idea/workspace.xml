@@ -17,7 +17,7 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/main/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="455">
+            <state relative-caret-position="544">
               <caret line="41" column="44" lean-forward="false" selection-start-line="41" selection-start-column="37" selection-end-line="41" selection-end-column="44" />
               <folding>
                 <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
@@ -43,8 +43,8 @@
       <file leaf-file-name="PCAplot.service.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="89">
-              <caret line="405" column="35" lean-forward="true" selection-start-line="405" selection-start-column="35" selection-end-line="405" selection-end-column="35" />
+            <state relative-caret-position="17">
+              <caret line="405" column="35" lean-forward="false" selection-start-line="405" selection-start-column="35" selection-end-line="405" selection-end-column="35" />
               <folding>
                 <element signature="e#406#813#0" expanded="false" />
                 <element signature="e#32340#34745#0" expanded="false" />
@@ -66,7 +66,7 @@
       <file leaf-file-name="weball26.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data/weball26.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="289">
               <caret line="17" column="28" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1568" selection-end-column="0" />
               <folding />
             </state>
@@ -76,7 +76,7 @@
       <file leaf-file-name="iris.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data/iris.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="357">
               <caret line="21" column="57" lean-forward="false" selection-start-line="21" selection-start-column="57" selection-end-line="21" selection-end-column="57" />
               <folding />
             </state>
@@ -86,7 +86,7 @@
       <file leaf-file-name="spec.service.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="11492">
               <caret line="676" column="4" lean-forward="false" selection-start-line="676" selection-start-column="4" selection-end-line="676" selection-end-column="4" />
               <folding />
             </state>
@@ -702,26 +702,26 @@
       <workItem from="1538525015396" duration="47613000" />
       <workItem from="1538681959982" duration="41000" />
       <workItem from="1538682014031" duration="116926000" />
-      <workItem from="1539149223038" duration="10368000" />
+      <workItem from="1539149223038" duration="10474000" />
+      <workItem from="1539986620503" duration="72000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="759286000" />
+    <option name="totallyTimeSpent" value="759464000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="166" y="117" width="1552" height="873" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32388663" sideWeight="0.5053619" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32388663" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32388663" sideWeight="0.49463806" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964224" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18632708" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18900804" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -1012,7 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="277">
           <caret line="232" column="0" lean-forward="false" selection-start-line="232" selection-start-column="0" selection-end-line="232" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1020,7 +1019,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="123">
           <caret line="18556" column="43" lean-forward="false" selection-start-line="18556" selection-start-column="43" selection-end-line="18556" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1102,20 +1100,19 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/vega-lite/vega-lite.min.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
           <caret line="0" column="5681" lean-forward="false" selection-start-line="0" selection-start-column="5681" selection-end-line="0" selection-end-column="5681" />
         </state>
+      </provider>
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/d3-slidegraph/slide-com.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="12" column="32" lean-forward="false" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1130,7 +1127,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="14" lean-forward="false" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1138,7 +1134,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-510">
           <caret line="3" column="58" lean-forward="false" selection-start-line="3" selection-start-column="54" selection-end-line="3" selection-end-column="58" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2143,7 +2138,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/main/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
+        <state relative-caret-position="544">
           <caret line="41" column="44" lean-forward="false" selection-start-line="41" selection-start-column="37" selection-end-line="41" selection-end-column="44" />
           <folding>
             <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
@@ -2153,7 +2148,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/spec/spec.service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="11492">
           <caret line="676" column="4" lean-forward="false" selection-start-line="676" selection-start-column="4" selection-end-line="676" selection-end-column="4" />
           <folding />
         </state>
@@ -2161,7 +2156,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data/weball26.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="289">
           <caret line="17" column="28" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1568" selection-end-column="0" />
           <folding />
         </state>
@@ -2169,7 +2164,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data/iris.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="357">
           <caret line="21" column="57" lean-forward="false" selection-start-line="21" selection-start-column="57" selection-end-line="21" selection-end-column="57" />
           <folding />
         </state>
@@ -2185,8 +2180,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/PCAplot/PCAplot.service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="405" column="35" lean-forward="true" selection-start-line="405" selection-start-column="35" selection-end-line="405" selection-end-column="35" />
+        <state relative-caret-position="17">
+          <caret line="405" column="35" lean-forward="false" selection-start-line="405" selection-start-column="35" selection-end-line="405" selection-end-column="35" />
           <folding>
             <element signature="e#406#813#0" expanded="false" />
             <element signature="e#32340#34745#0" expanded="false" />
