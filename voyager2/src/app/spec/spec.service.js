@@ -555,6 +555,11 @@ angular.module('pcagnosticsviz')
           //delete spec.config.cell;
           spec.mark = ANY;
         }
+
+        if (spec.config.typer){
+            PCAplot.madeprop(spec);
+        }
+
         Spec.parseSpec(spec);
 
       },

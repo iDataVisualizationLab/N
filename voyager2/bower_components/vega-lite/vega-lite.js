@@ -1799,11 +1799,11 @@ function getSupportedMark(channel) {
             return {
                 point: true, tick: true, rule: true, circle: true, square: true,
                 bar: true, line: true, area: true, text: true,
-                boxplot:true, hexagon:true, leader:true, contour:true, scatter3D:true
+                boxplot:true, hexagon:true, leader:true, contour:true, scatter3D:true, radar:true
             };
         case exports.X2:
             return {
-                scatter3D:true
+                scatter3D:true, radar:true
             };
         case exports.Y2:
             return {

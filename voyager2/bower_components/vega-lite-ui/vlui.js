@@ -6191,7 +6191,7 @@
                                     // draw boxplot inspirted by http://bl.ocks.org/jensgrubert/7789216
                                     var labels = true; // show the text labels beside individual boxplots?
                                     // my zone \(=o=)\
-                                    var margin = {top: 5, right: 5, bottom: 35, left: 20};
+                                    var margin = {top: 35, right: 5, bottom: 35, left: 20};
                                     var  width = $(boxplotdiv[0]).width() - margin.left - margin.right;
                                     //var height = $(old_canvas[0]).height() - margin.top - margin.bottom;
                                     var height = (parseInt($(boxplotdiv[0]).parent().parent().css("max-height"),10)||parseInt($(boxplotdiv[0]).parent().parent().parent()[0].offsetHeight,10)) - margin.top - margin.bottom-$(boxplotdiv[0]).parent().parent().find('.vl-plot-group-header').outerHeight(true);//||width/3;
@@ -6222,8 +6222,10 @@
                                     // console.log(points);
                                     try{
                                         var fieldDefs =fieldset.map(function(d){return Dataset.schema.fieldSchema(d)});
-                                        var color = d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]);
+                                        //var color = d3.scale.ordinal().range(["#EDC951","#CC333F","#00A0B0"]);
+                                        var tip=[];
                                         var data = Dataset.data.map(function (d){
+                                            tip.push(d3.entries(d));
                                             return fieldDefs.map(function(f){return {value: (f.stats.max-f.stats.min)? (d[f.field]-f.stats.min)/(f.stats.max-f.stats.min):0, or: d[f.field]}; });});
                                         var radarChartOptions = {
                                             w: width,
@@ -6232,9 +6234,15 @@
                                             maxValue: 1,
                                             levels: 5,
                                             roundStrokes: true,
-                                            color: color
+                                            color: color,
+                                            labelFactor: 1.1, 	//How much farther than the radius of the outer circle should the labels be placed
+                                            wrapWidth: 60, 		//The number of pixels after which a label
+                                            opacityArea: 0.35, 	//The opacity of the area of the blob
+                                            dotRadius: 2, 			//The size of the colored circles of each
+                                            opacityCircles: 0.1, 	//The opacity of the circles of each blob
+                                            strokeWidth: 1,
                                         };
-                                        RadarChart(".radar-Chart", data,fieldDefs, radarChartOptions);
+                                        RadarChart(".radar-Chart", data,fieldDefs, radarChartOptions,tip);
 
 
 
@@ -6316,7 +6324,7 @@
                             });
                         }
                     }
-                    function RadarChart(id, data,axis, options) {
+                    function RadarChart(id, data,axis, options,tiptext) {
                         var cfg = {
                             w: 600,				//Width of the circle
                             h: 600,				//Height of the circle
@@ -6343,7 +6351,7 @@
                         //If the supplied maxValue is smaller than the actual one, replace by the max in the data
                         /*var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));*/
                         var maxValue = cfg.maxValue;
-                        var allAxis = (axis),	//Names of each axis
+                        var allAxis = axis,	//Names of each axis
                             total = allAxis.length,					//The number of different axes
                             radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
                             Format = d3.format('%'),			 	//Percentage formatting
@@ -6440,7 +6448,7 @@
                             .attr("dy", "0.35em")
                             .attr("x", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.cos(angleSlice*i - Math.PI/2); })
                             .attr("y", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.sin(angleSlice*i - Math.PI/2); })
-                            .text(function(d){return d})
+                            .text(function(d){return d.field})
                             .call(wrap, cfg.wrapWidth);
 
                         /////////////////////////////////////////////////////////
@@ -6464,11 +6472,11 @@
                             .attr("class", "radarWrapper");
 
                         //Append the backgrounds
-                        blobWrapper
+                        /*blobWrapper
                             .append("path")
                             .attr("class", "radarArea")
                             .attr("d", function(d,i) { return radarLine(d); })
-                            .style("fill", function(d,i) { return cfg.color(i); })
+                            .style("fill", "none")//function(d,i) { return cfg.color(i); })
                             .style("fill-opacity", cfg.opacityArea)
                             .on('mouseover', function (d,i){
                                 //Dim all blobs
@@ -6485,16 +6493,35 @@
                                 d3.selectAll(".radarArea")
                                     .transition().duration(200)
                                     .style("fill-opacity", cfg.opacityArea);
-                            });
+                            });*/
 
                         //Create the outlines
                         blobWrapper.append("path")
                             .attr("class", "radarStroke")
                             .attr("d", function(d,i) { return radarLine(d); })
                             .style("stroke-width", cfg.strokeWidth + "px")
-                            .style("stroke", function(d,i) { return cfg.color(i); })
+                            .style("stroke", "#2f5597")//function(d,i) { return cfg.color(i); })
                             .style("fill", "none")
-                            .style("filter" , "url(#glow)");
+                            .style("filter" , "url(#glow)")
+                            .style("opacity", cfg.opacityArea)
+                            .on('mouseover', function (d,i){
+                                //Dim all blobs
+                                d3.selectAll(".radarStroke")
+                                    .transition().duration(200)
+                                    .style("opacity", 0.1);
+                                //Bring back the hovered over blob
+                                d3.select(this)
+                                    .transition().duration(200)
+                                    .style("opacity", 0.7);
+                                tip.show(tiptext[i], '');
+                            })
+                            .on('mouseout', function(){
+                                //Bring back all blobs
+                                d3.selectAll(".radarStroke")
+                                    .transition().duration(200)
+                                    .style("opacity", cfg.opacityArea);
+                                tip.hide();
+                            });
 
                         //Append the circles
                         blobWrapper.selectAll(".radarCircle")
@@ -6504,8 +6531,8 @@
                             .attr("r", cfg.dotRadius)
                             .attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2); })
                             .attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2); })
-                            .style("fill", function(d,i,j) { return cfg.color(j); })
-                            .style("fill-opacity", 0.8);
+                            .style("fill", "#2f5597")//function(d,i,j) { return cfg.color(j); })
+                            .style("fill-opacity", 0.5);
 
                         /////////////////////////////////////////////////////////
                         //////// Append invisible circles for tooltip ///////////
@@ -6528,8 +6555,8 @@
                             .style("fill", "none")
                             .style("pointer-events", "all")
                             .on("mouseover", function(d,i) {
-                                newX =  parseFloat(d3.select(this).attr('cx')) - 10;
-                                newY =  parseFloat(d3.select(this).attr('cy')) - 10;
+                                var newX =  parseFloat(d3.select(this).attr('cx')) - 10;
+                                var newY =  parseFloat(d3.select(this).attr('cy')) - 10;
 
                                 tooltip
                                     .attr('x', newX)
@@ -6547,7 +6574,27 @@
                         var tooltip = g.append("text")
                             .attr("class", "tooltip")
                             .style("opacity", 0);
+                        var tip = d3.tip()
+                            .attr('class', 'd3-tip tips ')
+                            .offset([10, 20])
+                            .direction('e')
+                            .html(function(values,title) {
+                                var str =''
+                                str += '<h3>' + (title.length==1 ? 'ID ' : '' )+ title  + '</h3>'
+                                str += "<table>";
+                                for (var i=0; i<values.length; i++) {
+                                    if ( values[i].key != 'pc1' && values[i].key != 'pc2') {
+                                        str += "<tr>";
+                                        str += "<td>" + values[i].key + "</td>";
+                                        str += "<td class=pct>" + values[i].value + "</td>";
+                                        str + "</tr>";
+                                    }
+                                }
+                                str += "</table>";
 
+                                return str;
+                            });
+                        svg.call(tip);
                         /////////////////////////////////////////////////////////
                         /////////////////// Helper Function /////////////////////
                         /////////////////////////////////////////////////////////

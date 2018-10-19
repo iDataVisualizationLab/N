@@ -31,7 +31,7 @@ angular.module('pcagnosticsviz')
             mainfield: null,
             prop:null,
             dim: 0,
-            dataref:null,
+            dataref:[],
             limit: 10,
             mspec:null,
         };
@@ -57,9 +57,9 @@ angular.module('pcagnosticsviz')
             // Biplot.data;
             //var data = Dataset.data);
             if (typeof dataor !=='undefined' ) {
-                PCAplot.data = [Dataset.schema.fieldSchemas,PCAplot.dataref];
+                PCAplot.data = [Dataset.schema.fieldSchemas, PCAplot.dataref];
                 //d3.selectAll('.biplot').append("g");
-                var data=_.cloneDeep(dataor);
+                var data = _.cloneDeep(dataor);
                 var margin = {top: 20, right: 20, bottom: 20, left: 20};
                 var width = $('.biplot').width() - margin.left - margin.right;
                 var height = $('.biplot').width() - margin.top - margin.bottom;
@@ -72,10 +72,11 @@ angular.module('pcagnosticsviz')
                 // sub space
                 var submarign = {top: 5, right: 5, bottom: 5, left: 5};
                 var subgSize = {
-                    w:(40-submarign.left - submarign.right),
-                    h:(40- submarign.top - submarign.bottom),};
-                var subx = d3.scale.linear().range([submarign.left,subgSize.w+submarign.left]).domain([0,1]); // switch to match how R biplot shows it
-                var suby = d3.scale.linear().range([submarign.top+subgSize.h, submarign.top]).domain([0,1]);
+                    w: (40 - submarign.left - submarign.right),
+                    h: (40 - submarign.top - submarign.bottom),
+                };
+                var subx = d3.scale.linear().range([submarign.left, subgSize.w + submarign.left]).domain([0, 1]); // switch to match how R biplot shows it
+                var suby = d3.scale.linear().range([submarign.top + subgSize.h, submarign.top]).domain([0, 1]);
 
                 var svg_main = d3.select("#bi-plot")
                     .attr("width", width + margin.left + margin.right)
@@ -84,145 +85,173 @@ angular.module('pcagnosticsviz')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                 var g_axis = svg.select("#bi-plot-axis");
                 var g_point = svg.select("#bi-plot-point");
-                var idlabel =[],
+                var idlabel = [],
                     brand_names = [],
                     matrix = [],
                     outlier = [];
-                if (dimension ===0){
+                var dataref = null;
+                if (dimension === 0) {
                     brand_names = Object.keys(data[0]);
                     matrix = data2Num(data);
 
-                    var outlier = brand_names.map(function(d,i) {
-                        var outlier= 0,
-                            row = matrix.map(function(r) {return r[i]}),
-                            q1 = ss.quantile(row,0.25),
-                            q3 = ss.quantile(row,0.75),
-                            iqr = (q3-q1)*3;
-                            //iqr = Dataset.schema.fieldSchema(d).stats.stdev*1.35;
+                    var outlier = brand_names.map(function (d, i) {
+                        var outlier = 0,
+                            row = matrix.map(function (r) {
+                                return r[i]
+                            }),
+                            q1 = ss.quantile(row, 0.25),
+                            q3 = ss.quantile(row, 0.75),
+                            iqr = (q3 - q1) * 3;
+                        //iqr = Dataset.schema.fieldSchema(d).stats.stdev*1.35;
                         Dataset.schema.fieldSchema(d).stats.q1 = q1;
                         Dataset.schema.fieldSchema(d).stats.q3 = q3;
-                        Dataset.schema.fieldSchema(d).stats.q1iqr = Math.max(q1-iqr,ss.min(row));
-                        Dataset.schema.fieldSchema(d).stats.q3iqr = Math.min(q3+iqr,ss.max(row));
-                        Dataset.schema.fieldSchema(d).stats.iqr=iqr;
+                        Dataset.schema.fieldSchema(d).stats.q1iqr = Math.max(q1 - iqr, ss.min(row));
+                        Dataset.schema.fieldSchema(d).stats.q3iqr = Math.min(q3 + iqr, ss.max(row));
+                        Dataset.schema.fieldSchema(d).stats.iqr = iqr;
                         //console.log(Dataset.schema.fieldSchema(d).stats);
-                        row.forEach(function(e)  {
-                            if ((e < q1 - 2*iqr)||(e > q3 + 2*iqr))
-                                outlier +=10;
-                            else if ((e < q1 - iqr)||(e > q3 + iqr))
-                                outlier = outlier+1;});
+                        row.forEach(function (e) {
+                            if ((e < q1 - 2 * iqr) || (e > q3 + 2 * iqr))
+                                outlier += 10;
+                            else if ((e < q1 - iqr) || (e > q3 + iqr))
+                                outlier = outlier + 1;
+                        });
                         return outlier;
-                    });}
-                else{
-                    var newdata=[];
-                    data.forEach(function(d){
+                    });
+                }
+                else {
+                    var newdata = [];
+                    data.forEach(function (d) {
                         for (var e in d[d.field]) {
-                            if (d[d.field][e].invalid!=1){
-                            idlabel.push([d.field,e]);
-                            newdata.push(d[d.field][e]);}
+                            if (d[d.field][e].invalid != 1) {
+                                idlabel.push([d.field, e]);
+                                newdata.push(d[d.field][e]);
+                            }
                         }
                     });
-                    data = newdata.filter(function(d){return !d.invalid}); // for overview 2D
+                    data = newdata.filter(function (d) {
+                        return !d.invalid
+                    }); // for overview 2D
                     // idlabel = Object.keys(data);
                     //brand_names = Object.keys(data[idlabel[0]]);
-                    brand_names = Object.keys(data[0]).filter(function(d){return d!="label";});
+                    brand_names = Object.keys(data[0]).filter(function (d) {
+                        return d != "label";
+                    });
                     // data = d3.values(data);
-                    matrix = data.map(function(d) {return d3.values(d)});
+                    matrix = data.map(function (d) {
+                        return d3.values(d)
+                    });
                     //console.log(data);
+                    if (brand_names < 9) {
+                        data.forEach(function (d, i) {
+                            d.label = idlabel[i];
+                            d.pc1 = 0;
+                            d.pc2 = 0;
+                        });
+                        dataref = _.cloneDeep(data);
+                        var brands = brand_names
+                            .map(function (key, i) {
+                                return {brand: key, pc1: 0, pc2: 0}
+                            });
+                        PCAplot.estimate(brands, dimension, dataref);
+                    }
+
                 }
-
-
-
-
+                try{
                 var pca = new PCA();
                 // console.log(brand_names);
-                matrix = pca.scale(matrix,true,true);
+                matrix = pca.scale(matrix, true, true);
 
-                var pc = pca.pca(matrix,2);
+                var pc = pca.pca(matrix, 2);
 
                 var A = pc[0];  // this is the U matrix from SVD
                 var B = pc[1];  // this is the dV matrix from SVD
                 var chosenPC = pc[2];   // this is the most value of PCA
-                data.map(function(d,i){
-                        d.pc1 = A[i][chosenPC[0]];
+                data.forEach(function (d, i) {
+                    d.pc1 = A[i][chosenPC[0]];
                     d.pc2 = A[i][chosenPC[1]];
                 });
-                var dataref = null;
-                if (dimension ==1) {
-                    data.forEach(function(d,i){d.label = idlabel[i]});
+                if (dimension == 1) {
+                    data.forEach(function (d, i) {
+                        d.label = idlabel[i]
+                    });
                     dataref = _.cloneDeep(data);
-                    data = brand_names.map(function(d){
-                        var top =data.sort(function(a,b){
-                            return a[d]<b[d]?1:-1;
+                    data = brand_names.map(function (d) {
+                        var top = data.sort(function (a, b) {
+                            return a[d] < b[d] ? 1 : -1;
                         })[0];
-                        if (top[d]>0.65) {
+                        if (top[d] > 0.65) {
                             top.feature = d;
                             return top;
                         }
-                    }).filter(function (d){return d!=undefined;});
+                    }).filter(function (d) {
+                        return d != undefined;
+                    });
                 }
-                var maxxy = [-Infinity,-Infinity];
-                var minxy = [Infinity,Infinity];
+                var maxxy = [-Infinity, -Infinity];
+                var minxy = [Infinity, Infinity];
                 //A.forEach(function(d){maxxy=Math.max(maxxy,Math.abs(d[0]),Math.abs(d[1]));});
-                maxxy = maxxy.map(function(d,i){
-                    return d3.max(data.map(function(e){
-                        return e['pc'+(i+1)];
+                maxxy = maxxy.map(function (d, i) {
+                    return d3.max(data.map(function (e) {
+                        return e['pc' + (i + 1)];
                     }));
                 });
-                minxy = minxy.map(function(d,i){
-                    return d3.min(data.map(function(e){
-                        return e['pc'+(i+1)];
+                minxy = minxy.map(function (d, i) {
+                    return d3.min(data.map(function (e) {
+                        return e['pc' + (i + 1)];
                     }));
                 });
-                var maxxyall = [0,0];
-                maxxyall = maxxyall.map(function(d,i){
-                    return Math.max(Math.abs(minxy[i]),Math.abs(maxxy[i]));
+                var maxxyall = [0, 0];
+                maxxyall = maxxyall.map(function (d, i) {
+                    return Math.max(Math.abs(minxy[i]), Math.abs(maxxy[i]));
                 });
                 // x.domain([-maxxyall]).nice();
                 // y.domain([minxy[1],maxxy[1]]).nice();
-                x.domain([-maxxyall[0],maxxyall[0]]).nice();
-                y.domain([-maxxyall[1],maxxyall[1]]).nice();
+                x.domain([-maxxyall[0], maxxyall[0]]).nice();
+                y.domain([-maxxyall[1], maxxyall[1]]).nice();
                 var scale_axis = 0;
-                B.forEach(function(i){scale_axis = Math.max(scale_axis,Math.sqrt(i[0]*i[0] + i[1]*i[1]))});
-                var scale_axisx = maxxyall[0]/scale_axis;
-                var scale_axisy = maxxyall[1]/scale_axis;
+                B.forEach(function (i) {
+                    scale_axis = Math.max(scale_axis, Math.sqrt(i[0] * i[0] + i[1] * i[1]))
+                });
+                var scale_axisx = maxxyall[0] / scale_axis;
+                var scale_axisy = maxxyall[1] / scale_axis;
                 var brands = brand_names
-                    .map(function(key, i) {
+                    .map(function (key, i) {
                         return {
                             brand: key,
-                            pc1: B[i][chosenPC[0]]*scale_axisx,
-                            pc2: B[i][chosenPC[1]]*scale_axisy,
+                            pc1: B[i][chosenPC[0]] * scale_axisx,
+                            pc2: B[i][chosenPC[1]] * scale_axisy,
                         }
                     });
                 // console.log(brands);
 
 
-
-                data.map(function(d,i) {
+                data.map(function (d, i) {
                     var xy = rotate(d.pc1, d.pc2, angle);
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
                     d.vector = matrix[i];
                 });
 
-                brands.map(function(d,i) {
+                brands.map(function (d, i) {
                     var xy = rotate(d.pc1, d.pc2, angle);
                     d.pc1 = xy.x;
                     d.pc2 = xy.y;
-                    if (dimension===0){
+                    if (dimension === 0) {
                         d.outlier = outlier[i];
-                        d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;}
+                        d.skew = Dataset.schema.fieldSchema(d.brand).stats.modeskew;
+                    }
                 });
                 //update to calculate
-                PCAplot.estimate(brands,dimension,dataref);
+                PCAplot.estimate(brands, dimension, dataref);
                 // draw
-                var onMouseOverAttribute = function (a,j) {
-                    brands.forEach(function(b, idx) {
-                        var A = { x: 0, y:0 };
-                        var B = { x: b.pc1,  y: b.pc2 };
-                        var C = { x: a.pc1,  y: a.pc2 };
+                var onMouseOverAttribute = function (a, j) {
+                    brands.forEach(function (b, idx) {
+                        var A = {x: 0, y: 0};
+                        var B = {x: b.pc1, y: b.pc2};
+                        var C = {x: a.pc1, y: a.pc2};
                         //var C = { x: a.vector[idx],  y: a.vector[idx] };
 
-                        b.D = getSpPoint(A,B,C);
+                        b.D = getSpPoint(A, B, C);
                     });
 
                     svg.selectAll('.tracer')
@@ -230,11 +259,25 @@ angular.module('pcagnosticsviz')
                         .enter()
                         .append('line')
                         .attr('class', 'tracer tips')
-                        .attr('x1', function(b,i) { return x(a.pc1); return x1; })
-                        .attr('y1', function(b,i) { return y(a.pc2); return y1; })
-                        .attr('x2', function(b,i) { return x(b.D.x); return x2; })
-                        .attr('y2', function(b,i) { return y(b.D.y); return y2; })
-                        .style("stroke", function(d) { return "#ff6f2b"});
+                        .attr('x1', function (b, i) {
+                            return x(a.pc1);
+                            return x1;
+                        })
+                        .attr('y1', function (b, i) {
+                            return y(a.pc2);
+                            return y1;
+                        })
+                        .attr('x2', function (b, i) {
+                            return x(b.D.x);
+                            return x2;
+                        })
+                        .attr('y2', function (b, i) {
+                            return y(b.D.y);
+                            return y2;
+                        })
+                        .style("stroke", function (d) {
+                            return "#ff6f2b"
+                        });
 
                     delete a.D;
                     var ca = _.cloneDeep(a);
@@ -249,19 +292,21 @@ angular.module('pcagnosticsviz')
 // draw line from the brand axis a perpendicular to each attribute b
                 var legendtop = svg.selectAll('.legendtop').data([''])
                     .enter().append('text')
-                    .text(function(d){return d})
+                    .text(function (d) {
+                        return d
+                    })
                     .attr('text-anchor', 'end')
-                    .attr('y',height+margin.bottom/2)
-                    .attr('x',width);
-                var onMouseOverBrand = function(b,j) {
+                    .attr('y', height + margin.bottom / 2)
+                    .attr('x', width);
+                var onMouseOverBrand = function (b, j) {
 
-                    data.forEach(function(a, idx) {
-                        var A = { x: 0, y:0 };
-                        var B = { x: b.pc1,  y: b.pc2 };
-                        var C = { x: a.pc1,  y: a.pc2 };
+                    data.forEach(function (a, idx) {
+                        var A = {x: 0, y: 0};
+                        var B = {x: b.pc1, y: b.pc2};
+                        var C = {x: a.pc1, y: a.pc2};
                         // var C = { x: a.vector[j],  y: a.vector[j] };
 
-                        a.D = getSpPoint(A,B,C);
+                        a.D = getSpPoint(A, B, C);
                     });
 
                     var tracer = svg.selectAll('.tracer')
@@ -270,21 +315,39 @@ angular.module('pcagnosticsviz')
                     tracer
                         .append('line')
                         .attr('class', 'tracer tips')
-                        .attr('x1', function(a,i) { return x(a.D.x);  })
-                        .attr('y1', function(a,i) { return y(a.D.y);  })
-                        .attr('x2', function(a,i) { return x(a.pc1);  })
-                        .attr('y2', function(a,i) { return y(a.pc2); })
-                        .style("stroke", function(d) { return "#aaa"});
+                        .attr('x1', function (a, i) {
+                            return x(a.D.x);
+                        })
+                        .attr('y1', function (a, i) {
+                            return y(a.D.y);
+                        })
+                        .attr('x2', function (a, i) {
+                            return x(a.pc1);
+                        })
+                        .attr('y2', function (a, i) {
+                            return y(a.pc2);
+                        })
+                        .style("stroke", function (d) {
+                            return "#aaa"
+                        });
 
                     tracer
                         .append('circle')
                         .attr('class', 'tracer-c tips')
-                        .attr('cx', function(a,i) { return x(a.D.x);  })
-                        .attr('cy', function(a,i) { return y(a.D.y);  })
-                        .attr('r',5)
-                        .style("fill", function(d) { return "#ff6f2b"})
+                        .attr('cx', function (a, i) {
+                            return x(a.D.x);
+                        })
+                        .attr('cy', function (a, i) {
+                            return y(a.D.y);
+                        })
+                        .attr('r', 5)
+                        .style("fill", function (d) {
+                            return "#ff6f2b"
+                        })
                         .style("fill-opacity", 0.1);
-                    legendtop.data([b.brand]).text(function(d){return d;});
+                    legendtop.data([b.brand]).text(function (d) {
+                        return d;
+                    });
                     /*var tipText = data.map(function(d) {
                         return {key: d[brand_names[0]], value: d[b['brand']] }
                     });*/
@@ -296,13 +359,15 @@ angular.module('pcagnosticsviz')
                     //add tip to head
                 };
 
-                var onMouseLeave = function (b,j) {
+                var onMouseLeave = function (b, j) {
                     svg.selectAll('.tracer').remove();
                     svg.selectAll('.tracer-c').remove();
                     tip.hide();
-                    legendtop.data(['']).text(function(d){return d;});
+                    legendtop.data(['']).text(function (d) {
+                        return d;
+                    });
                 };
-                if (dimension===0) {
+                if (dimension === 0) {
                     g_point.selectAll(".subgraph").remove();
                     var point = g_point.selectAll(".dot")
                         .data(data)
@@ -335,41 +400,53 @@ angular.module('pcagnosticsviz')
                         .style("fill-opacity", 0.4)
                         .on('mouseover', onMouseOverAttribute)
                         .on('mouseleave', onMouseLeave);
-                }else {
+                } else {
                     g_point.selectAll(".dot").remove();
-                    var subplot =g_point.selectAll(".subgraph")
+                    var subplot = g_point.selectAll(".subgraph")
                         .data(data)
                         .attr("class", "subgraph")
-                        .attr('transform',function(d){return "translate(" + (x(d.pc1)-(subgSize.w+submarign.left + submarign.right)/2) + "," + (y(d.pc2)-(subgSize.h+submarign.top + submarign.bottom)/2) + ")"})
+                        .attr('transform', function (d) {
+                            return "translate(" + (x(d.pc1) - (subgSize.w + submarign.left + submarign.right) / 2) + "," + (y(d.pc2) - (subgSize.h + submarign.top + submarign.bottom) / 2) + ")"
+                        })
                         .on('mouseover', onMouseOverAttribute)
                         .on('mouseleave', onMouseLeave);
                     subplot.exit().remove();
                     var subinside = subplot
                         .enter().append("g")
                         .attr("class", "subgraph")
-                        .attr('transform',function(d){return "translate(" + (x(d.pc1)-(subgSize.w+submarign.left + submarign.right)/2) + "," + (y(d.pc2)-(subgSize.h+submarign.top + submarign.bottom)/2) + ")"})
+                        .attr('transform', function (d) {
+                            return "translate(" + (x(d.pc1) - (subgSize.w + submarign.left + submarign.right) / 2) + "," + (y(d.pc2) - (subgSize.h + submarign.top + submarign.bottom) / 2) + ")"
+                        })
                         .on('mouseover', onMouseOverAttribute)
                         .on('mouseleave', onMouseLeave);
                     subinside.append("rect")
-                        .attr("class","backgroundSub")
-                        .attr("width",subgSize.w+submarign.left + submarign.right)
-                        .attr("height",subgSize.h+submarign.top + submarign.bottom)
-                        .attr("x",0)
-                        .attr("y",0);
+                        .attr("class", "backgroundSub")
+                        .attr("width", subgSize.w + submarign.left + submarign.right)
+                        .attr("height", subgSize.h + submarign.top + submarign.bottom)
+                        .attr("x", 0)
+                        .attr("y", 0);
                     var subpoint = subplot.selectAll(".point")
-                        .data(function(d){
+                        .data(function (d) {
                             //var datapoint = Dataset.data.map(function(it){return [it[PCAplot.mainfield],it[d.label]]});
-                            var datapoint = Dataset.data.map(function(it){return [it[d.label[0]],it[d.label[1]]]});
-                            var datax = datapoint.map(function(d){return d[0]});
-                            var datay = datapoint.map(function(d){return d[1]});
+                            var datapoint = Dataset.data.map(function (it) {
+                                return [it[d.label[0]], it[d.label[1]]]
+                            });
+                            var datax = datapoint.map(function (d) {
+                                return d[0]
+                            });
+                            var datay = datapoint.map(function (d) {
+                                return d[1]
+                            });
                             var maxx = d3.max(datax);
                             var minx = d3.min(datax);
                             var maxy = d3.max(datay);
                             var miny = d3.min(datay);
-                            datapoint.forEach(function(d){
-                                d[0] = (d[0]-minx)/(maxx-minx);
-                                d[1] = (d[1]-miny)/(maxy-miny);});
-                            return datapoint;})
+                            datapoint.forEach(function (d) {
+                                d[0] = (d[0] - minx) / (maxx - minx);
+                                d[1] = (d[1] - miny) / (maxy - miny);
+                            });
+                            return datapoint;
+                        })
                         .attr("cx", function (d) {
                             return subx(d[0]);
                         })
@@ -377,7 +454,7 @@ angular.module('pcagnosticsviz')
                             return suby(d[1]);
                         });
                     subpoint.exit().remove();
-                    subpoint    .enter()
+                    subpoint.enter()
                         .append("circle")
                         .attr("class", "point")
                         .attr("r", 1)
@@ -391,25 +468,35 @@ angular.module('pcagnosticsviz')
                             return '#161616';
                         })
 
-                        .style('opacity',0.5);
+                        .style('opacity', 0.5);
                 }
 
                 var circlebrand = g_axis.selectAll(".circle_brand")
                     .data(brands)
-                    .attr("x", function(d) { return x(d.pc1)-2.5; })
-                    .attr("y", function(d) { return y(d.pc2)-2.5; })
-                    .style("fill", function(d) {
-                        return color(d['brand']); });
+                    .attr("x", function (d) {
+                        return x(d.pc1) - 2.5;
+                    })
+                    .attr("y", function (d) {
+                        return y(d.pc2) - 2.5;
+                    })
+                    .style("fill", function (d) {
+                        return color(d['brand']);
+                    });
                 circlebrand.exit().remove();
                 circlebrand
                     .enter().append("rect")
                     .attr("class", "circle_brand")
                     .attr("width", 5)
-                    .attr('height',5)
-                    .attr("x", function(d) { return x(d.pc1)-2.5; })
-                    .attr("y", function(d) { return y(d.pc2)-2.5; })
-                    .style("fill", function(d) {
-                        return color(d['brand']); });
+                    .attr('height', 5)
+                    .attr("x", function (d) {
+                        return x(d.pc1) - 2.5;
+                    })
+                    .attr("y", function (d) {
+                        return y(d.pc2) - 2.5;
+                    })
+                    .style("fill", function (d) {
+                        return color(d['brand']);
+                    });
 
 
                 /*g_axis.selectAll("text.brand")
@@ -430,7 +517,7 @@ angular.module('pcagnosticsviz')
                     .on("dragstart", function (d) {
 
                         current_field = Dataset.schema.fieldSchema(d.brand);
-                        var proIwant = d3.selectAll($("[id='"+d.brand+"']")).select('div')
+                        var proIwant = d3.selectAll($("[id='" + d.brand + "']")).select('div')
                         //.attr ('class','schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty ui-droppable-active drop-active');
                         var pill = {
                             field: current_field.field,
@@ -446,14 +533,18 @@ angular.module('pcagnosticsviz')
                              return this.parentNode.insertBefore(this.cloneNode(true), this.nextSibling);
                          });*/
                         temp_drag = d3.select('bi-plot').append('span').html(ori);
-                        temp_drag.attr("class",'pill draggable full-width no-right-margin field-info ng-pristine ng-untouched ng-valid ng-isolate-scope ui-draggable ui-draggable-handle ng-empty ui-draggable-dragging')
-                            .style("position","absolute")
-                            .style("z-index",'9999')
-                            .style("left",function(){return ((d3.event.x||d3.event.pageX)) + "px"})
-                            .style("top",function(){var con = (d3.event.y||d3.event.pageY) +100;
-                                return con + "px"});
+                        temp_drag.attr("class", 'pill draggable full-width no-right-margin field-info ng-pristine ng-untouched ng-valid ng-isolate-scope ui-draggable ui-draggable-handle ng-empty ui-draggable-dragging')
+                            .style("position", "absolute")
+                            .style("z-index", '9999')
+                            .style("left", function () {
+                                return ((d3.event.x || d3.event.pageX)) + "px"
+                            })
+                            .style("top", function () {
+                                var con = (d3.event.y || d3.event.pageY) + 100;
+                                return con + "px"
+                            });
                         d3.selectAll('.field-drop')
-                            .attr("class","field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty ui-dropable-active drop-active ");
+                            .attr("class", "field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty ui-dropable-active drop-active ");
                         NotifyingService.notify();
                         // NotifyingService.notify();
                         //console.log($(proIwant[0]));
@@ -463,16 +554,22 @@ angular.module('pcagnosticsviz')
                     })
                     .on("drag", function (d) {
                         temp_drag
-                            .style("left",function(){return d3.event.x + "px"})
-                            .style("top",function(){return (d3.event.y+100) + "px"});
+                            .style("left", function () {
+                                return d3.event.x + "px"
+                            })
+                            .style("top", function () {
+                                return (d3.event.y + 100) + "px"
+                            });
 
                     })
                     .on("dragend", function (d) {
                         var proIwant = d3.selectAll("schema-list-item")
                             .data(Dataset.schema.fieldSchemas)
-                            .filter(function(it){return it.field == d.brand;})
+                            .filter(function (it) {
+                                return it.field == d.brand;
+                            })
                             .select('div')
-                            .attr ('class','schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty');
+                            .attr('class', 'schema-list-item ng-pristine ng-untouched ng-valid ui-droppable ui-droppable-disabled ng-empty');
 
                         Pills.dragStop;
                         Pills.dragStop;
@@ -481,35 +578,49 @@ angular.module('pcagnosticsviz')
                         temp_drag.remove();
                         var tem_group = d3.selectAll(".shelf-group");
                         tem_group = tem_group[0];
-                        var tem_group = tem_group.filter(function(d,i){var pos_g = d.getBoundingClientRect();
-                            return (pos_g.top<pos.top&&pos_g.bottom>pos.top&&pos_g.left<pos.left&&pos_g.right>pos.left)});
+                        var tem_group = tem_group.filter(function (d, i) {
+                            var pos_g = d.getBoundingClientRect();
+                            return (pos_g.top < pos.top && pos_g.bottom > pos.top && pos_g.left < pos.left && pos_g.right > pos.left)
+                        });
 
-                        try{
-                            var chan = $(tem_group[0]).attr('channel-id').replace(/'/g,"");
+                        try {
+                            var chan = $(tem_group[0]).attr('channel-id').replace(/'/g, "");
                             // console.log(chan);
-                            if (chan!=null){
+                            if (chan != null) {
                                 Pills.set(chan, current_field);
                                 Pills.listener.dragDrop(chan);
                                 //.update(Spec.spec);
-                            }}catch(e){}
+                            }
+                        } catch (e) {
+                        }
                         NotifyingService.notify();
                         d3.selectAll("div [d3-over='true']")
-                            .attr('d3-over','false');
+                            .attr('d3-over', 'false');
 
 
                         //var event = new Event('submit');  // (*)
                         //$(d3.select('.schema')[0]).dispatchEvent(event);
                         d3.selectAll('.field-drop')
-                            .attr("class","field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty");
+                            .attr("class", "field-drop ng-pristine ng-untouched ng-valid ui-droppable ng-not-empty");
                     });
 
                 var listitem = g_axis.selectAll(".line")
                     .data(brands)
-                    .attr('x1', function(d) { return x(0)})//x(-d.pc1);})
-                    .attr('y1', function(d) { return x(0)})//y(-d.pc2); })
-                    .attr("x2", function(d) { return x(d.pc1); })
-                    .attr("y2", function(d) { return y(d.pc2); })
-                    .style("stroke", function(d) { return color(d['brand']); })
+                    .attr('x1', function (d) {
+                        return x(0)
+                    })//x(-d.pc1);})
+                    .attr('y1', function (d) {
+                        return x(0)
+                    })//y(-d.pc2); })
+                    .attr("x2", function (d) {
+                        return x(d.pc1);
+                    })
+                    .attr("y2", function (d) {
+                        return y(d.pc2);
+                    })
+                    .style("stroke", function (d) {
+                        return color(d['brand']);
+                    })
                     .style("stroke-width", '1px')
                     .on('mouseover', onMouseOverBrand)
                     .on('mouseleave', onMouseLeave);
@@ -521,53 +632,63 @@ angular.module('pcagnosticsviz')
                             $(proIwant[0]).trigger("dblclick");
                         })
                         .call(dragHandler);
-                }else {
+                } else {
                     listitem
                         .on("dblclick", function (d) {
                             // to do
                         })
-                        .on("dragstart",null)
-                        .on("drag",null)
-                        .on("dragend",null);
+                        .on("dragstart", null)
+                        .on("drag", null)
+                        .on("dragend", null);
                 }
                 listitem.exit().remove();
                 listitem
                     .enter().append("line")
                     .attr("class", "line square draggable")
-                    .attr('x1', function(d) { return x(0)})//x(-d.pc1);})
-                    .attr('y1', function(d) { return x(0)})//y(-d.pc2); })
-                    .attr("x2", function(d) { return x(d.pc1); })
-                    .attr("y2", function(d) { return y(d.pc2); })
-                    .style("stroke", function(d) { return color(d['brand']); })
+                    .attr('x1', function (d) {
+                        return x(0)
+                    })//x(-d.pc1);})
+                    .attr('y1', function (d) {
+                        return x(0)
+                    })//y(-d.pc2); })
+                    .attr("x2", function (d) {
+                        return x(d.pc1);
+                    })
+                    .attr("y2", function (d) {
+                        return y(d.pc2);
+                    })
+                    .style("stroke", function (d) {
+                        return color(d['brand']);
+                    })
                     .style("stroke-width", '1px')
                     .on('mouseover', onMouseOverBrand)
                     .on('mouseleave', onMouseLeave);
                 if (dimension == 0) {
-                    listitem.on("dblclick", function(d) {
-                        var proIwant = d3.selectAll($("[id='"+d.brand+"']"))
+                    listitem.on("dblclick", function (d) {
+                        var proIwant = d3.selectAll($("[id='" + d.brand + "']"))
                             .select('div').select('span');
                         $(proIwant[0]).trigger("dblclick");
                     })
-                    .call(dragHandler);
-                } else{
+                        .call(dragHandler);
+                } else {
                     listitem
                         .on("dblclick", function (d) {
                             // to do
                         })
-                        .on("dragstart",null)
-                        .on("drag",null)
-                        .on("dragend",null);
+                        .on("dragstart", null)
+                        .on("drag", null)
+                        .on("dragend", null);
                 }
                 var tip = d3.tip()
                     .attr('class', 'd3-tip tips ')
                     .offset([10, 20])
                     .direction('e')
-                    .html(function(values,title) {
-                        var str =''
-                        str += '<h3>' + (title.length==1 ? 'Brand ' : '' )+ title  + '</h3>'
+                    .html(function (values, title) {
+                        var str = ''
+                        str += '<h3>' + (title.length == 1 ? 'Brand ' : '') + title + '</h3>'
                         str += "<table>";
-                        for (var i=0; i<values.length; i++) {
-                            if ( values[i].key != 'pc1' && values[i].key != 'pc2') {
+                        for (var i = 0; i < values.length; i++) {
+                            if (values[i].key != 'pc1' && values[i].key != 'pc2') {
                                 str += "<tr>";
                                 str += "<td>" + values[i].key + "</td>";
                                 str += "<td class=pct>" + values[i].value + "</td>";
@@ -580,7 +701,7 @@ angular.module('pcagnosticsviz')
                     });
                 svg.call(tip);
                 g_axis.selectAll('.place-label').remove();
-                if(PCAplot.dim) {
+                if (PCAplot.dim) {
                     var axis = g_axis.node();
                     axis.parentNode.appendChild(axis);
 
@@ -671,6 +792,7 @@ angular.module('pcagnosticsviz')
                     arrangeLabels();
                 }
                 PCAplot.dataencde = data;
+            }catch(e){console.log('Not enough dimension');}
             }
             return PCAplot};
         function getSpPoint(A,B,C){
@@ -846,6 +968,57 @@ angular.module('pcagnosticsviz')
                 case 'radar': radarplot(spec,object); break;
             }
         }
+
+        var guideon = function(prop,mspec){
+            //console.log(prop);
+            //prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
+            PCAplot.types =  support[prop.dim].types;
+            PCAplot.marks = support[prop.dim].marks;
+            // PCAplot.spec = mspec;
+            prop.charts = PCAplot.data[prop.dim].sort(prop.ranking)
+                .map(function(d){return prop.plot((d.fieldDefs||d ),prop.mark,prop.mspec) });
+            prop.previewcharts = prop.charts.map(function (d) {
+                var thum =_.cloneDeep(d);
+                // console.log(d);
+                thum.vlSpec.config = {
+                    cell: {
+                        width: 100,
+                        height: prop.dim?100:30
+                    },
+                    axis: {
+                        grid: false,
+                        //ticks: false,
+                        labels: false,
+                        titleOffset: 20
+                    },
+                    overlay: {line: true},
+                    scale: {useRawDomain: true},
+                    displayModeBar: false,
+                    colorbar: false
+                };
+                if (d.fieldSet[0].type!="temporal"){
+                    thum.vlSpec.config.axis.ticks = false;
+                }
+                return thum;});
+            var pos = 0;
+            if(prop.dim!=PCAplot.dim){
+                var axis = prop.mspec.config.typer.fieldDefs;
+                pos = PCAplot.data[prop.dim].findIndex(function(d){
+                    var f= true;
+                    var ff=false;
+                    d.fieldDefs.forEach(function(i){
+                        axis.forEach(function(fi){ff=ff||(fi.field==i.field)});
+                        f = f&&ff;});
+                    return f; });
+                console.log(pos+': '+axis);
+            }
+            PCAplot.mspec = prop.charts[pos];
+            prop.pos = [pos];
+            PCAplot.limit = pos>10?pos:10;
+
+
+            PCAplot.updateguide(prop);
+        };
         function drawGuideplot (object,type,dataref) {
             if (dataref == undefined)
                 dataref = Dataset.schema.fieldSchemas;
@@ -881,194 +1054,23 @@ angular.module('pcagnosticsviz')
                 plot: drawGuideexplore,
                 dim: PCAplot.dim};
 
-            PCAplot.chart.guideon = function(prop){
-                //console.log(prop);
-                //prop.charts = Dataset.schema.fieldSchemas.sort(prop.ranking)
-                PCAplot.types =  support[PCAplot.dim].types;
-                PCAplot.marks = support[PCAplot.dim].marks;
-                // PCAplot.spec = mspec;
-                prop.charts = dataref.sort(prop.ranking)
-                    .map(function(d){return prop.plot((d.fieldDefs||d ),prop.mark,prop.mspec) });
-                prop.previewcharts = prop.charts.map(function (d) {
-                    var thum =_.cloneDeep(d);
-                    // console.log(d);
-                    thum.vlSpec.config = {
-                        cell: {
-                            width: 100,
-                            height: prop.dim?100:30
-                        },
-                        axis: {
-                            grid: false,
-                            //ticks: false,
-                            labels: false,
-                            titleOffset: 20
-                        },
-                        overlay: {line: true},
-                        scale: {useRawDomain: true},
-                        displayModeBar: false,
-                        colorbar: false
-                    };
-                    if (d.fieldSet[0].type!="temporal"){
-                        thum.vlSpec.config.axis.ticks = false;
-                    }
-                    return thum;});
-                prop.pos = 0;
-                PCAplot.limit = 10;
-
-
-                PCAplot.updateguide(prop);
-                var data = [];
-                var datarefn = [];
-                if (PCAplot.dataref.length ==0|| PCAplot.dataref== null){
-                    var idlabel=[];
-                    data = dataref.map(function(d){
-                        var tem = {field: d.field};
-                        tem[d.field] = d.scag;
-                        return tem;});
-                    var newdata=[];
-                    data.forEach(function(d){
-                        for (var e in d[d.field]) {
-                            if (d[d.field][e].invalid!=1){
-                                idlabel.push([d.field,e]);
-                                newdata.push(d[d.field][e]);}
-                        }
-                    });
-                    data = newdata.filter(function(d){return !d.invalid});
-                    data.forEach(function(d,i){d.label = idlabel[i]});
-                    datarefn = _.cloneDeep(data);
-                    PCAplot.dataref = datarefn.map(function(d){
-                        return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
-                            scag: d,};
-                    });
-                }
-                var fieldsets = PCAplot.prop.charts [0].fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&& d!="*"});
-                if (prop.dim==0){
-                    var possible = PCAplot.dataref.filter(function (d){
-                        var ff= true;
-                        var f=false;
-                        fieldsets.forEach(function(it){
-                            d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
-                            ff=ff&&f;})
-                        return ff;});
-                    if (possible.length!=0) {
-                        var topitem = support[prop.dim + 1].types.map(function (d) {
-                            return possible.sort(function (a, b) {
-                                return a[d] < b[d] ? 1 : -1
-                            })[0];
-                        });
-                        var unique = [];
-                        var uniquetype = [];
-                        topitem.forEach(function (d, i) {
-                            if (unique.filter(function (u) {
-                                    return u == d;
-                                }).length == 0) {
-                                unique.push(d);
-                                uniquetype.push(support[prop.dim + 1].types[i]);
-                            }
-                        });
-                        var charts = uniquetype.map(function (d, i) {
-                            return {v: unique[i], type: d}
-                        })
-                            .map(function (d) {
-                                var spec = {};
-                                //spec.data = Dataset.dataset;
-                                spec.config = {
-                                    /*cell: {
-                                        width: PCAplot.dim?100:200,
-                                        height: PCAplot.dim?100:30,
-                                    },*/
-                                    axis: {
-                                        grid: false,
-                                        ticks: false,
-                                        titleOffset: 20
-                                    },
-                                    overlay: {line: true},
-                                    scale: {useRawDomain: true}
-                                };
-                                //mark2plot (type2mark(d.type),spec,d.v.fieldDefs);
-                                mark2plot(mark2mark(prop.mark, PCAplot.dim), spec, d.v.fieldDefs);
-                                var query = getQuery(spec);
-                                var output = cql.query(query, Dataset.schema);
-                                PCAplot.query = output.query;
-                                var topItem = output.result.getTopSpecQueryModel();
-                                return Chart.getChart(topItem);
-
-                            });
-                        PCAplot.alternatives = [{'charts': charts}];
-                    }else{
-                        PCAplot.alternatives.length=0;}
-                }else if (prop.dim>0) {
-                    var possible = PCAplot.dataref.filter(function (d){
-                        var ff= false;
-                        var f=false;
-                        fieldsets.forEach(function(it){
-                            d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
-                            ff=ff||f;});
-                        return ff;});
-                    possible = possible.filter(function (d){
-                        var ff= true;
-                        var f=false;
-                        fieldsets.forEach(function(it){
-                            d.fieldDefs.forEach(function(m){f=(f||(m.field==it)); })
-                            ff=ff&&f;});
-                        return !ff;});
-                    var topitem = support[1].types.map(function (d) {
-                        return possible.sort(function (a, b) {
-                            return (a.scag[d] < b.scag[d]) ? 1 : -1;
-                        })[0];
-                    });
-                    var unique = [];
-                    var uniquetype = [];
-                    topitem.forEach(function (d, i) {
-                        if (unique.filter(function (u) {
-                                return u == d;
-                            }).length == 0) {
-                            unique.push(d);
-                            uniquetype.push(support[prop.dim + 1].types[0]);
-                        }
-                    });
-                    unique.forEach(function(d){
-                        var newf = fieldsets.map(function(f){
-                            return Dataset.schema.fieldSchema(f);});
-                        Array.prototype.push.apply(newf,d.fieldDefs.filter(function(fe){
-                            var ff = true;
-                            fieldsets.forEach(function(fs){ff=ff&&fs!=fe.field});
-                            return ff;
-                        }));
-                        d.fieldDefs=newf});
-                    var charts = uniquetype.map(function (d, i) {
-                        return {v: unique[i], type: d}
-                    })
-                        .map(function (d) {
-                            var spec = {};
-                            //spec.data = Dataset.dataset;
-                            spec.config = {
-                                /*cell: {
-                                    width: PCAplot.dim?100:200,
-                                    height: PCAplot.dim?100:30,
-                                },*/
-                                axis: {
-                                    grid: false,
-                                    ticks: false,
-                                    titleOffset: 20
-                                },
-                                overlay: {line: true},
-                                scale: {useRawDomain: true}
-                            };
-                            //mark2plot (type2mark(d.type),spec,d.v.fieldDefs);
-                            mark2plot(mark2mark(prop.mark, PCAplot.dim), spec, d.v.fieldDefs);
-                            var query = getQuery(spec);
-                            var output = cql.query(query, Dataset.schema);
-                            PCAplot.query = output.query;
-                            var topItem = output.result.getTopSpecQueryModel();
-                            return Chart.getChart(topItem);
-
-                        });
-                    PCAplot.alternatives = [{'charts': charts}];
-                }else{
-                    PCAplot.alternatives.length=0;}
-                }
+            PCAplot.chart.guideon = guideon;
                 PCAplot.charts.push(PCAplot.chart);
+        };
+
+        PCAplot.madeprop = function (spec){
+            var type = spec.config.typer.type;
+            var dim = spec.config.typer.dim;
+            var mark = spec.config.typer.mark;
+            var prop = {
+                mspec:spec,
+                type: type,
+                mark: mark,
+                ranking: getranking(type),
+                plot: drawGuideexplore,
+                dim: dim};
+            guideon(prop);
+            PCAplot.updateguide(prop);
         };
 
         PCAplot.alternativeupdate = function(mspec){
@@ -1077,7 +1079,7 @@ angular.module('pcagnosticsviz')
                 var data = [];
                 var datarefn = [];
                 var idlabel=[];
-                data = PCAplot.dataref.map(function(d){
+                data = PCAplot.data[0].map(function(d){
                     var tem = {field: d.field};
                     tem[d.field] = d.scag;
                     return tem;});
@@ -1096,6 +1098,7 @@ angular.module('pcagnosticsviz')
                     return {fieldDefs: [Dataset.schema.fieldSchema(d.label[0]),Dataset.schema.fieldSchema(d.label[1])],
                         scag: d,};
                 });
+                PCAplot.data[1] =PCAplot.dataref;
             }
             //var fieldsets = mspec.fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&&d!="*"});
             var fieldsets = mspec.fieldSet.map(function(d){return d.field}).filter(function(d){return d!="count"&&d!="*"});
@@ -1152,7 +1155,10 @@ angular.module('pcagnosticsviz')
                             var output = cql.query(query, Dataset.schema);
                             PCAplot.query = output.query;
                             var topItem = output.result.getTopSpecQueryModel();
-                            return Chart.getChart(topItem);
+                            var temc = Chart.getChart(topItem);
+                            temc.vlSpec.config.typer = {type: d.type,mark: mark2mark(mspec.vlSpec.mark, PCAplot.dim)
+                                ,dim: d.v.fieldDefs.length-1, fieldDefs:d.v.fieldDefs};
+                            return temc;
 
                         });
                     PCAplot.alternatives = [{'charts': charts}];
@@ -1273,7 +1279,7 @@ angular.module('pcagnosticsviz')
             support[dim].marks.forEach(function(d,i){
                 if (d==oldmark){
                     pos= i; return ;}});
-            return support[dim+1].marks[pos>support[dim+1].marks.length-1?support[dim+1].marks.length-1:pos];
+            return support[dim+1].marks[pos>support[dim+1].marks.length-1?0:pos];
         }
         function type2mark (type){
             switch (type) {
@@ -1405,8 +1411,13 @@ angular.module('pcagnosticsviz')
             };
         }
         function radarplot(spec,objects){
-            spec.mark = "radard";
-            spec.layer = objects.map(function(o){return {encoding:{x: { field: o.field, type: o.type}}}});
+            spec.mark = "radar";
+            spec.encoding = {
+                x: { field: objects[0].field, type: objects[0].type},
+                y: { field: objects[1].field, type: objects[1].type},
+                x2: { field: objects[2].field, type: objects[2].type},
+            };
+            //spec.layer = objects.map(function(o){return {encoding:{x: { field: o.field, type: o.type}}}});
         }
 
 
