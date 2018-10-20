@@ -25,7 +25,9 @@ var mainconfig = {
     renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
-    Isweekly: false
+    rateOfTopics: 0.05,
+    Isweekly: false,
+    seperate: true
 };
 var daystep = 1;
 var startDate;
@@ -84,7 +86,10 @@ $(document).ready(function () {
         .defer(d3.json,"src/data/dataout.json")
         .await(ready);
     d3.select("#IsWeekly").on("change",()=> {
-        mainconfig.IsWeekly = ~mainconfig.IsWeekly;
+        mainconfig.IsWeekly = !mainconfig.IsWeekly;
+        render();});
+    d3.select("#IsSeperate").on("change",()=> {
+        mainconfig.seperate = !mainconfig.seperate;
         render();});
 
 });
@@ -144,10 +149,13 @@ function wordCloud(selector,config) {
             .size([width - margins.left - margins.right, height])
             .interpolate(interpolation)
             .fontScale(d3.scaleLinear())
+            .frequencyScale(d3.scaleSqrt())
             .minFontSize(min)
             .maxFontSize(max)
             .data(data)
-            .font(font);
+            .font(font)
+            .suddenmode(true)
+            .seperate(mainconfig.seperate);
         var boxes = ws.boxes(),
             minFreq = ws.minFreq(),
             maxFreq = ws.maxFreq();
@@ -516,6 +524,7 @@ function ready (error, dataf){
 }
 
 function render (){
+    d3.selectAll("input[type='checkbox']").property("disabled",true);
     d3.selectAll("#timelinewImg").selectAll('svg').remove();
     spinner.spin(document.getElementById('timelinewImg'));
     handledata(data);
@@ -665,7 +674,7 @@ function handledata(data){
             return d3.timeFormat('%b %d %Y')(d3.timeMonday(d))
         };
         daystep = 7;
-        svgHeight = 1000;
+        svgHeight = 1200;
         mainconfig.wstep = 5;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
@@ -718,8 +727,9 @@ function handledata(data){
         .entries(termscollection);
     nestedByTerm.forEach(c=> c.values.forEach( day=>
         day.values.sort((a,b)=>b.values[0].sudden-a.values[0].sudden)));
-    nestedByTerm.forEach(c=> c.values.forEach( day=>
-        day.values = day.values.slice(0,mainconfig.numberOfTopics)));
+    nestedByTerm.forEach(c=> c.values.forEach( day=>{
+        var numtake = Math.max(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
+        day.values = day.values.slice(0,numtake)}));
 
     termscollection.length = 0;
     nestedByTerm.forEach(c=>
@@ -737,7 +747,7 @@ function handledata(data){
         .key(function(d) { return outputFormat(d.time); })
         .key(function(d) { return d.category; })
         .key(function(d) { return d.term; })
-        .rollup(function(words) { return {frequency: words.length,data:words}; })
+        .rollup(function(words) { return {frequency: words.length,sudden: words[0].sudden,data:words}; })
         .entries(termscollection);
 
     //nested_data = nested_data.slice(1,nested_data.length-1);
@@ -760,7 +770,7 @@ function handledata(data){
                     text => {
                         return {
                             text: text.key,
-                            sudden: 0,
+                            sudden: text.value.sudden,
                             topic: w.key,
                             frequency: text.value.frequency,
                             data: text.value.data,

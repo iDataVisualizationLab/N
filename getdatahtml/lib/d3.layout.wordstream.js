@@ -12,7 +12,8 @@ d3.wordStream = function(){
         spiral = achemedeanSpiral,
         canvas = cloudCanvas,
         interpolation = d3.curveNatural,
-        seperate = true;
+        seperate = true,
+        suddenmode = true;
     let wordStream = {};
 
     let cloudRadians = Math.PI / 180, toDegree = 180 / Math.PI,
@@ -35,6 +36,10 @@ d3.wordStream = function(){
             //Place
             for(let bc = 0; bc < boxes.data.length; bc++){
                 let words = boxes.data[bc].words[topic];
+                if (suddenmode)
+                    words.sort((a,b)=>b.sudden-a.sudden);
+                else
+                    words.sort((a,b)=>b.frequency-a.frequency);
                 let n = words.length;
                 let innerBox = innerBoxes[bc];
                 board.boxWidth = innerBox.width;
@@ -81,21 +86,12 @@ d3.wordStream = function(){
     function buildFrequencyScale(data){     // Tinh tong tat ca cac frq
         let totalFrequencies  = calculateTotalFrequenciesABox(data);    // mang chua cac aBox cua tung Timestep
         if (!seperate) {
-            // let max = 0;        // tong so freq cua toan bo do thi
-            // d3.map(totalFrequencies, function (d) {       // VD d :{person: 168, location: 127, organization: 170, miscellaneous: 102}
-            //     let keys = d3.keys(totalFrequencies[0]);        // keys = topics
-            //     let total = 0;
-            //     keys.forEach(key => {
-            //         total += d[key];
-            //     });
-            //     if (total > max) max = total;
-            // });
             let max = d3.max(totalFrequencies,d=>d3.sum(d3.keys(d).map(t=>d[t])));
-            let min = d3.min(totalFrequencies,d=>d3.min(d3.keys(d).map(t=>d[t])));
+            let min = d3.min(totalFrequencies,d=>d3.sum(d3.keys(d).map(t=>d[t])));
             // frequencyScale.domain([0, max]).range([0, size[1]]);        // size[1] la chieu cao cua to giay
-            frequencyScale.domain([min, max]).range([0, size[1]]);        // size[1] la chieu cao cua to giay
+            frequencyScale.domain([0, max]).range([0, size[1]]);        // size[1] la chieu cao cua to giay
         }else{
-            let max = d3.max(totalFrequencies,d=>d3.max(d3.keys(d).map(t=>d[t])));
+            let max = d3.max(totalFrequencies,d=>d3.sum(d3.keys(d).map(t=>d[t])));
             let min = d3.min(totalFrequencies,d=>d3.min(d3.keys(d).map(t=>d[t])));
             frequencyScale.domain([min, max]).range([0, size[1]]);
         }
@@ -104,7 +100,7 @@ d3.wordStream = function(){
     function buildBoxes(data){
         //Build settings based on frequencies
         let totalFrequencies  = calculateTotalFrequenciesABox(data);
-            let topics = d3.keys(data[0].words);
+        let topics = d3.keys(data[0].words);
         //#region creating boxes
         let numberOfBoxes = data.length;
         let boxes = {};
@@ -126,7 +122,6 @@ d3.wordStream = function(){
         if (!seperate) {
             layers = d3.stack()
                 .keys(topics)
-                // .value((d, key,i) => frequencyScale(totalFrequencies[i][key]))
                 .value((d, key, i) => frequencyScale(totalFrequencies[i][key]))
                 .order(d3.stackOrderNone)
                 .offset(d3.stackoffsetnone)
@@ -149,7 +144,6 @@ d3.wordStream = function(){
 
                 var layer =  d3.stack()
                 .keys([t])
-                // .value((d, key,i) => frequencyScale(totalFrequencies[i][key]))
                 .value((d, key, i) => totalFrequencies[i][t])
                 .order(d3.stackOrderNone)
                 .offset(d3.stackOffsetSilhouette)
@@ -161,7 +155,7 @@ d3.wordStream = function(){
             for (var i = 1; i<layers.length;i++){
                 layers[i].offset = layers[i-1].offset + layers[i-1].max +(layers[i].max - layers[i].min)/2;
             }
-            var scale = d3.scaleLinear().domain([layers[0].min,layers[layers.length-1].offset+layers[layers.length-1].max]).range([0,size[1]]);
+            var scale = frequencyScale.domain([layers[0].min,layers[layers.length-1].offset+layers[layers.length-1].max]).range([0,size[1]]);
             layers = layers.map((l,j) => {
                 var m = l.map((e, i) => {
                     return {y0: scale(e[0] + l.offset),
@@ -610,6 +604,14 @@ d3.wordStream = function(){
     };
     wordStream.maxFreq = function (_) {
         return arguments.length ? (maxFreq = _, wordStream) : maxFreq;
+
+    };
+    wordStream.suddenmode = function (_) {
+        return arguments.length ? (suddenmode = _, wordStream) : suddenmode;
+
+    };
+    wordStream.seperate = function (_) {
+        return arguments.length ? (seperate = _, wordStream) : seperate;
 
     };
     //#endregion

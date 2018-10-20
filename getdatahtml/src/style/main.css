@@ -56,5 +56,9 @@ body {
 .grid path {
   stroke-width: 0;
 }
+.grid line {
+  stroke-width: 0.1;
+  opacity: 1;
+}
 
 /*# sourceMappingURL=main.css.map */
