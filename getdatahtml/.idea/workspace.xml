@@ -27,8 +27,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4182">
-              <caret line="657" column="26" lean-forward="true" selection-start-line="657" selection-start-column="26" selection-end-line="657" selection-end-column="26" />
+            <state relative-caret-position="265">
+              <caret line="671" column="22" lean-forward="false" selection-start-line="671" selection-start-column="22" selection-end-line="671" selection-end-column="22" />
               <folding>
                 <element signature="n#!!block;n#wordCloud#0" expanded="false" />
               </folding>
@@ -103,12 +103,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>x</find>
-      <find>d3.axis</find>
-      <find>&quot;setTime</find>
-      <find>mainco</find>
-      <find>sudden</find>
-      <find>Arti</find>
       <find>table</find>
       <find>layer</find>
       <find>grid</find>
@@ -119,7 +113,6 @@
       <find>reu</find>
       <find>on(</find>
       <find>black</find>
-      <find>handle</find>
       <find>spi</find>
       <find>spinner</find>
       <find>spinner.st</find>
@@ -128,11 +121,18 @@
       <find>maincon</find>
       <find>outputFor</find>
       <find>IsWeekly</find>
-      <find>outputFormat</find>
       <find>width</find>
       <find>termscollection</find>
       <find>blackli</find>
       <find>termscollection_org</find>
+      <find>start</find>
+      <find>outputFormat</find>
+      <find>Art</find>
+      <find>.getDa</find>
+      <find>sudden</find>
+      <find>Isweekly</find>
+      <find>svgheight</find>
+      <find>handle</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -163,8 +163,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="181" />
-    <option name="y" value="126" />
+    <option name="x" value="235" />
+    <option name="y" value="80" />
     <option name="width" value="1552" />
     <option name="height" value="873" />
   </component>
@@ -298,15 +298,15 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="25740000" />
+      <workItem from="1540005288595" duration="27671000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74163000" />
+    <option name="totallyTimeSpent" value="76094000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="181" y="126" width="1552" height="873" extended-state="0" />
+    <frame x="235" y="80" width="1552" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2600536" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -340,7 +340,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>473</line>
+          <line>475</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -350,48 +350,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>762</line>
+          <line>774</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>661</line>
+          <line>673</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>721</line>
+          <line>733</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/lib/d3.layout.wordstream.js</url>
-          <line>124</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>733</line>
+          <line>745</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>516</line>
+          <line>518</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="41" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>84</line>
+          <line>86</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="44" />
+      <option name="time" value="45" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -744,7 +738,7 @@
     <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
-          <caret line="215" column="19" lean-forward="false" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="19" />
+          <caret line="125" column="8" lean-forward="false" selection-start-line="125" selection-start-column="8" selection-end-line="125" selection-end-column="8" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -753,8 +747,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/script/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4182">
-          <caret line="657" column="26" lean-forward="true" selection-start-line="657" selection-start-column="26" selection-end-line="657" selection-end-column="26" />
+        <state relative-caret-position="265">
+          <caret line="671" column="22" lean-forward="false" selection-start-line="671" selection-start-column="22" selection-end-line="671" selection-end-column="22" />
           <folding>
             <element signature="n#!!block;n#wordCloud#0" expanded="false" />
           </folding>

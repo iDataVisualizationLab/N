@@ -20,12 +20,14 @@ var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
 var svgHeight = 2000;
+
 var mainconfig = {
     renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
     Isweekly: false
 };
+var daystep = 1;
 var startDate;
 var endDate;
 var wordTip = d3.tip()
@@ -537,9 +539,9 @@ function render (){
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
     var startDatedis = new Date (startDate);
-    startDatedis["setDate"](startDatedis.getDate() - 0.5);
+    startDatedis["setDate"](startDatedis.getDate() - daystep/2);
     var endDatedis = new Date (endDate);
-    endDatedis["setDate"](endDatedis.getDate() + 0.5);
+    endDatedis["setDate"](endDatedis.getDate() + daystep/2);
     x.range([0, width])
         .domain([new Date (startDatedis),parseTime(endDatedis)]);
     let gridlineNodes = d3.axisTop()
@@ -658,7 +660,17 @@ function render (){
 function handledata(data){
     var termscollection = [];
     //sort out term for 1 article
-        outputFormat = mainconfig.IsWeekly?d3.timeMonday:d3.timeFormat('%b %d %Y');
+    if (mainconfig.IsWeekly) {
+        outputFormat =  (d) => {
+            return d3.timeFormat('%b %d %Y')(d3.timeMonday(d))
+        };
+        daystep = 7;
+        svgHeight = 1000;
+    }else {
+        outputFormat =  d3.timeFormat('%b %d %Y');
+        daystep = 1;
+        svgHeight = 1500;
+    }
     var nested_data = d3.nest()
         .key(function(d) { return d.title; })
         .key(function(d) { return d.term; })
@@ -677,7 +689,7 @@ function handledata(data){
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
-                    preday["setDate"](preday.getDate() + 1);
+                    preday["setDate"](preday.getDate() + daystep);
                     if (preday != new Date(day.key))
                         pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
@@ -798,7 +810,7 @@ function fillData(endDate, startDate) {
         }
         dd.push({"key": outputFormat(new Date(now)), "value": yy});
         d.push({"date": outputFormat(new Date(now)), "words": y});
-        now["setDate"](now.getDate() + 1);
+        now["setDate"](now.getDate() + daystep);
     }
     ArticleDay = dd;
     TermwDay = d;
