@@ -523,7 +523,7 @@ function render (){
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
     var numDays = Math.floor((new Date(endDate) - new Date(startDate))/1000/60/60/24);
-    width = Math.max(width,mainconfig.wstep*(numDays+2));
+    width = Math.max(width,mainconfig.wstep*(numDays+daystep));
     var height = svgHeight - margin.bottom - margin.top;
 
     // parse the date / time
@@ -666,10 +666,12 @@ function handledata(data){
         };
         daystep = 7;
         svgHeight = 1000;
+        mainconfig.wstep = 5;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
         daystep = 1;
         svgHeight = 1500;
+        mainconfig.wstep = 50;
     }
     var nested_data = d3.nest()
         .key(function(d) { return d.title; })

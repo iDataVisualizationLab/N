@@ -27,8 +27,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="671" column="22" lean-forward="false" selection-start-line="671" selection-start-column="22" selection-end-line="671" selection-end-column="22" />
+            <state relative-caret-position="133">
+              <caret line="668" column="29" lean-forward="true" selection-start-line="668" selection-start-column="29" selection-end-line="668" selection-end-column="29" />
               <folding>
                 <element signature="n#!!block;n#wordCloud#0" expanded="false" />
               </folding>
@@ -103,7 +103,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>table</find>
       <find>layer</find>
       <find>grid</find>
       <find>data</find>
@@ -133,6 +132,7 @@
       <find>Isweekly</find>
       <find>svgheight</find>
       <find>handle</find>
+      <find>wstep</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -298,12 +298,12 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="27671000" />
+      <workItem from="1540005288595" duration="27951000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76094000" />
+    <option name="totallyTimeSpent" value="76374000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="235" y="80" width="1552" height="873" extended-state="0" />
@@ -350,25 +350,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>774</line>
+          <line>776</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>673</line>
+          <line>675</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>733</line>
+          <line>735</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>745</line>
+          <line>747</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="39" />
         </line-breakpoint>
@@ -747,8 +747,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/script/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="671" column="22" lean-forward="false" selection-start-line="671" selection-start-column="22" selection-end-line="671" selection-end-column="22" />
+        <state relative-caret-position="133">
+          <caret line="668" column="29" lean-forward="true" selection-start-line="668" selection-start-column="29" selection-end-line="668" selection-end-column="29" />
           <folding>
             <element signature="n#!!block;n#wordCloud#0" expanded="false" />
           </folding>
