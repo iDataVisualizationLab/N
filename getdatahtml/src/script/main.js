@@ -8,7 +8,9 @@ var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
 var TermwDay,
+    termscollection,
     ArticleDay,
+    data,
     svg;
 var lineColor = d3.scaleLinear()
     .domain([0,120])
@@ -22,7 +24,7 @@ var mainconfig = {
     renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
-    display: "weekly"
+    Isweekly: false
 };
 var startDate;
 var endDate;
@@ -70,13 +72,18 @@ var opts = {
     trail: 40, // Afterglow percentage
     className: 'spinner', // The CSS class to assign to the spinner
 };
+var target;
 var spinner ;
 $(document).ready(function () {
-    var target = document.getElementById('timelinewImg');
-    spinner = new Spinner(opts).spin(target);
+    target = document.getElementById('timelinewImg');
+    spinner = new Spinner(opts);
+    spinner.spin(document.getElementById('timelinewImg'));
     d3.queue()
         .defer(d3.json,"src/data/dataout.json")
         .await(ready);
+    d3.select("#IsWeekly").on("change",()=> {
+        mainconfig.mainconfig.IsWeekly = ~mainconfig.mainconfig.IsWeekly;
+        render();});
 
 });
 function wordCloud(selector,config) {
@@ -491,19 +498,24 @@ function wordCloud(selector,config) {
         }
     }
 }
-function ready (error, data){
+function ready (error, dataf){
+    //spinner = new Spinner(opts).spin(document.getElementById('timelinewImg'));
     if (error) throw error;
+    data = dataf;
     // format the data
     //data =data.filter(d=>d.source=="reuters");
     data.forEach(function(d) {
         if(d.source !== "reuters")
             d.time = parseTime(d.time);
     });
+    data.sort((a,b)=> a.time-b.time);
+    termscollection = blacklist(data);
     render();
 }
 
 function render (){
-
+    d3.selectAll("#timelinewImg").selectAll('svg').remove();
+    spinner.spin(document.getElementById('timelinewImg'));
     handledata(data);
 
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
@@ -641,13 +653,12 @@ function render (){
             .attr("cy",d=> d.y);
     }
     spinner.stop();
+    d3.selectAll("input[type='checkbox']").property("disabled",false);
 }
 function handledata(data){
-    data.sort((a,b)=> a.time-b.time);
-    var termscollection = blacklist(data);
 
     //sort out term for 1 article
-
+        outputFormat = mainconfig.IsWeekly?d3.timeMonday():d3.timeFormat('%b %d %Y');
     var nested_data = d3.nest()
         .key(function(d) { return d.title; })
         .key(function(d) { return d.term; })
