@@ -27,8 +27,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="813" column="27" lean-forward="false" selection-start-line="813" selection-start-column="27" selection-end-line="813" selection-end-column="27" />
+            <state relative-caret-position="4182">
+              <caret line="657" column="26" lean-forward="true" selection-start-line="657" selection-start-column="26" selection-end-line="657" selection-end-column="26" />
               <folding>
                 <element signature="n#!!block;n#wordCloud#0" expanded="false" />
               </folding>
@@ -103,7 +103,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>x.</find>
       <find>x</find>
       <find>d3.axis</find>
       <find>&quot;setTime</find>
@@ -133,6 +132,7 @@
       <find>width</find>
       <find>termscollection</find>
       <find>blackli</find>
+      <find>termscollection_org</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -298,12 +298,12 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="25597000" />
+      <workItem from="1540005288595" duration="25740000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74020000" />
+    <option name="totallyTimeSpent" value="74163000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="181" y="126" width="1552" height="873" extended-state="0" />
@@ -753,8 +753,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/script/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="813" column="27" lean-forward="false" selection-start-line="813" selection-start-column="27" selection-end-line="813" selection-end-column="27" />
+        <state relative-caret-position="4182">
+          <caret line="657" column="26" lean-forward="true" selection-start-line="657" selection-start-column="26" selection-end-line="657" selection-end-column="26" />
           <folding>
             <element signature="n#!!block;n#wordCloud#0" expanded="false" />
           </folding>

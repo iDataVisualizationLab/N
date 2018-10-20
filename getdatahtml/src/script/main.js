@@ -656,14 +656,14 @@ function render (){
     d3.selectAll("input[type='checkbox']").property("disabled",false);
 }
 function handledata(data){
-    termscollection = termscollection_org;
+    var termscollection = [];
     //sort out term for 1 article
         outputFormat = mainconfig.IsWeekly?d3.timeMonday:d3.timeFormat('%b %d %Y');
     var nested_data = d3.nest()
         .key(function(d) { return d.title; })
         .key(function(d) { return d.term; })
         .rollup(function(words) { return {frequency: words.length,data:words[0]}; })
-        .entries(termscollection);
+        .entries(termscollection_org);
     termscollection.length = 0;
     nested_data.forEach(d=> d.values.forEach(e=> termscollection.push(e.value.data)));
     //sudden
