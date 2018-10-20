@@ -21,7 +21,8 @@ var svgHeight = 2000;
 var mainconfig = {
     renderpic: false,
     wstep: 50,
-    numberOfTopics: 20
+    numberOfTopics: 20,
+    display: "weekly"
 };
 var startDate;
 var endDate;
@@ -30,12 +31,23 @@ var wordTip = d3.tip()
     .offset([-10, 0])
     .html(function (d) {
         var str = '';
+        str += "<div class = headertip>"
+        str += "<h5 class ='headerterm'>Term: </h5>";
+        str += "<h3 class ='information'>";
+        str +=  (d.text||d.key) +'</h3>';
+        str += "<h5 class ='headerterm'>  Freqeuncy: </h5>";
+        str += "<h4 class ='information'>";
+        str += (d.frequency||d.value.articlenum) +'</h4>';
+        str += "<h5 class ='headerterm'>  Date: </h5>";
+        str += "<h4 class ='information'>";
+        str += outputFormat(d.data[0].time) +'</h4>';
+        str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th colspan="2">' + (d.text||d.key) + ' : ' + (d.frequency||d.value.articlenum) + "-" + outputFormat(d.data[0].time) +'</th>';
-        // if(d.key==undefined)
-        //     str += '<h4>' + outputFormat(d.data[0].time) + '</h4>';
+        str += '<th >Source</th>';
+        str += '<th >Title</th>';
         str + "</tr>";
+
         (d.data||d.value.data).forEach(t => {
             var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
             str += "<tr>";
@@ -487,6 +499,11 @@ function ready (error, data){
         if(d.source !== "reuters")
             d.time = parseTime(d.time);
     });
+    render();
+}
+
+function render (){
+
     handledata(data);
 
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
@@ -572,13 +589,13 @@ function ready (error, data){
         .attr("width", "100%")
         .attr("class","circle-pattern")
         .attr("patternContentUnits", "objectBoundingBox")
-            .append("image")
-            .attr("height", 1).attr("width", 1)
-            .attr("preserveAspectRatio", "none")
-            .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-            .attr("xlink:href", function (d) {
-                return mainconfig.renderpic? d.urlToImage:"";
-            });
+        .append("image")
+        .attr("height", 1).attr("width", 1)
+        .attr("preserveAspectRatio", "none")
+        .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+        .attr("xlink:href", function (d) {
+            return mainconfig.renderpic? d.urlToImage:"";
+        });
 
     pic.on("error", function(){
         let el = d3.select(this);
@@ -605,7 +622,7 @@ function ready (error, data){
     //     .on("mouseleave", () => wordTip.hide());
     //.attr("fill",d => "url(#"+d.time+")");
     //simulation.nodes(ArticleDay);
-        //.on('tick',ticked);
+    //.on('tick',ticked);
     // Add the X Axis
 
     timeline.select('.sublegend')
@@ -624,7 +641,6 @@ function ready (error, data){
             .attr("cy",d=> d.y);
     }
     spinner.stop();
-
 }
 function handledata(data){
     data.sort((a,b)=> a.time-b.time);
@@ -701,7 +717,7 @@ function handledata(data){
 
     //nested_data = nested_data.slice(1,nested_data.length-1);
     //slice data
-    nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 1 2018'));
+    nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 15 2018'));
 
     // ArticleByDay
     ArticleDay = d3.nest()
