@@ -8,7 +8,7 @@ var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
 var TermwDay,
-    termscollection,
+    termscollection_org,
     ArticleDay,
     data,
     svg;
@@ -82,7 +82,7 @@ $(document).ready(function () {
         .defer(d3.json,"src/data/dataout.json")
         .await(ready);
     d3.select("#IsWeekly").on("change",()=> {
-        mainconfig.mainconfig.IsWeekly = ~mainconfig.mainconfig.IsWeekly;
+        mainconfig.IsWeekly = ~mainconfig.IsWeekly;
         render();});
 
 });
@@ -509,7 +509,7 @@ function ready (error, dataf){
             d.time = parseTime(d.time);
     });
     data.sort((a,b)=> a.time-b.time);
-    termscollection = blacklist(data);
+    termscollection_org = blacklist(data);
     render();
 }
 
@@ -656,9 +656,9 @@ function render (){
     d3.selectAll("input[type='checkbox']").property("disabled",false);
 }
 function handledata(data){
-
+    termscollection = termscollection_org;
     //sort out term for 1 article
-        outputFormat = mainconfig.IsWeekly?d3.timeMonday():d3.timeFormat('%b %d %Y');
+        outputFormat = mainconfig.IsWeekly?d3.timeMonday:d3.timeFormat('%b %d %Y');
     var nested_data = d3.nest()
         .key(function(d) { return d.title; })
         .key(function(d) { return d.term; })
@@ -811,7 +811,7 @@ function blacklist(data){
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
     var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU"];
-    var termscollection = [];
+    termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
             numterm++;
@@ -824,10 +824,10 @@ function blacklist(data){
                 var e = w;
                 e.time = d.time;
                 e.title = d.title;
-                termscollection.push(w)});
+            termscollection_org.push(w)});
     });
     console.log("#org terms: " +numterm);
-    console.log("#terms: " +termscollection.length);
-    return termscollection;
+    console.log("#terms: " +termscollection_org.length);
+    return termscollection_org;
 }
 
