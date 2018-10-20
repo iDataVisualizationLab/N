@@ -9,7 +9,7 @@ $(document).ready(function () {
         .await((error, d)=>{data =d;
             console.log(data.length);
             d3.queue()
-                .defer(d3.json,"src/data/dataout13.json")
+                .defer(d3.json,"src/data/dataout14.json")
                 .await((error, d)=>{
                     console.log(d.length);
                     d.forEach(e=>{

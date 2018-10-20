@@ -1,9 +1,9 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
-var categoriesgroup ={  "PRODUCT":["PRODUCT","LAW","EVENT"],
+var categoriesgroup ={  "PRODUCT":["PRODUCT","EVENT"],
                         "PERSON":["PERSON"],
-                        "NATION":["LOC","GPE"], // ORG merge GPE
+                        "NATION":["GPE"], // ORG merge GPE
                         "ORG":["ORG"],
-                        "NUMBER": ["MONEY","PERCENT","ORDINAL"]};
+                        "NUMBER": ["MONEY","PERCENT"]};
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
@@ -13,13 +13,15 @@ var TermwDay,
 var lineColor = d3.scaleLinear()
     .domain([0,120])
     .range(['#558', '#000']);
-var x = d3.scalePoint();
-var wscale = 0.1;
+// var x = d3.scalePoint();
+var x = d3.scaleTime();
+var wscale = 0.01;
 var timeline;
 var svgHeight = 2000;
 var mainconfig = {
     renderpic: false,
     wstep: 50,
+    numberOfTopics: 20
 };
 var startDate;
 var endDate;
@@ -67,7 +69,7 @@ $(document).ready(function () {
 });
 function wordCloud(selector,config) {
     function draw(data) {
-        d3.select(selector).select('svg').selectAll('g').remove();
+        d3.select(selector).select('svg').selectAll('.cloud').remove();
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
@@ -104,7 +106,9 @@ function wordCloud(selector,config) {
 
         //Draw the word cloud
 
-        var mainGroup = svg.append('g').attr('transform', 'translate(' + margins.left + ',' + (margins.top) + ')');
+        var mainGroup = svg.append('g')
+            .attr('class','cloud')
+            .attr('transform', 'translate(' + margins.left + ',' + (margins.top) + ')');
         var wordStreamG = mainGroup.append('g');
         var k = 0;
         // if (pop) {
@@ -131,14 +135,14 @@ function wordCloud(selector,config) {
 
         var color = d3.scaleOrdinal(d3.schemeCategory10);
         //Display time axes
-        var dates = [];
-        boxes.data.forEach(row => {
-            dates.push(row.date);
-        });
+        // var dates = [];
+        // boxes.data.forEach(row => {
+        //     dates.push(row.date);
+        // });
 
-        x.domain(dates);
-        var xrange = x.range();
-        var boxwidth = width/data.length;
+
+        // var xrange = x.range();
+        var boxwidth = ~~(width/data.length);
         // x.range([xrange[0] + boxwidth, width - boxwidth])
         mainGroup.attr('transform', 'translate(' + margins.left + ',' + margins.top + ')');
 
@@ -226,10 +230,10 @@ function wordCloud(selector,config) {
             });
         });
         //Color based on term
-        var terms = [];
-        for(i=0; i< allWords.length; i++){
-            terms.concat(allWords[i].text);
-        }
+        // var terms = [];
+        // for(i=0; i< allWords.length; i++){
+        //     terms.concat(allWords[i].text);
+        // }
 
         // Unique term de to mau cho cac chu  cung noi dung co cung mau
 
@@ -264,11 +268,11 @@ function wordCloud(selector,config) {
         gtext.enter()
             .append('g')
             .attr('class','gtext')
-            .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+')rotate('+d.rotate+')';}})
+            .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+') rotate('+d.rotate+')';}})
             .append('text')
             .attr("class",'stext')
             .text(function(d){return d.text;})
-            .transition().attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+            .transition().duration(10).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -298,7 +302,7 @@ function wordCloud(selector,config) {
             var allTexts = mainGroup.selectAll('.stext').filter(t =>{
                 var sameTerm = t && t.text === text &&  t.topic === topic;
                 var sameArticle = false;
-                t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title==tt.title)!=undefined)));
+                t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title===tt.title)!==undefined)));
                 return sameTerm || sameArticle;
             });
             allTexts.style('fill-opacity', 1);
@@ -311,7 +315,7 @@ function wordCloud(selector,config) {
             wordTip.show(d);
         });
 
-        mainGroup.selectAll('.stext').on('mouseout', function(d){
+        mainGroup.selectAll('.stext').on('mouseleave', function(d){
             var thisText = d3.select(this);
             thisText.style('cursor', 'default');
             var text = thisText.text();
@@ -321,11 +325,7 @@ function wordCloud(selector,config) {
             );
 
             allTexts
-                .style('fill-opacity', function(d){return opacity(d.frequency)})
-                .attrs({
-                    stroke: 'none',
-                    'stroke-width': '0'
-                });
+                .style('fill-opacity', function(d){return opacity(d.frequency)});
             wordTip.hide();
         });
         //Click
@@ -343,10 +343,10 @@ function wordCloud(selector,config) {
                 t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title==tt.title)!=undefined)));
                 return sameTerm || sameArticle;
             });
-            d3.selectAll(".article")
-                .filter(a=>  allTexts._groups[0].find(d=> outputFormat(d.__data__.data[0].time)==a.key) != undefined)
-                .style("fill","#ffc62a")
-                .style("filter","url(#glow)");
+            // d3.selectAll(".article")
+            //     .filter(a=>  allTexts._groups[0].find(d=> outputFormat(d.__data__.data[0].time)==a.key) != undefined)
+            //     .style("fill","#ffc62a")
+            //     .style("filter","url(#glow)");
             //Select the data for the stream layers
             var streamLayer = d3.select("path[topic='"+ topic+"']" ).datum();
             //Push all points
@@ -413,6 +413,7 @@ function wordCloud(selector,config) {
                 .data(d => d.data)
                     .enter()
                 .append('a')
+                .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
                 .attr("xlink:href",d => d.url)
                 .attr('class','stackimg')
                     .append('rect')
@@ -491,7 +492,7 @@ function ready (error, data){
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
     var numDays = Math.floor((new Date(endDate) - new Date(startDate))/1000/60/60/24);
-    width = Math.max(width,mainconfig.wstep*numDays);
+    width = Math.max(width,mainconfig.wstep*(numDays+2));
     var height = svgHeight - margin.bottom - margin.top;
 
     // parse the date / time
@@ -506,7 +507,17 @@ function ready (error, data){
     var rc = 1;
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
-    x.range([0, width]);
+    var startDatedis = new Date (startDate);
+    startDatedis["setDate"](startDatedis.getDate() - 0.5);
+    var endDatedis = new Date (endDate);
+    endDatedis["setDate"](endDatedis.getDate() + 0.5);
+    x.range([0, width])
+        .domain([new Date (startDatedis),parseTime(endDatedis)]);
+    let gridlineNodes = d3.axisTop()
+        .tickFormat("")
+        .tickSize(-height)
+        .scale(x)
+        .ticks(d3.timeMonday.every(1));
     var y = d3.scaleLinear().range([height/2, 0]);
     var simulation = d3.forceSimulation()
         .force("y", d3.forceY(height*wscale/2).strength(0.05));
@@ -516,17 +527,30 @@ function ready (error, data){
         .append("svg")
         .attr("width", width)
         .attr("height", height*(1-wscale));
+    svg.append("g")
+        .attr("class", "grid")
+        .call(gridlineNodes);
     var configwc = {width: width,height: height*(1-wscale)};
     myWordCloud = wordCloud('#tagCloud',configwc);
 
     myWordCloud.update(TermwDay);
+    timeline.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height*wscale + ")")
+        .call(d3.axisTop(x)
+            .ticks(d3.timeMonday.every(1))
+            .tickFormat(d3.timeFormat("%B %d, %Y")))
+        .selectAll("text")
+        .style("text-anchor", "start")
+        .attr("dx", ".8em")
+        .attr("dy", "-.15em");
     // Scale the range of the data
     //x.domain(d3.extent(data, function(d) { return d.time; }));
     //y.domain([0, d3.max(data, function(d) { return d.close; })]);
     // simulation.force("x", d3.forceX(d => x(outputFormat(d.time))).strength(0.05));
 
-    simulation.force("x", d3.forceX(d => x(d.key)).strength(0.05))
-        .force("collide", d3.forceCollide(d=>rcscale(d.value.articlenum)));
+    // simulation.force("x", d3.forceX(d => x(d.key)).strength(0.05))
+    //     .force("collide", d3.forceCollide(d=>rcscale(d.value.articlenum)));
     //bubbles
     var defs = d3.select("#timelinewImg").select('g').append("defs");
     var filter = defs.append("filter")
@@ -571,36 +595,26 @@ function ready (error, data){
     // simulation.nodes(data)
     //     .on('tick',ticked);
     var rcscale = d3.scaleLinear().domain(d3.extent(ArticleDay,(d=> d.value.articlenum))).range([2,20]);
-    var circles = timeline.selectAll(".article")
-        .data(ArticleDay)
-        .enter().append("circle")
-        .attr("class", "article")
-        .attr("r",d=> rcscale(d.value.articlenum))
-        .attr("fill","lightblue");
-    circles.on("mouseover", d=>wordTip.show(d))
-        .on("mouseout", () => wordTip.hide());
+    // var circles = timeline.selectAll(".article")
+    //     .data(ArticleDay)
+    //     .enter().append("circle")
+    //     .attr("class", "article")
+    //     .attr("r",d=> rcscale(d.value.articlenum))
+    //     .attr("fill","lightblue");
+    // circles.on("mouseenter", d=>wordTip.show(d))
+    //     .on("mouseleave", () => wordTip.hide());
     //.attr("fill",d => "url(#"+d.time+")");
-    simulation.nodes(ArticleDay);
+    //simulation.nodes(ArticleDay);
         //.on('tick',ticked);
     // Add the X Axis
-    timeline.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + height*wscale + ")")
-        .call(d3.axisBottom(x)
-        .tickValues(x.domain().filter(function(d,i){ return !(i%10)})))
-            //.tickFormat(d3.timeFormat("%B %d, %Y")))
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)");
+
     timeline.select('.sublegend')
         .attr("transform", "translate(" + 0 + "," + height*wscale + ")");
-    timeline.select('.legend')
-        .append("text")
-        .style("text-anchor", "middle")
-        .attr("transform", "translate(0,"+height*wscale/2+") rotate(-90)")
-        .text('NEWS');
+    // timeline.select('.legend')
+    //     .append("text")
+    //     .style("text-anchor", "middle")
+    //     .attr("transform", "translate(0,"+height*wscale/2+") rotate(-90)")
+    //     .text('NEWS');
     // Add the Y Axis
     // svg.append("g")
     //     .attr("class", "axis")
@@ -624,8 +638,60 @@ function handledata(data){
         .rollup(function(words) { return {frequency: words.length,data:words[0]}; })
         .entries(termscollection);
     termscollection.length = 0;
-    nested_data.forEach(d=> d.values.forEach(e=> termscollection.push(e.value.data)))
+    nested_data.forEach(d=> d.values.forEach(e=> termscollection.push(e.value.data)));
+    //sudden
+    var nestedByTerm = d3.nest()
+        .key(function(d) { return d.category; })
+        .key(function(d) { return d.term; })
+        .key(function(d) { return outputFormat(d.time); })
+        .entries(termscollection);
+    nestedByTerm.forEach(c=>
+        c.values.forEach(term=> {
+                var pre = 0;
+                var preday = new Date(term.values[0].key);
+                term.values.forEach(day => {
+                    preday["setDate"](preday.getDate() + 1);
+                    if (preday != new Date(day.key))
+                        pre = 0;
+                    var sudden  = (day.values.length+1)/(pre+1);
+                    day.values.forEach(e=> e.sudden = sudden);
+                    pre = day.values.length;
+                    preday = new Date(day.key);
+                })
+            }
+        )
+    );
+    termscollection.length = 0;
+    nestedByTerm.forEach(c=>
+        c.values.forEach(term=> {
+                term.values.forEach(day => {
+                    day.values.forEach(e=> termscollection.push(e))
+                })
+            }
+        )
+    );
+    nestedByTerm = d3.nest()
+        .key(function(d) { return d.category; })
+        .key(function(d) { return outputFormat(d.time); })
+        .key(function(d) { return d.term; })
+        .entries(termscollection);
+    nestedByTerm.forEach(c=> c.values.forEach( day=>
+        day.values.sort((a,b)=>b.values[0].sudden-a.values[0].sudden)));
+    nestedByTerm.forEach(c=> c.values.forEach( day=>
+        day.values = day.values.slice(0,mainconfig.numberOfTopics)));
+
+    termscollection.length = 0;
+    nestedByTerm.forEach(c=>
+        c.values.forEach(term=> {
+                term.values.forEach(day => {
+                    day.values.forEach(e=> termscollection.push(e))
+                })
+            }
+        )
+    );
+    console.log('cut by sudden: '+ termscollection.length);
     // done -sort
+    termscollection.sort((a,b)=>a.time-b.time);
     nested_data = d3.nest()
         .key(function(d) { return outputFormat(d.time); })
         .key(function(d) { return d.category; })
@@ -633,18 +699,21 @@ function handledata(data){
         .rollup(function(words) { return {frequency: words.length,data:words}; })
         .entries(termscollection);
 
-    nested_data = nested_data.slice(1,nested_data.length-1);
+    //nested_data = nested_data.slice(1,nested_data.length-1);
+    //slice data
     nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 1 2018'));
+
+    // ArticleByDay
     ArticleDay = d3.nest()
         .key(function(d) { return outputFormat(d.time); })
         .rollup(function(words) { return {articlenum: words.length,data:words}; })
         .entries(data);
-    ArticleDay=ArticleDay.filter(d=> nested_data.find(e=> e.key==d.key));
+    ArticleDay=ArticleDay.filter(d=> nested_data.find(e=> e.key === d.key));
     TermwDay = nested_data.map(d=>{
         var words = {};
         categories.forEach( topic =>
         {
-            var w = d.values.filter(wf => wf.key == topic)[0];
+            var w = d.values.filter(wf => wf.key === topic)[0];
             if (w !== undefined) {
                 words[w.key] = w.values.map(
                     text => {
@@ -664,10 +733,13 @@ function handledata(data){
          'words': words};});
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
+    console.log(startDate +" - "+endDate);
     fillData(endDate, startDate)
 
 
 }
+
+
 
 function fillData(endDate, startDate) {
     var d = [],
@@ -731,3 +803,4 @@ function blacklist(data){
     console.log("#terms: " +termscollection.length);
     return termscollection;
 }
+
