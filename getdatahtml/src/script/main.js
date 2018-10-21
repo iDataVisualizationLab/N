@@ -24,7 +24,7 @@ var timeline;
 var svgHeight = 2000;
 
 var mainconfig = {
-    renderpic: true,
+    renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
     rateOfTopics: 0.05,
