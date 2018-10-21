@@ -14,14 +14,14 @@ function drawColorLegend() {
     svg.append("circle")
         .attr("class", "nodeLegend")
         .attr("cx", xx)
-        .attr("cy", y4)
+        .attr("cy", y1)
         .attr("r", rr)
         .style("fill", "#1f77b4");
 
     svg.append("text")
         .attr("class", "nodeLegend")
         .attr("x", xx+10)
-        .attr("y", y4+1)
+        .attr("y", y1+1)
         .text("Number")
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
@@ -50,14 +50,14 @@ function drawColorLegend() {
       svg.append("circle")
         .attr("class", "nodeLegend")
         .attr("cx", xx)
-        .attr("cy", y1)
+        .attr("cy", y3)
         .attr("r", rr)
         .style("fill", "#2ca02c");
       
       svg.append("text")
         .attr("class", "nodeLegend")
         .attr("x", xx+10)
-        .attr("y", y1+1)
+        .attr("y", y3+1)
         .text("Person")
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
@@ -70,14 +70,14 @@ function drawColorLegend() {
        svg.append("circle")
         .attr("class", "nodeLegend")
         .attr("cx", xx)
-        .attr("cy", y3)
+        .attr("cy", y4)
         .attr("r", rr)
         .style("fill", "#d62728");
 
       svg.append("text")
         .attr("class", "nodeLegend")
         .attr("x", xx+10)
-        .attr("y", y3+1)
+        .attr("y", y4+1)
         .text("Organization")
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
@@ -329,13 +329,17 @@ function getColor(category, count) {
   var sat = minSat+Math.round(percent*(maxSat-minSat));
  
   if (category=="person")
-    return "rgb("+sat+", "+255+", "+sat+")" ; // leaf node
+    // return "rgb("+sat+", "+255+", "+sat+")" ; // leaf node
+      return "rgba(44, 160, 44,0.7)";
   else if (category=="location")
-    return "rgb("+255+", "+sat+", "+sat+")" ; // leaf node
+    // return "rgb("+255+", "+sat+", "+sat+")" ; // leaf node
+      return "rgba(255, 127, 14,0.7)";
   else if (category=="organization")
-    return "rgb("+sat+", "+sat+", "+255+")" ; // leaf node
+        return "rgba(214, 39, 40,0.7)";
+    // return "rgb("+sat+", "+sat+", "+255+")" ; // leaf node
   else if (category=="miscellaneous")
-    return "rgb("+(215)+", "+(215)+", "+(sat)+")" ; // leaf node
+    // return "rgb("+(215)+", "+(215)+", "+(sat)+")" ; // leaf node
+      return "rgba(31, 119, 180,0.7)";
   else
     return "#000000";
    
