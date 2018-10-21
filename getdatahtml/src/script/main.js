@@ -24,7 +24,7 @@ var timeline;
 var svgHeight = 2000;
 
 var mainconfig = {
-    renderpic: false,
+    renderpic: true,
     wstep: 50,
     numberOfTopics: 20,
     rateOfTopics: 0.05,
@@ -144,7 +144,7 @@ $(document).ready(function () {
 });
 function wordCloud(selector,config) {
     function draw(data) {
-        d3.select(selector).select('svg').selectAll('.cloud').remove();
+        //d3.select(selector).select('svg').selectAll('.cloud').remove();
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
@@ -330,9 +330,10 @@ function wordCloud(selector,config) {
             .data(allWords)
             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+')rotate('+d.rotate+')';}});
 
-        gtext.selectAll('.stext')
+        var stext = gtext.selectAll('.stext')
+            .transition()
             .text(function(d){return d.text;})
-            .transition().duration(1000).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+            .attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -344,7 +345,8 @@ function wordCloud(selector,config) {
                 'fill-opacity': function(d){return opacity(d.frequency)},
                 'text-anchor': 'middle',
                 'alignment-baseline': 'middle'
-            });
+            })
+            .duration(1000);
         gtext.exit().remove();
         gtext.enter()
             .append('g')
@@ -353,7 +355,7 @@ function wordCloud(selector,config) {
             .append('text')
             .attr("class",'stext')
             .text(function(d){return d.text;})
-            .transition().duration(1000).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+            .transition().duration(100).styleTween('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -632,7 +634,7 @@ function render (){
         .attr("transform", "translate(0," + height*wscale + ")")
         .call(d3.axisTop(x)
             .ticks(d3.timeMonday.every(1))
-            .tickFormat(d3.timeFormat("%B %d, %Y")))
+            .tickFormat(d3.timeFormat("%b %d, %Y")))
         .selectAll("text")
         .style("text-anchor", "start")
         .attr("dx", ".8em")
@@ -728,7 +730,7 @@ function handledata(data){
         };
         daystep = 7;
         svgHeight = 1200;
-        mainconfig.wstep = 5;
+        mainconfig.wstep = 15;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
         daystep = 1;

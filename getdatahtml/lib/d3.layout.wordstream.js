@@ -124,7 +124,7 @@ d3.wordStream = function(){
                 .keys(topics)
                 .value((d, key, i) => frequencyScale(totalFrequencies[i][key]))
                 .order(d3.stackOrderNone)
-                .offset(d3.stackoffsetnone)
+                .offset(d3.stackOffsetSilhouette)
                 (data);
             var min = d3.min(layers, (d => d3.min(d, e => e[0])));
             layers = layers.map(l => {
