@@ -19,5 +19,12 @@
 <section class="options">
     <input type="checkbox" id="IsWeekly" disabled> Weekly
     <input type="checkbox" id="IsSeperate" disabled checked> Seperate
+    <script src="lib/autocomplete.js"></script>
+    <form autocomplete="off" action="none">
+        <div class="autocomplete" style="width:300px;">
+            <input id="theWord" type="text" name="theWord" placeholder="words">
+        </div>
+        <input type="button" value="Submit" onclick="searchWord()">
+    </form>
 </section>
 <section  class="timeline" id = "timelinewImg"></section >

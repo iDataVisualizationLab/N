@@ -1,4 +1,5 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
+let self = null;
 var categoriesgroup ={
     "NUMBER": ["MONEY","PERCENT"],
     "PRODUCT":["PRODUCT","EVENT"],
@@ -80,6 +81,7 @@ var opts = {
 var target;
 var spinner ;
 $(document).ready(function () {
+
     target = document.getElementById('timelinewImg');
     spinner = new Spinner(opts);
     spinner.spin(document.getElementById('timelinewImg'));
@@ -183,7 +185,7 @@ function wordCloud(selector,config) {
 
             var legendg = timeline.append("g")
                 .attr("class", "legend")
-                .attr("transform", "translate(" + (-20) + "," + 0 + ")")
+                .attr("transform", "translate(" + (-10) + "," + 0 + ")")
                 .append("g")
                 .attr("class", "sublegend")
                 .selectAll(".lengendtext")
@@ -524,6 +526,7 @@ function ready (error, dataf){
     });
     data.sort((a,b)=> a.time-b.time);
     termscollection_org = blacklist(data);
+    autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
     render();
 }
 
@@ -556,7 +559,7 @@ function render (){
     var endDatedis = new Date (endDate);
     endDatedis["setDate"](endDatedis.getDate() + daystep/2);
     x.range([0, width])
-        .domain([new Date (startDatedis),parseTime(endDatedis)]);
+        .domain([new Date (startDatedis),new Date (endDatedis)]);
     let gridlineNodes = d3.axisTop()
         .tickFormat("")
         .tickSize(-height)
@@ -686,11 +689,38 @@ function handledata(data){
         svgHeight = 1500;
         mainconfig.wstep = 50;
     }
-    var nested_data = d3.nest()
-        .key(function(d) { return d.title; })
-        .key(function(d) { return d.term; })
-        .rollup(function(words) { return {frequency: words.length,data:words[0]}; })
-        .entries(termscollection_org);
+    var nested_data;
+    let word = document.getElementById("theWord").value;
+    if (word) {
+        var collection = termscollection_org.filter(d=>d.term==word);
+        var title = d3.map(collection,d=>d.title);
+        termscollection = termscollection_org.filter(d=> title.has(d.title));
+        nested_data = d3.nest()
+            .key(function (d) {
+                return d.title;
+            })
+            .key(function (d) {
+                return d.term;
+            })
+            .rollup(function (words) {
+                return {frequency: words.length, data: words[0]};
+            })
+            .entries(termscollection);
+        // data = data.filter(d=> d.type!=="story" || d.title.toLowerCase().indexOf(word.toLowerCase())>=0)
+    }else {
+        nested_data = d3.nest()
+            .key(function (d) {
+                return d.title;
+            })
+            .key(function (d) {
+                return d.term;
+            })
+            .rollup(function (words) {
+                return {frequency: words.length, data: words[0]};
+            })
+            .entries(termscollection_org);
+
+    }
     termscollection.length = 0;
     nested_data.forEach(d=> d.values.forEach(e=> termscollection.push(e.value.data)));
     //sudden
@@ -789,9 +819,7 @@ function handledata(data){
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
     console.log(startDate +" - "+endDate);
-    fillData(endDate, startDate)
-
-
+    fillData(endDate, startDate);
 }
 
 
@@ -857,5 +885,9 @@ function blacklist(data){
     console.log("#org terms: " +numterm);
     console.log("#terms: " +termscollection_org.length);
     return termscollection_org;
+}
+
+function searchWord() {
+    render();
 }
 

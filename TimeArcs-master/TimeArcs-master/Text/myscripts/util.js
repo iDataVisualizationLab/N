@@ -11,13 +11,48 @@ function drawColorLegend() {
       var y4 = 62;
       var rr = 6;
 
-      
+    svg.append("circle")
+        .attr("class", "nodeLegend")
+        .attr("cx", xx)
+        .attr("cy", y4)
+        .attr("r", rr)
+        .style("fill", "#1f77b4");
+
+    svg.append("text")
+        .attr("class", "nodeLegend")
+        .attr("x", xx+10)
+        .attr("y", y4+1)
+        .text("Number")
+        .attr("dy", ".21em")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .style("text-anchor", "left")
+        .style("fill", "#1f77b4");
+
+    svg.append("circle")
+        .attr("class", "nodeLegend")
+        .attr("cx", xx)
+        .attr("cy", y2)
+        .attr("r", rr)
+        .style("fill", "#ff7f0e");
+
+    svg.append("text")
+        .attr("class", "nodeLegend")
+        .attr("x", xx+10)
+        .attr("y", y2+1)
+        .text("Product")
+        .attr("dy", ".21em")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .style("text-anchor", "left")
+        .style("fill", "#ff7f0e");
+
       svg.append("circle")
         .attr("class", "nodeLegend")
         .attr("cx", xx)
         .attr("cy", y1)
         .attr("r", rr)
-        .style("fill", "#00aa00");
+        .style("fill", "#2ca02c");
       
       svg.append("text")
         .attr("class", "nodeLegend")
@@ -28,32 +63,16 @@ function drawColorLegend() {
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px")
         .style("text-anchor", "left")
-        .style("fill", "#00aa00");
+        .style("fill", "#2ca02c");
    
-      svg.append("circle")
-        .attr("class", "nodeLegend")
-        .attr("cx", xx)
-        .attr("cy", y2)
-        .attr("r", rr)
-        .style("fill", "#cc0000");  
 
-      svg.append("text")
-        .attr("class", "nodeLegend")
-        .attr("x", xx+10)
-        .attr("y", y2+1)
-        .text("Product")
-        .attr("dy", ".21em")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
-        .style("text-anchor", "left")
-        .style("fill", "#cc0000");  
 
        svg.append("circle")
         .attr("class", "nodeLegend")
         .attr("cx", xx)
         .attr("cy", y3)
         .attr("r", rr)
-        .style("fill", "#0000cc");  
+        .style("fill", "#d62728");
 
       svg.append("text")
         .attr("class", "nodeLegend")
@@ -64,25 +83,9 @@ function drawColorLegend() {
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px")
         .style("text-anchor", "left")
-        .style("fill", "#0000cc");  
+        .style("fill", "#d62728");
         
-       svg.append("circle")
-        .attr("class", "nodeLegend")
-        .attr("cx", xx)
-        .attr("cy", y4)
-        .attr("r", rr)
-        .style("fill", "#aaaa00");  
 
-      svg.append("text")
-        .attr("class", "nodeLegend")
-        .attr("x", xx+10)
-        .attr("y", y4+1)
-        .text("Number")
-        .attr("dy", ".21em")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
-        .style("text-anchor", "left")
-        .style("fill", "#aaaa00");     
 
       // number of input terms  
       svg.append("text")
