@@ -24,21 +24,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="757" column="4" lean-forward="false" selection-start-line="757" selection-start-column="4" selection-end-line="757" selection-end-column="4" />
+            <state relative-caret-position="95">
+              <caret line="284" column="46" lean-forward="true" selection-start-line="284" selection-start-column="12" selection-end-line="284" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="d3.layout.wordstream.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="d3.layout.wordstream.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="124" column="53" lean-forward="false" selection-start-line="124" selection-start-column="53" selection-end-line="124" selection-end-column="53" />
+            <state relative-caret-position="112">
+              <caret line="413" column="18" lean-forward="false" selection-start-line="413" selection-start-column="18" selection-end-line="413" selection-end-column="18" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -113,14 +113,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>outputFormat</find>
-      <find>Art</find>
-      <find>.getDa</find>
-      <find>Isweekly</find>
-      <find>svgheight</find>
-      <find>handle</find>
-      <find>wstep</find>
-      <find>numberOfTopics</find>
       <find>OfTopics</find>
       <find>grid</find>
       <find>ws.</find>
@@ -140,9 +132,17 @@
       <find>transitio</find>
       <find>frequ</find>
       <find>frequen</find>
-      <find>transi</find>
       <find>frequencysc</find>
       <find>gtext.exit</find>
+      <find>d3.sc</find>
+      <find>color</find>
+      <find>min</find>
+      <find>sqrt</find>
+      <find>layers</find>
+      <find>tempPoint2</find>
+      <find>combined</find>
+      <find>area</find>
+      <find>transi</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -156,8 +156,8 @@
         <option value="$PROJECT_DIR$/src/script/convert.js" />
         <option value="$PROJECT_DIR$/src/style/main.sass" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/script/main.js" />
         <option value="$PROJECT_DIR$/lib/d3.layout.wordstream.js" />
+        <option value="$PROJECT_DIR$/src/script/main.js" />
       </list>
     </option>
   </component>
@@ -174,8 +174,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="235" />
-    <option name="y" value="80" />
+    <option name="x" value="603" />
+    <option name="y" value="193" />
     <option name="width" value="1552" />
     <option name="height" value="873" />
   </component>
@@ -309,15 +309,15 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="35870000" />
+      <workItem from="1540005288595" duration="40261000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84293000" />
+    <option name="totallyTimeSpent" value="88684000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="235" y="80" width="1552" height="873" extended-state="0" />
+    <frame x="603" y="193" width="1552" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2600536" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -351,7 +351,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>483</line>
+          <line>486</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -361,13 +361,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>745</line>
+          <line>748</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>757</line>
+          <line>760</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="39" />
         </line-breakpoint>
@@ -395,8 +395,26 @@
           <properties />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>164</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>215</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>227</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="57" />
+      <option name="time" value="60" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -740,21 +758,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="757" column="4" lean-forward="false" selection-start-line="757" selection-start-column="4" selection-end-line="757" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="124" column="53" lean-forward="false" selection-start-line="124" selection-start-column="53" selection-end-line="124" selection-end-column="53" />
+        <state relative-caret-position="112">
+          <caret line="413" column="18" lean-forward="false" selection-start-line="413" selection-start-column="18" selection-end-line="413" selection-end-column="18" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="284" column="46" lean-forward="true" selection-start-line="284" selection-start-column="12" selection-end-line="284" selection-end-column="46" />
+          <folding />
         </state>
       </provider>
     </entry>

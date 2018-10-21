@@ -149,7 +149,7 @@ function wordCloud(selector,config) {
             .size([width - margins.left - margins.right, height])
             .interpolate(interpolation)
             .fontScale(d3.scaleLinear())
-            .frequencyScale(d3.scaleSqrt())
+            .frequencyScale(d3.scaleLinear())
             .minFontSize(min)
             .maxFontSize(max)
             .data(data)
@@ -175,22 +175,25 @@ function wordCloud(selector,config) {
         // x.range([xrange[0] + boxwidth, width - boxwidth])
         mainGroup.attr('transform', 'translate(' + margins.left + ',' + margins.top + ')');
 
-        var legend = boxes.layers.map(d=> {return {'key' : d.key, 'pos': d.offset }});
+        if (mainconfig.seperate) {
+            var legend = boxes.layers.map(d => {
+                return {'key': d.key, 'pos': d.offset}
+            });
 
-        var legendg = timeline.append("g")
-            .attr("class", "legend")
-            .attr("transform", "translate("+ (-20) +"," + 0 + ")")
-            .append("g")
-            .attr("class","sublegend")
-            .selectAll(".lengendtext")
-            .data(legend)
-            .enter()
+            var legendg = timeline.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + (-20) + "," + 0 + ")")
+                .append("g")
+                .attr("class", "sublegend")
+                .selectAll(".lengendtext")
+                .data(legend)
+                .enter()
                 .append("text")
-                .attr("class","lengendtext")
+                .attr("class", "lengendtext")
                 .style("text-anchor", "middle")
-                .attr("transform", d=> "translate(0,"+d.pos+") rotate(-90)")
-                .text(d=>d.key);
-
+                .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
+                .text(d => d.key);
+        }
         // =============== Get BOUNDARY and LAYERPATH ===============
         var lineCardinal = d3.line()
             .x(function(d) { return d.x; })
@@ -280,7 +283,7 @@ function wordCloud(selector,config) {
 
         gtext.selectAll('.stext')
             .text(function(d){return d.text;})
-            .transition().attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+            .transition().duration(1000).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -301,7 +304,7 @@ function wordCloud(selector,config) {
             .append('text')
             .attr("class",'stext')
             .text(function(d){return d.text;})
-            .transition().duration(10).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+            .transition().duration(1000).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -418,7 +421,7 @@ function wordCloud(selector,config) {
                     cloned: true,
                     topic: topic
                 });
-                cloner.transition().duration(300).attrs({
+                cloner.transition().duration(1000).attrs({
                     transform: function(){return 'translate('+thePoint.x+','+(thePoint.y+height/2+delta+fontSize/2)+')';},
                 });
             });
