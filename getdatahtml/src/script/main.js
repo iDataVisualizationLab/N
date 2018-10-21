@@ -68,16 +68,55 @@ var wordTip = d3.tip()
 
         return str;
     });
+// var opts = {
+//     lines: 9, // The number of lines to draw
+//     length: 9, // The length of each line
+//     width: 5, // The line thickness
+//     radius: 14, // The radius of the inner circle
+//     color: '#EE3124', // #rgb or #rrggbb or array of colors
+//     speed: 1.9, // Rounds per second
+//     trail: 40, // Afterglow percentage
+//     className: 'spinner', // The CSS class to assign to the spinner
+// };
 var opts = {
-    lines: 9, // The number of lines to draw
-    length: 9, // The length of each line
-    width: 5, // The line thickness
-    radius: 14, // The radius of the inner circle
-    color: '#EE3124', // #rgb or #rrggbb or array of colors
-    speed: 1.9, // Rounds per second
-    trail: 40, // Afterglow percentage
+    lines: 7, // The number of lines to draw
+    length: 10, // The length of each line
+    width: 17, // The line thickness
+    radius: 3, // The radius of the inner circle
+    scale: 0.55, // Scales overall size of the spinner
+    corners: 1, // Corner roundness (0..1)
+    color: '#1687ff', // CSS color or array of colors
+    fadeColor: 'transparent', // CSS color or array of colors
+    speed: 1, // Rounds per second
+    rotate: 62, // The rotation offset
+    animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
     className: 'spinner', // The CSS class to assign to the spinner
+    top: '48%', // Top position relative to parent
+    left: '50%', // Left position relative to parent
+    position: 'absolute' // Element positioning
+    // lines: 10, // The number of lines to draw
+    // length: 27, // The length of each line
+    // width: 52, // The line thickness
+    // radius: 13, // The radius of the inner circle
+    // scale: 0.01, // Scales overall size of the spinner
+    // corners: 1, // Corner roundness (0..1)
+    // color: '#ffa4c0', // CSS color or array of colors
+    // fadeColor: 'transparent', // CSS color or array of colors
+    // speed: 1, // Rounds per second
+    // rotate: 62, // The rotation offset
+    // animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+    // direction: 1, // 1: clockwise, -1: counterclockwise
+    // zIndex: 2e9, // The z-index (defaults to 2000000000)
+    // className: 'spinner', // The CSS class to assign to the spinner
+    // top: '50%', // Top position relative to parent
+    // left: '50%', // Left position relative to parent
+    // shadow: '0 0 0px transparent', // Box-shadow for the lines
+    // position: 'absolute' // Element positioning
 };
+
+
 var target;
 var spinner ;
 $(document).ready(function () {
