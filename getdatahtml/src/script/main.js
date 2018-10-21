@@ -49,6 +49,13 @@ var wordTip = d3.tip()
         str += "<h5 class ='headerterm'>  Date: </h5>";
         str += "<h4 class ='information'>";
         str += outputFormat(d.data[0].time) +'</h4>';
+        if (daystep-1) {
+            var eDatedis = new Date (outputFormat(d.data[0].time));
+            eDatedis["setDate"](eDatedis.getDate() + daystep-1);
+            str += "<h4 class ='information'> - ";
+            str += d3.timeFormat('%b %d %Y')(eDatedis)  + '</h4>';
+        }
+
         str += "</div>"
         str += "<table>";
         str += "<tr>";
@@ -594,9 +601,9 @@ function render (){
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
     var startDatedis = new Date (startDate);
-    startDatedis["setDate"](startDatedis.getDate() - daystep/2);
+    startDatedis["setDate"](startDatedis.getDate() - daystep);
     var endDatedis = new Date (endDate);
-    endDatedis["setDate"](endDatedis.getDate() + daystep/2);
+    endDatedis["setDate"](endDatedis.getDate() + daystep);
     x.range([0, width])
         .domain([new Date (startDatedis),new Date (endDatedis)]);
     let gridlineNodes = d3.axisTop()
@@ -773,7 +780,7 @@ function handledata(data){
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
-                    preday["setDate"](preday.getDate() + daystep);
+                    preday["setDate"](preday.getDate() + daystep*2);
                     if (preday != new Date(day.key))
                         pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);

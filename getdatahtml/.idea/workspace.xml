@@ -14,30 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="85" column="42" lean-forward="false" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dataout.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
-          <provider selected="true" editor-type-id="LargeFileEditor">
-            <state relative-caret-position="111">
-              <caret line="0" column="437745" lean-forward="false" selection-start-line="0" selection-start-column="437740" selection-end-line="0" selection-end-column="437745" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.sass" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/style/main.sass">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="10" column="27" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="27" />
+            <state relative-caret-position="197">
+              <caret line="55" column="44" lean-forward="false" selection-start-line="55" selection-start-column="44" selection-end-line="55" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -64,19 +45,6 @@
                 <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.css.map" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/style/main.css.map">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="sourcemapFileViewerProvider">
-            <state />
           </provider>
         </entry>
       </file>
@@ -117,8 +85,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mainconfig</find>
-      <find>seperate</find>
       <find>scale</find>
       <find>frequencyScale</find>
       <find>transitio</find>
@@ -143,10 +109,12 @@
       <find>documen</find>
       <find>_org</find>
       <find>handle</find>
-      <find>Apple</find>
       <find>d3.map</find>
-      <find>opt</find>
       <find>sep</find>
+      <find>opt</find>
+      <find>Apple</find>
+      <find>daystep</find>
+      <find>out</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -161,8 +129,8 @@
         <option value="$PROJECT_DIR$/src/script/TimeArcsconvert.js" />
         <option value="$PROJECT_DIR$/lib/autocomplete.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/script/main.js" />
         <option value="$PROJECT_DIR$/src/style/main.sass" />
+        <option value="$PROJECT_DIR$/src/script/main.js" />
       </list>
     </option>
   </component>
@@ -314,12 +282,12 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="48026000" />
+      <workItem from="1540005288595" duration="48584000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96449000" />
+    <option name="totallyTimeSpent" value="97007000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="794" y="172" width="1552" height="873" extended-state="0" />
@@ -356,7 +324,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>528</line>
+          <line>535</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -366,19 +334,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>818</line>
+          <line>825</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>830</line>
+          <line>837</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>130</line>
+          <line>137</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
@@ -402,25 +370,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>206</line>
+          <line>213</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>257</line>
+          <line>264</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="58" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>567</line>
+          <line>574</line>
           <properties />
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>733</line>
+          <line>740</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="62" />
         </line-breakpoint>
@@ -750,19 +718,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="0" column="21546099" lean-forward="false" selection-start-line="0" selection-start-column="21546099" selection-end-line="0" selection-end-column="21546099" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="111">
-          <caret line="0" column="437745" lean-forward="false" selection-start-line="0" selection-start-column="437740" selection-end-line="0" selection-end-column="437745" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/style/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-744">
@@ -775,14 +730,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="85" column="42" lean-forward="false" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
           <folding />
         </state>
       </provider>
@@ -822,6 +769,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="10" column="27" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="0" column="21546099" lean-forward="false" selection-start-line="0" selection-start-column="21546099" selection-end-line="0" selection-end-column="21546099" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="111">
+          <caret line="0" column="437745" lean-forward="false" selection-start-line="0" selection-start-column="437740" selection-end-line="0" selection-end-column="437745" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="55" column="44" lean-forward="false" selection-start-line="55" selection-start-column="44" selection-end-line="55" selection-end-column="44" />
           <folding />
         </state>
       </provider>
