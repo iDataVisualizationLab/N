@@ -2,6 +2,11 @@ var blackw =["cnbc","CNBC","U.S.","reuters","Reuters"];
 // var outputFormat = d3.timeFormat('%Y-%m-%d %H:%M:%S');
 var outputFormat = d3.timeFormat('%Y-%m-%dT%H:%M:%SZ');
 var parseTime = (d => Date.parse(d));
+var categoriesgroup ={  "PRODUCT":["PRODUCT","EVENT"],
+    "PERSON":["PERSON"],
+    "NATION":["GPE"], // ORG merge GPE
+    "ORG":["ORG"],
+    "NUMBER": ["MONEY","PERCENT"]};
 $(document).ready(function () {
     // d3.queue()
     //     .defer(d3.json,"src/data/dataout.json")
@@ -37,6 +42,7 @@ $(document).ready(function () {
                             }
                             break;
                         case 'PRODUCT':
+                        case   "EVENT":
                             if (loc.find(kk=>kk==k.term) === undefined && blackw.find(kk=>kk==k.term) === undefined) {
                                 loc.push(k.term.replace(/\"/g,""));
                                 locs+=k.term.replace(/\"/g,"")+"|";

@@ -1,9 +1,10 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
-var categoriesgroup ={  "PRODUCT":["PRODUCT","EVENT"],
-                        "PERSON":["PERSON"],
-                        "NATION":["GPE"], // ORG merge GPE
-                        "ORG":["ORG"],
-                        "NUMBER": ["MONEY","PERCENT"]};
+var categoriesgroup ={
+    "NUMBER": ["MONEY","PERCENT"],
+    "PRODUCT":["PRODUCT","EVENT"],
+    "PERSON":["PERSON"],
+    "ORG":["ORG"],
+    "NATION":["GPE"]};
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
