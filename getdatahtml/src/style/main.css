@@ -7,13 +7,15 @@ body {
 .d3-tip {
   pointer-events: none;
   background-color: white;
+  border: black;
+  border-radius: 10px;
 }
 .d3-tip .headertip {
   text-align: center;
   width: 100%;
 }
 .d3-tip .headertip .headerterm {
-  color: #18a2bf;
+  color: #76777d;
 }
 .d3-tip h3, .d3-tip h4, .d3-tip h5 {
   display: inline-block;
@@ -32,7 +34,7 @@ body {
   background-color: #f2f2f2;
 }
 .d3-tip table th {
-  background-color: #153488;
+  background-color: #001831;
   color: white;
 }
 .d3-tip table th, .d3-tip table td {
@@ -138,7 +140,7 @@ body {
   color: #ffffff;
 }
 
-form {
+#searchdiv {
   display: inline-block;
 }
 
@@ -193,6 +195,10 @@ form {
   line-height: 38px;
   color: white;
   padding-right: 10px;
+}
+
+.sticky + .timeline {
+  padding-top: 47px;
 }
 
 /*# sourceMappingURL=main.css.map */

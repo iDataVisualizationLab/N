@@ -6,6 +6,7 @@ var categoriesgroup ={
     "PERSON":["PERSON"],
     "ORG":["ORG"],
     "NATION":["GPE"]};
+var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
@@ -41,13 +42,13 @@ var wordTip = d3.tip()
         var str = '';
         str += "<div class = headertip>"
         str += "<h5 class ='headerterm'>Term: </h5>";
-        str += "<h3 class ='information'>";
+        str += "<h3 class ='information' style='color: "+color(categories.indexOf(d.topic))+";'>";
         str +=  (d.text||d.key) +'</h3>';
-        str += "<h5 class ='headerterm'>  Freqeuncy: </h5>";
-        str += "<h4 class ='information'>";
+        str += "<h5 class ='headerterm'>  Frequency: </h5>";
+        str += "<h4 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
         str += (d.frequency||d.value.articlenum) +'</h4>';
         str += "<h5 class ='headerterm'>  Date: </h5>";
-        str += "<h4 class ='information'>";
+        str += "<h4 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
         str += outputFormat(d.data[0].time) +'</h4>';
         if (daystep-1) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
@@ -59,7 +60,7 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th >Source</th>';
+        str += '<th >Source(s)</th>';
         str += '<th >Title</th>';
         str + "</tr>";
 
@@ -75,16 +76,7 @@ var wordTip = d3.tip()
 
         return str;
     });
-// var opts = {
-//     lines: 9, // The number of lines to draw
-//     length: 9, // The length of each line
-//     width: 5, // The line thickness
-//     radius: 14, // The radius of the inner circle
-//     color: '#EE3124', // #rgb or #rrggbb or array of colors
-//     speed: 1.9, // Rounds per second
-//     trail: 40, // Afterglow percentage
-//     className: 'spinner', // The CSS class to assign to the spinner
-// };
+
 var opts = {
     lines: 7, // The number of lines to draw
     length: 10, // The length of each line
@@ -199,7 +191,7 @@ function wordCloud(selector,config) {
 
         //Display data
 
-        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        //var color = d3.scaleOrdinal(d3.schemeCategory10);
         //Display time axes
         // var dates = [];
         // boxes.data.forEach(row => {
@@ -562,8 +554,11 @@ function ready (error, dataf){
             d.time = parseTime(d.time);
     });
     data.sort((a,b)=> a.time-b.time);
+    data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
     termscollection_org = blacklist(data);
+
     autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
+    // document.getElementById("theWord").autocompleter({ source: data });
     render();
 }
 
@@ -823,7 +818,7 @@ function handledata(data){
 
     //nested_data = nested_data.slice(1,nested_data.length-1);
     //slice data
-    nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 15 2018'));
+    //nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 15 2018'));
 
     // ArticleByDay
     ArticleDay = d3.nest()

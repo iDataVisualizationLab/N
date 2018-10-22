@@ -192,7 +192,7 @@
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/JavaScript-autoComplete-master" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RunDashboard">
@@ -226,12 +226,12 @@
       <updated>1539971362955</updated>
       <workItem from="1539971364149" duration="2051000" />
       <workItem from="1539986708663" duration="72000" />
-      <workItem from="1539986996803" duration="8120000" />
+      <workItem from="1539986996803" duration="8734000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10243000" />
+    <option name="totallyTimeSpent" value="10857000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1015" y="124" width="1552" height="873" extended-state="0" />

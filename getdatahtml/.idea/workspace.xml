@@ -17,8 +17,8 @@
       <file leaf-file-name="d3.layout.wordstream.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="61">
-              <caret line="487" column="34" lean-forward="true" selection-start-line="487" selection-start-column="34" selection-end-line="487" selection-end-column="34" />
+            <state relative-caret-position="112">
+              <caret line="121" column="8" lean-forward="false" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -29,9 +29,22 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/script/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="115" column="40" lean-forward="true" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
-              <folding />
+            <state relative-caret-position="163">
+              <caret line="561" column="13" lean-forward="true" selection-start-line="561" selection-start-column="13" selection-end-line="561" selection-end-column="13" />
+              <folding>
+                <marker date="1540185784727" expanded="true" signature="1198:1244" ph="..." />
+                <marker date="1540185784727" expanded="true" signature="1399:1445" ph="..." />
+                <marker date="1540185784727" expanded="true" signature="1612:1658" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dataout.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
+          <provider selected="true" editor-type-id="LargeFileEditor">
+            <state relative-caret-position="145">
+              <caret line="0" column="1240156" lean-forward="false" selection-start-line="0" selection-start-column="1240156" selection-end-line="0" selection-end-column="1240156" />
             </state>
           </provider>
         </entry>
@@ -48,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.sass" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.sass" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/style/main.sass">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="189" column="21" lean-forward="false" selection-start-line="189" selection-start-column="21" selection-end-line="189" selection-end-column="21" />
+            <state relative-caret-position="204">
+              <caret line="191" column="14" lean-forward="false" selection-start-line="191" selection-start-column="14" selection-end-line="191" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -82,20 +95,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dataoutraw.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/dataoutraw.json">
-          <provider selected="true" editor-type-id="LargeFileEditor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="32" column="23" lean-forward="false" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="23" />
+            <state relative-caret-position="34">
+              <caret line="15" column="23" lean-forward="true" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -112,36 +116,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ready</find>
-      <find>documen</find>
-      <find>_org</find>
-      <find>d3.map</find>
-      <find>sep</find>
-      <find>opt</find>
-      <find>Apple</find>
-      <find>daystep</find>
-      <find>out</find>
-      <find>wstep</find>
-      <find>%b %d</find>
-      <find>glow</find>
-      <find>word</find>
-      <find>autocomplete</find>
-      <find>theWord</find>
-      <find>words</find>
-      <find>handle</find>
-      <find>target</find>
-      <find>urlTo</find>
-      <find>renderpic</find>
       <find>transition</find>
       <find>svgHeight</find>
       <find>clone</find>
       <find>keyw</find>
       <find>dataout</find>
-      <find>offse</find>
       <find>black</find>
       <find>navbar</find>
       <find>checkbox</find>
+      <find>table</find>
+      <find>d3.t</find>
+      <find>d3.tip</find>
+      <find>var color</find>
+      <find>color</find>
+      <find>Fre</find>
+      <find>theWord</find>
+      <find>searchWord</find>
+      <find>form</find>
+      <find>word</find>
+      <find>handle</find>
+      <find>data</find>
+      <find>document.getElementsByTagNamehead)[0].appendChildnewspop</find>
+      <find>ready</find>
+      <find>search</find>
+      <find>theW</find>
+      <find>termscoll</find>
       <find>tra</find>
+      <find>dataf</find>
+      <find>offse</find>
+      <find>auto</find>
+      <find>autocompl</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -155,9 +159,9 @@
         <option value="$PROJECT_DIR$/lib/autocomplete.js" />
         <option value="$PROJECT_DIR$/src/script/convert.js" />
         <option value="$PROJECT_DIR$/lib/d3.layout.wordstream.js" />
+        <option value="$PROJECT_DIR$/src/style/main.sass" />
         <option value="$PROJECT_DIR$/src/script/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/style/main.sass" />
       </list>
     </option>
   </component>
@@ -174,8 +178,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="224" />
-    <option name="y" value="138" />
+    <option name="x" value="113" />
+    <option name="y" value="177" />
     <option name="width" value="1552" />
     <option name="height" value="873" />
   </component>
@@ -259,11 +263,12 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\data" />
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\nvtng\Projects\getdatahtml\src\data" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\lib" />
+      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\data" />
       <recent name="E:\nvtng\Projects\getdatahtml\src\data" />
     </key>
   </component>
@@ -309,15 +314,15 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="72893000" />
+      <workItem from="1540005288595" duration="80267000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121316000" />
+    <option name="totallyTimeSpent" value="128690000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="224" y="138" width="1552" height="873" extended-state="0" />
+    <frame x="113" y="177" width="1552" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2600536" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -328,8 +333,8 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3994602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928476" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3994602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="JSON Viewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -351,7 +356,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>526</line>
+          <line>518</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -361,7 +366,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>125</line>
+          <line>117</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
@@ -385,36 +390,54 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>201</line>
+          <line>193</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>252</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>731</line>
+          <line>726</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>858</line>
+          <line>853</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="67" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/lib/d3.layout.wordstream.js</url>
-          <line>182</line>
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>850</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="68" />
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>828</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>823</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>820</line>
+          <properties />
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/main.js</url>
+          <line>708</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="77" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="72" />
+      <option name="time" value="80" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -487,7 +510,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9979">
           <caret line="587" column="35" lean-forward="false" selection-start-line="587" selection-start-column="35" selection-end-line="587" selection-end-column="35" />
-          <folding />
+          <folding>
+            <marker date="1540185784727" expanded="true" signature="1198:1244" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1399:1445" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1612:1658" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -541,7 +568,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1173">
           <caret line="478" column="44" lean-forward="false" selection-start-line="478" selection-start-column="44" selection-end-line="478" selection-end-column="44" />
-          <folding />
+          <folding>
+            <marker date="1540185784727" expanded="true" signature="1198:1244" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1399:1445" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1612:1658" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -603,7 +634,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7140">
           <caret line="420" column="23" lean-forward="false" selection-start-line="420" selection-start-column="23" selection-end-line="420" selection-end-column="23" />
-          <folding />
+          <folding>
+            <marker date="1540185784727" expanded="true" signature="1198:1244" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1399:1445" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1612:1658" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -740,44 +775,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="0" column="21546099" lean-forward="false" selection-start-line="0" selection-start-column="21546099" selection-end-line="0" selection-end-column="21546099" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="991">
-          <caret line="0" column="448645" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="1279210" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataoutraw.json">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/convert.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="14" lean-forward="false" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="487" column="34" lean-forward="true" selection-start-line="487" selection-start-column="34" selection-end-line="487" selection-end-column="34" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/TimeArcsconvert.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -790,26 +787,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/main.sass">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="191" column="14" lean-forward="false" selection-start-line="191" selection-start-column="14" selection-end-line="191" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/auto-complete.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dataoutraw.json">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="0" column="21546099" lean-forward="false" selection-start-line="0" selection-start-column="21546099" selection-end-line="0" selection-end-column="21546099" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="145">
+          <caret line="0" column="1240156" lean-forward="false" selection-start-line="0" selection-start-column="1240156" selection-end-line="0" selection-end-column="1240156" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="121" column="8" lean-forward="false" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/convert.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="14" lean-forward="false" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="115" column="40" lean-forward="true" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
-          <folding />
+        <state relative-caret-position="163">
+          <caret line="561" column="13" lean-forward="true" selection-start-line="561" selection-start-column="13" selection-end-line="561" selection-end-column="13" />
+          <folding>
+            <marker date="1540185784727" expanded="true" signature="1198:1244" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1399:1445" ph="..." />
+            <marker date="1540185784727" expanded="true" signature="1612:1658" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="32" column="23" lean-forward="false" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/style/main.sass">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="189" column="21" lean-forward="false" selection-start-line="189" selection-start-column="21" selection-end-line="189" selection-end-column="21" />
+        <state relative-caret-position="34">
+          <caret line="15" column="23" lean-forward="true" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
           <folding />
         </state>
       </provider>
