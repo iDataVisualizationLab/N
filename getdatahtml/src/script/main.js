@@ -21,7 +21,7 @@ var lineColor = d3.scaleLinear()
 var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
-var svgHeight = 2000;
+var svgHeight = 1500;
 
 var mainconfig = {
     renderpic: false,
@@ -103,30 +103,18 @@ var opts = {
     top: '48%', // Top position relative to parent
     left: '50%', // Left position relative to parent
     position: 'absolute' // Element positioning
-    // lines: 10, // The number of lines to draw
-    // length: 27, // The length of each line
-    // width: 52, // The line thickness
-    // radius: 13, // The radius of the inner circle
-    // scale: 0.01, // Scales overall size of the spinner
-    // corners: 1, // Corner roundness (0..1)
-    // color: '#ffa4c0', // CSS color or array of colors
-    // fadeColor: 'transparent', // CSS color or array of colors
-    // speed: 1, // Rounds per second
-    // rotate: 62, // The rotation offset
-    // animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
-    // direction: 1, // 1: clockwise, -1: counterclockwise
-    // zIndex: 2e9, // The z-index (defaults to 2000000000)
-    // className: 'spinner', // The CSS class to assign to the spinner
-    // top: '50%', // Top position relative to parent
-    // left: '50%', // Left position relative to parent
-    // shadow: '0 0 0px transparent', // Box-shadow for the lines
-    // position: 'absolute' // Element positioning
 };
+var navbar;
 
+// Get the offset position of the navbar
+var sticky;
 
 var target;
 var spinner ;
 $(document).ready(function () {
+    navbar = document.getElementById("navbar");
+// Get the offset position of the navbar
+    sticky = navbar.offsetTop;
 
     target = document.getElementById('timelinewImg');
     spinner = new Spinner(opts);
@@ -332,6 +320,7 @@ function wordCloud(selector,config) {
 
         var stext = gtext.selectAll('.stext')
             .transition()
+            .duration(600)
             .text(function(d){return d.text;})
             .attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
@@ -354,8 +343,8 @@ function wordCloud(selector,config) {
             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+') rotate('+d.rotate+')';}})
             .append('text')
             .attr("class",'stext')
+            .transition().duration(600).styleTween('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .text(function(d){return d.text;})
-            .transition().duration(100).styleTween('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -726,15 +715,15 @@ function handledata(data){
     //sort out term for 1 article
     if (mainconfig.IsWeekly) {
         outputFormat =  (d) => {
-            return d3.timeFormat('%b %d %Y')(d3.timeMonday(d))
+            return d3.timeFormat('%b %d %Y')(d3.timeSunday(d))
         };
         daystep = 7;
-        svgHeight = 1200;
+        svgHeight = 1000;
         mainconfig.wstep = 15;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
         daystep = 1;
-        svgHeight = 1500;
+        svgHeight = 1300;
         mainconfig.wstep = 50;
     }
     var nested_data;
@@ -914,7 +903,7 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU"];
+    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
@@ -939,3 +928,14 @@ function searchWord() {
     render();
 }
 
+// When the user scrolls the page, execute myFunction
+window.onscroll = function() {scrollfire()};
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function scrollfire() {
+    if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+    } else {
+        navbar.classList.remove("sticky");
+    }
+}

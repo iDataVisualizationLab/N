@@ -490,7 +490,6 @@ d3.wordStream = function(){
                         h = d.height,
                         x = d.x,
                         y = d.y;
-
                     let pixels = c.getImageData(d.x, d.y, d.width, d.height).data;
                     d.sprite = Array();
                     for(let i = 0; i<<2 < pixels.length; i++){

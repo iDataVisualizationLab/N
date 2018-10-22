@@ -4,27 +4,35 @@
     <meta charset="UTF-8">
     <title>FinanViz</title>
     <link rel="stylesheet" type="text/css" href="src/style/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
     <script src="lib/d3.layout.wordstream.js"></script>
     <script src="lib/d3-tip.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
+    <script src="lib/autocomplete.js"></script>
     <!--<script src="src/script/convert.js"></script>-->
     <!--<script src="src/script/twitter.js"></script>-->
     <!--<script src="src/script/TimeArcsconvert.js"></script>-->
     <script src="src/script/main.js"></script>
 </head>
 <body>
-<section class="options">
-    <input type="checkbox" id="IsWeekly" disabled> Weekly
-    <input type="checkbox" id="IsSeperate" disabled checked> Seperate
-    <script src="lib/autocomplete.js"></script>
+<!--<div class="header">-->
+    <!--<h3>FinanViz</h3>-->
+<!--</div>-->
+<div class="options" id ="navbar">
     <form autocomplete="off" action="none">
         <div class="autocomplete">
             <input id="theWord" type="text" name="theWord" placeholder="words">
         </div>
-        <input type="button" value="Submit" onclick="searchWord()">
+        <button class="btn" value="Submit" onclick="searchWord()">
+            <i class="material-icons">search</i>
+        </button>
     </form>
-</section>
+    <div class="setting">
+        <input type="checkbox" id="IsWeekly" disabled> Weekly
+        <input type="checkbox" id="IsSeperate" disabled checked> Stack
+    </div>
+</div>
 <section  class="timeline" id = "timelinewImg"></section >
