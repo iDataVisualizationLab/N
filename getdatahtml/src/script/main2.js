@@ -1,11 +1,14 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
 let self = null;
+// var categoriesgroup ={
+//     "NUMBER": ["MONEY","PERCENT"],
+//     "PRODUCT":["PRODUCT","EVENT"],
+//     "PERSON":["PERSON"],
+//     "ORG":["ORG"],
+//     "NATION":["GPE"]};
 var categoriesgroup ={
-    "NUMBER": ["MONEY","PERCENT"],
-    "PRODUCT":["PRODUCT","EVENT"],
-    "PERSON":["PERSON"],
-    "ORG":["ORG"],
-    "NATION":["GPE"]};
+    "acident": ["Accident"],
+    "risk": ["Risk"]};
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
@@ -28,7 +31,7 @@ var mainconfig = {
     renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
-    rateOfTopics: 0.05,
+    rateOfTopics: 0.01,
     Isweekly: false,
     seperate: true
 };
@@ -60,15 +63,15 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th >Source(s)</th>';
-        str += '<th >Title</th>';
+        str += '<th >Detail</th>';
+        // str += '<th >Title</th>';
         str + "</tr>";
 
         (d.data||d.value.data).forEach(t => {
             var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
             str += "<tr>";
-            str += "<td>" + ar.source + "</td>";
-            str += "<td class=pct>" + ar.title + "</td>";
+            str += "<td>" + ar.body + "</td>";
+            // str += "<td class=pct>" + ar.title + "</td>";
             str + "</tr>";
         });
 
@@ -110,30 +113,16 @@ $(document).ready(function () {
 
     target = document.getElementById('timelinewImg');
     spinner = new Spinner(opts);
-    spinner.spin(document.body);
+    spinner.spin(document.getElementById('timelinewImg'));
     d3.queue()
-        .defer(d3.json,"src/data/dataout.json")
+        .defer(d3.json,"src/data/dataIoT.json")
         .await(ready);
     d3.select("#IsWeekly").on("change",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
-        spinner = new Spinner(opts);
-        spinner.spin(document.body);
-        setTimeout(function () {
-            // do calculations
-            // update graph
-            // clear spinner
-            render();
-        }, 0);});
+        render();});
     d3.select("#IsSeperate").on("change",()=> {
         mainconfig.seperate = !mainconfig.seperate;
-        spinner = new Spinner(opts);
-        spinner.spin(document.body);
-        setTimeout(function () {
-            // do calculations
-            // update graph
-            // clear spinner
-            render();
-        }, 0);});
+        render();});
 
 });
 function wordCloud(selector,config) {
@@ -482,38 +471,38 @@ function wordCloud(selector,config) {
                 .selectAll('.stackimgg')
                 .data(points.slice(1, points.length-1))
                 .enter()
-                    .append('g')
-                    .attr('class','stackimgg')
-                    .attr('transform',d=>'translate('+d.x+',0)');
+                .append('g')
+                .attr('class','stackimgg')
+                .attr('transform',d=>'translate('+d.x+',0)');
             // var max = 0;
             // var min = 0;
             var img = wimg.selectAll('.stackimg')
                 .data(d => d.data)
-                    .enter()
+                .enter()
                 .append('a')
                 .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
                 .attr("xlink:href",d => d.url)
                 .attr('class','stackimg')
-                    .append('rect')
-                    //.attr('class','stackimg')
-                    // .attr('d', area)
-                    //.style('fill', prevColor)
-                    .attr("fill",d => "url(#"+d.time+")")
-                    .attr('y',(d,i)=>{
-                        var y = i*boxwidth*2/3;
-                        // max = max< y? y:max;
-                        // min = min> y? y:min;
-                        return y;})
-                    .attrs({
-                        'fill-opacity': 1,
-                        topic: topic,
-                        wordStream: true,
-                        x: 0,
-                        width: boxwidth,
-                        height: boxwidth*2/3
+                .append('rect')
+                //.attr('class','stackimg')
+                // .attr('d', area)
+                //.style('fill', prevColor)
+                .attr("fill",d => "url(#"+d.time+")")
+                .attr('y',(d,i)=>{
+                    var y = i*boxwidth*2/3;
+                    // max = max< y? y:max;
+                    // min = min> y? y:min;
+                    return y;})
+                .attrs({
+                    'fill-opacity': 1,
+                    topic: topic,
+                    wordStream: true,
+                    x: 0,
+                    width: boxwidth,
+                    height: boxwidth*2/3
 
-                    });
-                // .attr('xlink:href',d=>d.url);
+                });
+            // .attr('xlink:href',d=>d.url);
 
             wimg.transition().duration(600)
                 .attr('transform', (d, i)=> 'translate('+d.x+',-'+d.data.length*boxwidth*2/3/2+')');
@@ -561,29 +550,26 @@ function ready (error, dataf){
     //spinner = new Spinner(opts).spin(document.getElementById('timelinewImg'));
     if (error) throw error;
     data = dataf;
+    console.log("twitter: "+data.length);
     // format the data
     //data =data.filter(d=>d.source=="reuters");
     data.forEach(function(d) {
         if(d.source !== "reuters")
-            d.time = parseTime(d.time);
+            d.time = parseInt(d.time);
     });
     data.sort((a,b)=> a.time-b.time);
-    data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
+    data = data.filter(d=> d.time> parseTime('Dec 27 2017'));
     termscollection_org = blacklist(data);
-
+    forcegraph();
     autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
     // document.getElementById("theWord").autocompleter({ source: data });
-    setTimeout(function () {
-        // do calculations
-        // update graph
-        // clear spinner
     render();
-    }, 0);
 }
 
 function render (){
     d3.selectAll("input[type='checkbox']").property("disabled",true);
     d3.selectAll("#timelinewImg").selectAll('svg').remove();
+    spinner.spin(document.getElementById('timelinewImg'));
     handledata(data);
 
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
@@ -865,7 +851,7 @@ function handledata(data){
             }
         });
         return {'date': d.key,
-         'words': words};});
+            'words': words};});
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
     console.log(startDate +" - "+endDate);
@@ -916,7 +902,9 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S"];
+    // var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S"];
+    var blackw =["iot","risk","globalcityforum2018"];
+    // var blackw =[];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
@@ -925,11 +913,11 @@ function blacklist(data){
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
             key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
             return key;}).forEach( w => {
-                w.maincategory = w.category;
-                w.category = categoriesmap[w.category]||w.category;
-                var e = w;
-                e.time = d.time;
-                e.title = d.title;
+            w.maincategory = w.category;
+            w.category = categoriesmap[w.category]||w.category;
+            var e = w;
+            e.time = d.time;
+            e.title = d.title;
             termscollection_org.push(w)});
     });
     console.log("#org terms: " +numterm);
@@ -938,14 +926,7 @@ function blacklist(data){
 }
 
 function searchWord() {
-    spinner = new Spinner(opts);
-    spinner.spin(document.body);
-    setTimeout(function () {
-        // do calculations
-        // update graph
-        // clear spinner
-        render();
-    }, 0);
+    render();
 }
 
 // When the user scrolls the page, execute myFunction

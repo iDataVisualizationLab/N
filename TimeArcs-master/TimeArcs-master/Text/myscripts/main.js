@@ -142,7 +142,7 @@ var nodes2List = {};
 var links2List = {};
 
 //d3.tsv("data/corpus_ner_geo.tsv", function(error, data_) {
-d3.tsv("data/fnews.tsv", function(error, data_) {
+d3.tsv("data/ioT.tsv", function(error, data_) {
 //d3.tsv("data/wikinews.tsv", function(error, data_) {
       if (error) throw error;
       console.log("fnews");

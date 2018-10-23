@@ -13,9 +13,12 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 
     <script src="lib/autocomplete.js"></script>
+    <script src="src/script/forcegraph.js"></script>
     <!--<script src="src/script/convert.js"></script>-->
     <!--<script src="src/script/twitter.js"></script>-->
     <!--<script src="src/script/TimeArcsconvert.js"></script>-->
+    <!--<script src="src/script/timearc2.js"></script>-->
+    <!--<script src="src/script/main2.js"></script>-->
     <script src="src/script/main.js"></script>
 </head>
 <body>
@@ -34,7 +37,11 @@
     </div>
     <div class="setting">
         <input type="checkbox" id="IsWeekly" disabled> Weekly
-        <input type="checkbox" id="IsSeperate" disabled checked> Stack
+        <input type="checkbox" id="IsSeperate" disabled > Stack
     </div>
 </div>
 <section  class="timeline" id = "timelinewImg"></section >
+
+<section class="forcegraph" id = "forcegraph">
+    <svg></svg>
+</section>
