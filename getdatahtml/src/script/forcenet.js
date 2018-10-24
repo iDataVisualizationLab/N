@@ -1,37 +1,50 @@
 function forcegraph(selector) {
-    var svg2 = d3.select(selector).select('svg');
-    var width = $(selector).width();
-    var height = $(selector).height();
-    svg2.attrs({width: width, height: height});
+    var svg2main = d3.select(selector).select('svg');
+    var margin = { top: -5, right: -5, bottom: -5, left: -5 },
+        width = $(selector).width() - margin.left - margin.right,
+        height = $(selector).height() - margin.top - margin.bottom;
+
+    svg2main.attrs({width: width, height: height});
+    var svg2 = svg2main.append('g')
+        .attr("class", "focus")
+    .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+    var rect = svg2.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
     var force2 = d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(-100 ))
-        .force("gravity", d3.forceManyBody(20))
-    //    .force("alpha", 0.1)
+        .force("charge", d3.forceManyBody().strength(-180 ))
+        .force("gravity", d3.forceManyBody(0.15))
+        .alphaTarget(0.3)
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(20));
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(40));
     computeNodes();
     var linkScale = d3.scaleLinear()
             .range([0.5, 2])
             .domain([Math.round(mainconfig.minfreq)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
-    // var drag = d3.drag()
-    //     .subject(function (d) { return d; })
-    //     .on("start", dragstarted)
-    //     .on("drag", dragged)
-    //     .on("end", dragended);
-    //
-    // var zoom = d3.zoom()
-    //     .scaleExtent([1, 10])
-    //     .on("zoom", zoomed);
+    var drag = d3.drag()
+        .subject(function (d) { return d; })
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
+
+    var zoom = d3.zoom()
+        .scaleExtent([0, 10])
+        .on("zoom", zoomed);
+
+    svg2.call(zoom);
 
 
 /// The second force directed layout ***********
 
+    var container = svg2.append("g");
 
     force2.nodes(nodes2);
     force2.force("link").links(links2);
 
 
-    var link2 = svg2.selectAll(".link2")
+    var link2 = container.selectAll(".link2")
         .data(links2)
         .enter().append("line")
         .attr("class", "link2")
@@ -40,9 +53,11 @@ function forcegraph(selector) {
             return 0.2 + linkScale(d.count);
         });
 
-    var node2 = svg2.selectAll(".nodeText2")
+    var node2 = container.selectAll(".nodeText2")
         .data(nodes2)
-        .enter().append("text")
+        .enter().append("g");
+
+    node2.append("text")
         .attr("class", ".nodeText2")
         .text(function (d) {
             return d.key
@@ -59,6 +74,7 @@ function forcegraph(selector) {
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
         .attr("font-size", "12px");
+    node2.call(drag);
 
     force2.on("tick", function () {
         link2.attr("x1", function (d) {
@@ -79,8 +95,37 @@ function forcegraph(selector) {
             .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
-}
+    zoom.scaleTo(svg2, 0.5);
 
+    function zoomed() {
+        const currentTransform = d3.event.transform;
+        container.attr("transform", currentTransform);
+        //slider.property("value", currentTransform.k);
+    }
+
+    function dragstarted(d) {
+        d3.select(this).classed("dragging", true);
+        if (!d3.event.active) force2.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+        // d3.select(this).attr('transform', d => {
+        //     d.x = d3.event.x;
+        //     d.y = d3.event.y;
+        //     return 'translate('+ d.x+','+d.y+')'});
+    }
+
+    function dragended(d) {
+        d3.select(this).classed("dragging", false);
+        if (!d3.event.active) force2.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
+}
 function computeNodes() {
     var termArray = termscollection_org;
     var nested_data = d3.nest()
@@ -129,6 +174,8 @@ function computeNodes() {
     links2 = Object.keys(linkmap).map(d=> linkmap[d]);
     links2.sort((a,b)=>b.count-a.count);
     links2 = links2.filter(d=> d.count>mainconfig.minlink);
+    nodes2 = nodes2.filter(d=>links2.find(e=>d.key == e.source || d.key == e.target));
     console.log("link2.length = "+links2.length);
+    console.log("nodes2.length = "+nodes2.length);
     
 }

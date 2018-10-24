@@ -45,13 +45,13 @@ var wordTip = d3.tip()
         str += "<div class = headertip>"
         str += "<h6 class ='headerterm'>Term: </h6>";
         str += "<h5 class ='information' style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str +=  (d.text||d.key) +' </h5>';
+        str +=  (d.text||d.key) +" "+'</h5>';
         str += "<h6 class ='headerterm'>  Frequency: </h6>";
         str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str += (d.frequency||d.value.articlenum) +' </h4>';
+        str += (d.frequency||d.value.articlenum)+" " +'</h4>';
         str += "<h6 class ='headerterm'>  Date: </h6>";
         str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str += outputFormat(d.data[0].time) +' </h4>';
+        str += outputFormat(d.data[0].time)+" " +'</h4>';
         if (daystep-1) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
             eDatedis["setDate"](eDatedis.getDate() + daystep-1);
