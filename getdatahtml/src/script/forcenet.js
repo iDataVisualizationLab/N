@@ -106,7 +106,7 @@ function forcegraph(selector,searchbox) {
             .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
-    zoom.scaleTo(svg2, 0.3);
+    zoom.scaleTo(svg2, 0.5);
 
     function zoomed() {
         const currentTransform = d3.event.transform;
