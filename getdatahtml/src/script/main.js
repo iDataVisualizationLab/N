@@ -23,14 +23,15 @@ var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
 var svgHeight = 1500;
-
+var nodes2,links2;
 var mainconfig = {
     renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
     rateOfTopics: 0.05,
     Isweekly: false,
-    seperate: true
+    seperate: true,
+    minfreq: 3,
 };
 var daystep = 1;
 var startDate;
