@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="366" column="65" lean-forward="false" selection-start-line="366" selection-start-column="54" selection-end-line="366" selection-end-column="65" />
+            <state relative-caret-position="121">
+              <caret line="28" column="11" lean-forward="false" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -64,10 +64,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1078">
+            <state relative-caret-position="119">
               <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
@@ -104,9 +104,10 @@
       <find>numberInputTerms</find>
       <find>computeConnectivity</find>
       <find>relationship</find>
-      <find>force2</find>
       <find>linkScale</find>
       <find>valueSlider</find>
+      <find>force</find>
+      <find>force2</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -238,12 +239,12 @@
       <updated>1539971362955</updated>
       <workItem from="1539971364149" duration="2051000" />
       <workItem from="1539986708663" duration="72000" />
-      <workItem from="1539986996803" duration="22288000" />
+      <workItem from="1539986996803" duration="23012000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24411000" />
+    <option name="totallyTimeSpent" value="25135000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="746" y="154" width="1552" height="873" extended-state="0" />
@@ -406,14 +407,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1078">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/streamGraph.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -424,8 +417,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="366" column="65" lean-forward="false" selection-start-line="366" selection-start-column="54" selection-end-line="366" selection-end-column="65" />
+        <state relative-caret-position="121">
+          <caret line="28" column="11" lean-forward="false" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
