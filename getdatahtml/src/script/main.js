@@ -1,4 +1,5 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
+var sidenav;
 let self = null;
 var categoriesgroup ={
     "NUMBER": ["MONEY","PERCENT"],
@@ -134,7 +135,7 @@ $(document).ready(function () {
         }
         update();
     });
-    $('.sidenav').sidenav();
+    //$('.sidenav').sidenav();
 
 });
 function update(){
@@ -984,5 +985,5 @@ document.addEventListener('DOMContentLoaded', function() {
         preventScrolling: false
     };
     var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, options);
+    sidenav = M.Sidenav.init(elems, options);
 });

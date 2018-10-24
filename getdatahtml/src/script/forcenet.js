@@ -16,7 +16,7 @@ function forcegraph(selector,searchbox) {
     var force2 = d3.forceSimulation()
         .force("charge", d3.forceManyBody().strength(-80 ))
         .force("gravity", d3.forceManyBody(0.5))
-        .alpha(1.5)
+        .alpha(1)
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("link", d3.forceLink().id(function(d) { return d.key }).distance(60).strength(0.2));
     computeNodes();
@@ -77,6 +77,13 @@ function forcegraph(selector,searchbox) {
         .on('contextmenu', function(d){
             d3.event.preventDefault();
             $(searchbox).val(d.key);
+            M.Sidenav.getInstance($(selector)).close();
+            setTimeout(function () {
+                // do calculations
+                // update graph
+                // clear spinner
+                searchWord();
+            }, 0);
         });
     node2.call(drag);
 
