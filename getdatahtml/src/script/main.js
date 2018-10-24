@@ -513,7 +513,7 @@ function wordCloud(selector,config) {
                     .enter()
                 .append('a')
                 .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-                .attrs({"xlink:href": (d => d.url),
+                .attrs({"xlink:href": (d => d.url||d.link),
                     'target':"_blank"})
                 .attr('class','stackimg')
                     .append('rect')
