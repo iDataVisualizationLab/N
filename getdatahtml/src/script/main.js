@@ -41,15 +41,15 @@ var wordTip = d3.tip()
     .html(function (d) {
         var str = '';
         str += "<div class = headertip>"
-        str += "<h5 class ='headerterm'>Term: </h5>";
-        str += "<h3 class ='information' style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str +=  (d.text||d.key) +'</h3>';
-        str += "<h5 class ='headerterm'>  Frequency: </h5>";
-        str += "<h4 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str += (d.frequency||d.value.articlenum) +'</h4>';
-        str += "<h5 class ='headerterm'>  Date: </h5>";
-        str += "<h4 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str += outputFormat(d.data[0].time) +'</h4>';
+        str += "<h6 class ='headerterm'>Term: </h6>";
+        str += "<h5 class ='information' style='color: "+color(categories.indexOf(d.topic))+";'>";
+        str +=  (d.text||d.key) +' </h5>';
+        str += "<h6 class ='headerterm'>  Frequency: </h6>";
+        str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
+        str += (d.frequency||d.value.articlenum) +' </h4>';
+        str += "<h6 class ='headerterm'>  Date: </h6>";
+        str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
+        str += outputFormat(d.data[0].time) +' </h4>';
         if (daystep-1) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
             eDatedis["setDate"](eDatedis.getDate() + daystep-1);
@@ -114,28 +114,41 @@ $(document).ready(function () {
     d3.queue()
         .defer(d3.json,"src/data/dataout.json")
         .await(ready);
-    d3.select("#IsWeekly").on("change",()=> {
+    d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
-        spinner = new Spinner(opts);
-        spinner.spin(document.body);
-        setTimeout(function () {
-            // do calculations
-            // update graph
-            // clear spinner
-            render();
-        }, 0);});
-    d3.select("#IsSeperate").on("change",()=> {
+        if ( $("#IsWeekly").hasClass('active') ) {
+            $("#IsWeekly").removeClass('active');
+        } else {
+            $("#IsWeekly").addClass('active');
+        }
+        update();
+    });
+    d3.select("#IsSeperate").on("click",()=> {
         mainconfig.seperate = !mainconfig.seperate;
-        spinner = new Spinner(opts);
-        spinner.spin(document.body);
-        setTimeout(function () {
-            // do calculations
-            // update graph
-            // clear spinner
-            render();
-        }, 0);});
+        if ( $("#IsSeperate").hasClass('active') ) {
+            $("#IsSeperate").removeClass('active');
+        } else {
+            $("#IsSeperate").addClass('active');
+        }
+        update();
+    });
+    $('.sidenav').sidenav();
 
 });
+function update(){
+    pinner = new Spinner(opts);
+    spinner.spin(document.getElementById("loading"));
+    setTimeout(function () {
+        // do calculations
+        // update graph
+        // clear spinner
+        render();
+    }, 0);
+    document.body.scrollTop = 0;
+    document.body.scrollLeft = 0;
+    document.documentElement.scrollTop = 0;
+    document.documentElement.scrollLeft = 0;
+}
 function wordCloud(selector,config) {
     function draw(data) {
         //d3.select(selector).select('svg').selectAll('.cloud').remove();
@@ -570,8 +583,15 @@ function ready (error, dataf){
     data.sort((a,b)=> a.time-b.time);
     data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
     termscollection_org = blacklist(data);
-
-    autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
+    forcegraph("#slide-out");
+    var listjson = {};
+    d3.map(termscollection_org, function(d){return d.term;}).keys().forEach(d=>listjson[d]=null);
+    $('#autocomplete-input').autocomplete( {
+        data: listjson,
+        limit: 100,
+        minLength: 2,
+    });
+    // autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
     // document.getElementById("theWord").autocompleter({ source: data });
     setTimeout(function () {
         // do calculations
@@ -582,7 +602,7 @@ function ready (error, dataf){
 }
 
 function render (){
-    d3.selectAll("input[type='checkbox']").property("disabled",true);
+    d3.selectAll("toogle").property("disabled",true);
     d3.selectAll("#timelinewImg").selectAll('svg').remove();
     handledata(data);
 
@@ -721,7 +741,7 @@ function render (){
             .attr("cy",d=> d.y);
     }
     spinner.stop();
-    d3.selectAll("input[type='checkbox']").property("disabled",false);
+    d3.selectAll("toogle").property("disabled",false);
 }
 function handledata(data){
     var termscollection = [];
@@ -740,8 +760,9 @@ function handledata(data){
         mainconfig.wstep = 50;
     }
     var nested_data;
-    let word = document.getElementById("theWord").value;
-    if (word) {
+    // let word = document.getElementById("theWord").value;
+    let word = $('#autocomplete-input').val();
+    if (word !== "") {
         var collection = termscollection_org.filter(d=>d.term==word);
         var title = d3.map(collection,d=>d.title);
         termscollection = termscollection_org.filter(d=> title.has(d.title));
@@ -938,24 +959,28 @@ function blacklist(data){
 }
 
 function searchWord() {
-    spinner = new Spinner(opts);
-    spinner.spin(document.body);
-    setTimeout(function () {
-        // do calculations
-        // update graph
-        // clear spinner
-        render();
-    }, 0);
+    update();
 }
 
 // When the user scrolls the page, execute myFunction
-window.onscroll = function() {scrollfire()};
+// window.onscroll = function() {scrollfire()};
 
 // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-function scrollfire() {
-    if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
-    } else {
-        navbar.classList.remove("sticky");
-    }
-}
+// function scrollfire() {
+//     if (window.pageYOffset >= sticky) {
+//         navbar.classList.add("sticky")
+//     } else {
+//         navbar.classList.remove("sticky");
+//     }
+// }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var options = {
+        edge: 'right',
+        draggable: true,
+        inDuration: 250,
+        preventScrolling: false
+    };
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, options);
+});

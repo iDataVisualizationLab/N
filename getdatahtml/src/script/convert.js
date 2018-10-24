@@ -25,7 +25,7 @@ $(document).ready(function () {
                 t.keywords.forEach((k,i)=>{
                     //console.log("Before: "+k.term);
                     k.term = k.term.trim();
-                    k.term = k.term.replace(/approximately |\|\||up |'s|between | »|~|a |well over |\$|00:\d\d|\"|\.$|\" | \(|\(|'|' | '|@|& $|$&|close to |roughly |nearly |more than |less than |around /gi,"");
+                    k.term = k.term.replace(/approximately |\|\||up |'s|between |—| »|~|a |well over |\$|00:\d\d|\"|\.$|\" | \(|\(|'|' | '|@|& $|$&|close to |roughly |nearly |more than |less than |around /gi,"");
                     k.term = k.term.replace(/ percent/gi,"%");
                     //console.log(" After: "+k.term);
                     if(k.term =="")
