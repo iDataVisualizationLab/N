@@ -585,7 +585,7 @@ function ready (error, dataf){
     data.sort((a,b)=> a.time-b.time);
     data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
     termscollection_org = blacklist(data);
-    forcegraph("#slide-out");
+    forcegraph("#slide-out","#autocomplete-input");
     var listjson = {};
     d3.map(termscollection_org, function(d){return d.term;}).keys().forEach(d=>listjson[d]=null);
     $('#autocomplete-input').autocomplete( {
@@ -939,7 +939,7 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S"];
+    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S","’s"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {

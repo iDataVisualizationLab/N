@@ -1,4 +1,4 @@
-function forcegraph(selector) {
+function forcegraph(selector,searchbox) {
     var svg2main = d3.select(selector).select('svg');
     var margin = { top: -5, right: -5, bottom: -5, left: -5 },
         width = $(selector).width() - margin.left - margin.right,
@@ -14,15 +14,15 @@ function forcegraph(selector) {
         .style("fill", "none")
         .style("pointer-events", "all")
     var force2 = d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(-180 ))
-        .force("gravity", d3.forceManyBody(20))
-        .alphaTarget(0.3)
+        .force("charge", d3.forceManyBody().strength(-80 ))
+        .force("gravity", d3.forceManyBody(0.5))
+        .alpha(1.5)
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(40).strength(0.2));
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(60).strength(0.2));
     computeNodes();
     var linkScale = d3.scaleLinear()
-            .range([0.5, 2])
-            .domain([Math.round(mainconfig.minfreq)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
+            .range([0.1, 3])
+            .domain([Math.round(mainconfig.minlink)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
     var drag = d3.drag()
         .subject(function (d) { return d; })
         .on("start", dragstarted)
@@ -50,7 +50,7 @@ function forcegraph(selector) {
         .attr("class", "link2")
         .style("stroke", "#777")
         .style("stroke-width", function (d) {
-            return 0.2 + linkScale(d.count);
+            return 0.1 + linkScale(d.count);
         });
 
     var node2 = container.selectAll(".nodeText2")
@@ -73,7 +73,11 @@ function forcegraph(selector) {
         })
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "12px");
+        .attr("font-size", "12px")
+        .on('contextmenu', function(d){
+            d3.event.preventDefault();
+            $(searchbox).val(d.key);
+        });
     node2.call(drag);
 
     force2.on("tick", function () {
