@@ -13,15 +13,15 @@ function forcegraph(selector) {
     var linkScale = d3.scaleLinear()
             .range([0.5, 2])
             .domain([Math.round(mainconfig.minfreq)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
-    var drag = d3.drag()
-        .subject(function (d) { return d; })
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
-    
-    var zoom = d3.zoom()
-        .scaleExtent([1, 10])
-        .on("zoom", zoomed);
+    // var drag = d3.drag()
+    //     .subject(function (d) { return d; })
+    //     .on("start", dragstarted)
+    //     .on("drag", dragged)
+    //     .on("end", dragended);
+    //
+    // var zoom = d3.zoom()
+    //     .scaleExtent([1, 10])
+    //     .on("zoom", zoomed);
 
 
 /// The second force directed layout ***********

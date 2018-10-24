@@ -83,8 +83,8 @@
       <file leaf-file-name="forcenet.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
+            <state relative-caret-position="187">
+              <caret line="23" column="31" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="23" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -93,7 +93,7 @@
       <file leaf-file-name="forcegraph.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/script/forcegraph.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
+            <state relative-caret-position="1285">
               <caret line="111" column="32" lean-forward="true" selection-start-line="111" selection-start-column="32" selection-end-line="111" selection-end-column="48" />
               <folding />
             </state>
@@ -152,10 +152,10 @@
       <find>isSubtring</find>
       <find>edge</find>
       <find>d3.nest</find>
-      <find>slice</find>
-      <find>700</find>
       <find>h5</find>
       <find>config</find>
+      <find>700</find>
+      <find>slice</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -330,12 +330,12 @@
       <workItem from="1539887531016" duration="28523000" />
       <workItem from="1539972576112" duration="9370000" />
       <workItem from="1539986620495" duration="10530000" />
-      <workItem from="1540005288595" duration="132089000" />
+      <workItem from="1540005288595" duration="132193000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="180512000" />
+    <option name="totallyTimeSpent" value="180616000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="142" y="187" width="1552" height="873" extended-state="0" />
@@ -888,14 +888,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/forcegraph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="111" column="32" lean-forward="true" selection-start-line="111" selection-start-column="32" selection-end-line="111" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/style/main.sass">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -917,10 +909,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/forcegraph.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1285">
+          <caret line="111" column="32" lean-forward="true" selection-start-line="111" selection-start-column="32" selection-end-line="111" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
+        <state relative-caret-position="187">
+          <caret line="23" column="31" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="23" selection-end-column="31" />
           <folding />
         </state>
       </provider>
