@@ -284,6 +284,12 @@ function wordCloud(selector,config) {
 
 
         // ============== DRAW CURVES =================
+
+        var overclick = mainGroup.append('rect')
+            .attr('class','wsoverlay').attrs({width:width, height:height})
+            .style("fill", "none")
+            .style("pointer-events", "all");
+
         var topics = boxes.topics;
         var stokepath = mainGroup.selectAll('.stokepath')
             .data(boxes.layers)
@@ -508,7 +514,8 @@ function wordCloud(selector,config) {
                     .enter()
                 .append('a')
                 .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-                .attr("xlink:href",d => d.url)
+                .attrs({"xlink:href": (d => d.url),
+                    'target':"_blank"})
                 .attr('class','stackimg')
                     .append('rect')
                     //.attr('class','stackimg')
@@ -539,33 +546,51 @@ function wordCloud(selector,config) {
                 return t && !t.cloned ;
             });
             allOtherTexts.attr('visibility', 'hidden');
+            mainGroup.selectAll('.stokepath').attr('visibility', 'hidden');
 
         });
 
-
-
-        topics.forEach(topic=>{
-            d3.select("path[topic='"+ topic+"']" ).on('click', function(){
-                wordStreamG.selectAll('.stackg').remove();
-                mainGroup.selectAll('.stext').filter(t=>{
-                    return t && !t.cloned && t.placed;
-                }).attrs({
-                    visibility: 'visible'
-                });
-                //Remove the cloned element
-                document.querySelectorAll("g[cloned='true']").forEach(node=>{
-                    node.parentNode.removeChild(node);
-                });
-                //Remove the added path for it
-                document.querySelectorAll("path[wordStream='true']").forEach(node=>{
-                    node.parentNode.removeChild(node);
-                });
-                d3.selectAll(".article")
-                    .style("fill","lightblue")
-                    .style("filter","");
+        overclick.on('click',()=>{
+            mainGroup.selectAll('.stokepath').attr('visibility', 'visible');
+            wordStreamG.selectAll('.stackg').remove();
+            mainGroup.selectAll('.stext').filter(t=>{
+                return t && !t.cloned && t.placed;
+            }).attrs({
+                visibility: 'visible'
+            });
+            //Remove the cloned element
+            document.querySelectorAll("g[cloned='true']").forEach(node=>{
+                node.parentNode.removeChild(node);
+            });
+            //Remove the added path for it
+            document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+                node.parentNode.removeChild(node);
             });
 
         });
+
+        // topics.forEach(topic=>{
+        //     d3.select("path[topic='"+ topic+"']" ).on('click', function(){
+        //         wordStreamG.selectAll('.stackg').remove();
+        //         mainGroup.selectAll('.stext').filter(t=>{
+        //             return t && !t.cloned && t.placed;
+        //         }).attrs({
+        //             visibility: 'visible'
+        //         });
+        //         //Remove the cloned element
+        //         document.querySelectorAll("g[cloned='true']").forEach(node=>{
+        //             node.parentNode.removeChild(node);
+        //         });
+        //         //Remove the added path for it
+        //         document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+        //             node.parentNode.removeChild(node);
+        //         });
+        //         d3.selectAll(".article")
+        //             .style("fill","lightblue")
+        //             .style("filter","");
+        //     });
+        //
+        // });
     }
     return {
         update: function (words) {

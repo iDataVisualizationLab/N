@@ -12,7 +12,7 @@ function forcegraph(selector,searchbox) {
         .attr("width", width)
         .attr("height", height)
         .style("fill", "none")
-        .style("pointer-events", "all")
+        .style("pointer-events", "all");
     var force2 = d3.forceSimulation()
         .force("charge", d3.forceManyBody().strength(-80 ))
         .force("gravity", d3.forceManyBody(0.5))
