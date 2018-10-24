@@ -233,6 +233,10 @@ function wordCloud(selector,config) {
         var boxwidth = ~~(width/data.length);
         // x.range([xrange[0] + boxwidth, width - boxwidth])
         mainGroup.attr('transform', 'translate(' + margins.left + ',' + margins.top + ')');
+        var overclick = wordStreamG.append('rect')
+            .attr('class','wsoverlay').attrs({width:width, height:height})
+            .style("fill", "none")
+            .style("pointer-events", "all");
 
         if (mainconfig.seperate) {
             var legend = boxes.layers.map(d => {
@@ -284,11 +288,6 @@ function wordCloud(selector,config) {
 
 
         // ============== DRAW CURVES =================
-
-        var overclick = mainGroup.append('rect')
-            .attr('class','wsoverlay').attrs({width:width, height:height})
-            .style("fill", "none")
-            .style("pointer-events", "all");
 
         var topics = boxes.topics;
         var stokepath = mainGroup.selectAll('.stokepath')
@@ -547,10 +546,11 @@ function wordCloud(selector,config) {
             });
             allOtherTexts.attr('visibility', 'hidden');
             mainGroup.selectAll('.stokepath').attr('visibility', 'hidden');
-
+            d3.select('.sublegend').attr('visibility', 'hidden');
         });
 
         overclick.on('click',()=>{
+            d3.select('.sublegend').attr('visibility', 'visible');
             mainGroup.selectAll('.stokepath').attr('visibility', 'visible');
             wordStreamG.selectAll('.stackg').remove();
             mainGroup.selectAll('.stext').filter(t=>{
