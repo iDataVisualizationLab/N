@@ -43,7 +43,7 @@ function forcegraph(selector) {
         })
         .attr("dy", ".35em")
         .style("fill", function (d) {
-            return getColor(d.group, d.frequency);
+            return color(categories.indexOf(d.group));
         })
         .style("text-anchor", "middle")
         .style("text-shadow", "1px 1px 0 rgba(55, 55, 55, 0.6")
@@ -101,7 +101,7 @@ function computeNodes() {
     var collection = [];
     nested_data.forEach(d=> d.values.forEach(t=>collection.push({title: t.key, term:{key: d.key, frequency: d.values.length}})));
     nodes2 = [];
-    nested_data.forEach(d=> d.values.forEach(t=>nodes2.push({key: d.key, frequency: d.values.length,group: t.value.category})));
+    nested_data.forEach(d=> { nodes2.push({key: d.key, frequency: d.values.length,group: d.values[0].value.category})});
     console.log("nodes2.length = "+nodes2.length);
     nested_data = d3.nest()
         .key(function (d) {
