@@ -221,6 +221,8 @@ nav ul li.active {
 #slide-out {
   width: 700px;
   height: 700px;
+  padding: 5px;
+  overflow: hidden;
   top: calc(50% - 700px /2);
 }
 

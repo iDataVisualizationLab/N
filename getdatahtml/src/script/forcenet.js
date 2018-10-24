@@ -4,25 +4,31 @@ function forcegraph(selector) {
     var height = $(selector).height();
     svg2.attrs({width: width, height: height});
     var force2 = d3.forceSimulation()
-        .force("charge", -180)
-        .force("linkDistance", 80)
-        .force("gravity", 0.15)
-        .force("alpha", 0.1)
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        .force("charge", d3.forceManyBody().strength(-100 ))
+        .force("gravity", d3.forceManyBody(20))
+    //    .force("alpha", 0.1)
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(20));
     computeNodes();
     var linkScale = d3.scaleLinear()
             .range([0.5, 2])
-            .domain([Math.round(mainconfig.minfreq)-0.4, Math.max(d3.max(links2,d=>d.count),10)]); 
-    console.log("computed: "+links2.length);
+            .domain([Math.round(mainconfig.minfreq)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
+    var drag = d3.drag()
+        .subject(function (d) { return d; })
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
+    
+    var zoom = d3.zoom()
+        .scaleExtent([1, 10])
+        .on("zoom", zoomed);
+
 
 /// The second force directed layout ***********
 
 
     force2.nodes(nodes2);
-    force2.force("link",d3.forceLink(links2)
-     .id(function(d,i) {
-         return d.key;
-     }));;
+    force2.force("link").links(links2);
 
 
     var link2 = svg2.selectAll(".link2")
@@ -69,12 +75,8 @@ function forcegraph(selector) {
             });
 
 
-        node2.attr("x", function (d) {
-            return d.x;
-        })
-            .attr("y", function (d) {
-                return d.y;
-            });
+        node2
+            .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
 }
@@ -93,9 +95,10 @@ function computeNodes() {
         })
         .entries(termscollection_org);
     nested_data.sort((a,b)=> b.values.length - a.values.length);
-    var numNode = Math.min(180, nested_data.length);
-    var numNode2 = Math.min(numNode*3, nested_data.length);
+    var numNode = Math.min(60, nested_data.length);
+    var numNode2 = Math.min(numNode*2, nested_data.length);
     nested_data = nested_data.slice(0,numNode2);
+    nested_data = nested_data.filter(d=>d.values.length>mainconfig.minfreq);
     console.log("nested_data.length = "+nested_data.length);
     
     var collection = [];
@@ -125,7 +128,7 @@ function computeNodes() {
     
     links2 = Object.keys(linkmap).map(d=> linkmap[d]);
     links2.sort((a,b)=>b.count-a.count);
-    links2 = links2.filter(d=> d.count>mainconfig.minfreq);
+    links2 = links2.filter(d=> d.count>mainconfig.minlink);
     console.log("link2.length = "+links2.length);
     
 }

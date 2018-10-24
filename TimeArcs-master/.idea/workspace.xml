@@ -17,8 +17,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="621" column="66" lean-forward="false" selection-start-line="621" selection-start-column="54" selection-end-line="621" selection-end-column="66" />
+            <state relative-caret-position="206">
+              <caret line="674" column="20" lean-forward="true" selection-start-line="674" selection-start-column="20" selection-end-line="674" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -236,12 +236,12 @@
       <updated>1539971362955</updated>
       <workItem from="1539971364149" duration="2051000" />
       <workItem from="1539986708663" duration="72000" />
-      <workItem from="1539986996803" duration="16528000" />
+      <workItem from="1539986996803" duration="17679000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18651000" />
+    <option name="totallyTimeSpent" value="19802000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="746" y="154" width="1552" height="873" extended-state="0" />
@@ -290,18 +290,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js</url>
-          <line>667</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js</url>
           <line>678</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js</url>
+          <line>621</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -422,8 +422,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TimeArcs-master/Text/myscripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="621" column="66" lean-forward="false" selection-start-line="621" selection-start-column="54" selection-end-line="621" selection-end-column="66" />
+        <state relative-caret-position="206">
+          <caret line="674" column="20" lean-forward="true" selection-start-line="674" selection-start-column="20" selection-end-line="674" selection-end-column="20" />
           <folding />
         </state>
       </provider>

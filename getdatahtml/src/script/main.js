@@ -32,6 +32,7 @@ var mainconfig = {
     Isweekly: false,
     seperate: true,
     minfreq: 3,
+    minlink:20,
 };
 var daystep = 1;
 var startDate;
