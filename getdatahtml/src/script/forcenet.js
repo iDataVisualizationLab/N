@@ -15,10 +15,10 @@ function forcegraph(selector) {
         .style("pointer-events", "all")
     var force2 = d3.forceSimulation()
         .force("charge", d3.forceManyBody().strength(-180 ))
-        .force("gravity", d3.forceManyBody(0.15))
+        .force("gravity", d3.forceManyBody(20))
         .alphaTarget(0.3)
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(40));
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(40).strength(0.2));
     computeNodes();
     var linkScale = d3.scaleLinear()
             .range([0.5, 2])
@@ -95,7 +95,7 @@ function forcegraph(selector) {
             .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
-    zoom.scaleTo(svg2, 0.5);
+    zoom.scaleTo(svg2, 0.3);
 
     function zoomed() {
         const currentTransform = d3.event.transform;
