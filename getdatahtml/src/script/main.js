@@ -1,4 +1,5 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
+var sidenav;
 let self = null;
 var categoriesgroup ={
     "NUMBER": ["MONEY","PERCENT"],
@@ -6,6 +7,7 @@ var categoriesgroup ={
     "PERSON":["PERSON"],
     "ORG":["ORG"],
     "NATION":["GPE"]};
+var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
@@ -21,15 +23,17 @@ var lineColor = d3.scaleLinear()
 var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
-var svgHeight = 2000;
-
+var svgHeight = 1500;
+var nodes2,links2;
 var mainconfig = {
     renderpic: false,
     wstep: 50,
     numberOfTopics: 20,
     rateOfTopics: 0.05,
     Isweekly: false,
-    seperate: true
+    seperate: true,
+    minfreq: 3,
+    minlink:20,
 };
 var daystep = 1;
 var startDate;
@@ -40,15 +44,15 @@ var wordTip = d3.tip()
     .html(function (d) {
         var str = '';
         str += "<div class = headertip>"
-        str += "<h5 class ='headerterm'>Term: </h5>";
-        str += "<h3 class ='information'>";
-        str +=  (d.text||d.key) +'</h3>';
-        str += "<h5 class ='headerterm'>  Freqeuncy: </h5>";
-        str += "<h4 class ='information'>";
-        str += (d.frequency||d.value.articlenum) +'</h4>';
-        str += "<h5 class ='headerterm'>  Date: </h5>";
-        str += "<h4 class ='information'>";
-        str += outputFormat(d.data[0].time) +'</h4>';
+        str += "<h6 class ='headerterm'>Term: </h6>";
+        str += "<h5 class ='information' style='color: "+color(categories.indexOf(d.topic))+";'>";
+        str +=  (d.text||d.key) +" "+'</h5>';
+        str += "<h6 class ='headerterm'>  Frequency: </h6>";
+        str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
+        str += (d.frequency||d.value.articlenum)+" " +'</h4>';
+        str += "<h6 class ='headerterm'>  Date: </h6>";
+        str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
+        str += outputFormat(d.data[0].time)+" " +'</h4>';
         if (daystep-1) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
             eDatedis["setDate"](eDatedis.getDate() + daystep-1);
@@ -59,7 +63,7 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th >Source</th>';
+        str += '<th >Source(s)</th>';
         str += '<th >Title</th>';
         str + "</tr>";
 
@@ -75,16 +79,7 @@ var wordTip = d3.tip()
 
         return str;
     });
-// var opts = {
-//     lines: 9, // The number of lines to draw
-//     length: 9, // The length of each line
-//     width: 5, // The line thickness
-//     radius: 14, // The radius of the inner circle
-//     color: '#EE3124', // #rgb or #rrggbb or array of colors
-//     speed: 1.9, // Rounds per second
-//     trail: 40, // Afterglow percentage
-//     className: 'spinner', // The CSS class to assign to the spinner
-// };
+
 var opts = {
     lines: 7, // The number of lines to draw
     length: 10, // The length of each line
@@ -103,48 +98,63 @@ var opts = {
     top: '48%', // Top position relative to parent
     left: '50%', // Left position relative to parent
     position: 'absolute' // Element positioning
-    // lines: 10, // The number of lines to draw
-    // length: 27, // The length of each line
-    // width: 52, // The line thickness
-    // radius: 13, // The radius of the inner circle
-    // scale: 0.01, // Scales overall size of the spinner
-    // corners: 1, // Corner roundness (0..1)
-    // color: '#ffa4c0', // CSS color or array of colors
-    // fadeColor: 'transparent', // CSS color or array of colors
-    // speed: 1, // Rounds per second
-    // rotate: 62, // The rotation offset
-    // animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
-    // direction: 1, // 1: clockwise, -1: counterclockwise
-    // zIndex: 2e9, // The z-index (defaults to 2000000000)
-    // className: 'spinner', // The CSS class to assign to the spinner
-    // top: '50%', // Top position relative to parent
-    // left: '50%', // Left position relative to parent
-    // shadow: '0 0 0px transparent', // Box-shadow for the lines
-    // position: 'absolute' // Element positioning
 };
+var navbar;
 
+// Get the offset position of the navbar
+var sticky;
 
 var target;
 var spinner ;
 $(document).ready(function () {
+    navbar = document.getElementById("navbar");
+// Get the offset position of the navbar
+    sticky = navbar.offsetTop;
 
     target = document.getElementById('timelinewImg');
     spinner = new Spinner(opts);
-    spinner.spin(document.getElementById('timelinewImg'));
+    spinner.spin(document.body);
     d3.queue()
         .defer(d3.json,"src/data/dataout.json")
         .await(ready);
-    d3.select("#IsWeekly").on("change",()=> {
+    d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
-        render();});
-    d3.select("#IsSeperate").on("change",()=> {
+        if ( $("#IsWeekly").hasClass('active') ) {
+            $("#IsWeekly").removeClass('active');
+        } else {
+            $("#IsWeekly").addClass('active');
+        }
+        update();
+    });
+    d3.select("#IsSeperate").on("click",()=> {
         mainconfig.seperate = !mainconfig.seperate;
-        render();});
+        if ( $("#IsSeperate").hasClass('active') ) {
+            $("#IsSeperate").removeClass('active');
+        } else {
+            $("#IsSeperate").addClass('active');
+        }
+        update();
+    });
+    //$('.sidenav').sidenav();
 
 });
+function update(){
+    pinner = new Spinner(opts);
+    spinner.spin(document.getElementById("loading"));
+    setTimeout(function () {
+        // do calculations
+        // update graph
+        // clear spinner
+        render();
+    }, 0);
+    document.body.scrollTop = 0;
+    document.body.scrollLeft = 0;
+    document.documentElement.scrollTop = 0;
+    document.documentElement.scrollLeft = 0;
+}
 function wordCloud(selector,config) {
     function draw(data) {
-        d3.select(selector).select('svg').selectAll('.cloud').remove();
+        //d3.select(selector).select('svg').selectAll('.cloud').remove();
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
@@ -211,7 +221,7 @@ function wordCloud(selector,config) {
 
         //Display data
 
-        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        //var color = d3.scaleOrdinal(d3.schemeCategory10);
         //Display time axes
         // var dates = [];
         // boxes.data.forEach(row => {
@@ -223,6 +233,10 @@ function wordCloud(selector,config) {
         var boxwidth = ~~(width/data.length);
         // x.range([xrange[0] + boxwidth, width - boxwidth])
         mainGroup.attr('transform', 'translate(' + margins.left + ',' + margins.top + ')');
+        var overclick = wordStreamG.append('rect')
+            .attr('class','wsoverlay').attrs({width:width, height:height})
+            .style("fill", "none")
+            .style("pointer-events", "all");
 
         if (mainconfig.seperate) {
             var legend = boxes.layers.map(d => {
@@ -274,6 +288,7 @@ function wordCloud(selector,config) {
 
 
         // ============== DRAW CURVES =================
+
         var topics = boxes.topics;
         var stokepath = mainGroup.selectAll('.stokepath')
             .data(boxes.layers)
@@ -330,9 +345,11 @@ function wordCloud(selector,config) {
             .data(allWords)
             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+')rotate('+d.rotate+')';}});
 
-        gtext.selectAll('.stext')
+        var stext = gtext.selectAll('.stext')
+            .transition()
+            .duration(600)
             .text(function(d){return d.text;})
-            .transition().duration(1000).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+            .attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -344,7 +361,8 @@ function wordCloud(selector,config) {
                 'fill-opacity': function(d){return opacity(d.frequency)},
                 'text-anchor': 'middle',
                 'alignment-baseline': 'middle'
-            });
+            })
+            .duration(1000);
         gtext.exit().remove();
         gtext.enter()
             .append('g')
@@ -352,8 +370,8 @@ function wordCloud(selector,config) {
             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+') rotate('+d.rotate+')';}})
             .append('text')
             .attr("class",'stext')
+            .transition().duration(600).styleTween('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .text(function(d){return d.text;})
-            .transition().duration(1000).attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
@@ -495,7 +513,8 @@ function wordCloud(selector,config) {
                     .enter()
                 .append('a')
                 .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-                .attr("xlink:href",d => d.url)
+                .attrs({"xlink:href": (d => d.url||d.link),
+                    'target':"_blank"})
                 .attr('class','stackimg')
                     .append('rect')
                     //.attr('class','stackimg')
@@ -526,33 +545,52 @@ function wordCloud(selector,config) {
                 return t && !t.cloned ;
             });
             allOtherTexts.attr('visibility', 'hidden');
-
+            mainGroup.selectAll('.stokepath').attr('visibility', 'hidden');
+            d3.select('.sublegend').attr('visibility', 'hidden');
         });
 
-
-
-        topics.forEach(topic=>{
-            d3.select("path[topic='"+ topic+"']" ).on('click', function(){
-                wordStreamG.selectAll('.stackg').remove();
-                mainGroup.selectAll('.stext').filter(t=>{
-                    return t && !t.cloned && t.placed;
-                }).attrs({
-                    visibility: 'visible'
-                });
-                //Remove the cloned element
-                document.querySelectorAll("g[cloned='true']").forEach(node=>{
-                    node.parentNode.removeChild(node);
-                });
-                //Remove the added path for it
-                document.querySelectorAll("path[wordStream='true']").forEach(node=>{
-                    node.parentNode.removeChild(node);
-                });
-                d3.selectAll(".article")
-                    .style("fill","lightblue")
-                    .style("filter","");
+        overclick.on('click',()=>{
+            d3.select('.sublegend').attr('visibility', 'visible');
+            mainGroup.selectAll('.stokepath').attr('visibility', 'visible');
+            wordStreamG.selectAll('.stackg').remove();
+            mainGroup.selectAll('.stext').filter(t=>{
+                return t && !t.cloned && t.placed;
+            }).attrs({
+                visibility: 'visible'
+            });
+            //Remove the cloned element
+            document.querySelectorAll("g[cloned='true']").forEach(node=>{
+                node.parentNode.removeChild(node);
+            });
+            //Remove the added path for it
+            document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+                node.parentNode.removeChild(node);
             });
 
         });
+
+        // topics.forEach(topic=>{
+        //     d3.select("path[topic='"+ topic+"']" ).on('click', function(){
+        //         wordStreamG.selectAll('.stackg').remove();
+        //         mainGroup.selectAll('.stext').filter(t=>{
+        //             return t && !t.cloned && t.placed;
+        //         }).attrs({
+        //             visibility: 'visible'
+        //         });
+        //         //Remove the cloned element
+        //         document.querySelectorAll("g[cloned='true']").forEach(node=>{
+        //             node.parentNode.removeChild(node);
+        //         });
+        //         //Remove the added path for it
+        //         document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+        //             node.parentNode.removeChild(node);
+        //         });
+        //         d3.selectAll(".article")
+        //             .style("fill","lightblue")
+        //             .style("filter","");
+        //     });
+        //
+        // });
     }
     return {
         update: function (words) {
@@ -571,15 +609,29 @@ function ready (error, dataf){
             d.time = parseTime(d.time);
     });
     data.sort((a,b)=> a.time-b.time);
+    data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
     termscollection_org = blacklist(data);
-    autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
+    forcegraph("#slide-out","#autocomplete-input");
+    var listjson = {};
+    d3.map(termscollection_org, function(d){return d.term;}).keys().forEach(d=>listjson[d]=null);
+    $('#autocomplete-input').autocomplete( {
+        data: listjson,
+        limit: 100,
+        minLength: 2,
+    });
+    // autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
+    // document.getElementById("theWord").autocompleter({ source: data });
+    setTimeout(function () {
+        // do calculations
+        // update graph
+        // clear spinner
     render();
+    }, 0);
 }
 
 function render (){
-    d3.selectAll("input[type='checkbox']").property("disabled",true);
+    d3.selectAll("toogle").property("disabled",true);
     d3.selectAll("#timelinewImg").selectAll('svg').remove();
-    spinner.spin(document.getElementById('timelinewImg'));
     handledata(data);
 
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
@@ -632,7 +684,7 @@ function render (){
         .attr("transform", "translate(0," + height*wscale + ")")
         .call(d3.axisTop(x)
             .ticks(d3.timeMonday.every(1))
-            .tickFormat(d3.timeFormat("%B %d, %Y")))
+            .tickFormat(d3.timeFormat("%b %d, %Y")))
         .selectAll("text")
         .style("text-anchor", "start")
         .attr("dx", ".8em")
@@ -717,27 +769,28 @@ function render (){
             .attr("cy",d=> d.y);
     }
     spinner.stop();
-    d3.selectAll("input[type='checkbox']").property("disabled",false);
+    d3.selectAll("toogle").property("disabled",false);
 }
 function handledata(data){
     var termscollection = [];
     //sort out term for 1 article
     if (mainconfig.IsWeekly) {
         outputFormat =  (d) => {
-            return d3.timeFormat('%b %d %Y')(d3.timeMonday(d))
+            return d3.timeFormat('%b %d %Y')(d3.timeSunday(d))
         };
         daystep = 7;
-        svgHeight = 1200;
-        mainconfig.wstep = 5;
+        svgHeight = 1000;
+        mainconfig.wstep = 15;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
         daystep = 1;
-        svgHeight = 1500;
+        svgHeight = 1300;
         mainconfig.wstep = 50;
     }
     var nested_data;
-    let word = document.getElementById("theWord").value;
-    if (word) {
+    // let word = document.getElementById("theWord").value;
+    let word = $('#autocomplete-input').val();
+    if (word !== "") {
         var collection = termscollection_org.filter(d=>d.term==word);
         var title = d3.map(collection,d=>d.title);
         termscollection = termscollection_org.filter(d=> title.has(d.title));
@@ -832,7 +885,7 @@ function handledata(data){
 
     //nested_data = nested_data.slice(1,nested_data.length-1);
     //slice data
-    nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 15 2018'));
+    //nested_data = nested_data.filter(d=> parseTime(d.key)> parseTime('Apr 15 2018'));
 
     // ArticleByDay
     ArticleDay = d3.nest()
@@ -912,7 +965,7 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU"];
+    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S","’s"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
@@ -934,6 +987,28 @@ function blacklist(data){
 }
 
 function searchWord() {
-    render();
+    update();
 }
 
+// When the user scrolls the page, execute myFunction
+// window.onscroll = function() {scrollfire()};
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+// function scrollfire() {
+//     if (window.pageYOffset >= sticky) {
+//         navbar.classList.add("sticky")
+//     } else {
+//         navbar.classList.remove("sticky");
+//     }
+// }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var options = {
+        edge: 'right',
+        draggable: true,
+        inDuration: 250,
+        preventScrolling: false
+    };
+    var elems = document.querySelectorAll('.sidenav');
+    sidenav = M.Sidenav.init(elems, options);
+});
