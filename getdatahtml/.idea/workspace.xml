@@ -28,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/quantum.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="121">
-              <caret line="36" column="63" lean-forward="false" selection-start-line="36" selection-start-column="63" selection-end-line="36" selection-end-column="63" />
+              <caret line="56" column="39" lean-forward="false" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="39" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -39,13 +39,13 @@
       <file leaf-file-name="quantumdata.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="611" column="17" lean-forward="false" selection-start-line="611" selection-start-column="17" selection-end-line="611" selection-end-column="17" />
+            <state relative-caret-position="163">
+              <caret line="1031" column="19" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1069" selection-end-column="3" />
               <folding>
-                <element signature="e#2923#3803#0" expanded="false" />
-                <marker date="1542168058746" expanded="true" signature="1483:1529" ph="..." />
-                <marker date="1542168058746" expanded="true" signature="1688:1734" ph="..." />
-                <marker date="1542168058746" expanded="true" signature="1905:1951" ph="..." />
+                <element signature="e#2949#3829#0" expanded="false" />
+                <marker date="1542169301574" expanded="true" signature="1506:1552" ph="..." />
+                <marker date="1542169301574" expanded="true" signature="1711:1757" ph="..." />
+                <marker date="1542169301574" expanded="true" signature="1928:1974" ph="..." />
               </folding>
             </state>
           </provider>
@@ -73,15 +73,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>term&quot;: &quot; &quot;</find>
-      <find>twitt</find>
-      <find>hash</find>
-      <find>txdr</find>
-      <find>url</find>
-      <find>layer</find>
-      <find>defs</find>
-      <find>data</find>
-      <find>wordStream</find>
       <find>daystep</find>
       <find>d3.timeFormat</find>
       <find>ready(</find>
@@ -101,8 +92,17 @@
       <find>title</find>
       <find>FinanViz</find>
       <find>Fina</find>
-      <find>tool</find>
       <find>fre</find>
+      <find>tool</find>
+      <find>subca</find>
+      <find>we</find>
+      <find>IsWee</find>
+      <find>handle</find>
+      <find>blacklist</find>
+      <find>termscollection_org = blacklist(data);</find>
+      <find>blacklis</find>
+      <find>category</find>
+      <find>blackli</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -146,8 +146,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="650" />
-    <option name="y" value="206" />
+    <option name="x" value="288" />
+    <option name="y" value="134" />
     <option name="width" value="1552" />
     <option name="height" value="873" />
   </component>
@@ -260,15 +260,15 @@
       <workItem from="1541717364371" duration="92000" />
       <workItem from="1541787337109" duration="3180000" />
       <workItem from="1541806513051" duration="30519000" />
-      <workItem from="1542130891779" duration="8022000" />
+      <workItem from="1542130891779" duration="9408000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="249552000" />
+    <option name="totallyTimeSpent" value="250938000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="650" y="206" width="1552" height="873" extended-state="0" />
+    <frame x="288" y="134" width="1552" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2774799" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -387,24 +387,48 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
-          <line>611</line>
+          <line>621</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
-          <line>635</line>
+          <line>646</line>
           <properties />
           <option name="timeStamp" value="124" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
-          <line>48</line>
+          <line>49</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="125" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
+          <line>670</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="126" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
+          <line>832</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
+          <line>839</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
+          <line>1016</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="126" />
+      <option name="time" value="131" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -757,16 +781,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quantum.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="36" column="63" lean-forward="false" selection-start-line="36" selection-start-column="63" selection-end-line="36" selection-end-column="63" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -785,15 +799,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quantum.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="56" column="39" lean-forward="false" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="39" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="611" column="17" lean-forward="false" selection-start-line="611" selection-start-column="17" selection-end-line="611" selection-end-column="17" />
+        <state relative-caret-position="163">
+          <caret line="1031" column="19" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1069" selection-end-column="3" />
           <folding>
-            <element signature="e#2923#3803#0" expanded="false" />
-            <marker date="1542168058746" expanded="true" signature="1483:1529" ph="..." />
-            <marker date="1542168058746" expanded="true" signature="1688:1734" ph="..." />
-            <marker date="1542168058746" expanded="true" signature="1905:1951" ph="..." />
+            <element signature="e#2949#3829#0" expanded="false" />
+            <marker date="1542169301574" expanded="true" signature="1506:1552" ph="..." />
+            <marker date="1542169301574" expanded="true" signature="1711:1757" ph="..." />
+            <marker date="1542169301574" expanded="true" signature="1928:1974" ph="..." />
           </folding>
         </state>
       </provider>
