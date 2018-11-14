@@ -347,7 +347,7 @@ function wordCloud(selector,config) {
             })
 
             .attrs({
-                'fill-opacity': 0.07,      // = 1 if full color
+                'fill-opacity': 0.03,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -362,7 +362,7 @@ function wordCloud(selector,config) {
                 return color(i);
             })
             .attrs({
-                'fill-opacity': 0.07,      // = 1 if full color
+                'fill-opacity': 0.03,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
