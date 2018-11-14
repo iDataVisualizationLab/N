@@ -889,7 +889,7 @@ function handledata(data){
                 term.values.forEach(day => {
                     preday["setDate"](preday.getDate() + daystep);
                     if (preday.getFullYear() != new Date(day.key).getFullYear())
-                        pre = 0;
+                        pre = pre==0?0:pre-1;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
                     pre = day.values.length;

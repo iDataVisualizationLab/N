@@ -40,12 +40,12 @@
         <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="61">
-              <caret line="889" column="64" lean-forward="false" selection-start-line="889" selection-start-column="64" selection-end-line="889" selection-end-column="64" />
+              <caret line="889" column="66" lean-forward="true" selection-start-line="889" selection-start-column="66" selection-end-line="889" selection-end-column="66" />
               <folding>
                 <element signature="e#2949#3829#0" expanded="false" />
-                <marker date="1542171374714" expanded="true" signature="1506:1552" ph="..." />
-                <marker date="1542171374714" expanded="true" signature="1711:1757" ph="..." />
-                <marker date="1542171374714" expanded="true" signature="1928:1974" ph="..." />
+                <marker date="1542171697115" expanded="true" signature="1506:1552" ph="..." />
+                <marker date="1542171697115" expanded="true" signature="1711:1757" ph="..." />
+                <marker date="1542171697115" expanded="true" signature="1928:1974" ph="..." />
               </folding>
             </state>
           </provider>
@@ -260,12 +260,12 @@
       <workItem from="1541717364371" duration="92000" />
       <workItem from="1541787337109" duration="3180000" />
       <workItem from="1541806513051" duration="30519000" />
-      <workItem from="1542130891779" duration="11277000" />
+      <workItem from="1542130891779" duration="11594000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="252807000" />
+    <option name="totallyTimeSpent" value="253124000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="288" y="134" width="1552" height="873" extended-state="0" />
@@ -824,12 +824,12 @@
     <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="61">
-          <caret line="889" column="64" lean-forward="false" selection-start-line="889" selection-start-column="64" selection-end-line="889" selection-end-column="64" />
+          <caret line="889" column="66" lean-forward="true" selection-start-line="889" selection-start-column="66" selection-end-line="889" selection-end-column="66" />
           <folding>
             <element signature="e#2949#3829#0" expanded="false" />
-            <marker date="1542171374714" expanded="true" signature="1506:1552" ph="..." />
-            <marker date="1542171374714" expanded="true" signature="1711:1757" ph="..." />
-            <marker date="1542171374714" expanded="true" signature="1928:1974" ph="..." />
+            <marker date="1542171697115" expanded="true" signature="1506:1552" ph="..." />
+            <marker date="1542171697115" expanded="true" signature="1711:1757" ph="..." />
+            <marker date="1542171697115" expanded="true" signature="1928:1974" ph="..." />
           </folding>
         </state>
       </provider>
