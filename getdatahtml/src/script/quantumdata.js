@@ -11,6 +11,15 @@ var categoriesgroup ={
     "Journals & Magazines": ["IEEE Journals & Magazines"],
     "Conferences":["IEEE Conferences"],
     "Early Access Articles":["IEEE Early Access Articles"]};
+var wordsunvi = ["University",
+    "Institute",
+    "Univ.",
+    "Inst.",
+    "Inc.",
+    "Paris-Dauphine",
+    "IRCCyN",
+    "Pacific Northwest National Laboratory",
+    "Naval Research Lab"];
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%Y');
@@ -33,8 +42,8 @@ var mainconfig = {
     subcategory:true,
     renderpic: false,
     wstep: 100,
-    numberOfTopics: 20,
-    rateOfTopics: 0.1,
+    numberOfTopics: 10,
+    rateOfTopics: 0.005,
     Isweekly: false,
     seperate: false,
     minfreq: 10,
@@ -338,7 +347,7 @@ function wordCloud(selector,config) {
             })
 
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.07,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -353,7 +362,7 @@ function wordCloud(selector,config) {
                 return color(i);
             })
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.07,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -645,8 +654,18 @@ function ready (error, dataf){
     // format the data
     //data =data.filter(d=>d.source=="reuters");
     data = dataf.map(function(d) {
-
-        return {
+        var wregex = new RegExp(wordsunvi.join("|"),"g");
+        var university =[];
+        d["Author Affiliations"].split(";").forEach(e=>{
+            e.split(",").forEach(t=>{
+                if (t.match(wregex)!=null)
+                    university.push({term: t,
+                        category:  t.match(wregex),
+                        category1:  t.match(wregex),
+                        category2: t.match(wregex)});
+            });
+        });
+        var ditem = {
             time: parseTime(~~d.Publication_Year),
             keywords: d["INSPEC Controlled Terms"].split(";").map(k=>
             {
@@ -663,12 +682,15 @@ function ready (error, dataf){
                 }
                 return {term: k,
                     category:  d["Document Identifier"],
-                category1:  d["Document Identifier"],
-                category2: classcit}}),
+                    category1:  d["Document Identifier"],
+                    category2: classcit}}).concat(university),
             title: d["Document Title"],
             author: d["Authors"].split(";"),
-            source: d["Publisher"]
+            source: d["Publisher"],
+            urlToImage: "",
+            link: d["PDF Link"]
         };
+        return ditem;
 
     });
     data.sort((a,b)=> a.time-b.time);
@@ -790,8 +812,7 @@ function render (){
 
     pic.on("error", function(){
         let el = d3.select(this);
-        el.attr("xlink:href",
-        );
+        el.attr("xlink:href", "src/img/bb.jpg");
         el.on("error", null);
     })
     // var circles = timeline.selectAll(".img")
@@ -848,20 +869,22 @@ function handledata(data){
     }else {
         outputFormat =  d3.timeFormat('%Y');
         daystep = 365;
-        svgHeight = 1000;
-        mainconfig.wstep = 200;
+        svgHeight = 800;
+        mainconfig.wstep = 100;
     }
     if (mainconfig.subcategory){
         categoriesgroup ={
-            "UNKNOW": ["UNKNOW"],
-            "HAVE CITATION": ["1-10","10-100",">100"]};
+            "Unknown citation": ["UNKNOW"],
+            "Have citation": ["1-10","10-100",">100"],
+            "Affiliations": wordsunvi};
         termscollection_org = blacklist(data,"category2");
         forcegraph("#slide-out","#autocomplete-input");
     }else {
         categoriesgroup ={
             "Journals & Magazines": ["IEEE Journals & Magazines"],
             "Conferences":["IEEE Conferences"],
-            "Early Access Articles":["IEEE Early Access Articles"]};
+            "Early Access Articles":["IEEE Early Access Articles"],
+            "Affiliations": wordsunvi};
         termscollection_org = blacklist(data,"category1");
         forcegraph("#slide-out","#autocomplete-input");
     }
@@ -940,7 +963,8 @@ function handledata(data){
     nestedByTerm.forEach(c=> c.values.forEach( day=>
         day.values.sort((a,b)=>b.values[0].sudden-a.values[0].sudden)));
     nestedByTerm.forEach(c=> c.values.forEach( day=>{
-        var numtake = Math.min(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
+        // var numtake = Math.max(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
+        var numtake = mainconfig.numberOfTopics;
         day.values = day.values.slice(0,numtake)}));
 
     termscollection.length = 0;
