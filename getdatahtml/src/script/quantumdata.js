@@ -27,13 +27,13 @@ var lineColor = d3.scaleLinear()
 var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
-var svgHeight = 1500;
+var svgHeight = 1000;
 var nodes2,links2;
 var mainconfig = {
-    subcategory:false,
+    subcategory:true,
     renderpic: false,
     wstep: 100,
-    numberOfTopics: 100,
+    numberOfTopics: 20,
     rateOfTopics: 0.1,
     Isweekly: false,
     seperate: false,
@@ -173,14 +173,14 @@ function wordCloud(selector,config) {
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
-        var font = "Impact";
+        var font = "Arial";
         var interpolation = d3.curveCardinal;
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
         var min = 12;
-        var max = 30;
+        var max = 50;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -271,6 +271,31 @@ function wordCloud(selector,config) {
                 .style("text-anchor", "middle")
                 .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
                 .text(d => d.key);
+        }else{
+            var legend = d3.keys(categoriesgroup).map((d,i) => {
+                return {'key': d, 'pos': i*20}
+            });
+            var legendg = timeline.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + (20) + "," + 20 + ")")
+                .append("g")
+                .attr("class", "sublegend")
+                .selectAll(".lengendgtext")
+                .data(legend)
+                .enter()
+                .append("g")
+                .attr("class", "lengendgtext")
+                .attr("transform", d => "translate(0," + d.pos + ")");
+            legendg.append("circle")
+                .attrs({class: "lengendmark",
+                cx: 0,
+                cy: 0,
+                r:5})
+                .style("fill",(d,i)=>color(i));
+            legendg.append("text")
+                .attr("class", "lengendtext")
+                .attrs({dx:10,dy:5})
+                .text(d => d.key);
         }
         // =============== Get BOUNDARY and LAYERPATH ===============
         var lineCardinal = d3.line()
@@ -351,7 +376,7 @@ function wordCloud(selector,config) {
 
         var opacity = d3.scaleLog()
             .domain([minFreq, maxFreq])
-            .range([0.4,1]);
+            .range([0.5,1]);
 
         // Add moi chu la 1 element <g>, xoay g dung d.rotate
         var placed = true; // = false de hien thi nhung tu ko dc dien
@@ -823,8 +848,8 @@ function handledata(data){
     }else {
         outputFormat =  d3.timeFormat('%Y');
         daystep = 365;
-        svgHeight = 1300;
-        mainconfig.wstep = 100;
+        svgHeight = 1000;
+        mainconfig.wstep = 200;
     }
     if (mainconfig.subcategory){
         categoriesgroup ={
