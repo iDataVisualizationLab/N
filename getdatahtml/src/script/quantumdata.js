@@ -887,8 +887,8 @@ function handledata(data){
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
-                    preday["setDate"](preday.getDate() + daystep*2);
-                    if (preday != new Date(day.key))
+                    preday["setDate"](preday.getDate() + daystep);
+                    if (preday.getFullYear() != new Date(day.key).getFullYear())
                         pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
