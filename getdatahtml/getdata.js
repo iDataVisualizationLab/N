@@ -160,13 +160,141 @@ fetch(url).then(function(webresponse) {
 let ht = document.querySelectorAll(".twitter-hashtag");
 var htt = [];
 ht.forEach(d=>htt.push(d.querySelector("b").textContent));
-htt = htt.filter(d=> d!="riskmanagement"&&d!="RiskManagement"&&d!="Riskmanagement");
+//htt = htt.filter(d=> d!="riskmanagement"&&d!="RiskManagement"&&d!="Riskmanagement");
 JSON.stringify(htt);
 ///
-var     ht = document.querySelectorAll(".js-tweet-text-container");
+var ht = document.querySelectorAll(".js-tweet-text-container");
 let htg = [];
 ht.forEach(d=>htg.push(d.querySelectorAll(".twitter-hashtag")));
 htt = htg.map(d=> { var tt= [];
     d.forEach(e=>tt.push(e.querySelector("b").textContent));
     return tt;});
 htt=htt.filter(d=>d.length!=0);
+
+
+
+
+    /// scroll Twitt
+
+// from:twdb since:2012-01-01 until:2015-01-01
+var username = 'twdb';
+var timestart = '2012-01-01';
+var timeend = '2015-01-01';
+var queryhtml = 'https://twitter.com/search?f=tweets&q=from%3A'+username+'%20since%3A'+timestart+'%20until%3A'+timeend+'&src=typd';
+
+// auto scroll
+    var scolling = setInterval(function(){
+        if (document.documentElement.scrollTop === document.documentElement.scrollHeight) {
+            clearInterval(scolling);
+            console.log('done scroll');
+        }
+        else
+            window.scrollBy(0,1000);
+        }, 2000);
+
+
+//twitter
+var ht = document.querySelectorAll(".js-stream-item");
+var datacollection = [];
+ht.forEach(d=>{
+    var time = d.querySelector('._timestamp.js-short-timestamp').getAttribute('data-time');
+    // (new Date(time.getAttribute('data-time') * 1000)).toLocaleString()
+    var datatweet = d.querySelector('.tweet')['dataset'];
+
+    var body = d.querySelector('.js-tweet-text-container');
+    var bodyContent = body.innerText;
+    var htg = d.querySelectorAll(".twitter-hashtag");
+    var htgtext = [];
+    htg.forEach(e=>htgtext.push(e.querySelector("b").textContent));
+    var action = d.querySelector(".ProfileTweet-actionList");
+    var replynum = action.querySelector(".ProfileTweet-action--reply").querySelector('.ProfileTweet-actionCountForPresentation').textContent;
+    replynum=~~likenum;
+    var Retweet = action.querySelector(".ProfileTweet-action--retweet").querySelector('.ProfileTweet-actionCountForPresentation').textContent;
+    Retweet=~~Retweet;
+    var likenum = action.querySelector(".ProfileTweet-action--favorite").querySelector('.ProfileTweet-actionCountForPresentation').textContent;
+    likenum=~~likenum;
+
+    var imgcontain = null;
+    var imglist = [];
+    try {imgcontain = (d.querySelector('.AdaptiveMedia-container')||d.querySelector('.js-media-container').querySelector('iframe').contentDocument);
+        if (imgcontain!=null) {
+            var img = imgcontain.querySelectorAll('img');
+            img.forEach(im => imglist.push(im.src));
+            if (imglist.length == 0)
+                imglist.push(d.querySelector('.js-media-container').querySelector('iframe').contentDocument.querySelector('img').src);
+        }
+    }catch{};
+    var content ={time:time,
+        body:bodyContent,
+        hashtag:htgtext,
+        action: {
+            reply:replynum,
+            retweet: Retweet,
+            like:likenum,
+        },
+        link: datatweet.permalinkPath,
+        img: imglist,
+        mentions: datatweet.mentions,
+    };
+    datacollection.push(content);
+    });
+JSON.stringify(datacollection);
+
+//imdb
+var datacollection = [];
+var ht = document.querySelectorAll(".lister-item");
+ht.forEach(d=>{
+    var time = d.querySelector('.lister-item-year').innerText.replace(/\(|\)/g,'');
+    time = ~~time;
+    // (new Date(time.getAttribute('data-time') * 1000)).toLocaleString()
+    //var datatweet = d.querySelector('.tweet')['dataset'];
+    var title = d.querySelector(".lister-item-header").querySelector('a').text;
+    console.log(title);
+    var bodyContent = d.innerHTML;
+    var actors = d.querySelector("p[class='']").innerText;
+    var objectactor = {};
+    if (actors!=="") {
+        actors=actors.trim().split(" | ");
+        actors.forEach(a => {
+            var sa = a.split(': ');
+            objectactor[sa[0]] = sa[1].split(', ');
+        });
+    }
+    var metascore = 0;
+    try {
+        metascore = ~~d.querySelector('.metascore').textContent.trim();
+    }catch{}
+    var htg = d.querySelector(".genre");
+    if (htg==null)
+        htg =["UNKNOW"];
+    else
+        htg = htg.innerText.trim().split(", ");
+    var story = d.querySelectorAll(".text-muted")[2].textContent.trim();
+    //vote
+    var vote = d.querySelector("meta[itemprop=ratingCount]").content;
+    vote=~~vote;
+    var rate = d.querySelector("meta[itemprop=ratingValue]").content;
+    rate=parseFloat(rate);
+    var bestRating = d.querySelector("meta[itemprop=bestRating]").content;
+    bestRating=parseFloat(bestRating);
+
+
+    var imglist = d.querySelector(".lister-item-image").querySelector("img").src;
+
+    var content ={time:time,
+        title: title,
+        body:bodyContent,
+        story:story,
+        genre:htg,
+        action: {
+            vote:vote,
+            rate: rate,
+            bestRating:bestRating,
+        },
+        member: objectactor,
+        link: d.querySelector('.lister-item-header>a').href,
+        img: imglist
+    };
+    datacollection.push(content);
+});
+JSON.stringify(datacollection);
