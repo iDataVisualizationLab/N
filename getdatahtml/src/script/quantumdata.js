@@ -30,6 +30,7 @@ var timeline;
 var svgHeight = 1500;
 var nodes2,links2;
 var mainconfig = {
+    subcategory:false,
     renderpic: false,
     wstep: 100,
     numberOfTopics: 20,
@@ -57,7 +58,7 @@ var wordTip = d3.tip()
         str += "<h6 class ='headerterm'>  Date: </h6>";
         str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
         str += outputFormat(d.data[0].time)+" " +'</h4>';
-        if (daystep-1) {
+        if (daystep-365) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
             eDatedis["setDate"](eDatedis.getDate() + daystep-1);
             str += "<h5 class ='information'> - ";
@@ -75,7 +76,7 @@ var wordTip = d3.tip()
             // var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
             var ar =t;
             str += "<tr>";
-            s//tr += "<td>" + ar.title + "</td>";
+            // str += "<td>" + ar.title + "</td>";
             str += "<td class=pct>" + ar.title + "</td>";
             str + "</tr>";
         });
@@ -122,6 +123,15 @@ $(document).ready(function () {
     d3.queue()
         .defer(d3.csv,"src/data/quantumar.csv")
         .await(ready);
+    d3.select("#IsCitationCount").on("click",()=> {
+        mainconfig.subcategory = !mainconfig.subcategory;
+        if ( $("#IsCitationCount").hasClass('active') ) {
+            $("#IsCitationCount").removeClass('active');
+        } else {
+            $("#IsCitationCount").addClass('active');
+        }
+        update();
+    });
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
         if ( $("#IsWeekly").hasClass('active') ) {
@@ -626,7 +636,8 @@ function ready (error, dataf){
                         classcit = "<100";
                 }
                 return {term: k,
-                category:  d["Document Identifier"],
+                    category:  d["Document Identifier"],
+                category1:  d["Document Identifier"],
                 category2: classcit}}),
             title: d["Document Title"],
             author: d["Authors"],
@@ -635,7 +646,7 @@ function ready (error, dataf){
     });
     data.sort((a,b)=> a.time-b.time);
     //data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
-    termscollection_org = blacklist(data);
+    termscollection_org = blacklist(data,"category1");
     forcegraph("#slide-out","#autocomplete-input");
     var listjson = {};
     d3.map(termscollection_org, function(d){return d.term;}).keys().forEach(d=>listjson[d]=null);
@@ -813,6 +824,22 @@ function handledata(data){
         svgHeight = 1300;
         mainconfig.wstep = 100;
     }
+    if (mainconfig.subcategory){
+        categoriesgroup ={
+            "UNKNOW": ["UNKNOW"],
+            "1-10":["1-10"],
+            "10-100":["10-100"],
+            ">100":[">100"]};
+        termscollection_org = blacklist(data,"category2");
+        forcegraph("#slide-out","#autocomplete-input");
+    }else {
+        categoriesgroup ={
+            "Journals & Magazines": ["IEEE Journals & Magazines"],
+            "Conferences":["IEEE Conferences"],
+            "Early Access Articles":["IEEE Early Access Articles"]};
+        termscollection_org = blacklist(data,"category1");
+        forcegraph("#slide-out","#autocomplete-input");
+    }
     var nested_data;
     // let word = document.getElementById("theWord").value;
     let word = $('#autocomplete-input').val();
@@ -986,7 +1013,7 @@ function fillData(endDate, startDate) {
     TermwDay = d;
 }
 
-function blacklist(data){
+function blacklist(data,category){
     var numterm =0;
     categories = Object.keys(categoriesgroup);
     var categoriesmap = {};
@@ -999,11 +1026,11 @@ function blacklist(data){
             numterm++;
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
+            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w[category]]!= undefined ;
             return key;}).forEach( w => {
-            w.maincategory = w.category;
+            w.maincategory = w[category];
             w.term = w.term.trim();
-            w.category = categoriesmap[w.category]||w.category;
+            w.category = categoriesmap[w[category]]||w[category];
             var e = w;
             e.time = d.time;
             e.title = d.title;
