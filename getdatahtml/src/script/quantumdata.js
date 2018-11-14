@@ -683,7 +683,12 @@ function ready (error, dataf){
                 return {term: k,
                     category:  d["Document Identifier"],
                     category1:  d["Document Identifier"],
-                    category2: classcit}}).concat(university),
+                    category2: classcit}}).concat(university).concat(d["Authors"].split(";").map(a=>{
+                        return{term: a,
+                    category:  "Author",
+                    category1:  "Author",
+                    category2: "Author"}
+            })),
             title: d["Document Title"],
             author: d["Authors"].split(";"),
             source: d["Publisher"],
@@ -876,7 +881,8 @@ function handledata(data){
         categoriesgroup ={
             "Unknown citation": ["UNKNOW"],
             "Have citation": ["1-10","10-100",">100"],
-            "Affiliations": wordsunvi};
+            "Affiliations": wordsunvi,
+        "Author":["Author"]};
         termscollection_org = blacklist(data,"category2");
         forcegraph("#slide-out","#autocomplete-input");
     }else {
@@ -884,7 +890,8 @@ function handledata(data){
             "Journals & Magazines": ["IEEE Journals & Magazines"],
             "Conferences":["IEEE Conferences"],
             "Early Access Articles":["IEEE Early Access Articles"],
-            "Affiliations": wordsunvi};
+            "Affiliations": wordsunvi,
+        "Author":["Author"]};
         termscollection_org = blacklist(data,"category1");
         forcegraph("#slide-out","#autocomplete-input");
     }

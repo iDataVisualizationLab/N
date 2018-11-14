@@ -39,13 +39,13 @@
       <file leaf-file-name="quantumdata.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="871" column="21" lean-forward="false" selection-start-line="871" selection-start-column="21" selection-end-line="871" selection-end-column="21" />
+            <state relative-caret-position="248">
+              <caret line="893" column="25" lean-forward="false" selection-start-line="893" selection-start-column="25" selection-end-line="893" selection-end-column="25" />
               <folding>
                 <element signature="e#3139#4019#0" expanded="false" />
-                <marker date="1542180968159" expanded="true" signature="1701:1747" ph="..." />
-                <marker date="1542180968159" expanded="true" signature="1906:1952" ph="..." />
-                <marker date="1542180968159" expanded="true" signature="2123:2169" ph="..." />
+                <marker date="1542181207681" expanded="true" signature="1701:1747" ph="..." />
+                <marker date="1542181207681" expanded="true" signature="1906:1952" ph="..." />
+                <marker date="1542181207681" expanded="true" signature="2123:2169" ph="..." />
               </folding>
             </state>
           </provider>
@@ -128,12 +128,12 @@
       <find>numberOfTopics</find>
       <find>svgHe</find>
       <find>legend</find>
-      <find>category</find>
       <find>categoriesgroup</find>
       <find>link</find>
       <find>ready (</find>
       <find>bb.jpg</find>
       <find>urlto</find>
+      <find>category</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -303,12 +303,12 @@
       <workItem from="1541717364371" duration="92000" />
       <workItem from="1541787337109" duration="3180000" />
       <workItem from="1541806513051" duration="30519000" />
-      <workItem from="1542130891779" duration="20113000" />
+      <workItem from="1542130891779" duration="20353000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="261643000" />
+    <option name="totallyTimeSpent" value="261883000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="785" y="232" width="1552" height="873" extended-state="0" />
@@ -436,13 +436,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
-          <line>695</line>
+          <line>700</line>
           <properties />
           <option name="timeStamp" value="124" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
-          <line>879</line>
+          <line>885</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="127" />
         </line-breakpoint>
@@ -460,7 +460,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/quantumdata.js</url>
-          <line>969</line>
+          <line>976</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="137" />
         </line-breakpoint>
@@ -837,13 +837,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="871" column="21" lean-forward="false" selection-start-line="871" selection-start-column="21" selection-end-line="871" selection-end-column="21" />
+        <state relative-caret-position="248">
+          <caret line="893" column="25" lean-forward="false" selection-start-line="893" selection-start-column="25" selection-end-line="893" selection-end-column="25" />
           <folding>
             <element signature="e#3139#4019#0" expanded="false" />
-            <marker date="1542180968159" expanded="true" signature="1701:1747" ph="..." />
-            <marker date="1542180968159" expanded="true" signature="1906:1952" ph="..." />
-            <marker date="1542180968159" expanded="true" signature="2123:2169" ph="..." />
+            <marker date="1542181207681" expanded="true" signature="1701:1747" ph="..." />
+            <marker date="1542181207681" expanded="true" signature="1906:1952" ph="..." />
+            <marker date="1542181207681" expanded="true" signature="2123:2169" ph="..." />
           </folding>
         </state>
       </provider>
