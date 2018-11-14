@@ -152,7 +152,7 @@ function computeNodes() {
         })
         .entries(termscollection_org);
     nested_data.sort((a,b)=> b.values.length - a.values.length);
-    var numNode = Math.min(60, nested_data.length);
+    var numNode = Math.min(20, nested_data.length);
     var numNode2 = Math.min(numNode*2, nested_data.length);
     nested_data = nested_data.slice(0,numNode2);
     nested_data = nested_data.filter(d=>d.values.length>mainconfig.minfreq);
@@ -175,7 +175,7 @@ function computeNodes() {
             for (var j =i+1; j< term.length; j++){
                 var temp =  linkmap[term[i].term.key+"___"+term[j].term.key]||linkmap[term[j].term.key+"___"+term[i].term.key];
                 if (temp==undefined){
-                    linkmap[term[i].term.key+"___"+term[j].term.key] = {source: term[i].term.key,target: term[j].term.key, count: 1};;
+                    linkmap[term[i].term.key+"___"+term[j].term.key] = {source: term[i].term.key,target: term[j].term.key, count: 1};
                 }
                 else
                     temp.count++;

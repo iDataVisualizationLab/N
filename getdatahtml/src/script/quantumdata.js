@@ -46,8 +46,8 @@ var mainconfig = {
     rateOfTopics: 0.005,
     Isweekly: false,
     seperate: false,
-    minfreq: 10,
-    minlink:4,
+    minfreq: 5,
+    minlink:10,
 };
 var daystep = 365;
 var startDate;
@@ -874,7 +874,7 @@ function handledata(data){
     }else {
         outputFormat =  d3.timeFormat('%Y');
         daystep = 365;
-        svgHeight = 800;
+        svgHeight = 1000;
         mainconfig.wstep = 100;
     }
     if (mainconfig.subcategory){
