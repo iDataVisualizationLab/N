@@ -36,7 +36,7 @@ var mainconfig = {
     numberOfTopics: 100,
     rateOfTopics: 0.1,
     Isweekly: false,
-    seperate: true,
+    seperate: false,
     minfreq: 10,
     minlink:4,
 };
@@ -68,15 +68,15 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        //str += '<th >Source(s)</th>';
+        str += '<th >Source(s)</th>';
         str += '<th >Title</th>';
         str + "</tr>";
 
         (d.data||d.value.data).forEach(t => {
-            // var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
-            var ar =t;
+            var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
+            //var ar =t;
             str += "<tr>";
-            // str += "<td>" + ar.title + "</td>";
+            str += "<td>" + ar.source + "</td>";
             str += "<td class=pct>" + ar.title + "</td>";
             str + "</tr>";
         });
@@ -620,6 +620,7 @@ function ready (error, dataf){
     // format the data
     //data =data.filter(d=>d.source=="reuters");
     data = dataf.map(function(d) {
+
         return {
             time: parseTime(~~d.Publication_Year),
             keywords: d["INSPEC Controlled Terms"].split(";").map(k=>
@@ -640,7 +641,8 @@ function ready (error, dataf){
                 category1:  d["Document Identifier"],
                 category2: classcit}}),
             title: d["Document Title"],
-            author: d["Authors"],
+            author: d["Authors"].split(";"),
+            source: d["Publisher"]
         };
 
     });
@@ -827,9 +829,7 @@ function handledata(data){
     if (mainconfig.subcategory){
         categoriesgroup ={
             "UNKNOW": ["UNKNOW"],
-            "1-10":["1-10"],
-            "10-100":["10-100"],
-            ">100":[">100"]};
+            "HAVE CITATION": ["1-10","10-100",">100"]};
         termscollection_org = blacklist(data,"category2");
         forcegraph("#slide-out","#autocomplete-input");
     }else {
