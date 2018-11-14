@@ -33,8 +33,8 @@ var mainconfig = {
     subcategory:false,
     renderpic: false,
     wstep: 100,
-    numberOfTopics: 20,
-    rateOfTopics: 0.05,
+    numberOfTopics: 100,
+    rateOfTopics: 0.1,
     Isweekly: false,
     seperate: true,
     minfreq: 10,
@@ -179,8 +179,8 @@ function wordCloud(selector,config) {
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
-        var max = 25;
+        var min = 12;
+        var max = 30;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;

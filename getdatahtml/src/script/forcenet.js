@@ -5,6 +5,7 @@ function forcegraph(selector,searchbox) {
         height = $(selector).height() - margin.top - margin.bottom;
 
     svg2main.attrs({width: width, height: height});
+    svg2main.select('g').remove();
     var svg2 = svg2main.append('g')
         .attr("class", "focus")
     .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
