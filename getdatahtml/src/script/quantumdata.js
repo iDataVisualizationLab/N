@@ -31,7 +31,7 @@ var svgHeight = 1500;
 var nodes2,links2;
 var mainconfig = {
     renderpic: false,
-    wstep: 50,
+    wstep: 100,
     numberOfTopics: 20,
     rateOfTopics: 0.05,
     Isweekly: false,
@@ -67,15 +67,16 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th >Source(s)</th>';
+        //str += '<th >Source(s)</th>';
         str += '<th >Title</th>';
         str + "</tr>";
 
         (d.data||d.value.data).forEach(t => {
-            var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
+            // var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
+            var ar =t;
             str += "<tr>";
-            str += "<td>" + ar.source + "</td>";
-            str += "<td class=pct>" + ar.body + "</td>";
+            s//tr += "<td>" + ar.title + "</td>";
+            str += "<td class=pct>" + ar.title + "</td>";
             str + "</tr>";
         });
 
@@ -810,7 +811,7 @@ function handledata(data){
         outputFormat =  d3.timeFormat('%Y');
         daystep = 365;
         svgHeight = 1300;
-        mainconfig.wstep = 50;
+        mainconfig.wstep = 100;
     }
     var nested_data;
     // let word = document.getElementById("theWord").value;
