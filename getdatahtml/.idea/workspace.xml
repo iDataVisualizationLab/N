@@ -27,7 +27,7 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
+            <state relative-caret-position="1387">
               <caret line="83" column="5" lean-forward="false" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
               <folding />
             </state>
@@ -44,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main4.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main4.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/script/main4.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="626" column="7" lean-forward="true" selection-start-line="626" selection-start-column="7" selection-end-line="626" selection-end-column="7" />
+            <state relative-caret-position="112">
+              <caret line="946" column="4" lean-forward="false" selection-start-line="946" selection-start-column="4" selection-end-line="946" selection-end-column="4" />
               <folding>
                 <element signature="e#9498#10378#0" expanded="false" />
               </folding>
@@ -66,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.sass" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.sass" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/style/main.sass">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="226" column="17" lean-forward="true" selection-start-line="226" selection-start-column="17" selection-end-line="226" selection-end-column="17" />
+            <state relative-caret-position="197">
+              <caret line="67" column="19" lean-forward="false" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -132,7 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dataf</find>
       <find>wordtip</find>
       <find>table</find>
       <find>wordstream</find>
@@ -158,10 +157,11 @@
       <find>IsWee</find>
       <find>tick</find>
       <find>sudden</find>
-      <find>css</find>
       <find>blackl</find>
       <find>black</find>
       <find>handledata</find>
+      <find>css</find>
+      <find>limit</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -191,10 +191,10 @@
         <option value="$PROJECT_DIR$/voronoi/script/quantumdata.js" />
         <option value="$PROJECT_DIR$/src/data/collectionwatviz.json" />
         <option value="$PROJECT_DIR$/src/script/watVizeveident.js" />
-        <option value="$PROJECT_DIR$/src/style/main.sass" />
         <option value="$PROJECT_DIR$/lib/d3.layout.wordstream.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/script/main4.js" />
+        <option value="$PROJECT_DIR$/src/style/main.sass" />
       </list>
     </option>
   </component>
@@ -211,8 +211,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1129" />
-    <option name="y" value="760" />
+    <option name="x" value="777" />
+    <option name="y" value="219" />
     <option name="width" value="1552" />
     <option name="height" value="873" />
   </component>
@@ -370,15 +370,15 @@
       <workItem from="1541806513051" duration="30519000" />
       <workItem from="1542130891779" duration="21259000" />
       <workItem from="1542319340443" duration="3035000" />
-      <workItem from="1542406721676" duration="40132000" />
+      <workItem from="1542406721676" duration="41021000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="305956000" />
+    <option name="totallyTimeSpent" value="306845000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1129" y="760" width="1552" height="873" extended-state="0" />
+    <frame x="777" y="219" width="1552" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2855228" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -852,14 +852,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/style/main.sass">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="226" column="17" lean-forward="true" selection-start-line="226" selection-start-column="17" selection-end-line="226" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/watVizeveident.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="129">
@@ -872,14 +864,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="83" column="5" lean-forward="false" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="139">
@@ -888,13 +872,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1387">
+          <caret line="83" column="5" lean-forward="false" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/main4.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="626" column="7" lean-forward="true" selection-start-line="626" selection-start-column="7" selection-end-line="626" selection-end-column="7" />
+        <state relative-caret-position="112">
+          <caret line="946" column="4" lean-forward="false" selection-start-line="946" selection-start-column="4" selection-end-line="946" selection-end-column="4" />
           <folding>
             <element signature="e#9498#10378#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/main.sass">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="67" column="19" lean-forward="false" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
