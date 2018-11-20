@@ -15,11 +15,11 @@ function forcegraph(selector,searchbox) {
         .style("fill", "none")
         .style("pointer-events", "all");
     var force2 = d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(-180 ))
+        .force("charge", d3.forceManyBody().strength(-30 ))
         .force("gravity", d3.forceManyBody(0.15))
         .alpha(1)
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(80));
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(50));
     computeNodes();
     var linkScale = d3.scaleLinear()
             .range([0.1, 3])
@@ -53,7 +53,7 @@ function forcegraph(selector,searchbox) {
         .style("stroke-width", function (d) {
             return 0.1 + linkScale(d.count);
         });
-
+    var scalefomtsize = d3.scaleLinear().domain(d3.extent(nodes2,d=>d.frequency)).range([12,25]);
     var node2 = container.selectAll(".nodeText2")
         .data(nodes2)
         .enter().append("g");
@@ -74,7 +74,7 @@ function forcegraph(selector,searchbox) {
         })
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "12px")
+        .attr("font-size", d=> scalefomtsize(d.frequency))
         .on('contextmenu', function(d){
             d3.event.preventDefault();
             $(searchbox).val(d.key);

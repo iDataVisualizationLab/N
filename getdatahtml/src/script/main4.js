@@ -36,8 +36,8 @@ var mainconfig = {
     rateOfTopics: 0.5,
     Isweekly: false,
     seperate: false,
-    minfreq: 1,
-    minlink:3,
+    minfreq: 5,
+    minlink: 5,
 };
 var daystep = 3;
 var startDate;
