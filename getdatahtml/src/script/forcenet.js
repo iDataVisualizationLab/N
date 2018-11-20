@@ -15,11 +15,11 @@ function forcegraph(selector,searchbox) {
         .style("fill", "none")
         .style("pointer-events", "all");
     var force2 = d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(-30 ))
+        .force("charge", d3.forceManyBody().strength(-20 ))
         .force("gravity", d3.forceManyBody(0.15))
         .alpha(1)
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(50));
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(70));
     computeNodes();
     var linkScale = d3.scaleLinear()
             .range([0.1, 3])
