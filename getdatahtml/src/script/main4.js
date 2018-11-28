@@ -44,7 +44,8 @@ var startDate;
 var endDate;
 var wordTip = d3.tip()
     .attr('class', 'd3-tip')
-    .offset([-10, 0])
+    .style('pointer-events','none')
+    .offset([-10, 10]).direction('s')
     .html(function (d) {
         var str = '';
         str += "<div class = headertip>"
@@ -812,7 +813,7 @@ function render (){
 
     pic.on("error", function(){
         let el = d3.select(this);
-        el.attr("xlink:href",
+        el.attr("xlink:href","src/img/bb.jpg"
             );
         el.on("error", null);
     })
