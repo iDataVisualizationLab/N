@@ -83,7 +83,7 @@ var wordTip = d3.tip()
         str += "</table>";
 
         return str;
-    });
+    }).style('pointer-events','none');
 
 var opts = {
     lines: 7, // The number of lines to draw
@@ -481,7 +481,7 @@ function wordCloud(selector,config) {
             //     'stroke-width': 1.5
             // });
 
-            wordTip.show(d);
+            wordTip.show(d).style('pointer-events','none');
         });
 
         mainGroup.selectAll('.stext').on('mouseleave', function(d){

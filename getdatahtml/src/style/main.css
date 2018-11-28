@@ -6,7 +6,7 @@ body {
 
 .d3-tip {
   padding: 5px;
-  pointer-events: none;
+  pointer-events: none !important;
   background-color: white;
   border: 0.5px solid black;
   border-radius: 5px;
