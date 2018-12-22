@@ -298,3 +298,49 @@ ht.forEach(d=>{
     datacollection.push(content);
 });
 JSON.stringify(datacollection);
+
+//usgs.gov
+//https://www.usgs.gov/centers/tx-water/publications?logstash-usgs-pw%3Apalladium_root_publication_type=Report&logstash-usgs-pw%3Apalladium_root_topics=&logstash-usgs-pw%3Apalladium_root_publication_year_date=&sort=&page=0
+
+var data = [];
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+var source = "usgs";
+var url = "https://www.usgs.gov/centers/tx-water/publications?logstash-usgs-pw%3Apalladium_root_publication_type=Report&logstash-usgs-pw%3Apalladium_root_topics=&logstash-usgs-pw%3Apalladium_root_publication_year_date=&sort=&page=0";
+(async function loop() {
+    var nextnotnull = true;
+    do{
+        //let url = "https://www.usgs.gov/centers/tx-water/publications?logstash-usgs-pw%3Apalladium_root_publication_type=Report&logstash-usgs-pw%3Apalladium_root_topics=&logstash-usgs-pw%3Apalladium_root_publication_year_date=&sort=&page=0";
+        let html = document;
+        let r = html.querySelector(".view-content").querySelectorAll(".views-row");
+        r.forEach( d => {
+            var content = d.querySelector(".field-content>div").outerText.split("\n");
+            var item = {};
+                item.source = source;
+                item.title = d.querySelector(".list-title").textContent;
+                item.abstract = d.querySelector(".field-content>div>p").textContent;
+                item.link = d.querySelector(".field-content>div>a").href;
+                item.urlToImage = d.querySelector("img").src;
+                item.author = content[4];
+
+                item.time = ~~content[0].split(": ")[1];
+                //console.log(item.time);
+                data.push(item);
+        });
+        nextnotnull = html.querySelector("li.next")!=null;
+        html.querySelector("li.next>a").click();
+        await delay(Math.random() * 3000+3000);
+    } while (nextnotnull)
+    // var a = document.createElement("a");
+    // var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+    // a.href = dataStr;
+    // a.download = 'data.json';
+    // a.click();
+    console.log(JSON.stringify(data));
+})();
+
+
+data.forEach( d =>{
+    let html = document.createElement('html');
+    html.innerHTML = d.body;
+    d.body = html.innerText.replace(/\s+/g,' ').replace("\t", '').replace("\n", '');
+});

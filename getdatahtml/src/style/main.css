@@ -5,10 +5,14 @@ body {
 }
 
 .d3-tip {
-  pointer-events: none;
+  padding: 5px;
+  pointer-events: none !important;
   background-color: white;
-  border: black;
-  border-radius: 10px;
+  border: 0.5px solid black;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px grey;
+  max-width: 400px;
+  overflow: hidden;
 }
 .d3-tip .headertip {
   text-align: center;
@@ -18,17 +22,18 @@ body {
   color: #76777d;
 }
 .d3-tip h3, .d3-tip h4, .d3-tip h5, .d3-tip h6 {
+  font-size: small;
   display: inline-block;
   margin: auto;
 }
 .d3-tip h5 {
-  padding-left: 20px;
+  padding-left: 5px;
+  padding-right: 10px;
 }
 .d3-tip table {
   font-size: small;
   border-radius: 10px;
-  border-collapse: collapse;
-  min-width: 800px;
+  min-width: 200px;
 }
 .d3-tip table tr:nth-child(even) {
   background-color: #f2f2f2;
@@ -57,9 +62,10 @@ body {
   stroke-width: 0;
 }
 .grid line {
-  stroke-width: 0.2;
-  stroke-opacity: 1;
-  color: black;
+  stroke-dasharray: 1 2;
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+  stroke: black;
 }
 
 @keyframes spinner-line-fade-more {

@@ -5,6 +5,7 @@ function forcegraph(selector,searchbox) {
         height = $(selector).height() - margin.top - margin.bottom;
 
     svg2main.attrs({width: width, height: height});
+    svg2main.select('g').remove();
     var svg2 = svg2main.append('g')
         .attr("class", "focus")
     .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
@@ -14,11 +15,11 @@ function forcegraph(selector,searchbox) {
         .style("fill", "none")
         .style("pointer-events", "all");
     var force2 = d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(-180 ))
+        .force("charge", d3.forceManyBody().strength(-20 ))
         .force("gravity", d3.forceManyBody(0.15))
         .alpha(1)
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(80));
+        .force("link", d3.forceLink().id(function(d) { return d.key }).distance(70));
     computeNodes();
     var linkScale = d3.scaleLinear()
             .range([0.1, 3])
@@ -52,7 +53,7 @@ function forcegraph(selector,searchbox) {
         .style("stroke-width", function (d) {
             return 0.1 + linkScale(d.count);
         });
-
+    var scalefomtsize = d3.scaleLinear().domain(d3.extent(nodes2,d=>d.frequency)).range([12,25]);
     var node2 = container.selectAll(".nodeText2")
         .data(nodes2)
         .enter().append("g");
@@ -73,7 +74,7 @@ function forcegraph(selector,searchbox) {
         })
         .attr("dy", ".21em")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "12px")
+        .attr("font-size", d=> scalefomtsize(d.frequency))
         .on('contextmenu', function(d){
             d3.event.preventDefault();
             $(searchbox).val(d.key);
@@ -151,7 +152,7 @@ function computeNodes() {
         })
         .entries(termscollection_org);
     nested_data.sort((a,b)=> b.values.length - a.values.length);
-    var numNode = Math.min(60, nested_data.length);
+    var numNode = Math.min(20, nested_data.length);
     var numNode2 = Math.min(numNode*2, nested_data.length);
     nested_data = nested_data.slice(0,numNode2);
     nested_data = nested_data.filter(d=>d.values.length>mainconfig.minfreq);
@@ -174,7 +175,7 @@ function computeNodes() {
             for (var j =i+1; j< term.length; j++){
                 var temp =  linkmap[term[i].term.key+"___"+term[j].term.key]||linkmap[term[j].term.key+"___"+term[i].term.key];
                 if (temp==undefined){
-                    linkmap[term[i].term.key+"___"+term[j].term.key] = {source: term[i].term.key,target: term[j].term.key, count: 1};;
+                    linkmap[term[i].term.key+"___"+term[j].term.key] = {source: term[i].term.key,target: term[j].term.key, count: 1};
                 }
                 else
                     temp.count++;

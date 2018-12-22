@@ -11,6 +11,15 @@ var categoriesgroup ={
     "Journals & Magazines": ["IEEE Journals & Magazines"],
     "Conferences":["IEEE Conferences"],
     "Early Access Articles":["IEEE Early Access Articles"]};
+var wordsunvi = ["University",
+    "Institute",
+    "Univ.",
+    "Inst.",
+    "Inc.",
+    "Paris-Dauphine",
+    "IRCCyN",
+    "Pacific Northwest National Laboratory",
+    "Naval Research Lab"];
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%Y');
@@ -27,17 +36,18 @@ var lineColor = d3.scaleLinear()
 var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
-var svgHeight = 1500;
+var svgHeight = 1000;
 var nodes2,links2;
 var mainconfig = {
+    subcategory:true,
     renderpic: false,
     wstep: 100,
-    numberOfTopics: 20,
-    rateOfTopics: 0.05,
+    numberOfTopics: 10,
+    rateOfTopics: 0.005,
     Isweekly: false,
-    seperate: true,
-    minfreq: 10,
-    minlink:4,
+    seperate: false,
+    minfreq: 5,
+    minlink:10,
 };
 var daystep = 365;
 var startDate;
@@ -57,7 +67,7 @@ var wordTip = d3.tip()
         str += "<h6 class ='headerterm'>  Date: </h6>";
         str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
         str += outputFormat(d.data[0].time)+" " +'</h4>';
-        if (daystep-1) {
+        if (daystep-365) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
             eDatedis["setDate"](eDatedis.getDate() + daystep-1);
             str += "<h5 class ='information'> - ";
@@ -67,15 +77,15 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        //str += '<th >Source(s)</th>';
+        str += '<th >Source(s)</th>';
         str += '<th >Title</th>';
         str + "</tr>";
 
         (d.data||d.value.data).forEach(t => {
-            // var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
-            var ar =t;
+            var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
+            //var ar =t;
             str += "<tr>";
-            s//tr += "<td>" + ar.title + "</td>";
+            str += "<td>" + ar.source + "</td>";
             str += "<td class=pct>" + ar.title + "</td>";
             str + "</tr>";
         });
@@ -122,6 +132,15 @@ $(document).ready(function () {
     d3.queue()
         .defer(d3.csv,"src/data/quantumar.csv")
         .await(ready);
+    d3.select("#IsCitationCount").on("click",()=> {
+        mainconfig.subcategory = !mainconfig.subcategory;
+        if ( $("#IsCitationCount").hasClass('active') ) {
+            $("#IsCitationCount").removeClass('active');
+        } else {
+            $("#IsCitationCount").addClass('active');
+        }
+        update();
+    });
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
         if ( $("#IsWeekly").hasClass('active') ) {
@@ -163,14 +182,14 @@ function wordCloud(selector,config) {
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
-        var font = "Impact";
+        var font = "Arial";
         var interpolation = d3.curveCardinal;
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
-        var max = 25;
+        var min = 12;
+        var max = 50;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -261,6 +280,31 @@ function wordCloud(selector,config) {
                 .style("text-anchor", "middle")
                 .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
                 .text(d => d.key);
+        }else{
+            var legend = d3.keys(categoriesgroup).map((d,i) => {
+                return {'key': d, 'pos': i*20}
+            });
+            var legendg = timeline.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + (20) + "," + 20 + ")")
+                .append("g")
+                .attr("class", "sublegend")
+                .selectAll(".lengendgtext")
+                .data(legend)
+                .enter()
+                .append("g")
+                .attr("class", "lengendgtext")
+                .attr("transform", d => "translate(0," + d.pos + ")");
+            legendg.append("circle")
+                .attrs({class: "lengendmark",
+                cx: 0,
+                cy: 0,
+                r:5})
+                .style("fill",(d,i)=>color(i));
+            legendg.append("text")
+                .attr("class", "lengendtext")
+                .attrs({dx:10,dy:5})
+                .text(d => d.key);
         }
         // =============== Get BOUNDARY and LAYERPATH ===============
         var lineCardinal = d3.line()
@@ -303,7 +347,7 @@ function wordCloud(selector,config) {
             })
 
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.03,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -318,7 +362,7 @@ function wordCloud(selector,config) {
                 return color(i);
             })
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.03,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -341,7 +385,7 @@ function wordCloud(selector,config) {
 
         var opacity = d3.scaleLog()
             .domain([minFreq, maxFreq])
-            .range([0.4,1]);
+            .range([0.5,1]);
 
         // Add moi chu la 1 element <g>, xoay g dung d.rotate
         var placed = true; // = false de hien thi nhung tu ko dc dien
@@ -610,7 +654,18 @@ function ready (error, dataf){
     // format the data
     //data =data.filter(d=>d.source=="reuters");
     data = dataf.map(function(d) {
-        return {
+        var wregex = new RegExp(wordsunvi.join("|"),"g");
+        var university =[];
+        d["Author Affiliations"].split(";").forEach(e=>{
+            e.split(",").forEach(t=>{
+                if (t.match(wregex)!=null)
+                    university.push({term: t,
+                        category:  t.match(wregex),
+                        category1:  t.match(wregex),
+                        category2: t.match(wregex)});
+            });
+        });
+        var ditem = {
             time: parseTime(~~d.Publication_Year),
             keywords: d["INSPEC Controlled Terms"].split(";").map(k=>
             {
@@ -626,16 +681,26 @@ function ready (error, dataf){
                         classcit = "<100";
                 }
                 return {term: k,
-                category:  d["Document Identifier"],
-                category2: classcit}}),
+                    category:  d["Document Identifier"],
+                    category1:  d["Document Identifier"],
+                    category2: classcit}}).concat(university).concat(d["Authors"].split(";").map(a=>{
+                        return{term: a,
+                    category:  "Author",
+                    category1:  "Author",
+                    category2: "Author"}
+            })),
             title: d["Document Title"],
-            author: d["Authors"],
+            author: d["Authors"].split(";"),
+            source: d["Publisher"],
+            urlToImage: "",
+            link: d["PDF Link"]
         };
+        return ditem;
 
     });
     data.sort((a,b)=> a.time-b.time);
     //data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
-    termscollection_org = blacklist(data);
+    termscollection_org = blacklist(data,"category1");
     forcegraph("#slide-out","#autocomplete-input");
     var listjson = {};
     d3.map(termscollection_org, function(d){return d.term;}).keys().forEach(d=>listjson[d]=null);
@@ -752,8 +817,7 @@ function render (){
 
     pic.on("error", function(){
         let el = d3.select(this);
-        el.attr("xlink:href",
-        );
+        el.attr("xlink:href", "src/img/bb.jpg");
         el.on("error", null);
     })
     // var circles = timeline.selectAll(".img")
@@ -810,8 +874,26 @@ function handledata(data){
     }else {
         outputFormat =  d3.timeFormat('%Y');
         daystep = 365;
-        svgHeight = 1300;
+        svgHeight = 1000;
         mainconfig.wstep = 100;
+    }
+    if (mainconfig.subcategory){
+        categoriesgroup ={
+            "Unknown citation": ["UNKNOW"],
+            "Have citation": ["1-10","10-100",">100"],
+            "Affiliations": wordsunvi,
+        "Author":["Author"]};
+        termscollection_org = blacklist(data,"category2");
+        forcegraph("#slide-out","#autocomplete-input");
+    }else {
+        categoriesgroup ={
+            "Journals & Magazines": ["IEEE Journals & Magazines"],
+            "Conferences":["IEEE Conferences"],
+            "Early Access Articles":["IEEE Early Access Articles"],
+            "Affiliations": wordsunvi,
+        "Author":["Author"]};
+        termscollection_org = blacklist(data,"category1");
+        forcegraph("#slide-out","#autocomplete-input");
     }
     var nested_data;
     // let word = document.getElementById("theWord").value;
@@ -860,9 +942,9 @@ function handledata(data){
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
-                    preday["setDate"](preday.getDate() + daystep*2);
-                    if (preday != new Date(day.key))
-                        pre = 0;
+                    preday["setDate"](preday.getDate() + daystep);
+                    if (preday.getFullYear() != new Date(day.key).getFullYear())
+                        pre = pre==0?0:pre-1;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
                     pre = day.values.length;
@@ -888,7 +970,8 @@ function handledata(data){
     nestedByTerm.forEach(c=> c.values.forEach( day=>
         day.values.sort((a,b)=>b.values[0].sudden-a.values[0].sudden)));
     nestedByTerm.forEach(c=> c.values.forEach( day=>{
-        var numtake = Math.min(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
+        // var numtake = Math.max(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
+        var numtake = mainconfig.numberOfTopics;
         day.values = day.values.slice(0,numtake)}));
 
     termscollection.length = 0;
@@ -986,7 +1069,7 @@ function fillData(endDate, startDate) {
     TermwDay = d;
 }
 
-function blacklist(data){
+function blacklist(data,category){
     var numterm =0;
     categories = Object.keys(categoriesgroup);
     var categoriesmap = {};
@@ -999,11 +1082,11 @@ function blacklist(data){
             numterm++;
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
+            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w[category]]!= undefined ;
             return key;}).forEach( w => {
-            w.maincategory = w.category;
+            w.maincategory = w[category];
             w.term = w.term.trim();
-            w.category = categoriesmap[w.category]||w.category;
+            w.category = categoriesmap[w[category]]||w[category];
             var e = w;
             e.time = d.time;
             e.title = d.title;

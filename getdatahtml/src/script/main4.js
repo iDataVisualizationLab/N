@@ -1,12 +1,16 @@
 // var categories = ["PRODUCT","ORG","PERSON","MONEY","PERCENT"];//["ORG","GPE","NORP","LOC","PERSON","PRODUCT","EVENT","FAC","MONEY","PERCENT"];
 var sidenav;
+var stopWordList = ["brazo","we're","it's","can't","we’re","thk","it’","chk","you're","you'll","us","thx","the","a","an","republicans","republican","democrats","democratic","and","democrat","americans","american","america","hey","ok","wanna","lmao","lot","ur","im","thank","you?","&amp;","dm","just","dont","lol","lil","gonna","rt","...","..","--","about","above","according","accordingly","across","actually","adj","adv","after","afterwards","again","against","ago","ah","aint","al","albeit","all","almost","alone","along","already","also","alt","although","always","am","among","amongst","an","and","another","any","anybody","anyhow","anyone","anything","anyway","anyways","anywhere","apparently","appear","apply","are","area","areas","arent","around","as","aside","ask","asked","asking","asks","at","available","ave","away","aye","ba","back","backed","backing","backs","basic","basis","be","became","because","become","becomes","becoming","been","before","beforehand","began","begin","behind","being","beings","below","beside","besides","best","better","between","beyond","bi","big","both","brief","but","by","call","called","came","can","cannot","cant","certain","certainly","cf","clear","clearly","cm","co","come","comes","concerning","consequently","considering","contain","containing","contains","contrariwise","corresponding","could","couldnt","course","currently","date","dc","de","definitely","describe","described","describes","despite","determine","determined","di","did","didnt","differ","different","differently","do","does","doesnt","doing","done","dont","double","down","downed","downing","downs","downwards","dr","dual","during","each","early","ed","eg","eight","either","eleven","else","elsewhere","empty","end","ended","ending","ends","enough","entirely","especially","est","et","etc","even","evenly","ever","every","everybody","everyone","everything","everywhere","everywhere","exactly","example","except","excepted","excepting","exception","exclude","excluding","exclusive","face","faces","fact","facts","far","felt","few","fifteen","fifth","find","finds","first","five","for","forth","forty","forward","found","four","fr","free","from","front","ft","full","fully","further","furthered","furthering","furthermore","furthers","furthest","gave","general","generally","get","gets","getting","give","given","gives","go","goes","going","gone","good","goods","got","gotten","great","greater","greatest","group","grouped","grouping","groups","had","hadnt","half","halves","happens","hardly","has","hasnt","hast","hath","have","having","he","hear","heard","hed","hello","help","hence","henceforth","her","here","hereabouts","hereafter","hereby","herein","hereto","hereupon","hers","herself","hes","high","higher","highest","him","himself","hindmost","his","hither","hitherto","hopefully","how","howbeit","however","howsoever","hr","hundred","hyper","id","ie","if","ii","iii","im","immediate","important","in","inasmuch","inc","including","indeed","indicate","indicated","indicates","insofar","insomuch","instead","int","interest","interested","interesting","interests","into","intra","intro","inward","inwards","is","isnt","it","itd","item","itll","its","itself","iv","ive","ix","just","keep","keeps","kept","kg","km","knew","know","known","knows","large","largely","last","lat","lately","later","latest","latter","latterly","least","left","less","lest","let","lets","like","likely","little","ll","lon","long","longer","longest","look","looks","ltd","lt","made","made","mainly","make","making","man","many","may","maybe","md","me","mean","means","meant","meantime","meanwhile","merely","micro","might","mine","mm","more","moreover","morning","most","mostly","move","mph","mr","mrs","ms","mt","much","multi","must","mustnt","my","myself","name","namely","near","nearly","necessary","need","needed","needing","neednt","needs","neither","never","nevertheless","new","newer","newest","news","next","nine","no","nobody","non","none","nonetheless","noone","nope","nor","normally","not","nothing","notwithstanding","novel","now","nowadays","nowhere","nt","number","obs","obviously","of","off","often","oh","okay","old","older","oldest","on","once","one","ones","only","onto","op","open","opened","opening","opens","or","other","others","otherwise","ought","our","ours","ourselves","out","outside","over","overall","own","oz","page","part","parted","particular","particularly","parting","parts","per","perhaps","phr","pl","please","plus","pm","possible","pre","presumably","pro","probably","provided","pt","put","puts","quite","rather","re","really","reasonably","regarding","regardless","regards","related","relatively","required","respectively","results","right","said","saith","same","saw","say","saying","says","sec","second","secondly","seconds","see","seeing","seem","seemed","seeming","seems","seen","sees","seldom","self","selves","semi","seven","several","shall","shalt","she","shes","should","shouldnt","show","showed","showing","shown","shows","side","sides","since","sir","sixty","so","some","somebody","somehow","someone","something","sometime","sometimes","somewhat","somewhere","st","still","such","supposing","sure","take","tell","tends","th","than","thank","thanks","thanx","that","thatd","thatll","thats","the","thee","their","theirs","them","themselves","then","thence","thenceforth","there","thereabout","thereabouts","thereafter","thereby","thered","therefore","therein","thereof","thereon","theres","thereto","thereupon","therll","these","they","theyve","thine","thing","things","think","thinks","third","this","thorough","thoroughly","those","thou","though","three","thrice","through","throughout","thru","thus","thy","thyself","till","time","tm","to","today","together","told","too","took","toward","towards","trans","tried","tries","truly","trying","turn","turned","turning","turns","twelve","twenty","twice","two","under","unless","unlike","unlikely","until","unto","up","upon","upward","upwards","us","use","used","useful","uses","using","usually","various","ve","very","vi","vii","viii","via","viz","vs","was","wasnt","way","ways","we","well","wells","went","were","werent","weve","what","whatever","whatsoever","when","whence","whenever","whensoever","where","whereabouts","whereafter","whereas","whereat","whereby","wherefore","wherefrom","wherein","whereinto","whereof","whereon","wheresoever","whereto","whereunto","whereupon","wherever","wherewith","whether","whew","which","whichever","whichsoever","while","whilst","whither","who","whoa","whoever","whole","whom","whomever","whomsoever","whose","whosoever","why","will","willing","wilt","wish","with","within","without","wonder","wont","work","worked","working","works","worse","worst","would","wouldnt","wt","xi","xii","xiii","xiv","xv","xvi","xvii","xviii","xix","xx","yd","ye","year","years","yes","yet","yippee","you","youd","youll","young","younger","youngest","your","youre","yours","yourself","yourselves","youve","yup","zero","Lymphatic"];
 let self = null;
+// var categoriesgroup ={
+//     "NUMBER": ["MONEY","PERCENT"],
+//     "EVENT":["PRODUCT","EVENT","LAW","DATE"],
+//     "PERSON":["PERSON"],
+//     "ORG":["ORG"],
+//     "NATION":["GPE","LOC","FAC"]};
 var categoriesgroup ={
-    "NUMBER": ["MONEY","PERCENT"],
-    "EVENT":["PRODUCT","EVENT","LAW","DATE"],
-    "PERSON":["PERSON"],
-    "ORG":["ORG"],
-    "NATION":["GPE","LOC","FAC"]};
+    "usgs": ["usgs"],
+    "twitter":["twitter"]};
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
@@ -23,43 +27,44 @@ var lineColor = d3.scaleLinear()
 var x = d3.scaleTime();
 var wscale = 0.01;
 var timeline;
-var svgHeight = 1500;
+var svgHeight = 1500, svgWidth;
 var nodes2,links2;
 var mainconfig = {
     renderpic: false,
     wstep: 50,
-    numberOfTopics: 20000,
-    rateOfTopics: 0.05,
+    numberOfTopics: 30,
+    rateOfTopics: 0.5,
     Isweekly: false,
-    seperate: true,
-    minfreq: 0,
-    minlink:0,
+    seperate: false,
+    minfreq: 5,
+    minlink: 5,
 };
-var daystep = 1;
+var daystep = 3;
 var startDate;
 var endDate;
 var wordTip = d3.tip()
     .attr('class', 'd3-tip')
-    .offset([-10, 0])
+    .style('pointer-events','none')
+    .offset([-10, 10]).direction('s')
     .html(function (d) {
         var str = '';
         str += "<div class = headertip>"
         str += "<h6 class ='headerterm'>Term: </h6>";
-        str += "<h5 class ='information' style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str +=  (d.text||d.key) +" "+'</h5>';
-        str += "<h6 class ='headerterm'>  Frequency: </h6>";
-        str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str += (d.frequency||d.value.articlenum)+" " +'</h4>';
-        str += "<h6 class ='headerterm'>  Date: </h6>";
-        str += "<h5 class ='information'style='color: "+color(categories.indexOf(d.topic))+";'>";
-        str += outputFormat(d.data[0].time)+" " +'</h4>';
+        str += "<h5 class ='information' >";
+        str +=  (d.text||d.key)+'</h5>';
+        str += "<h6 class ='headerterm'>Frequency:</h6>";
+        str += "<h5 class ='information'>";
+        str += (d.frequency||d.value.articlenum)+'</h4>';
+        str += "<h6 class ='headerterm'>Date:</h6>";
+        str += "<h5 class ='information'>";
+        str += outputFormat(d.data[0].time);
         if (daystep-1) {
             var eDatedis = new Date (outputFormat(d.data[0].time));
-            eDatedis["setDate"](eDatedis.getDate() + daystep-1);
-            str += "<h5 class ='information'> - ";
-            str += d3.timeFormat('%b %d %Y')(eDatedis)  + '</h4>';
+            eDatedis["setMonth"](eDatedis.getMonth() + daystep-1);
+            str += " - ";
+            str += d3.timeFormat('%b %Y')(eDatedis);
         }
-
+        str += '</h5>';
         str += "</div>"
         str += "<table>";
         str += "<tr>";
@@ -71,14 +76,14 @@ var wordTip = d3.tip()
             var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
             str += "<tr>";
             str += "<td>" + ar.source + "</td>";
-            str += "<td class=pct>" + ar.body + "</td>";
+            str += "<td class=pct>" + (ar.body||ar.title) + "</td>";
             str + "</tr>";
         });
 
         str += "</table>";
 
         return str;
-    });
+    }).style('pointer-events','none');
 
 var opts = {
     lines: 7, // The number of lines to draw
@@ -115,7 +120,8 @@ $(document).ready(function () {
     spinner = new Spinner(opts);
     spinner.spin(document.body);
     d3.queue()
-        .defer(d3.json,"src/data/twittwaterv2.json")
+        // .defer(d3.json,"src/data/twittwaterv2.json")
+        .defer(d3.json,"src/data/collectionwatviz.json")
         .await(ready);
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
@@ -152,20 +158,84 @@ function update(){
     document.documentElement.scrollTop = 0;
     document.documentElement.scrollLeft = 0;
 }
+function drawWordCloud(words){
+    var font ="Arial";
+    var word_count = {};
+    words.forEach(date=> {
+        categories.forEach((c,i) =>{
+            date.words[c].slice(0,25).forEach(w=> word_count[w.text] = {frequency: w.frequency, category: [c,i]})})
+    });
+    var margin = {top: 0, right: 0, bottom: 0, left: 0};
+    var width = svgWidth-mainconfig.wstep;
+    var height = svgHeight;
+    d3.select("#WordcloudImg").select('svg').remove();
+    d3.select("#WordcloudImg")
+        .append('svg')
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("id","wordchart")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg_location = "#wordchart";
+
+
+    var fill = color;
+
+    var word_entries = d3.entries(word_count);
+
+    var xScale = d3.scaleLinear()
+        .domain([0, d3.max(word_entries, function(d) {
+            return d.value.frequency;
+        })
+        ])
+        .range([12,40]);
+
+    d3.layout.cloud().size([width, height])
+        .timeInterval(20)
+        .words(word_entries)
+        .fontSize(function(d) { return xScale(+d.value.frequency); })
+        .text(function(d) { return d.key; })
+        // .rotate(function() { return ~~(Math.random() * 2) * 90; })
+        .rotate(0)
+        .font(font)
+        .on("end", draw)
+        .start();
+
+    function draw(words) {
+        d3.select(svg_location).append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
+            .selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", function(d) { return xScale(d.value.frequency) + "px"; })
+            .style("font-family", font)
+            .style("fill", function(d, i) { return fill(d.value.category[1]); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) { return d.key; });
+    }
+
+    d3.layout.cloud().stop();
+}
 function wordCloud(selector,config) {
     function draw(data) {
         //d3.select(selector).select('svg').selectAll('.cloud').remove();
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
-        var font = "Impact";
-        var interpolation = d3.curveCardinal;
+        var font = "Arial";
+        var interpolation = d3.curveMonotoneX;
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
-        var max = 25;
+        var min = 12;
+        var max = 40;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -411,7 +481,7 @@ function wordCloud(selector,config) {
             //     'stroke-width': 1.5
             // });
 
-            wordTip.show(d);
+            wordTip.show(d).style('pointer-events','none');
         });
 
         mainGroup.selectAll('.stext').on('mouseleave', function(d){
@@ -604,12 +674,26 @@ function ready (error, dataf){
     data = dataf;
     // format the data
     //data =data.filter(d=>d.source=="reuters");
+
     data.forEach(function(d) {
-        d.time = ~~d.time*1000;
-        d.keywords = d.keywords.concat(d.hashTag.map(e=>{return {term: e.toLowerCase(),category:"EVENT"}}));
-        console.log(d.keywords);
+        d.time = d.source=="usgs"?new Date (parseTime(d.time))["setMonth"](Math.random()*11):~~d.time*1000;
+        d.keywords =[];
+        //console.log(d.hashTag.length);
+        d.keywords = (d.source=="twitter")?d.keywords.concat(d.hashTag.map(e=>{return {term: e.toLowerCase().replace(/\.|\,|\(|\)|\;|\:|\!|\?|\#/gi,'').replace(/s$/g,''),category:"TERM"}})):d.keywords;
+
+        (d.body||(d.abstract.concat(" "+d.title))).toLowerCase().split(" ").forEach(w=> {
+            w = w.trim().replace(/\.|\,|\(|\)|\;|\:|\!|\?|\#|\"|\'/gi,'').replace(/s$/g,'');
+            if (stopWordList.find(wm=>wm==w)==undefined&& w.match(/\(\b(19|20)\d{2}\b\)|\b(19|20)\d{2}\b|http|twdb/g)==null && w.length>2)
+                d.keywords.push({term: w, category:d.source})})
+        // d.keywords.forEach(key => {
+        //     if (key.term.toLowerCase().match("ogallala")!==null)
+        //         data.push(d);
+        // });
     });
+    var limit = ["October 2012","January 2015"];
     data.sort((a,b)=> a.time-b.time);
+    data  = data.filter(d=> (d.time>=parseTime(limit[0])&&d.time<=parseTime(limit[1])));
+    console.log("Num usgs: "+data.filter(d=>d.source =="usgs").length);
     //data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
     termscollection_org = blacklist(data);
     forcegraph("#slide-out","#autocomplete-input");
@@ -635,10 +719,11 @@ function render (){
     d3.selectAll("#timelinewImg").selectAll('svg').remove();
     handledata(data);
 
-    var margin = {top: 20, right: 100, bottom: 100, left: 100};
+    var margin = {top: 20, right: 100, bottom: 5, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
-    var numDays = Math.floor((new Date(endDate) - new Date(startDate))/1000/60/60/24);
-    width = Math.max(width,mainconfig.wstep*(numDays+daystep));
+    var numDays = Math.floor((new Date(endDate).getMonth() - new Date(startDate).getMonth()));
+    var width = Math.max(width,mainconfig.wstep*(numDays+daystep));
+    svgWidth = width+ margin.left + margin.right;
     var height = svgHeight - margin.bottom - margin.top;
 
     // parse the date / time
@@ -654,16 +739,16 @@ function render (){
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
     var startDatedis = new Date (startDate);
-    startDatedis["setDate"](startDatedis.getDate() - daystep);
+    startDatedis["setDate"](startDatedis.getDate() - daystep/2);
     var endDatedis = new Date (endDate);
-    endDatedis["setDate"](endDatedis.getDate() + daystep);
+    endDatedis["setDate"](endDatedis.getDate() + daystep/2);
     x.range([0, width])
         .domain([new Date (startDatedis),new Date (endDatedis)]);
     let gridlineNodes = d3.axisTop()
-        .tickFormat("")
+        .ticks(d3.timeMonth.every(daystep))
+        .tickFormat(d3.timeFormat("%B"))
         .tickSize(-height)
-        .scale(x)
-        .ticks(d3.timeMonday.every(1));
+        .scale(x);
     var y = d3.scaleLinear().range([height/2, 0]);
     var simulation = d3.forceSimulation()
         .force("y", d3.forceY(height*wscale/2).strength(0.05));
@@ -684,8 +769,8 @@ function render (){
         .attr("class", "axis")
         .attr("transform", "translate(0," + height*wscale + ")")
         .call(d3.axisTop(x)
-            .ticks(d3.timeMonday.every(1))
-            .tickFormat(d3.timeFormat("%b %d, %Y")))
+            .ticks(d3.timeMonth.every(daystep))
+            .tickFormat(d3.timeFormat("%B, %Y")))
         .selectAll("text")
         .style("text-anchor", "start")
         .attr("dx", ".8em")
@@ -728,72 +813,45 @@ function render (){
 
     pic.on("error", function(){
         let el = d3.select(this);
-        el.attr("xlink:href",
+        el.attr("xlink:href","src/img/bb.jpg"
             );
         el.on("error", null);
     })
-    // var circles = timeline.selectAll(".img")
-    //     .data(data)
-    //     .enter().append("circle")
-    //     .attr("class", "img")
-    //     .attr("r",rc)
-    //     .attr("fill","lightblue");
-    // //.attr("fill",d => "url(#"+d.time+")");
-    // simulation.nodes(data)
-    //     .on('tick',ticked);
+
     var rcscale = d3.scaleLinear().domain(d3.extent(ArticleDay,(d=> d.value.articlenum))).range([2,20]);
-    // var circles = timeline.selectAll(".article")
-    //     .data(ArticleDay)
-    //     .enter().append("circle")
-    //     .attr("class", "article")
-    //     .attr("r",d=> rcscale(d.value.articlenum))
-    //     .attr("fill","lightblue");
-    // circles.on("mouseenter", d=>wordTip.show(d))
-    //     .on("mouseleave", () => wordTip.hide());
-    //.attr("fill",d => "url(#"+d.time+")");
-    //simulation.nodes(ArticleDay);
-    //.on('tick',ticked);
-    // Add the X Axis
 
     timeline.select('.sublegend')
         .attr("transform", "translate(" + 0 + "," + height*wscale + ")");
-    // timeline.select('.legend')
-    //     .append("text")
-    //     .style("text-anchor", "middle")
-    //     .attr("transform", "translate(0,"+height*wscale/2+") rotate(-90)")
-    //     .text('NEWS');
-    // Add the Y Axis
-    // svg.append("g")
-    //     .attr("class", "axis")
-    //     .call(d3.axisLeft(y));
-    function ticked(){
-        circles.attr("cx",d=> d.x)
-            .attr("cy",d=> d.y);
-    }
+
+    drawWordCloud(TermwDay);
     spinner.stop();
     d3.selectAll("toogle").property("disabled",false);
 }
 function handledata(data){
     var termscollection = [];
     //sort out term for 1 article
+
     if (mainconfig.IsWeekly) {
-        outputFormat =  (d) => {
-            return d3.timeFormat('%b %d %Y')(d3.timeSunday(d))
-        };
-        daystep = 7;
-        svgHeight = 1000;
-        mainconfig.wstep = 15;
-    }else {
-        outputFormat =  d3.timeFormat('%b %d %Y');
+        outputFormat =  d3.timeFormat('%b %Y');
         daystep = 1;
-        svgHeight = 1300;
+        svgHeight = 510;
         mainconfig.wstep = 50;
+    }else {
+        outputFormat =  (d) => {
+            return d3.timeFormat('%b %Y')(d3.timeMonth.every(daystep)(d));
+        };
+        daystep = 3;
+        svgHeight = 510;
+        mainconfig.wstep = 25;
     }
     var nested_data;
     // let word = document.getElementById("theWord").value;
+    startDate = termscollection_org[0].date;
+    endDate = termscollection_org[termscollection_org.length-1].date;
+
     let word = $('#autocomplete-input').val();
     if (word !== "") {
-        var collection = termscollection_org.filter(d=>d.term==word);
+        var collection = termscollection_org.filter(d=>d.term.match(word)!=null);
         var title = d3.map(collection,d=>d.title);
         termscollection = termscollection_org.filter(d=> title.has(d.title));
         nested_data = d3.nest()
@@ -836,8 +894,8 @@ function handledata(data){
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
-                    preday["setDate"](preday.getDate() + daystep*2);
-                    if (preday != new Date(day.key))
+                    preday["setMonth"](preday.getMonth() + daystep*2);
+                    if (preday.getMonth() < new Date(day.key).getMonth())
                         pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
@@ -863,9 +921,12 @@ function handledata(data){
         .entries(termscollection);
     nestedByTerm.forEach(c=> c.values.forEach( day=>
         day.values.sort((a,b)=>b.values[0].sudden-a.values[0].sudden)));
-    nestedByTerm.forEach(c=> c.values.forEach( day=>{
-        var numtake = Math.max(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
-        day.values = day.values.slice(0,numtake)}));
+    nestedByTerm.forEach(c=> {
+        if (c.key =="twitter")
+            c.values.forEach( day=>{
+            var numtake =mainconfig.numberOfTopics;
+            day.values = day.values.slice(0,numtake)})
+    });
 
     termscollection.length = 0;
     nestedByTerm.forEach(c=>
@@ -921,7 +982,7 @@ function handledata(data){
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
     console.log(startDate +" - "+endDate);
-    fillData(endDate, startDate);
+    //fillData(endDate, startDate);
 }
 
 
@@ -939,7 +1000,7 @@ function fillData(endDate, startDate) {
         var yy = 0;
         try {
             var presenttime = new Date(TermwDay[iterator].date);
-            if (iterator < len && (now.getTime() == presenttime.getTime())) {
+            if (iterator < len && (now.getMonth() == presenttime.getMonth())) {
                 y = TermwDay[iterator].words;
                 yy = ArticleDay[iterator].value;
                 ++iterator;
@@ -956,7 +1017,7 @@ function fillData(endDate, startDate) {
         }
         dd.push({"key": outputFormat(new Date(now)), "value": yy});
         d.push({"date": outputFormat(new Date(now)), "words": y});
-        now["setDate"](now.getDate() + daystep);
+        now["setMonth"](now.getMonth() + daystep);
     }
     ArticleDay = dd;
     TermwDay = d;
@@ -968,7 +1029,7 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["TX","TWDB","&","&nbsp; "," ","today"];
+    var blackw =["where'","there'","wxsusie","101516880552290731073741860124458454072type=1…","wsiconfexpo","1qevuey","you’re","agwt","grt","click","tamest_","a4we'","it'","sept","asr","rgv","a4we","wkly","txwri","wtr","gues","taken","wednesday","photo","reminder","board","TX","TWDB","thi","&","&nbsp; ","drewdarby4tx","h2o4texa","abt","2o4texa","toddahunter"," ","today","txwater","Texa","twdb","texa","(usgs)","1)","collected","study","data","water","visit"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
