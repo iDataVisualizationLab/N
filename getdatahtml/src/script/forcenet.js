@@ -59,7 +59,7 @@ function forcegraph(selector,searchbox) {
         .enter().append("g");
 
     node2.append("text")
-        .attr("class", ".nodeText2")
+        .attr("class", "nodeText2")
         .text(function (d) {
             return d.key
         })
