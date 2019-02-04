@@ -5,6 +5,7 @@ let heightSvg = 600;
 
 
 let mainsvg = d3.select("content");
+let data = [];
 
 mainsvg.attrs({
     width: widthSvg,
@@ -16,5 +17,6 @@ let maing = mainsvg. append('g');
 init();
 
 function init(){
-    maing
+    data = object2Data(readData());
+    console.log(data);
 }
