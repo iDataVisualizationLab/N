@@ -19,7 +19,7 @@
     <session id="97850068">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.3" value="1" />
@@ -65,7 +65,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="691">
+            <state relative-caret-position="1037">
               <caret line="61" column="27" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
             </state>
           </provider>
@@ -204,10 +204,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1281" />
-    <option name="y" value="385" />
-    <option name="width" value="1294" />
-    <option name="height" value="1047" />
+    <option name="x" value="-32768" />
+    <option name="y" value="-32768" />
+    <option name="width" value="2580" />
+    <option name="height" value="1100" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -378,19 +378,19 @@
       <workItem from="1544549543848" duration="1207000" />
       <workItem from="1544728265034" duration="599000" />
       <workItem from="1544848442214" duration="151000" />
-      <workItem from="1545606712243" duration="1639000" />
+      <workItem from="1545606712243" duration="2239000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="341282000" />
+    <option name="totallyTimeSpent" value="341882000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1281" y="385" width="1294" height="1047" extended-state="0" />
+    <frame x="-32768" y="-32768" width="2580" height="1100" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.39951378" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.19563492" />
       <window_info id="Structure" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Event Log" order="0" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="1" show_stripe_button="false" />
@@ -399,7 +399,7 @@
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" />
       <window_info anchor="bottom" id="Run" order="6" />
-      <window_info active="true" anchor="bottom" id="Debug" order="7" visible="true" weight="0.32275712" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.3050672" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -820,7 +820,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="691">
+        <state relative-caret-position="1037">
           <caret line="61" column="27" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
         </state>
       </provider>
