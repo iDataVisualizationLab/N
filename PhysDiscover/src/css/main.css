@@ -23,7 +23,7 @@
 /*}*/
 
 .axisLabel {
-    font-weight: bold;
+    /*font-weight: bold;*/
     font: 12px sans-serif;
 }
 .d3-tip {

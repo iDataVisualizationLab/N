@@ -1,7 +1,7 @@
 
 let widthSvg = document.getElementById("container").clientWidth-100;
 let heightSvg = 600;
-let margin = ({top: 20, right: 30, bottom: 50, left: 50});
+let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
 
 
@@ -94,6 +94,7 @@ function draw(){
             .attr("x", widthSvg - margin.right)
             .attr("y", -4)
             .attr("fill", "#000")
+            .attr("font-weight", "bold")
             .attr("text-anchor", "end")
             .text("Temperature"));
     let yAxis = g => g
@@ -104,6 +105,7 @@ function draw(){
             .attr("x", 4)
             .attr("class","axisLabel")
             .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
             .text("Delta Temperature"));
 
     mainsvg.append("g")
@@ -159,6 +161,7 @@ function colorlegend (g){
         .attr("transform", "rotate(-90)")
         .attr("x",0 - (legendFullHeight / 2))
         .attr("dy", "1em")
+        .attr("font-weight", "bold")
         .style("text-anchor", "middle")
         .text("Derivation from the average curve");
     var gradient = legendSvg.append('defs')
