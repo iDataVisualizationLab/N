@@ -22,7 +22,10 @@
     /*opacity: 1;*/
 /*}*/
 
-
+.axisLabel {
+    font-weight: bold;
+    font: 12px sans-serif;
+}
 .d3-tip {
     line-height: 1;
     font-weight: bold;
@@ -31,7 +34,13 @@
     color: #fff;
     border-radius: 2px;
 }
+body {
+    font: 10px sans-serif;
+}
 
+#header {
+    text-align: center;
+}
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
     box-sizing: border-box;
@@ -50,4 +59,11 @@
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
+}
+
+#legend-svg {
+    vertical-align: top;
+}
+#controls {
+    padding-top: 10px;
 }

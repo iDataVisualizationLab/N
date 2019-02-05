@@ -1,6 +1,7 @@
-let widthSvg = 800;
+
+let widthSvg = document.getElementById("container").clientWidth-100;
 let heightSvg = 600;
-let margin = ({top: 20, right: 30, bottom: 30, left: 40});
+let margin = ({top: 20, right: 30, bottom: 50, left: 50});
 
 
 
@@ -77,7 +78,7 @@ function distance (a,b){
 }
 function draw(){
     color = d3.scaleSequential(d3.interpolateSpectral)
-        .domain(d3.extent(nestbyKey,d=>d.gap));
+        .domain(d3.extent(nestbyKey,d=>d.gap).reverse());
     x = d3.scaleLinear()
         .domain(d3.extent(data, d => d.f)).nice()
         .range([margin.left, widthSvg - margin.right]);
@@ -87,23 +88,23 @@ function draw(){
     let xAxis = g => g
         .attr("transform", `translate(0,${heightSvg - margin.bottom})`)
         .call(d3.axisBottom(x))
-        .call(g => g.select(".domain").remove())
+        //.call(g => g.select(".domain").remove())
         .call(g => g.append("text")
+            .attr("class","axisLabel")
             .attr("x", widthSvg - margin.right)
             .attr("y", -4)
             .attr("fill", "#000")
-            .attr("font-weight", "bold")
             .attr("text-anchor", "end")
-            .text(data.f));
+            .text("Temperature"));
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y))
-        .call(g => g.select(".domain").remove())
+        //.call(g => g.select(".domain").remove())
         .call(g => g.select(".tick:last-of-type text").clone()
             .attr("x", 4)
+            .attr("class","axisLabel")
             .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .text(data.df));
+            .text("Delta Temperature"));
 
     mainsvg.append("g")
         .call(xAxis);
@@ -134,26 +135,33 @@ function draw(){
         .on('mouseover',mouseoverHandel)
         .on('mouseleave',mouseleaveHandel);
     maing.call(sumgap);
-    maing.call(colorlegend);
+    d3.select('#legend-svg').call(colorlegend);
 }
 
 function colorlegend (g){
     // add the legend now
-    var legendFullHeight = heightSvg;
-    var legendFullWidth = 50;
+    var legendFullHeight = heightSvg-margin.bottom;
+    var legendFullWidth = 80;
 
-    var legendMargin = { top: 20, bottom: 20, left: 5, right: 20 };
+    var legendMargin = { top: 20, bottom: 20, left: 20, right: 35 };
 
     // use same margins as main plot
     var legendWidth = legendFullWidth - legendMargin.left - legendMargin.right;
     var legendHeight = legendFullHeight - legendMargin.top - legendMargin.bottom;
 
-    var legendSvg = g
-        .append('g')
+    var legendSvgMain = g.attr('width', legendFullWidth)
+        .attr('height', legendFullHeight);
+    var legendSvg = legendSvgMain.append('g')
         .attr('transform', 'translate(' + legendMargin.left + ',' +
             legendMargin.top + ')');
-
-    legendSvg.append('defs')
+    legendSvgMain.append("text")
+        .attr("class","axisLabel")
+        .attr("transform", "rotate(-90)")
+        .attr("x",0 - (legendFullHeight / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Derivation from the average curve");
+    var gradient = legendSvg.append('defs')
         .append('linearGradient')
         .attr('id', 'gradient')
         .attr('x1', '0%') // bottom
@@ -164,16 +172,14 @@ function colorlegend (g){
     // programatically generate the gradient for the legend
     // this creates an array of [pct, colour] pairs as stop
     // values for legend
-    var pct = linspace(0, 100, color.length).map(function(d) {
-        return Math.round(d) + '%';
+    var pct = linspace(0, 100, 10).map(function(d) {
+        return Math.round(d);
     });
-
-    var colourPct = d3.zip(pct, scale);
-
-    colourPct.forEach(function(d) {
+    let gap = Math.abs(color.domain()[1]-color.domain()[0]);
+    pct.forEach(function(d) {
         gradient.append('stop')
-            .attr('offset', d[0])
-            .attr('stop-color', d[1])
+            .attr('offset', d+"%")
+            .attr('stop-color', color(d*gap/100))
             .attr('stop-opacity', 1);
     });
 
@@ -185,13 +191,11 @@ function colorlegend (g){
         .style('fill', 'url(#gradient)');
 
     // create a scale and axis for the legend
-    var legendScale = d3.scale.linear()
-        .domain(color.domain)
+    var legendScale = d3.scaleLinear()
+        .domain(color.domain().reverse())
         .range([legendHeight, 0]);
 
-    var legendAxis = d3.svg.axis()
-        .scale(legendScale)
-        .orient("right")
+    var legendAxis = d3.axisRight(legendScale)
         // .tickValues(d3.range(-3, 4))
         // .tickFormat(d3.format("d"));
 
