@@ -33,29 +33,96 @@ function readData() {
 
         function readDataList(count,iteration) {
             for (i = 0; i < iterationstep; i++) {
-                // Process the result
-
-                //console.log(hosts[count].name+" "+hostResults[name]);
-                var result = simulateResults2(hosts[count].name, iteration, serviceList[0]);
-                var name = result.data.service.host_name;
-                hostResults[name].arrTemperature.push(result);
-
-                var result = simulateResults2(hosts[count].name, iteration, serviceList[1]);
-                hostResults[name].arrCPU_load.push(result);
-
-                var result = simulateResults2(hosts[count].name, iteration, serviceList[2]);
-                hostResults[name].arrMemory_usage.push(result);
-
-                var result = simulateResults2(hosts[count].name, iteration, serviceList[3]);
-                hostResults[name].arrFans_health.push(result);
-
-                var result = simulateResults2(hosts[count].name, iteration, serviceList[4]);
-                hostResults[name].arrPower_usage.push(result);
+                serviceListattr.forEach((sv,si)=> {
+                    var result = simulateResults2(hosts[count].name, iteration, serviceList[si]);
+                    var name = result.data.service.host_name;
+                    hostResults[name][sv].push(processData(result.data.service.plugin_output, serviceList[si]));
+                });
                 iteration++;
             }
             return iteration;
         }
-
+        function processData(str, serviceName) {
+            if (serviceName == serviceList[0]) {
+                var a = [];
+                if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
+                    a[0] = undefinedValue;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                else {
+                    var arrString = str.split(" ");
+                    a[0] = +arrString[2] || undefinedValue;
+                    a[1] = +arrString[6] || undefinedValue;
+                    a[2] = +arrString[10] || undefinedValue;
+                }
+                return a;
+            }
+            else if (serviceName == serviceList[1]) {
+                var a = [];
+                if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0
+                    || str.indexOf("CPU Load: null") >= 0) {
+                    a[0] = undefinedValue;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                else {
+                    var arrString = str.split("CPU Load: ")[1];
+                    a[0] = +arrString;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                return a;
+            }
+            else if (serviceName == serviceList[2]) {
+                var a = [];
+                if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
+                    a[0] = undefinedValue;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                else {
+                    var arrString = str.split(" Usage Percentage = ")[1].split(" :: ")[0];
+                    a[0] = +arrString;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                return a;
+            }
+            else if (serviceName == serviceList[3]) {
+                var a = [];
+                if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
+                    a[0] = undefinedValue;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                    a[3] = undefinedValue;
+                }
+                else {
+                    var arr4 = str.split(" RPM ");
+                    a[0] = +arr4[0].split("FAN_1 ")[1];
+                    a[1] = +arr4[1].split("FAN_2 ")[1];
+                    a[2] = +arr4[2].split("FAN_3 ")[1];
+                    a[3] = +arr4[3].split("FAN_4 ")[1];
+                }
+                return a;
+            }
+            else if (serviceName == serviceList[4]) {
+                var a = [];
+                if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
+                    a[0] = undefinedValue;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                else {
+                    var maxConsumtion = 3.2;  // over 100%
+                    var arr4 = str.split(" ");
+                    a[0] = +arr4[arr4.length - 2] / maxConsumtion;
+                    a[1] = undefinedValue;
+                    a[2] = undefinedValue;
+                }
+                return a;
+            }
+        }
         function simulateResults2(hostname, iter, s) {
             var newService;
             if (s == serviceList[0])
@@ -77,87 +144,6 @@ function readData() {
                 newService = sampleS[hostname]["arrPower_usage"][iter];
             }
 
-            function processData(str, serviceName) {
-                if (serviceName == serviceList[0]) {
-                    var a = [];
-                    if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
-                        a[0] = undefinedValue;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    else {
-                        var arrString = str.split(" ");
-                        a[0] = +arrString[2] || undefinedValue;
-                        a[1] = +arrString[6] || undefinedValue;
-                        a[2] = +arrString[10] || undefinedValue;
-                    }
-                    return a;
-                }
-                else if (serviceName == serviceList[1]) {
-                    var a = [];
-                    if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0
-                        || str.indexOf("CPU Load: null") >= 0) {
-                        a[0] = undefinedValue;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    else {
-                        var arrString = str.split("CPU Load: ")[1];
-                        a[0] = +arrString;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    return a;
-                }
-                else if (serviceName == serviceList[2]) {
-                    var a = [];
-                    if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
-                        a[0] = undefinedValue;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    else {
-                        var arrString = str.split(" Usage Percentage = ")[1].split(" :: ")[0];
-                        a[0] = +arrString;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    return a;
-                }
-                else if (serviceName == serviceList[3]) {
-                    var a = [];
-                    if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
-                        a[0] = undefinedValue;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                        a[3] = undefinedValue;
-                    }
-                    else {
-                        var arr4 = str.split(" RPM ");
-                        a[0] = +arr4[0].split("FAN_1 ")[1];
-                        a[1] = +arr4[1].split("FAN_2 ")[1];
-                        a[2] = +arr4[2].split("FAN_3 ")[1];
-                        a[3] = +arr4[3].split("FAN_4 ")[1];
-                    }
-                    return a;
-                }
-                else if (serviceName == serviceList[4]) {
-                    var a = [];
-                    if (str.indexOf("timed out") >= 0 || str.indexOf("(No output on stdout)") >= 0 || str.indexOf("UNKNOWN") >= 0) {
-                        a[0] = undefinedValue;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    else {
-                        var maxConsumtion = 3.2;  // over 100%
-                        var arr4 = str.split(" ");
-                        a[0] = +arr4[arr4.length - 2] / maxConsumtion;
-                        a[1] = undefinedValue;
-                        a[2] = undefinedValue;
-                    }
-                    return a;
-                }
-            }
 
             function handlemissingdata(hostname, iter) {
                 var simisval = jQuery.extend(true, {}, sampleS[hostname]["arrTemperature"][iter]);
