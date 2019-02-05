@@ -5,15 +5,22 @@
     pointer-events: none;
 }
 
+.gapLine {
+    stroke: darkred;
+    stroke-width: 2px;
+    fill: none;
+    pointer-events: none;
+}
+
 .disablePoint {
     color: gray;
     opacity: 0.1;
 }
 
-.datapoint {
-    color: steelblue;
-    opacity: 1;
-}
+/*.datapoint {*/
+    /*color: steelblue;*/
+    /*opacity: 1;*/
+/*}*/
 
 
 .d3-tip {
