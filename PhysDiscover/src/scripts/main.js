@@ -164,7 +164,7 @@ function colorlegend (g){
     // programatically generate the gradient for the legend
     // this creates an array of [pct, colour] pairs as stop
     // values for legend
-    var pct = linspace(0, 100, scale.length).map(function(d) {
+    var pct = linspace(0, 100, color.length).map(function(d) {
         return Math.round(d) + '%';
     });
 
