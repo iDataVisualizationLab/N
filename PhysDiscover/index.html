@@ -4,20 +4,38 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" type="text/css" href= "src/css/main.css">
     <script src="src/lib/jquery-1.9.0.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="src/lib/d3.tip.js"></script>
     <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
+
 </head>
-<body>
-<div id="header">
-<h2 >Phase space of temperatures</h2>
-</div>
-<div id="container">
-<svg id="content"></svg>
-<svg id="legend-svg"></svg>
+<body >
+<nav>
+    <div class="nav-wrapper" id="header">
+
+        <a href="#" class="brand-logo center" >Phase space of temperatures</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="https://idatavisualizationlab.github.io/HPCC/HiperView/demo.html">Hipper View</a></li>
+            <li><a href="story.html">Story</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class= "container">
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1" id="mainPlot">
+            <svg id="content"></svg>
+            <svg id="legend-svg"></svg>
+        </div>
+    </div>
 </div>
 <!--load dataset-->
 <script src="data/hostlist.js"></script>

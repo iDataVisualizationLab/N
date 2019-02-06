@@ -36,10 +36,28 @@
 }
 body {
     font: 10px sans-serif;
+    background-color: #fff0e9;
+
 }
 
 #header {
-    text-align: center;
+    /*background-color: #ffffff;*/
+    background-color: #a71d31;
+    background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);
+}
+#header svg {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.brand-logo{
+    font-family: 'Staatliches', cursive;
+    /*background-color: #3f0d12;*/
+    /*background-image: linear-gradient(315deg, #3f0d12 0%, #a71d31 74%);*/
+    /*-webkit-background-clip: text;*/
+    /*-webkit-text-fill-color: transparent;*/
 }
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
@@ -61,6 +79,10 @@ body {
     left: 0;
 }
 
+#mainPlot {
+    max-width:900px;
+    max-height:650px;
+}
 #legend-svg {
     vertical-align: top;
 }

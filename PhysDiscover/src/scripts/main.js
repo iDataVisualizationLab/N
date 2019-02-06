@@ -1,5 +1,5 @@
 
-let widthSvg = document.getElementById("container").clientWidth-100;
+let widthSvg = 800;//document.getElementById("mainPlot").clientWidth-101;
 let heightSvg = 600;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
@@ -9,11 +9,27 @@ let mainsvg = d3.select("#content"),
 x,y,color;
 let dataRaw = [];
 let data,nestbyKey, sumnet=[];
+// mainsvg.attrs({
+//     width: widthSvg,
+//     height: heightSvg,
+// });
 mainsvg.attrs({
-    width: widthSvg,
-    height: heightSvg,
-});
+    ViewBox:"0 0 "+widthSvg+" " +heightSvg,
+    preserveAspectRatio:"xMidYMid meet"
+}).styles({
+    width: '90%',
+    overflow: "visible",
 
+}).call(resize);
+
+d3.select(window).on("resize." + "mainPlot", resize);
+
+// get width of container and resize svg to fit it
+function resize() {
+    var targetWidth = parseInt(d3.select(mainsvg.node().parentNode).style("width"));
+    mainsvg.attr("width", targetWidth);
+    mainsvg.attr("height", Math.round(targetWidth / (widthSvg/heightSvg)));
+}
 /* Initialize tooltip */
 let tip = d3.tip().attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -291,3 +307,16 @@ function deactivepoint(p){
     return p.style('fill','gray')
         .style('opacity',0.1).attr('r',1);
 }
+
+
+// // materialize
+// document.addEventListener('DOMContentLoaded', function() {
+//     var elems = document.querySelectorAll('.sidenav');
+//     var instances = M.Sidenav.init(elems, options);
+// });
+//
+// // Or with jQuery
+//
+// $(document).ready(function(){
+//     $('.sidenav').sidenav();
+// });
