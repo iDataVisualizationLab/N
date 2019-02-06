@@ -1,12 +1,13 @@
 
-let widthSvg = 800;//document.getElementById("mainPlot").clientWidth-101;
-let heightSvg = 600;
+let widthSvg = 500;//document.getElementById("mainPlot").clientWidth-101;
+let heightSvg = 500;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
 
-
-let mainsvg = d3.select("#content"),
-x,y,color;
+let currentColor ="black";
+const mainsvg = d3.select("#content"),
+    netsvg = d3.select("#networkcontent");
+let x,y,color;
 let dataRaw = [];
 let data,nestbyKey, sumnet=[];
 // mainsvg.attrs({
@@ -20,16 +21,8 @@ mainsvg.attrs({
     width: '90%',
     overflow: "visible",
 
-}).call(resize);
+});
 
-d3.select(window).on("resize." + "mainPlot", resize);
-
-// get width of container and resize svg to fit it
-function resize() {
-    var targetWidth = parseInt(d3.select(mainsvg.node().parentNode).style("width"));
-    mainsvg.attr("width", targetWidth);
-    mainsvg.attr("height", Math.round(targetWidth / (widthSvg/heightSvg)));
-}
 /* Initialize tooltip */
 let tip = d3.tip().attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -47,9 +40,11 @@ init();
 function init(){
     dataRaw = object2Data(readData());
     data = calData(UnzipData(dataRaw));
-    draw();
-
+    nodenLink = callgapsall(data)
+    drawSumgap();
+    drawNetgap(nodenLink);
 }
+//Sumgap
 function UnzipData(dataRaw){
     let temp = [];
     dataRaw.forEach(d=>{
@@ -79,11 +74,11 @@ function calData(data){
         .key(function(d) { return d.key; }).sortKeys(function(a,b) { return a.timestep-b.timestep})
         .entries(data);
     nestbyKey.forEach(key => {
-        let gap = 0;
-        key.values.forEach((t,i)=>{
-            gap += distance([t.f,t.df],[sumnet[i].f,sumnet[i].df]);
-        })
-        key.gap = gap;
+        // let gap = 0;
+        // key.values.forEach((t,i)=>{
+        //     gap += distance([t.f,t.df],[sumnet[i].f,sumnet[i].df]);
+        // })
+        key.gap = integration (key.values,sumnet);
     });
     return data;
 }
@@ -92,7 +87,23 @@ function distance (a,b){
     a.forEach((ai,i)=> dis += (ai-b[i])*(ai-b[i]));
     return Math.sqrt(dis);
 }
-function draw(){
+function integration (a,b){
+    let gap = 0;
+    a.forEach((t,i)=>{
+        gap += distance([t.f,t.df],[b[i].f,b[i].df]);
+    });
+    return gap;
+}
+function drawSumgap(){
+    mainsvg.attrs({
+        ViewBox:"0 0 "+widthSvg+" " +heightSvg,
+        preserveAspectRatio:"xMidYMid meet"
+    }).attrs({
+        width: widthSvg,
+        height: heightSvg,
+        // overflow: "visible",
+
+    });
     color = d3.scaleSequential(d3.interpolateSpectral)
         .domain(d3.extent(nestbyKey,d=>d.gap).reverse());
     x = d3.scaleLinear()
@@ -106,7 +117,6 @@ function draw(){
         .call(d3.axisBottom(x))
         //.call(g => g.select(".domain").remove())
         .call(g => g.append("text")
-            .attr("class","axisLabel")
             .attr("x", widthSvg - margin.right)
             .attr("y", -4)
             .attr("fill", "#000")
@@ -168,7 +178,9 @@ function colorlegend (g){
     var legendHeight = legendFullHeight - legendMargin.top - legendMargin.bottom;
 
     var legendSvgMain = g.attr('width', legendFullWidth)
-        .attr('height', legendFullHeight);
+        .attr('height', legendFullHeight)
+        .style('position', 'fixed')
+        .style('float', 'right');
     var legendSvg = legendSvgMain.append('g')
         .attr('transform', 'translate(' + legendMargin.left + ',' +
             legendMargin.top + ')');
@@ -257,28 +269,11 @@ function mouseoverHandel(datain){
         .call(deactivepoint);
     let currentHost = mainsvg.select("#"+datapoint.key);
     if (!currentHost.select('.linkLine').empty())
-        currentHost.select('.linkLine').datum(d=>d.values)
-        .style("opacity",1)
-        .attrs({
-            class: 'linkLine',
-            d: d3.line()
-                .curve(d3.curveCardinal)
-                .x(function(d) {
-                    return x(d.values[0].f); })
-                .y(function(d) { return y(d.values[0].df); })
-        }).transition()
+        currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect).transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
     else
-        currentHost.append('path').datum(d=>d.values)
-        .attrs({
-            class: 'linkLine',
-            d: d3.line()
-                .curve(d3.curveCardinal)
-                .x(function(d) {
-                    return x(d.values[0].f); })
-                .y(function(d) { return y(d.values[0].df); })
-        }).transition()
+        currentHost.append('path').datum(d=>d.values).call(lineConnect).transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
     function tweenDash() {
@@ -296,7 +291,17 @@ function mouseleaveHandel(datain){
         .call(activepoint);
     mainsvg.selectAll(".linkLine").style("opacity",0.5);
 }
-
+function lineConnect(l){
+    return l
+        .attrs({
+            class: 'linkLine',
+            d: d3.line()
+                .curve(d3.curveCardinal)
+                .x(function(d) {
+                    return x(d.values[0].f); })
+                .y(function(d) { return y(d.values[0].df); })
+        })
+}
 function activepoint(p){
     return p.style('fill',d=>color(d.gap))
         .style('opacity',1)
@@ -307,16 +312,114 @@ function deactivepoint(p){
     return p.style('fill','gray')
         .style('opacity',0.1).attr('r',1);
 }
+// Netgap
+function callgapsall(data){
+    let newdata = {nodes:[],links:[]}
+    nestbyKey.forEach((key,i) => {
+        for (let j=i+1; j<nestbyKey.length;j++) {
+            let target = nestbyKey[j];
+            newdata.links.push({
+                source: key.key,
+                target: target.key,
+                value: integration(key.values, target.values)
+            });
+        }
+        newdata.nodes.push({
+            id: key.key,
+            value: key.gap,
+            values: d3.nest().key(function(d) { return d.timestep; })
+            .entries(key.values)
+        })
+    });
+    return newdata;
+}
+function drawNetgap(nodenLink){
+    netsvg.attrs({
+        ViewBox:"0 0 "+widthSvg+" " +heightSvg,
+        preserveAspectRatio:"xMidYMid meet"
+    }).attrs({
+        width: widthSvg,
+        height: heightSvg,
+        // overflow: "visible",
+
+    });
+    let radius =5;
+    const links = nodenLink.links.map(d => Object.create(d));
+    const nodes = nodenLink.nodes.map(d => {
+        let temp = Object.create(d);
+        temp.values = d.values;
+        return temp;
+    });
+
+    const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>d.value).strength(0.1))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(widthSvg / 2, heightSvg / 2));
 
 
-// // materialize
-// document.addEventListener('DOMContentLoaded', function() {
-//     var elems = document.querySelectorAll('.sidenav');
-//     var instances = M.Sidenav.init(elems, options);
-// });
-//
-// // Or with jQuery
-//
-// $(document).ready(function(){
-//     $('.sidenav').sidenav();
-// });
+    // const link = netsvgG.append("g")
+    //     //.attr("stroke", "#999")
+    //     //.attr("stroke-opacity", 0.6)
+    //     .selectAll("line")
+    //     .data(links)
+    //     .enter().append("line").attr('stroke', 'none')
+    //     //.attr("stroke-width", d => Math.sqrt(d.value));
+    const netsvgG = netsvg.append("g");
+    const node = netsvgG.append("g")
+        .selectAll(".linkLine")
+        // .data(nodenLink.nodes,d=>d.values)
+        .data(nodes)
+        .enter().append('g');
+    node.append('path').datum(d=>d.values)
+        .call(lineConnect).attr('stroke','black').attr('stroke-width',0.5)
+        // .attr("stroke", "#fff")
+        // .attr("stroke-width", 0.5)
+        // .selectAll("circle")
+        // .data(nodes)
+        // .enter().append("circle")
+        // .attr("r", 2)
+        // .attr("fill", d=>color(d.value))
+        // .call(drag(simulation));
+
+    node.append("title")
+        .text(d => d.id);
+
+    simulation.on("tick", () => {
+        // link
+        //     .attr("x1", d => d.source.x)
+        //     .attr("y1", d => d.source.y)
+        //     .attr("x2", d => d.target.x)
+        //     .attr("y2", d => d.target.y);
+
+        node
+            .attr("transform", d=>{
+                d.x = Math.max(radius, Math.min(widthSvg - radius, d.x));
+                d.y = Math.max(radius, Math.min(heightSvg - radius, d.y));
+                return `translate(${d.x},${d.y})`});
+    });
+    function drag (simulation) {
+
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        return d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+    }
+    //invalidation.then(() => simulation.stop());
+}

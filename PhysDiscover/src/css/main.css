@@ -25,6 +25,7 @@
 .axisLabel {
     /*font-weight: bold;*/
     font: 12px sans-serif;
+    fill: black;
 }
 .d3-tip {
     line-height: 1;
@@ -36,7 +37,6 @@
 }
 body {
     font: 10px sans-serif;
-    background-color: #fff0e9;
 
 }
 
@@ -88,4 +88,30 @@ body {
 }
 #controls {
     padding-top: 10px;
+}
+
+
+   .pin-top {
+       position: relative;
+   }
+
+
+   .pin-bottom {
+       position: relative;
+   }
+
+   .pinned {
+       position: fixed !important;
+   }
+html, body, .block {
+    height: 100%;
+}
+.container {
+    color: black;
+}
+#blue {
+    background-color: #fff0e9 !important;
+}
+#red {
+    background-color: #e3ffff !important;
 }
