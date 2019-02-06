@@ -268,12 +268,17 @@ function mouseoverHandel(datain){
     cpoint.transition().duration(500)
         .call(deactivepoint);
     let currentHost = mainsvg.select("#"+datapoint.key);
+
+    netsvg.selectAll(".linkLineg").style('opacity',0);
+    d3.select('#mini'+datapoint.key).style('opacity',1);
     if (!currentHost.select('.linkLine').empty())
-        currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect).transition()
+        currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect)
+            .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
     else
-        currentHost.append('path').datum(d=>d.values).call(lineConnect).transition()
+        currentHost.append('path').datum(d=>d.values).call(lineConnect)
+            .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
     function tweenDash() {
@@ -290,16 +295,18 @@ function mouseleaveHandel(datain){
         .transition().duration(200)
         .call(activepoint);
     mainsvg.selectAll(".linkLine").style("opacity",0.5);
+    netsvg.selectAll(".linkLineg").style('opacity',1)
 }
-function lineConnect(l){
+function lineConnect(l,scale){
+    scale = scale||1;
     return l
         .attrs({
             class: 'linkLine',
             d: d3.line()
                 .curve(d3.curveCardinal)
                 .x(function(d) {
-                    return x(d.values[0].f); })
-                .y(function(d) { return y(d.values[0].df); })
+                    return x(d.values[0].f)/scale; })
+                .y(function(d) { return y(d.values[0].df)/scale; })
         })
 }
 function activepoint(p){
@@ -347,12 +354,12 @@ function drawNetgap(nodenLink){
     const links = nodenLink.links.map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
-        temp.values = d.values;
+        temp.key = d.id;
         return temp;
     });
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>d.value).strength(0.1))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>d.value).strength(0.05))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(widthSvg / 2, heightSvg / 2));
 
@@ -364,14 +371,30 @@ function drawNetgap(nodenLink){
     //     .data(links)
     //     .enter().append("line").attr('stroke', 'none')
     //     //.attr("stroke-width", d => Math.sqrt(d.value));
+    netsvg.call(tip);
     const netsvgG = netsvg.append("g");
-    const node = netsvgG.append("g")
-        .selectAll(".linkLine")
+    const node = netsvgG
+        .selectAll(".linkLineg")
         // .data(nodenLink.nodes,d=>d.values)
         .data(nodes)
-        .enter().append('g');
+        .enter().append('g')
+        .attr('class','linkLineg')
+        .attr('id',(d,i)=>'mini'+nodes[i].key)
+        .style('pointer-events','auto');
     node.append('path').datum(d=>d.values)
-        .call(lineConnect).attr('stroke','black').attr('stroke-width',0.5)
+        .call(d=>lineConnect(d,5))
+        .attr('stroke','black')
+        .attr('stroke-width',0.5);
+    node.selectAll('path')
+        .style('pointer-events','auto')
+        .on('mouseover',(d)=>{
+            console.log(d);
+            tip.show({values: [{key:d.key}]});});
+    node.nodes().forEach(d=>{
+        let e= d3.select(d).select('path').node().getBBox();
+        d.__data__.width = e.width;
+        d.__data__.height = e.height;
+        });
         // .attr("stroke", "#fff")
         // .attr("stroke-width", 0.5)
         // .selectAll("circle")
@@ -393,9 +416,9 @@ function drawNetgap(nodenLink){
 
         node
             .attr("transform", d=>{
-                d.x = Math.max(radius, Math.min(widthSvg - radius, d.x));
-                d.y = Math.max(radius, Math.min(heightSvg - radius, d.y));
-                return `translate(${d.x},${d.y})`});
+                d.x = Math.max(0, Math.min(widthSvg - d.width, d.x));
+                d.y = Math.max(0, Math.min(heightSvg - d.height, d.y));
+                return `translate(${d.x-d.width/2},${d.y-d.height/2})`});
     });
     function drag (simulation) {
 
