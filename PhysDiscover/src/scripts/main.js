@@ -7,7 +7,7 @@ let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 let currentColor ="black";
 const mainsvg = d3.select("#content"),
     netsvg = d3.select("#networkcontent");
-let x,y,color;
+let x,y,color,brush,legendScale;
 let dataRaw = [];
 let data,nestbyKey, sumnet=[];
 // mainsvg.attrs({
@@ -222,7 +222,7 @@ function colorlegend (g){
         .style('fill', 'url(#gradient)');
 
     // create a scale and axis for the legend
-    var legendScale = d3.scaleLinear()
+    legendScale = d3.scaleLinear()
         .domain(color.domain().reverse())
         .range([legendHeight, 0]);
 
@@ -234,6 +234,24 @@ function colorlegend (g){
         .attr("class", "legend axis")
         .attr("transform", "translate(" + legendWidth + ", 0)")
         .call(legendAxis);
+    brush = d3.brushY()
+        .extent([[0, 0], [legendWidth, legendHeight]])
+        .on("brush end", brushed);
+    legendSvg.append("g")
+        .attr("class", "brush")
+        .call(brush)
+        .call(brush.move, legendScale.range().reverse());
+}
+function brushed() {
+    if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+    var s = d3.event.selection || legendScale.range();
+    s.map(legendScale.invert, legendScale);
+    // x.domain(s.map(x2.invert, x2));
+    // focus.select(".area").attr("d", area);
+    // focus.select(".axis--x").call(xAxis);
+    // svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+    //     .scale(width / (s[1] - s[0]))
+    //     .translate(-s[0], 0));
 }
 function linspace(start, end, n) {
     var out = [];
@@ -269,7 +287,7 @@ function mouseoverHandel(datain){
         .call(deactivepoint);
     let currentHost = mainsvg.select("#"+datapoint.key);
 
-    netsvg.selectAll(".linkLineg").style('opacity',0);
+    netsvg.selectAll(".linkLineg").style('opacity',0.2);
     d3.select('#mini'+datapoint.key).style('opacity',1);
     if (!currentHost.select('.linkLine').empty())
         currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect)
@@ -325,11 +343,14 @@ function callgapsall(data){
     nestbyKey.forEach((key,i) => {
         for (let j=i+1; j<nestbyKey.length;j++) {
             let target = nestbyKey[j];
-            newdata.links.push({
-                source: key.key,
-                target: target.key,
-                value: integration(key.values, target.values)
-            });
+            let gap2 = integration(key.values, target.values);
+            if (gap2<200) {
+                newdata.links.push({
+                    source: key.key,
+                    target: target.key,
+                    value: gap2
+                });
+            }
         }
         newdata.nodes.push({
             id: key.key,
@@ -340,7 +361,11 @@ function callgapsall(data){
     });
     return newdata;
 }
+function updateLinks (){
+
+}
 function drawNetgap(nodenLink){
+    let marginNet = ({top: 5, right: 20, bottom: 20, left: 5});
     netsvg.attrs({
         ViewBox:"0 0 "+widthSvg+" " +heightSvg,
         preserveAspectRatio:"xMidYMid meet"
@@ -350,18 +375,21 @@ function drawNetgap(nodenLink){
         // overflow: "visible",
 
     });
+    let widthNet= widthSvg-marginNet.left-marginNet.right;
+    let heightNet= heightSvg-marginNet.top-marginNet.bottom;
     let radius =5;
     const links = nodenLink.links.map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
+        temp.gap = d.value;
         return temp;
     });
-
+    const scalerevse = d3.scaleLinear().domain(d3.extent(nodenLink.links,d=>d.value).reverse()).range([0,150]);
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>d.value).strength(0.05))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(widthSvg / 2, heightSvg / 2));
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(0.1))
+        .force("charge", d3.forceManyBody().distanceMin(5))
+        .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
 
 
     // const link = netsvgG.append("g")
@@ -372,7 +400,7 @@ function drawNetgap(nodenLink){
     //     .enter().append("line").attr('stroke', 'none')
     //     //.attr("stroke-width", d => Math.sqrt(d.value));
     netsvg.call(tip);
-    const netsvgG = netsvg.append("g");
+    const netsvgG = netsvg.append("g").attr('transform',`translate(${marginNet.left},${marginNet.top})`);
     const node = netsvgG
         .selectAll(".linkLineg")
         // .data(nodenLink.nodes,d=>d.values)
@@ -381,9 +409,12 @@ function drawNetgap(nodenLink){
         .attr('class','linkLineg')
         .attr('id',(d,i)=>'mini'+nodes[i].key)
         .style('pointer-events','auto');
-    node.append('path').datum(d=>d.values)
+    node.append('path')
+        .style('stroke',d=>
+            color(d.gap))
+        .datum(d=>d.values)
         .call(d=>lineConnect(d,5))
-        .attr('stroke','black')
+
         .attr('stroke-width',0.5);
     node.selectAll('path')
         .style('pointer-events','auto')
@@ -391,7 +422,7 @@ function drawNetgap(nodenLink){
             console.log(d);
             tip.show({values: [{key:d.key}]});});
     node.nodes().forEach(d=>{
-        let e= d3.select(d).select('path').node().getBBox();
+        let e= d3.select(d).select('path').node().getBoundingClientRect();
         d.__data__.width = e.width;
         d.__data__.height = e.height;
         });
@@ -407,6 +438,7 @@ function drawNetgap(nodenLink){
     node.append("title")
         .text(d => d.id);
 
+
     simulation.on("tick", () => {
         // link
         //     .attr("x1", d => d.source.x)
@@ -416,9 +448,10 @@ function drawNetgap(nodenLink){
 
         node
             .attr("transform", d=>{
-                d.x = Math.max(0, Math.min(widthSvg - d.width, d.x));
-                d.y = Math.max(0, Math.min(heightSvg - d.height, d.y));
-                return `translate(${d.x-d.width/2},${d.y-d.height/2})`});
+
+                d.x = Math.max(widthNet/10, Math.min(widthNet - widthNet/5, d.x));
+                d.y = Math.max(heightNet/10, Math.min(heightNet - widthNet/5, d.y));
+                return `translate(${d.x- widthNet/10},${d.y- heightNet/10})`});
     });
     function drag (simulation) {
 
