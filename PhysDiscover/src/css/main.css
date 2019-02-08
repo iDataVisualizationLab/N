@@ -49,8 +49,8 @@ body {
     margin-top: 0;
 }
 #currentservice {
-    background-color: #f7f285;
-    color: black;
+    /*background-color: #f7f285;*/
+    /*color: black;*/
 }
 #header svg {
     display: inline-block;
