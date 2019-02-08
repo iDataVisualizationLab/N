@@ -48,7 +48,10 @@ body {
 .titletext {
     margin-top: 0;
 }
-
+#currentservice {
+    background-color: #f7f285;
+    color: black;
+}
 #header svg {
     display: inline-block;
     position: absolute;

@@ -435,6 +435,7 @@ function drawNetgap(nodenLink){
         .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
         // .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(1))
         .force("charge", d3.forceManyBody().strength(-3))
+        .force('collision',d3.forceCollide().radius(5   ))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
         // .force("x", d3.forceX())
         // .force("y", d3.forceY());
