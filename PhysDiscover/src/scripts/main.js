@@ -344,7 +344,7 @@ function callgapsall(data){
         for (let j=i+1; j<nestbyKey.length;j++) {
             let target = nestbyKey[j];
             let gap2 = integration(key.values, target.values);
-            if (gap2<200) {
+            if (gap2<100) {
                 newdata.links.push({
                     source: key.key,
                     target: target.key,
@@ -385,22 +385,28 @@ function drawNetgap(nodenLink){
         temp.gap = d.value;
         return temp;
     });
-    const scalerevse = d3.scaleLinear().domain(d3.extent(nodenLink.links,d=>d.value).reverse()).range([0,150]);
+    const scalerevse = d3.scaleLinear().domain(d3.extent(nodenLink.links,d=>d.value).reverse()).range([2,250]);
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(0.1))
-        .force("charge", d3.forceManyBody().distanceMin(5))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(0.2))
+        .force("charge", d3.forceManyBody().distanceMin(30))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
 
 
-    // const link = netsvgG.append("g")
-    //     //.attr("stroke", "#999")
-    //     //.attr("stroke-opacity", 0.6)
-    //     .selectAll("line")
-    //     .data(links)
-    //     .enter().append("line").attr('stroke', 'none')
-    //     //.attr("stroke-width", d => Math.sqrt(d.value));
+     
     netsvg.call(tip);
     const netsvgG = netsvg.append("g").attr('transform',`translate(${marginNet.left},${marginNet.top})`);
+    
+
+
+   /* const link = netsvgG.append("g")
+         //.attr("stroke", "#999")
+         //.attr("stroke-opacity", 0.6)
+         .selectAll("line")
+         .data(links)
+         .enter().append("line").attr('stroke', 'black')
+         .attr("stroke-opacity", 0.2)
+         .attr("stroke-width", d => Math.sqrt(d.value)/10);*/
+     
     const node = netsvgG
         .selectAll(".linkLineg")
         // .data(nodenLink.nodes,d=>d.values)
@@ -409,6 +415,7 @@ function drawNetgap(nodenLink){
         .attr('class','linkLineg')
         .attr('id',(d,i)=>'mini'+nodes[i].key)
         .style('pointer-events','auto');
+            
     node.append('path')
         .style('stroke',d=>
             color(d.gap))
@@ -440,11 +447,11 @@ function drawNetgap(nodenLink){
 
 
     simulation.on("tick", () => {
-        // link
-        //     .attr("x1", d => d.source.x)
-        //     .attr("y1", d => d.source.y)
-        //     .attr("x2", d => d.target.x)
-        //     .attr("y2", d => d.target.y);
+        /*link
+             .attr("x1", d => d.source.x)
+             .attr("y1", d => d.source.y)
+             .attr("x2", d => d.target.x)
+             .attr("y2", d => d.target.y);*/
 
         node
             .attr("transform", d=>{
