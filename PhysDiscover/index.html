@@ -23,7 +23,23 @@
 
             <div class="nav-wrapper" id="header">
 
-                <a href="#" class="brand-logo center" >Phase space of temperatures</a>
+                <div class="brand-logo center col s12" >
+                    Phase space of
+                    <form class ="input-field inline">
+                    <div class="input-field inline" >
+                        <select>
+                            <optgroup label="team 1">
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                            </optgroup>
+                            <optgroup label="team 2">
+                                <option value="3">Option 3</option>
+                                <option value="4">Option 4</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    </form>
+                </div>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="https://idatavisualizationlab.github.io/HPCC/HiperView/demo.html">Hipper View</a></li>
                     <li><a href="story.html">Story</a></li>
@@ -36,12 +52,12 @@
             <div class="col s6 m6 ">
                 <div class="card-panel grey lighten-5 z-depth-1">
                     <div class="card-image" id="mainPlot">
-                    <svg id="content"></svg>
-                    <svg id="legend-svg"></svg>
-                        <span class="card-title">Card Title</span>
+                        <svg id="content"></svg>
+                        <svg id="legend-svg"></svg>
                     </div>
+                    <blockquote><h6>Phase Space of Temperature</h6></blockquote>
                     <div class="card-content">
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                        <p>Inspired by Physics momentum.</p>
                     </div>
                 </div>
             </div>
@@ -54,8 +70,9 @@
 
                         <svg id="networkcontent"></svg>
                     </div>
+                    <blockquote><h6>Clustering derivation </h6></blockquote>
                     <div class="card-content">
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                        <p>To enhance the information and detect outlying in data.</p>
                     </div>
                 </div>
 

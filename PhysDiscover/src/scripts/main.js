@@ -7,7 +7,7 @@ let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 let currentColor ="black";
 const mainsvg = d3.select("#content"),
     netsvg = d3.select("#networkcontent");
-let x,y,color,brush,legendScale;
+let x,y,color,brush,legendScale,scaleX,scaleY;
 let dataRaw = [];
 let data,nestbyKey, sumnet=[];
 // mainsvg.attrs({
@@ -40,7 +40,7 @@ init();
 function init(){
     dataRaw = object2Data(readData());
     data = calData(UnzipData(dataRaw));
-    nodenLink = callgapsall(data)
+    nodenLink = callgapsall(data);
     drawSumgap();
     drawNetgap(nodenLink);
 }
@@ -56,7 +56,6 @@ function UnzipData(dataRaw){
 function calData(data){
     let nest = d3.nest()
         .key(function(d) { return d.timestep; })
-        //.key(function(d) { return d.variety; })
         .entries(data);
     nest.forEach((n,i)=>{
         let currentMean = d3.mean(n.values,m=>m.f);
@@ -73,12 +72,14 @@ function calData(data){
     nestbyKey = d3.nest()
         .key(function(d) { return d.key; }).sortKeys(function(a,b) { return a.timestep-b.timestep})
         .entries(data);
+    scaleX = d3.scaleLinear().domain(d3.extent(data,d=>d.f)).range([0,1]);
+    scaleY = d3.scaleLinear().domain(d3.extent(data,d=>d.df)).range([0,1]);
     nestbyKey.forEach(key => {
         // let gap = 0;
         // key.values.forEach((t,i)=>{
         //     gap += distance([t.f,t.df],[sumnet[i].f,sumnet[i].df]);
         // })
-        key.gap = integration (key.values,sumnet);
+        key.gap = integration (key.values.map(d=>normalize(d)),sumnet.map(d=>normalize(d)));
     });
     return data;
 }
@@ -87,10 +88,13 @@ function distance (a,b){
     a.forEach((ai,i)=> dis += (ai-b[i])*(ai-b[i]));
     return Math.sqrt(dis);
 }
+function normalize(a){
+    return [scaleX(a.f),scaleY(a.df)];
+}
 function integration (a,b){
     let gap = 0;
     a.forEach((t,i)=>{
-        gap += distance([t.f,t.df],[b[i].f,b[i].df]);
+        gap += distance(t,b[i]);
     });
     return gap;
 }
@@ -244,8 +248,11 @@ function colorlegend (g){
 }
 function brushed() {
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
-    var s = d3.event.selection || legendScale.range();
-    s.map(legendScale.invert, legendScale);
+    let s = d3.event.selection || legendScale.range();
+    let range = s.map(legendScale.invert, legendScale);
+    d3.selectAll(".gCategory")
+        .filter(d=>(d.gap<=range[0] && d.gap>=range[1]));
+    // d3.selectAll(".gCategory")
     // x.domain(s.map(x2.invert, x2));
     // focus.select(".area").attr("d", area);
     // focus.select(".axis--x").call(xAxis);
@@ -289,6 +296,8 @@ function mouseoverHandel(datain){
 
     netsvg.selectAll(".linkLineg").style('opacity',0.2);
     d3.select('#mini'+datapoint.key).style('opacity',1);
+    d3.selectAll(".linkGap").style('stroke-opacity',0.1);
+    d3.selectAll(".linkGap").filter(d=>d.source.key===datapoint.key||d.target.key===datapoint.key).style('stroke-opacity',1);
     if (!currentHost.select('.linkLine').empty())
         currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect)
             .transition()
@@ -313,7 +322,8 @@ function mouseleaveHandel(datain){
         .transition().duration(200)
         .call(activepoint);
     mainsvg.selectAll(".linkLine").style("opacity",0.5);
-    netsvg.selectAll(".linkLineg").style('opacity',1)
+    netsvg.selectAll(".linkLineg").style('opacity',1);
+    netsvg.selectAll(".linkGap").style('stroke-opacity',0.3);
 }
 function lineConnect(l,scale){
     scale = scale||1;
@@ -337,20 +347,22 @@ function deactivepoint(p){
     return p.style('fill','gray')
         .style('opacity',0.1).attr('r',1);
 }
+
 // Netgap
-function callgapsall(data){
-    let newdata = {nodes:[],links:[]}
+
+function callgapsall(){
+    let newdata = {nodes:[],links:[]};
     nestbyKey.forEach((key,i) => {
         for (let j=i+1; j<nestbyKey.length;j++) {
             let target = nestbyKey[j];
-            let gap2 = integration(key.values, target.values);
-            if (gap2<200) {
+            let gap2 = integration(key.values.map(d=> normalize(d)), target.values.map(d=> normalize(d)));
+            //if (gap2<200) {
                 newdata.links.push({
                     source: key.key,
                     target: target.key,
                     value: gap2
                 });
-            }
+            //}
         }
         newdata.nodes.push({
             id: key.key,
@@ -366,8 +378,10 @@ function updateLinks (){
 }
 function drawNetgap(nodenLink){
     let marginNet = ({top: 5, right: 20, bottom: 20, left: 5});
+    let scalezoom = 1.5;
     netsvg.attrs({
-        ViewBox:"0 0 "+widthSvg+" " +heightSvg,
+       // viewBox:  [-widthSvg*scalezoom / 2, -heightSvg*scalezoom / 2, widthSvg*scalezoom, heightSvg*scalezoom],
+        viewBox:  [0,0, widthSvg*scalezoom, heightSvg*scalezoom],
         preserveAspectRatio:"xMidYMid meet"
     }).attrs({
         width: widthSvg,
@@ -375,32 +389,61 @@ function drawNetgap(nodenLink){
         // overflow: "visible",
 
     });
-    let widthNet= widthSvg-marginNet.left-marginNet.right;
-    let heightNet= heightSvg-marginNet.top-marginNet.bottom;
+    let widthNet= widthSvg*scalezoom-marginNet.left-marginNet.right;
+    let heightNet= heightSvg*scalezoom-marginNet.top-marginNet.bottom;
     let radius =5;
-    const links = nodenLink.links.map(d => Object.create(d));
+
+    function cutbyIQR() {
+        nodenLink.links.sort((a, b) => {
+            a.value - b.value
+        });
+        let templarray = nodenLink.links.map(d => d.value);
+        const q1 = d3.quantile(templarray, 0.25);
+        const q3 = d3.quantile(templarray, 0.75);
+        const iqr = q3 - q1;
+        return nodenLink.links.filter(d=> (d.value>(q3+1.5*iqr)||d.value<(q1-1.5*iqr)));
+    }
+
+    function cutbyThreshold(threshhold, maxlink) {
+        let tempLinks=[];
+        let tempc = d3.nest()
+            .key(d=>d.source)
+            .sortValues((a,b)=>a.value-b.value)
+            .rollup(d=>d.slice(0,maxlink).filter(l=>l.value<threshhold))
+            .entries(nodenLink.links);
+        tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
+            return tempLinks;
+    }
+
+    const links = cutbyThreshold(2, 4).map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
         temp.gap = d.value;
         return temp;
     });
-    const scalerevse = d3.scaleLinear().domain(d3.extent(nodenLink.links,d=>d.value).reverse()).range([0,150]);
+    // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
+    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,100]);
+    let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([1,0.2]);
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(0.1))
-        .force("charge", d3.forceManyBody().distanceMin(5))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
+        // .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(1))
+        .force("charge", d3.forceManyBody().strength(-3))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
+        // .force("x", d3.forceX())
+        // .force("y", d3.forceY());
 
 
-    // const link = netsvgG.append("g")
-    //     //.attr("stroke", "#999")
-    //     //.attr("stroke-opacity", 0.6)
-    //     .selectAll("line")
-    //     .data(links)
-    //     .enter().append("line").attr('stroke', 'none')
-    //     //.attr("stroke-width", d => Math.sqrt(d.value));
     netsvg.call(tip);
     const netsvgG = netsvg.append("g").attr('transform',`translate(${marginNet.left},${marginNet.top})`);
+    const link = netsvgG.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.3)
+        .selectAll(".linkGap")
+        .data(links).join("line")
+        // .enter().append("line")
+        .attr("class","linkGap")
+        .attr("stroke-width", d => Math.sqrt(d.value));
     const node = netsvgG
         .selectAll(".linkLineg")
         // .data(nodenLink.nodes,d=>d.values)
@@ -419,8 +462,9 @@ function drawNetgap(nodenLink){
     node.selectAll('path')
         .style('pointer-events','auto')
         .on('mouseover',(d)=>{
-            console.log(d);
-            tip.show({values: [{key:d.key}]});});
+            tip.show({values: [{key:d.key}]});})
+        .on('mouseleave',(d)=>tip.hide())
+        .call(drag(simulation));
     node.nodes().forEach(d=>{
         let e= d3.select(d).select('path').node().getBoundingClientRect();
         d.__data__.width = e.width;
@@ -433,25 +477,25 @@ function drawNetgap(nodenLink){
         // .enter().append("circle")
         // .attr("r", 2)
         // .attr("fill", d=>color(d.value))
-        // .call(drag(simulation));
+
 
     node.append("title")
         .text(d => d.id);
 
 
     simulation.on("tick", () => {
-        // link
-        //     .attr("x1", d => d.source.x)
-        //     .attr("y1", d => d.source.y)
-        //     .attr("x2", d => d.target.x)
-        //     .attr("y2", d => d.target.y);
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
 
         node
             .attr("transform", d=>{
 
-                d.x = Math.max(widthNet/10, Math.min(widthNet - widthNet/5, d.x));
-                d.y = Math.max(heightNet/10, Math.min(heightNet - widthNet/5, d.y));
-                return `translate(${d.x- widthNet/10},${d.y- heightNet/10})`});
+                d.x = Math.max(widthSvg/10, Math.min(widthNet - widthSvg/5, d.x));
+                d.y = Math.max(heightSvg/10, Math.min(heightNet - heightSvg/5, d.y));
+                return `translate(${d.x- widthSvg/10},${d.y- heightSvg/10})`});
     });
     function drag (simulation) {
 
@@ -479,3 +523,7 @@ function drawNetgap(nodenLink){
     }
     //invalidation.then(() => simulation.stop());
 }
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init('classes', 'drop');
+});
