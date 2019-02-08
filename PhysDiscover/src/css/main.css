@@ -120,3 +120,8 @@ html, body, .block {
     background-color: #e3ffff !important;
 }
 
+.input-field p, .input-field .select-wrapper {
+    display: inline-block;
+    clear: both;
+    float: none;
+}

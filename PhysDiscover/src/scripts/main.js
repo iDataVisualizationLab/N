@@ -4,6 +4,11 @@ let heightSvg = 500;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
 
+
+//dataprt
+
+let service_part =0;
+
 let currentColor ="black";
 const mainsvg = d3.select("#content"),
     netsvg = d3.select("#networkcontent");
@@ -49,11 +54,12 @@ function UnzipData(dataRaw){
     let temp = [];
     dataRaw.forEach(d=>{
         d.value[serviceListattr[chosenService]].forEach((it,i)=>
-            temp.push({f: it[1],df: 0, key: d.key, timestep:i, undefined:false}));
+            temp.push({f: it[service_part],df: 0, key: d.key, timestep:i, undefined:false}));
     });
     return temp;
 }
 function calData(data){
+    sumnet =[];
     let nest = d3.nest()
         .key(function(d) { return d.timestep; })
         .entries(data);
@@ -523,7 +529,30 @@ function drawNetgap(nodenLink){
     }
     //invalidation.then(() => simulation.stop());
 }
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init('classes', 'drop');
+$( document ).ready(function(){
+    $(".dropdown-trigger").dropdown();
+
+    let menucombo = d3.select("#listvar")
+        .selectAll('li')
+        .data(serviceList.map(d=>d))
+        .join('li').attr('tabindex',"0");
+    menucombo.selectAll('a').data((d,i)=>[{id: i,text: d}])
+        .join("a").on('click',changeVar)
+        .text(d=>d.text);
 });
+function changeVar(d){
+    chosenService =d.id;
+    reset();
+    $('#currentservice').text(d.text);
+}
+
+function reset(){
+    mainsvg.selectAll('*').remove();
+    d3.select('#legend-svg').selectAll('*').remove();
+    netsvg.selectAll('*').remove();
+
+    data = calData(UnzipData(dataRaw));
+    nodenLink = callgapsall(data);
+    drawSumgap();
+    drawNetgap(nodenLink);
+}
