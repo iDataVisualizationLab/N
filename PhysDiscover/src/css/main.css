@@ -45,6 +45,13 @@ body {
     background-color: #a71d31;
     background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);
 }
+.titletext {
+    margin-top: 0;
+}
+#currentservice {
+    /*background-color: #f7f285;*/
+    /*color: black;*/
+}
 #header svg {
     display: inline-block;
     position: absolute;
@@ -114,4 +121,10 @@ html, body, .block {
 }
 #red {
     background-color: #e3ffff !important;
+}
+
+.input-field p, .input-field .select-wrapper {
+    display: inline-block;
+    clear: both;
+    float: none;
 }

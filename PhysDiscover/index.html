@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -20,10 +22,24 @@
 <body >
 
     <nav class="pushpin-demo-nav" data-target="blue">
+        <ul id="listvar" class="dropdown-content">
+            <li><a href="#!">one</a></li>
+            <li><a href="#!">two</a></li>
+            <li><a href="#!">three</a></li>
+        </ul>
+
+        <ul id="listposible" class="dropdown-content">
+            <li><a href="#!">one</a></li>
+            <li><a href="#!">two</a></li>
+            <li><a href="#!">three</a></li>
+        </ul>
 
             <div class="nav-wrapper" id="header">
 
-                <a href="#" class="brand-logo center" >Phase space of temperatures</a>
+                <div class="brand-logo center input-field col s12 inline" >
+                    Phase space of
+                    <a class="dropdown-trigger" href="#!" data-target="listvar"><p id = "currentservice" class="titletext">Temperature</p><i class="material-icons right">arrow_drop_down</i></a>
+                </div>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="https://idatavisualizationlab.github.io/HPCC/HiperView/demo.html">Hipper View</a></li>
                     <li><a href="story.html">Story</a></li>
@@ -36,12 +52,12 @@
             <div class="col s6 m6 ">
                 <div class="card-panel grey lighten-5 z-depth-1">
                     <div class="card-image" id="mainPlot">
-                    <svg id="content"></svg>
-                    <svg id="legend-svg"></svg>
-                        <span class="card-title">Card Title</span>
+                        <svg id="content"></svg>
+                        <svg id="legend-svg"></svg>
                     </div>
+                    <blockquote><h6>Phase Space of Temperature</h6></blockquote>
                     <div class="card-content">
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                        <p>Inspired by Physics momentum.</p>
                     </div>
                 </div>
             </div>
@@ -54,8 +70,9 @@
 
                         <svg id="networkcontent"></svg>
                     </div>
+                    <blockquote><h6>Clustering derivation </h6></blockquote>
                     <div class="card-content">
-                        <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                        <p>To enhance the information and detect outlying in data.</p>
                     </div>
                 </div>
 
