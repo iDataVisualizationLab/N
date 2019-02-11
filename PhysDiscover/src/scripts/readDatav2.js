@@ -8,6 +8,7 @@ function readData() {
     return d3.json("src/data/Huffv2.json").then((data)=>{
         let timestep = d3.nest().key(d=>d.timestep).entries(data).length;
         let timerange = d3.range(timestep).map(function(d) { return new Date(2007, d);});
+
         return data.map(d=>{
             return {key: d.fam.replace("'", ""),
             topic: d.topic,

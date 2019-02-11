@@ -65,14 +65,23 @@ function drawSumgap(){
     color = d3.scaleSequential(d3.interpolateSpectral)
         .domain(d3.extent(nestbyKey,d=>d.gap).reverse());
     x = d3.scaleLinear()
+        // .domain(d3.extent(data, d => d.f)).nice()
+        .domain([0,1]).nice()
+        .range([margin.left, widthSvg - margin.right]);
+    xx = d3.scaleLinear()
         .domain(d3.extent(data, d => d.f)).nice()
+        .domain([0,1]).nice()
         .range([margin.left, widthSvg - margin.right]);
     y = d3.scaleLinear()
+        .domain([0,1]).nice()
+        // .domain(d3.extent(data, d => d.df)).nice()
+        .range([heightSvg - margin.bottom, margin.top]);
+    yy = d3.scaleLinear()
         .domain(d3.extent(data, d => d.df)).nice()
         .range([heightSvg - margin.bottom, margin.top]);
     let xAxis = g => g
         .attr("transform", `translate(0,${heightSvg - margin.bottom})`)
-        .call(d3.axisBottom(x))
+        .call(d3.axisBottom(xx))
         //.call(g => g.select(".domain").remove())
         .call(g => g.append("text")
             .attr("x", widthSvg - margin.right)
@@ -83,7 +92,7 @@ function drawSumgap(){
             .text("Temperature"));
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(yy))
         //.call(g => g.select(".domain").remove())
         .call(g => g.select(".tick:last-of-type text").clone()
             .attr("x", 4)
@@ -115,8 +124,8 @@ function drawSumgap(){
         .data(d=>d.values).enter()
         .append('circle')
         .attrs({class: 'datapoint',
-            cx: d=>x(d.values[0].f),
-            cy: d=>y(d.values[0].df),
+            cx: d=>x(scaleX(d.values[0].f)),
+            cy: d=>y(scaleY(d.values[0].df)),
             r:  2})
         .on('mouseover',mouseoverHandel)
         .on('mouseleave',mouseleaveHandel);
@@ -235,8 +244,8 @@ function sumgap (g){
             d: d3.line()
                 .curve(d3.curveCardinal)
                 .x(function(d) {
-                    return x(d.f); })
-                .y(function(d) { return y(d.df); })
+                    return x(scaleX(d.f)); })
+                .y(function(d) { return y(scaleY(d.df)); })
         });
 }
 function mouseoverHandel(datain){
@@ -287,8 +296,8 @@ function lineConnect(l,scale){
             d: d3.line()
                 .curve(d3.curveCardinal)
                 .x(function(d) {
-                    return x(d.values[0].f)/scale; })
-                .y(function(d) { return y(d.values[0].df)/scale; })
+                    return x(scaleX(d.values[0].f))/scale; })
+                .y(function(d) { return y(scaleY(d.values[0].df))/scale; })
         })
 }
 function activepoint(p){
@@ -451,7 +460,7 @@ function drawNetgap(nodenLink){
 
                 d.x = Math.max(widthSvg/10, Math.min(widthNet - widthSvg/5, d.x));
                 d.y = Math.max(heightSvg/10, Math.min(heightNet - heightSvg/5, d.y));
-                return `translate(${d.x- widthSvg/10},${d.y- heightSvg/10})`});
+                return `translate(${d.x},${d.y- heightSvg/5})`});
     });
     function drag (simulation) {
 
