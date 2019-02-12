@@ -27,14 +27,14 @@
           <entry key="CSS" value="1" />
           <entry key="HTML" value="2" />
           <entry key="JSON" value="2" />
-          <entry key="JavaScript" value="27" />
+          <entry key="JavaScript" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="290" />
-          <entry key="HTML" value="922" />
-          <entry key="JavaScript" value="12194" />
+          <entry key="CSS" value="309" />
+          <entry key="HTML" value="1064" />
+          <entry key="JavaScript" value="13283" />
         </counts>
       </usages-collector>
     </session>
@@ -44,17 +44,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="24" column="60" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="60" />
+            <state relative-caret-position="402">
+              <caret line="54" column="22" lean-forward="true" selection-start-line="43" selection-start-column="16" selection-end-line="54" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
+            <state relative-caret-position="256">
+              <caret line="34" column="10" selection-start-line="34" selection-start-column="10" selection-end-line="36" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -62,26 +62,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/temp.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
+            <state relative-caret-position="136">
+              <caret line="46" column="43" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scripts/readData.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="30" selection-start-line="1" selection-start-column="20" selection-end-line="2" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="84" column="33" lean-forward="true" selection-start-line="84" selection-start-column="12" selection-end-line="84" selection-end-column="33" />
+            <state relative-caret-position="119">
+              <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -89,8 +80,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="291" column="4" selection-start-line="291" selection-start-column="4" selection-end-line="291" selection-end-column="4" />
+            <state relative-caret-position="159">
+              <caret line="258" column="47" lean-forward="true" selection-start-line="258" selection-start-column="36" selection-end-line="258" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -107,8 +98,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="52" column="19" selection-start-line="51" selection-start-column="6" selection-end-line="52" selection-end-column="19" />
+            <state relative-caret-position="1207">
+              <caret line="131" column="5" selection-start-line="131" selection-start-column="1" selection-end-line="131" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -126,36 +117,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>nettemp</find>
-      <find>colider</find>
-      <find>0.3</find>
       <find>limitconnect</find>
-      <find>color</find>
-      <find>many</find>
-      <find>filter</find>
-      <find>filter(</find>
-      <find>.f</find>
-      <find>d.f</find>
-      <find>scaleX</find>
-      <find>cal</find>
-      <find>simulation</find>
-      <find>UnzipData</find>
-      <find>callgapsall</find>
-      <find>activepoint</find>
-      <find>mean</find>
-      <find>drawSumgap</find>
-      <find>.range(</find>
-      <find>scaleX =</find>
-      <find>x</find>
+      <find>tick</find>
+      <find>wssvg</find>
+      <find>xax</find>
       <find>line</find>
-      <find>lineConnect</find>
-      <find>x = d3</find>
+      <find>linec</find>
+      <find>scatterConfig</find>
+      <find>sym</find>
+      <find>d3.scaleSymlog()</find>
+      <find>delta</find>
+      <find>scaleX</find>
       <find>xx</find>
+      <find>tip</find>
+      <find>x</find>
+      <find>scattercon</find>
+      <find>lineconnec</find>
+      <find>x =</find>
+      <find>x = d3.</find>
+      <find>.x</find>
+      <find>scatterConfig.y</find>
       <find>x(</find>
-      <find>normalize</find>
-      <find>xx(</find>
-      <find>chosenService</find>
-      <find>changeVar</find>
+      <find>mouse</find>
+      <find>symlog</find>
+      <find>linkgroup</find>
+      <find>stroke-width</find>
+      <find>0.3</find>
+      <find>0.5</find>
+      <find>link</find>
+      <find>linkGap</find>
+      <find>0.8</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -164,14 +155,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/css/main.css" />
         <option value="$PROJECT_DIR$/src/scripts/readData.js" />
+        <option value="$PROJECT_DIR$/src/scripts/readDatav2.js" />
+        <option value="$PROJECT_DIR$/src/css/main.css" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/temp.html" />
-        <option value="$PROJECT_DIR$/src/scripts/readDatav2.js" />
-        <option value="$PROJECT_DIR$/src/scripts/Huffmain.js" />
         <option value="$PROJECT_DIR$/src/scripts/ulti.js" />
         <option value="$PROJECT_DIR$/src/scripts/main.js" />
+        <option value="$PROJECT_DIR$/src/scripts/Huffmain.js" />
       </list>
     </option>
   </component>
@@ -273,7 +264,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html">
+  <component name="RunManager" selected="JavaScript Debug.temp.html">
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:64320/PhysDiscover/index.html">
       <method v="2" />
     </configuration>
@@ -301,24 +292,24 @@
       <workItem from="1549239946658" duration="606000" />
       <workItem from="1549240643473" duration="3613000" />
       <workItem from="1549318628498" duration="130000" />
-      <workItem from="1549318796503" duration="189471000" />
+      <workItem from="1549318796503" duration="220110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="193820000" />
+    <option name="totallyTimeSpent" value="224459000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="278" y="27" width="2289" height="1020" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14042172" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14042172" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.43179256" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.43179256" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -349,69 +340,45 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>446</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>480</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>346</line>
+          <line>487</line>
           <properties />
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>424</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="123" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>382</line>
+          <line>524</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="129" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>337</line>
+          <line>478</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>213</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="131" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>215</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="132" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>318</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="134" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/main.js</url>
-          <line>81</line>
+          <line>82</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="135" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/scripts/main.js</url>
-          <line>73</line>
+          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
+          <line>193</line>
           <properties />
-          <option name="timeStamp" value="136" />
+          <option name="timeStamp" value="141" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
+          <line>207</line>
+          <properties />
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
+          <line>237</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="145" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -431,13 +398,6 @@
     <entry file="http://localhost:64320/PhysDiscover/src/scripts/main.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="52" column="19" selection-start-line="51" selection-start-column="6" selection-end-line="52" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/Huff.json">
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state relative-caret-position="170">
@@ -454,41 +414,10 @@
     <entry file="file://$PROJECT_DIR$/src/data/Huffv2.json">
       <provider selected="true" editor-type-id="LargeFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/temp.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="http://localhost:64320/PhysDiscover/src/scripts/Huffmain.js">
-      <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="84" column="33" lean-forward="true" selection-start-line="84" selection-start-column="12" selection-end-line="84" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="291" column="4" selection-start-line="291" selection-start-column="4" selection-end-line="291" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="24" column="60" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/readDatav2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        <state relative-caret-position="402">
+          <caret line="54" column="22" lean-forward="true" selection-start-line="43" selection-start-column="16" selection-end-line="54" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -499,10 +428,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/temp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="46" column="43" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="http://localhost:64320/PhysDiscover/src/scripts/Huffmain.js">
+      <provider selected="true" editor-type-id="httpFileEditor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
+        <state relative-caret-position="256">
+          <caret line="34" column="10" selection-start-line="34" selection-start-column="10" selection-end-line="36" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/readDatav2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="258" column="47" lean-forward="true" selection-start-line="258" selection-start-column="36" selection-end-line="258" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1207">
+          <caret line="131" column="5" selection-start-line="131" selection-start-column="1" selection-end-line="131" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
         </state>
       </provider>
     </entry>

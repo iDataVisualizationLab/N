@@ -70,7 +70,6 @@ function drawSumgap(){
         .range([margin.left, widthSvg - margin.right]);
     xx = d3.scaleLinear()
         .domain(d3.extent(data, d => d.f)).nice()
-        .domain([0,1]).nice()
         .range([margin.left, widthSvg - margin.right]);
     y = d3.scaleLinear()
         .domain([0,1]).nice()
@@ -248,46 +247,7 @@ function sumgap (g){
                 .y(function(d) { return y(scaleY(d.df)); })
         });
 }
-function mouseoverHandel(datain){
-    tip.show(datain);
-    let timestep = datain.key;
-    let datapoint = datain.values[0];
-    let cpoint = mainsvg.selectAll(".gCategory").filter(f=>f.key!==datapoint.key);
-    cpoint.transition().duration(500)
-        .call(deactivepoint);
-    let currentHost = mainsvg.select("#"+datapoint.key);
 
-    netsvg.selectAll(".linkLineg").style('opacity',0.2);
-    d3.select('#mini'+datapoint.key).style('opacity',1);
-    d3.selectAll(".linkGap").style('stroke-opacity',0.1);
-    d3.selectAll(".linkGap").filter(d=>d.source.key===datapoint.key||d.target.key===datapoint.key).style('stroke-opacity',1);
-    if (!currentHost.select('.linkLine').empty())
-        currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect)
-            .transition()
-            .duration(2000)
-            .attrTween("stroke-dasharray", tweenDash);
-    else
-        currentHost.append('path').datum(d=>d.values).call(lineConnect)
-            .transition()
-            .duration(2000)
-            .attrTween("stroke-dasharray", tweenDash);
-    function tweenDash() {
-        var l = this.getTotalLength(),
-            i = d3.interpolateString("0," + l, l + "," + l);
-        return function (t) { return i(t); };
-    }
-}
-function mouseleaveHandel(datain){
-    tip.hide();
-    // let timestep = datain.key;
-    // let datapoint = datain.values;
-    let cpoint = mainsvg.selectAll(".gCategory")
-        .transition().duration(200)
-        .call(activepoint);
-    mainsvg.selectAll(".linkLine").style("opacity",0.5);
-    netsvg.selectAll(".linkLineg").style('opacity',1);
-    netsvg.selectAll(".linkGap").style('stroke-opacity',0.3);
-}
 function lineConnect(l,scale){
     scale = scale||1;
     return l

@@ -128,3 +128,8 @@ html, body, .block {
     clear: both;
     float: none;
 }
+
+.linkLineg text {
+    text-shadow: 1px 1px #fff8ff;
+    text-anchor: start;
+}
