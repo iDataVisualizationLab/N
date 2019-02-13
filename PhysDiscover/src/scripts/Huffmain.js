@@ -49,7 +49,7 @@ let netConfig ={
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
     colider: function() {return this.smallgrapSize()/15},
-    ratiograph: 7,
+    ratiograph: 8,
     smallgrapSize: function(d){return this.width/this.ratiograph},
     fontRange:[25,35]
 };
@@ -102,6 +102,7 @@ function init(){
         initScatter ();
         initWS ();
         drawWS();
+        drawInstances(dataRaw);
         drawScatter();
         nodenLink = callgapsall(data,filterConfig.limitconnect);
         //initNetgap();
@@ -117,6 +118,7 @@ function recall (){
     nodenLink = callgapsall(data,filterConfig.limitconnect);
     //initNetgap();
     drawNetgapHuff(nodenLink,isColorMatchCategory);
+    drawScatter();
 }
 function initOther(){
     let colors = d3.schemeCategory10;
@@ -157,7 +159,17 @@ function initScatter () {
     scatterConfig.scale = netConfig.smallgrapSize()/scatterConfig.widthG();
     scatterConfig.x = d3.scaleSymlog().domain(d3.extent(data,d=>d.f)).range([0, scatterConfig.widthG()]);
     scatterConfig.y = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([scatterConfig.heightG(), 0]);
-
+    scatterConfig.lineConnect = function (l){
+        return l
+            .attrs({
+                class: 'linkLine',
+                d: d3.line()
+                    .curve(d3.curveCardinal.tension(0.25))
+                    .x(function(d) {
+                        return scatterConfig.x(d.values[0].f); })
+                    .y(function(d) { return scatterConfig.y(d.values[0].df); })
+            })
+    };
     scatterConfig.xAxis = g => g
         .attr("transform", `translate(0,${scatterConfig.heightG()})`)
         .call(d3.axisBottom(scatterConfig.x))
@@ -178,41 +190,85 @@ function initScatter () {
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
             .text("Sudden Change"));
-
+    scsvg.gIn = scsvg.g.append('g')
+        .attr('id','InstancePlot');
     scsvg.select('.axis').append('g')
         .attr('class','axis--x')
         .call(scatterConfig.xAxis);
     scsvg.select('.axis').append('g')
         .attr('class','axis--y')
         .call(scatterConfig.yAxis);
+    scsvg.g.call(tip2);
 }
+function drawInstances(dataR){
+    let datanest = d3.nest()
+        .key(function(d) { return d.key; }).sortValues((a,b)=>(b.df-a.df))
+        .rollup(d=>d.slice(0,1))
+        .entries(dataR);
+    let pointsdata = scsvg.gIn.selectAll(".gInstance")
+        .data(datanest,d=>d.value);
+    let gpoints_new = pointsdata.enter()
+        .append('g')
+        .attr('class','gInstance').style('opacity',0);
+
+    gpoints_new.selectAll(".instancePoint")
+        .data(d=>d.value).enter()
+        .append('circle')
+        .attr('class','instancePoint');
+    //remove
+    pointsdata.exit().transition().duration(1000)
+        .style('opacity',0.1).remove();
+    //update data
+    let gpoints = scsvg.g.selectAll(".gInstance")
+        .attr('id', d=>'instance'+d.key).call(activepoint);
+
+    gpoints.selectAll(".instancePoint").attrs({
+        cx: d=>scatterConfig.x(d.f),
+        cy: d=>scatterConfig.y(d.df),
+        r:  2})
+        .style('opacity',0.2)
+        .style('fill',d=> color(d.topic));
+
+
+}
+
 function drawScatter(){
     let datanest = d3.nest()
         .key(function(d) { return d.key; })
         .key(function(d) { return d.timestep; })
         .entries(data);
+
     datanest.forEach((d,i)=>d.gap =nestbyKey[i].gap);
-    let maing = scsvg.g. append('g')
-        .attrs({id: 'maing'});
-    scsvg.g.call(tip2);
-    let gpoints = maing.selectAll(".gCategory")
-        .data(datanest,d=>d.values).enter()
+
+    let pointsdata = scsvg.g.selectAll(".gCategory")
+        .data(datanest,d=>d.values);
+    let gpoints_new = pointsdata.enter()
         .append('g')
-        .attrs({class: 'gCategory',
-            id: d=>d.key})
-        .call(activepoint);
-    gpoints.selectAll(".datapoint")
+        .attr('class','gCategory').style('opacity',0);
+
+    gpoints_new.selectAll(".datapoint")
         .data(d=>d.values).enter()
         .append('circle')
-        .attrs({class: 'datapoint',
-            cx: d=>scatterConfig.x(d.values[0].f),
-            cy: d=>scatterConfig.y(d.values[0].df),
-            r:  2})
+        .attr('class','datapoint');
+    //remove
+    pointsdata.exit().transition().duration(1000)
+        .style('opacity',0.1).remove();
+    //update data
+    let gpoints = scsvg.g.selectAll(".gCategory")
+        .attr('id', d=>d.key).call(activepoint);
+
+    gpoints.selectAll(".datapoint").attrs({
+        cx: d=>scatterConfig.x(d.values[0].f),
+        cy: d=>scatterConfig.y(d.values[0].df),
+        r:  2})
+        .style('fill',d=> color(d.values[0].topic))
         .on('mouseover',mouseoverHandel)
-        .on('mouseleave',mouseleaveHandel);
-    scsvg.g.call(sumgap);
+        .on('mouseleave',mouseleaveHandel)
+
+    // scsvg.g.call(sumgap);
    // d3.select('#legend-svg').call(colorlegend);
 }
+
 function mouseoverHandel(datain){
     tip2.show(datain);
     let timestep = datain.key;
@@ -228,14 +284,13 @@ function mouseoverHandel(datain){
     d3.selectAll(".linkGap").filter(d=>d.source.key===datapoint.key||d.target.key===datapoint.key).style('stroke-opacity',1);
     if (!currentHost.select('.linkLine').empty())
         currentHost.select('.linkLine').datum(d=>d.values)
-            .call(d=>lineConnect(d,scatterConfig.scale))
+            .call(scatterConfig.lineConnect)
             .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
     else
-        currentHost.append('path').datum(d=>d.values).call(d=>lineConnect(d,scatterConfig.scale))
-            .style('stroke',d=>{
-                console.log(d); return color(d.values[0].topic)})
+        currentHost.append('path').datum(d=>d.values).call(scatterConfig.lineConnect)
+            .style('stroke',d=> color(d[0].values[0].topic))
             .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);

@@ -248,13 +248,13 @@ function sumgap (g){
         });
 }
 
-function lineConnect(l,scale){
+function lineConnect(l,scale,scale){
     scale = scale||1;
     return l
         .attrs({
             class: 'linkLine',
             d: d3.line()
-                .curve(d3.curveCardinal)
+                .curve(d3.curveCardinal.tension(0.25))
                 .x(function(d) {
                     return x(scaleX(d.values[0].f))/scale; })
                 .y(function(d) { return y(scaleY(d.values[0].df))/scale; })
