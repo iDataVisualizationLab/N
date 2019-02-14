@@ -279,13 +279,13 @@ function callgapsall(data,limit){
         for (let j=i+1; j<nestbyKey.length;j++) {
             let target = nestbyKey[j];
             let gap2 = integration(key.values.map(d=> normalize(d)), target.values.map(d=> normalize(d)));
-            if (limit === undefined || gap2<limit) {
+            //if (limit === undefined || gap2<limit) {
                 newdata.links.push({
                     source: key.key,
                     target: target.key,
                     value: gap2
                 });
-            }
+            //}
         }
         newdata.nodes.push({
             id: key.key,

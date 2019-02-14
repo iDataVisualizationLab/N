@@ -16,10 +16,11 @@ let x,y,color,brush,legendScale,scaleX,scaleY;
 
 let filterConfig = {
     time: [undefined,undefined],
-    maxevent : 10,
-    limitSudden : 15,
-    limitconnect : 10,
-    scalevalueLimit:0.5
+    maxevent : 30,
+    maxeventAll : 200,
+    limitSudden : 50,
+    limitconnect : 1,
+    scalevalueLimit: 0.1
 };
 let scatterConfig ={
     g:{},
@@ -41,14 +42,14 @@ let wsConfig ={
 let netConfig ={
     g:{},
     margin: {top: 0, right: 0, bottom: 0, left: 0},
-    scalezoom: 2    ,
+    scalezoom: 4    ,
     width: widthSvg,
     height: heightSvg,
     widthView: function(){return this.width*this.scalezoom},
     heightView: function(){return this.height*this.scalezoom},
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-    colider: function() {return this.smallgrapSize()/15},
+    colider: function() {return this.smallgrapSize()/10},
     ratiograph: 8,
     smallgrapSize: function(d){return this.width/this.ratiograph},
     fontRange:[25,35]
@@ -100,8 +101,11 @@ function init(){
             .domain([0,1]).nice()
             .range([netConfig.smallgrapSize(),0]);
         initScatter ();
+        // WORD STREAM
         initWS ();
         drawWS();
+        renderWordStream(data);
+        // SCATTER PLOT
         drawInstances(dataRaw);
         drawScatter();
         nodenLink = callgapsall(data,filterConfig.limitconnect);
@@ -154,11 +158,16 @@ function initScatter () {
 
     scsvg.g = scsvg.append('g')
         .attr('class','graph')
-        .attr('transform',`translate(${scatterConfig.margin.left},${scatterConfig.margin.top})`);
+        .attr('transform',`translate(${scatterConfig.margin.left},${scatterConfig.margin.top})`)
+            .append('svg')
+            .attrs({
+                width: scatterConfig.widthG(),
+                height: scatterConfig.heightG(),
+            });
 
     scatterConfig.scale = netConfig.smallgrapSize()/scatterConfig.widthG();
-    scatterConfig.x = d3.scaleSymlog().domain(d3.extent(data,d=>d.f)).range([0, scatterConfig.widthG()]);
-    scatterConfig.y = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([scatterConfig.heightG(), 0]);
+    scatterConfig.x = d3.scaleSymlog().domain(d3.extent(data,d=>d.f)).nice().range([0, scatterConfig.widthG()]);
+    scatterConfig.y = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).nice().range([scatterConfig.heightG(), 0]);
     scatterConfig.lineConnect = function (l){
         return l
             .attrs({
@@ -199,7 +208,58 @@ function initScatter () {
         .attr('class','axis--y')
         .call(scatterConfig.yAxis);
     scsvg.g.call(tip2);
+
+    scatterConfig.xAxisSpike = d3.axisTop(scatterConfig.x).tickValues([]).tickSize(scatterConfig.height/2);
+    scatterConfig.yAxisSpike = d3.axisRight(scatterConfig.y).tickValues([]).tickSize(scatterConfig.width/2);
+    scsvg.select('.axis').append('g')
+        .attr('class','axis--y--spike')
+        .call(customYAxis);
+    scsvg.select('.axis').append('g')
+        .attr('class','axis--x--spike')
+        .attr("transform", `translate(0,${scatterConfig.heightG()})`)
+        .call(customXAxis);
 }
+
+function customYAxis(g) {
+    g.call(scatterConfig.yAxisSpike);
+    g.select(".domain").remove();
+    g.selectAll(".tick line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    g.selectAll(".tick text").attr("x", 4).attr("dy", -4);
+}
+
+function customXAxis(g) {
+    g.call(scatterConfig.xAxisSpike);
+    g.select(".domain").remove();
+    g.selectAll(".tick line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    g.selectAll(".tick text").style('text-anchor','end').attr("dx", -4).attr("y", -4);
+}
+
+function customTimeAxis(g) {
+    g.call(wsConfig.timeAxisSpike);
+    g.select(".domain").remove();
+    g.selectAll(".tick line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    g.selectAll(".tick text").style('text-anchor','end').attr("dx", -4).attr("y", -4);
+}
+
+function updateSpike(x,y,time){
+    if (x&&y) {
+        scatterConfig.yAxisSpike.tickValues([y]).tickSize(scatterConfig.x(x));
+        scsvg.select('.axis--y--spike').call(customYAxis);
+        scatterConfig.xAxisSpike.tickValues([x]).tickSize(scatterConfig.heightG() - scatterConfig.y(y));
+        scsvg.select('.axis--x--spike').call(customXAxis);
+        wsConfig.timeAxisSpike.tickValues([time]);
+        wssvg.select('.axis--x--spike').call(customTimeAxis);
+    }else
+    {
+        scatterConfig.yAxisSpike.tickValues([]);
+        scsvg.select('.axis--y--spike').call(customYAxis);
+        scatterConfig.xAxisSpike.tickValues([]);
+        scsvg.select('.axis--x--spike').call(customXAxis);
+        wsConfig.timeAxisSpike.tickValues([]);
+        wssvg.select('.axis--x--spike').call(customTimeAxis);
+    }
+}
+
 function drawInstances(dataR){
     let datanest = d3.nest()
         .key(function(d) { return d.key; }).sortValues((a,b)=>(b.df-a.df))
@@ -270,6 +330,7 @@ function drawScatter(){
 }
 
 function mouseoverHandel(datain){
+    console.log(datain);
     tip2.show(datain);
     let timestep = datain.key;
     let datapoint = datain.values[0];
@@ -277,7 +338,7 @@ function mouseoverHandel(datain){
     cpoint.transition().duration(500)
         .call(deactivepoint);
     let currentHost = scsvg.g.select("#"+datapoint.key);
-
+    updateSpike(datapoint.f,datapoint.df,datapoint.timestep);
     netsvg.selectAll(".linkLineg").style('opacity',0.2);
     d3.select('#mini'+datapoint.key).style('opacity',1);
     d3.selectAll(".linkGap").style('stroke-opacity',0.1);
@@ -300,7 +361,7 @@ function mouseoverHandel(datain){
         return function (t) { return i(t); };
     }
 }
-function mouseleaveHandel(datain){
+function mouseleaveHandel(){
     tip2.hide();
     // let timestep = datain.key;
     // let datapoint = datain.values;
@@ -310,6 +371,8 @@ function mouseleaveHandel(datain){
     scsvg.g.selectAll(".linkLine").style("opacity",0.5);
     netsvg.selectAll(".linkLineg").style('opacity',1);
     netsvg.selectAll(".linkGap").style('stroke-opacity',0.5);
+
+    updateSpike();
 }
 function initWS () {
     wssvg.attrs({
@@ -327,7 +390,8 @@ function initWS () {
     wssvg.g = wssvg.append('g')
         .attr('class','graph')
         .attr('transform',`translate(${wsConfig.margin.left},${wsConfig.margin.top})`);
-
+    wssvg.g.append('g')
+        .attr("class",'wsArea');
 
 
     wsConfig.timeScale = d3.scaleTime()
@@ -345,16 +409,26 @@ function initWS () {
     wssvg.g.append("g")
         .attr("class", "brush")
         .call(brush);
+
+    wsConfig.timeAxisSpike = d3.axisTop(wsConfig.timeScale)
+        .tickValues([])
+        .tickSize(wsConfig.height)
+        .tickFormat(d3.timeFormat("%B %Y"));
+    wssvg.select('.axis').append('g')
+        .attr('class','axis--x--spike')
+        .attr("transform", `translate(0,${wsConfig.heightG()})`)
+        .call(customTimeAxis);
 }
 
 function drawWS(){
     wsConfig.timeScale.domain(d3.extent(dataRaw, function(d) { return d.timestep; }));
     wssvg.select('.axis--x').call(wssvg.xAxis);
     wssvg.g.select('.brush').call(brush.move, wsConfig.timeScale.range());
+    // renderWordStream(data);
 }
 
 function brushedTime (){
-    console.log(d3.event.sourceEvent!=null?d3.event.sourceEvent.type:"nope!!")
+    console.log(d3.event.sourceEvent!=null?d3.event.sourceEvent.type:"nope!!");
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return;
     var d0 = (d3.event.selection || wsConfig.timeScale.range()).map(wsConfig.timeScale.invert),
@@ -395,17 +469,18 @@ function filterTop(dataR){
     filterConfig.limitSudden = 0;
     nettemp.forEach(c=>{
         c.values=c.values.slice(filterConfig.time[0],filterConfig.time[1]);
-        filterConfig.limitSudden = d3.max([filterConfig.limitSudden,d3.max(c.values,d=>(d3.max(d.values,e=>e.df)))]);
+        filterConfig.limitSudden = d3.mean([filterConfig.limitSudden,d3.max(c.values,d=>(d3.max(d.values,e=>e.df)))]);
     });
-    filterConfig.limitSudden = Math.sqrt(filterConfig.limitSudden);
+    filterConfig.limitSudden = filterConfig.limitSudden*0.25;
     nettemp.forEach(c=>{
         c.values.forEach(t=>{
             t.values.sort((a,b)=>(b.df-a.df));
-            topkeys = d3.merge([topkeys,t.values.slice(0,filterConfig.maxevent).filter(d=>d.df>filterConfig.limitSudden).map(it=>it.key)]);
+            topkeys = d3.merge([topkeys,t.values.slice(0,filterConfig.maxevent).filter(d=>d.df>filterConfig.limitSudden).map(it=>it)]);
         });
     });
+    topkeys.sort((a,b)=>a.df-b.df);
     d3.nest()
-        .key(d=>d).entries(topkeys).forEach(d=>{
+        .key(d=>d.key).entries(topkeys).slice(0,filterConfig.maxeventAll).forEach(d=>{
         nettemp.forEach(c=>{
             c.values.forEach(t=>{
                 let ins = t.values.find(e=>e.key===d.key);
@@ -483,13 +558,13 @@ function initNetgap(){
     netsvg.call(tip);
     zoom.scaleTo(netsvg, 1/netConfig.scalezoom);
     netsvg.call(zoom   .translateTo, netConfig.widthG() / 2,netConfig.heightG() / 2);
-    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*1.5,netConfig.colider()*20]);
-    netConfig.invertscale =  d3.scalePow().exponent(5).range([0.8,0.2]);
+    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*1.5,netConfig.colider()*50]);
+    netConfig.invertscale =  d3.scalePow().exponent(5).range([0.8,0.1]);
     netConfig.simulation = d3.forceSimulation(netConfig.nodes)
         .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>0.1))
         // .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
-        .force("charge", d3.forceManyBody().distanceMax(450)
-            .distanceMin(85))//.strength(-3))
+        .force("charge", d3.forceManyBody().distanceMax(netConfig.colider()*50)
+            .distanceMin(netConfig.colider()*1.5))//.strength(-3))
         .force('collision',d3.forceCollide().radius(netConfig.colider()))
         //.force("cluster", forceCluster)
         .force("center", d3.forceCenter(netConfig.widthG() / 2, netConfig.heightG() / 2))
@@ -539,8 +614,12 @@ function drawNetgapHuff(nodenLink){
         tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
         return tempLinks;
     }
-
-    const links = cutbyThreshold(d3.mean(nodenLink.links,d=>d.value)*filterConfig.scalevalueLimit, 10).map(d => Object.create(d));
+    let q1 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.25);
+    let q3 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.75);
+    filterConfig.scalevalueLimit = (q1- (q3-q1)*1.5);
+    filterConfig.scalevalueLimit = q1;
+    // const links = cutbyThreshold(d3.mean(nodenLink.links,d=>d.value)*filterConfig.scalevalueLimit, 10).map(d => Object.create(d));
+    const links = cutbyThreshold(filterConfig.scalevalueLimit, filterConfig.limitconnect).map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
@@ -643,6 +722,9 @@ function drawNetgapHuff(nodenLink){
     netConfig.node
         .style('pointer-events','auto')
         .on('mouseover',(dd)=>{
+            let maxSudden = d3.max(dd.values,d=>d.values[0].df);
+            let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
+            mouseoverHandel(maxSuddenPoint);
             netConfig.simulation.stop();
             netsvg.selectAll(".linkLineg").style('opacity',0.2);
             d3.select("#mini"+dd.key).style('opacity',1);
@@ -654,7 +736,8 @@ function drawNetgapHuff(nodenLink){
                 d3.select(id).style('opacity',1);
             });
             tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
-        .on('mouseleave',(d)=>{
+        .on('mouseleave',(dd)=>{
+            mouseleaveHandel();
             netConfig.simulation.alphaTarget(.5).restart()
 
             netsvg.selectAll(".linkLineg").style('opacity',1);
@@ -701,4 +784,39 @@ function dragForce (simulation) {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended);
+}
+function renderWordStream (data){
+    // d3.selectAll(".wordStreamDiv").selectAll('svg').remove();
+    // handledata(data);
+    let TermwDay = d3.nest().key(d=>d.timestep)
+        .key(d=>d.topic)
+        .rollup(e=>{return e.map(d=> {return {
+            frequency: d.f,
+                sudden: d.df,
+                text: d.text,
+                topic: d.topic,
+                data:d
+        }})})
+        .entries(data);
+    TermwDay.forEach(t=>{
+        t.words ={};
+        t.values.forEach(d=>{
+            t.words[d.key] = d.value;
+        });
+        delete t.values;
+    });
+    wsConfig.wstep = wsConfig.widthG()/TermwDay.length;
+
+    // parse the date / time
+
+    var configwc = {width: wsConfig.widthG(),height: wsConfig.heightG()};
+    myWordCloud = wordCloud('.wsArea',configwc);
+
+    myWordCloud.update(TermwDay);
+
+    // timeline.select('.sublegend')
+    //     .attr("transform", "translate(" + 0 + "," + height*wscale + ")");
+
+
+    //d3.selectAll("toogle").property("disabled",false);
 }

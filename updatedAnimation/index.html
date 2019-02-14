@@ -57,16 +57,18 @@
                 .on("mouseout", d=>{
                     div.transition().duration(1000).style("opacity", 0);
                     paused = false;
-                }).transition()
-                .call(blinkWhenValue);
+                })
+                .call(blinkWhenValue); // transition without interval timer
         }
         function blinkWhenValue(p){
             return p.transition()
                 .duration(d=>d.price>100?0:1000)
                 .attr("fill","steelblue")
+                .attr("r", 4)
                 .on("end",function(d){
                     if (d.price>100)
-                        return d3.active(this).transition().duration(100)
+                        return d3.active(this).transition().duration(500)
+                            .attr('r',10)
                             .attr("fill","red")
                             .call(blinkWhenValue);
                 });
