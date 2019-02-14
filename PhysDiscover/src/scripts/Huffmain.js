@@ -1,4 +1,4 @@
-let widthSvg = 1000;//document.getElementById("mainPlot").clientWidth-101;
+let widthSvg = 1500;//document.getElementById("mainPlot").clientWidth-101;
 let heightSvg = 800;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
@@ -25,8 +25,8 @@ let filterConfig = {
 let scatterConfig ={
     g:{},
     margin: {top: 5, right: 5, bottom: 40, left: 40},
-    width: 600,
-    height: 600,
+    width: 500,
+    height: 500,
     widthG: function(){return this.width-this.margin.left-this.margin.right},
     heightG: function(){return this.height-this.margin.top-this.margin.bottom},
     scale:5,
@@ -42,7 +42,7 @@ let wsConfig ={
 let netConfig ={
     g:{},
     margin: {top: 0, right: 0, bottom: 0, left: 0},
-    scalezoom: 4    ,
+    scalezoom: 1,
     width: widthSvg,
     height: heightSvg,
     widthView: function(){return this.width*this.scalezoom},
@@ -50,9 +50,9 @@ let netConfig ={
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
     colider: function() {return this.smallgrapSize()/10},
-    ratiograph: 8,
+    ratiograph: 24,
     smallgrapSize: function(d){return this.width/this.ratiograph},
-    fontRange:[25,35]
+    fontRange:[10,15]
 };
 let isColorMatchCategory = true;
 
@@ -355,6 +355,8 @@ function mouseoverHandel(datain){
             .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
+    // word stream
+    wssvg.selectAll('.gtext').filter(d=>d.data.key!==datapoint.key).style('opacity',0.1);
     function tweenDash() {
         var l = this.getTotalLength(),
             i = d3.interpolateString("0," + l, l + "," + l);
@@ -371,7 +373,7 @@ function mouseleaveHandel(){
     scsvg.g.selectAll(".linkLine").style("opacity",0.5);
     netsvg.selectAll(".linkLineg").style('opacity',1);
     netsvg.selectAll(".linkGap").style('stroke-opacity',0.5);
-
+    wssvg.selectAll('.gtext').style('opacity',1);
     updateSpike();
 }
 function initWS () {
@@ -522,7 +524,7 @@ function callSum(){
 
 
 function initNetgap(){
-    netConfig.margin = ({top: 5, right: 20, bottom: 20, left: 5});
+    netConfig.margin = ({top: 0, right: 0, bottom: 0, left: 0});
     netConfig.width = widthSvg;
     netConfig.height = heightSvg;
     netsvg
@@ -558,10 +560,10 @@ function initNetgap(){
     netsvg.call(tip);
     zoom.scaleTo(netsvg, 1/netConfig.scalezoom);
     netsvg.call(zoom   .translateTo, netConfig.widthG() / 2,netConfig.heightG() / 2);
-    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*1.5,netConfig.colider()*50]);
+    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*1.5,netConfig.colider()*20]);
     netConfig.invertscale =  d3.scalePow().exponent(5).range([0.8,0.1]);
     netConfig.simulation = d3.forceSimulation(netConfig.nodes)
-        .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>0.1))
+        .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
         // .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
         .force("charge", d3.forceManyBody().distanceMax(netConfig.colider()*50)
             .distanceMin(netConfig.colider()*1.5))//.strength(-3))
@@ -586,14 +588,7 @@ function initNetgap(){
                 return `translate(${d.x},${d.y-smallgaph})`});
                 //return `translate(${d.x- netConfig.width/10},${d.y- netConfig.height/10})`});
     });
-    function forceCluster(alpha) {
-        for (var i = 0, n = nodes.length, node, cluster, k = alpha * 1; i < n; ++i) {
-            node = nodes[i];
-            cluster = clusters[node.cluster];
-            node.vx -= (node.x - cluster.x) * k;
-            node.vy -= (node.y - cluster.y) * k;
-        }
-    }
+
 
 }
 
@@ -651,7 +646,7 @@ function drawNetgapHuff(nodenLink){
         // .enter().append("line")
         .attr("class","linkGap")
         .attr("stroke", 'black')
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .attr("stroke-width", d => Math.sqrt(Math.sqrt(d.value)));
 
 
     // DATA JOIN
