@@ -42,9 +42,17 @@ body {
 
 #header {
     /*background-color: #ffffff;*/
-    background-color: #a71d31;
-    background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);
+    background: #ffffff;  /* fallback for old browsers */
+    border-bottom: 1px solid #f3f3f3;
+
+
+    /*background-color: #a71d31;*/
+    /*background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);*/
 }
+#header a,#header .brand-logo{
+    color:black
+}
+
 .titletext {
     margin-top: 0;
 }
@@ -90,9 +98,7 @@ body {
     max-width:1200px;
     max-height:1200px;
 }
-#legend-svg {
-    vertical-align: top;
-}
+
 #controls {
     padding-top: 10px;
 }
@@ -141,3 +147,11 @@ ul {
     background-color: #555;
     color: #ffffff;
 }
+
+.bodyContent {
+    background: #141E30;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+

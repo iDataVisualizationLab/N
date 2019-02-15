@@ -26,7 +26,6 @@ mainsvg.attrs({
     ViewBox:"0 0 "+widthSvg+" " +heightSvg,
     preserveAspectRatio:"xMidYMid meet"
 }).styles({
-    width: '90%',
     overflow: "visible",
 
 });

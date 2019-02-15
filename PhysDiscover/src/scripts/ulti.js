@@ -146,9 +146,7 @@ function colorlegend (g){
     var legendHeight = legendFullHeight - legendMargin.top - legendMargin.bottom;
 
     var legendSvgMain = g.attr('width', legendFullWidth)
-        .attr('height', legendFullHeight)
-        .style('position', 'fixed')
-        .style('float', 'right');
+        .attr('height', legendFullHeight);
     var legendSvg = legendSvgMain.append('g')
         .attr('transform', 'translate(' + legendMargin.left + ',' +
             legendMargin.top + ')');
