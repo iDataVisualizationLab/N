@@ -4,7 +4,7 @@ var serviceLists = [{text: "Huff", id: 0,
 var serviceListattr = ["arr"];
 var chosenService = 0;
 
-function readData() {
+function readData(startCut,endCut) {
      // return d3.json("src/data/Huffv2.json").then((data)=>{
     return d3.json("src/data/Huffv3.json").then((data)=>{
         // let timestep = d3.nest().key(d=>d.timestep).entries(data).length;
@@ -13,11 +13,13 @@ function readData() {
         let dataRead = [];
         data.forEach(topics=>{
             topics.values.forEach(d=>d.value.forEach(it=>{
+                let timestepIt = timerange[it.timestep];
+                if ((timestepIt>(startCut||0)) &&(timestepIt<(endCut||Infinity)))
                 dataRead.push({key: d.key.replace("'", ""),
                         topic: topics.key,
                         text: it.text,
                         f: it.frequency,
-                        timestep: timerange[it.timestep],
+                        timestep: timestepIt,
                         df: it.sudden});
             }));
         });

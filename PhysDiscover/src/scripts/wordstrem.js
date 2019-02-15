@@ -2,7 +2,7 @@
 var categoriesgroup ={
     "term": ["term"]};
 
-var colorsw = d3.scaleOrdinal(d3.schemeCategory10);
+//var colorsw = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%Y');
 var parseTime = (d => Date.parse(d));
@@ -181,11 +181,11 @@ function wordCloud(selector,config) {
             .data(boxes.layers)
             .attr('d', area)
             .style('fill', function (d, i) {
-                return colorsw(i);
+                return color(boxes.topics[i]);
             })
 
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.05,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.5,
                 topic: function(d, i){return topics[i];}
@@ -197,10 +197,10 @@ function wordCloud(selector,config) {
             .attr('class','stokepath')
             .attr('d', area)
             .style('fill', function (d, i) {
-                return colorsw(i);
+                return color(boxes.topics[i]);
             })
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.05,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.5,
                 topic: function(d, i){return topics[i];}
@@ -217,7 +217,7 @@ function wordCloud(selector,config) {
 
         var opacity = d3.scaleLog()
             .domain([minFreq, maxFreq])
-            .range([0.5,1]);
+            .range([0.7,1]);
 
         // Add moi chu la 1 element <g>, xoay g dung d.rotate
         var placed = true; // = false de hien thi nhung tu ko dc dien
@@ -240,7 +240,7 @@ function wordCloud(selector,config) {
             .styles({
                 'font-family': font,
                 'font-size': function(d){return d.fontSize + "px";},
-                'fill': function(d){return colorsw(d.topicIndex)},//function(d){return color(d.topicIndex);},
+                'fill': function(d){return color(boxes.topics[d.topicIndex])},//function(d){return color(d.topicIndex);},
                 'fill-opacity': function(d){return opacity(d.frequency)},
                 'text-anchor': 'middle',
                 'alignment-baseline': 'middle'
@@ -264,7 +264,7 @@ function wordCloud(selector,config) {
             .styles({
                 'font-family': font,
                 'font-size': function(d){return d.fontSize + "px";},
-                'fill': function(d){return colorsw(d.topicIndex)},
+                'fill': function(d){return color(boxes.topics[d.topicIndex])},//function(d){return color(d.topicIndex);},
                 'fill-opacity': function(d){return opacity(d.frequency)},
                 'text-anchor': 'middle',
                 'alignment-baseline': 'middle'
@@ -286,7 +286,7 @@ function wordCloud(selector,config) {
             var allTexts = mainGroup.selectAll('.stext').filter(t =>{
                 var sameTerm = t && t.text === text &&  t.topic === topic;
                 var sameArticle = false;
-                t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title===tt.title)!==undefined)));
+                //t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title===tt.title)!==undefined)));
                 return sameTerm || sameArticle;
             });
             allTexts.style('fill-opacity', 1);
@@ -296,7 +296,7 @@ function wordCloud(selector,config) {
             //     'stroke-width': 1.5
             // });
 
-            showTip(d,wordTip);
+            //showTip(d,wordTip);
         });
 
         mainGroup.selectAll('.stext').on('mouseleave', function(d){
@@ -310,7 +310,7 @@ function wordCloud(selector,config) {
 
             allTexts
                 .style('fill-opacity', function(d){return opacity(d.frequency)});
-            hidetip();
+            //hidetip();
         });
         //Click
 

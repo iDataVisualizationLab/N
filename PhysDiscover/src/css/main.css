@@ -50,7 +50,9 @@ body {
     /*background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);*/
 }
 #header a,#header .brand-logo{
-    font-family: 'Russo One', sans-serif;
+    /*font-family: 'Passion One', cursive;*/
+    /*font-family: 'Russo One', sans-serif;*/
+    font-family: 'Fredoka One', cursive;
     color: #ffffff
 }
 
@@ -160,4 +162,8 @@ ul {
 }
 blockquote{
     border-left: 5px solid #ffffff;
+}
+
+.disableWord {
+    opacity:0.1;
 }

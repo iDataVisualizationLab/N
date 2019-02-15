@@ -93,7 +93,7 @@ init();
 function init(){
 
 
-    readData().then((d)=>{
+    readData(new Date('2010')).then((d)=>{
         // read and assign
         dataRaw = d;
 
@@ -112,10 +112,8 @@ function init(){
         // WORD STREAM
         initWS ();
         drawWS();
-        const cal1 = new Date();
-        renderWordStream(data);
-        const cal2 = new Date();
-        console.log('Word Stream drawing time: '+(cal2-cal1));
+
+        renderWS(data);
         // SCATTER PLOT
         drawInstances(dataRaw);
         drawScatter();
@@ -130,6 +128,7 @@ function recall (){
     data = filterTop(dataRaw);
     callSum();
     drawWS();
+    // hightlightWS();
     nodenLink = callgapsall(data,filterConfig.limitconnect);
     //initNetgap();
     drawNetgapHuff(nodenLink,isColorMatchCategory);
@@ -452,7 +451,6 @@ function drawWS(){
     wsConfig.timeScale.domain(d3.extent(dataRaw, function(d) { return d.timestep; }));
     wssvg.select('.axis--x').call(wssvg.xAxis);
     wssvg.g.select('.brush').call(brush.move, wsConfig.timeScale.range());
-    // renderWordStream(data);
 }
 
 function brushedTime (){
@@ -467,6 +465,7 @@ function brushedTime (){
         d1[1] = d3.timeMonth.offset(d1[0]);
     }
     updateAxisX(d1);
+    hightlightWS(d1);
     //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
     if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")){
 
@@ -807,7 +806,7 @@ function dragForce (simulation) {
         .on("drag", dragged)
         .on("end", dragended);
 }
-function renderWordStream (data){
+function renderWS (data){
     const cal1 = new Date();
     // d3.selectAll(".wordStreamDiv").selectAll('svg').remove();
     // handledata(data);
@@ -815,7 +814,7 @@ function renderWordStream (data){
         .key(d=>d.topic)
         .rollup(e=>{return e.filter(d=>d.f).map(d=> {
             return {
-            frequency: d.f,
+            frequency: Math.sqrt(d.f),
                 sudden: d.df,
                 text: d.text,
                 topic: d.topic,
@@ -840,9 +839,14 @@ function renderWordStream (data){
 
     myWordCloud.update(TermwDay);
 
-    // timeline.select('.sublegend')
-    //     .attr("transform", "translate(" + 0 + "," + height*wscale + ")");
+}
 
-
-    //d3.selectAll("toogle").property("disabled",false);
+function hightlightWS(d1){
+    d3.selectAll('.stext')
+        .classed('disableWord',false)
+        .filter(d=> {
+            let cT = d.data.timestep;
+            let TR = d1||filterConfig.time.map(wsConfig.time2index.invert);
+            return (cT < TR[0]) || (cT > TR[1]); //in range time
+        }).classed('disableWord',true);
 }
