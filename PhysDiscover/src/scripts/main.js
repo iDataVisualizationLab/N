@@ -75,14 +75,16 @@ $( document ).ready(function(){
     //             .text(d=>d.text),
     //         update => update.select("a")
     //             .text(d=>d.text));
+    serviceLists.forEach(d=>d.sub.forEach(e=>e.mainService=d.id));
     d3.select("#listvar")
         .selectAll('li').remove();
     let menucombo = d3.select("#listvar")
         .selectAll('li')
         .data(serviceLists,d=>d.id)
-        .join(enter => enter.append("li") .attr('tabindex','0')
+        .join(enter => enter.append("li") .attr('tabindex','0').selectAll('a')
+                .data(d=>d.sub).enter()
                 .append("a")
-                .attr('href',"#").text(d=>d.text),
+                .attr('href',"#").text(d=>{console.log(d);return d.text}),
             update => update.select("a")
                 .text(d=>d.text))
         .on('click',changeVar);
@@ -97,6 +99,7 @@ $( document ).ready(function(){
 function changeVar(d){
     console.log(d);
     chosenService =d.id;
+    service_part = d.mainService;
     reset();
     $('#currentservice').text(d.text);
 }

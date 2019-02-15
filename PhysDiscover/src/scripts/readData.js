@@ -1,10 +1,10 @@
 var serviceList = ["Temperature","Job_load","Memory_usage","Fans_speed","Power_consum"];
 var serviceLists = [{text: "Temperature", id: 0,
-    sub:[{text: 'CPU1', id: 0},{text: 'CPU2', id: 1},{text: 'Intel', id: 2}]},
-    {text: "Job_load", id: 1,sub:[]},
-    {text: "Memory_usage", id: 2,sub:[]},
+    sub:[{text: 'Temperature - CPU1', id: 0},{text: 'Temperature - CPU2', id: 1},{text: 'Temperature - Intel', id: 2}]},
+    {text: "Job_load", id: 1,sub:[{text: 'Job_load', id: 0}]},
+    {text: "Memory_usage", id: 2,sub:[{text: 'Memory_usage', id: 0}]},
     {text: "Fans_speed", id: 3,sub:[{text: 'Fan1', id: 0},{text: 'Fan2', id: 1},{text: 'Fan3', id: 2},{text: 'Fan4', id: 3}]},
-    {text: "Power_consum", id: 4,sub:[]}];
+    {text: "Power_consum", id: 4,sub:[{text: 'Power_consum', id: 0}]}];
 var serviceListattr = ["arrTemperature","arrCPU_load","arrMemory_usage","arrFans_health","arrPower_usage"];
 var thresholds = [[3,98], [0,10], [0,99], [1050,17850],[0,200] ];
 var chosenService = 0;
