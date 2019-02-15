@@ -34,7 +34,14 @@ mainsvg.attrs({
 /* Initialize tooltip */
 let tip = d3.tip().attr('class', 'd3-tip')
     .offset([-10, 0])
-    .html(function(d) { return d.values[0].key; });
+    .html(function(d) {
+        console.log(d);
+        if (d.values[0].connect===undefined)return d.values[0].key;
+        return ([d.values[0].key,d.values[0].connect.map(e=> {
+        if (e.source.key !== d.values[0].key)
+            return e.source.key;
+        return  e.target.key;
+    }).join(', ')]).join(': '); });
 
 
 
@@ -100,7 +107,7 @@ function changeVar(d){
     console.log(d);
     chosenService =d.mainService;
     service_part = d.id;
-    $('#labelSum').text('Phase Space of '+serviceLists[chosenService]);
+    $('#labelSum').text('Phase Space of '+serviceLists[chosenService].text);
     reset();
     $('#currentservice').text(d.text);
 }
@@ -128,6 +135,7 @@ function mouseoverHandel(datain){
     d3.select('#mini'+datapoint.key).style('opacity',1);
     d3.selectAll(".linkGap").style('stroke-opacity',0.1);
     d3.selectAll(".linkGap").filter(d=>d.source.key===datapoint.key||d.target.key===datapoint.key).style('stroke-opacity',1);
+
     if (!currentHost.select('.linkLine').empty())
         currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect)
             .transition()

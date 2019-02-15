@@ -85,7 +85,7 @@ function drawSumgap(){
         .call(g => g.append("text")
             .attr("x", widthSvg - margin.right)
             .attr("y", -4)
-            .attr("fill", "#000")
+            .attr('fill','#ffffff')
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
             .attr('class','labelx')
@@ -127,7 +127,7 @@ function drawSumgap(){
         .attrs({class: 'datapoint',
             cx: d=>x(scaleX(d.values[0].f)),
             cy: d=>y(scaleY(d.values[0].df)),
-            r:  2})
+            r:  4})
         .on('mouseover',mouseoverHandel)
         .on('mouseleave',mouseleaveHandel);
     maing.call(sumgap);
@@ -265,7 +265,7 @@ function lineConnect(l,scale){
 function activepoint(p){
     return p.style('fill',d=>color(d.gap))
         .style('opacity',1)
-        .attr('r',2);
+        .attr('r',4);
 }
 
 function deactivepoint(p){
@@ -349,12 +349,12 @@ function drawNetgap(nodenLink){
         return temp;
     });
     // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
-    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,50]);
+    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,100]);
     let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0.8,0.2]);
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
         //.force('collision',d3.forceCollide().radius(widthSvg/10))
-        .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/5)
+        .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/3)
             .distanceMin(5))
         .force('collision',d3.forceCollide().radius(5))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
@@ -393,7 +393,13 @@ function drawNetgap(nodenLink){
             let maxSudden = d3.max(dd.values,d=>d.values[0].df);
             let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
             mouseoverHandel(maxSuddenPoint);
-            tip.show({values: [{key:dd.key}]});})
+            let connect = d3.selectAll(".linkGap").filter(d=>d.source.key===dd.key||d.target.key===dd.key).style('stroke-opacity',1);
+            connect.data().forEach(d=>{
+                let id = "#mini"+(d.source.key!==dd.key?d.source.key:d.target.key);
+                console.log(id);
+                d3.select(id).style('opacity',1);
+            });
+            tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
         .on('mouseleave',(d)=>{
             mouseleaveHandel();
             tip.hide();})

@@ -36,7 +36,7 @@
     border-radius: 2px;
 }
 body {
-    font: 10px sans-serif;
+    font: 12px sans-serif;
 
 }
 
@@ -135,4 +135,9 @@ html, body, .block {
 }
 ul {
     font-size: 12px;
+}
+
+.card-panel {
+    background-color: #555;
+    color: #ffffff;
 }
