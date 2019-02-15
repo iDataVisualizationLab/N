@@ -33,7 +33,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="331" />
+          <entry key="CSS" value="333" />
           <entry key="HTML" value="1172" />
           <entry key="JavaScript" value="16209" />
         </counts>
@@ -51,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="34">
@@ -128,11 +128,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+            <state relative-caret-position="108">
+              <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
             </state>
           </provider>
         </entry>
@@ -196,8 +196,8 @@
         <option value="$PROJECT_DIR$/src/scripts/Huffmain.js" />
         <option value="$PROJECT_DIR$/src/scripts/ulti.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/css/main.css" />
         <option value="$PROJECT_DIR$/src/scripts/main.js" />
+        <option value="$PROJECT_DIR$/src/css/main.css" />
       </list>
     </option>
   </component>
@@ -336,12 +336,12 @@
       <workItem from="1549240643473" duration="3613000" />
       <workItem from="1549318628498" duration="130000" />
       <workItem from="1549318796503" duration="229710000" />
-      <workItem from="1550069831199" duration="51140000" />
+      <workItem from="1550069831199" duration="51446000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="285199000" />
+    <option name="totallyTimeSpent" value="285505000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="788" y="27" width="1729" height="1020" extended-state="0" />
@@ -599,17 +599,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
         </state>
       </provider>
     </entry>
