@@ -55,22 +55,37 @@ function init(){
 }
 
 $( document ).ready(function(){
-    $(".dropdown-trigger").dropdown();
-
+    $('.dropdown-trigger').dropdown();
+    // $('.dropdown-button2').dropdown({
+    //         inDuration: 300,
+    //         outDuration: 225,
+    //         constrain_width: false, // Does not change width of dropdown to that of the activator
+    //         hover: true, // Activate on hover
+    //         gutter: ($('.dropdown-content').width()*3)/2.5 + 2, // Spacing from edge
+    //         belowOrigin: false, // Displays dropdown below the button
+    //         alignment: 'left' // Displays dropdown with edge aligned to the left of button
+    //     }
+    // );
+    // let submenu = d3.select('#sublistvar')
+    //     .selectAll('li')
+    //     .data(serviceLists[chosenService].sub,d=>d.id)
+    //     .join(enter => enter.append("li") .attr('tabindex','1')
+    //             .append("a")
+    //             .attr('href',"#!")
+    //             .text(d=>d.text),
+    //         update => update.select("a")
+    //             .text(d=>d.text));
+    d3.select("#listvar")
+        .selectAll('li').remove();
     let menucombo = d3.select("#listvar")
         .selectAll('li')
-        .data(serviceLists.map(d=>d),d=>d)
-        .join('li').attr('tabindex',"0");
-    menucombo.selectAll('.collapsible-header')
-        .data(d=>{console.log(d); return [d]})
-        .join('div')
-        .attr('class','collapsible-header')
-        .text(d=>{return d.text;});
-    let cbody = menucombo.selectAll('.collapsible-body')
-        .data(d=>{console.log(d); return [d]})
-        .join('ul')
-        .attr('class','collapsible-body');
-    cbody.selectAll('li').data(d=>d.sub).join('li').text(d=>d.text);
+        .data(serviceLists,d=>d.id)
+        .join(enter => enter.append("li") .attr('tabindex','0')
+                .append("a")
+                .attr('href',"#").text(d=>d.text),
+            update => update.select("a")
+                .text(d=>d.text))
+        .on('click',changeVar);
 
     // menucombo.select('.collapsible-header')
     //     .join('div')
@@ -80,6 +95,7 @@ $( document ).ready(function(){
     //     .text(d=>d.text);
 });
 function changeVar(d){
+    console.log(d);
     chosenService =d.id;
     reset();
     $('#currentservice').text(d.text);

@@ -248,7 +248,7 @@ function sumgap (g){
         });
 }
 
-function lineConnect(l,scale,scale){
+function lineConnect(l,scale){
     scale = scale||1;
     return l
         .attrs({

@@ -25,6 +25,7 @@ let filterConfig = {
 let scatterConfig ={
     g:{},
     margin: {top: 5, right: 5, bottom: 40, left: 40},
+    scaleView:1,
     width: 500,
     height: 500,
     widthG: function(){return this.width-this.margin.left-this.margin.right},
@@ -74,6 +75,13 @@ let tip2 = d3.tip().attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) { return d.values[0].key; });
 
+
+$(document).ready(function(){
+    //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
+    widthSvg = $('#network').width();
+    wsConfig.width = $('#WS').width();
+    netConfig.width = widthSvg;
+});
 
 init();
 
@@ -145,18 +153,18 @@ function initOther(){
 
 function initScatter () {
     scsvg.attrs({
-        ViewBox:"0 0 "+scatterConfig.width+" " +scatterConfig.height,
-        preserveAspectRatio:"xMidYMid meet"
-    }).attrs({
-        width: scatterConfig.width,
-        height: scatterConfig.height,
+        preserveAspectRatio:"xMinYMin meet",
+        viewbox:"0 0 "+scatterConfig.width+" " +scatterConfig.height,
+        width:scatterConfig.width,
+        height:scatterConfig.height,
     });
-
-    scsvg.append('g')
+    let scsvg_g = scsvg.append('g')
+        .attr('class','zoomContent').attr("transform","scale("+scatterConfig.scaleView+","+scatterConfig.scaleView+")");;
+    scsvg_g.append('g')
         .attr('class','axis')
         .attr('transform',`translate(${scatterConfig.margin.left},${scatterConfig.margin.top})`);
 
-    scsvg.g = scsvg.append('g')
+    scsvg.g = scsvg_g.append('g')
         .attr('class','graph')
         .attr('transform',`translate(${scatterConfig.margin.left},${scatterConfig.margin.top})`)
             .append('svg')
@@ -181,7 +189,7 @@ function initScatter () {
     };
     scatterConfig.xAxis = g => g
         .attr("transform", `translate(0,${scatterConfig.heightG()})`)
-        .call(d3.axisBottom(scatterConfig.x))
+        .call(d3.axisBottom(scatterConfig.x).ticks(5))
         .call(g => g.append("text")
             .attr("x", scatterConfig.widthG())
             .attr("y", -4)
@@ -191,7 +199,7 @@ function initScatter () {
             .text("Frequency"));
     scatterConfig.yAxis = g => g
         .attr("transform", `translate(0,0)`)
-        .call(d3.axisLeft(scatterConfig.y))
+        .call(d3.axisLeft(scatterConfig.y).ticks(5))
         //.call(g => g.select(".domain").remove())
         .call(g => g.select(".tick:last-of-type text").clone()
             .attr("x", 4)
@@ -397,7 +405,7 @@ function initWS () {
 
 
     wsConfig.timeScale = d3.scaleTime()
-        .rangeRound([margin.left, widthSvg - margin.right]);
+        .rangeRound([margin.left, wsConfig.width - margin.right]);
     brush = d3.brushX()
         .extent([[0, 0], [wsConfig.widthG(), wsConfig.heightG()]])
         .on("brush end", brushedTime);
@@ -441,7 +449,7 @@ function brushedTime (){
         d1[1] = d3.timeMonth.offset(d1[0]);
     }
     updateAxisX(d1);
-    if (d3.event.sourceEvent && d3.event.sourceEvent.type === "mouseup"){
+    if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")){
 
         filterConfig.time = d1.map(wsConfig.time2index);
 

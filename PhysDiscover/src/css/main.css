@@ -133,3 +133,6 @@ html, body, .block {
     text-shadow: 1px 1px #fff8ff;
     text-anchor: start;
 }
+ul {
+    font-size: 12px;
+}
