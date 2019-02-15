@@ -89,7 +89,7 @@ function drawSumgap(){
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
             .attr('class','labelx')
-            .text(serviceLists[chosenService].text));
+            .text(()=>serviceLists[chosenService].text));
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(yy))
@@ -100,7 +100,7 @@ function drawSumgap(){
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
             .attr('class','labely')
-            .text("Delta "+serviceLists[chosenService].text));
+            .text(()=>"&Delta "+serviceLists[chosenService].text));
 
     mainsvg.append("g")
         .call(xAxis);

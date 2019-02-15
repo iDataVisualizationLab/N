@@ -1,6 +1,6 @@
 // config
-let widthSvg = 800;//document.getElementById("mainPlot").clientWidth-101;
-let heightSvg = 800;
+let widthSvg = 1000;//document.getElementById("mainPlot").clientWidth-101;
+let heightSvg = 1000;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
 
@@ -98,8 +98,9 @@ $( document ).ready(function(){
 });
 function changeVar(d){
     console.log(d);
-    chosenService =d.id;
-    service_part = d.mainService;
+    chosenService =d.mainService;
+    service_part = d.id;
+    $('#labelSum').text('Phase Space of '+serviceLists[chosenService]);
     reset();
     $('#currentservice').text(d.text);
 }
