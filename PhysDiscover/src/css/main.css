@@ -17,15 +17,15 @@
     opacity: 0.1;
 }
 
-/*.datapoint {*/
-    /*color: steelblue;*/
-    /*opacity: 1;*/
-/*}*/
+.datapoint {
+    stroke: white;
+    stroke-width: 0.5px;
+}
 
 .axisLabel {
     /*font-weight: bold;*/
-    font: 12px sans-serif;
-    fill: black;
+    font: 16px sans-serif;
+    fill: #ffffff;
 }
 .d3-tip {
     line-height: 1;
@@ -36,7 +36,7 @@
     border-radius: 2px;
 }
 body {
-    font: 12px sans-serif;
+    font: 14px sans-serif;
 
 }
 
@@ -70,7 +70,7 @@ body {
 .d3-tip:after {
     box-sizing: border-box;
     display: inline;
-    font-size: 10px;
+    font-size: 14px;
     width: 100%;
     line-height: 1;
     color: rgba(0, 0, 0, 0.8);
@@ -134,7 +134,7 @@ html, body, .block {
     text-anchor: start;
 }
 ul {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .card-panel {

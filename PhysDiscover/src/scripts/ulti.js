@@ -88,7 +88,7 @@ function drawSumgap(){
             .attr('fill','#ffffff')
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
-            .attr('class','labelx')
+            .attr('class','labelx axisLabel')
             .text(()=>serviceLists[chosenService].text));
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
@@ -99,7 +99,7 @@ function drawSumgap(){
             .attr("class","axisLabel")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
-            .attr('class','labely')
+            .attr('class','labely axisLabel')
             .text(()=>"\u0394 "+serviceLists[chosenService].text));
 
     mainsvg.append("g")
@@ -127,7 +127,7 @@ function drawSumgap(){
         .attrs({class: 'datapoint',
             cx: d=>x(scaleX(d.values[0].f)),
             cy: d=>y(scaleY(d.values[0].df)),
-            r:  4})
+            r:  3})
         .on('mouseover',mouseoverHandel)
         .on('mouseleave',mouseleaveHandel);
     maing.call(sumgap);
@@ -265,7 +265,7 @@ function lineConnect(l,scale){
 function activepoint(p){
     return p.style('fill',d=>color(d.gap))
         .style('opacity',1)
-        .attr('r',4);
+        .attr('r',3);
 }
 
 function deactivepoint(p){
@@ -355,8 +355,8 @@ function drawNetgap(nodenLink){
         .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
         //.force('collision',d3.forceCollide().radius(widthSvg/10))
         .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/3)
-            .distanceMin(5))
-        .force('collision',d3.forceCollide().radius(5))
+            .distanceMin(10))
+        .force('collision',d3.forceCollide().radius(10))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
     // .force("x", d3.forceX())
     // .force("y", d3.forceY());
