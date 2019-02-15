@@ -302,7 +302,7 @@ function updateLinks (){
 }
 function drawNetgap(nodenLink){
     let marginNet = ({top: 5, right: 20, bottom: 20, left: 5});
-    let scalezoom = 1.5;
+    let scalezoom = 1;
     netsvg.attrs({
         // viewBox:  [-widthSvg*scalezoom / 2, -heightSvg*scalezoom / 2, widthSvg*scalezoom, heightSvg*scalezoom],
         viewBox:  [0,0, widthSvg*scalezoom, heightSvg*scalezoom],
@@ -347,13 +347,14 @@ function drawNetgap(nodenLink){
         return temp;
     });
     // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
-    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,100]);
-    let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([1,0.2]);
+    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,50]);
+    let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0.8,0.2]);
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
-        // .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(1))
-        .force("charge", d3.forceManyBody().strength(-3))
-        .force('collision',d3.forceCollide().radius(10))
+        //.force('collision',d3.forceCollide().radius(widthSvg/10))
+        .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/5)
+            .distanceMin(5))
+        .force('collision',d3.forceCollide().radius(5))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
     // .force("x", d3.forceX())
     // .force("y", d3.forceY());
@@ -362,7 +363,7 @@ function drawNetgap(nodenLink){
     netsvg.call(tip);
     const netsvgG = netsvg.append("g").attr('transform',`translate(${marginNet.left},${marginNet.top})`);
     const link = netsvgG.append("g")
-        .attr("stroke", "#999")
+        .attr("stroke", "#000000")
         .attr("stroke-opacity", 0.3)
         .selectAll(".linkGap")
         .data(links).join("line")
@@ -381,7 +382,7 @@ function drawNetgap(nodenLink){
         .style('stroke',d=>
             color(d.gap))
         .datum(d=>d.values)
-        .call(d=>lineConnect(d,5))
+        .call(d=>lineConnect(d,10))
 
         .attr('stroke-width',0.5);
     node.selectAll('path')
@@ -418,9 +419,9 @@ function drawNetgap(nodenLink){
         node
             .attr("transform", d=>{
 
-                d.x = Math.max(widthSvg/10, Math.min(widthNet - widthSvg/5, d.x));
-                d.y = Math.max(heightSvg/10, Math.min(heightNet - heightSvg/5, d.y));
-                return `translate(${d.x},${d.y- heightSvg/5})`});
+                // d.x = Math.max(widthSvg/10, Math.min(widthNet - widthSvg/5, d.x));
+                // d.y = Math.max(heightSvg/10, Math.min(heightNet - heightSvg/5, d.y));
+                return `translate(${d.x-widthSvg/20},${d.y- heightSvg/20})`});
     });
     function drag (simulation) {
 
