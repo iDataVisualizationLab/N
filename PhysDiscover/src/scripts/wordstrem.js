@@ -185,9 +185,9 @@ function wordCloud(selector,config) {
             })
 
             .attrs({
-                'fill-opacity': 0.03,      // = 1 if full color
+                'fill-opacity': 0.1,      // = 1 if full color
                 // stroke: 'black',
-                'stroke-width': 0.3,
+                'stroke-width': 0.5,
                 topic: function(d, i){return topics[i];}
             });
         stokepath.exit().remove();
@@ -200,9 +200,9 @@ function wordCloud(selector,config) {
                 return colorsw(i);
             })
             .attrs({
-                'fill-opacity': 0.03,      // = 1 if full color
+                'fill-opacity': 0.1,      // = 1 if full color
                 // stroke: 'black',
-                'stroke-width': 0.3,
+                'stroke-width': 0.5,
                 topic: function(d, i){return topics[i];}
             });
         // ARRAY OF ALL WORDS

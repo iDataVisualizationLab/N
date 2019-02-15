@@ -196,9 +196,10 @@ function initScatter () {
         .call(g => g.append("text")
             .attr("x", scatterConfig.widthG())
             .attr("y", -4)
-            .attr("fill", "#000")
+            // .attr("fill", "#000")
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
+            .attr('class','labelx axisLabel')
             .text("Frequency"));
     scatterConfig.yAxis = g => g
         .attr("transform", `translate(0,0)`)
@@ -209,6 +210,7 @@ function initScatter () {
             .attr("class","axisLabel")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
+            .attr('class','labely axisLabel')
             .text("Sudden Change"));
     scsvg.gIn = scsvg.g.append('g')
         .attr('id','InstancePlot');
