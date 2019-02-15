@@ -100,7 +100,7 @@ function drawSumgap(){
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
             .attr('class','labely')
-            .text(()=>"&Delta "+serviceLists[chosenService].text));
+            .text(()=>"\u0394 "+serviceLists[chosenService].text));
 
     mainsvg.append("g")
         .call(xAxis);
@@ -389,9 +389,14 @@ function drawNetgap(nodenLink){
         .attr('stroke-width',0.5);
     node.selectAll('path')
         .style('pointer-events','auto')
-        .on('mouseover',(d)=>{
-            tip.show({values: [{key:d.key}]});})
-        .on('mouseleave',(d)=>tip.hide())
+        .on('mouseover',(dd)=>{
+            let maxSudden = d3.max(dd.values,d=>d.values[0].df);
+            let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
+            mouseoverHandel(maxSuddenPoint);
+            tip.show({values: [{key:dd.key}]});})
+        .on('mouseleave',(d)=>{
+            mouseleaveHandel();
+            tip.hide();})
         .call(drag(simulation));
     node.nodes().forEach(d=>{
         let e= d3.select(d).select('path').node().getBoundingClientRect();
