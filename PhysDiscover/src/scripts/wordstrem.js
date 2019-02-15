@@ -124,10 +124,12 @@ function wordCloud(selector,config) {
             .font(font)
             .suddenmode(true)
             .seperate(mainconfig.seperate);
+        const cal1 = new Date();
         var boxes = ws.boxes(),
             minFreq = ws.minFreq(),
             maxFreq = ws.maxFreq();
-
+        const cal2 = new Date();
+        console.log('---- Analyzing Word Stream ----: '+(cal2-cal1));
         //Display data
 
 

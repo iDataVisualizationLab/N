@@ -460,31 +460,7 @@ function drawNetgap(nodenLink){
     }
     //invalidation.then(() => simulation.stop());
 }
-$( document ).ready(function(){
-    $(".dropdown-trigger").dropdown();
-    $('.collapsible').collapsible();
 
-    let menucombo = d3.select("#listvar")
-        .selectAll('li')
-        .data(serviceLists)
-        .enter()
-        .append('li');
-    menucombo
-        .append('div')
-        .attrs(d=>{return {class: 'collapsible-header',
-            text: d.text}});
-    // menucombo
-    //     .append('div')
-    //     .attrs(d=>{return {class: 'collapsible-body'}})
-    //     .data(d=>{return d.sub})
-    //     .enter();
-
-    // menucombo.selectAll('.collapsible-header').data((d,i)=>[{id: i,text: d}])
-    //     .join("div")
-    menucombo
-        .on('click',changeVar)
-        .text(d=>d.text);
-});
 function changeVar(d){
     chosenService =d.id;
     reset();

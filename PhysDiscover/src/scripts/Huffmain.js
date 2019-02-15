@@ -112,7 +112,10 @@ function init(){
         // WORD STREAM
         initWS ();
         drawWS();
+        const cal1 = new Date();
         renderWordStream(data);
+        const cal2 = new Date();
+        console.log('Word Stream drawing time: '+(cal2-cal1));
         // SCATTER PLOT
         drawInstances(dataRaw);
         drawScatter();
@@ -407,7 +410,7 @@ function initWS () {
     wsConfig.timeScale = d3.scaleTime()
         .rangeRound([margin.left, wsConfig.width - margin.right]);
     brush = d3.brushX()
-        .extent([[0, 0], [wsConfig.widthG(), wsConfig.heightG()]])
+        .extent([[0, wsConfig.heightG()-wsConfig.heightG()/10], [wsConfig.widthG(), wsConfig.heightG()+wsConfig.heightG()/10]])
         .on("brush end", brushedTime);
     wssvg.xAxis = d3.axisBottom(wsConfig.timeScale);
         // .ticks(d3.timeMonth)
@@ -416,10 +419,23 @@ function initWS () {
         .attr('class','axis--x')
         .attr("transform", "translate(0," + wsConfig.heightG() + ")")
         .call(wssvg.xAxis);
-    wssvg.g.append("g")
+    let brushArea = wssvg.g.append("g")
         .attr("class", "brush")
         .call(brush);
-
+    // var handle = brushArea.selectAll(".handle--custom")
+    //     .data([{type: "w"}, {type: "e"}])
+    //     .enter().append("path")
+    //     .attr("class", "handle--custom")
+    //     .attr("fill", "#666")
+    //     .attr("fill-opacity", 0.8)
+    //     .attr("stroke", "#000")
+    //     .attr("stroke-width", 1.5)
+    //     .attr("cursor", "ew-resize")
+    //     .attr("d", d3.arc()
+    //         .innerRadius(0)
+    //         .outerRadius(wsConfig.heightG() / 20)
+    //         .startAngle(0)
+    //         .endAngle(function(d, i) { return i ? Math.PI : -Math.PI; }));
     wsConfig.timeAxisSpike = d3.axisTop(wsConfig.timeScale)
         .tickValues([])
         .tickSize(wsConfig.height)
@@ -449,6 +465,7 @@ function brushedTime (){
         d1[1] = d3.timeMonth.offset(d1[0]);
     }
     updateAxisX(d1);
+    //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
     if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")){
 
         filterConfig.time = d1.map(wsConfig.time2index);
@@ -789,11 +806,13 @@ function dragForce (simulation) {
         .on("end", dragended);
 }
 function renderWordStream (data){
+    const cal1 = new Date();
     // d3.selectAll(".wordStreamDiv").selectAll('svg').remove();
     // handledata(data);
     let TermwDay = d3.nest().key(d=>d.timestep)
         .key(d=>d.topic)
-        .rollup(e=>{return e.map(d=> {return {
+        .rollup(e=>{return e.filter(d=>d.f).map(d=> {
+            return {
             frequency: d.f,
                 sudden: d.df,
                 text: d.text,
@@ -801,6 +820,7 @@ function renderWordStream (data){
                 data:d
         }})})
         .entries(data);
+
     TermwDay.forEach(t=>{
         t.words ={};
         t.values.forEach(d=>{
@@ -809,7 +829,8 @@ function renderWordStream (data){
         delete t.values;
     });
     wsConfig.wstep = wsConfig.widthG()/TermwDay.length;
-
+    const cal2 = new Date();
+    console.log('Word Stream calculate time: '+(cal2-cal1));
     // parse the date / time
 
     var configwc = {width: wsConfig.widthG(),height: wsConfig.heightG()};

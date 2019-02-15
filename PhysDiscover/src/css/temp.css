@@ -41,19 +41,15 @@ body {
 }
 
 #header {
-    /*background-color: #ffffff;*/
-    background: #485563;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #29323c, #485563);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
 
-    /*background-color: #a71d31;*/
-    /*background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);*/
+    background-color: #a71d31;
+    background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);
 }
-#header a,#header .brand-logo{
-    color: #ffffff
-}
+/*#header a,#header .brand-logo{*/
+    /*color:black*/
+/*}*/
 
 .titletext {
     margin-top: 0;
@@ -106,18 +102,18 @@ body {
 }
 
 
-   .pin-top {
-       position: relative;
-   }
+.pin-top {
+    position: relative;
+}
 
 
-   .pin-bottom {
-       position: relative;
-   }
+.pin-bottom {
+    position: relative;
+}
 
-   .pinned {
-       position: fixed !important;
-   }
+.pinned {
+    position: fixed !important;
+}
 html, body, .block {
     height: 100%;
 }
@@ -141,17 +137,11 @@ html, body, .block {
     text-shadow: 1px 1px #fff8ff;
     text-anchor: start;
 }
-.dropdown-content {
-    background-color: #1b1111c4;
-}
 ul {
     font-size: 14px;
 }
 
-.card-panel {
-    background-color: #555;
-    color: #ffffff;
-}
+
 
 .bodyContent {
     background: #141E30;  /* fallback for old browsers */

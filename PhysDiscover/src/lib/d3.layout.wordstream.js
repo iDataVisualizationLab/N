@@ -28,7 +28,7 @@ d3.wordStream = function(){
         //Get the sprite for each word
         getImageData(boxes);
         //Set for each stream
-        for(let tc = 0; tc< boxes.topics.length; tc++){
+            for(let tc = 0; tc< boxes.topics.length; tc++){
             let topic = boxes.topics[tc];
             let board = buildBoard(boxes, topic);
             let innerBoxes = boxes.innerBoxes[topic];
@@ -478,6 +478,7 @@ d3.wordStream = function(){
                 }
             });
         }
+
         for(let bc = 0; bc < data.length; bc++){
             boxes.topics.forEach(topic=>{
                 let words = data[bc].words[topic];
