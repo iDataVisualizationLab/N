@@ -28,6 +28,7 @@
     fill: #ffffff;
 }
 .d3-tip {
+    pointer-events: none;
     line-height: 1;
     font-weight: bold;
     padding: 12px;
@@ -88,6 +89,7 @@ body {
     content: "\25BC";
     position: absolute;
     text-align: center;
+    pointer-events: none;
 }
 
 /* Style northward tooltips differently */
@@ -95,6 +97,7 @@ body {
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
+    pointer-events: none;
 }
 
 #mainPlot {

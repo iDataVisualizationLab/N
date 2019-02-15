@@ -334,8 +334,12 @@ function drawScatter(){
         cy: d=>scatterConfig.y(d.values[0].df),
         r:  2})
         .style('fill',d=> color(d.values[0].topic))
-        .on('mouseover',mouseoverHandel)
-        .on('mouseleave',mouseleaveHandel)
+        .on('mouseover',function(d){
+            tip2.show(datain);
+            mouseoverHandel(d);})
+        .on('mouseleave',function(d){
+            tip2.hide();
+            mouseleaveHandel(d)})
 
     // scsvg.g.call(sumgap);
    // d3.select('#legend-svg').call(colorlegend);
@@ -343,7 +347,7 @@ function drawScatter(){
 
 function mouseoverHandel(datain){
     console.log(datain);
-    tip2.show(datain);
+
     let timestep = datain.key;
     let datapoint = datain.values[0];
     let cpoint = scsvg.g.selectAll(".gCategory").filter(f=>f.key!==datapoint.key);
@@ -376,7 +380,6 @@ function mouseoverHandel(datain){
     }
 }
 function mouseleaveHandel(){
-    tip2.hide();
     // let timestep = datain.key;
     // let datapoint = datain.values;
     let cpoint = scsvg.g.selectAll(".gCategory")
