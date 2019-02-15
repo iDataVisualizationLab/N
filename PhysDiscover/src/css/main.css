@@ -6,7 +6,7 @@
 }
 
 .gapLine {
-    stroke: darkred;
+    stroke: #000000;
     stroke-width: 2px;
     fill: none;
     pointer-events: none;
@@ -88,7 +88,7 @@ body {
 
 #mainPlot {
     max-width:900px;
-    max-height:650px;
+    max-height:900px;
 }
 #legend-svg {
     vertical-align: top;

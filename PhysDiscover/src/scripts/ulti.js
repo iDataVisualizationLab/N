@@ -88,7 +88,8 @@ function drawSumgap(){
             .attr("fill", "#000")
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
-            .text("Temperature"));
+            .attr('class','labelx')
+            .text(serviceLists[chosenService].text));
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(yy))
@@ -98,7 +99,8 @@ function drawSumgap(){
             .attr("class","axisLabel")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
-            .text("Delta Temperature"));
+            .attr('class','labely')
+            .text("Delta "+serviceLists[chosenService].text));
 
     mainsvg.append("g")
         .call(xAxis);

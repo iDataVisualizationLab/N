@@ -1,6 +1,6 @@
 // config
-let widthSvg = 500;//document.getElementById("mainPlot").clientWidth-101;
-let heightSvg = 500;
+let widthSvg = 800;//document.getElementById("mainPlot").clientWidth-101;
+let heightSvg = 800;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
 
