@@ -80,6 +80,7 @@ $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
     widthSvg = $('#network').width();
     wsConfig.width = $('#WS').width();
+    scatterConfig.width = $('#mainPlot').width();
     netConfig.width = widthSvg;
     d3.select("#DarkTheme").on("click",switchTheme);
 });
@@ -471,15 +472,17 @@ function brushedTime (){
     updateAxisX(d1);
     hightlightWS(d1);
     //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
-    if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")){
-
-        filterConfig.time = d1.map(wsConfig.time2index);
-        d3.select('.cover').classed('hidden',false);
-        let temp = d3.event.target;
-        setTimeout(()=> {
-            recall();
-            d3.select(this).call(temp.move, d1.map(wsConfig.timeScale));
-        },0);
+    if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")) {
+        let newTime = d1.map(wsConfig.time2index);
+        if ((filterConfig.time[0] !== newTime[0]) || (filterConfig.time[1] !== newTime[1])) {
+            filterConfig.time = newTime;
+            d3.select('.cover').classed('hidden', false);
+            let temp = d3.event.target;
+            setTimeout(() => {
+                recall();
+                d3.select(this).call(temp.move, d1.map(wsConfig.timeScale));
+            }, 0);
+        }
 
     }
     function updateAxisX(d1){

@@ -28,7 +28,7 @@
     fill: #ffffff;
 }
 
-.light .axisLabrel {
+.light .axisLabel {
     fill: #000000;
 }
 
@@ -171,8 +171,20 @@ ul {
 }
 
 .card-panel {
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
     background-color: #272727;
     color: #ffffff;
+}
+
+.card-panel:not(#network) {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.card-image:not(#network) {
+    padding-top: 24px;
 }
 
 .light .card-panel {
