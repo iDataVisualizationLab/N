@@ -34,7 +34,7 @@ let scatterConfig ={
 };
 let wsConfig ={
     g:{},
-    margin: {top: 5, right: 20, bottom: 20, left: 5},
+    margin: {top: 5, right: 20, bottom: 30, left: 5},
     width: widthSvg,
     height: 500,
     widthG: function(){return this.width-this.margin.left-this.margin.right},
@@ -419,15 +419,17 @@ function initWS () {
     wssvg.g = wssvg.append('g')
         .attr('class','graph')
         .attr('transform',`translate(${wsConfig.margin.left},${wsConfig.margin.top})`);
-    wssvg.g.append('g')
-        .attr("class",'wsArea');
+
 
 
     wsConfig.timeScale = d3.scaleTime()
         .rangeRound([0, wsConfig.widthG()]);
     brush = d3.brushX()
-        .extent([[0, wsConfig.heightG()-wsConfig.heightG()/10], [wsConfig.widthG(), wsConfig.heightG()+wsConfig.heightG()/10]])
+        .extent([[0, wsConfig.heightG()-wsConfig.margin.bottom*0.9], [wsConfig.widthG(), wsConfig.heightG()+wsConfig.margin.bottom*0.9]])
         .on("brush end", brushedTime);
+    let brushArea = wssvg.g.append("g")
+        .attr("class", "brush")
+        .call(brush);
     wssvg.xAxis = d3.axisBottom(wsConfig.timeScale);
         // .ticks(d3.timeMonth)
         // .tickPadding(0);
@@ -435,9 +437,7 @@ function initWS () {
         .attr('class','axis--x')
         .attr("transform", "translate(0," + wsConfig.heightG() + ")")
         .call(wssvg.xAxis);
-    let brushArea = wssvg.g.append("g")
-        .attr("class", "brush")
-        .call(brush);
+
     wsConfig.timeAxisSpike = d3.axisTop(wsConfig.timeScale)
         .tickValues([])
         .tickSize(wsConfig.height)
@@ -446,6 +446,8 @@ function initWS () {
         .attr('class','axis--x--spike')
         .attr("transform", `translate(0,${wsConfig.heightG()})`)
         .call(customTimeAxis);
+    wssvg.g.append('g')
+        .attr("class",'wsArea');
 }
 
 function drawWS(){
@@ -837,7 +839,7 @@ function renderWS (data){
     console.log('Word Stream calculate time: '+(cal2-cal1));
     // parse the date / time
 
-    var configwc = {width: wsConfig.widthG(),height: wsConfig.heightG()};
+    var configwc = {width: wsConfig.widthG(),height: wsConfig.heightG(),margin:{top: 20, right: 0, bottom: 20, left: 0}};
     myWordCloud = wordCloud('.wsArea',configwc);
 
     myWordCloud.update(TermwDay);

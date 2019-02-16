@@ -76,7 +76,7 @@ function wordCloud(selector,config) {
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
-        var margins = {top: 0, right: 0, bottom: 0, left: 0};
+        var margins = {top: 0, right: 0, bottom: 10, left: 0};
         var min = 10;
         var max = 15;
         lineColor.domain([min, max]);
@@ -143,7 +143,7 @@ function wordCloud(selector,config) {
         var overclick = wordStreamG.append('rect')
             .attr('class','wsoverlay').attrs({width:width, height:height})
             .style("fill", "none")
-            .style("pointer-events", "all");
+            // .style("pointer-events", "all");
 
         // =============== Get BOUNDARY and LAYERPATH ===============
         var lineCardinal = d3.line()

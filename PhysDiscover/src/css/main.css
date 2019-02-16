@@ -222,3 +222,29 @@ blockquote{
 .cover.hidden {
     display: none;
 }
+
+
+.brush rect.selection {
+    fill: rgba(185,185,185,0.92);
+    stroke: none;
+}
+.brush:hover rect.selection {
+    stroke: #ffffff;
+    stroke-dasharray: 5,5;
+}
+.brush rect.selection:hover {
+    stroke-dasharray: none;
+}
+
+.light .brush rect.selection {
+    fill: rgba(100,100,100,0.41);
+    stroke: #fff;
+}
+.light .brush:hover rect.selection {
+    stroke: #222;
+    stroke-dasharray: 5,5;
+}
+
+.light .brush rect.selection:hover {
+    stroke-dasharray: none;
+}
