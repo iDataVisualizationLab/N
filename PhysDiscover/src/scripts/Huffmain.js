@@ -34,7 +34,7 @@ let scatterConfig ={
 };
 let wsConfig ={
     g:{},
-    margin: {top: 5, right: 20, bottom: 30, left: 5},
+    margin: {top: 5, right: 5, bottom: 30, left: 5},
     width: widthSvg,
     height: 500,
     widthG: function(){return this.width-this.margin.left-this.margin.right},
