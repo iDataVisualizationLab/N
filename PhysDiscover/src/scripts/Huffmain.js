@@ -24,7 +24,7 @@ let filterConfig = {
 };
 let scatterConfig ={
     g:{},
-    margin: {top: 5, right: 5, bottom: 40, left: 40},
+    margin: {top: 10, right: 10, bottom: 40, left: 40},
     scaleView:1,
     width: 500,
     height: 500,
@@ -36,7 +36,7 @@ let wsConfig ={
     g:{},
     margin: {top: 5, right: 20, bottom: 20, left: 5},
     width: widthSvg,
-    height: 300,
+    height: 500,
     widthG: function(){return this.width-this.margin.left-this.margin.right},
     heightG: function(){return this.height-this.margin.top-this.margin.bottom},
 };
@@ -120,19 +120,21 @@ function init(){
         nodenLink = callgapsall(data,filterConfig.limitconnect);
         //initNetgap();
         drawNetgapHuff(nodenLink,isColorMatchCategory);
+        d3.select('.cover').classed('hidden',true);
 
     });
 
 }
 function recall (){
-    data = filterTop(dataRaw);
-    callSum();
-    drawWS();
-    // hightlightWS();
-    nodenLink = callgapsall(data,filterConfig.limitconnect);
-    //initNetgap();
-    drawNetgapHuff(nodenLink,isColorMatchCategory);
-    drawScatter();
+        data = filterTop(dataRaw);
+        callSum();
+        drawWS();
+        // hightlightWS();
+        nodenLink = callgapsall(data,filterConfig.limitconnect);
+        //initNetgap();
+        drawNetgapHuff(nodenLink,isColorMatchCategory);
+        drawScatter();
+        d3.select('.cover').classed('hidden',true);
 }
 function initOther(){
     let colors = d3.schemeCategory10;
@@ -460,6 +462,7 @@ function brushedTime (){
     console.log(d3.event.sourceEvent!=null?d3.event.sourceEvent.type:"nope!!");
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return;
+
     var d0 = (d3.event.selection || wsConfig.timeScale.range()).map(wsConfig.timeScale.invert),
         d1 = d0.map(d3.timeMonth.round);
     // If empty when rounded, use floor instead.
@@ -467,18 +470,20 @@ function brushedTime (){
         d1[0] = d3.timeMonth.floor(d0[0]);
         d1[1] = d3.timeMonth.offset(d1[0]);
     }
+    console.log(d1);
     updateAxisX(d1);
     hightlightWS(d1);
     //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
     if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")){
 
         filterConfig.time = d1.map(wsConfig.time2index);
+        d3.select('.cover').classed('hidden',false);
+        let temp = d3.event.target;
+        setTimeout(()=> {
+            recall();
+            d3.select(this).call(temp.move, d1.map(wsConfig.timeScale));
+        },0);
 
-        recall ();
-        d3.select(this).call(d3.event.target.move, d1.map(wsConfig.timeScale));
-
-
-        return;
     }
     function updateAxisX(d1){
         wssvg.xAxis.tickValues(d3.merge([wsConfig.timeScale.ticks(),d1]));

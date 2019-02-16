@@ -28,6 +28,7 @@
     fill: #ffffff;
 }
 .d3-tip {
+    pointer-events: none;
     line-height: 1;
     font-weight: bold;
     padding: 12px;
@@ -41,15 +42,20 @@ body {
 }
 
 #header {
+    /*background-color: #ffffff;*/
+    background: #485563;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #29323c, #485563);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-
-
-    background-color: #a71d31;
-    background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);
+    /*background-color: #a71d31;*/
+    /*background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);*/
 }
-/*#header a,#header .brand-logo{*/
-    /*color:black*/
-/*}*/
+#header a,#header .brand-logo{
+    /*font-family: 'Passion One', cursive;*/
+    /*font-family: 'Russo One', sans-serif;*/
+    font-family: 'Fredoka One', cursive;
+    color: #ffffff
+}
 
 .titletext {
     margin-top: 0;
@@ -83,6 +89,7 @@ body {
     content: "\25BC";
     position: absolute;
     text-align: center;
+    pointer-events: none;
 }
 
 /* Style northward tooltips differently */
@@ -90,6 +97,7 @@ body {
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
+    pointer-events: none;
 }
 
 #mainPlot {
@@ -137,11 +145,17 @@ html, body, .block {
     text-shadow: 1px 1px #fff8ff;
     text-anchor: start;
 }
+.dropdown-content {
+    background-color: #1b1111c4;
+}
 ul {
     font-size: 14px;
 }
 
-
+.card-panel {
+    background-color: #555;
+    color: #ffffff;
+}
 
 .bodyContent {
     background: #141E30;  /* fallback for old browsers */
@@ -149,4 +163,10 @@ ul {
     background: linear-gradient(to top, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
+blockquote{
+    border-left: 5px solid #ffffff;
+}
 
+.disableWord {
+    opacity:0.1;
+}
