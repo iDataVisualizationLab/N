@@ -82,6 +82,7 @@ function wordCloud(selector,config) {
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
+        margin = config.margin||margin;
         height = height - margins.top - margins.bottom;
 
 

@@ -81,6 +81,7 @@ $(document).ready(function(){
     widthSvg = $('#network').width();
     wsConfig.width = $('#WS').width();
     netConfig.width = widthSvg;
+    d3.select("#DarkTheme").on("click",switchTheme);
 });
 
 init();
@@ -126,11 +127,20 @@ function init(){
 
 }
 function recall (){
+    let cal1 = new Date();
         data = filterTop(dataRaw);
+    let cal2 = new Date();
+    console.log('---- filter Top ----: '+(cal2-cal1));
         callSum();
-        drawWS();
+    cal1 = new Date();
+    console.log('---- call average ----: '+(cal1-cal2));
+    drawWS();
+    cal2 = new Date();
+    console.log('---- drawWS ----: '+(cal2-cal1));
         // hightlightWS();
         nodenLink = callgapsall(data,filterConfig.limitconnect);
+    cal1 = new Date();
+    console.log('---- call LINK ----: '+(cal1-cal2));
         //initNetgap();
         drawNetgapHuff(nodenLink,isColorMatchCategory);
         drawScatter();
@@ -337,7 +347,7 @@ function drawScatter(){
         r:  2})
         .style('fill',d=> color(d.values[0].topic))
         .on('mouseover',function(d){
-            tip2.show(datain);
+            tip2.show(d);
             mouseoverHandel(d);})
         .on('mouseleave',function(d){
             tip2.hide();
@@ -414,7 +424,7 @@ function initWS () {
 
 
     wsConfig.timeScale = d3.scaleTime()
-        .rangeRound([margin.left, wsConfig.width - margin.right]);
+        .rangeRound([0, wsConfig.widthG()]);
     brush = d3.brushX()
         .extent([[0, wsConfig.heightG()-wsConfig.heightG()/10], [wsConfig.widthG(), wsConfig.heightG()+wsConfig.heightG()/10]])
         .on("brush end", brushedTime);
@@ -428,20 +438,6 @@ function initWS () {
     let brushArea = wssvg.g.append("g")
         .attr("class", "brush")
         .call(brush);
-    // var handle = brushArea.selectAll(".handle--custom")
-    //     .data([{type: "w"}, {type: "e"}])
-    //     .enter().append("path")
-    //     .attr("class", "handle--custom")
-    //     .attr("fill", "#666")
-    //     .attr("fill-opacity", 0.8)
-    //     .attr("stroke", "#000")
-    //     .attr("stroke-width", 1.5)
-    //     .attr("cursor", "ew-resize")
-    //     .attr("d", d3.arc()
-    //         .innerRadius(0)
-    //         .outerRadius(wsConfig.heightG() / 20)
-    //         .startAngle(0)
-    //         .endAngle(function(d, i) { return i ? Math.PI : -Math.PI; }));
     wsConfig.timeAxisSpike = d3.axisTop(wsConfig.timeScale)
         .tickValues([])
         .tickSize(wsConfig.height)
@@ -470,7 +466,6 @@ function brushedTime (){
         d1[0] = d3.timeMonth.floor(d0[0]);
         d1[1] = d3.timeMonth.offset(d1[0]);
     }
-    console.log(d1);
     updateAxisX(d1);
     hightlightWS(d1);
     //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
@@ -857,4 +852,17 @@ function hightlightWS(d1){
             let TR = d1||filterConfig.time.map(wsConfig.time2index.invert);
             return (cT < TR[0]) || (cT > TR[1]); //in range time
         }).classed('disableWord',true);
+}
+
+function switchTheme(){
+    if (this.value==="light"){
+        this.value = "dark";
+        this.text = "Light";
+        d3.select('body').classed('light',false);
+        return;
+    }
+    this.value = "light";
+    this.text = "Dark";
+    d3.select('body').classed('light',true);
+    return
 }

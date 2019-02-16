@@ -19,7 +19,7 @@
 
 .datapoint {
     stroke: white;
-    stroke-width: 0.5px;
+    stroke-width: 0.1px;
 }
 
 .axisLabel {
@@ -27,6 +27,11 @@
     font: 16px sans-serif;
     fill: #ffffff;
 }
+
+.light .axisLabrel {
+    fill: #000000;
+}
+
 .d3-tip {
     pointer-events: none;
     line-height: 1;
@@ -38,11 +43,15 @@
 }
 body {
     font: 14px sans-serif;
-
+    background-color: #232b33;
+    color: white;
 }
-
+body.light {
+    background-color: white;
+    color: black;
+}
 #header {
-    /*background-color: #ffffff;*/
+        /*background-color: #ffffff;*/
     background: #485563;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #29323c, #485563);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -50,11 +59,19 @@ body {
     /*background-color: #a71d31;*/
     /*background-image: linear-gradient(315deg, #a71d31 0%, #3f0d12 74%);*/
 }
-#header a,#header .brand-logo{
-    /*font-family: 'Passion One', cursive;*/
-    /*font-family: 'Russo One', sans-serif;*/
+.light #header {
+    background:  #f3f3f3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f3f3f3, #ececec);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f3f3f3, #ececec); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#header, #header a,#header .brand-logo{
     font-family: 'Fredoka One', cursive;
     color: #ffffff
+}
+
+.light #header,.light #header a,.light #header .brand-logo {
+    color: #484848
 }
 
 .titletext {
@@ -128,12 +145,7 @@ html, body, .block {
 .container {
     color: black;
 }
-#blue {
-    background-color: #fff0e9 !important;
-}
-#red {
-    background-color: #e3ffff !important;
-}
+
 
 .input-field p, .input-field .select-wrapper {
     display: inline-block;
@@ -142,9 +154,15 @@ html, body, .block {
 }
 
 .linkLineg text {
-    text-shadow: 1px 1px #fff8ff;
+    fill: #ffffff;
+    /*text-shadow: 1px 1px #fff8ff;*/
     text-anchor: start;
 }
+
+.light .linkLineg text {
+    fill: #000000;
+}
+
 .dropdown-content {
     background-color: #1b1111c4;
 }
@@ -153,9 +171,13 @@ ul {
 }
 
 .card-panel {
-    /*background-color: #555;*/
     background-color: #272727;
     color: #ffffff;
+}
+
+.light .card-panel {
+    background-color: white;
+    color: #000000;
 }
 
 .bodyContent {
@@ -181,6 +203,12 @@ blockquote{
     background: -webkit-linear-gradient(to top, #29323cc4, #485563);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to top, #29323cc4, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+}
+
+.light  .cover {
+    background:  #f3f3f3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f3f3f3c4, #ececec);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f3f3f3c4, #ececec); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .cover .spinnerC {
     position: fixed;
