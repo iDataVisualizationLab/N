@@ -214,7 +214,7 @@ blockquote{
     background: #485563;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to top, #29323cc4, #485563);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to top, #29323cc4, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    z-index: 10;
 }
 
 .light  .cover {
@@ -259,4 +259,27 @@ blockquote{
 
 .light .brush rect.selection:hover {
     stroke-dasharray: none;
+}
+
+/*legend*/
+.floatTitle {
+    z-index: 0;
+    position: absolute;
+    padding: 10px;
+}
+
+.color-block, .color-bar {
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    margin: 1px 4px 1px 0px;
+}
+
+.floatTitle .tally::first-letter{
+    text-transform: uppercase;
+}
+
+sup {
+    vertical-align: super;
+    font-size: smaller;
 }

@@ -14,6 +14,8 @@ const wssvg = d3.select("#WScontent"),
     scsvg = d3.select("#Scattercontent");
 let x,y,color,brush,legendScale,scaleX,scaleY;
 
+let dataInformation ={
+};
 let filterConfig = {
     time: [undefined,undefined],
     maxevent : 30,
@@ -83,9 +85,9 @@ $(document).ready(function(){
     scatterConfig.width = $('#mainPlot').width();
     netConfig.width = widthSvg;
     d3.select("#DarkTheme").on("click",switchTheme);
-});
 
-init();
+    init();
+});
 
 
 
@@ -102,6 +104,7 @@ function init(){
         // filter data maxevent and limitsudden
         data = filterTop(dataRaw);
         initOther();
+        initLegendGroup(dataRaw);
         callSum();
         initNetgap();
         x = d3.scaleLinear()
@@ -125,6 +128,61 @@ function init(){
         d3.select('.cover').classed('hidden',true);
 
     });
+
+}
+function initLegendGroup(data){
+    let nesteddata = d3.nest().key(d=>d.topic).key(d=>d.key).entries(data);
+    dataInformation.lengend = {};
+    dataInformation.lengend.data = nesteddata.map(d=>{return{topic: d.key, terms:d.values.length}});
+    dataInformation.lengend.total =d3.sum(dataInformation.lengend.data,d=>d.terms);
+    let legend_data = d3.select('#legendGroup')
+        .selectAll(".row")
+        .data(dataInformation.lengend.data);
+    let legend = legend_data
+        .enter().append("div")
+        .attr('class','row')
+        .attr("title", "Hide group");
+    legend
+        .append("span")
+        .style("background", function(d,i) { return color(d.topic)})
+        .attr("class", "color-bar");
+    legend
+        .append("span")
+        .attr("class", "tally");
+
+    legend
+        .append("span")
+        .text(function(d,i) { return " " + d.topic});
+    legend.call(updatelegend);
+
+}
+
+function updatelegend(l){
+    l.select('.tally').transition()
+        .duration(500).text(function(d,i) { return d.terms});
+    l.select('.color-bar').transition()
+        .duration(500)
+        .style("width", function(d) {
+            return Math.ceil(widthSvg/5*d.terms/dataInformation.lengend.total) + "px";
+        });
+}
+
+function drawlegend(d1){
+    let TR = d1||filterConfig.time.map(wsConfig.time2index.invert);
+    dataInformation.lengend.data =_.chain(dataRaw).filter(d=>{
+        if (d.f===0) return 0;
+        let cT = d.timestep;
+        return ((cT >= TR[0]) && (cT <= TR[1])); //in range time
+    }).groupBy(d=>d.key).map(d=>d[0]).groupBy(d=>d.topic)
+        .map(d=>{return {topic: d[0].topic, terms:d.length}})
+        .value();
+    //let nesteddata = d3.nest().key(d=>d.topic).key(d=>d.key).entries(dataFilter);
+    // dataInformation.lengend.data = nesteddata.map(d=>{return{topic: d.key, terms:d.values.length}});
+    // dataInformation.lengend.total =d3.sum(dataInformation.lengend.data,d=>d.terms);
+    d3.select('#legendGroup')
+        .selectAll(".row")
+        .data(dataInformation.lengend.data)
+        .call(updatelegend);
 
 }
 function recall (){
@@ -471,6 +529,7 @@ function brushedTime (){
     }
     updateAxisX(d1);
     hightlightWS(d1);
+    drawlegend(d1);
     //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
     if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")) {
         let newTime = d1.map(wsConfig.time2index);
@@ -716,12 +775,13 @@ function drawNetgapHuff(nodenLink){
         .call(d=>lineConnect(d,1))
         .attr('stroke-width',0.5);
 
-    let newsvg = newnodes.append('svg')
+    let newsvg = newnodes
+        .append('svg')
         .attrs({
-            x:0,
-            y:0,
-            width: netConfig.smallgrapSize(),
-            height: netConfig.smallgrapSize()
+            x:-netConfig.smallgrapSize()*0.2,
+            y:-netConfig.smallgrapSize()*0.2,
+            width: netConfig.smallgrapSize()*1.4,
+            height: netConfig.smallgrapSize()*1.4
         });
 
     newsvg.append('path')
