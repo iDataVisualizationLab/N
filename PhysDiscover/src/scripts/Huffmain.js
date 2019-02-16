@@ -168,17 +168,20 @@ function updatelegend(l){
 }
 
 function drawlegend(d1){
+    let cal1 = new Date();
     let TR = d1||filterConfig.time.map(wsConfig.time2index.invert);
-    dataInformation.lengend.data =_.chain(dataRaw).filter(d=>{
-        if (d.f===0) return 0;
-        let cT = d.timestep;
-        return ((cT >= TR[0]) && (cT <= TR[1])); //in range time
-    }).groupBy(d=>d.key).map(d=>d[0]).groupBy(d=>d.topic)
+    dataInformation.lengend.data =_.chain(dataRaw)
+        .filter(d=>d.f!==0)
+        .groupBy(d=>d.key).map(d=>d[0])
+        .filter(d=>{
+                let cT = d.timestep;
+                return ((cT >= TR[0]) && (cT <= TR[1])); //in range time
+            })
+        .groupBy(d=>d.topic)
         .map(d=>{return {topic: d[0].topic, terms:d.length}})
         .value();
-    //let nesteddata = d3.nest().key(d=>d.topic).key(d=>d.key).entries(dataFilter);
-    // dataInformation.lengend.data = nesteddata.map(d=>{return{topic: d.key, terms:d.values.length}});
-    // dataInformation.lengend.total =d3.sum(dataInformation.lengend.data,d=>d.terms);
+    let cal2 = new Date();
+    console.log('---- filter legend ----: '+(cal2-cal1));
     d3.select('#legendGroup')
         .selectAll(".row")
         .data(dataInformation.lengend.data)
@@ -528,21 +531,24 @@ function brushedTime (){
         d1[1] = d3.timeMonth.offset(d1[0]);
     }
     updateAxisX(d1);
-    hightlightWS(d1);
-    drawlegend(d1);
-    //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
-    if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup"||d3.event.sourceEvent.type === "touchend")) {
-        let newTime = d1.map(wsConfig.time2index);
-        if ((filterConfig.time[0] !== newTime[0]) || (filterConfig.time[1] !== newTime[1])) {
-            filterConfig.time = newTime;
+
+    let newTime = d1.map(wsConfig.time2index);
+    if ((filterConfig.time[0] !== newTime[0]) || (filterConfig.time[1] !== newTime[1])) {
+        filterConfig.time = newTime;
+        hightlightWS(d1);
+        drawlegend(d1);
+
+        //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
+        if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup" || d3.event.sourceEvent.type === "touchend")) {
+
             d3.select('.cover').classed('hidden', false);
             let temp = d3.event.target;
             setTimeout(() => {
                 recall();
                 d3.select(this).call(temp.move, d1.map(wsConfig.timeScale));
             }, 0);
-        }
 
+        }
     }
     function updateAxisX(d1){
         wssvg.xAxis.tickValues(d3.merge([wsConfig.timeScale.ticks(),d1]));
