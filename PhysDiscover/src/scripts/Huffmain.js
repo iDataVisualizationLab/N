@@ -17,6 +17,7 @@ let x,y,color,brush,legendScale,scaleX,scaleY;
 let dataInformation ={
 };
 let filterConfig = {
+    timeTemp: [undefined,undefined],
     time: [undefined,undefined],
     maxevent : 30,
     maxeventAll : 200,
@@ -533,23 +534,24 @@ function brushedTime (){
     updateAxisX(d1);
 
     let newTime = d1.map(wsConfig.time2index);
-    if ((filterConfig.time[0] !== newTime[0]) || (filterConfig.time[1] !== newTime[1])) {
-        filterConfig.time = newTime;
+    if ((filterConfig.timeTemp[0] !== newTime[0]) || (filterConfig.timeTemp[1] !== newTime[1])) {
+        filterConfig.timeTemp = newTime;
         hightlightWS(d1);
         drawlegend(d1);
-
+    }
         //wssvg.selectAll(".handle--custom").attr("display", null).attr("transform", function(d, i) { return "translate(" + d0[i] + "," + wsConfig.heightG() / 20 + ")"; });
-        if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup" || d3.event.sourceEvent.type === "touchend")) {
-
+    if (d3.event.sourceEvent && (d3.event.sourceEvent.type === "mouseup" || d3.event.sourceEvent.type === "touchend")) {
+        if ((filterConfig.time[0] !== filterConfig.timeTemp[0]) || (filterConfig.time[1] !== filterConfig.timeTemp[1])) {
+            filterConfig.time = filterConfig.timeTemp;
             d3.select('.cover').classed('hidden', false);
             let temp = d3.event.target;
             setTimeout(() => {
                 recall();
                 d3.select(this).call(temp.move, d1.map(wsConfig.timeScale));
             }, 0);
-
         }
     }
+
     function updateAxisX(d1){
         wssvg.xAxis.tickValues(d3.merge([wsConfig.timeScale.ticks(),d1]));
         wssvg.select('.axis--x') .call(wssvg.xAxis);

@@ -38,7 +38,7 @@
         <counts>
           <entry key="CSS" value="1029" />
           <entry key="HTML" value="1574" />
-          <entry key="JavaScript" value="18987" />
+          <entry key="JavaScript" value="19021" />
         </counts>
       </usages-collector>
     </session>
@@ -66,8 +66,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="538" column="18" selection-start-line="538" selection-start-column="18" selection-end-line="538" selection-end-column="18" />
+            <state relative-caret-position="140">
+              <caret line="538" column="25" lean-forward="true" selection-start-line="538" selection-start-column="25" selection-end-line="538" selection-end-column="25" />
               <folding>
                 <element signature="n#!!block;n#customYAxis#0" />
                 <element signature="n#!!block;n#updateSpike#0" />
@@ -138,7 +138,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>shadow</find>
       <find>555</find>
       <find>card-panel</find>
       <find>body</find>
@@ -167,6 +166,7 @@
       <find>--</find>
       <find>drawlegend</find>
       <find>drawle</find>
+      <find>filterConfig</find>
       <find>brushed</find>
     </findStrings>
   </component>
@@ -332,12 +332,12 @@
       <workItem from="1549240643473" duration="3613000" />
       <workItem from="1549318628498" duration="130000" />
       <workItem from="1549318796503" duration="229710000" />
-      <workItem from="1550069831199" duration="110905000" />
+      <workItem from="1550069831199" duration="111121000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="344964000" />
+    <option name="totallyTimeSpent" value="345180000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="588" y="130" width="1418" height="886" extended-state="0" />
@@ -380,7 +380,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>702</line>
+          <line>704</line>
           <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -390,37 +390,37 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>430</line>
+          <line>431</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="156" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>821</line>
+          <line>823</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="157" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>712</line>
+          <line>714</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="158" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>911</line>
+          <line>913</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="164" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>898</line>
+          <line>900</line>
           <properties />
           <option name="timeStamp" value="169" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>120</line>
+          <line>121</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="171" />
         </line-breakpoint>
@@ -486,19 +486,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>928</line>
+          <line>930</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>133</line>
+          <line>134</line>
           <properties />
           <option name="timeStamp" value="202" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/Huffmain.js</url>
-          <line>171</line>
+          <line>172</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="203" />
         </line-breakpoint>
@@ -627,8 +627,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="538" column="18" selection-start-line="538" selection-start-column="18" selection-end-line="538" selection-end-column="18" />
+        <state relative-caret-position="140">
+          <caret line="538" column="25" lean-forward="true" selection-start-line="538" selection-start-column="25" selection-end-line="538" selection-end-column="25" />
           <folding>
             <element signature="n#!!block;n#customYAxis#0" />
             <element signature="n#!!block;n#updateSpike#0" />
