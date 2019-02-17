@@ -394,12 +394,12 @@ function drawNetgap(nodenLink){
     });
     // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
     const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,40]);
-    let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0.8,0.2]);
+    let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0.9,0.2]);
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
         //.force('collision',d3.forceCollide().radius(widthSvg/10))
-        // .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/3)
-        //     .distanceMin(5))
+        .force("charge", d3.forceManyBody(10).distanceMax(widthSvg/3)
+            .distanceMin(5))
         .force("gravity", d3.forceManyBody(5).distanceMax(widthSvg/5)
            .distanceMin(5))
         .force('collision',d3.forceCollide().radius(5))
@@ -430,7 +430,7 @@ function drawNetgap(nodenLink){
         .style('stroke',d=>
             color(d.gap))
         .datum(d=>d.values)
-        .call(d=>lineConnect(d,10))
+        .call(d=>lineConnect(d,12))
 
         .attr('stroke-width',0.5);
     node.selectAll('path')

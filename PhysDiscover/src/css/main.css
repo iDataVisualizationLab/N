@@ -283,3 +283,8 @@ sup {
     vertical-align: super;
     font-size: smaller;
 }
+
+#legend-svg {
+    position: absolute;
+    right:50%;
+}

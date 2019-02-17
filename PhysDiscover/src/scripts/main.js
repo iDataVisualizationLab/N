@@ -81,6 +81,7 @@ $( document ).ready(function(){
     //             .text(d=>d.text),
     //         update => update.select("a")
     //             .text(d=>d.text));
+
     serviceLists.forEach(d=>d.sub.forEach(e=>e.mainService=d.id));
     d3.select("#listvar")
         .selectAll('li').remove();
@@ -101,6 +102,8 @@ $( document ).ready(function(){
     //     .text(d=>d.text);
     //     .join("a").on('click',changeVar)
     //     .text(d=>d.text);
+    widthSvg = $('#network').width()-50;
+    heightSvg = widthSvg;
     d3.select("#DarkTheme").on("click",switchTheme);
 });
 function changeVar(d){

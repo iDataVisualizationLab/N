@@ -613,19 +613,40 @@ function filterTop(dataR){
 function callSum(){
     sumnet =[];
         let nest = d3.nest()
-            .key(d=>d.topic)
             .key(function(d) { return d.timestep; })
+            .rollup(d=>{return {f: d3.mean(d,m=>m.f), df: d3.mean(d,m=>m.df), timestep:d[0].timestep}})
             .entries(data);
-        nest.forEach(d=>{
-            let sumnetit={};
-            sumnetit.key = d.key;
-            sumnetit.values = [];
-            d.values.forEach((n,i)=>{
-                let currentMean = d3.mean(n.values,m=>m.f);
-                sumnetit.values.push({f: currentMean, df: d3.mean(n.values,m=>m.df),timestep:i});
-            });
-            sumnet.push(sumnetit);
+    sumnet = nest.map((d)=>{
+            return d.value;
         });
+    nestbyKey = d3.nest()
+        .key(function(d) { return d.key; }).sortKeys(function(a,b) { return a.timestep-b.timestep})
+        .entries(data);
+    scaleX = d3.scaleSymlog().domain(d3.extent(data,d=>d.f)).range([0,1]);
+    // scaleX = d3.scaleLinear().domain(d3.extent(data,d=>d.f)).range([0,1]);
+    //scaleY = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([0,1]);
+    scaleY = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([0,1]);
+    // scaleY = d3.scaleLinear().domain(d3.extent(data,d=>d.df)).range([0,1]);
+    nestbyKey.forEach(key => {
+        key.gap = integration (key.values.map(d=>normalize(d)),sumnet.map(d=>normalize(d)));
+    });
+}
+function callSum(){
+    sumnet =[];
+    let nest = d3.nest()
+        .key(d=>d.topic)
+        .key(function(d) { return d.timestep; })
+        .entries(data);
+    nest.forEach(d=>{
+        let sumnetit={};
+        sumnetit.key = d.key;
+        sumnetit.values = [];
+        d.values.forEach((n,i)=>{
+            let currentMean = d3.mean(n.values,m=>m.f);
+            sumnetit.values.push({f: currentMean, df: d3.mean(n.values,m=>m.df),timestep:i});
+        });
+        sumnet.push(sumnetit);
+    });
     nestbyKey = d3.nest()
         .key(function(d) { return d.key; }).sortKeys(function(a,b) { return a.timestep-b.timestep})
         .entries(data);
@@ -638,7 +659,6 @@ function callSum(){
         key.gap = integration (key.values.map(d=>normalize(d)),sumnet.find(d=>d.key===nestbyKey[0].values[0].topic).values.map(d=>normalize(d)));
     });
 }
-
 
 function initNetgap(){
     netConfig.margin = ({top: 0, right: 0, bottom: 0, left: 0});
@@ -670,7 +690,8 @@ function initNetgap(){
         netConfig.g.attr("transform", d3.event.transform);
     }
     var zoom = d3.zoom()
-        .scaleExtent([1/netConfig.scalezoom, 40])
+        // .scaleExtent([1/netConfig.scalezoom, 40])
+        .scaleExtent([0.25, 40])
         //.translateExtent([[-netConfig.width/2,-netConfig.height/2], [netConfig.width*1.5,netConfig.height*1.5]])
         .on("zoom", zoomed);
     netsvg.call(zoom);
@@ -682,10 +703,11 @@ function initNetgap(){
     netConfig.simulation = d3.forceSimulation(netConfig.nodes)
         .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
         // .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
-        .force("charge", d3.forceManyBody().distanceMax(netConfig.colider()*50)
+        .force("charge", d3.forceManyBody(netConfig.colider()).distanceMax(netConfig.widthG()/4)
             .distanceMin(netConfig.colider()*1.5))//.strength(-3))
         .force('collision',d3.forceCollide().radius(netConfig.colider()))
-        //.force("cluster", forceCluster)
+        .force("gravity", d3.forceManyBody(netConfig.colider()).distanceMax(netConfig.widthG()/4)
+            .distanceMin(netConfig.colider()*1.5))
         .force("center", d3.forceCenter(netConfig.widthG() / 2, netConfig.heightG() / 2))
         .on("tick", () => {
             netConfig.link
@@ -700,8 +722,8 @@ function initNetgap(){
                 // d.x = Math.max(netConfig.width/10, Math.min(netConfig.widthG() - netConfig.width/5, d.x));
                 // d.y = Math.max(netConfig.height/10, Math.min(netConfig.heightG() - netConfig.height/5, d.y));
                 let smallgaph = netConfig.smallgrapSize();
-                d.x = Math.max(smallgaph, Math.min(netConfig.widthG() - smallgaph/2, d.x));
-                d.y = Math.max(smallgaph, Math.min(netConfig.heightG() - smallgaph/2, d.y));
+                d.x = Math.max(smallgaph-netConfig.widthG()*0.25, Math.min(netConfig.widthG()*1.25 - smallgaph/2, d.x));
+                d.y = Math.max(smallgaph-netConfig.heightG()*0.25, Math.min(netConfig.heightG()*1.25 - smallgaph/2, d.y));
                 return `translate(${d.x},${d.y-smallgaph})`});
                 //return `translate(${d.x- netConfig.width/10},${d.y- netConfig.height/10})`});
     });
@@ -716,22 +738,47 @@ function drawNetgapHuff(nodenLink){
     let widthNet= netConfig.widthG();
     let heightNet= netConfig.heightG();
 
-    function cutbyThreshold(threshhold, maxlink) {
+    // function cutbyThreshold(threshhold, maxlink) {
+    //     let tempLinks=[];
+    //     let tempc = d3.nest()
+    //         .key(d=>d.source)
+    //         .sortValues((a,b)=>a.value-b.value)
+    //         .rollup(d=>d.slice(0,maxlink).filter(l=>l.value<threshhold))
+    //         .entries(nodenLink.links);
+    //     tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
+    //     return tempLinks;
+    // }
+    // let q1 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.25);
+    // let q3 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.75);
+    // filterConfig.scalevalueLimit = (q1- (q3-q1)*1.5);
+    // filterConfig.scalevalueLimit = q1;
+    // const links = cutbyThreshold(filterConfig.scalevalueLimit, filterConfig.limitconnect).map(d => Object.create(d));
+
+    function cutbyIQRv3(multi,maxlink) {
+        nodenLink.links.sort((a, b) => a.value - b.value);
+        nodenLink.nodes.sort((a, b) => a.value - b.value);
+        let templarray = nodenLink.links.map(d => d.value);
+        const q1 = d3.quantile(templarray, 0.25);
+        const q3 = d3.quantile(templarray, 0.75);
+        const qmean = d3.median(templarray);
+        const iqr = q3 - q1;
+        let filtered= nodenLink.links.filter(d=> (d.value<(q3+iqr*multi)));
         let tempLinks=[];
-        let tempc = d3.nest()
+        let tempc =d3.nest()
             .key(d=>d.source)
-            .sortValues((a,b)=>a.value-b.value)
-            .rollup(d=>d.slice(0,maxlink).filter(l=>l.value<threshhold))
-            .entries(nodenLink.links);
+            .rollup(d=>{
+                let nv =nodenLink.nodes.find(e=>e.id === d[0].source).value;
+                if (nv>q3)
+                    return d.slice(0,1).filter(d=> (d.value<q1));
+                if (nv>q1)
+                    return d.slice(0,maxlink-1).filter(d=> (d.value<qmean));
+                return d.slice(0,maxlink);})
+            .entries(filtered);
         tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
         return tempLinks;
     }
-    let q1 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.25);
-    let q3 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.75);
-    filterConfig.scalevalueLimit = (q1- (q3-q1)*1.5);
-    filterConfig.scalevalueLimit = q1;
-    // const links = cutbyThreshold(d3.mean(nodenLink.links,d=>d.value)*filterConfig.scalevalueLimit, 10).map(d => Object.create(d));
-    const links = cutbyThreshold(filterConfig.scalevalueLimit, filterConfig.limitconnect).map(d => Object.create(d));
+
+    const links = cutbyIQRv3(1.5, 2).map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
@@ -746,7 +793,8 @@ function drawNetgapHuff(nodenLink){
 
     netConfig.scalerevse.domain(d3.extent(links,d=>d.value));
     netConfig.invertscale.domain(d3.extent(nodes,d=>d.value));
-    let fontscale = d3.scaleLog().domain(d3.extent(nodenLink.nodes, d=>d3.mean(d.values,e=>e.values[0].f))).range(netConfig.fontRange);
+    let fontscale = d3.scaleLog().domain(d3.extent(nodenLink.nodes, d=>d.value)).range(netConfig.fontRange);
+    // let fontscale = d3.scaleLog().domain(d3.extent(nodenLink.nodes, d=>d3.mean(d.values,e=>e.values[0].f))).range(netConfig.fontRange);
     // netConfig.simulation.nodes(nodes);
     // netConfig.simulation.force("link").links(links);
         // .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)));
@@ -829,7 +877,8 @@ function drawNetgapHuff(nodenLink){
             x:0,
             y:netConfig.smallgrapSize(),
             dy: ".71em"
-        }).style('font-size',d=>fontscale(d3.mean(d.values,e=>e.values[0].f)));
+        }).style('font-size',d=>fontscale(d.value));
+        // }).style('font-size',d=>fontscale(d3.mean(d.values,e=>e.values[0].f)));
 
     // netConfig.node.select('path')
     netConfig.node

@@ -15,7 +15,7 @@ function readData(startCut,endCut) {
             topics.values.forEach(d=>d.value.forEach(it=>{
                 let timestepIt = timerange[it.timestep];
                 if ((timestepIt>(startCut||0)) &&(timestepIt<(endCut||Infinity)))
-                dataRead.push({key: d.key.replace("'", ""),
+                dataRead.push({key: d.key.replace(/'|&/gi, ""),
                         topic: topics.key,
                         text: it.text,
                         f: it.frequency,
