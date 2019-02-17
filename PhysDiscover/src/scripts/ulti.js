@@ -318,16 +318,60 @@ function drawNetgap(nodenLink){
     let radius =5;
 
     function cutbyIQR() {
-        nodenLink.links.sort((a, b) => {
-            a.value - b.value
-        });
+        nodenLink.links.sort((a, b) => a.value - b.value);
         let templarray = nodenLink.links.map(d => d.value);
         const q1 = d3.quantile(templarray, 0.25);
         const q3 = d3.quantile(templarray, 0.75);
         const iqr = q3 - q1;
         return nodenLink.links.filter(d=> (d.value>(q3+1.5*iqr)||d.value<(q1-1.5*iqr)));
     }
-
+    function cutbyIQRv2(multi,maxlink) {
+        nodenLink.links.sort((a, b) => a.value - b.value);
+        nodenLink.nodes.sort((a, b) => a.value - b.value);
+        let templarray = nodenLink.nodes.map(d => d.value);
+        const q1 = d3.quantile(templarray, 0.25);
+        const q3 = d3.quantile(templarray, 0.75);
+        const iqr = q3 - q1;
+        // let filtered= nodenLink.links.filter(d=> (d.value<q3*multi));
+        let tempLinks=[];
+        let tempc =d3.nest()
+            .key(d=>d.source)
+            .rollup(d=>{
+                let nv =nodenLink.nodes.find(e=>e.id === d[0].source).value;
+                if (nv>(q3+iqr*multi))
+                    return [];
+                else if (nv>q3)
+                    return d.slice(0,maxlink-3);
+                else if (nv>q1)
+                    return d.slice(0,maxlink-2);
+                return d.slice(0,maxlink);})
+            .entries(nodenLink.links);
+        tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
+        return tempLinks;
+    }
+    function cutbyIQRv3(multi,maxlink) {
+        nodenLink.links.sort((a, b) => a.value - b.value);
+        nodenLink.nodes.sort((a, b) => a.value - b.value);
+        let templarray = nodenLink.links.map(d => d.value);
+        const q1 = d3.quantile(templarray, 0.25);
+        const q3 = d3.quantile(templarray, 0.75);
+        const qmean = d3.median(templarray);
+        const iqr = q3 - q1;
+        let filtered= nodenLink.links.filter(d=> (d.value<(q3+iqr*multi)));
+        let tempLinks=[];
+        let tempc =d3.nest()
+            .key(d=>d.source)
+            .rollup(d=>{
+                let nv =nodenLink.nodes.find(e=>e.id === d[0].source).value;
+                if (nv>q3)
+                    return d.slice(0,1).filter(d=> (d.value<qmean));
+                if (nv>q1)
+                    return d.slice(0,maxlink-1).filter(d=> (d.value<qmean));
+                return d.slice(0,maxlink);})
+            .entries(filtered);
+        tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
+        return tempLinks;
+    }
     function cutbyThreshold(threshhold, maxlink) {
         let tempLinks=[];
         let tempc = d3.nest()
@@ -339,7 +383,9 @@ function drawNetgap(nodenLink){
         return tempLinks;
     }
 
-    const links = cutbyThreshold(2, 4).map(d => Object.create(d));
+
+    const links = cutbyIQRv3(1.5, 4).map(d => Object.create(d));
+
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
@@ -347,14 +393,16 @@ function drawNetgap(nodenLink){
         return temp;
     });
     // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
-    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,100]);
+    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,40]);
     let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0.8,0.2]);
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
         //.force('collision',d3.forceCollide().radius(widthSvg/10))
-        .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/3)
-            .distanceMin(10))
-        .force('collision',d3.forceCollide().radius(10))
+        // .force("charge", d3.forceManyBody().strength(-3).distanceMax(widthSvg/3)
+        //     .distanceMin(5))
+        .force("gravity", d3.forceManyBody(5).distanceMax(widthSvg/5)
+           .distanceMin(5))
+        .force('collision',d3.forceCollide().radius(5))
         .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
     // .force("x", d3.forceX())
     // .force("y", d3.forceY());
@@ -476,4 +524,17 @@ function reset(){
     nodenLink = callgapsall(data);
     drawSumgap();
     drawNetgap(nodenLink);
+}
+
+function switchTheme(){
+    if (this.value==="light"){
+        this.value = "dark";
+        this.text = "Light";
+        d3.select('body').classed('light',false);
+        return;
+    }
+    this.value = "light";
+    this.text = "Dark";
+    d3.select('body').classed('light',true);
+    return
 }

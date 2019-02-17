@@ -1,5 +1,5 @@
 let widthSvg = 1500;//document.getElementById("mainPlot").clientWidth-101;
-let heightSvg = 800;
+let heightSvg = 1000;
 let margin = ({top: 20, right: 50, bottom: 50, left: 50});
 
 
@@ -169,7 +169,7 @@ function updatelegend(l){
 }
 
 function drawlegend(d1){
-    let cal1 = new Date();
+    // let cal1 = new Date();
     let TR = d1||filterConfig.time.map(wsConfig.time2index.invert);
     dataInformation.lengend.data =_.chain(dataRaw)
         .filter(d=>d.f!==0)
@@ -181,8 +181,8 @@ function drawlegend(d1){
         .groupBy(d=>d.topic)
         .map(d=>{return {topic: d[0].topic, terms:d.length}})
         .value();
-    let cal2 = new Date();
-    console.log('---- filter legend ----: '+(cal2-cal1));
+    // let cal2 = new Date();
+    // console.log('---- filter legend ----: '+(cal2-cal1));
     d3.select('#legendGroup')
         .selectAll(".row")
         .data(dataInformation.lengend.data)
@@ -565,6 +565,22 @@ function brushedTime (){
 function filterTop(dataR){
     let data =[];
     let topkeys = [];
+
+    // _.chain(dataRaw)
+    //     .sortBy(d=>d.timestep)
+    //     .groupBy(d=>d.topic)
+    //     .groupBy(d=>d.timestep)
+    //     .map(d=>)
+    //
+    //     .groupBy(d=>d.key).map(d=>d[0])
+    //     .filter(d=>{
+    //         let cT = d.timestep;
+    //         return ((cT >= TR[0]) && (cT <= TR[1])); //in range time
+    //     })
+    //     .groupBy(d=>d.topic)
+    //     .map(d=>{return {topic: d[0].topic, terms:d.length}})
+    //     .value();
+
     let nettemp = d3.nest()
         .key(d=>d.topic).sortValues(d=>d.timestep)
         .key(function(d) { return d.timestep; })
@@ -927,15 +943,3 @@ function hightlightWS(d1){
         }).classed('disableWord',true);
 }
 
-function switchTheme(){
-    if (this.value==="light"){
-        this.value = "dark";
-        this.text = "Light";
-        d3.select('body').classed('light',false);
-        return;
-    }
-    this.value = "light";
-    this.text = "Dark";
-    d3.select('body').classed('light',true);
-    return
-}

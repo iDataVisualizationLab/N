@@ -101,6 +101,7 @@ $( document ).ready(function(){
     //     .text(d=>d.text);
     //     .join("a").on('click',changeVar)
     //     .text(d=>d.text);
+    d3.select("#DarkTheme").on("click",switchTheme);
 });
 function changeVar(d){
     console.log(d);
