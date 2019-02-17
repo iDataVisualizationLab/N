@@ -101,7 +101,7 @@ $( document ).ready(function(){
     //     .text(d=>d.text);
     //     .join("a").on('click',changeVar)
     //     .text(d=>d.text);
-    widthSvg = $('#network').width()-50;
+    widthSvg = $('#network').width();
     heightSvg = widthSvg;
     d3.select("#DarkTheme").on("click",switchTheme);
     init();

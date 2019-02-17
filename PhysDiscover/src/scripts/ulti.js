@@ -436,6 +436,12 @@ function drawNetgap(nodenLink){
         .attr('class','linkLineg')
         .attr('id',(d,i)=>'mini'+nodes[i].key)
         .style('pointer-events','auto');
+    node.append('rect')
+        .attrs({
+            opacity:0,
+            width: widthNet/12,
+            height: widthNet/12,
+        });
     node.append('path')
         .style('stroke',d=>
             color(d.gap))
@@ -443,9 +449,10 @@ function drawNetgap(nodenLink){
         .call(d=>lineConnect(d,12))
 
         .attr('stroke-width',0.5);
-    node.selectAll('path')
+    node.selectAll('rect')
         .style('pointer-events','auto')
         .on('mouseover',(dd)=>{
+            simulation.stop();
             let maxSudden = d3.max(dd.values,d=>d.values[0].df);
             let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
             mouseoverHandel(maxSuddenPoint);
@@ -457,6 +464,7 @@ function drawNetgap(nodenLink){
             });
             tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
         .on('mouseleave',(d)=>{
+            simulation.alphaTarget(.3).restart();
             mouseleaveHandel();
             tip.hide();})
         .call(drag(simulation));
@@ -495,7 +503,7 @@ function drawNetgap(nodenLink){
     function drag (simulation) {
 
         function dragstarted(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            if (!d3.event.active) simulation.alphaTarget(0.01).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
@@ -506,7 +514,7 @@ function drawNetgap(nodenLink){
         }
 
         function dragended(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
+            if (!d3.event.active) simulation.alphaTarget(0.3);
             d.fx = null;
             d.fy = null;
         }

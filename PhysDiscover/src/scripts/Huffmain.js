@@ -898,7 +898,7 @@ function drawNetgapHuff(nodenLink){
             tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
         .on('mouseleave',(dd)=>{
             mouseleaveHandel();
-            netConfig.simulation.alphaTarget(.5).restart()
+            netConfig.simulation.alphaTarget(.3).restart();
 
             netsvg.selectAll(".linkLineg").style('opacity',1);
             netsvg.selectAll(".linkGap").style('stroke-opacity',0.5);
