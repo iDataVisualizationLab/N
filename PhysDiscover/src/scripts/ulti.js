@@ -313,6 +313,7 @@ function drawNetgap(nodenLink){
         // overflow: "visible",
 
     });
+
     let widthNet= widthSvg*scalezoom-marginNet.left-marginNet.right;
     let heightNet= heightSvg*scalezoom-marginNet.top-marginNet.bottom;
     let radius =5;
@@ -410,6 +411,15 @@ function drawNetgap(nodenLink){
 
     netsvg.call(tip);
     const netsvgG = netsvg.append("g").attr('transform',`translate(${marginNet.left},${marginNet.top})`);
+
+    function zoomed() {
+        netsvgG.attr("transform", d3.event.transform);
+    }
+    var zoom = d3.zoom()
+        .scaleExtent([0.25, 40])
+        .on("zoom", zoomed);
+    netsvg.call(zoom);
+
     const link = netsvgG.append("g")
         .attr("stroke", "#000000")
         .attr("stroke-opacity", 0.3)
