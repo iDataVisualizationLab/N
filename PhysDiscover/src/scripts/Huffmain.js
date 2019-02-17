@@ -53,7 +53,7 @@ let netConfig ={
     heightView: function(){return this.height*this.scalezoom},
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-    colider: function() {return this.smallgrapSize()/10},
+    colider: function() {return this.smallgrapSize()/5},
     ratiograph: 24,
     smallgrapSize: function(d){return this.width/this.ratiograph},
     fontRange:[10,15]
@@ -736,21 +736,6 @@ function drawNetgapHuff(nodenLink){
     let widthNet= netConfig.widthG();
     let heightNet= netConfig.heightG();
 
-    // function cutbyThreshold(threshhold, maxlink) {
-    //     let tempLinks=[];
-    //     let tempc = d3.nest()
-    //         .key(d=>d.source)
-    //         .sortValues((a,b)=>a.value-b.value)
-    //         .rollup(d=>d.slice(0,maxlink).filter(l=>l.value<threshhold))
-    //         .entries(nodenLink.links);
-    //     tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
-    //     return tempLinks;
-    // }
-    // let q1 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.25);
-    // let q3 = d3.quantile(nodenLink.links.map(d=>d.value).sort((a,b)=>a-b),0.75);
-    // filterConfig.scalevalueLimit = (q1- (q3-q1)*1.5);
-    // filterConfig.scalevalueLimit = q1;
-    // const links = cutbyThreshold(filterConfig.scalevalueLimit, filterConfig.limitconnect).map(d => Object.create(d));
 
     function cutbyIQRv3(multi,maxlink) {
         nodenLink.links.sort((a, b) => a.value - b.value);
@@ -776,7 +761,7 @@ function drawNetgapHuff(nodenLink){
         return tempLinks;
     }
 
-    const links = cutbyIQRv3(1.5, 2).map(d => Object.create(d));
+    const links = cutbyIQRv3(1.5, 4).map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
@@ -785,21 +770,11 @@ function drawNetgapHuff(nodenLink){
         temp.topic = d.extra.topic;
         return temp;
     });
-    // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
-    // const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,100]);
-    // const invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([1,0.2]);
 
     netConfig.scalerevse.domain(d3.extent(links,d=>d.value));
     netConfig.invertscale.domain(d3.extent(nodes,d=>d.value));
     let fontscale = d3.scaleLog().domain(d3.extent(nodenLink.nodes, d=>d.value)).range(netConfig.fontRange);
-    // let fontscale = d3.scaleLog().domain(d3.extent(nodenLink.nodes, d=>d3.mean(d.values,e=>e.values[0].f))).range(netConfig.fontRange);
-    // netConfig.simulation.nodes(nodes);
-    // netConfig.simulation.force("link").links(links);
-        // .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)));
-        // .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(1))
 
-    // .force("x", d3.forceX())
-    // .force("y", d3.forceY());
 
     const netsvgG = netConfig.g;
 
