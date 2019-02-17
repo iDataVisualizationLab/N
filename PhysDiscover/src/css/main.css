@@ -117,10 +117,10 @@ body.light {
     pointer-events: none;
 }
 
-#mainPlot {
-    max-width:1200px;
-    max-height:1200px;
-}
+/*#mainPlot {*/
+    /*max-width:1200px;*/
+    /*max-height:1200px;*/
+/*}*/
 
 #controls {
     padding-top: 10px;
