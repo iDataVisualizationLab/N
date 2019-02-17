@@ -284,7 +284,12 @@ sup {
     font-size: smaller;
 }
 
-#legend-svg {
-    position: absolute;
-    left: calc(50% - 100px);
+/*#legend-svg {*/
+    /*position: absolute;*/
+    /*left: calc(50% - 100px);*/
+/*}*/
+
+.menuFloat {
+    position: fixed;
+    right: 0px;
 }
