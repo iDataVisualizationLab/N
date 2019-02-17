@@ -38,7 +38,7 @@
         <counts>
           <entry key="CSS" value="1052" />
           <entry key="HTML" value="1574" />
-          <entry key="JavaScript" value="19711" />
+          <entry key="JavaScript" value="19722" />
         </counts>
       </usages-collector>
     </session>
@@ -75,8 +75,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="700" column="61" selection-start-line="700" selection-start-column="61" selection-end-line="700" selection-end-column="61" />
+            <state relative-caret-position="72">
+              <caret line="700" column="102" lean-forward="true" selection-start-line="700" selection-start-column="102" selection-end-line="700" selection-end-column="103" />
               <folding>
                 <element signature="n#!!block;n#customYAxis#0" />
                 <element signature="n#!!block;n#updateSpike#0" />
@@ -211,7 +211,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="588" />
     <option name="y" value="130" />
     <option name="width" value="1418" />
@@ -341,25 +341,25 @@
       <workItem from="1549240643473" duration="3613000" />
       <workItem from="1549318628498" duration="130000" />
       <workItem from="1549318796503" duration="229710000" />
-      <workItem from="1550069831199" duration="127494000" />
+      <workItem from="1550069831199" duration="128459000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="361553000" />
+    <option name="totallyTimeSpent" value="362518000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="588" y="130" width="1418" height="886" extended-state="0" />
+    <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23269513" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12559618" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" weight="0.32919955" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.27091634" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.22101842" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -636,8 +636,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/Huffmain.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="700" column="61" selection-start-line="700" selection-start-column="61" selection-end-line="700" selection-end-column="61" />
+        <state relative-caret-position="72">
+          <caret line="700" column="102" lean-forward="true" selection-start-line="700" selection-start-column="102" selection-end-line="700" selection-end-column="103" />
           <folding>
             <element signature="n#!!block;n#customYAxis#0" />
             <element signature="n#!!block;n#updateSpike#0" />
