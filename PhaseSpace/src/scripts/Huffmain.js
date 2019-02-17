@@ -84,6 +84,7 @@ $(document).ready(function(){
     widthSvg = $('#network').width();
     wsConfig.width = $('#WS').width();
     scatterConfig.width = $('#mainPlot').width();
+    scatterConfig.height = scatterConfig.width;
     netConfig.width = widthSvg;
     d3.select("#DarkTheme").on("click",switchTheme);
 
@@ -352,6 +353,11 @@ function drawInstances(dataR){
         .key(function(d) { return d.key; }).sortValues((a,b)=>(b.df-a.df))
         .rollup(d=>d.slice(0,1))
         .entries(dataR);
+    let nestSumAlltime = d3.nest()
+        .key(function(d) { return d.timestep; })
+        .rollup(d=>{return [{df: d3.mean(d,e=>e.df), f: d3.mean(d,e=>e.f), timestep: d[0].timestep}]})
+        .entries(dataR);
+    nestSumAlltime.forEach(d=>{d.values=d.value; delete d.value});
     let pointsdata = scsvg.gIn.selectAll(".gInstance")
         .data(datanest,d=>d.value);
     let gpoints_new = pointsdata.enter()
@@ -375,7 +381,22 @@ function drawInstances(dataR){
         r:  2})
         .style('opacity',0.2)
         .style('fill',d=> color(d.topic));
+    scsvg.gIn
+        // .select('.gSumLine')
+        // .data([nestSumAlltime])
+        // .enter()
+        // .append('g')
+        // .attr('class','gSumLine')
 
+        .append('path').datum(nestSumAlltime)
+        .styles({
+            fill: 'none',
+            stroke: 'black',
+            'stroke-width' : 2
+        })
+        .call(scatterConfig.lineConnect)
+        .classed('linkLine',false)
+        .classed('gSumLine',true);
 
 }
 
@@ -631,34 +652,6 @@ function callSum(){
         key.gap = integration (key.values.map(d=>normalize(d)),sumnet.map(d=>normalize(d)));
     });
 }
-function callSum(){
-    sumnet =[];
-    let nest = d3.nest()
-        .key(d=>d.topic)
-        .key(function(d) { return d.timestep; })
-        .entries(data);
-    nest.forEach(d=>{
-        let sumnetit={};
-        sumnetit.key = d.key;
-        sumnetit.values = [];
-        d.values.forEach((n,i)=>{
-            let currentMean = d3.mean(n.values,m=>m.f);
-            sumnetit.values.push({f: currentMean, df: d3.mean(n.values,m=>m.df),timestep:i});
-        });
-        sumnet.push(sumnetit);
-    });
-    nestbyKey = d3.nest()
-        .key(function(d) { return d.key; }).sortKeys(function(a,b) { return a.timestep-b.timestep})
-        .entries(data);
-    scaleX = d3.scaleSymlog().domain(d3.extent(data,d=>d.f)).range([0,1]);
-    // scaleX = d3.scaleLinear().domain(d3.extent(data,d=>d.f)).range([0,1]);
-    //scaleY = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([0,1]);
-    scaleY = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([0,1]);
-    // scaleY = d3.scaleLinear().domain(d3.extent(data,d=>d.df)).range([0,1]);
-    nestbyKey.forEach(key => {
-        key.gap = integration (key.values.map(d=>normalize(d)),sumnet.find(d=>d.key===nestbyKey[0].values[0].topic).values.map(d=>normalize(d)));
-    });
-}
 
 function initNetgap(){
     netConfig.margin = ({top: 0, right: 0, bottom: 0, left: 0});
@@ -698,7 +691,7 @@ function initNetgap(){
     netsvg.call(tip);
     zoom.scaleTo(netsvg, 1/netConfig.scalezoom);
     netsvg.call(zoom   .translateTo, netConfig.widthG() / 2,netConfig.heightG() / 2);
-    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*2,netConfig.colider()*20]);
+    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*2,netConfig.colider()*10]);
     netConfig.invertscale =  d3.scalePow().exponent(5).range([0.8,0.1]);
     netConfig.simulation = d3.forceSimulation(netConfig.nodes)
         .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
