@@ -44,7 +44,6 @@ let tip = d3.tip().attr('class', 'd3-tip')
 
 
 
-init();
 
 
 
@@ -105,6 +104,8 @@ $( document ).ready(function(){
     widthSvg = $('#network').width()-50;
     heightSvg = widthSvg;
     d3.select("#DarkTheme").on("click",switchTheme);
+    init();
+
 });
 function changeVar(d){
     console.log(d);

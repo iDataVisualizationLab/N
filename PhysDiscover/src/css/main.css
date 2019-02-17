@@ -286,5 +286,5 @@ sup {
 
 #legend-svg {
     position: absolute;
-    right:50%;
+    left: calc(50% - 100px);
 }
