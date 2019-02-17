@@ -698,16 +698,14 @@ function initNetgap(){
     netsvg.call(tip);
     zoom.scaleTo(netsvg, 1/netConfig.scalezoom);
     netsvg.call(zoom   .translateTo, netConfig.widthG() / 2,netConfig.heightG() / 2);
-    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*1.5,netConfig.colider()*20]);
+    netConfig.scalerevse = d3.scalePow().exponent(5).range([0,netConfig.colider()*20]);
     netConfig.invertscale =  d3.scalePow().exponent(5).range([0.8,0.1]);
     netConfig.simulation = d3.forceSimulation(netConfig.nodes)
         .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
         // .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
-        .force("charge", d3.forceManyBody(netConfig.colider()).distanceMax(netConfig.widthG()/4)
-            .distanceMin(netConfig.colider()*1.5))//.strength(-3))
+        .force("charge", d3.forceManyBody(netConfig.colider()).distanceMax(netConfig.widthG()/5))//.strength(-3))
         .force('collision',d3.forceCollide().radius(netConfig.colider()))
-        .force("gravity", d3.forceManyBody(netConfig.colider()).distanceMax(netConfig.widthG()/4)
-            .distanceMin(netConfig.colider()*1.5))
+        .force("gravity", d3.forceManyBody(netConfig.colider()).distanceMax(netConfig.widthG()/5))
         .force("center", d3.forceCenter(netConfig.widthG() / 2, netConfig.heightG() / 2))
         .on("tick", () => {
             netConfig.link
