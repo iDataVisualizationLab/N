@@ -163,6 +163,18 @@ html, body, .block {
     fill: #000000;
 }
 
+.linkText {
+    fill: #ffffff;
+    /*text-shadow: 1px 1px #fff8ff;*/
+    text-anchor: start;
+    text-shadow: 1px 1px #000000;
+}
+
+.light .linkText {
+    fill: #000000;
+    text-shadow: 1px 1px #fff8ff;
+}
+
 .dropdown-content {
     background-color: #1b1111c4;
     min-width: 200px;
@@ -297,4 +309,12 @@ sup {
 .menuFloat {
     position: fixed;
     right: 0px;
+}
+
+.linkGap {
+    stroke: black;
+}
+
+.light .linkGap {
+    stroke: black;
 }

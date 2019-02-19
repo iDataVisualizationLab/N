@@ -29,7 +29,21 @@ mainsvg.attrs({
     overflow: "visible",
 
 });
-
+let netConfig ={
+    g:{},
+    margin: {top: 0, right: 0, bottom: 0, left: 0},
+    scalezoom: 1,
+    width: widthSvg,
+    height: heightSvg,
+    widthView: function(){return this.width*this.scalezoom},
+    heightView: function(){return this.height*this.scalezoom},
+    widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
+    heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
+    colider: function() {return this.smallgrapSize()/3},
+    ratiograph: 12,
+    smallgrapSize: function(d){return this.width/this.ratiograph},
+    fontRange:[10,15]
+};
 /* Initialize tooltip */
 let tip = d3.tip().attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -55,6 +69,7 @@ function init(){
     data = calData(UnzipData(dataRaw));
     nodenLink = callgapsall(data);
     drawSumgap();
+    initNetgap ();
     drawNetgap(nodenLink,isColorMatchCategory);
 
 }
@@ -119,7 +134,7 @@ function changeVar(d){
 function reset(){
     mainsvg.selectAll('*').remove();
     d3.select('#legend-svg').selectAll('*').remove();
-    netsvg.selectAll('*').remove();
+    //netsvg.selectAll('*').remove();
 
     data = calData(UnzipData(dataRaw));
     nodenLink = callgapsall(data);
@@ -142,11 +157,14 @@ function mouseoverHandel(datain){
 
     if (!currentHost.select('.linkLine').empty())
         currentHost.select('.linkLine').datum(d=>d.values).call(lineConnect)
+            .style('stroke',color(currentHost.datum().gap))
             .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);
     else
-        currentHost.append('path').datum(d=>d.values).call(lineConnect)
+        currentHost
+            .append('path').datum(d=>d.values).call(lineConnect)
+            .style('stroke',color(currentHost.datum().gap))
             .transition()
             .duration(2000)
             .attrTween("stroke-dasharray", tweenDash);

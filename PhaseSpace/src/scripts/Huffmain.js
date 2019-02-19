@@ -53,10 +53,10 @@ let netConfig ={
     heightView: function(){return this.height*this.scalezoom},
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-    colider: function() {return this.smallgrapSize()/5},
+    colider: function() {return this.smallgrapSize()/2},
     ratiograph: 24,
     smallgrapSize: function(d){return this.width/this.ratiograph},
-    fontRange:[10,15]
+    fontRange:[15,20]
 };
 let isColorMatchCategory = true;
 
@@ -353,11 +353,15 @@ function drawInstances(dataR){
         .key(function(d) { return d.key; }).sortValues((a,b)=>(b.df-a.df))
         .rollup(d=>d.slice(0,1))
         .entries(dataR);
-    let nestSumAlltime = d3.nest()
-        .key(function(d) { return d.timestep; })
-        .rollup(d=>{return [{df: d3.mean(d,e=>e.df), f: d3.mean(d,e=>e.f), timestep: d[0].timestep}]})
-        .entries(dataR);
-    nestSumAlltime.forEach(d=>{d.values=d.value; delete d.value});
+    // let nestSumAlltime = d3.nest()
+    //     .key(function(d) { return d.timestep; })
+    //     .rollup(d=>{return [{df: d3.mean(d,e=>e.df), f: d3.mean(d,e=>e.f), timestep: d[0].timestep}]})
+    //     .entries(dataR);
+    // // let nestSumAlltime = d3.nest()
+    // //     .key(function(d) { return d.timestep; })
+    // //     .rollup(d=>{return [{df: d3.median(d.filter(e=>e.f).map(e=>e.df).sort((a,b)=>a-b)), f: d3.median(d.filter(e=>e.f).map(e=>e.f).sort((a,b)=>a-b)), timestep: d[0].timestep}]})
+    // //     .entries(dataR);
+    // nestSumAlltime.forEach(d=>{d.values=d.value; delete d.value});
     let pointsdata = scsvg.gIn.selectAll(".gInstance")
         .data(datanest,d=>d.value);
     let gpoints_new = pointsdata.enter()
@@ -381,22 +385,22 @@ function drawInstances(dataR){
         r:  2})
         .style('opacity',0.2)
         .style('fill',d=> color(d.topic));
-    scsvg.gIn
-        // .select('.gSumLine')
-        // .data([nestSumAlltime])
-        // .enter()
-        // .append('g')
-        // .attr('class','gSumLine')
-
-        .append('path').datum(nestSumAlltime)
-        .styles({
-            fill: 'none',
-            stroke: 'black',
-            'stroke-width' : 2
-        })
-        .call(scatterConfig.lineConnect)
-        .classed('linkLine',false)
-        .classed('gSumLine',true);
+    // scsvg.gIn
+    //     // .select('.gSumLine')
+    //     // .data([nestSumAlltime])
+    //     // .enter()
+    //     // .append('g')
+    //     // .attr('class','gSumLine')
+    //
+    //     .append('path').datum(nestSumAlltime)
+    //     .styles({
+    //         fill: 'none',
+    //         stroke: 'black',
+    //         'stroke-width' : 2
+    //     })
+    //     .call(scatterConfig.lineConnect)
+    //     .classed('linkLine',false)
+    //     .classed('gSumLine',true);
 
 }
 
@@ -437,6 +441,18 @@ function drawScatter(){
             tip2.hide();
             mouseleaveHandel(d)})
 
+    scsvg.g.select('.gSumLine').remove();
+
+    scsvg.g
+        .append('path').datum(sumnet)
+        .styles({
+            fill: 'none',
+            stroke: 'black',
+            'stroke-width' : 2
+        })
+        .call(scatterConfig.lineConnect)
+        .classed('linkLine',false)
+        .classed('gSumLine',true);
     // scsvg.g.call(sumgap);
    // d3.select('#legend-svg').call(colorlegend);
 }
@@ -632,13 +648,13 @@ function filterTop(dataR){
     return data;
 }
 function callSum(){
-    sumnet =[];
-        let nest = d3.nest()
+    sumnet = d3.nest()
             .key(function(d) { return d.timestep; })
             .rollup(d=>{return {f: d3.mean(d,m=>m.f), df: d3.mean(d,m=>m.df), timestep:d[0].timestep}})
             .entries(data);
-    sumnet = nest.map((d)=>{
-            return d.value;
+    sumnet.forEach((d)=>{
+            d.values = [d.value];
+            delete d.value;
         });
     nestbyKey = d3.nest()
         .key(function(d) { return d.key; }).sortKeys(function(a,b) { return a.timestep-b.timestep})
@@ -649,8 +665,9 @@ function callSum(){
     scaleY = d3.scaleSymlog().domain(d3.extent(data,d=>d.df)).range([0,1]);
     // scaleY = d3.scaleLinear().domain(d3.extent(data,d=>d.df)).range([0,1]);
     nestbyKey.forEach(key => {
-        key.gap = integration (key.values.map(d=>normalize(d)),sumnet.map(d=>normalize(d)));
+        key.gap = integration (key.values.map(d=>normalize(d)),sumnet.map(d=>normalize(d.values[0])));
     });
+
 }
 
 function initNetgap(){
@@ -691,14 +708,18 @@ function initNetgap(){
     netsvg.call(tip);
     zoom.scaleTo(netsvg, 1/netConfig.scalezoom);
     netsvg.call(zoom   .translateTo, netConfig.widthG() / 2,netConfig.heightG() / 2);
-    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*2,netConfig.colider()*10]);
-    netConfig.invertscale =  d3.scalePow().exponent(5).range([0.8,0.1]);
+    var collisionForce = rectCollide()
+        .size(function (d) {
+            return [d.size.w, d.size.h] }).strength(0.8);
+    netConfig.scalerevse = d3.scalePow().exponent(5).range([netConfig.colider()*2,netConfig.colider()*5]);
+    netConfig.invertscale =  d3.scalePow().exponent(5).range([0.7,0.1]);
     netConfig.simulation = d3.forceSimulation(netConfig.nodes)
         .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
         // .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
-        .force("charge", d3.forceManyBody().distanceMax(netConfig.widthG()/5).strength(-1))
-        .force('collision',d3.forceCollide().radius(netConfig.colider()))
-        .force("gravity", d3.forceManyBody(10).distanceMax(netConfig.widthG()/5))
+        .force("charge", d3.forceManyBody(10).distanceMax(netConfig.widthG()/3).distanceMin(netConfig.colider()*2))
+        // .force('collision',d3.forceCollide().radius(netConfig.colider()))
+        .force('collision',collisionForce)
+        .force("gravity", d3.forceManyBody(10).distanceMax(netConfig.widthG()/3).distanceMin(netConfig.colider()*2))
         .force("center", d3.forceCenter(netConfig.widthG() / 2, netConfig.heightG() / 2))
         .on("tick", () => {
             netConfig.link
@@ -717,6 +738,8 @@ function initNetgap(){
                 d.y = Math.max(smallgaph-netConfig.heightG()*0.25, Math.min(netConfig.heightG()*1.25 - smallgaph/2, d.y));
                 return `translate(${d.x},${d.y-smallgaph})`});
                 //return `translate(${d.x- netConfig.width/10},${d.y- netConfig.height/10})`});
+            netConfig.nodeText.attr("x", d => d.x)
+                .attr("y", d => d.y)
     });
 
 
@@ -754,7 +777,7 @@ function drawNetgapHuff(nodenLink){
         return tempLinks;
     }
 
-    const links = cutbyIQRv3(1.5, 4).map(d => Object.create(d));
+    const links = cutbyIQRv3(1.5, 2).map(d => Object.create(d));
     const nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
@@ -781,21 +804,14 @@ function drawNetgapHuff(nodenLink){
 
 
     // DATA JOIN
-    // Join new data with old elements, if any.
     netConfig.node = netsvgG
         .selectAll(".linkLineg")
         .data(nodes);
     // UPDATE
-    // Update old elements as needed.
     netConfig.node
         .attr('id',(d,i)=>'mini'+nodes[i].key)
         .style('pointer-events','auto');
     // ENTER
-    // Create new elements as needed.
-    //
-    // ENTER + UPDATE
-    // After merging the entered elements with the update selection,
-    // apply operations to both.
     let newnodes = netConfig.node
         .enter().append('g')
         .attr('class','linkLineg')
@@ -804,7 +820,6 @@ function drawNetgapHuff(nodenLink){
     // EXIT
     // Remove old elements as needed.
     netConfig.node.exit().remove();
-
 
     netConfig.node.select('path')
         .style('stroke',d=>
@@ -829,7 +844,7 @@ function drawNetgapHuff(nodenLink){
         .call(d=>lineConnect(d,1))
         .attr('stroke-width',0.5);
     newsvg.append("title");
-    newnodes.append("text");
+    // newnodes.append("text");
 
     netConfig.node = netsvgG
         .selectAll(".linkLineg");
@@ -837,13 +852,13 @@ function drawNetgapHuff(nodenLink){
     netConfig.node.select("title")
         .text(d => d.id);
 
-    netConfig.node.select("text")
-        .text(d => d.text)
-        .attrs({
-            x:0,
-            y:netConfig.smallgrapSize(),
-            dy: ".71em"
-        }).style('font-size',d=>fontscale(d.value));
+    // netConfig.node.select("text")
+    //     .text(d => d.text)
+    //     .attrs({
+    //         x:0,
+    //         y:netConfig.smallgrapSize(),
+    //         dy: ".30em"
+    //     }).style('font-size',d=>fontscale(d.value));
         // }).style('font-size',d=>fontscale(d3.mean(d.values,e=>e.values[0].f)));
 
     // netConfig.node.select('path')
@@ -854,12 +869,12 @@ function drawNetgapHuff(nodenLink){
             let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
             mouseoverHandel(maxSuddenPoint);
             netConfig.simulation.stop();
-            netsvg.selectAll(".linkLineg").style('opacity',0.2);
+            netsvg.selectAll(".linkLineg").style('opacity',0.5);
             d3.select("#mini"+dd.key).style('opacity',1);
-            d3.selectAll(".linkGap").style('stroke-opacity',0.1);
+            d3.selectAll(".linkGap").style('stroke-opacity',0.5);
             let connect = d3.selectAll(".linkGap").filter(d=>d.source.key===dd.key||d.target.key===dd.key).style('stroke-opacity',1);
             connect.data().forEach(d=>{
-                let id = "#mini"+(d.source.key!=dd.key?d.source.key:d.target.key);
+                let id = "#mini"+(d.source.key!== dd.key?d.source.key:d.target.key);
                 console.log(id);
                 d3.select(id).style('opacity',1);
             });
@@ -874,15 +889,70 @@ function drawNetgapHuff(nodenLink){
         .call(dragForce(netConfig.simulation));
 
 
+    // DATA JOIN
+    netConfig.nodeText = netsvgG
+        .selectAll(".linkText")
+        .data(nodes);
+    // UPDATE
+    netConfig.nodeText
+        .attr('id',(d,i)=>'text'+nodes[i].key)
+        .style('pointer-events','auto');
+    // ENTER
+    netConfig.nodeText
+        .enter().append('text')
+        .attr('class','linkText')
+        .attr('id',(d,i)=>'text'+nodes[i].key)
+        .style('pointer-events','auto');
+    // EXIT
+    // Remove old elements as needed.
+    netConfig.nodeText.exit().remove();
 
 
+    netConfig.nodeText = netsvgG
+        .selectAll(".linkText");
+
+    netConfig.nodeText
+        .text(d => d.text)
+        .attrs({
+            x:0,
+            y:netConfig.smallgrapSize(),
+            // dy: ".30em"
+        }).style('font-size',d=>fontscale(d.gap));
+    // }).style('font-size',d=>fontscale(d3.mean(d.values,e=>e.values[0].f)));
+
+    // netConfig.node.select('path')
+    netConfig.nodeText
+        .style('pointer-events','auto')
+        .on('mouseover',(dd)=>{
+            let maxSudden = d3.max(dd.values,d=>d.values[0].df);
+            let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
+            mouseoverHandel(maxSuddenPoint);
+            netConfig.simulation.stop();
+            netsvg.selectAll(".linkLineg").style('opacity',0.5);
+            d3.select("#mini"+dd.key).style('opacity',1);
+            d3.selectAll(".linkGap").style('stroke-opacity',0.5);
+            let connect = d3.selectAll(".linkGap").filter(d=>d.source.key===dd.key||d.target.key===dd.key).style('stroke-opacity',1);
+            connect.data().forEach(d=>{
+                let id = "#mini"+(d.source.key!== dd.key?d.source.key:d.target.key);
+                console.log(id);
+                d3.select(id).style('opacity',1);
+            });
+            tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
+        .on('mouseleave',(dd)=>{
+            mouseleaveHandel();
+            netConfig.simulation.alphaTarget(.3).restart();
+
+            netsvg.selectAll(".linkLineg").style('opacity',1);
+            netsvg.selectAll(".linkGap").style('stroke-opacity',0.5);
+            tip.hide()})
+        .call(dragForce(netConfig.simulation));
 
 
-    // netConfig.node.nodes().forEach(d=>{
-    //     let e= d3.select(d).select('path').node().getBBox();
-    //     d.__data__.cwidth = e.x+e.width/2;
-    //     d.__data__.cheight = e.y+e.height/2;
-    // });
+    netConfig.nodeText.nodes().forEach(d=>{
+        let e= d3.select(d).node().getBoundingClientRect();
+        d.__data__.size = {w: e.width,h: e.height*2};
+    });
+
     netConfig.simulation.nodes(nodes);
     netConfig.simulation.force("link").links(links);
     netConfig.simulation.alphaTarget(.5).restart()

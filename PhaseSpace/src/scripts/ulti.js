@@ -121,6 +121,10 @@ function drawSumgap(){
         .attrs({class: 'gCategory',
             id: d=>d.key})
         .call(activepoint);
+    gpoints.append('path')
+        .attr('class','linkLine')
+        .datum(d=>d.values);
+
     gpoints.selectAll(".datapoint")
         .data(d=>d.values).enter()
         .append('circle')
@@ -297,59 +301,63 @@ function callgapsall(data,limit){
     });
     return newdata;
 }
-function updateLinks (){
+function initNetgap (){
+    netConfig.margin ={top: 5, right: 20, bottom: 20, left: 5};
+    netConfig.width = widthSvg;
+    netConfig.height = heightSvg;
+    netsvg
+        .attrs({
+            width: netConfig.width,
+            height: netConfig.height,
+        });
+    netConfig.scalerevse = d3.scaleLinear().range([30,90]);
+    netConfig.invertscale =  d3.scaleLinear().range([0.5,0.01]);
+    netConfig.simulation = d3.forceSimulation(netConfig.nodes)
+        .force("link", d3.forceLink(netConfig.links).id(d => d.id).distance(d=>netConfig.scalerevse(d.value)).strength(d=>netConfig.invertscale(d.value)))
+        .force("charge", d3.forceManyBody(10).distanceMax(netConfig.width/3)
+            .distanceMin(30))
+        .force("gravity", d3.forceManyBody(5).distanceMax(netConfig.width/5)
+            .distanceMin(30))
+        .force('collision',d3.forceCollide().radius(20))
+        .force("center", d3.forceCenter(netConfig.widthG() / 2, netConfig.heightG()/ 2))
+        .on("tick", () => {
+            netConfig.link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            netConfig.node
+                .attr("transform", d=>{
+                    let smallgaph = netConfig.smallgrapSize();
+                    d.x = Math.max(smallgaph-netConfig.widthG()*0.5, Math.min(netConfig.widthG()*1.5 - smallgaph/2, d.x));
+                    d.y = Math.max(smallgaph-netConfig.heightG()*0.5, Math.min(netConfig.heightG()*1.5 - smallgaph/2, d.y));
+                    return `translate(${d.x},${d.y-smallgaph})`});
+
+            netConfig.nodeText.attr("x", d => d.x)
+                .attr("y", d => d.y)
+            //return `translate(${d.x- netConfig.width/10},${d.y- netConfig.height/10})`});
+        });
+
+    netsvg.call(tip);
+    netConfig.g = netsvg.append("g").attr('transform',`translate(${netConfig.margin.left},${netConfig.margin.top})`);
+    netConfig.g.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.9)
+        .attr("stroke-width", 1)
+        .attr('class','linkgroup');
+    function zoomed() {
+        netConfig.g.attr("transform", d3.event.transform);
+    }
+    var zoom = d3.zoom()
+        .scaleExtent([0.25, 40])
+        .on("zoom", zoomed);
+    netsvg.call(zoom);
 
 }
 function drawNetgap(nodenLink){
-    let marginNet = ({top: 5, right: 20, bottom: 20, left: 5});
-    let scalezoom = 1;
-    netsvg.attrs({
-        // viewBox:  [-widthSvg*scalezoom / 2, -heightSvg*scalezoom / 2, widthSvg*scalezoom, heightSvg*scalezoom],
-        viewBox:  [0,0, widthSvg*scalezoom, heightSvg*scalezoom],
-        preserveAspectRatio:"xMidYMid meet"
-    }).attrs({
-        width: widthSvg,
-        height: heightSvg,
-        // overflow: "visible",
 
-    });
-
-    let widthNet= widthSvg*scalezoom-marginNet.left-marginNet.right;
-    let heightNet= heightSvg*scalezoom-marginNet.top-marginNet.bottom;
-    let radius =5;
-
-    function cutbyIQR() {
-        nodenLink.links.sort((a, b) => a.value - b.value);
-        let templarray = nodenLink.links.map(d => d.value);
-        const q1 = d3.quantile(templarray, 0.25);
-        const q3 = d3.quantile(templarray, 0.75);
-        const iqr = q3 - q1;
-        return nodenLink.links.filter(d=> (d.value>(q3+1.5*iqr)||d.value<(q1-1.5*iqr)));
-    }
-    function cutbyIQRv2(multi,maxlink) {
-        nodenLink.links.sort((a, b) => a.value - b.value);
-        nodenLink.nodes.sort((a, b) => a.value - b.value);
-        let templarray = nodenLink.nodes.map(d => d.value);
-        const q1 = d3.quantile(templarray, 0.25);
-        const q3 = d3.quantile(templarray, 0.75);
-        const iqr = q3 - q1;
-        // let filtered= nodenLink.links.filter(d=> (d.value<q3*multi));
-        let tempLinks=[];
-        let tempc =d3.nest()
-            .key(d=>d.source)
-            .rollup(d=>{
-                let nv =nodenLink.nodes.find(e=>e.id === d[0].source).value;
-                if (nv>(q3+iqr*multi))
-                    return [];
-                else if (nv>q3)
-                    return d.slice(0,maxlink-3);
-                else if (nv>q1)
-                    return d.slice(0,maxlink-2);
-                return d.slice(0,maxlink);})
-            .entries(nodenLink.links);
-        tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
-        return tempLinks;
-    }
+    netConfig.simulation.stop();
     function cutbyIQRv3(multi,maxlink) {
         nodenLink.links.sort((a, b) => a.value - b.value);
         nodenLink.nodes.sort((a, b) => a.value - b.value);
@@ -368,7 +376,7 @@ function drawNetgap(nodenLink){
                     return d.slice(0,1).filter(d=> (d.value<qmean));
                 if (nv>q1)
                     return d.slice(0,maxlink-1).filter(d=> (d.value<qmean));
-                return d.slice(0,maxlink);})
+                return d.slice(0,maxlink).filter(d=> (d.value<qmean));})
             .entries(filtered);
         tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
         return tempLinks;
@@ -385,146 +393,168 @@ function drawNetgap(nodenLink){
     }
 
 
-    const links = cutbyIQRv3(1.5, 4).map(d => Object.create(d));
+    netConfig.links = cutbyIQRv3(1.5, 3).map(d => Object.create(d));
 
-    const nodes = nodenLink.nodes.map(d => {
+    netConfig.nodes = nodenLink.nodes.map(d => {
         let temp = Object.create(d);
         temp.key = d.id;
         temp.gap = d.value;
         return temp;
     });
     // const scalerevse = d3.scaleLinear().domain(d3.extent(links,d=>d.value)).range([1,200]);
-    const scalerevse = d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0,40]);
-    let invertscale =  d3.scalePow().exponent(10).domain(d3.extent(links,d=>d.value)).range([0.9,0.2]);
-    const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(d=>scalerevse(d.value)).strength(d=>invertscale(d.value)))
-        //.force('collision',d3.forceCollide().radius(widthSvg/10))
-        .force("charge", d3.forceManyBody(10).distanceMax(widthSvg/3)
-            .distanceMin(5))
-        .force("gravity", d3.forceManyBody(5).distanceMax(widthSvg/5)
-           .distanceMin(5))
-        .force('collision',d3.forceCollide().radius(5))
-        .force("center", d3.forceCenter(widthNet / 2, heightNet / 2));
-    // .force("x", d3.forceX())
-    // .force("y", d3.forceY());
+    netConfig.scalerevse.domain(d3.extent(netConfig.links,d=>d.value));
+    netConfig.invertscale.domain(d3.extent(netConfig.nodes,d=>d.value));
 
 
-    netsvg.call(tip);
-    const netsvgG = netsvg.append("g").attr('transform',`translate(${marginNet.left},${marginNet.top})`);
 
-    function zoomed() {
-        netsvgG.attr("transform", d3.event.transform);
-    }
-    var zoom = d3.zoom()
-        .scaleExtent([0.25, 40])
-        .on("zoom", zoomed);
-    netsvg.call(zoom);
 
-    const link = netsvgG.append("g")
-        .attr("stroke", "#000000")
-        .attr("stroke-opacity", 0.3)
+    netConfig.link = netConfig.g.select('.linkgroup')
         .selectAll(".linkGap")
-        .data(links).join("line")
+        .data(netConfig.links).join("line")
         // .enter().append("line")
         .attr("class","linkGap")
         .attr("stroke-width", d => Math.sqrt(d.value));
-    const node = netsvgG
+
+    netConfig.node = netConfig.g
         .selectAll(".linkLineg")
-        // .data(nodenLink.nodes,d=>d.values)
-        .data(nodes)
+        .data(netConfig.nodes,d=>d.key);
+    let newnodes = netConfig.node
         .enter().append('g')
         .attr('class','linkLineg')
-        .attr('id',(d,i)=>'mini'+nodes[i].key)
+        .attr('id',(d,i)=>'mini'+netConfig.nodes[i].key)
         .style('pointer-events','auto');
-    node.append('rect')
+    netConfig.node.exit().remove();
+    newnodes.append('rect')
         .attrs({
             opacity:0,
-            width: widthNet/12,
-            height: widthNet/12,
+            width: netConfig.smallgrapSize(),
+            height: netConfig.smallgrapSize(),
         });
-    node.append('path')
+
+    newnodes.append('path');
+
+    netConfig.node = netConfig.g
+        .selectAll(".linkLineg");
+
+    netConfig.node.select('path')
         .style('stroke',d=>
             color(d.gap))
         .datum(d=>d.values)
-        .call(d=>lineConnect(d,12))
+        .call(d=>lineConnect(d,netConfig.ratiograph))
+        .attr('stroke-width',1);
 
-        .attr('stroke-width',0.5);
-    node.selectAll('rect')
+    netConfig.node.selectAll('rect')
         .style('pointer-events','auto')
         .on('mouseover',(dd)=>{
-            simulation.stop();
+            netConfig.simulation.stop();
             let maxSudden = d3.max(dd.values,d=>d.values[0].df);
             let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
             mouseoverHandel(maxSuddenPoint);
             let connect = d3.selectAll(".linkGap").filter(d=>d.source.key===dd.key||d.target.key===dd.key).style('stroke-opacity',1);
             connect.data().forEach(d=>{
                 let id = "#mini"+(d.source.key!==dd.key?d.source.key:d.target.key);
-                console.log(id);
                 d3.select(id).style('opacity',1);
             });
             tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
         .on('mouseleave',(d)=>{
-            simulation.alphaTarget(.3).restart();
+            netConfig.simulation.alphaTarget(.3).restart();
             mouseleaveHandel();
             tip.hide();})
-        .call(drag(simulation));
-    node.nodes().forEach(d=>{
-        let e= d3.select(d).select('path').node().getBoundingClientRect();
-        d.__data__.width = e.width;
-        d.__data__.height = e.height;
-    });
-    // .attr("stroke", "#fff")
-    // .attr("stroke-width", 0.5)
-    // .selectAll("circle")
-    // .data(nodes)
-    // .enter().append("circle")
-    // .attr("r", 2)
-    // .attr("fill", d=>color(d.value))
+        .call(dragForce(netConfig.simulation));
 
-
-    node.append("title")
+    netConfig.node.append("title")
         .text(d => d.id);
+    // DATA JOIN
+    netConfig.nodeText = netConfig.g
+        .selectAll(".linkText")
+        .data(netConfig.nodes);
+    // UPDATE
+    netConfig.nodeText
+        .attr('id',(d,i)=>'text'+netConfig.nodes[i].key)
+        .style('pointer-events','auto');
+    // ENTER
+    netConfig.nodeText
+        .enter().append('text')
+        .attr('class','linkText')
+        .attr('id',(d,i)=>'text'+netConfig.nodes[i].key)
+        .style('pointer-events','auto');
+    // EXIT
+    // Remove old elements as needed.
+    netConfig.nodeText.exit().remove();
 
 
-    simulation.on("tick", () => {
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+    netConfig.nodeText = netConfig.g
+        .selectAll(".linkText");
 
-        node
-            .attr("transform", d=>{
+    netConfig.nodeText
+        .text(d => d.key)
+        .attrs({
+            x:0,
+            y:netConfig.smallgrapSize(),
+            // dy: ".30em"
+        }).style('font-size',0);
+    // }).style('font-size',d=>fontscale(d3.mean(d.values,e=>e.values[0].f)));
 
-                // d.x = Math.max(widthSvg/10, Math.min(widthNet - widthSvg/5, d.x));
-                // d.y = Math.max(heightSvg/10, Math.min(heightNet - heightSvg/5, d.y));
-                return `translate(${d.x-widthSvg/20},${d.y- heightSvg/20})`});
+    // netConfig.node.select('path')
+    netConfig.nodeText
+        .style('pointer-events','auto')
+        .on('mouseover',(dd)=>{
+            let maxSudden = d3.max(dd.values,d=>d.values[0].df);
+            let maxSuddenPoint = dd.values.find(d=>d.values[0].df===maxSudden);
+            mouseoverHandel(maxSuddenPoint);
+            netConfig.simulation.stop();
+            netsvg.selectAll(".linkLineg").style('opacity',0.5);
+            d3.select("#mini"+dd.key).style('opacity',1);
+            d3.selectAll(".linkGap").style('stroke-opacity',0.5);
+            let connect = d3.selectAll(".linkGap").filter(d=>d.source.key===dd.key||d.target.key===dd.key).style('stroke-opacity',1);
+            connect.data().forEach(d=>{
+                let id = "#mini"+(d.source.key!== dd.key?d.source.key:d.target.key);
+                d3.select(id).style('opacity',1);
+            });
+            tip.show({values: [{key:dd.key,topic:dd.topic,text:dd.text, connect: connect.data()}]});})
+        .on('mouseleave',(dd)=>{
+            mouseleaveHandel();
+            netConfig.simulation.alphaTarget(.3).restart();
+
+            netsvg.selectAll(".linkLineg").style('opacity',1);
+            netsvg.selectAll(".linkGap").style('stroke-opacity',0.5);
+            tip.hide()})
+        .call(dragForce(netConfig.simulation));
+
+
+    netConfig.nodeText.nodes().forEach(d=>{
+        let e= d3.select(d).node().getBoundingClientRect();
+        d.__data__.size = {w: e.width,h: e.height*2};
     });
-    function drag (simulation) {
 
-        function dragstarted(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.01).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
+    netConfig.simulation.nodes(netConfig.nodes);
+    netConfig.simulation.force("link").links(netConfig.links);
+    netConfig.simulation.alphaTarget(.5).restart()
 
-        function dragged(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
+}
+function dragForce (simulation) {
 
-        function dragended(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3);
-            d.fx = null;
-            d.fy = null;
-        }
-
-        return d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended);
+    function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(.03).restart();
+        d.fx = d.x;
+        d.fy = d.y;
     }
-    //invalidation.then(() => simulation.stop());
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(.5);
+        d.fx = null;
+        d.fy = null;
+    }
+
+    return d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
 }
 
 function changeVar(d){
@@ -555,4 +585,104 @@ function switchTheme(){
     this.text = "Dark";
     d3.select('body').classed('light',true);
     return
+}
+
+function rectCollide() {
+    var nodes, sizes, masses
+    var size = constant([0, 0])
+    var strength = 1
+    var iterations = 1
+
+    function force() {
+        var node, size, mass, xi, yi
+        var i = -1
+        while (++i < iterations) { iterate() }
+
+        function iterate() {
+            var j = -1
+            var tree = d3.quadtree(nodes, xCenter, yCenter).visitAfter(prepare)
+
+            while (++j < nodes.length) {
+                node = nodes[j]
+                size = sizes[j]
+                mass = masses[j]
+                xi = xCenter(node)
+                yi = yCenter(node)
+
+                tree.visit(apply)
+            }
+        }
+
+        function apply(quad, x0, y0, x1, y1) {
+            var data = quad.data
+            var xSize = (size[0] + quad.size[0]) / 2
+            var ySize = (size[1] + quad.size[1]) / 2
+            if (data) {
+                if (data.index <= node.index) { return }
+
+                var x = xi - xCenter(data)
+                var y = yi - yCenter(data)
+                var xd = Math.abs(x) - xSize
+                var yd = Math.abs(y) - ySize
+
+                if (xd < 0 && yd < 0) {
+                    var l = Math.sqrt(x * x + y * y)
+                    var m = masses[data.index] / (mass + masses[data.index])
+
+                    if (Math.abs(xd) < Math.abs(yd)) {
+                        node.vx -= (x *= xd / l * strength) * m
+                        data.vx += x * (1 - m)
+                    } else {
+                        node.vy -= (y *= yd / l * strength) * m
+                        data.vy += y * (1 - m)
+                    }
+                }
+            }
+
+            return x0 > xi + xSize || y0 > yi + ySize ||
+                x1 < xi - xSize || y1 < yi - ySize
+        }
+
+        function prepare(quad) {
+            if (quad.data) {
+                quad.size = sizes[quad.data.index]
+            } else {
+                quad.size = [0, 0]
+                var i = -1
+                while (++i < 4) {
+                    if (quad[i] && quad[i].size) {
+                        quad.size[0] = Math.max(quad.size[0], quad[i].size[0])
+                        quad.size[1] = Math.max(quad.size[1], quad[i].size[1])
+                    }
+                }
+            }
+        }
+    }
+
+    function xCenter(d) { return d.x + d.vx + sizes[d.index][0] / 2 }
+    function yCenter(d) { return d.y + d.vy + sizes[d.index][1] / 2 }
+
+    force.initialize = function (_) {
+        sizes = (nodes = _).map(size)
+        masses = sizes.map(function (d) { return d[0] * d[1] })
+    }
+
+    force.size = function (_) {
+        return (arguments.length
+            ? (size = typeof _ === 'function' ? _ : constant(_), force)
+            : size)
+    }
+
+    force.strength = function (_) {
+        return (arguments.length ? (strength = +_, force) : strength)
+    }
+
+    force.iterations = function (_) {
+        return (arguments.length ? (iterations = +_, force) : iterations)
+    }
+
+    return force
+}
+function constant(_) {
+    return function () { return _ }
 }
