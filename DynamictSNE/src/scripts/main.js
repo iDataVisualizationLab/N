@@ -83,7 +83,8 @@ function init() {
         dataRaw = d;
         d3.select("#currentData")
             .text('Employment Rate');
-        resetRequest();
+        timestep = 0;
+        request();
         d3.select('.cover').classed('hidden',true);
     });
 }
@@ -113,7 +114,7 @@ function request(){
 }
 function resetRequest (){
     pausechange();
-    if (interval2) interval2.stop();
+    interval2.stop();
     TSneplot.remove();
     TSneplot.reset(true);
     timestep = 0;

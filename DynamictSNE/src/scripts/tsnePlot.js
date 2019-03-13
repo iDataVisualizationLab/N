@@ -46,13 +46,12 @@ d3.Tsneplot = function () {
             .data(data.top10, d => d.name);
         // EXIT
         dataTop.exit()
-            .transition()
+            .transition('exito')
             .attr('transform', function (d) {
                 return 'translate(20,' + getTransformation(d3.select(this).attr('transform')).translateY + ')'
             })
-            .transition('exit')
-            .duration((d, i) => i * 100)
-            .style('opacity', 0)
+            .transition()
+            .duration((d, i) => i * 50)
             .attr('transform', 'translate(20,' + (maxlist + 1) * sizebox + ")")
             .remove();
         // ENTER
@@ -62,7 +61,7 @@ d3.Tsneplot = function () {
             .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
             .style('opacity', 0)
             .transition('update')
-            .duration((d, i) => i * 100)
+            .duration((d, i) => i * 50)
             .style('opacity', 1)
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
         newdiv.append('rect').attrs(
