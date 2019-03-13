@@ -1,0 +1,252 @@
+$font-stack:    Helvetica, sans-serif
+$primary-color: #333
+$sideNavwidth: 350px
+
+body
+  font: 14px $font-stack
+  background-color: #232b33
+  color: white
+  .mainContain
+    display: none
+  .mainContain.active
+    display: block
+
+#header
+  background: #485563
+  background: linear-gradient(to right, #29323c, #485563)
+  a,
+  .brand-logo
+    font-family: $font-stack
+    color: #ffffff
+  img
+    padding-top: 0.5em
+    display: block
+    height: auto
+    max-width: 3em
+
+  nav
+    ul
+      li.active
+        background-color: rgba(255,255,255,0.26)
+        border-bottom: 5px solid #ffffff73
+
+        a
+          opacity: 1!important
+
+.container
+  color: black
+
+.video-container
+  margin-top: 2em
+
+.cover
+  position: fixed
+  margin: 0
+  width: 100%
+  height: 100%
+  background: #485563
+  background: linear-gradient(to right, #29323cc4, #485563)
+  z-index: 10
+  .spinnerC
+    position: fixed
+    margin: 0
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+.cover.hidden
+  display: none
+
+.subpanel
+  background-color: #383838b5
+  float: left
+  left: 10px
+  position: absolute
+  transition: 0.5s
+  padding-right: 10px
+
+.sidenavs
+  height: 100%
+  width: 0
+  position: fixed
+  z-index: 1
+  top: 0
+  left: 0
+  background: rgba(0, 0, 0, 0.21)
+  overflow-x: hidden
+  transition: 0.5s
+  padding-top: 80px
+
+  a
+    padding: 8px 8px 8px 32px
+    text-decoration: none
+    display: block
+    transition: 0.3s
+  a:hover
+    color: #f1f1f1
+
+  #datasetsSelectTrigger img
+    width: 30px
+    height: 30px
+    overflow: hidden
+    display: inline-block
+    vertical-align: middle
+
+  #datasetsSelectTrigger
+    color: black
+    background-color: rgba(255,255,255,0.9)
+    padding: 5px
+    border: 1px solid #f2f2f2
+    border-radius: 2px
+    height: 3rem
+
+  #search
+    font-size: inherit
+
+  .collapsible
+    border: none
+    .collapsible-header
+      background-color: transparent
+      font-size: large
+    .collapsible-body
+      padding: 1rem
+
+  select
+    padding: 0
+    height: auto
+    display: inline-block
+    width: auto
+.offcanvas
+  a:focus
+    color: #f1f1f1
+
+#header2
+  border-bottom: 1px solid rgba(100,100,100,0.35)
+  background: rgba(0, 0, 0, 0.21)
+  padding: 6px 24px 4px
+  line-height: 24px
+  h1
+    display: inline-block
+    margin: 0px 14px 0 0
+  #header2 button
+    vertical-align: top
+  .controls
+    float: right
+    height: 24px
+    line-height: 24px
+
+.relative
+  position: relative
+
+.floatTitle
+  z-index: 0
+  position: absolute
+  padding: 10px
+  .tally::first-letter
+    text-transform: uppercase
+
+#Maincontent
+  margin-left: 0px
+  transition: all 0.5s
+
+.closebtn
+  position: fixed
+  top: 50%
+  left: -40px
+
+.overlaySide:hover
+  .openbtn
+    left: 20px
+.overlaySide
+  margin: 0
+  padding: 0
+  position: fixed
+  top: 0px
+  left: -20px
+  background-color: rgba(0,0,0,0)
+  z-index: 999
+  width: 40px
+  height: 100%
+
+  .openbtn
+    position: absolute
+    top: 50%
+    left: -30px
+
+
+.sideIn.sidenavs
+  width: $sideNavwidth
+
+.sideIn#Maincontent
+  position: relative
+  margin-left: $sideNavwidth
+
+.sideIn
+  #scatterzone
+    left: $sideNavwidth
+  .closebtn
+    top: 50%
+    left: $sideNavwidth - 20px
+    transition: 0.5s
+  .overlaySide
+    left: -80px
+
+.top10DIV
+  overflow-y: auto
+
+.top10
+
+.top10_item circle
+  fill: black
+
+.top10_item .detailDecoration
+  fill: rgb(162, 162, 162)
+  rx: 10
+
+.light .top10_item .detailDecoration
+  fill: white
+
+.top10_item circle.new
+  fill: red
+
+.top10_item.remove
+
+
+//light
+body.light
+  background-color: white
+  color: black
+
+.light
+  #header
+    background:  #f3f3f3
+    background: -webkit-linear-gradient(to right, #f3f3f3, #ececec)
+    background: linear-gradient(to right, #f3f3f3, #ececec)
+    .tab a
+      opacity: 0.5
+  #header2
+    background: rgba(0, 0, 0, 0.21)
+  .cover
+    background:  #f3f3f3
+    background: -webkit-linear-gradient(to right, #f3f3f3c4, #ececec)
+    background: linear-gradient(to right, #f3f3f3c4, #ececec)
+
+/* Scrollbars */
+
+::-webkit-scrollbar
+  width: 10px
+  height: 10px
+
+.light ::-webkit-scrollbar-track
+  background: #ddd
+
+.light ::-webkit-scrollbar-thumb
+  background: #b5b5b5
+
+::-webkit-scrollbar-track
+  background: #222
+  border-radius: 12px
+
+::-webkit-scrollbar-thumb
+  background: #444
+  border-radius: 12px

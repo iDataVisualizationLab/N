@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="src/style/materialize.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="src/style/main.css"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+
+<nav >
+
+    <div class="nav-wrapper" id="header">
+
+        <div class="brand-logo center input-field col s12 inline" >
+            tSNE
+        </div>
+        <div class="row s5 left hide-on-med-and-down ">
+            <ul id="nav-mobile" class="tabs tabs-transparent">
+                <li class="tab"><a class="active" href="#video">Video</a></li>
+                <li class="tab"><a  href="#demo">Demo</a></li>
+            </ul>
+        </div>
+        <ul class="right">
+            <li><a href="#!" value="dark" id = "DarkTheme" class="waves-effect waves-light">Light</a></li>
+        </ul>
+    </div>
+</nav>
+<div id="mySidenav" class="sidenavs">
+    <div class="row s12">
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header search-wrapper focused">
+                    <input type="text" id="search" placeholder="Search Racks...">
+                    <i class="material-icons">search</i>
+                </div>
+                <div class="collapsible-body"><span>Resevered for hierarchy.</span></div>
+            </li>
+            <li class="active">
+                <div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>
+                <div class="collapsible-body">
+                    <label for="datacom" class="col s4"> Dataset: </label>
+                    <div  class="row s12">
+                        <select id="datacom" class="col s7">
+                            <option value="EmploymentRate" selected="selected">Employment Rate</option>
+                            <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
+                            <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
+                            <!--<option value="WorldTerrorism" >World Terrorism</option>-->
+                            <!--<option value="LifeExpectancy">Life Expectancy</option>-->
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">help</i>Controls</div>
+                <div class="collapsible-body"><strong>Zoom</strong>: Scroll mouse button to zoom.<br/></div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="Maincontent" class="row s12">
+    <a href="javascript:void(0)" class="closebtn btn-floating btn waves-effect waves-light" onclick="closeNav()"><i class="material-icons">chevron_left</i></a>
+    <div class="overlaySide">
+        <a class="openbtn btn-floating btn waves-effect waves-light" id="sideNavbtn" onclick="openNav()">
+            <i class="material-icons">chevron_right</i></a>
+    </div>
+    <div id="video" class= "container mainContain active">
+        <div class="video-container">
+            <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+    <div id="demo" class= "row mainContain">
+        <div class="cover">
+            <div class="spinnerC center">
+                <h3>loading...</h3>
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-yellow">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="header2" class="row s12 marginBottom0">
+            <!--<h1>HPCC Explorer</h1>-->
+            <div class="col valign-wrapper">
+                <h6 id="currentData">  </h6>
+            </div>
+            <div class="controls">
+                <div id="controlHolder"  class="controlHolder">
+
+                    <!--<button onclick="realTimeRequest()" value = false class ="menuBtn record"><i class="fas fa-record pauseicon"></i>Offline</button>-->
+                    <button onclick="pauseRequest()" value = false class ="menuBtn pause"><i class="fas fa-pause pauseicon"></i></button>
+                    <button onclick="resetRequest()" class ="menuBtn rotatehover" style="background-color: #ddf;"><i class="fas fa-sync-alt pauseicon"></i></button>
+                </div>
+
+
+            </div>
+            <div id="legendHolder"  class="legendHolder">
+            </div>
+
+            <div style="clear:both;"></div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12">
+                <div class="col s12 m12">
+                    <div class="card-image center-align relative" id="tSNE">
+                        <svg id="tSNEcontent" class="active"></svg>
+                        <div id ="subzone" class="subpanel card-panel active">
+                            <div class="details" ></div>
+                            <div class="top10DIV">
+                                <svg class="top10" >
+
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="src/lib/TimerInterval.js"></script>
+<script src="src/lib/underscore-min.js"></script>
+<script src="src/scripts/tsnePlot.js"></script>
+<script src="src/scripts/ulti.js"></script>
+<script src="src/scripts/main.js"></script>
+
+</body>
+</html>

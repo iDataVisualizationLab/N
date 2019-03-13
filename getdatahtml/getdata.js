@@ -344,3 +344,35 @@ data.forEach( d =>{
     html.innerHTML = d.body;
     d.body = html.innerText.replace(/\s+/g,' ').replace("\t", '').replace("\n", '');
 });
+
+
+
+
+// GAB.com
+var data =[];
+var no_more = false;
+var topic = 'Terrorist';
+var baseurl = 'https://gab.com/api/hash/'+topic+'?sort=date';
+var timeString ='0';
+var fetchNow = function(d) {
+    fetch(baseurl+'&before='+d)
+    .then(function(response) {
+            return response.json();
+    }).then(function(myJson) {
+        no_more = myJson['no-more'];
+        myJson.data.forEach(d=>data.push(d));
+        if(no_more) {
+            resultFound = true;
+            console.log('done: data.length = '+data.length);
+            JSON.stringify(data);
+        }
+        else {
+            if (myJson.data.length)
+                fetchNow(myJson.data[myJson.data.length-1].published_at.replace(/:/g,'%3A').replace('+','%2B'));
+            else
+                fetchNow(myJson.data[myJson.data.length-1].published_at.replace(/:/g,'%3A').replace('+','%2B'));
+        }
+    });
+};
+
+fetchNow('0');
