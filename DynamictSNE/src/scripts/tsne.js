@@ -650,7 +650,13 @@
         getSolution: function() {
             return this.Y;
         },
-
+        // return dist to current solution
+        getProbability: function() {
+            return this.P;
+        },
+        getDist: function() {
+            return this.dists;
+        },
         // perform a single step of optimization to improve the embedding
         step: function() {
             this.iter += 1;

@@ -12,7 +12,7 @@ let width = 2000,
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
     dotRadius: 3,
     opt:{
-        epsilon : 50, // epsilon is learning rate (10 = default)
+        epsilon : 30, // epsilon is learning rate (10 = default)
         perplexity : 30, // roughly how many neighbors each point influences (30 = default)
         dim : 2, // dimensionality of the embedding (2 = default)
         maxtries: 1000
@@ -41,7 +41,7 @@ let width = 2000,
         zoom:60,
     };
 let formatTime = d3.timeFormat("%b %Y");
-let simDuration =100, timestep=0,maxtimestep,interval2;
+let simDuration =1000, timestep=0,maxtimestep,interval2;
 let dataRaw;
 let TSneplot = d3.Tsneplot();
 
@@ -185,8 +185,7 @@ function playchange(){
     interval2.pause();
     e.value = "true";
     $(e).addClass('active');
-    $(e.querySelector('i')).removeClass('fa-pause pauseicon').addClass('fa-play pauseicon');
-    svg.selectAll(".connectTimeline").style("stroke-opacity", 0.1);
+    $(e.querySelector('i')).text('play_arrow');
 }
 
 function pausechange(){
@@ -194,6 +193,5 @@ function pausechange(){
     if (interval2) interval2.resume();
     e.value = "false";
     $(e).removeClass('active');
-    $(e.querySelector('i')).removeClass('fa-play pauseicon').addClass('fa-pause pauseicon');
-    svg.selectAll(".connectTimeline").style("stroke-opacity", 1);
+    $(e.querySelector('i')).text('pause');
 }

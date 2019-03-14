@@ -2,6 +2,10 @@ importScripts("https://d3js.org/d3.v5.min.js");
 importScripts("../tsne.js");
 importScripts("../../lib/underscore-min.js");
 
+importScripts("../../lib/jLouvain.js");
+
+
+
 let tsne,sol,
     stepnumber = 10,
     countstack =0,
@@ -11,7 +15,8 @@ let tsne,sol,
     store_step,
     store_step_temp,
     hostname,
-    stopCondition =0.000001;
+    stopCondition =0.000001,
+    community = jLouvain();
 addEventListener('message',function ({data}){
         switch (data.action) {
             case "inittsne":
@@ -22,12 +27,17 @@ addEventListener('message',function ({data}){
 
                 for (let  i =0; i<40;i++) {
                     cost = tsne.step();
-                    postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 }
                 hostname = data.value.map(d=>d.name);
+                //jLouvain-------
+                community.nodes(hostname).edges(convertLink(tsne.getProbability(),hostname));
+                var result  = community();
+                console.log(result);
+                postMessage({action:'cluster', result: result});
+                //---------------
                 store_step = initStore(hostname,tsne.getSolution());
                 store_step_temp = copyStore(store_step);
-                // postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 postMessage({action:data.action, status:"done" });
                 countstack = 0;
                 break;
@@ -41,6 +51,12 @@ addEventListener('message',function ({data}){
                     countstack++;
                     postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 }
+                //jLouvain-------
+                community.edges(convertLink(tsne.getProbability(),hostname));
+                var result  = community();
+                console.log(result);
+                postMessage({action:'cluster', result: result});
+                //---------------
                 // updateTempStore(tsne.getSolution());
                 // if (countstack>stack){
                 //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
@@ -117,4 +133,13 @@ function distance (a,b) {
 
 function getTop10 (store) {
     return _(store).sortBy(d=>d.dis).reverse().slice(0,20);
+}
+
+function convertLink (P,ids) {
+    const N = ids.length;
+    let links =[];
+    for (let i = 0; i < N; i++)
+        for (let j = i+1; j < N; j++)
+            links.push({source: ids[i], target:ids[j], weight: P[i*N+j]});
+    return links;
 }

@@ -37,6 +37,7 @@ d3.Tsneplot = function () {
         ty =0;
     let needUpdate = false;
     let first = true;
+
     function updateRenderRanking(data) {
         var max = d3.max(d3.extent(d3.merge(d3.extent(data.top10,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
         scaleX_small.domain([-max,max]);
@@ -106,18 +107,26 @@ d3.Tsneplot = function () {
             });
     }
     tsne.addEventListener('message',({data})=>{
-        if (data.status==='done') {
-            isbusy = false;
+        switch (data.status) {
+            case 'done':
+                isbusy = false;
+                break;
         }
-        if (data.action==='step'){
-            store.Y = data.result.solution;
-            store.cost = data.result.cost;
-            updateEmbedding(store.Y,store.cost);
+        switch (data.action) {
+            case 'step':
+                store.Y = data.result.solution;
+                store.cost = data.result.cost;
+                updateEmbedding(store.Y, store.cost);
+                break;
+
+            case "updateTracker":
+                updateRenderRanking(data);
+                break;
+            case 'cluster':
+                updateCluster (data.result);
+                break;
         }
-        if (data.action==="updateTracker")
-        {
-            updateRenderRanking(data);
-        }
+
     }, false);
 
     Tsneplot.init = function(){
@@ -208,7 +217,6 @@ d3.Tsneplot = function () {
             ss = d3.zoomTransform(this).k;
             tx = d3.zoomTransform(this).x;
             ty = d3.zoomTransform(this).y;
-            console.log(ss+" "+tx+"-"+ty)
             if (store.Y) updateEmbedding(store.Y,store.cost,true);
         }
         var zoom = d3.zoom()
@@ -225,6 +233,16 @@ d3.Tsneplot = function () {
             }
         };
     };
+
+    function updateCluster (data) {
+        let group = g.selectAll('.linkLineg')
+            .select('circle')
+                .style("fill",
+                        d=>{
+                    return colorCategory(data[d.name])}
+                );
+    }
+
     function updateEmbedding(Y,cost,skiptransition) {
         d3.select("#subzone").select('.cost').text(cost.toFixed(2));
         // get current solution
@@ -297,6 +315,7 @@ d3.Tsneplot = function () {
         }
     };
 
+    let colorCategory =d3.scaleOrdinal(d3.schemeCategory10);
     let colorScale =d3.scaleSequential(d3.interpolateSpectral);
     let meanArr=[];
     function distanace(a,b){

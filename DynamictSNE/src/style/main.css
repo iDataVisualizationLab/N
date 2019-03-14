@@ -242,6 +242,10 @@ body .mainContain.active {
   fill: red;
 }
 
+.rotatehover:hover i {
+  transform: rotate(360deg);
+}
+
 #timespan {
   min-width: 500px;
   height: 0;
