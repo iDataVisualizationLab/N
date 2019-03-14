@@ -253,6 +253,7 @@ label {
 
 #tSNEcontent .pannel rect {
   fill: white;
+  stroke: black;
 }
 
 #timespan {
