@@ -43,16 +43,22 @@ d3.Tsneplot = function () {
         scaleX_small.domain([-max,max]);
         scaleY_small.domain(scaleX_small.domain());
         // console.log(data.top10);
+        try {
+            panel.select('.top10').selectAll('.top10_item').interrupt();
+        }catch(e){
+            console.log(e)
+        }
         const dataTop = panel.select('.top10').selectAll('.top10_item')
             .data(data.top10, d => d.name);
         // EXIT
         dataTop.exit()
             .transition('exito')
+            .duration((d, i) => 20)
             .attr('transform', function (d) {
                 return 'translate(20,' + getTransformation(d3.select(this).attr('transform')).translateY + ')'
             })
             .transition()
-            .duration((d, i) => i * 50)
+            .duration((d, i) => Math.max((i+1) * 20,500)-20)
             .attr('transform', 'translate(20,' + (maxlist + 1) * sizebox + ")")
             .remove();
         // ENTER
@@ -62,7 +68,7 @@ d3.Tsneplot = function () {
             .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
             .style('opacity', 0)
             .transition('update')
-            .duration((d, i) => i * 50)
+            .duration((d, i) => Math.max((i+1) * 20,500))
             .style('opacity', 1)
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
         newdiv.append('rect').attrs(
@@ -268,6 +274,7 @@ d3.Tsneplot = function () {
         let group = g.selectAll('.linkLineg');
         if (!skiptransition)
             group = group
+                .interrupt()
                 .transition('move')
                 .duration(150);
         group.attr("transform", function(d, i) {
