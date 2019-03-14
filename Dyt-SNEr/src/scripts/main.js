@@ -70,6 +70,8 @@ $(document).ready(function(){
     $('#zoomInit')[0].value = runopt.zoom;
     $('#simDurationUI').on('change',function(){
         simDuration = this.value;
+        interval2.stop();
+        request();
     });
     $('#simDurationUI')[0].value = simDuration;
     controlTime = $('#timespan')[0].M_Range;
