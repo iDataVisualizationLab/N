@@ -20,13 +20,14 @@ addEventListener('message',function ({data}){
             case "initDataRaw":
                 tsne.initDataRaw(data.value);
 
-                for (let  i =0; i<2;i++) {
+                for (let  i =0; i<40;i++) {
                     cost = tsne.step();
+                    postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 }
                 hostname = data.value.map(d=>d.name);
                 store_step = initStore(hostname,tsne.getSolution());
                 store_step_temp = copyStore(store_step);
-                postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                // postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 postMessage({action:data.action, status:"done" });
                 countstack = 0;
                 break;
@@ -40,11 +41,11 @@ addEventListener('message',function ({data}){
                     countstack++;
                     postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 }
-                updateTempStore(tsne.getSolution());
-                if (countstack>stack){
-                    postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
-                    countstack =0;
-                }
+                // updateTempStore(tsne.getSolution());
+                // if (countstack>stack){
+                //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
+                //     countstack =0;
+                // }
                 // postMessage({action:'step', result: {cost: cost, solution: sol}});
                 postMessage({action:data.action, status:"done" });
                 break;
@@ -65,11 +66,11 @@ addEventListener('message',function ({data}){
                     countstack++;
                 }
                 sol =tsne.getSolution();
-                updateTempStore(sol);
-                if (countstack>stack){
-                    postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
-                    countstack =0;
-                }
+                // updateTempStore(sol);
+                // if (countstack>stack){
+                //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
+                //     countstack =0;
+                // }
                 postMessage({action: 'step', result: {cost: cost, solution: sol}, status:"done"});
                 break;
         }

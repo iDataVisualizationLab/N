@@ -20,7 +20,7 @@ d3.Tsneplot = function () {
                 dim : 2, // dimensionality of the embedding (2 = default)
                 maxtries: 50
             }
-    },
+    },runopt,
         arr = [],
         isbusy = false,
         // tsne = new tsnejs.tSNE(graphicopt.opt);
@@ -237,8 +237,8 @@ d3.Tsneplot = function () {
                 .duration(150);
         group.attr("transform", function(d, i) {
             return "translate(" +
-                (Y[i][0]*20*ss+tx) + "," +
-                (Y[i][1]*20*ss+ty) + ")"; });
+                (Y[i][0]*runopt.zoom*ss+tx) + "," +
+                (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
         //let curentHostpos = currenthost.node().getBoundingClientRect();
 
 
@@ -393,7 +393,9 @@ d3.Tsneplot = function () {
 
     Tsneplot.graphicopt = function (_) {
         return arguments.length ? (graphicopt = _, Tsneplot) : graphicopt;
-
+    };
+    Tsneplot.runopt = function (_) {
+        return arguments.length ? (runopt = _, Tsneplot) : runopt;
     };
     return Tsneplot;
 };

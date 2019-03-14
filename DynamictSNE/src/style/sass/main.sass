@@ -1,6 +1,9 @@
 $font-stack:    Helvetica, sans-serif
 $primary-color: #333
 $sideNavwidth: 350px
+\:root
+  --sideVal: 0%
+  --steptime: 90.25px
 
 body
   font: 14px $font-stack
@@ -210,6 +213,107 @@ body
   fill: red
 
 .top10_item.remove
+
+=rangeTrack
+  width: 100%
+  height: 2px
+  cursor: pointer
+  background: linear-gradient(to right, #37adbf 0%, #37adbf  var(--sideVal) , #fff var(--sideVal), #fff 100%)
+  border: none
+  border-radius: 3px
+
+=rangeThumb
+  width: 18px
+  height: 18px
+  margin: -8px 0  0
+  border-radius: 50%
+  background: #37adbf
+  cursor: pointer
+  border: 0 !important
+
+
+#timespan
+  min-width: 500px
+  height: 0
+  margin: 0
+
+  // Thumb
+  &::-webkit-slider-thumb
+    -webkit-appearance: none
+    @include rangeThumb
+
+  &::-moz-range-thumb
+    @include rangeThumb
+
+  &::-ms-thumb
+    @include rangeThumb
+
+  // Track
+  &::-webkit-slider-runnable-track
+    +rangeTrack
+
+  &::-moz-range-track
+    +rangeTrack
+
+
+  &::-ms-track
+    +rangeTrack
+
+  &:focus
+    background: none
+    outline: none
+
+  &::-ms-track
+    width: 100%
+    cursor: pointer
+    background: transparent
+    border-color: transparent
+    color: transparent
+
+.rangecustomOut
+  height: 0px
+.rangecustom
+  height: 5px
+  .thumb
+    top: -40px !important
+
+.range-labels
+  margin: 18px -30px 0
+  padding: 0
+  list-style: none
+
+  li
+    top: -12px
+    position: relative
+    float: left
+    width: var(--steptime)
+    text-align: center
+    color: #b2b2b2
+    font-size: 12px
+    cursor: pointer
+
+    span
+      visibility: hidden
+    &::before
+      position: absolute
+      top: -10px
+      right: 0
+      left: 0
+      content: ""
+      margin: 0 auto
+      width: 9px
+      height: 9px
+      background: #b2b2b2
+      border-radius: 50%
+
+  .active
+    color: #37adbf
+    span
+      visibility: visible
+
+  .selected::before
+    background: #37adbf
+
 
 
 //light

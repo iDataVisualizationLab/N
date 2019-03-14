@@ -31,12 +31,17 @@ let width = 2000,
                 style: {
                     'stroke': 'black',
                     'stroke-width': 0.5,
+                    'fill': 'none'
                 }
             }
         }
     }
-};
-let simDuration =2000, timestep=0,maxtimestep=100,interval2;
+},controlTime,
+    runopt ={
+        zoom:60,
+    };
+let formatTime = d3.timeFormat("%b %Y");
+let simDuration =100, timestep=0,maxtimestep,interval2;
 let dataRaw;
 let TSneplot = d3.Tsneplot();
 
@@ -51,23 +56,48 @@ $(document).ready(function(){
     $('.tabs').tabs({'onShow':function(){
             if ($('#demo').css('display')!=="none")
                 initialize()}});
+    $('#zoomInit').on('change',function(){
+        runopt.zoom = this.value;
+        TSneplot.runopt(runopt);
+    });
+    $('#zoomInit')[0].value = runopt.zoom;
+    $('#simDurationUI').on('change',function(){
+        simDuration = this.value;
+    });
+    $('#simDurationUI')[0].value = simDuration;
+    controlTime = $('#timespan')[0].M_Range;
     d3.select('#datacom').on("change", function () {
         d3.select('.cover').classed('hidden', false);
         const choice = this.value;
         const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
         setTimeout(() => {
             readData(choice).then((d)=>{
-                maxtimestep = d.YearsData.length;
                 dataRaw = d;
                 d3.select(".currentData")
                     .text(choicetext);
+                maxtimestep = dataRaw.YearsData.length;
                 resetRequest();
                 d3.select('.cover').classed('hidden', true);});
         },0);
     });
     d3.select("#DarkTheme").on("click",switchTheme);
 });
+function RangechangeVal(val) {
+    controlTime.el.value =val;
+    root.style.setProperty('--sideVal', (val/(maxtimestep-1)*100)+'%' );
+    if (!$(controlTime.thumb).hasClass('active')) {
+        controlTime._showRangeBubble();
+    }
 
+    let offsetLeft = controlTime._calcRangeOffset();
+    $(controlTime.thumb)
+        .addClass('active')
+        .css('left', offsetLeft + 'px');
+    if (dataRaw.TimeMatch)
+        $(controlTime.value).html(dataRaw.TimeMatch[controlTime.$el.val()]);
+    else
+        $(controlTime.value).html(controlTime.$el.val());
+}
 function initDemo(){
     width = $('#tSNE').width();
     height = 1000;
@@ -84,16 +114,29 @@ function init() {
         d3.select("#currentData")
             .text('Employment Rate');
         timestep = 0;
+        maxtimestep = dataRaw.YearsData.length;
+        initTime (maxtimestep);
+        RangechangeVal(0);
         request();
         d3.select('.cover').classed('hidden',true);
     });
 }
-
+function initTime (max){
+    controlTime.el.min = 0;
+    controlTime.el.max = max-1;
+    d3.select('.range-labels').selectAll('li')
+        .data(dataRaw.TimeMatch)
+        .enter()
+        .append('li')
+        .append('span')
+        .text(d=>d.split(' ')[1]);
+    // root.style.setProperty('--steptime',(600/(max-1))+'px')
+}
 function initTsne () {
  TsnePlotopt.width = width;
  TsnePlotopt.height = height;
  TsnePlotopt.svg =svg.attr("class", "T_sneSvg");
- TSneplot.graphicopt(TsnePlotopt);
+ TSneplot.runopt(runopt).graphicopt(TsnePlotopt);
  TSneplot.svg(TsnePlotopt.svg).init();
 }
 
@@ -106,6 +149,11 @@ function step (index){
 function request(){
     interval2 = new IntervalTimer(function () {
         if (timestep<maxtimestep){
+            // d3.select('.range-labels').selectAll('li').classed("active selected",false);
+            // d3.select('.range-labels').selectAll('li')
+            //     .filter((d,i)=>i===timestep)
+            //     .classed("active selected",true);
+            RangechangeVal(timestep);
             step(timestep);
             timestep++;
             TSneplot.getTop10();

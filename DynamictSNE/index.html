@@ -44,8 +44,8 @@
             <li class="active">
                 <div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>
                 <div class="collapsible-body">
-                    <label for="datacom" class="col s4"> Dataset: </label>
-                    <div  class="row s12">
+                    <div  class="row s12 valign-wrapper">
+                        <label for="datacom" class="col s4"> Dataset: </label>
                         <select id="datacom" class="col s7">
                             <option value="EmploymentRate" selected="selected">Employment Rate</option>
                             <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
@@ -53,6 +53,18 @@
                             <!--<option value="WorldTerrorism" >World Terrorism</option>-->
                             <!--<option value="LifeExpectancy">Life Expectancy</option>-->
                         </select>
+                    </div>
+                    <div  class="row s12 valign-wrapper">
+                        <label for="zoomInit" class="col s4"> Zoom init: </label>
+                        <p class="range-field col s7">
+                            <input type="range" id="zoomInit" min="1" max="80" />
+                        </p>
+                    </div>
+                    <div  class="row s12 valign-wrapper">
+                        <label for="simDurationUI" class="col s4">Delay: </label>
+                        <p class="range-field col s7">
+                            <input type="number" id="simDurationUI" min="10" max="2000" />
+                        </p>
                     </div>
                 </div>
             </li>
@@ -127,11 +139,19 @@
                 <h6 id="currentData">  </h6>
             </div>
             <div class="controls">
-                <div id="controlHolder"  class="controlHolder">
+                <div id="controlHolder"  class="controlHolder valign-wrapper">
+                    <div class = "rangecustomOut">
+                        <div class="range-field rangecustom col s12">
+                            <input type="range" id="timespan" min="1" max="80" class = "active"/>
+                        </div>
+                        <!--<ul class="range-labels">-->
+                            <!--&lt;!&ndash;<li class="active selected"><span>Today</span></li>&ndash;&gt;-->
 
+                        <!--</ul>-->
+                    </div>
                     <!--<button onclick="realTimeRequest()" value = false class ="menuBtn record"><i class="fas fa-record pauseicon"></i>Offline</button>-->
-                    <button onclick="pauseRequest()" value = false class ="menuBtn pause"><i class="fas fa-pause pauseicon"></i></button>
-                    <button onclick="resetRequest()" class ="menuBtn rotatehover" style="background-color: #ddf;"><i class="fas fa-sync-alt pauseicon"></i></button>
+                    <button onclick="pauseRequest()" value = false class ="waves-effect waves-light btn pause"><i class="fas fa-pause pauseicon"></i></button>
+                    <button onclick="resetRequest()" class ="waves-effect waves-light btn rotatehover" style="background-color: #ddf;"><i class="fas fa-sync-alt pauseicon"></i></button>
                 </div>
 
 

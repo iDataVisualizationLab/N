@@ -1,3 +1,8 @@
+:root {
+  --sideVal: 0%;
+  --steptime: 90.25px;
+}
+
 body {
   font: 14px Helvetica, sans-serif;
   background-color: #232b33;
@@ -235,6 +240,126 @@ body .mainContain.active {
 
 .top10_item circle.new {
   fill: red;
+}
+
+#timespan {
+  min-width: 500px;
+  height: 0;
+  margin: 0;
+}
+#timespan::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: -8px 0 0;
+  border-radius: 50%;
+  background: #37adbf;
+  cursor: pointer;
+  border: 0 !important;
+}
+#timespan::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  margin: -8px 0 0;
+  border-radius: 50%;
+  background: #37adbf;
+  cursor: pointer;
+  border: 0 !important;
+}
+#timespan::-ms-thumb {
+  width: 18px;
+  height: 18px;
+  margin: -8px 0 0;
+  border-radius: 50%;
+  background: #37adbf;
+  cursor: pointer;
+  border: 0 !important;
+}
+#timespan::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: linear-gradient(to right, #37adbf 0%, #37adbf var(--sideVal), #fff var(--sideVal), #fff 100%);
+  border: none;
+  border-radius: 3px;
+}
+#timespan::-moz-range-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: linear-gradient(to right, #37adbf 0%, #37adbf var(--sideVal), #fff var(--sideVal), #fff 100%);
+  border: none;
+  border-radius: 3px;
+}
+#timespan::-ms-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: linear-gradient(to right, #37adbf 0%, #37adbf var(--sideVal), #fff var(--sideVal), #fff 100%);
+  border: none;
+  border-radius: 3px;
+}
+#timespan:focus {
+  background: none;
+  outline: none;
+}
+#timespan::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.rangecustomOut {
+  height: 0px;
+}
+
+.rangecustom {
+  height: 5px;
+}
+.rangecustom .thumb {
+  top: -40px !important;
+}
+
+.range-labels {
+  margin: 18px -30px 0;
+  padding: 0;
+  list-style: none;
+}
+.range-labels li {
+  top: -12px;
+  position: relative;
+  float: left;
+  width: var(--steptime);
+  text-align: center;
+  color: #b2b2b2;
+  font-size: 12px;
+  cursor: pointer;
+}
+.range-labels li span {
+  visibility: hidden;
+}
+.range-labels li::before {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  left: 0;
+  content: "";
+  margin: 0 auto;
+  width: 9px;
+  height: 9px;
+  background: #b2b2b2;
+  border-radius: 50%;
+}
+.range-labels .active {
+  color: #37adbf;
+}
+.range-labels .active span {
+  visibility: visible;
+}
+.range-labels .selected::before {
+  background: #37adbf;
 }
 
 body.light {
