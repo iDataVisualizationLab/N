@@ -100,7 +100,7 @@ function RangechangeVal(val) {
 }
 function initDemo(){
     width = $('#tSNE').width();
-    height = 1000;
+    height = d3.max([document.body.clientHeight-280, 300]);
     // scatterConfig.width = $('#mainPlot').width();
     // netConfig.width = widthSvg;
     init();

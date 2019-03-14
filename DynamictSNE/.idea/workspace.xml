@@ -36,7 +36,7 @@
         <counts>
           <entry key="CSS" value="4" />
           <entry key="HTML" value="329" />
-          <entry key="JavaScript" value="2565" />
+          <entry key="JavaScript" value="2580" />
           <entry key="Sass" value="413" />
         </counts>
       </usages-collector>
@@ -47,8 +47,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="153" column="103" selection-start-line="153" selection-start-column="103" selection-end-line="153" selection-end-column="103" />
+            <state relative-caret-position="272">
+              <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
               <folding>
                 <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" />
               </folding>
@@ -77,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="79" column="63" lean-forward="true" selection-start-line="79" selection-start-column="63" selection-end-line="79" selection-end-column="63" />
+            <state relative-caret-position="141">
+              <caret line="102" column="50" selection-start-line="102" selection-start-column="50" selection-end-line="102" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -92,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/worker/tSNEworker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="57" column="53" selection-start-line="57" selection-start-column="47" selection-end-line="57" selection-end-column="53" />
+            <state relative-caret-position="340">
+              <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -110,11 +110,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/tsnePlot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="241" column="45" selection-start-line="241" selection-start-column="45" selection-end-line="241" selection-end-column="45" />
+            <state relative-caret-position="141">
+              <caret line="117" column="46" lean-forward="true" selection-start-line="117" selection-start-column="46" selection-end-line="117" selection-end-column="46" />
               <folding>
                 <element signature="e#1381#3533#0" />
               </folding>
@@ -144,7 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setting</find>
       <find>reset</find>
       <find>control</find>
       <find>initStore</find>
@@ -174,6 +173,7 @@
       <find>colorCategory</find>
       <find>color</find>
       <find>cluster</find>
+      <find>width</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -187,12 +187,12 @@
         <option value="$PROJECT_DIR$/src/scripts/ulti.js" />
         <option value="$PROJECT_DIR$/src/style/other.css" />
         <option value="$PROJECT_DIR$/src/style/sass/main.sass" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/scripts/main.js" />
         <option value="$PROJECT_DIR$/src/lib/jLouvain.js" />
         <option value="$PROJECT_DIR$/src/scripts/tsne.js" />
-        <option value="$PROJECT_DIR$/src/scripts/worker/tSNEworker.js" />
         <option value="$PROJECT_DIR$/src/scripts/tsnePlot.js" />
+        <option value="$PROJECT_DIR$/src/scripts/main.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/src/scripts/worker/tSNEworker.js" />
       </list>
     </option>
   </component>
@@ -322,12 +322,12 @@
       <option name="presentableId" value="Default" />
       <updated>1552442266043</updated>
       <workItem from="1552442267184" duration="43329000" />
-      <workItem from="1552573780439" duration="6707000" />
+      <workItem from="1552573780439" duration="8196000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50036000" />
+    <option name="totallyTimeSpent" value="51525000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="148" y="138" width="1920" height="882" extended-state="0" />
@@ -458,16 +458,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="153" column="103" selection-start-line="153" selection-start-column="103" selection-end-line="153" selection-end-column="103" />
-          <folding>
-            <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/jLouvain.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3105">
@@ -475,20 +465,6 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="79" column="63" lean-forward="true" selection-start-line="79" selection-start-column="63" selection-end-line="79" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/worker/tSNEworker.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="57" column="53" selection-start-line="57" selection-start-column="47" selection-end-line="57" selection-end-column="53" />
         </state>
       </provider>
     </entry>
@@ -511,11 +487,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/tsnePlot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="241" column="45" selection-start-line="241" selection-start-column="45" selection-end-line="241" selection-end-column="45" />
+        <state relative-caret-position="141">
+          <caret line="117" column="46" lean-forward="true" selection-start-line="117" selection-start-column="46" selection-end-line="117" selection-end-column="46" />
           <folding>
             <element signature="e#1381#3533#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="102" column="50" selection-start-line="102" selection-start-column="50" selection-end-line="102" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+          <folding>
+            <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/worker/tSNEworker.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
         </state>
       </provider>
     </entry>

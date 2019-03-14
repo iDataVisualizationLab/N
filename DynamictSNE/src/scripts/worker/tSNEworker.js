@@ -54,7 +54,6 @@ addEventListener('message',function ({data}){
                 //jLouvain-------
                 community.edges(convertLink(tsne.getProbability(),hostname));
                 var result  = community();
-                console.log(result);
                 postMessage({action:'cluster', result: result});
                 //---------------
                 // updateTempStore(tsne.getSolution());
@@ -87,6 +86,11 @@ addEventListener('message',function ({data}){
                 //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
                 //     countstack =0;
                 // }
+                //jLouvain-------
+                community.edges(convertLink(tsne.getProbability(),hostname));
+                var result  = community();
+                postMessage({action:'cluster', result: result});
+                //---------------
                 postMessage({action: 'step', result: {cost: cost, solution: sol}, status:"done"});
                 break;
         }
