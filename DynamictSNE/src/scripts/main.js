@@ -195,6 +195,17 @@ function playchange(){
     $(e.querySelector('i')).text('play_arrow');
 }
 
+function changeShape(d){
+    if (d.checked) {
+        TsnePlotopt.display.symbol.type ="circle";
+        TsnePlotopt.display.symbol.radius =3;
+    }else {
+        TsnePlotopt.display.symbol.type ="path";
+        TsnePlotopt.display.symbol.radius =30;
+    }
+    TSneplot.displaystyle(TsnePlotopt.display)
+}
+
 function pausechange(){
     var e = d3.select('.pause').node();
     if (interval2) interval2.resume();

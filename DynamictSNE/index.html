@@ -55,17 +55,31 @@
                         </select>
                     </div>
                     <div  class="row s12 valign-wrapper">
+                        <label for="simDurationUI" class="col s4">Delay: </label>
+                        <p class="col s7">
+                            <input type="number" id="simDurationUI" min="10" max="2000" />
+                        </p>
+                    </div>
+                    <div  class="row s12 valign-wrapper">
                         <label for="zoomInit" class="col s4"> Zoom init: </label>
                         <p class="range-field col s7">
                             <input type="range" id="zoomInit" min="1" max="80" />
                         </p>
                     </div>
                     <div  class="row s12 valign-wrapper">
-                        <label for="simDurationUI" class="col s4">Delay: </label>
-                        <p class="col s7">
-                            <input type="number" id="simDurationUI" min="10" max="2000" />
+                        <label for="simDurationUI" class="col s4">Detail display: </label>
+                        <p class="switch col s7">
+
+                                <label>
+                                    <span class="true">Radar</span>
+                                    <input type="checkbox" onchange="changeShape(this)">
+                                    <span class="lever"></span>
+                                    <span class="false">Dot</span>
+                                </label>
+
                         </p>
                     </div>
+
                 </div>
             </li>
             <li>

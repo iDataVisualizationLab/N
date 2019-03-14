@@ -136,7 +136,7 @@ function distance (a,b) {
 }
 
 function getTop10 (store) {
-    return _(store).sortBy(d=>d.dis).reverse().slice(0,20);
+    return _(store).sortBy(d=>d.dis).reverse().slice(0,50);
 }
 
 function convertLink (P,ids) {

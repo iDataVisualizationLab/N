@@ -222,9 +222,9 @@ d3.Tsneplot = function () {
         const sizegraph = sizebox - 5;
         scaleX_small.range([0,sizegraph]);
         scaleY_small.range([0,sizegraph]);
-        panel.select(".top10DIV").style('max-height', sizebox*10+"px");
+        panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-100, sizebox*50)+"px");
         panel.select(".top10").attrs({width: 200,
-        height: sizebox*20});
+        height: sizebox*50});
         // menu.append('text').attr("dy", "2em").attr("x",10).text('Cost: ');
         // menu.append('text').attr("dy", "2em").attr("x",40).attr('class','cost');
         g = g.append('g')
@@ -367,7 +367,24 @@ d3.Tsneplot = function () {
 
         return arr;
     }
+    function changeshape (){
+        const selector = g.selectAll(".linkLineg");
+        switch (graphicopt.display.symbol.type){
+            case "path":
+                selector.select('rect').style('display','block');
+                selector.select('.tSNEborder').style('display','block');
+                selector.select('circle').style('display','none');
+                initradar (arr[0].length);
+                break;
+            case "circle":
+                selector.select('rect').style('display','none');
+                selector.select('.tSNEborder').style('display','none');
+                selector.select('circle').style('display','block')
+                    .attr("r",graphicopt.display.symbol.radius|| graphicopt.dotRadius);
+                break;
+        }
 
+    }
     function drawEmbedding(data) {
 
         let datapoint = g.selectAll(".linkLineg")
@@ -444,8 +461,12 @@ d3.Tsneplot = function () {
     };
 
     Tsneplot.displaystyle = function (_) {
-        return arguments.length ? (graphicopt.display = _, Tsneplot) : graphicopt.display;
-
+        if (arguments.length){
+            graphicopt.display = _;
+            changeshape ();
+            return Tsneplot;
+        }
+        return graphicopt.display;
     };
 
     Tsneplot.graphicopt = function (_) {
