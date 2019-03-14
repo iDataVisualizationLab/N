@@ -1,45 +1,52 @@
 let width = 2000,
     height = 1000,
     TsnePlotopt  = {
-    margin: {top: 0, right: 0, bottom: 0, left: 0},
-    offset: {top: 0},
-    width: width,
-    height: height,
-    scalezoom: 1,
-    widthView: function(){return this.width*this.scalezoom},
-    heightView: function(){return this.height*this.scalezoom},
-    widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
-    heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-    dotRadius: 3,
-    opt:{
-        epsilon : 30, // epsilon is learning rate (10 = default)
-        perplexity : 30, // roughly how many neighbors each point influences (30 = default)
-        dim : 2, // dimensionality of the embedding (2 = default)
-        maxtries: 1000
-    },
-    top10:{
-        details :{
-            circle: {
-                attr: {
-                    r : 2,
+        margin: {top: 0, right: 0, bottom: 0, left: 0},
+        offset: {top: 0},
+        width: width,
+        height: height,
+        scalezoom: 1,
+        widthView: function(){return this.width*this.scalezoom},
+        heightView: function(){return this.height*this.scalezoom},
+        widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
+        heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
+        dotRadius: 3,
+        opt:{
+            epsilon : 30, // epsilon is learning rate (10 = default)
+            perplexity : 30, // roughly how many neighbors each point influences (30 = default)
+            dim : 2, // dimensionality of the embedding (2 = default)
+            maxtries: 1000
+        },
+        display:{
+          symbol:{
+              type: 'path',
+              radius: 30,
+          }
+        },
+        top10:{
+            details :{
+                circle: {
+                    attr: {
+                        r : 2,
+                    },
+                    style: {
+                        opacity: 0.2
+                    }
                 },
-                style: {
-                    opacity: 0.2
-                }
-            },
-            path: {
-                style: {
-                    'stroke': 'black',
-                    'stroke-width': 0.5,
-                    'fill': 'none'
+                path: {
+                    style: {
+                        'stroke': 'black',
+                        'stroke-width': 0.5,
+                        'fill': 'none'
+                    }
                 }
             }
         }
-    }
 },controlTime,
     runopt ={
         zoom:60,
     };
+let arrColor = ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"];
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2;
 let dataRaw;

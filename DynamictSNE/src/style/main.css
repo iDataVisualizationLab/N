@@ -246,6 +246,10 @@ body .mainContain.active {
   transform: rotate(360deg);
 }
 
+#tSNEcontent .pannel rect {
+  fill: white;
+}
+
 #timespan {
   min-width: 500px;
   height: 0;
@@ -375,6 +379,11 @@ body.light {
   background: #f3f3f3;
   background: -webkit-linear-gradient(to right, #f3f3f3, #ececec);
   background: linear-gradient(to right, #f3f3f3, #ececec);
+  color: #484848;
+}
+.light #header a,
+.light #header .brand-logo {
+  color: #484848;
 }
 .light #header .tab a {
   opacity: 0.5;

@@ -129,31 +129,26 @@ d3.Tsneplot = function () {
 
     }, false);
 
-    Tsneplot.init = function(){
-        tsne.postMessage({action:"inittsne",value:graphicopt.opt});
+    function initradar (dim){
         // radar
-        var total = 10,                 //The number of different axes
-            angle1= Math.PI * 2 / total,
-            angle2= Math.PI * 2 / (total+4);
+        var total = dim,                 //The number of different axes
+            angle1= Math.PI * 2 / total;
+
         angleSlice = [];
         for (var i=0;i<total;i++){
-            if (i==0 || i==1 || i==2)       // Temperatures
-                angleSlice.push(angle2*(i-1));
-            else if (i==5 || i==6 || i==7 || i==8)  // Fan speeds
-                angleSlice.push(Math.PI/4.62+angle2*(i-1));
-            else if (i==9)  // Power consumption
-                angleSlice.push(Math.PI * 1.5);
-            else
-                angleSlice.push(angle1*(i-1));
-        }      //TOMMY DANG
-        angleSlice[0] = Math.PI * 2 +angleSlice[0];
+                angleSlice.push(angle1*i);
+        }
         var rScale = d3.scaleLinear()
-            .range([0, graphicopt.dotRadius])
+            .range([0,graphicopt.display.symbol.radius|| graphicopt.dotRadius])
             .domain([0, 1]);
         radarcreate = d3.radialLine()
             .curve(d3.curveCardinalClosed.tension(0))
             .radius(function(d) { return rScale(d); })
             .angle(function(d,i) {  return angleSlice[i]; });
+    }
+    Tsneplot.init = function(){
+        tsne.postMessage({action:"inittsne",value:graphicopt.opt});
+
 
         trackercreate = d3.line()
             .x(d=> scaleX_small(d[0]))
@@ -175,6 +170,27 @@ d3.Tsneplot = function () {
             .attr("height", graphicopt.heightG());
         const rg = svg.append("defs").append("radialGradient")
             .attr("id", "rGradient");
+        const legntharrColor = arrColor.length-1;
+        rg.append("stop")
+            .attr("offset","0%")
+            .attr("stop-opacity", 0);
+        rg.append("stop")
+            .attr("offset", 3 / legntharrColor * 100 + "%")
+            .attr("stop-color", arrColor[4])
+            .attr("stop-opacity", 0);
+        arrColor.forEach((d,i)=>{
+            if (i>3) {
+                rg.append("stop")
+                    .attr("offset", i / legntharrColor * 100 + "%")
+                    .attr("stop-color", d)
+                    .attr("stop-opacity", i / legntharrColor);
+                if (i != legntharrColor)
+                    rg.append("stop")
+                        .attr("offset", (i + 1) / legntharrColor * 100 + "%")
+                        .attr("stop-color", arrColor[i + 1])
+                        .attr("stop-opacity", i / legntharrColor);
+            }
+        });
         glowEffect = svg.append('defs').append('filter').attr('id', 'glowTSne'),
             feGaussianBlur = glowEffect.append('feGaussianBlur').attr('stdDeviation', 2.5).attr('result', 'coloredBlur'),
             feMerge = glowEffect.append('feMerge'),
@@ -264,11 +280,21 @@ d3.Tsneplot = function () {
     let currenthost = {};
     Tsneplot.draw = function(name){
         if (first){
+            initradar (arr[0].length);
             Tsneplot.redraw();
             isbusy = false;
         }else {
             needUpdate = true;
-
+            if (graphicopt.display.symbol.type ==='path') {
+                let newdata = g.selectAll(".linkLineg")
+                    .data(arr, d => d.name);
+                newdata.select('clipPath').select('path')
+                    .transition('expand').duration(100).ease(d3.easePolyInOut)
+                    .attr("d", d => radarcreate(d));
+                newdata.select('.tSNEborder')
+                    .transition('expand').duration(100).ease(d3.easePolyInOut)
+                    .attr("d", d => radarcreate(d));
+            }
             if (!isbusy) {
                 isbusy = true;
                 tsne.postMessage({action: "updateData", value: arr});
@@ -349,35 +375,44 @@ d3.Tsneplot = function () {
             .enter().append("g")
             .attr("class", d=>"linkLineg "+d.name);
 
-        // datapointN.append("clipPath")
-        //     .attr("id",d=>"tSNE"+d.name)
-        //     .append("path")
-        //     .attr("d", d => radarcreate(d));
-        // datapointN
-        //     .append("rect")
-        //     .style('fill', 'url(#rGradient)')
-        //     .attr("clip-path", d=>"url(#tSNE"+d.name+")")
-        //     .attr("x",-graphicopt.dotRadius)
-        //     .attr("y",-graphicopt.dotRadius)
-        //     .attr("width",graphicopt.dotRadius*2)
-        //     .attr("height",graphicopt.dotRadius*2);
-        // datapointN
-        //     .append("path")
-        //     .attr("class","tSNEborder")
-        //     .attr("d", d => radarcreate(d))
-        //     .style("stroke", 'black')
-        //     .style("stroke-width", 0.5)
-        //     .style("stroke-opacity", 0.5);
+
+        datapointN.append("clipPath")
+            .attr("id",d=>fixstr("tSNE"+d.name))
+            .append("path")
+            .attr("d", d => radarcreate(d));
+        datapointN
+            .append("rect")
+            .style('display',graphicopt.display.symbol.type=='path'?'block':'none')
+            .style('fill', 'url(#rGradient)')
+            .attr("clip-path", d=>"url(#"+fixstr("tSNE"+d.name)+")")
+            .attr("x",-graphicopt.display.symbol.radius|| graphicopt.dotRadius)
+            .attr("y",-graphicopt.display.symbol.radius|| graphicopt.dotRadius)
+            .attr("width",(graphicopt.display.symbol.radius|| graphicopt.dotRadius)*2)
+            .attr("height",(graphicopt.display.symbol.radius|| graphicopt.dotRadius)*2);
+
+        datapointN
+            .append("path")
+            .attr("class","tSNEborder")
+            .style('display',graphicopt.display.symbol.type=='path'?'block':'none')
+            .attr("d", d => radarcreate(d))
+            .style("fill",'none')
+            .style("stroke", "black")//'currentColor')
+            .style("stroke-width", 0.5)
+            .style("stroke-opacity", 0.5);
+
         datapointN
             .append("circle")
+            .style('display',graphicopt.display.symbol.type=='circle'?'block':'none')
             .style('fill', 'white')
             .attr("cx",0)
             .attr("cy",0)
-            .attr("r",graphicopt.dotRadius);
+            .attr("r",graphicopt.display.symbol.radius|| graphicopt.dotRadius);
+
         datapointN.append("text")
             .attr("text-anchor", "top")
             .attr("transform", "translate(5, -5)")
-            .attr("fill", 'currentColor')
+            // .attr("fill", 'currentColor')
+            .attr("fill", 'black')
             .attr("font-size", 12)
             .style('opacity',0.5);
 
@@ -389,7 +424,9 @@ d3.Tsneplot = function () {
             .text(function(d,i) {return d.name })
 
     }
-
+    function fixstr(s) {
+        return s.replace(/ |-|#/gi,'');
+    }
     Tsneplot.data = function (_) {
         return arguments.length ? (arr = _, Tsneplot) : arr;
 
@@ -405,10 +442,10 @@ d3.Tsneplot = function () {
 
     };
 
-    // Tsneplot.linepointer = function (_) {
-    //     return arguments.length ? (linepointer = _, Tsneplot) : linepointer;
-    //
-    // };
+    Tsneplot.displaystyle = function (_) {
+        return arguments.length ? (graphicopt.display = _, Tsneplot) : graphicopt.display;
+
+    };
 
     Tsneplot.graphicopt = function (_) {
         return arguments.length ? (graphicopt = _, Tsneplot) : graphicopt;
