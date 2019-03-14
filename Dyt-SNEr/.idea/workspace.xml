@@ -51,22 +51,19 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="1" />
+          <entry key="HTML" value="2" />
+          <entry key="JavaScript" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JavaScript" value="75" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/style/sass/main.sass">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3842">
-              <caret line="226" column="19" selection-start-line="226" selection-start-column="19" selection-end-line="226" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -84,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/readData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="259" column="4" selection-start-line="259" selection-start-column="4" selection-end-line="259" selection-end-column="4" />
+            <state relative-caret-position="354">
+              <caret line="212" column="13" lean-forward="true" selection-start-line="212" selection-start-column="13" selection-end-line="212" selection-end-column="13" />
               <folding>
                 <element signature="n#!!block;n#readData#0" />
               </folding>
@@ -93,11 +90,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="99">
+              <caret line="57" column="57" lean-forward="true" selection-start-line="57" selection-start-column="57" selection-end-line="57" selection-end-column="57" />
+              <folding>
+                <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ParallelCoordinates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="43" column="2" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
+            <state relative-caret-position="170">
+              <caret line="37" column="106" lean-forward="true" selection-start-line="37" selection-start-column="106" selection-end-line="37" selection-end-column="106" />
             </state>
           </provider>
         </entry>
@@ -105,11 +114,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/parallel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2074">
-              <caret line="124" column="44" selection-start-line="124" selection-start-column="44" selection-end-line="124" selection-end-column="44" />
+            <state relative-caret-position="90">
+              <caret line="393" lean-forward="true" selection-start-line="393" selection-end-line="393" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="124">
+              <caret line="156" column="47" lean-forward="true" selection-start-line="156" selection-start-column="47" selection-end-line="156" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -123,11 +141,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/tsnePlot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1190">
-              <caret line="70" column="46" selection-start-line="70" selection-start-column="46" selection-end-line="70" selection-end-column="46" />
+            <state relative-caret-position="209">
+              <caret line="441" column="30" selection-start-line="441" selection-start-column="30" selection-end-line="441" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -154,12 +172,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rGradient</find>
-      <find>embe</find>
-      <find>width</find>
-      <find>draw</find>
-      <find>tSNEborder</find>
-      <find>.light</find>
       <find>rect</find>
       <find>pannel</find>
       <find>text</find>
@@ -184,6 +196,12 @@
       <find>.interrup</find>
       <find>read</find>
       <find>thresholds</find>
+      <find>color-block</find>
+      <find>color</find>
+      <find>highlight</find>
+      <find>Interval2</find>
+      <find>.text</find>
+      <find>embe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -201,11 +219,11 @@
         <option value="$PROJECT_DIR$/src/scripts/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/scripts/worker/tSNEworker.js" />
-        <option value="$PROJECT_DIR$/src/scripts/tsnePlot.js" />
         <option value="$PROJECT_DIR$/src/style/sass/main.sass" />
+        <option value="$PROJECT_DIR$/ParallelCoordinates/index.html" />
         <option value="$PROJECT_DIR$/ParallelCoordinates/src/js/parallel.js" />
         <option value="$PROJECT_DIR$/ParallelCoordinates/src/js/readData.js" />
-        <option value="$PROJECT_DIR$/ParallelCoordinates/index.html" />
+        <option value="$PROJECT_DIR$/src/scripts/tsnePlot.js" />
       </list>
     </option>
   </component>
@@ -244,6 +262,17 @@
               <item name="Dyt-SNEr" type="b2602c69:ProjectViewProjectNode" />
               <item name="Dyt-SNEr" type="462c0819:PsiDirectoryNode" />
               <item name="ParallelCoordinates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Dyt-SNEr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Dyt-SNEr" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Dyt-SNEr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Dyt-SNEr" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -284,11 +313,14 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html (2)">
+  <component name="RunManager" selected="JavaScript Debug.index.html (3)">
     <configuration name="index.html (1)" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/DynamictSNE/ParallelCoordinates/index.html">
       <method v="2" />
     </configuration>
     <configuration name="index.html (2)" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/Dyt-SNEr/ParallelCoordinates/index.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="index.html (3)" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/Dyt-SNEr/index.html">
       <method v="2" />
     </configuration>
     <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/DynamictSNE/index.html">
@@ -298,9 +330,11 @@
       <item itemvalue="JavaScript Debug.index.html" />
       <item itemvalue="JavaScript Debug.index.html (1)" />
       <item itemvalue="JavaScript Debug.index.html (2)" />
+      <item itemvalue="JavaScript Debug.index.html (3)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.index.html (3)" />
         <item itemvalue="JavaScript Debug.index.html (2)" />
         <item itemvalue="JavaScript Debug.index.html (1)" />
         <item itemvalue="JavaScript Debug.index.html" />
@@ -320,24 +354,24 @@
       <workItem from="1552442267184" duration="43329000" />
       <workItem from="1552573780439" duration="17778000" />
       <workItem from="1552600447449" duration="2483000" />
-      <workItem from="1552603038902" duration="123000" />
+      <workItem from="1552603038902" duration="4586000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63713000" />
+    <option name="totallyTimeSpent" value="68176000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="520" y="53" width="1920" height="882" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2580645" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2580645" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32977304" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39919892" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.39919892" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -367,7 +401,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ParallelCoordinates/src/js/readData.js</url>
-          <line>259</line>
+          <line>262</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
@@ -444,13 +478,6 @@
     <entry file="http://localhost:64320/DynamictSNE/src/scripts/tsnePlot.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="74" column="59" selection-start-line="74" selection-start-column="59" selection-end-line="74" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/style/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4573">
@@ -467,13 +494,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/data/EmploymentRate.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="80" column="40" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="40" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/style/sass/main.sass">
       <provider selected="true" editor-type-id="text-editor">
@@ -492,27 +512,10 @@
     <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/ulti.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/parallel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2074">
-          <caret line="124" column="44" selection-start-line="124" selection-start-column="44" selection-end-line="124" selection-end-column="44" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/tsne.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4556">
           <caret line="653" column="22" selection-start-line="653" selection-start-column="8" selection-end-line="653" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/tsnePlot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1190">
-          <caret line="70" column="46" selection-start-line="70" selection-start-column="46" selection-end-line="70" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -523,20 +526,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ParallelCoordinates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="37" column="106" lean-forward="true" selection-start-line="37" selection-start-column="106" selection-end-line="37" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="http://localhost:64320/Dyt-SNEr/ParallelCoordinates/src/js/readData.js">
+      <provider selected="true" editor-type-id="httpFileEditor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/readData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="259" column="4" selection-start-line="259" selection-start-column="4" selection-end-line="259" selection-end-column="4" />
+        <state relative-caret-position="354">
+          <caret line="212" column="13" lean-forward="true" selection-start-line="212" selection-start-column="13" selection-end-line="212" selection-end-column="13" />
           <folding>
             <element signature="n#!!block;n#readData#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParallelCoordinates/index.html">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="43" column="2" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
+        <state relative-caret-position="99">
+          <caret line="57" column="57" lean-forward="true" selection-start-line="57" selection-start-column="57" selection-end-line="57" selection-end-column="57" />
+          <folding>
+            <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/parallel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="393" lean-forward="true" selection-start-line="393" selection-end-line="393" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="156" column="47" lean-forward="true" selection-start-line="156" selection-start-column="47" selection-end-line="156" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/tsnePlot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="441" column="30" selection-start-line="441" selection-start-column="30" selection-end-line="441" selection-end-column="30" />
         </state>
       </provider>
     </entry>

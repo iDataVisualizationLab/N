@@ -394,8 +394,8 @@ function selection_stats(opacity, n, total) {
 
 // Highlight single polyline
 function highlight(d) {
-    d3.select("#foreground").style("opacity", "0.25");
-    d3.select("#legend").selectAll(".row").style("opacity", function(p) { return (d.group == p) ? null : "0.3" });
+    d3.select("#foreground").style("opacity", "0.1");
+    d3.select("#legend").selectAll(".row").style("opacity", function(p) { return (d.group == p) ? null : "0.1" });
     path(d, highlighted, colorCanvas(selectedService==null?d.group:d[selectedService],1));
 }
 
@@ -469,7 +469,7 @@ function path(d, ctx, color) {
                 ctx.stroke();
                 ctx.beginPath();
                 ctx.moveTo(x0,y0);
-                ctx.setLineDash([5, 15]);
+                //ctx.setLineDash([5, 15]);
             } else{
 
             }

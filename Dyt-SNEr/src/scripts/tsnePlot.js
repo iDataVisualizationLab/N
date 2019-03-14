@@ -439,7 +439,7 @@ d3.Tsneplot = function () {
             // .attr("fill", 'currentColor')
             .attr("fill", 'black')
             .attr("font-size", 12)
-            .style('opacity',0.5);
+            .style('opacity',1);
 
         datapoint.exit().remove();
 
