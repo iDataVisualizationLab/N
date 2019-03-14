@@ -15,9 +15,14 @@ body .mainContain.active {
   display: block;
 }
 
+label {
+  color: white;
+}
+
 #header {
   background: #485563;
   background: linear-gradient(to right, #29323c, #485563);
+  z-index: 2;
 }
 #header a,
 #header .brand-logo {
@@ -328,6 +333,7 @@ body .mainContain.active {
 }
 .rangecustom .thumb {
   top: -40px !important;
+  z-index: 20;
 }
 
 .range-labels {

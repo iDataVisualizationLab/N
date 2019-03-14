@@ -170,16 +170,17 @@ d3.Tsneplot = function () {
             .attr("height", graphicopt.heightG());
         const rg = svg.append("defs").append("radialGradient")
             .attr("id", "rGradient");
+        const limitcolor = 0;
         const legntharrColor = arrColor.length-1;
         rg.append("stop")
             .attr("offset","0%")
             .attr("stop-opacity", 0);
         rg.append("stop")
-            .attr("offset", 3 / legntharrColor * 100 + "%")
-            .attr("stop-color", arrColor[4])
+            .attr("offset", (limitcolor-1) / legntharrColor * 100 + "%")
+            .attr("stop-color", arrColor[limitcolor])
             .attr("stop-opacity", 0);
         arrColor.forEach((d,i)=>{
-            if (i>3) {
+            if (i>(limitcolor-1)) {
                 rg.append("stop")
                     .attr("offset", i / legntharrColor * 100 + "%")
                     .attr("stop-color", d)
