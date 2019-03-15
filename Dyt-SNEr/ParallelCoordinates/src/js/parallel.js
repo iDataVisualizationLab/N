@@ -95,13 +95,13 @@ function init() {
     foreground = document.getElementById('foreground').getContext('2d');
     foreground.globalCompositeOperation = "destination-over";
     foreground.strokeStyle = "rgba(0,100,160,0.1)";
-    foreground.lineWidth = 1.7;
+    foreground.lineWidth = 0.2;
     foreground.fillText("Loading...",w/2,h/2);
 
 // Highlight canvas for temporary interactions
     highlighted = document.getElementById('highlight').getContext('2d');
     highlighted.strokeStyle = "rgba(0,100,160,1)";
-    highlighted.lineWidth = 4;
+    highlighted.lineWidth = 2;
 
 // Background canvas
     background = document.getElementById('background').getContext('2d');
@@ -394,8 +394,8 @@ function selection_stats(opacity, n, total) {
 
 // Highlight single polyline
 function highlight(d) {
-    d3.select("#foreground").style("opacity", "0.1");
-    d3.select("#legend").selectAll(".row").style("opacity", function(p) { return (d.group == p) ? null : "0.1" });
+    d3.select("#foreground").style("opacity", "1");
+    d3.select("#legend").selectAll(".row").style("opacity", function(p) { return (d.group == p) ? null : "0.7" });
     path(d, highlighted, colorCanvas(selectedService==null?d.group:d[selectedService],1));
 }
 
@@ -807,9 +807,9 @@ function resetSize() {
         .select("g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
     // Foreground canvas for primary view
-    foreground.lineWidth = 1.7;
+    foreground.lineWidth = 0.2;
 // Highlight canvas for temporary interactions
-    highlighted.lineWidth = 4;
+    highlighted.lineWidth = 2;
 
 // Background canvas
     background.lineWidth = 1.7;
