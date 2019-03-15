@@ -39,7 +39,7 @@ d3.Tsneplot = function () {
     let first = true;
 
     function updateRenderRanking(data) {
-        var max = d3.max(d3.extent(d3.merge(d3.extent(data.top10,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
+        var max = d3.max(d3.extent(d3.merge(d3.extent(data,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
         scaleX_small.domain([-max,max]);
         scaleY_small.domain(scaleX_small.domain());
         // console.log(data.top10);
@@ -49,7 +49,7 @@ d3.Tsneplot = function () {
             console.log(e)
         }
         const dataTop = panel.select('.top10').selectAll('.top10_item')
-            .data(data.top10, d => d.name);
+            .data(data, d => d.name);
         // EXIT
         dataTop.exit()
             .transition('exito')
@@ -74,18 +74,25 @@ d3.Tsneplot = function () {
         newdiv.append('rect').attrs(
             {class : 'detailDecoration',
                 y: -(sizebox-2)/2,
-                width: 190,
+                width: graphicopt.top10.width,
                 height: sizebox-2,
             });
         newdiv.append("text").text(d => d.name).attr('x',4);
         const gDetail = newdiv.append("g")
             .attr('class','gd')
-            .attr('transform', 'translate(120,'+(-sizebox/2)+')')
+            .attr('transform', 'translate('+(graphicopt.eventpad.eventpadtotalwidth)+','+(-sizebox/2)+')')
             .datum(d=>d);
         gDetail.append("path")
             .attr("d",trackercreate)
             .styles(graphicopt.top10.details.path.style);
         gDetail.call(createDetailCircle);
+
+        const gDetailc = newdiv.append("g")
+            .attr('class','gc')
+            // .attr('transform', 'translate('+(120+sizebox)+','+(-graphicopt.eventpad.size/2)+')')
+            .attr('transform', 'translate('+(0)+','+(graphicopt.eventpad.size/2)+')')
+            .datum(d=>d.cluster);
+        gDetailc.call(createClulsterPad);
 
         // UPDATE
         dataTop
@@ -98,6 +105,9 @@ d3.Tsneplot = function () {
             .attr("d",trackercreate);
         gd
             .call(createDetailCircle);
+        const gc = dataTop.select('.gc').datum(d=>d.cluster);
+        gc
+            .call(createClulsterPad);
     }
     function createDetailCircle (g){
         let newg = g.selectAll('circle').data(d=>d);
@@ -112,6 +122,31 @@ d3.Tsneplot = function () {
                 cy:scaleY_small(d[1]),}
             });
     }
+
+    function createClulsterPad (g){
+        let newg = g.selectAll('rect').data(d=>d,e=>e.timeStep);
+        newg.exit()
+            .transition()
+            .duration(runopt.simDuration/2)
+            .attr("transform", "scale(" + 0 + ")")
+            .remove();
+        newg.classed('new',false);
+        return newg.enter().append('rect')
+            .classed('new',true)
+            .attrs(graphicopt.top10.details.clulster.attr)
+            .styles(graphicopt.top10.details.clulster.style)
+            .style("fill",
+                d=>{
+                    return colorCategory(d.val)}
+            ).attr('x',(d,i)=>i*graphicopt.eventpad.size)
+            .style('opacity',0)
+            .merge(newg)
+            .transition()
+            .duration(runopt.simDuration)
+            .style('opacity',1)
+            .attr('x',(d,i)=>i*graphicopt.eventpad.size);
+    }
+
     tsne.addEventListener('message',({data})=>{
         switch (data.status) {
             case 'done':
@@ -126,7 +161,7 @@ d3.Tsneplot = function () {
                 break;
 
             case "updateTracker":
-                updateRenderRanking(data);
+                updateRenderRanking(reorderdata(data.top10));
                 break;
             case 'cluster':
                 updateCluster (data.result);
@@ -134,7 +169,14 @@ d3.Tsneplot = function () {
         }
 
     }, false);
-
+    function reorderdata(data) {
+        const NCluster = data[0].cluster.length;
+        if (NCluster>graphicopt.eventpad.maxstack){
+            const startpos = NCluster - graphicopt.eventpad.maxstack;
+            data.forEach(d=>d.cluster = d.cluster.slice(startpos,NCluster));
+        }
+        return data;
+    }
     function initradar (dim){
         // radar
         var total = dim,                 //The number of different axes
@@ -228,8 +270,16 @@ d3.Tsneplot = function () {
         const sizegraph = sizebox - 5;
         scaleX_small.range([0,sizegraph]);
         scaleY_small.range([0,sizegraph]);
+        graphicopt.top10.width = Math.min(graphicopt.width/4,300);
+        if (!graphicopt.eventpad)
+            graphicopt.eventpad ={};
+        graphicopt.eventpad.size = graphicopt.eventpad.size || 10;
+        graphicopt.eventpad.eventpadtotalwidth = graphicopt.top10.width - sizebox;
+        graphicopt.eventpad.maxstack = Math.floor(graphicopt.eventpad.eventpadtotalwidth /graphicopt.eventpad.size);
+        graphicopt.top10.details.clulster.attr.width = graphicopt.eventpad.size;
+        graphicopt.top10.details.clulster.attr.height = graphicopt.eventpad.size;
         panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-100, sizebox*50)+"px");
-        panel.select(".top10").attrs({width: 200,
+        panel.select(".top10").attrs({width: graphicopt.top10.width,
         height: sizebox*50});
         // menu.append('text').attr("dy", "2em").attr("x",10).text('Cost: ');
         // menu.append('text').attr("dy", "2em").attr("x",40).attr('class','cost');

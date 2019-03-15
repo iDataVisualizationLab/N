@@ -35,7 +35,7 @@ addEventListener('message',function ({data}){
                 console.log(result);
                 postMessage({action:'cluster', result: result});
                 //---------------
-                store_step = initStore(hostname,tsne.getSolution());
+                store_step = initStore(hostname,tsne.getSolution(),result);
                 store_step_temp = copyStore(store_step);
                 postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 postMessage({action:data.action, status:"done" });
@@ -65,7 +65,7 @@ addEventListener('message',function ({data}){
                 postMessage({action:data.action, status:"done" });
                 break;
             case "updateTracker":
-                updateStore(tsne.getSolution());
+                updateStore(tsne.getSolution(),community());
                 postMessage({action:data.action,  status:"done", top10: getTop10 (store_step) });
                 store_step_temp = copyStore(store_step);
                 break;
@@ -95,11 +95,12 @@ addEventListener('message',function ({data}){
                 break;
         }
 });
-function initStore(host,sol){
+function initStore(host,sol,clus){
     return  host.map((d,i)=>{
         let temp = [sol[i].slice()];
         temp.name = d;
         temp.dis = 0;
+        temp.cluster = [{timeStep:0,val:clus[d]}];
         return temp;});
 }
 function copyStore(store){
@@ -109,12 +110,13 @@ function copyStore(store){
         temp.dis = d.dis;
         return temp;});
 }
-function updateStore(sol){
+function updateStore(sol,clus){
     sol.forEach((s,i)=>{
         const ss = s.slice();
         store_step[i].push(ss);
         const currentLastIndex = store_step[i].length-2;
         store_step[i].dis += distance(store_step[i][currentLastIndex],ss);
+        store_step[i].cluster.push({timeStep:currentLastIndex+1,val:clus[store_step[i].name]});
         });
 }
 

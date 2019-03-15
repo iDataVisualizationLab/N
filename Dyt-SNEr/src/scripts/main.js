@@ -39,12 +39,22 @@ let width = 2000,
                         'stroke-width': 0.5,
                         'fill': 'none'
                     }
+                },
+                clulster: {
+                    attr: {
+                        rx: 3,
+                        ry: 3}
+                    ,
+                    style: {
+                        stroke: 'white'
+                    }
                 }
             }
         }
 },controlTime,
     runopt ={
         zoom:60,
+        simDuration: 1000,
     };
 let arrColor = ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"];
 let formatTime = d3.timeFormat("%b %Y");
@@ -70,6 +80,8 @@ $(document).ready(function(){
     $('#zoomInit')[0].value = runopt.zoom;
     $('#simDurationUI').on('change',function(){
         simDuration = this.value;
+        runopt.simDuration = simDuration;
+        TSneplot.runopt(runopt);
         interval2.stop();
         request();
     });
