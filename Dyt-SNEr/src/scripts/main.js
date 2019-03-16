@@ -12,8 +12,8 @@ let width = 2000,
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
         dotRadius: 3,
         opt:{
-            epsilon : 20, // epsilon is learning rate (10 = default)
-            perplexity : 30, // roughly how many neighbors each point influences (30 = default)
+            epsilon : 10, // epsilon is learning rate (10 = default)
+            perplexity : 50, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
         },
@@ -212,7 +212,7 @@ let isBusy = false;
 let dispatch = d3.dispatch("calDone");
 dispatch.on("calDone",function (tst){
     isBusy = false;
-    console.log(tst);
+    console.log('index return:: '+tst);
     if (playing)
         interval2.resume();
 });

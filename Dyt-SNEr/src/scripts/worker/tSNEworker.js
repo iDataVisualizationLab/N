@@ -7,7 +7,7 @@ importScripts("../../lib/jLouvain.js");
 
 
 let tsne,sol,
-    stepnumber = 10,
+    stepnumber = 100,
     countstack =0,
     stack = 100,
     cost,
@@ -47,12 +47,12 @@ addEventListener('message',function ({data}){
                 countstack = 0;
                 tsne.updateData(data.value);
                 stop = false;
-                for (let  i =0; i<2 &&(!stop);i++) {
+                for (let  i =0; i<1 &&(!stop);i++) {
                     const cost_old = tsne.step();
                     stop = ((cost_old - cost) <stopCondition)&&(cost_old - cost) >0;
                     cost = cost_old;
                     countstack++;
-                    postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                    //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 }
                 //jLouvain-------
                 community.edges(convertLink(tsne.getProbability(),hostname));

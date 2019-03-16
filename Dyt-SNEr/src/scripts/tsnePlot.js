@@ -155,7 +155,6 @@ d3.Tsneplot = function () {
                 console.log('lopps: '+ data.maxloop);
                 geTopComand();
                 isBusy = false;
-                returnEvent.call("calDone",this, timestep);
                 break;
             case 'done':
                 isBusy = false;
@@ -170,6 +169,7 @@ d3.Tsneplot = function () {
 
             case "updateTracker":
                 updateRenderRanking(reorderdata(data.top10));
+                returnEvent.call("calDone",this, currentIndex);
                 break;
             case 'cluster':
                 updateCluster (data.result);
@@ -333,8 +333,8 @@ d3.Tsneplot = function () {
         // if (!skiptransition)
         //     group = group
         //         .interrupt()
-        //         .transition('move')
-        //         .duration(runopt.simDuration);
+                 .transition()
+                
         .attr("transform", function(d, i) {
             return "translate(" +
                 (Y[i][0]*runopt.zoom*ss+tx) + "," +
