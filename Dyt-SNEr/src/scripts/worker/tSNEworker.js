@@ -76,7 +76,7 @@ addEventListener('message',function ({data}){
                 stepnumber = data.value;
                 break;
             case "step":
-                if (!stop)
+                if (!stop){
                     for (let i = 0; (i < stepnumber)&&(!stop); i++) {
                         const cost_old = tsne.step();
                         stop = ((cost_old - cost) <stopCondition)&&(cost_old - cost) >0;
@@ -88,14 +88,14 @@ addEventListener('message',function ({data}){
                         //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
                         //     countstack =0;
                         // }
+                    }
                         //jLouvain-------
                         community.edges(convertLink(tsne.getProbability(), hostname));
                         var result = community();
                         postMessage({action: 'cluster', result: result});
                         //---------------
                         postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
-                    }
-                else {
+                }else {
                     postMessage({action: 'stable'});
                 }
                 break;
