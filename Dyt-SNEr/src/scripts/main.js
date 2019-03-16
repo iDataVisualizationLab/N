@@ -304,4 +304,7 @@ function fixRangeTime (){
     controlTime.el.addEventListener("touchmove",  controlTime._handleRangeInputMousemoveTouchmoveBound);
     controlTime.el.addEventListener("mousedown", controlTime._handleRangeMousedownTouchstartBound);
     controlTime.el.addEventListener("touchstart", controlTime._handleRangeMousedownTouchstartBound);
+    $('#timespan').on('change',function(){
+        timestep = this.value;
+    });
 }
