@@ -17,12 +17,18 @@ let tsne,sol,
     hostname,
     stopCondition =0.00001,
     community = jLouvain();
+let geTopComand = _.once(stepstable);
+function stepstable (){
+    console.log('get here already')
+    postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}, maxloop: countstack, status: "stable"});
+}
 addEventListener('message',function ({data}){
         switch (data.action) {
             case "inittsne":
                 tsne = new tsnejs.tSNE(data.value);
                 break;
             case "initDataRaw":
+                geTopComand = _.once(stepstable);
                 countstack = 0;
                 tsne.initDataRaw(data.value);
                 stop = false;
@@ -40,10 +46,13 @@ addEventListener('message',function ({data}){
                 //---------------
                 store_step = initStore(hostname,tsne.getSolution(),result);
                 store_step_temp = copyStore(store_step);
-                postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                if (stop)
+                    geTopComand();
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateData":
+                geTopComand = _.once(stepstable);
                 countstack = 0;
                 tsne.updateData(data.value);
                 stop = false;
@@ -65,6 +74,8 @@ addEventListener('message',function ({data}){
                 //     countstack =0;
                 // }
                 // postMessage({action:'step', result: {cost: cost, solution: sol}});
+                if (stop)
+                    geTopComand();
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateTracker":
@@ -92,9 +103,11 @@ addEventListener('message',function ({data}){
                         //jLouvain-------
                         community.edges(convertLink(tsne.getProbability(), hostname));
                         var result = community();
-                        postMessage({action: 'cluster', result: result});
+                        postMessage({action: 'cluster', result: result,maxloop: countstack, status: stop?"stable":"done"});
                         //---------------
-                        postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
+                        if (stop)
+                            geTopComand();
+                        // postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
                 }else {
                     postMessage({action: 'stable'});
                 }

@@ -150,6 +150,7 @@ d3.Tsneplot = function () {
     let caltime;
     let geTopComand = _.once(Tsneplot.getTop10);
     tsne.addEventListener('message',({data})=>{
+        console.log(data)
         switch (data.status) {
             case 'stable':
                 isStable = true;
@@ -163,12 +164,10 @@ d3.Tsneplot = function () {
         }
         switch (data.action) {
             case 'step':
-                if (isStable) {
                     console.log("here");
                     store.Y = data.result.solution;
                     store.cost = data.result.cost;
                     updateEmbedding(store.Y, store.cost);
-                }
                 break;
 
             case "updateTracker":
@@ -345,6 +344,7 @@ d3.Tsneplot = function () {
                         (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
         }else{
             group.transition().duration(runopt.simDuration)
+                .ease(d3.easeLinear)
                 .attr("transform", function(d, i) {
                 return "translate(" +
                     (Y[i][0]*runopt.zoom*ss+tx) + "," +
