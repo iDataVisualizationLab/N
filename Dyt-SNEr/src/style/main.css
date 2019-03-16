@@ -335,6 +335,10 @@ label {
 .rangecustom .thumb {
   top: -40px !important;
   z-index: 20;
+  visibility: hidden  
+}
+.rangecustom .active.thumb {
+  visibility: visible
 }
 .rangecustom .thumb .value {
   margin-left: -10px !important;
