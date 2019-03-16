@@ -12,7 +12,7 @@ let width = 2000,
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
         dotRadius: 3,
         opt:{
-            epsilon : 10, // epsilon is learning rate (10 = default)
+            epsilon : 20, // epsilon is learning rate (10 = default)
             perplexity : 30, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
@@ -80,11 +80,11 @@ $(document).ready(function(){
     $('#zoomInit')[0].value = runopt.zoom;
     $('#simDurationUI').on('change',function(){
         simDuration = this.value;
-        runopt.simDuration = simDuration;
+        runopt.simDuration = simDuration/2;
         TSneplot.runopt(runopt);
-        interval2.stop();
+        interval2.pause();
         if (playing)
-            request();
+            interval2.resume();
     });
     $('#simDurationUI')[0].value = simDuration;
     controlTime = $('#timespan')[0].M_Range;
@@ -159,7 +159,7 @@ function initTsne () {
  TsnePlotopt.height = height;
  TsnePlotopt.svg =svg.attr("class", "T_sneSvg");
  TSneplot.runopt(runopt).graphicopt(TsnePlotopt);
- TSneplot.svg(TsnePlotopt.svg).init().dispatch(dispatch);
+ TSneplot.svg(TsnePlotopt.svg).dispatch(dispatch).init();
 
 }
 
@@ -187,7 +187,7 @@ function request(){
             if (isBusy)
                 interval2.pause();
         }
-    },simDuration);
+    },simDuration/2);
 }
 function resetRequest (){
     pausechange();
@@ -212,7 +212,7 @@ let isBusy = false;
 let dispatch = d3.dispatch("calDone");
 dispatch.on("calDone",function (tst){
     isBusy = false;
-    console.log(ts);
+    console.log(tst);
     if (playing)
         interval2.resume();
 });
