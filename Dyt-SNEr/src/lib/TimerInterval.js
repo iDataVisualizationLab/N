@@ -11,11 +11,12 @@ function IntervalTimer(callback, interval) {
         state = 2;
     };
 
-    this.resume = function () {
+    this.resume = function (intervalin) {
         if (state != 2) return;
 
         state = 3;
         window.setTimeout(this.timeoutCallback, remaining);
+        interval = intervalin||interval;
     };
 
     this.timeoutCallback = function (intervalin) {

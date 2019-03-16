@@ -91,7 +91,7 @@ $(document).ready(function(){
         TSneplot.runopt(runopt);
         interval2.pause();
         if (playing)
-            interval2.resume();
+            interval2.resume(simDuration);
     });
     $('#simDurationUI')[0].value = simDuration;
     fixRangeTime();

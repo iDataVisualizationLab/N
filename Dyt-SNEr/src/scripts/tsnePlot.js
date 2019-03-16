@@ -54,7 +54,8 @@ d3.Tsneplot = function () {
             .data(data, d => d.name);
         // EXIT
         dataTop.exit()
-            .transition()
+            .interrupt().selectAll("*").interrupt();
+        dataTop.exit()  .transition()
             .duration(runopt.simDuration/3)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
             .attr('transform', function (d) {
                 return 'translate(40,' + getTransformation(d3.select(this).attr('transform')).translateY + ')'
@@ -151,7 +152,7 @@ d3.Tsneplot = function () {
     let caltime;
     let geTopComand = _.once(Tsneplot.getTop10);
     tsne.addEventListener('message',({data})=>{
-        console.log(data)
+        // console.log(data)
         switch (data.status) {
             case 'stable':
                 isStable = true;
@@ -165,7 +166,6 @@ d3.Tsneplot = function () {
         }
         switch (data.action) {
             case 'step':
-                    console.log("here");
                     store.Y = data.result.solution;
                     store.cost = data.result.cost;
                     updateEmbedding(store.Y, store.cost);
@@ -336,8 +336,6 @@ d3.Tsneplot = function () {
         // move the groups accordingly
         let group = g.selectAll('.linkLineg');
         if (skiptransition==true) {
-            console.log(skiptransition);
-            console.log('here Skip');
             group
                 .interrupt().attr("transform", function(d, i) {
                     return "translate(" +
@@ -345,7 +343,7 @@ d3.Tsneplot = function () {
                         (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
         }else{
             group.transition().duration(runopt.simDuration)
-                .ease(d3.easeLinear)
+                .ease(d3.easeQuadOut)
                 .attr("transform", function(d, i) {
                 return "translate(" +
                     (Y[i][0]*runopt.zoom*ss+tx) + "," +
@@ -359,7 +357,7 @@ d3.Tsneplot = function () {
     let currentIndex = 0;
     Tsneplot.draw = function(index){
         currentIndex = index;
-        console.log("index: "+index);
+        // console.log("index: "+index);
         caltime = new Date();
         geTopComand = _.once(Tsneplot.getTop10);
         if (first){

@@ -19,7 +19,6 @@ let tsne,sol,
     community = jLouvain();
 let geTopComand = _.once(stepstable);
 function stepstable (){
-    console.log('get here already')
     postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}, maxloop: countstack, status: "stable"});
 }
 addEventListener('message',function ({data}){
