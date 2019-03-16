@@ -89,7 +89,7 @@ $(document).ready(function(){
         simDuration = this.value;
         runopt.simDuration = simDuration;
         TSneplot.runopt(runopt);
-        interval2.pause();
+        interval2.pause(simDuration);
         if (playing)
             interval2.resume(simDuration);
     });
@@ -221,10 +221,6 @@ function step (index){
 function request(){
     interval2 = new IntervalTimer(function () {
         if ((timestep<maxtimestep)&&!isBusy){
-            // d3.select('.range-labels').selectAll('li').classed("active selected",false);
-            // d3.select('.range-labels').selectAll('li')
-            //     .filter((d,i)=>i===timestep)
-            //     .classed("active selected",true);
             RangechangeVal(timestep);
             step(timestep);
             isBusy = true

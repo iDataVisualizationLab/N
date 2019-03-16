@@ -3,11 +3,12 @@ function IntervalTimer(callback, interval) {
     var timerId, startTime, remaining = 0;
     var state = 0; //  0 = idle, 1 = running, 2 = paused, 3= resumed
 
-    this.pause = function () {
+    this.pause = function (intervalin) {
         if (state != 1) return;
 
         remaining = interval - (new Date() - startTime);
         window.clearInterval(timerId);
+        interval = intervalin||interval;
         state = 2;
     };
 

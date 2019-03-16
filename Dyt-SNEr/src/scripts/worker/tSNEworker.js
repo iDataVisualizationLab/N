@@ -11,25 +11,33 @@ let tsne,sol,
     countstack =0,
     stack = 100,
     cost,
+    costa =[],
     stop = false,
     store_step,
     store_step_temp,
     hostname,
     stopCondition =0.00001,
-    community = jLouvain();
+    community = jLouvain(),
+    currentMaxIndex =0,
+    requestIndex = 0;
 let geTopComand = _.once(stepstable);
-function stepstable (){
-    postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}, maxloop: countstack, status: "stable"});
+function stepstable (cost , solution){
+    postMessage({action:'step', result: {cost: cost, solution: solution}, maxloop: countstack, status: "stable"});
 }
 addEventListener('message',function ({data}){
         switch (data.action) {
             case "inittsne":
                 tsne = new tsnejs.tSNE(data.value);
                 break;
+            case "maxstack":
+                maxstack = (data.value);
+                break;
             case "initDataRaw":
                 geTopComand = _.once(stepstable);
                 countstack = 0;
                 tsne.initDataRaw(data.value);
+                currentMaxIndex = 0;
+                requestIndex = 0;
                 stop = false;
                 let cost_first = tsne.step();
                 for (let  i =0; i<40;i++) {
@@ -47,40 +55,47 @@ addEventListener('message',function ({data}){
                 store_step_temp = copyStore(store_step);
                 //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 if (stop)
-                    geTopComand();
+                    geTopComand(cost,tsne.getSolution());
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateData":
                 geTopComand = _.once(stepstable);
                 countstack = 0;
-                tsne.updateData(data.value);
-                stop = false;
-                for (let  i =0; i<1 &&(!stop);i++) {
-                    const cost_old = tsne.step();
-                    stop = ((cost_old - cost) <stopCondition)&&(cost_old - cost) >0;
-                    cost = cost_old;
-                    countstack++;
-                    //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                requestIndex = data.index;
+                console.log(requestIndex+"_"+currentMaxIndex)
+                if (requestIndex > currentMaxIndex ) {
+                    // UPDATE
+                    tsne.updateData(data.value);
+                    stop = false;
+                    for (let i = 0; i < 1 && (!stop); i++) {
+                        const cost_old = tsne.step();
+                        stop = ((cost_old - cost) < stopCondition) && (cost_old - cost) > 0;
+                        cost = cost_old;
+                        countstack++;
+                        //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
+                    }
+                    //jLouvain-------
+                    community.edges(convertLink(tsne.getProbability(), hostname));
+                    var result = community();
+                    postMessage({action: 'cluster', result: result});
+                    //---------------
+                    if (stop)
+                        geTopComand(cost,tsne.getSolution());
+                }else{
+                    stop = true;
+                    console.log(costa)
+                    geTopComand(costa[requestIndex], store_step.map((d,i)=>d[requestIndex]))
                 }
-                //jLouvain-------
-                community.edges(convertLink(tsne.getProbability(),hostname));
-                var result  = community();
-                postMessage({action:'cluster', result: result});
-                //---------------
-                // updateTempStore(tsne.getSolution());
-                // if (countstack>stack){
-                //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
-                //     countstack =0;
-                // }
-                // postMessage({action:'step', result: {cost: cost, solution: sol}});
-                if (stop)
-                    geTopComand();
+
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateTracker":
-                updateStore(tsne.getSolution(),community());
-                postMessage({action:data.action,  status:"done", top10: getTop10 (store_step) });
-                store_step_temp = copyStore(store_step);
+                console.log(requestIndex+"_"+currentMaxIndex)
+                if (requestIndex > currentMaxIndex ||currentMaxIndex===0 ) {
+                    updateStore(tsne.getSolution(), community(),cost);
+                    store_step_temp = copyStore(store_step);
+                }
+                postMessage({action:data.action,  status:"done", top10: getTop10 (store_step,requestIndex) });
                 break;
             case "option":
                 stepnumber = data.value;
@@ -104,8 +119,8 @@ addEventListener('message',function ({data}){
                         var result = community();
                         postMessage({action: 'cluster', result: result,maxloop: countstack, status: stop?"stable":"done"});
                         //---------------
-                        if (stop)
-                            geTopComand();
+                    if (stop)
+                        geTopComand(cost,sol);
                         // postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
                 }else {
                     postMessage({action: 'stable'});
@@ -114,11 +129,15 @@ addEventListener('message',function ({data}){
         }
 });
 function initStore(host,sol,clus){
+    costa = [];
     return  host.map((d,i)=>{
-        let temp = [sol[i].slice()];
+        // let temp = [sol[i].slice()];
+        let temp = [];
         temp.name = d;
-        temp.dis = 0;
-        temp.cluster = [{timeStep:0,val:clus[d]}];
+        // temp.dis = 0;
+        temp.dis = [0];
+        // temp.cluster = [{timeStep:0,val:clus[d]}];
+        temp.cluster = [];
         return temp;});
 }
 function copyStore(store){
@@ -128,13 +147,18 @@ function copyStore(store){
         temp.dis = d.dis;
         return temp;});
 }
-function updateStore(sol,clus){
+function updateStore(sol,clus,cost){
+    costa.push(cost);
     sol.forEach((s,i)=>{
         const ss = s.slice();
         store_step[i].push(ss);
         const currentLastIndex = store_step[i].length-2;
-        store_step[i].dis += distance(store_step[i][currentLastIndex],ss);
+        if (currentLastIndex >-1 ) {
+            store_step[i].dis.push(store_step[i].dis[currentLastIndex]+ distance(store_step[i][currentLastIndex], ss))
+            // store_step[i].dis.push += distance(store_step[i][currentLastIndex], ss);
+        }
         store_step[i].cluster.push({timeStep:currentLastIndex+1,val:clus[store_step[i].name]});
+        currentMaxIndex = currentLastIndex+1;
         });
 }
 
@@ -154,9 +178,26 @@ function distance (a,b) {
     });
     return Math.sqrt(dsum);
 }
-
-function getTop10 (store) {
-    return _(store).sortBy(d=>d.dis).reverse().slice(0,50);
+let maxstack = 10;
+// function getTop10 (store,requestIndex) {
+//     return _(store).sortBy(d=>d.dis).reverse().slice(0,50).map(data=>{
+//         const NCluster = (requestIndex||currentMaxIndex) +1;
+//         //if (NCluster>maxstack-1){
+//             const startpos = Math.max(NCluster - maxstack,0);
+//             data.clusterS = data.cluster.slice(startpos,NCluster);
+//         //}
+//         return data;
+//     });
+// }
+function getTop10 (store,requestIndex) {
+    return _(store).sortBy(d=>d.dis[requestIndex||currentMaxIndex]).reverse().slice(0,50).map(data=>{
+        const NCluster = (requestIndex||currentMaxIndex) +1;
+        //if (NCluster>maxstack-1){
+        const startpos = Math.max(NCluster - maxstack,0);
+        data.clusterS = data.cluster.slice(startpos,NCluster);
+        //}
+        return data;
+    });
 }
 
 function convertLink (P,ids) {

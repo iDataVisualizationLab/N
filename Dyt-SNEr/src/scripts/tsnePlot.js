@@ -46,7 +46,7 @@ d3.Tsneplot = function () {
         scaleY_small.domain(scaleX_small.domain());
         // console.log(data.top10);
         try {
-            panel.select('.top10').selectAll('.top10_item').interrupt();
+            panel.select('.top10').selectAll('.top10_item').interrupt().selectAll("*").interrupt();
         }catch(e){
             console.log(e)
         }
@@ -94,7 +94,7 @@ d3.Tsneplot = function () {
             .attr('class','gc')
             // .attr('transform', 'translate('+(120+sizebox)+','+(-graphicopt.eventpad.size/2)+')')
             .attr('transform', 'translate('+(0)+','+(graphicopt.eventpad.size/2)+')')
-            .datum(d=>d.cluster);
+            .datum(d=>d.clusterS);
         gDetailc.call(createClulsterPad);
 
         // UPDATE
@@ -108,7 +108,7 @@ d3.Tsneplot = function () {
             .attr("d",trackercreate);
         gd
             .call(createDetailCircle);
-        const gc = dataTop.select('.gc').datum(d=>d.cluster);
+        const gc = dataTop.select('.gc').datum(d=>d.clusterS);
         gc
             .call(createClulsterPad);
     }
@@ -127,7 +127,13 @@ d3.Tsneplot = function () {
     }
 
     function createClulsterPad (g){
+        try {
+            g.selectAll('rect').interrupt().selectAll("*").interrupt();
+        }catch(e){
+            console.log(e)
+        }
         let newg = g.selectAll('rect').data(d=>d,e=>e.timeStep);
+        console.log(newg.data())
         newg.exit()
             .transition()
             .duration(runopt.simDuration)
@@ -152,7 +158,7 @@ d3.Tsneplot = function () {
     let caltime;
     let geTopComand = _.once(Tsneplot.getTop10);
     tsne.addEventListener('message',({data})=>{
-        // console.log(data)
+        console.log(data)
         switch (data.status) {
             case 'stable':
                 isStable = true;
@@ -172,7 +178,7 @@ d3.Tsneplot = function () {
                 break;
 
             case "updateTracker":
-                updateRenderRanking(reorderdata(data.top10));
+                updateRenderRanking(data.top10);
                 returnEvent.call("calDone",this, currentIndex);
                 break;
             case 'cluster':
@@ -289,6 +295,7 @@ d3.Tsneplot = function () {
         graphicopt.eventpad.size = graphicopt.eventpad.size || 10;
         graphicopt.eventpad.eventpadtotalwidth = graphicopt.top10.width - sizebox;
         graphicopt.eventpad.maxstack = Math.floor(graphicopt.eventpad.eventpadtotalwidth /graphicopt.eventpad.size);
+        tsne.postMessage({action:"maxstack",value:graphicopt.eventpad.maxstack});
         graphicopt.top10.details.clulster.attr.width = graphicopt.eventpad.size;
         graphicopt.top10.details.clulster.attr.height = graphicopt.eventpad.size;
         panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-100, sizebox*50)+"px");
@@ -361,10 +368,10 @@ d3.Tsneplot = function () {
         caltime = new Date();
         geTopComand = _.once(Tsneplot.getTop10);
         if (first){
-            initradar (arr[0].length);
-            Tsneplot.redraw();
             isBusy = false;
             isStable = false;
+            initradar (arr[0].length);
+            Tsneplot.redraw();
         }else {
             needUpdate = true;
             if (graphicopt.display.symbol.type ==='path') {
@@ -380,7 +387,7 @@ d3.Tsneplot = function () {
             if (!isBusy) {
                 isBusy = true;
                 isStable = false;
-                tsne.postMessage({action: "updateData", value: arr});
+                tsne.postMessage({action: "updateData", value: arr, index: currentIndex});
             }
 
 
