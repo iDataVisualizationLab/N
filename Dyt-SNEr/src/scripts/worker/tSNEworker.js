@@ -15,7 +15,7 @@ let tsne,sol,
     store_step,
     store_step_temp,
     hostname,
-    stopCondition =0.000001,
+    stopCondition =0.00001,
     community = jLouvain();
 addEventListener('message',function ({data}){
         switch (data.action) {
@@ -23,30 +23,33 @@ addEventListener('message',function ({data}){
                 tsne = new tsnejs.tSNE(data.value);
                 break;
             case "initDataRaw":
+                countstack = 0;
                 tsne.initDataRaw(data.value);
-
+                stop = false;
+                let cost_first = tsne.step();
                 for (let  i =0; i<40;i++) {
                     cost = tsne.step();
+                    countstack++;
                 }
+                stop = ((cost - cost_first) <stopCondition)&&(cost - cost_first) >0;
                 hostname = data.value.map(d=>d.name);
                 //jLouvain-------
                 community.nodes(hostname).edges(convertLink(tsne.getProbability(),hostname));
                 var result  = community();
-                console.log(result);
                 postMessage({action:'cluster', result: result});
                 //---------------
                 store_step = initStore(hostname,tsne.getSolution(),result);
                 store_step_temp = copyStore(store_step);
                 postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
-                postMessage({action:data.action, status:"done" });
-                countstack = 0;
+                postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateData":
+                countstack = 0;
                 tsne.updateData(data.value);
                 stop = false;
                 for (let  i =0; i<2 &&(!stop);i++) {
                     const cost_old = tsne.step();
-                    stop = Math.abs(cost_old - cost) <stopCondition;
+                    stop = ((cost_old - cost) <stopCondition)&&(cost_old - cost) >0;
                     cost = cost_old;
                     countstack++;
                     postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
@@ -62,7 +65,7 @@ addEventListener('message',function ({data}){
                 //     countstack =0;
                 // }
                 // postMessage({action:'step', result: {cost: cost, solution: sol}});
-                postMessage({action:data.action, status:"done" });
+                postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateTracker":
                 updateStore(tsne.getSolution(),community());
@@ -74,24 +77,27 @@ addEventListener('message',function ({data}){
                 break;
             case "step":
                 if (!stop)
-                for (let i = 0; (i < stepnumber)&&(!stop); i++) {
-                    const cost_old = tsne.step();
-                    stop = Math.abs(cost_old - cost) <stopCondition;
-                    cost = cost_old;
-                    countstack++;
+                    for (let i = 0; (i < stepnumber)&&(!stop); i++) {
+                        const cost_old = tsne.step();
+                        stop = ((cost_old - cost) <stopCondition)&&(cost_old - cost) >0;
+                        cost = cost_old;
+                        countstack++;
+                        sol = tsne.getSolution();
+                        // updateTempStore(sol);
+                        // if (countstack>stack){
+                        //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
+                        //     countstack =0;
+                        // }
+                        //jLouvain-------
+                        community.edges(convertLink(tsne.getProbability(), hostname));
+                        var result = community();
+                        postMessage({action: 'cluster', result: result});
+                        //---------------
+                        postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
+                    }
+                else {
+                    postMessage({action: 'stable'});
                 }
-                sol =tsne.getSolution();
-                // updateTempStore(sol);
-                // if (countstack>stack){
-                //     postMessage({action:'updateTracker', top10: getTop10 (store_step_temp)});
-                //     countstack =0;
-                // }
-                //jLouvain-------
-                community.edges(convertLink(tsne.getProbability(),hostname));
-                var result  = community();
-                postMessage({action:'cluster', result: result});
-                //---------------
-                postMessage({action: 'step', result: {cost: cost, solution: sol}, status:"done"});
                 break;
         }
 });

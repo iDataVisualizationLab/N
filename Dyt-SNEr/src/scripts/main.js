@@ -12,7 +12,7 @@ let width = 2000,
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
         dotRadius: 3,
         opt:{
-            epsilon : 30, // epsilon is learning rate (10 = default)
+            epsilon : 10, // epsilon is learning rate (10 = default)
             perplexity : 30, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
@@ -58,7 +58,7 @@ let width = 2000,
     };
 let arrColor = ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"];
 let formatTime = d3.timeFormat("%b %Y");
-let simDuration =1000, timestep=0,maxtimestep,interval2;
+let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw;
 let TSneplot = d3.Tsneplot();
 
@@ -83,7 +83,8 @@ $(document).ready(function(){
         runopt.simDuration = simDuration;
         TSneplot.runopt(runopt);
         interval2.stop();
-        request();
+        if (playing)
+            request();
     });
     $('#simDurationUI')[0].value = simDuration;
     controlTime = $('#timespan')[0].M_Range;
@@ -158,26 +159,33 @@ function initTsne () {
  TsnePlotopt.height = height;
  TsnePlotopt.svg =svg.attr("class", "T_sneSvg");
  TSneplot.runopt(runopt).graphicopt(TsnePlotopt);
- TSneplot.svg(TsnePlotopt.svg).init();
+ TSneplot.svg(TsnePlotopt.svg).init().dispatch(dispatch);
+
 }
 
 function step (index){
     let arr = _.zip.apply(_, (d3.values(dataRaw.YearsData[index])));
     arr.forEach((d,i)=>d.name = dataRaw.Countries[i]);
-    TSneplot.data(arr).draw();
+    TSneplot.data(arr).draw(index);
 }
+
+
 
 function request(){
     interval2 = new IntervalTimer(function () {
-        if (timestep<maxtimestep){
+        if ((timestep<maxtimestep)&&!isBusy){
             // d3.select('.range-labels').selectAll('li').classed("active selected",false);
             // d3.select('.range-labels').selectAll('li')
             //     .filter((d,i)=>i===timestep)
             //     .classed("active selected",true);
             RangechangeVal(timestep);
             step(timestep);
+            isBusy = true
             timestep++;
-            TSneplot.getTop10();
+            // TSneplot.getTop10();
+        }else{
+            if (isBusy)
+                interval2.pause();
         }
     },simDuration);
 }
@@ -200,10 +208,18 @@ function pauseRequest(){
     }
 
 }
-
+let isBusy = false;
+let dispatch = d3.dispatch("calDone");
+dispatch.on("calDone",function (tst){
+    isBusy = false;
+    console.log(ts);
+    if (playing)
+        interval2.resume();
+});
 function playchange(){
     var e = d3.select('.pause').node();
     interval2.pause();
+    playing = false;
     e.value = "true";
     $(e).addClass('active');
     $(e.querySelector('i')).text('play_arrow');
@@ -223,6 +239,7 @@ function changeShape(d){
 function pausechange(){
     var e = d3.select('.pause').node();
     if (interval2) interval2.resume();
+    playing = true;
     e.value = "false";
     $(e).removeClass('active');
     $(e.querySelector('i')).text('pause');

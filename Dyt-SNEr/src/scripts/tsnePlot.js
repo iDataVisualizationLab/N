@@ -22,7 +22,8 @@ d3.Tsneplot = function () {
             }
     },runopt,
         arr = [],
-        isbusy = false,
+        isBusy = false,
+        isStable = false,
         // tsne = new tsnejs.tSNE(graphicopt.opt);
         tsne = new Worker ('src/scripts/worker/tSNEworker.js');
     let sizebox = 50;
@@ -37,7 +38,7 @@ d3.Tsneplot = function () {
         ty =0;
     let needUpdate = false;
     let first = true;
-
+    let returnEvent;
     function updateRenderRanking(data) {
         var max = d3.max(d3.extent(d3.merge(d3.extent(data,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
         scaleX_small.domain([-max,max]);
@@ -53,12 +54,11 @@ d3.Tsneplot = function () {
         // EXIT
         dataTop.exit()
             .transition('exito')
-            .duration((d, i) => 20)
             .attr('transform', function (d) {
                 return 'translate(20,' + getTransformation(d3.select(this).attr('transform')).translateY + ')'
             })
             .transition()
-            .duration((d, i) => Math.max((i+1) * 20,500)-20)
+            .duration((d, i) => runopt.simDuration/2/50*i)
             .attr('transform', 'translate(20,' + (maxlist + 1) * sizebox + ")")
             .remove();
         // ENTER
@@ -68,7 +68,7 @@ d3.Tsneplot = function () {
             .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
             .style('opacity', 0)
             .transition('update')
-            .duration((d, i) => Math.max((i+1) * 20,500))
+            .duration((d, i) => (i+1)*runopt.simDuration/2/50)
             .style('opacity', 1)
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
         newdiv.append('rect').attrs(
@@ -97,7 +97,7 @@ d3.Tsneplot = function () {
         // UPDATE
         dataTop
             .transition()
-            .duration((d, i) => i * 100)
+            .duration((d, i) => i * runopt.simDuration/2/50)
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
 
         const gd = dataTop.select('.gd').datum(d=>d);
@@ -142,15 +142,23 @@ d3.Tsneplot = function () {
             .style('opacity',0)
             .merge(newg)
             .transition()
-            .duration(runopt.simDuration)
+            .duration(runopt.simDuration/2)
             .style('opacity',1)
             .attr('x',(d,i)=>i*graphicopt.eventpad.size);
     }
-
+    let caltime;
+    let geTopComand = _.once(Tsneplot.getTop10);
     tsne.addEventListener('message',({data})=>{
         switch (data.status) {
+            case 'stable':
+                isStable = true;
+                console.log('lopps: '+ data.maxloop);
+                geTopComand();
+                isBusy = false;
+                returnEvent.call("calDone",this, timestep);
+                break;
             case 'done':
-                isbusy = false;
+                isBusy = false;
                 break;
         }
         switch (data.action) {
@@ -300,8 +308,8 @@ d3.Tsneplot = function () {
         svg.call(zoom.translateBy, graphicopt.widthG() / 2,graphicopt.heightG() / 2);
 
         graphicopt.step = function () {
-            if (!isbusy) {
-                isbusy = true;
+            if (!isBusy && !isStable) {
+                isBusy = true;
                 tsne.postMessage({action: 'step'});
             }
         };
@@ -321,13 +329,13 @@ d3.Tsneplot = function () {
         // get current solution
         // var Y = tsne.getSolution();
         // move the groups accordingly
-        let group = g.selectAll('.linkLineg');
-        if (!skiptransition)
-            group = group
-                .interrupt()
-                .transition('move')
-                .duration(150);
-        group.attr("transform", function(d, i) {
+        let group = g.selectAll('.linkLineg')
+        // if (!skiptransition)
+        //     group = group
+        //         .interrupt()
+        //         .transition('move')
+        //         .duration(runopt.simDuration);
+        .attr("transform", function(d, i) {
             return "translate(" +
                 (Y[i][0]*runopt.zoom*ss+tx) + "," +
                 (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
@@ -336,25 +344,32 @@ d3.Tsneplot = function () {
 
     }
     let currenthost = {};
-    Tsneplot.draw = function(name){
+    let currentIndex = 0;
+    Tsneplot.draw = function(index){
+        currentIndex = index;
+        console.log("index: "+index);
+        caltime = new Date();
+        geTopComand = _.once(Tsneplot.getTop10);
         if (first){
             initradar (arr[0].length);
             Tsneplot.redraw();
-            isbusy = false;
+            isBusy = false;
+            isStable = false;
         }else {
             needUpdate = true;
             if (graphicopt.display.symbol.type ==='path') {
                 let newdata = g.selectAll(".linkLineg")
                     .data(arr, d => d.name);
                 newdata.select('clipPath').select('path')
-                    .transition('expand').duration(100).ease(d3.easePolyInOut)
+                    .transition('expand').duration(runopt.simDuration/2).ease(d3.easePolyInOut)
                     .attr("d", d => radarcreate(d));
                 newdata.select('.tSNEborder')
-                    .transition('expand').duration(100).ease(d3.easePolyInOut)
+                    .transition('expand').duration(runopt.simDuration/2).ease(d3.easePolyInOut)
                     .attr("d", d => radarcreate(d));
             }
-            if (!isbusy) {
-                isbusy = true;
+            if (!isBusy) {
+                isBusy = true;
+                isStable = false;
                 tsne.postMessage({action: "updateData", value: arr});
             }
 
@@ -363,6 +378,7 @@ d3.Tsneplot = function () {
     };
 
     Tsneplot.getTop10  = function (){
+        console.log(new Date() -caltime);
         tsne.postMessage({action:"updateTracker"});
         // clearInterval(intervalCalculate);
     };
@@ -373,17 +389,18 @@ d3.Tsneplot = function () {
     };
 
     Tsneplot.resume  = function (){
-        intervalUI = setInterval(graphicopt.step,50);
+        intervalUI = setInterval(graphicopt.step,10);
         // intervalCalculate = setInterval(updateData,2000);
     };
 
     Tsneplot.redraw  = function (){
         panel.classed("active",true);
-        // svg.style('visibility','visible');
-        tsne.postMessage({action:"initDataRaw",value:arr})//.initDataRaw(arr);
-        drawEmbedding(arr);
         first = false;
-        isbusy = false;
+        isBusy = true;
+        isStable = false;
+        // svg.style('visibility','visible');
+        tsne.postMessage({action:"initDataRaw",value:arr});//.initDataRaw(arr);
+        drawEmbedding(arr);
         // for (let  i =0; i<40;i++)
         //     tsne.step();
         Tsneplot.resume();
@@ -393,7 +410,8 @@ d3.Tsneplot = function () {
         if (!first){
             panel.classed("active",false);
             // svg.style('visibility','hidden');
-            isbusy = true;
+            isBusy = true;
+            isStable = false;
             Tsneplot.pause();
             g.selectAll('*').remove();
         }
@@ -531,6 +549,9 @@ d3.Tsneplot = function () {
     };
     Tsneplot.runopt = function (_) {
         return arguments.length ? (runopt = _, Tsneplot) : runopt;
+    };
+    Tsneplot.dispatch = function (_) {
+        return arguments.length ? (returnEvent = _, Tsneplot) : returnEvent;
     };
     return Tsneplot;
 };
