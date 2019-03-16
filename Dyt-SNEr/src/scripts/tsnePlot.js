@@ -163,9 +163,12 @@ d3.Tsneplot = function () {
         }
         switch (data.action) {
             case 'step':
-                store.Y = data.result.solution;
-                store.cost = data.result.cost;
-                updateEmbedding(store.Y, store.cost);
+                if (isStable) {
+                    console.log("here");
+                    store.Y = data.result.solution;
+                    store.cost = data.result.cost;
+                    updateEmbedding(store.Y, store.cost);
+                }
                 break;
 
             case "updateTracker":
@@ -331,16 +334,22 @@ d3.Tsneplot = function () {
         // get current solution
         // var Y = tsne.getSolution();
         // move the groups accordingly
-        let group = g.selectAll('.linkLineg')
-        // if (!skiptransition)
-        //     group = group
-        //         .interrupt()
-                 .transition()
-                
-        .attr("transform", function(d, i) {
-            return "translate(" +
-                (Y[i][0]*runopt.zoom*ss+tx) + "," +
-                (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
+        let group = g.selectAll('.linkLineg');
+        if (skiptransition==true) {
+            console.log(skiptransition);
+            console.log('here Skip');
+            group
+                .interrupt().attr("transform", function(d, i) {
+                    return "translate(" +
+                        (Y[i][0]*runopt.zoom*ss+tx) + "," +
+                        (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
+        }else{
+            group.transition().duration(runopt.simDuration)
+                .attr("transform", function(d, i) {
+                return "translate(" +
+                    (Y[i][0]*runopt.zoom*ss+tx) + "," +
+                    (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
+        }
         //let curentHostpos = currenthost.node().getBoundingClientRect();
 
 
@@ -551,6 +560,7 @@ d3.Tsneplot = function () {
     };
     Tsneplot.option = function (_) {
         if (arguments.length){
+            isBusy = true;
             option = _;
             tsne.postMessage({action:"inittsne",value:option});
             return Tsneplot;

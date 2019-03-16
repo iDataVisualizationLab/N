@@ -2,7 +2,7 @@ let width = 2000,
     height = 1000,
     TsneConfig = {
         epsilon : 10, // epsilon is learning rate (10 = default)
-            perplexity : 20, // roughly how many neighbors each point influences (30 = default)
+            perplexity : 30, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
     },
@@ -17,12 +17,6 @@ let width = 2000,
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
         dotRadius: 3,
-        opt:{
-            epsilon : 10, // epsilon is learning rate (10 = default)
-            perplexity : 20, // roughly how many neighbors each point influences (30 = default)
-            dim : 2, // dimensionality of the embedding (2 = default)
-            maxtries: 1000
-        },
         display:{
           symbol:{
               type: 'path',
@@ -89,7 +83,8 @@ $(document).ready(function(){
         TSneplot.option(TsneConfig);
         resetRequest();
     });
-    $('#detailLevel')[0].value = runopt.zoom;
+    $('#detailLevel')[0].value = TsneConfig.perplexity;
+
     $('#simDurationUI').on('change',function(){
         simDuration = this.value;
         runopt.simDuration = simDuration;
