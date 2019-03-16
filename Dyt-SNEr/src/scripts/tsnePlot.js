@@ -13,14 +13,15 @@ d3.Tsneplot = function () {
         heightView: function(){return this.height*this.scalezoom},
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-        dotRadius: 2,
-            opt:{
-                epsilon : 20, // epsilon is learning rate (10 = default)
-                perplexity : 30, // roughly how many neighbors each point influences (30 = default)
-                dim : 2, // dimensionality of the embedding (2 = default)
-                maxtries: 50
-            }
-    },runopt,
+        dotRadius: 2
+    },
+        option = {
+            epsilon : 20, // epsilon is learning rate (10 = default)
+            perplexity : 30, // roughly how many neighbors each point influences (30 = default)
+            dim : 2, // dimensionality of the embedding (2 = default)
+            maxtries: 50
+        },
+        runopt,
         arr = [],
         isBusy = false,
         isStable = false,
@@ -58,7 +59,7 @@ d3.Tsneplot = function () {
                 return 'translate(20,' + getTransformation(d3.select(this).attr('transform')).translateY + ')'
             })
             .transition()
-            .duration((d, i) => runopt.simDuration/2/50*i)
+            .duration((d, i) => runopt.simDuration/50*(i+1))
             .attr('transform', 'translate(20,' + (maxlist + 1) * sizebox + ")")
             .remove();
         // ENTER
@@ -68,7 +69,7 @@ d3.Tsneplot = function () {
             .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
             .style('opacity', 0)
             .transition('update')
-            .duration((d, i) => (i+1)*runopt.simDuration/2/50)
+            .duration((d, i) => (i+1)*runopt.simDuration/50)
             .style('opacity', 1)
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
         newdiv.append('rect').attrs(
@@ -97,7 +98,7 @@ d3.Tsneplot = function () {
         // UPDATE
         dataTop
             .transition()
-            .duration((d, i) => i * runopt.simDuration/2/50)
+            .duration((d, i) => runopt.simDuration/50*(i+1))
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
 
         const gd = dataTop.select('.gd').datum(d=>d);
@@ -127,7 +128,7 @@ d3.Tsneplot = function () {
         let newg = g.selectAll('rect').data(d=>d,e=>e.timeStep);
         newg.exit()
             .transition()
-            .duration(runopt.simDuration/2)
+            .duration(runopt.simDuration)
             .attr("transform", "scale(" + 0 + ")")
             .remove();
         newg.classed('new',false);
@@ -142,7 +143,7 @@ d3.Tsneplot = function () {
             .style('opacity',0)
             .merge(newg)
             .transition()
-            .duration(runopt.simDuration/2)
+            .duration(runopt.simDuration)
             .style('opacity',1)
             .attr('x',(d,i)=>i*graphicopt.eventpad.size);
     }
@@ -202,8 +203,9 @@ d3.Tsneplot = function () {
             .radius(function(d) { return rScale(d); })
             .angle(function(d,i) {  return angleSlice[i]; });
     }
+
     Tsneplot.init = function(){
-        tsne.postMessage({action:"inittsne",value:graphicopt.opt});
+        // tsne.postMessage({action:"inittsne",value:option});
 
 
         trackercreate = d3.line()
@@ -546,6 +548,14 @@ d3.Tsneplot = function () {
 
     Tsneplot.graphicopt = function (_) {
         return arguments.length ? (graphicopt = _, Tsneplot) : graphicopt;
+    };
+    Tsneplot.option = function (_) {
+        if (arguments.length){
+            option = _;
+            tsne.postMessage({action:"inittsne",value:option});
+            return Tsneplot;
+        }
+        return option;
     };
     Tsneplot.runopt = function (_) {
         return arguments.length ? (runopt = _, Tsneplot) : runopt;

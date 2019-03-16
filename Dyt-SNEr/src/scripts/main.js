@@ -1,5 +1,11 @@
 let width = 2000,
     height = 1000,
+    TsneConfig = {
+        epsilon : 10, // epsilon is learning rate (10 = default)
+            perplexity : 20, // roughly how many neighbors each point influences (30 = default)
+            dim : 2, // dimensionality of the embedding (2 = default)
+            maxtries: 1000
+    },
     TsnePlotopt  = {
         margin: {top: 0, right: 0, bottom: 0, left: 0},
         offset: {top: 0},
@@ -13,7 +19,7 @@ let width = 2000,
         dotRadius: 3,
         opt:{
             epsilon : 10, // epsilon is learning rate (10 = default)
-            perplexity : 50, // roughly how many neighbors each point influences (30 = default)
+            perplexity : 20, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
         },
@@ -78,16 +84,23 @@ $(document).ready(function(){
         TSneplot.runopt(runopt);
     });
     $('#zoomInit')[0].value = runopt.zoom;
+    $('#detailLevel').on('change',function(){
+        TsneConfig.perplexity = this.value;
+        TSneplot.option(TsneConfig);
+        resetRequest();
+    });
+    $('#detailLevel')[0].value = runopt.zoom;
     $('#simDurationUI').on('change',function(){
         simDuration = this.value;
-        runopt.simDuration = simDuration/2;
+        runopt.simDuration = simDuration;
         TSneplot.runopt(runopt);
         interval2.pause();
         if (playing)
             interval2.resume();
     });
     $('#simDurationUI')[0].value = simDuration;
-    controlTime = $('#timespan')[0].M_Range;
+    fixRangeTime();
+
     d3.select('#datacom').on("change", function () {
         d3.select('.cover').classed('hidden', false);
         const choice = this.value;
@@ -120,6 +133,45 @@ function RangechangeVal(val) {
     else
         $(controlTime.value).html(controlTime.$el.val());
 }
+function _handleRangeMousedownTouchstart(t) {
+    if ($(this.value).html(dataRaw.TimeMatch[this.$el.val()])||$(this.value).html(this.$el.val()))
+        this._mousedown = !0;
+        this.$el.addClass("active");
+    $(this.thumb).hasClass("active") || this._showRangeBubble();
+    if ("input" !== t.type) {
+        var e = this._calcRangeOffset();
+        $(this.thumb).addClass("active").css("left", e + "px")
+    }
+}
+function _handleRangeInputMousemoveTouchmove() {
+    if (this._mousedown) {
+        $(this.thumb).hasClass("active") || this._showRangeBubble();
+        var t = this._calcRangeOffset();
+        $(this.thumb).addClass("active").css("left", t + "px");
+        root.style.setProperty('--sideVal', (this.$el.val()/(maxtimestep-1)*100)+'%' );
+        if (dataRaw.TimeMatch)
+            $(this.value).html(dataRaw.TimeMatch[this.$el.val()]);
+        else
+            $(this.value).html(this.$el.val());
+    }
+}
+
+function rangeMove(t) {
+    if (s(this.value).html(this.$el.val()),
+        this._mousedown = !0,
+        this.$el.addClass("active"),
+    s(this.thumb).hasClass("active") || this._showRangeBubble(),
+    "input" !== t.type) {
+        // root.style.setProperty('--sideVal', (val / (maxtimestep - 1) * 100) + '%');
+        var e = this._calcRangeOffset();
+        s(this.thumb).addClass("active").css("left", e + "px");
+        if (dataRaw.TimeMatch)
+            $(controlTime.value).html(dataRaw.TimeMatch[controlTime.$el.val()]);
+        else
+            $(controlTime.value).html(controlTime.$el.val());
+    }
+}
+
 function initDemo(){
     width = $('#tSNE').width();
     height = d3.max([document.body.clientHeight-280, 300]);
@@ -158,7 +210,7 @@ function initTsne () {
  TsnePlotopt.width = width;
  TsnePlotopt.height = height;
  TsnePlotopt.svg =svg.attr("class", "T_sneSvg");
- TSneplot.runopt(runopt).graphicopt(TsnePlotopt);
+ TSneplot.runopt(runopt).graphicopt(TsnePlotopt).option(TsneConfig);
  TSneplot.svg(TsnePlotopt.svg).dispatch(dispatch).init();
 
 }
@@ -187,7 +239,7 @@ function request(){
             if (isBusy)
                 interval2.pause();
         }
-    },simDuration/2);
+    },simDuration);
 }
 function resetRequest (){
     pausechange();
@@ -219,6 +271,7 @@ dispatch.on("calDone",function (tst){
 function playchange(){
     var e = d3.select('.pause').node();
     interval2.pause();
+    TSneplot.pause();
     playing = false;
     e.value = "true";
     $(e).addClass('active');
@@ -239,8 +292,25 @@ function changeShape(d){
 function pausechange(){
     var e = d3.select('.pause').node();
     if (interval2) interval2.resume();
+    TSneplot.resume();
     playing = true;
     e.value = "false";
     $(e).removeClass('active');
     $(e.querySelector('i')).text('pause');
+}
+
+function fixRangeTime (){
+    controlTime = $('#timespan')[0].M_Range;
+    controlTime.el.removeEventListener("input", controlTime._handleRangeInputMousemoveTouchmoveBound);
+    controlTime.el.removeEventListener("mousemove", controlTime._handleRangeInputMousemoveTouchmoveBound);
+    controlTime.el.removeEventListener("touchmove", controlTime._handleRangeInputMousemoveTouchmoveBound);
+    controlTime.el.removeEventListener("mousedown", controlTime._handleRangeMousedownTouchstartBound);
+    controlTime.el.removeEventListener("touchstart", controlTime._handleRangeMousedownTouchstartBound);
+    controlTime._handleRangeInputMousemoveTouchmoveBound = _handleRangeInputMousemoveTouchmove.bind(controlTime) ;
+    controlTime._handleRangeMousedownTouchstartBound = _handleRangeMousedownTouchstart.bind(controlTime) ;
+    controlTime.el.addEventListener("input", controlTime._handleRangeInputMousemoveTouchmoveBound);
+    controlTime.el.addEventListener("mousemove",  controlTime._handleRangeInputMousemoveTouchmoveBound);
+    controlTime.el.addEventListener("touchmove",  controlTime._handleRangeInputMousemoveTouchmoveBound);
+    controlTime.el.addEventListener("mousedown", controlTime._handleRangeMousedownTouchstartBound);
+    controlTime.el.addEventListener("touchstart", controlTime._handleRangeMousedownTouchstartBound);
 }
