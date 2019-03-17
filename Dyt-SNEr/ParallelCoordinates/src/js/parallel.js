@@ -95,7 +95,7 @@ function init() {
     foreground = document.getElementById('foreground').getContext('2d');
     foreground.globalCompositeOperation = "destination-over";
     foreground.strokeStyle = "rgba(0,100,160,0.1)";
-    foreground.lineWidth = 0.2;
+    foreground.lineWidth = 0.8;
     foreground.fillText("Loading...",w/2,h/2);
 
 // Highlight canvas for temporary interactions
@@ -807,7 +807,7 @@ function resetSize() {
         .select("g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
     // Foreground canvas for primary view
-    foreground.lineWidth = 0.2;
+    foreground.lineWidth = 0.8;
 // Highlight canvas for temporary interactions
     highlighted.lineWidth = 2;
 
