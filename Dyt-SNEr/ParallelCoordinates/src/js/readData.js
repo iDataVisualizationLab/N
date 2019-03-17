@@ -244,8 +244,8 @@ function object2DataPrallel_new(temp){
     let newdata =[];
     const totalL = temp.YearsData.length;
     const key = d3.keys( temp.YearsData[0])
-    const timeslice = temp.TimeMatch.filter((d,i)=> i>totalL-20);
-    temp.YearsData.filter((d,i)=> i>totalL-20).forEach((ti,it)=>{
+    const timeslice = temp.TimeMatch.filter((d,i)=> i>totalL-7);
+    temp.YearsData.filter((d,i)=> i>totalL-7).forEach((ti,it)=>{
         temp.Countries.forEach((con,i)=>{
             var eachIn = {};
             d3.keys( temp.YearsData[0]).forEach((ke,ki)=>{
