@@ -133,7 +133,6 @@ d3.Tsneplot = function () {
             console.log(e)
         }
         let newg = g.selectAll('rect').data(d=>d,e=>e.timeStep);
-        console.log(newg.data())
         newg.exit()
             .transition()
             .duration(runopt.simDuration)
@@ -331,8 +330,8 @@ d3.Tsneplot = function () {
         let group = g.selectAll('.linkLineg')
             .select('circle')
                 .style("fill",
-                        d=>{
-                    return colorCategory(data[d.name])}
+                    (d,i)=>{
+                    return colorCategory(data[d.name]===undefined?data[i].val:data[d.name])}
                 );
     }
 

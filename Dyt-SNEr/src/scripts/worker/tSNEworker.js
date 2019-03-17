@@ -21,7 +21,8 @@ let tsne,sol,
     currentMaxIndex =0,
     requestIndex = 0;
 let geTopComand = _.once(stepstable);
-function stepstable (cost , solution){
+function stepstable (cost , solution,community){
+    postMessage({action: 'cluster', result: community});
     postMessage({action:'step', result: {cost: cost, solution: solution}, maxloop: countstack, status: "stable"});
 }
 addEventListener('message',function ({data}){
@@ -55,7 +56,7 @@ addEventListener('message',function ({data}){
                 store_step_temp = copyStore(store_step);
                 //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 if (stop)
-                    geTopComand(cost,tsne.getSolution());
+                    geTopComand(cost,tsne.getSolution(),community());
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateData":
@@ -77,14 +78,13 @@ addEventListener('message',function ({data}){
                     //jLouvain-------
                     community.edges(convertLink(tsne.getProbability(), hostname));
                     var result = community();
-                    postMessage({action: 'cluster', result: result});
+                    // postMessage({action: 'cluster', result: result});
                     //---------------
                     if (stop)
-                        geTopComand(cost,tsne.getSolution());
+                        geTopComand(cost,tsne.getSolution(),result);
                 }else{
                     stop = true;
-                    console.log(costa)
-                    geTopComand(costa[requestIndex], store_step.map((d,i)=>d[requestIndex]))
+                    geTopComand(costa[requestIndex], store_step.map((d,i)=>d[requestIndex]),store_step.map((d,i)=>d.cluster[requestIndex]))
                 }
 
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
@@ -117,10 +117,11 @@ addEventListener('message',function ({data}){
                         //jLouvain-------
                         community.edges(convertLink(tsne.getProbability(), hostname));
                         var result = community();
-                        postMessage({action: 'cluster', result: result,maxloop: countstack, status: stop?"stable":"done"});
+                        // postMessage({action: 'cluster', result: result, maxloop: countstack, status: stop?"stable":"done"});
+                        postMessage({action: 'imform',status: stop?"stable":"done"});
                         //---------------
                     if (stop)
-                        geTopComand(cost,sol);
+                        geTopComand(cost,sol,result);
                         // postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
                 }else {
                     postMessage({action: 'stable'});
