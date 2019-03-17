@@ -47,7 +47,7 @@ label {
   color: black;
 }
 
-.video-container {
+.responsive-video {
   margin-top: 2em;
 }
 
@@ -333,17 +333,17 @@ label {
   height: 5px;
 }
 .rangecustom .thumb {
+  isibility: hidden;
   top: -40px !important;
   z-index: 20;
-  visibility: hidden  
-}
-.rangecustom .active.thumb {
-  visibility: visible
 }
 .rangecustom .thumb .value {
   margin-left: -10px !important;
   margin-top: 2px !important;
   font-size: 12px !important;
+}
+.rangecustom .active.thum {
+  visibility: visible;
 }
 
 input {

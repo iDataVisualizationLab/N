@@ -71,8 +71,11 @@ $(document).ready(function(){
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
     $('.tabs').tabs({'onShow':function(){
-            if ($('#demo').css('display')!=="none")
-                initialize()}});
+            if ($('#demo').css('display')!=="none") {
+                $('video')[0].pause();
+                initialize();
+            }
+    }});
     $('#zoomInit').on('change',function(){
         runopt.zoom = this.value;
         TSneplot.runopt(runopt);
