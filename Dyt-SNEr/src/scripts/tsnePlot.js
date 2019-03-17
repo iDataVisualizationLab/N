@@ -66,7 +66,7 @@ d3.Tsneplot = function () {
             .remove();
         // ENTER
         const newdiv = dataTop.enter().append("g")
-            .attr('class', 'top10_item');
+            .attr('class',d=> 'top10_item '+fixstr(d.name));
         newdiv
             .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
             .style('opacity', 0)
@@ -148,6 +148,17 @@ d3.Tsneplot = function () {
                     return colorCategory(d.val)}
             ).attr('x',(d,i)=>i*graphicopt.eventpad.size)
             .style('opacity',0)
+            .on('mouseover',function(d){
+                const name = this.parentNode.parentNode.__data__.name;
+                svg.selectAll(".linkLineg").attr('opacity',0.2);
+                svg.select(".linkLineg."+fixstr(name)).attr('opacity',1).style("filter", "url(#glowTSne)");
+                // console.log(this.parentNode.parentNode.__data__.name)
+            }).on('mouseleave',function(d){
+
+                svg.selectAll(".linkLineg").attr('opacity',1).style("filter", null);
+
+                // console.log(this.parentNode.parentNode.__data__.name)
+            })
             .merge(newg)
             .transition()
             .duration(runopt.simDuration)
@@ -482,7 +493,7 @@ d3.Tsneplot = function () {
             .data(data);
         let datapointN = datapoint
             .enter().append("g")
-            .attr("class", d=>"linkLineg "+d.name);
+            .attr("class", d=>"linkLineg "+fixstr(d.name));
 
 
         datapointN.append("clipPath")
