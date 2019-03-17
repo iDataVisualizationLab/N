@@ -332,8 +332,11 @@ label {
 .rangecustom {
   height: 5px;
 }
+.rangecustom .thumb.active {
+  visibility: visible;
+}
 .rangecustom .thumb {
-  isibility: hidden;
+  visibility: hidden;
   top: -40px !important;
   z-index: 20;
 }
@@ -341,9 +344,6 @@ label {
   margin-left: -10px !important;
   margin-top: 2px !important;
   font-size: 12px !important;
-}
-.rangecustom .active.thum {
-  visibility: visible;
 }
 
 input {
