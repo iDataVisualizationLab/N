@@ -195,9 +195,11 @@ function getTop10 (store,requestIndex) {
         const NCluster = (requestIndex||currentMaxIndex) +1;
         //if (NCluster>maxstack-1){
         const startpos = Math.max(NCluster - maxstack,0);
-        data.clusterS = data.cluster.slice(startpos,NCluster);
+        let shortdata = data.slice(startpos,NCluster);
+        shortdata.name = data.name;
+        shortdata.clusterS = data.cluster.slice(startpos,NCluster);
         //}
-        return data;
+        return shortdata;
     });
 }
 

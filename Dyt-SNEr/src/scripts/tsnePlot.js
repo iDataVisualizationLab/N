@@ -43,7 +43,7 @@ d3.Tsneplot = function () {
     function updateRenderRanking(data) {
         var max = d3.max(d3.extent(d3.merge(d3.extent(data,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
         scaleX_small.domain([-max,max]);
-        scaleY_small.domain(scaleX_small.domain());
+        scaleY_small.domain([-max,max]);
         // console.log(data.top10);
         try {
             panel.select('.top10').selectAll('.top10_item').interrupt().selectAll("*").interrupt();
@@ -296,9 +296,9 @@ d3.Tsneplot = function () {
         panel.select(".details").append("span").text('t-SNE cost: ');
         panel.select(".details").append("span").attr('class','cost');
 
-        const sizegraph = sizebox - 5;
+        const sizegraph = sizebox - 6;
         scaleX_small.range([0,sizegraph]);
-        scaleY_small.range([0,sizegraph]);
+        scaleY_small.range([sizegraph/4-3,sizegraph*5/4-3]);
         graphicopt.top10.width = Math.min(graphicopt.width/4,300);
         if (!graphicopt.eventpad)
             graphicopt.eventpad ={};
@@ -308,9 +308,9 @@ d3.Tsneplot = function () {
         tsne.postMessage({action:"maxstack",value:graphicopt.eventpad.maxstack});
         graphicopt.top10.details.clulster.attr.width = graphicopt.eventpad.size;
         graphicopt.top10.details.clulster.attr.height = graphicopt.eventpad.size;
-        panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-100, sizebox*50)+"px");
+        panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-100, sizebox*50.5)+"px");
         panel.select(".top10").attrs({width: graphicopt.top10.width,
-        height: sizebox*50});
+        height: sizebox*50.5});
         // menu.append('text').attr("dy", "2em").attr("x",10).text('Cost: ');
         // menu.append('text').attr("dy", "2em").attr("x",40).attr('class','cost');
         g = g.append('g')
