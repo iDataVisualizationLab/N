@@ -52,7 +52,7 @@ let width = 2000,
             }
         },
         summary:{
-            size: 300
+            size: 200
         }
 },controlTime,
     runopt ={

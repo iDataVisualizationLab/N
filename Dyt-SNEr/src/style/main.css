@@ -73,15 +73,20 @@ label {
 }
 
 .rightPanel {
+  background-color: #ffffffc2;
   position: absolute;
   transition: 0.5s;
   top: 0px;
   right: 10px;
   padding-right: 10px;
+  border-width: 10px;
+  border-style: ridge;
+  border-radius: 10px;
+  border-color: #727272;
 }
 
 .subpanel {
-  background-color: #383838b5;
+  background-color: #696969b5;
   float: left;
   left: 10px;
   position: absolute;
@@ -243,7 +248,7 @@ label {
 }
 
 .top10_item .detailDecoration {
-  fill: #a2a2a2;
+  fill: #f4f4f4;
   rx: 10;
 }
 

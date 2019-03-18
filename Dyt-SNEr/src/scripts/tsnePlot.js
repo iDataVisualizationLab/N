@@ -43,7 +43,7 @@ d3.Tsneplot = function () {
     let returnEvent;
     function updateSummary(data){
         const data_new = data.map((d,i)=>{return {axis:axis[i],value:d}});
-        RadarChart('.averageSUm',[data_new],{levels:6});
+        RadarChart('.averageSUm',[data_new],{levels:6,w:graphicopt.summary.size,h:graphicopt.summary.size});
     }
     function updateRenderRanking(data) {
         var max = d3.max(d3.extent(d3.merge(d3.extent(data,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
@@ -319,7 +319,7 @@ d3.Tsneplot = function () {
         tsne.postMessage({action:"maxstack",value:graphicopt.eventpad.maxstack});
         graphicopt.top10.details.clulster.attr.width = graphicopt.eventpad.size;
         graphicopt.top10.details.clulster.attr.height = graphicopt.eventpad.size;
-        panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-100, sizebox*50.5)+"px");
+        panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-130, sizebox*50.5)+"px");
         panel.select(".top10").attrs({width: graphicopt.top10.width,
         height: sizebox*50.5});
         // menu.append('text').attr("dy", "2em").attr("x",10).text('Cost: ');

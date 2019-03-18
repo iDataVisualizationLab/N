@@ -9,7 +9,7 @@ function RadarChart(id, data, options) {
     var cfg = {
         w: 300,				//Width of the circle
         h: 300,				//Height of the circle
-        margin: {top: 20, right: 55, bottom: 20, left: 55}, //The margins of the SVG
+        margin: {top: 20, right: 55, bottom: 10, left: 55}, //The margins of the SVG
         levels: 3,				//How many levels or inner circles should there be drawn
         maxValue: 1, 			//What is the value that the biggest circle will represent
         labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
@@ -45,7 +45,7 @@ function RadarChart(id, data, options) {
     var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
         total = allAxis.length,					//The number of different axes
         radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
-        Format = d3.format('%'),			 	//Percentage formatting
+        Format = d3.format('.0%'),			 	//Percentage formatting
         angle1 = Math.PI * 2 / total,		//The width in radians of each "slice"
     angleSlice = [];
     for (var i=0;i<total;i++){
@@ -76,7 +76,8 @@ function RadarChart(id, data, options) {
         svg = d3.select(id).append("svg")
             .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
             .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
-            .attr("class", "radar" + id.replace(".",""));
+            .attr("class", "radar" + id.replace(".",""))
+            .style("overflow",'visible');
         //Append a g element
         g = svg.append("g")
             .attr("id","radarGroup")
@@ -166,7 +167,7 @@ function RadarChart(id, data, options) {
             .style("font-size", "10px")
             .attr("fill", "#737373")
             .text(function (d, i) {
-                return Format((maxValue * d / cfg.levels).toFixed(2));
+                return Format((maxValue * d / cfg.levels));
             });
 
         /////////////////////////////////////////////////////////
@@ -206,7 +207,7 @@ function RadarChart(id, data, options) {
                 return rScale(maxValue * cfg.labelFactor) * Math.sin(angleSlice[i] - Math.PI/2);
             })
             .text(function (d) {
-                return d
+                return d.trim()
             })
             .call(wrap, cfg.wrapWidth);
     }
@@ -226,26 +227,40 @@ function RadarChart(id, data, options) {
     //Create a wrapper for the blobs
     var blobWrapperg = g.selectAll(".radarWrapper")
         .data(data);
+    //Create the outlines
     blobWrapperg.exit().remove();
     var blobWrapper = blobWrapperg
         .enter().append("g")
         .attr("class", "radarWrapper");
 
 
-    //Create the outlines
+
     //update the outlines
     var blobWrapperpath = blobWrapperg.select(".radarStroke");
-    blobWrapperpath.attr("d", d =>
-        radarLine(d)).transition()
+    blobWrapperpath.transition()
+        .attr("d", d => radarLine(d)).transition()
         .style("stroke-width", () => cfg.strokeWidth + "px")
         .style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
         .style("stroke", (d, i) => cfg.color(i))
         .style("fill", "none");
+    blobWrapperg.select('clipPath').select('path')
+        .transition('expand').duration(runopt.simDuration/2).ease(d3.easePolyInOut)
+        .attr("d", d => radarLine(d));
     //Create the outlines
+    blobWrapper.append("clipPath")
+        .attr("id",(d,i)=>"sum"+i)
+        .append("path")
+        .attr("d", d => radarLine(d));
+    blobWrapper.append("rect")
+        .style('fill', 'url(#rGradient)')
+        .attr("clip-path",( d,i)=>"url(#sum"+i+")")
+        .attr("x",-radius)
+        .attr("y",-radius)
+        .attr("width",(radius)*2)
+        .attr("height",(radius)*2);
     blobWrapper.append("path")
         .attr("class", "radarStroke")
-        .attr("d", d =>
-            radarLine(d)).transition()
+        .attr("d", d => radarLine(d)).transition()
         .style("stroke-width", () => cfg.strokeWidth + "px")
         .style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
         .style("stroke", (d, i) => cfg.color(i))
@@ -266,7 +281,8 @@ function RadarChart(id, data, options) {
             if (cfg.radiuschange)
                 return 1+Math.pow((d.index+2),0.3);
             return cfg.dotRadius;
-        })
+        });
+    circleWrapper.transition()
         .attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice[i] - Math.PI/2); })
         .attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice[i] - Math.PI/2); })
         // .style("fill", function(d,i,j) {  return cfg.color(d.index); })
@@ -330,7 +346,7 @@ function RadarChart(id, data, options) {
             tooltip
                 .attr('x', newX)
                 .attr('y', newY)
-                .text(Format(d.value.toFixed(2)))
+                .text(Format(d.value))
                 .transition().duration(200)
                 .style('opacity', 1);
         })
@@ -354,7 +370,7 @@ function RadarChart(id, data, options) {
             tooltip
                 .attr('x', newX)
                 .attr('y', newY)
-                .text(Format(d.value.toFixed(2)))
+                .text(Format(d.value))
                 .transition().duration(200)
                 .style('opacity', 1);
         })
@@ -425,7 +441,7 @@ function RadarChart(id, data, options) {
             .attr("y", function (d) {
                 return -d * radius / cfg.levels;
             })
-            .attr("dy", "0.4em")
+            .attr("dy", "0.2em")
             .attr("font-family", "sans-serif")
             .style("font-size", "12px")
             .attr("fill", "#111")
@@ -457,7 +473,7 @@ function RadarChart(id, data, options) {
             })
             // .attr("x", d => {4+d.key*radius/cfg.levels})
             // .attr("y", function(d){return -d.key*radius/cfg.levels;})
-            .attr("dy", "0.4em")
+            .attr("dy", "0.2em")
             .attr("font-family", "sans-serif")
             .style("font-size", "12px")
             .attr("fill", "#111")
