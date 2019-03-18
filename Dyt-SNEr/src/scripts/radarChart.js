@@ -9,7 +9,7 @@ function RadarChart(id, data, options) {
     var cfg = {
         w: 300,				//Width of the circle
         h: 300,				//Height of the circle
-        margin: {top: 20, right: 20, bottom: 20, left: 20}, //The margins of the SVG
+        margin: {top: 20, right: 55, bottom: 20, left: 55}, //The margins of the SVG
         levels: 3,				//How many levels or inner circles should there be drawn
         maxValue: 1, 			//What is the value that the biggest circle will represent
         labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
@@ -166,7 +166,7 @@ function RadarChart(id, data, options) {
             .style("font-size", "10px")
             .attr("fill", "#737373")
             .text(function (d, i) {
-                return Format(maxValue * d / cfg.levels);
+                return Format((maxValue * d / cfg.levels).toFixed(2));
             });
 
         /////////////////////////////////////////////////////////
@@ -330,7 +330,7 @@ function RadarChart(id, data, options) {
             tooltip
                 .attr('x', newX)
                 .attr('y', newY)
-                .text(Format(d.value))
+                .text(Format(d.value.toFixed(2)))
                 .transition().duration(200)
                 .style('opacity', 1);
         })
@@ -354,7 +354,7 @@ function RadarChart(id, data, options) {
             tooltip
                 .attr('x', newX)
                 .attr('y', newY)
-                .text(Format(d.value))
+                .text(Format(d.value.toFixed(2)))
                 .transition().duration(200)
                 .style('opacity', 1);
         })
