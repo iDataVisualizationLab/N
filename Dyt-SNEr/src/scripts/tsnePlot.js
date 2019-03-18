@@ -22,6 +22,7 @@ d3.Tsneplot = function () {
             maxtries: 50
         },
         runopt,
+        axis,
         arr = [],
         isBusy = false,
         isStable = false,
@@ -40,6 +41,10 @@ d3.Tsneplot = function () {
     let needUpdate = false;
     let first = true;
     let returnEvent;
+    function updateSummary(data){
+        const data_new = data.map((d,i)=>{return {axis:axis[i],value:d}});
+        RadarChart('.averageSUm',[data_new],{levels:6});
+    }
     function updateRenderRanking(data) {
         var max = d3.max(d3.extent(d3.merge(d3.extent(data,d=>d3.extent(d3.merge(d))))).map(d=>Math.abs(d)));
         scaleX_small.domain([-max,max]);
@@ -189,10 +194,14 @@ d3.Tsneplot = function () {
 
             case "updateTracker":
                 updateRenderRanking(data.top10);
+                // updateSummary(data.average);
                 returnEvent.call("calDone",this, currentIndex);
                 break;
             case 'cluster':
                 updateCluster (data.result);
+                break;
+            case 'mean':
+                updateSummary(data.val);
                 break;
         }
 
@@ -245,6 +254,7 @@ d3.Tsneplot = function () {
             .append("rect")
             .attr("width", graphicopt.widthG())
             .attr("height", graphicopt.heightG());
+        // gradient
         const rg = svg.append("defs").append("radialGradient")
             .attr("id", "rGradient");
         const limitcolor = 0;
@@ -269,6 +279,7 @@ d3.Tsneplot = function () {
                         .attr("stop-opacity", i / legntharrColor);
             }
         });
+        // END gradient
         glowEffect = svg.append('defs').append('filter').attr('id', 'glowTSne'),
             feGaussianBlur = glowEffect.append('feGaussianBlur').attr('stdDeviation', 2.5).attr('result', 'coloredBlur'),
             feMerge = glowEffect.append('feMerge'),
@@ -335,6 +346,14 @@ d3.Tsneplot = function () {
                 tsne.postMessage({action: 'step'});
             }
         };
+
+
+        //summary
+        d3.select('.rightPanel').select('.averageSumPlot')
+            .attrs({width:graphicopt.summary.size,
+                    height:graphicopt.summary.size,
+            })
+
     };
 
     function updateCluster (data) {
@@ -585,6 +604,9 @@ d3.Tsneplot = function () {
     };
     Tsneplot.runopt = function (_) {
         return arguments.length ? (runopt = _, Tsneplot) : runopt;
+    };
+    Tsneplot.axis = function (_) {
+        return arguments.length ? (axis = _, Tsneplot) : axis;
     };
     Tsneplot.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, Tsneplot) : returnEvent;

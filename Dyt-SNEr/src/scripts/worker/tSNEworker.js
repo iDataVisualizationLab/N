@@ -21,6 +21,7 @@ let tsne,sol,
     currentMaxIndex =0,
     requestIndex = 0;
 let geTopComand = _.once(stepstable);
+let average;
 function stepstable (cost , solution,community){
     postMessage({action: 'cluster', result: community});
     postMessage({action:'step', result: {cost: cost, solution: solution}, maxloop: countstack, status: "stable"});
@@ -63,7 +64,9 @@ addEventListener('message',function ({data}){
                 geTopComand = _.once(stepstable);
                 countstack = 0;
                 requestIndex = data.index;
-                console.log(requestIndex+"_"+currentMaxIndex)
+                console.log(requestIndex+"_"+currentMaxIndex);
+                average = calAverage (data.value);
+                postMessage({action: 'mean', val: average});
                 if (requestIndex > currentMaxIndex ) {
                     // UPDATE
                     tsne.updateData(data.value);
@@ -202,7 +205,9 @@ function getTop10 (store,requestIndex) {
         return shortdata;
     });
 }
-
+function calAverage (data) {
+    return _(data).unzip().map(d=>d3.mean(d));
+}
 function convertLink (P,ids) {
     const N = ids.length;
     let links =[];

@@ -50,6 +50,9 @@ let width = 2000,
                     }
                 }
             }
+        },
+        summary:{
+            size: 300
         }
 },controlTime,
     runopt ={
@@ -109,6 +112,7 @@ $(document).ready(function(){
                 d3.select(".currentData")
                     .text(choicetext);
                 maxtimestep = dataRaw.YearsData.length;
+                TSneplot.axis(d.Variables);
                 resetRequest();
                 d3.select('.cover').classed('hidden', true);});
         },0);
@@ -189,6 +193,7 @@ function init() {
         maxtimestep = dataRaw.YearsData.length;
         initTime (maxtimestep);
         RangechangeVal(0);
+        TSneplot.axis(d.Variables);
         request();
         d3.select('.cover').classed('hidden',true);
     });
