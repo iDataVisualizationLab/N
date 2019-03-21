@@ -42,7 +42,8 @@ d3.Tsneplot = function () {
     let first = true;
     let returnEvent;
     function updateSummary(data){
-        const data_new = data.map((d,i)=>{return {axis:axis[i],value:d}});
+        const data_new = data.map((d,i)=>{return {axis:axis[i],value:d.mean,origin:d}});
+        data_new.type = "statistics";
         RadarChart('.averageSUm',[data_new],{levels:6,w:graphicopt.summary.size,h:graphicopt.summary.size});
     }
     function updateRenderRanking(data) {
@@ -227,7 +228,7 @@ d3.Tsneplot = function () {
             .range([0,graphicopt.display.symbol.radius|| graphicopt.dotRadius])
             .domain([0, 1]);
         radarcreate = d3.radialLine()
-            .curve(d3.curveCardinalClosed.tension(0))
+            .curve(d3.curveCatmullRomClosed.alpha(0.5))
             .radius(function(d) { return rScale(d); })
             .angle(function(d,i) {  return angleSlice[i]; });
     }
@@ -322,8 +323,6 @@ d3.Tsneplot = function () {
         panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-130, sizebox*50.5)+"px");
         panel.select(".top10").attrs({width: graphicopt.top10.width,
         height: sizebox*50.5});
-        // menu.append('text').attr("dy", "2em").attr("x",10).text('Cost: ');
-        // menu.append('text').attr("dy", "2em").attr("x",40).attr('class','cost');
         g = g.append('g')
             .attr('class','graph')
             //.attr('transform',`translate(${graphicopt.widthG()/2},${graphicopt.heightG() /2})`);

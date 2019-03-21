@@ -1,7 +1,7 @@
 importScripts("https://d3js.org/d3.v5.min.js");
 importScripts("../tsne.js");
 importScripts("../../lib/underscore-min.js");
-
+importScripts("https://unpkg.com/simple-statistics@2.2.0/dist/simple-statistics.min.js");
 importScripts("../../lib/jLouvain.js");
 
 
@@ -206,7 +206,8 @@ function getTop10 (store,requestIndex) {
     });
 }
 function calAverage (data) {
-    return _(data).unzip().map(d=>d3.mean(d));
+    return _(data).unzip().map(function (d){return{mean:ss.mean(d), q1: ss.quantile(d,0.25), q3: ss.quantile(d,0.75)}});
+    // return _(data).unzip().map(d=>d3.mean(d));
 }
 function convertLink (P,ids) {
     const N = ids.length;
