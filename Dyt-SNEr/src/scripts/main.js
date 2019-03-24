@@ -188,7 +188,7 @@ function init() {
     readData('EmploymentRate').then((d)=>{
         dataRaw = d;
         d3.select("#currentData")
-            .text('Employment Rate');
+            .text('Unemployment Rate');
         timestep = 0;
         maxtimestep = dataRaw.YearsData.length;
         initTime (maxtimestep);

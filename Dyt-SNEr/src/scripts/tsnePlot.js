@@ -377,7 +377,7 @@ d3.Tsneplot = function () {
                         (Y[i][0]*runopt.zoom*ss+tx) + "," +
                         (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
         }else{
-            group.transition().duration(runopt.simDuration)
+            group.transition().duration(runopt.simDuration*1.1)
                 .ease(d3.easeLinear)
                 .attr("transform", function(d, i) {
                 return "translate(" +
