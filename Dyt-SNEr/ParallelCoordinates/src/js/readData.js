@@ -222,7 +222,7 @@ function colorbyCategory(data,key) {
     var listKey = _(data).unique(key).map(d=>d[key]);
     var listcolor= listKey.map(colorscale);
     // isolate
-    listcolor= listKey.map((d)=>d!=="Alaska"?'#000000':'#ff0000')
+    listcolor= listKey.map((d)=>'steelblue')
     //----
     colors.domain(listKey).range(listcolor);
     color = colors;
@@ -261,4 +261,16 @@ function object2DataPrallel_new(temp){
     });
 
     return newdata;
+}
+function  readData_newN() {
+    return d3.json("src/data/NRCStandardized.json", function (error, data) {
+        if (error) throw error;
+        data.forEach ((eachIn,i)=>{
+            eachIn.rack = eachIn.Control;
+            eachIn.group = eachIn.Control;
+            eachIn.name = i.toString();
+            eachIn.id = i.toString();
+        })
+        return data;
+    });
 }

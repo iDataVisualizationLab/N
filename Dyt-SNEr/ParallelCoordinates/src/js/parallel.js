@@ -4,7 +4,7 @@
 
 var width, height;
 
-var m = [40, 0, 10, 0],
+var m = [200, 100, 10, 100],
     w,
     h,
     xscale,
@@ -123,11 +123,14 @@ function init() {
 // Load the data and visualization
 
     // Convert quantitative scales to floats
-    readData_new('EmploymentRate').then(ob=>{
-        data = object2DataPrallel_new(ob);
-
+    // readData_new('EmploymentRate').then(ob=>{
+    readData_newN().then(ob=>{
+        data = ob;
+        var ordinari =  d3.keys(data[0]);
+        order = [1, 2, 22, 21, 16, 0, 12, 20, 23, 11, 31, 18, 15, 14, 27, 32, 26, 13, 19, 6, 24, 7, 17, 9, 30, 29, 25, 28, 10, 8, 4, 3, 5];
+        dimensions = order.map(d=>ordinari[d]);
         // Extract the list of numerical dimensions and create a scale for each.
-        xscale.domain(dimensions = d3.keys(data[0]).filter(function (k) {
+        xscale.domain(dimensions.filter(function (k) {
             return (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
                 .domain(d3.extent(data, function (d) {
                     return d[k];
@@ -211,7 +214,8 @@ function init() {
                 return d3.select(this).call(axis.scale(yscale[d]));
             })
             .append("svg:text")
-            .attr("text-anchor", "middle")
+            .attr("text-anchor", "start")
+            .attr('transform',"rotate(-45)")
             // .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
             .attr("y", -14)
             .attr("x", 0)
