@@ -3,11 +3,12 @@ var sidenav;
 var stopWordList = ["brazo","we're","it's","can't","we’re","thk","it’","chk","you're","you'll","us","thx","the","a","an","republicans","republican","democrats","democratic","and","democrat","americans","american","america","hey","ok","wanna","lmao","lot","ur","im","thank","you?","&amp;","dm","just","dont","lol","lil","gonna","rt","...","..","--","about","above","according","accordingly","across","actually","adj","adv","after","afterwards","again","against","ago","ah","aint","al","albeit","all","almost","alone","along","already","also","alt","although","always","am","among","amongst","an","and","another","any","anybody","anyhow","anyone","anything","anyway","anyways","anywhere","apparently","appear","apply","are","area","areas","arent","around","as","aside","ask","asked","asking","asks","at","available","ave","away","aye","ba","back","backed","backing","backs","basic","basis","be","became","because","become","becomes","becoming","been","before","beforehand","began","begin","behind","being","beings","below","beside","besides","best","better","between","beyond","bi","big","both","brief","but","by","call","called","came","can","cannot","cant","certain","certainly","cf","clear","clearly","cm","co","come","comes","concerning","consequently","considering","contain","containing","contains","contrariwise","corresponding","could","couldnt","course","currently","date","dc","de","definitely","describe","described","describes","despite","determine","determined","di","did","didnt","differ","different","differently","do","does","doesnt","doing","done","dont","double","down","downed","downing","downs","downwards","dr","dual","during","each","early","ed","eg","eight","either","eleven","else","elsewhere","empty","end","ended","ending","ends","enough","entirely","especially","est","et","etc","even","evenly","ever","every","everybody","everyone","everything","everywhere","everywhere","exactly","example","except","excepted","excepting","exception","exclude","excluding","exclusive","face","faces","fact","facts","far","felt","few","fifteen","fifth","find","finds","first","five","for","forth","forty","forward","found","four","fr","free","from","front","ft","full","fully","further","furthered","furthering","furthermore","furthers","furthest","gave","general","generally","get","gets","getting","give","given","gives","go","goes","going","gone","good","goods","got","gotten","great","greater","greatest","group","grouped","grouping","groups","had","hadnt","half","halves","happens","hardly","has","hasnt","hast","hath","have","having","he","hear","heard","hed","hello","help","hence","henceforth","her","here","hereabouts","hereafter","hereby","herein","hereto","hereupon","hers","herself","hes","high","higher","highest","him","himself","hindmost","his","hither","hitherto","hopefully","how","howbeit","however","howsoever","hr","hundred","hyper","id","ie","if","ii","iii","im","immediate","important","in","inasmuch","inc","including","indeed","indicate","indicated","indicates","insofar","insomuch","instead","int","interest","interested","interesting","interests","into","intra","intro","inward","inwards","is","isnt","it","itd","item","itll","its","itself","iv","ive","ix","just","keep","keeps","kept","kg","km","knew","know","known","knows","large","largely","last","lat","lately","later","latest","latter","latterly","least","left","less","lest","let","lets","like","likely","little","ll","lon","long","longer","longest","look","looks","ltd","lt","made","made","mainly","make","making","man","many","may","maybe","md","me","mean","means","meant","meantime","meanwhile","merely","micro","might","mine","mm","more","moreover","morning","most","mostly","move","mph","mr","mrs","ms","mt","much","multi","must","mustnt","my","myself","name","namely","near","nearly","necessary","need","needed","needing","neednt","needs","neither","never","nevertheless","new","newer","newest","news","next","nine","no","nobody","non","none","nonetheless","noone","nope","nor","normally","not","nothing","notwithstanding","novel","now","nowadays","nowhere","nt","number","obs","obviously","of","off","often","oh","okay","old","older","oldest","on","once","one","ones","only","onto","op","open","opened","opening","opens","or","other","others","otherwise","ought","our","ours","ourselves","out","outside","over","overall","own","oz","page","part","parted","particular","particularly","parting","parts","per","perhaps","phr","pl","please","plus","pm","possible","pre","presumably","pro","probably","provided","pt","put","puts","quite","rather","re","really","reasonably","regarding","regardless","regards","related","relatively","required","respectively","results","right","said","saith","same","saw","say","saying","says","sec","second","secondly","seconds","see","seeing","seem","seemed","seeming","seems","seen","sees","seldom","self","selves","semi","seven","several","shall","shalt","she","shes","should","shouldnt","show","showed","showing","shown","shows","side","sides","since","sir","sixty","so","some","somebody","somehow","someone","something","sometime","sometimes","somewhat","somewhere","st","still","such","supposing","sure","take","tell","tends","th","than","thank","thanks","thanx","that","thatd","thatll","thats","the","thee","their","theirs","them","themselves","then","thence","thenceforth","there","thereabout","thereabouts","thereafter","thereby","thered","therefore","therein","thereof","thereon","theres","thereto","thereupon","therll","these","they","theyve","thine","thing","things","think","thinks","third","this","thorough","thoroughly","those","thou","though","three","thrice","through","throughout","thru","thus","thy","thyself","till","time","tm","to","today","together","told","too","took","toward","towards","trans","tried","tries","truly","trying","turn","turned","turning","turns","twelve","twenty","twice","two","under","unless","unlike","unlikely","until","unto","up","upon","upward","upwards","us","use","used","useful","uses","using","usually","various","ve","very","vi","vii","viii","via","viz","vs","was","wasnt","way","ways","we","well","wells","went","were","werent","weve","what","whatever","whatsoever","when","whence","whenever","whensoever","where","whereabouts","whereafter","whereas","whereat","whereby","wherefore","wherefrom","wherein","whereinto","whereof","whereon","wheresoever","whereto","whereunto","whereupon","wherever","wherewith","whether","whew","which","whichever","whichsoever","while","whilst","whither","who","whoa","whoever","whole","whom","whomever","whomsoever","whose","whosoever","why","will","willing","wilt","wish","with","within","without","wonder","wont","work","worked","working","works","worse","worst","would","wouldnt","wt","xi","xii","xiii","xiv","xv","xvi","xvii","xviii","xix","xx","yd","ye","year","years","yes","yet","yippee","you","youd","youll","young","younger","youngest","your","youre","yours","yourself","yourselves","youve","yup","zero","Lymphatic"];
 let self = null;
 var categoriesgroup ={
-    "NUMBER": ["MONEY","PERCENT"],
-    "EVENT":["PRODUCT","EVENT","LAW","DATE"],
-    "PERSON":["PERSON"],
-    "ORG":["ORG"],
-    "NATION":["GPE","LOC","FAC"]};
+    // "#":["CARDINAL"]
+    "NUMBER": ["MONEY","PERCENT","QUANTITY"],
+    "TIME": ["DATE","TIME"],
+    // "EVENT":["PRODUCT","EVENT","LAW"],
+    "PERSON":["PERSON","ORG"],
+    "PLACE":["GPE","LOC","FAC","NORP"]};
 // var categoriesgroup ={
 //     "usgs": ["usgs"],
 //     "twitter":["twitter"]};
@@ -36,8 +37,21 @@ var mainconfig = {
     rateOfTopics: 0.8,
     Isweekly: false,
     seperate: false,
-    minfreq: 2,
+    minfreq: 5,
     minlink: 1,
+};
+var timeconfig = {
+    displayformattime: d3.timeFormat('%b %Y'),
+
+    step: 1,
+    scale: d3.scaleThreshold(),
+    setscale: function (timerange) {
+        var domain = d3.scaleTime().domain(timerange).ticks(d3['time'+this.time_unit].every(this.step));
+        this.scale.domain(domain).range(domain)
+    },
+    time_unit: 'Month',
+    getTime: function (d) { return this['get'+time_unit]()},
+    next: function(d) {d["set"+this.time_unit](this.getTime(d) + this.step);}
 };
 var daystep = 1;
 var startDate;
@@ -165,13 +179,13 @@ function wordCloud(selector,config) {
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
         var font = "Arial";
-        var interpolation = d3.curveMonotoneX;
+        var interpolation = d3.curveCardinal;
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
-        var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
-        var max = 20;
+        var margins = {top: 0, right: 5, bottom: 0, left: 5};
+        var min = 15;
+        var max = 40;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -179,7 +193,7 @@ function wordCloud(selector,config) {
 
         //set svg data.
         svg.attrs({
-            width: width,
+            width: width+2,
             height: height
         });
         svg.call(wordTip);
@@ -262,6 +276,31 @@ function wordCloud(selector,config) {
                 .style("text-anchor", "middle")
                 .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
                 .text(d => d.key);
+        }else{
+            var legend = d3.keys(categoriesgroup).map((d,i) => {
+                return {'key': d, 'pos': i*20}
+            });
+            var legendg = timeline.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + (20) + "," + 20 + ")")
+                .append("g")
+                .attr("class", "sublegend")
+                .selectAll(".lengendgtext")
+                .data(legend)
+                .enter()
+                .append("g")
+                .attr("class", "lengendgtext")
+                .attr("transform", d => "translate(0," + d.pos + ")");
+            legendg.append("circle")
+                .attrs({class: "lengendmark",
+                    cx: 0,
+                    cy: 0,
+                    r:5})
+                .style("fill",(d,i)=>color(i));
+            legendg.append("text")
+                .attr("class", "lengendtext")
+                .attrs({dx:10,dy:5})
+                .text(d => d.key);
         }
         // =============== Get BOUNDARY and LAYERPATH ===============
         var lineCardinal = d3.line()
@@ -319,7 +358,7 @@ function wordCloud(selector,config) {
                 return color(i);
             })
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.03,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -342,7 +381,7 @@ function wordCloud(selector,config) {
 
         var opacity = d3.scaleLog()
             .domain([minFreq, maxFreq])
-            .range([0.4,1]);
+            .range([0.5,1]);
 
         // Add moi chu la 1 element <g>, xoay g dung d.rotate
         var placed = true; // = false de hien thi nhung tu ko dc dien
@@ -417,7 +456,7 @@ function wordCloud(selector,config) {
             //     'stroke-width': 1.5
             // });
 
-            wordTip.show(d).style('pointer-events','none');
+            wordTip.show(d);
         });
 
         mainGroup.selectAll('.stext').on('mouseleave', function(d){
@@ -462,7 +501,7 @@ function wordCloud(selector,config) {
                 if (item == undefined)
                     item =[];
                 else
-                    item = item.data.map(t=>ArticleDay.filter(f=> f.key == outputFormat(new Date(t.time)))[0].value.data.find(f=> f.title == t.title))
+                    item = item.data.map(t=>ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title))
                 points.push({
                     x: elm.x,
                     y: boxwidth/3*item.length,
@@ -664,16 +703,16 @@ function render (){
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
     var startDatedis = new Date (startDate);
-    startDatedis["setDate"](startDatedis.getDate() - daystep);
+    startDatedis["setDate"](startDatedis.getMonth() - daystep);
     var endDatedis = new Date (endDate);
-    endDatedis["setDate"](endDatedis.getDate() + daystep);
+    endDatedis["setDate"](endDatedis.getMonth() + daystep);
     x.range([0, width])
         .domain([new Date (startDatedis),new Date (endDatedis)]);
     let gridlineNodes = d3.axisTop()
+        .tickValues(d3.range(15).map(d=>d+0.5))
         .tickFormat("")
         .tickSize(-height)
-        .scale(x);
-    //.ticks(d3.timeMonday.every(1));
+        .scale(d3.scaleLinear().domain([0.5,14.5]).range(x.range()));
     var y = d3.scaleLinear().range([height/2, 0]);
     var simulation = d3.forceSimulation()
         .force("y", d3.forceY(height*wscale/2).strength(0.05));
@@ -693,12 +732,13 @@ function render (){
     timeline.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + height*wscale + ")")
-        .call(d3.axisTop(x)
-        //.ticks(d3.timeMonday.every(1))
-            .tickFormat(d3.timeFormat("%Y")))
+        .call(d3.axisTop(d3.scaleLinear().domain([0.5,14.5]).range(x.range()))
+            // .tickValues(d3.range(14))
+            .tickFormat(d=>(d!=0.5&&d!=14.5)?data[d-1].title:"")
+        )
         .selectAll("text")
-        .style("text-anchor", "start")
-        .attr("dx", ".8em")
+        .style("text-anchor", "middle")
+        // .attr("dx", ".8em")
         .attr("dy", "-.15em");
     // Scale the range of the data
     //x.domain(d3.extent(data, function(d) { return d.time; }));
@@ -787,17 +827,17 @@ function handledata(data){
     //sort out term for 1 article
 
     if (mainconfig.IsWeekly) {
-        outputFormat =  d3.timeFormat('%b %Y');
-        daystep = 1;
+        outputFormat =  d3.timeFormat('%Y');
+        daystep = 12;
         svgHeight = 1000;
         mainconfig.wstep = 50;
     }else {
         outputFormat =  (d) => {
-            return d3.timeFormat('%b %Y')(d3.timeMonth.every(daystep)(d));
+            return d3.timeFormat('%b %Y')(d);
         };
         daystep = 1;
-        svgHeight = 1000;
-        mainconfig.wstep = 25;
+        svgHeight = 1200;
+        mainconfig.wstep = 100;
     }
     var nested_data;
     // let word = document.getElementById("theWord").value;
@@ -853,7 +893,7 @@ function handledata(data){
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
-                    preday["setMonth"](preday.getMonth() + daystep);
+                    preday["setMonth"](preday.getMonth() + daystep*2);
                     if (preday.getMonth() < new Date(day.key).getMonth())
                         pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
@@ -891,7 +931,9 @@ function handledata(data){
     nestedByTerm.forEach(c=>
         c.values.forEach(term=> {
                 term.values.forEach(day => {
-                    day.values.filter(e=>e.frequency>1).forEach(e=> termscollection.push(e))
+                    day.values
+                        // .filter(e=>e.frequency>1)
+                        .forEach(e=> termscollection.push(e))
                 })
             }
         )
@@ -945,7 +987,7 @@ function handledata(data){
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
     console.log(startDate +" - "+endDate);
-    //fillData(endDate, startDate);
+    // fillData(endDate, startDate);
 }
 
 
@@ -985,14 +1027,20 @@ function fillData(endDate, startDate) {
     ArticleDay = dd;
     TermwDay = d;
 }
-
+function correctlabel (term) {
+    var list = [
+        {category: 'LOC', val: ['quinhon','dongnai','bienhoa','kienhoa','chaudoc','bongson','danang','binhphuoc','gocong','bienhoa','kienhoa']}
+    ]
+    if (list[0].val.find(w=>term.term.toLocaleLowerCase().replace(' ','')==w))
+        term.category = list[0].category;
+}
 function blacklist(data){
     var numterm =0;
     categories = Object.keys(categoriesgroup);
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["durin","al","where'","there'","wxsusie","101516880552290731073741860124458454072type=1…","wsiconfexpo","1qevuey","you’re","agwt","grt","click","tamest_","a4we'","it'","sept","asr","rgv","a4we","wkly","txwri","wtr","gues","taken","wednesday","photo","reminder","board","TX","TWDB","thi","&","&nbsp; ","drewdarby4tx","h2o4texa","abt","2o4texa","toddahunter"," ","today","txwater","Texa","twdb","texa","(usgs)","1)","collected","study","data","water","visit"];
+    var blackw =["0f","themonth","unclassified","durin","al","where'","there'","1","wxsusie","101516880552290731073741860124458454072type=1…","wsiconfexpo","1qevuey","you’re","agwt","grt","click","tamest_","a4we'","it'","sept","asr","rgv","a4we","wkly","txwri","wtr","gues","taken","wednesday","photo","reminder","board","TX","TWDB","thi","&","&nbsp; ","drewdarby4tx","h2o4texa","abt","2o4texa","toddahunter"," ","today","txwater","Texa","twdb","texa","(usgs)","1)","collected","study","data","water","visit"];
     // var blackw =[];
     termscollection_org =[];
     data.forEach(d=>{
@@ -1000,7 +1048,8 @@ function blacklist(data){
             numterm++;
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
+            correctlabel(w);
+            key = key || ((blackw.find(d=>d===w.term.toLocaleLowerCase().replace(" ",""))== undefined)) && categoriesmap[w.category]!= undefined ;
             return key;}).forEach( w => {
             w.maincategory = w.category;
             w.term = w.term.trim();

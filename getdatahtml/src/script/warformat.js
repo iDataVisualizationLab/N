@@ -5,19 +5,20 @@ $(document).ready(function () {
     //     .await(ready);
 
     d3.queue()
-        .defer(d3.json,"src/data/war/dataOR.json")
+        .defer(d3.json,"src/data/war/dataWar_OR_out.json")
         .defer(d3.json,"src/data/war/dataWarout.json")
         .awaitAll((error,dd)=>{
             ordata = dd[0];
             data =dd[1];
             var keywordscollection =[];
             data.forEach (d=> keywordscollection=d3.merge([keywordscollection,d.keywords]));
+            ordata.forEach (d=> keywordscollection=d3.merge([keywordscollection,d.keywords]));
             keywordscollection = d3.nest().key(e=>e.term).entries(keywordscollection).map(e=>e.values[0]);
 
             data.forEach((d,i)=>{
                 d.keywords = [];
                 keywordscollection.forEach((term)=>{
-                    collect = ordata[i].text.match(new RegExp(term.term,'g'));
+                    collect = ordata[i].text.match(new RegExp(' '+term.term+' ','g'));
                     if (collect)
                     {
                         var term_frequency = collect.length;
