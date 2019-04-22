@@ -15,7 +15,7 @@
     <session id="-575827975">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.opened" value="2" />
         </counts>
@@ -108,7 +108,7 @@
   <component name="PropertiesComponent">
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../timeline" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
@@ -136,16 +136,15 @@
       <option name="presentableId" value="Default" />
       <updated>1553625342277</updated>
       <workItem from="1553625343429" duration="3024000" />
-      <workItem from="1555772928086" duration="142000" />
+      <workItem from="1555772928086" duration="271000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3166000" />
+    <option name="totallyTimeSpent" value="3295000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25198728" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
