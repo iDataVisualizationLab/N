@@ -4,15 +4,16 @@ var stopWordList = ["brazo","we're","it's","can't","we’re","thk","it’","chk"
 let self = null;
 var categoriesgroup ={
     // "#":["CARDINAL"]
-    "NUMBER": ["MONEY","PERCENT","QUANTITY"],
     "TIME": ["DATE","TIME"],
+    "LOCATION":["GPE","LOC","FAC","NORP"],
+    "NUMBER": ["MONEY","PERCENT","QUANTITY"],
     // "EVENT":["PRODUCT","EVENT","LAW"],
-    "PERSON":["PERSON","ORG"],
-    "PLACE":["GPE","LOC","FAC","NORP"]};
+    "PERSON":["PERSON"],
+    "ORG":["ORG"],};
 // var categoriesgroup ={
 //     "usgs": ["usgs"],
 //     "twitter":["twitter"]};
-var color = d3.scaleOrdinal(d3.schemeCategory10);
+var color = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.keys(categoriesgroup));
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
@@ -33,15 +34,15 @@ var nodes2,links2;
 var mainconfig = {
     renderpic: false,
     wstep: 50,
-    numberOfTopics: 100,
-    rateOfTopics: 0.8,
-    Isweekly: false,
+    numberOfTopics: 60,
+    rateOfTopics: 0.5,
+    Isweekly: true,
     seperate: false,
     minfreq: 5,
     minlink: 1,
 };
 var timeconfig = {
-    displayformattime: d3.timeFormat('%b %Y'),
+    displayformattime: d3.timeFormat('%Y'),
 
     step: 1,
     scale: d3.scaleThreshold(),
@@ -135,7 +136,7 @@ $(document).ready(function () {
     spinner.spin(document.body);
     d3.queue()
     // .defer(d3.json,"src/data/twittwaterv2.json")
-        .defer(d3.json,"src/data/war/datafrequency.json")
+        .defer(d3.json,"src/data/war/F3011AF.json")
         .await(ready);
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
@@ -183,8 +184,8 @@ function wordCloud(selector,config) {
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
-        var margins = {top: 0, right: 5, bottom: 0, left: 5};
-        var min = 15;
+        var margins = {top: 0, right: 0, bottom: 0, left: 0};
+        var min = 20;
         var max = 40;
         lineColor.domain([min, max]);
         width = config.width;
@@ -193,7 +194,7 @@ function wordCloud(selector,config) {
 
         //set svg data.
         svg.attrs({
-            width: width+2,
+            width: width,
             height: height
         });
         svg.call(wordTip);
@@ -235,6 +236,10 @@ function wordCloud(selector,config) {
             .font(font)
             .suddenmode(false)
             .seperate(mainconfig.seperate);
+            if (config.stepDetails)
+                ws = ws.stepDetails(config.stepDetails);
+            if (config.layerWeight)
+                ws = ws.layerWeight(config.layerWeight);
         var boxes = ws.boxes(),
             minFreq = ws.minFreq(),
             maxFreq = ws.maxFreq();
@@ -649,13 +654,16 @@ function ready (error, dataf){
     data = dataf;
     // format the data
     //data =data.filter(d=>d.source=="reuters");
-
     data.forEach(function(d) {
-        d.time =new Date (d.time);
+        // if (typeof(d.time)==="number")
+        //     d.time=new Date ("Jan "+d.time);
+        // else
+        //     d.time =new Date (d.time);
+        d.time = new Date (d.timestep);
         d.date =d.time;
         //console.log(d.hashTag.length);
     });
-    var limit = ["October 1960","January 2018"];
+    var limit = ["January 1963","January 1976"];
     data.sort((a,b)=> a.time-b.time);
     data  = data.filter(d=> (d.time>=parseTime(limit[0])&&d.time<=parseTime(limit[1])));
     console.log("Num usgs: "+data.filter(d=>d.source =="usgs").length);
@@ -686,7 +694,7 @@ function render (){
 
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
-    var numDays = Math.floor((new Date(endDate).getMonth() - new Date(startDate).getMonth()));;
+    var numDays = Math.floor((new Date(endDate).getYear() - new Date(startDate).getYear()));;
     width = Math.max(width,mainconfig.wstep*(numDays));
     var height = svgHeight - margin.bottom - margin.top;
 
@@ -703,16 +711,27 @@ function render (){
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
     var startDatedis = new Date (startDate);
-    startDatedis["setDate"](startDatedis.getMonth() - daystep);
+    startDatedis["setDate"](startDatedis.getYear() - daystep/2);
     var endDatedis = new Date (endDate);
-    endDatedis["setDate"](endDatedis.getMonth() + daystep);
-    x.range([0, width])
-        .domain([new Date (startDatedis),new Date (endDatedis)]);
+    endDatedis["setDate"](endDatedis.getYear() + daystep/2);
+    // if (numDays === TermwDay)
+    //     x = d3.scaleTime().range([0, width])
+    //         .domain([new Date (startDatedis),new Date (endDatedis)]);
+    // else
+        x = d3.scaleBand().range([0, width])
+            .domain(TermwDay.map(d=>new Date('Jan' + d.date))).paddingOuter(0).paddingInner(0);
+    let xdistribution = d3.scaleBand().range([0, width])
+        .domain(ArticleDay.map(d=>d.value.articlenum)).paddingOuter(0).paddingInner(0);
+    // chaper mark----
+    // let gridlineNodes = d3.axisTop()
+    //     .tickValues(d3.range(data.length).map(d=>d+0.5))
+    //     .tickFormat("")
+    //     .tickSize(-height)
+    //     .scale(d3.scaleLinear().domain([0.5,data.length-0.5]).range(x.range()));
     let gridlineNodes = d3.axisTop()
-        .tickValues(d3.range(15).map(d=>d+0.5))
         .tickFormat("")
         .tickSize(-height)
-        .scale(d3.scaleLinear().domain([0.5,14.5]).range(x.range()));
+        .scale(x);
     var y = d3.scaleLinear().range([height/2, 0]);
     var simulation = d3.forceSimulation()
         .force("y", d3.forceY(height*wscale/2).strength(0.05));
@@ -724,22 +743,42 @@ function render (){
         .attr("height", height*(1-wscale));
     svg.append("g")
         .attr("class", "grid")
-        .call(gridlineNodes);
-    var configwc = {width: width,height: height*(1-wscale)};
+        .call(gridlineNodes)
+        .attr("transform", "translate("+x.bandwidth()/2+",0)");
+    var configwc = {width: width,height: height*(1-wscale), stepDetails: ArticleDay.map(d=>Math.pow(d.value.articlenum,0.6)), layerWeight: {NUMBER:3}};
     myWordCloud = wordCloud('#tagCloud',configwc);
 
     myWordCloud.update(TermwDay);
     timeline.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + height*wscale + ")")
-        .call(d3.axisTop(d3.scaleLinear().domain([0.5,14.5]).range(x.range()))
-            // .tickValues(d3.range(14))
-            .tickFormat(d=>(d!=0.5&&d!=14.5)?data[d-1].title:"")
-        )
+        // chaper mark----
+        // .call(d3.axisTop(d3.scaleLinear().domain([0.5,data.length-0.5]).range(x.range()))
+        //     // .tickValues(d3.range(14))
+        //     .tickFormat(d=>(d!=0.5&&d!=(data.length-0.5))?data[d-1].title:"")
+        // )
+        .call(d3.axisTop(x)
+        //.ticks(d3.timeMonday.every(1))
+            .tickFormat(d3.timeFormat("%Y")))
         .selectAll("text")
         .style("text-anchor", "middle")
-        // .attr("dx", ".8em")
+        // .attr("dx", (-mainconfig.wstep)+"px")
         .attr("dy", "-.15em");
+    let subaxis = timeline.append("g")
+        .attr("class", "axisAtr")
+        .attr("transform", "translate(0," + height + ")");
+
+    subaxis.call(d3.axisBottom(xdistribution))
+        .selectAll("text")
+        .style("text-anchor", "middle")
+    subaxis.append("text")
+            .attr("x", 10)
+            .attr("dy", '-1em')
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .attr('class','labelx axisLabel')
+            .text('Number of documents per year');
+    // xdistribution
     // Scale the range of the data
     //x.domain(d3.extent(data, function(d) { return d.time; }));
     //y.domain([0, d3.max(data, function(d) { return d.close; })]);
@@ -780,7 +819,7 @@ function render (){
         let el = d3.select(this);
         el.attr("xlink:href", "src/img/bb.jpg");
         el.on("error", null);
-    })
+    });
     // var circles = timeline.selectAll(".img")
     //     .data(data)
     //     .enter().append("circle")
@@ -833,7 +872,7 @@ function handledata(data){
         mainconfig.wstep = 50;
     }else {
         outputFormat =  (d) => {
-            return d3.timeFormat('%b %Y')(d);
+            return d3.timeFormat('%Y')(d);
         };
         daystep = 1;
         svgHeight = 1200;
@@ -841,8 +880,8 @@ function handledata(data){
     }
     var nested_data;
     // let word = document.getElementById("theWord").value;
-    startDate = termscollection_org[0].date;
-    endDate = termscollection_org[termscollection_org.length-1].date;
+    startDate = termscollection_org[0].time;
+    endDate = termscollection_org[termscollection_org.length-1].time;
 
     let word = $('#autocomplete-input').val();
     if (word !== "") {
@@ -892,9 +931,9 @@ function handledata(data){
         c.values.forEach(term=> {
                 var pre = 0;
                 var preday = new Date(term.values[0].key);
-                term.values.forEach(day => {
-                    preday["setMonth"](preday.getMonth() + daystep*2);
-                    if (preday.getMonth() < new Date(day.key).getMonth())
+                term.values.forEach((day) => {
+                    preday["setYear"](preday.getYear() + daystep*2);
+                    if (preday.getYear() < new Date(day.key).getYear())
                         pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
@@ -918,21 +957,26 @@ function handledata(data){
         .key(function(d) { return outputFormat(d.time); })
         .key(function(d) { return d.term; })
         .entries(termscollection);
-    nestedByTerm.forEach(c=> c.values.forEach( day=>
-        day.values.sort((a,b)=>b.values[0].frequency-a.values[0].frequency)));
+    // nestedByTerm.forEach(c=> c.values.forEach( day=>
+    //     day.values.sort((a,b)=>b.values[0].frequency-a.values[0].frequency)));
     // nestedByTerm.forEach(c=> {
     //     if (c.key =="twitter")
     //         c.values.forEach( day=>{
     //             var numtake =mainconfig.numberOfTopics;
     //             day.values = day.values.slice(0,numtake)})
     // });
-
+    nestedByTerm.forEach(c=> c.values.forEach( day=>
+        day.values.sort((a,b)=>b.values[0].sudden-a.values[0].sudden)));
+    nestedByTerm.forEach(c=> c.values.forEach( day=>{
+        // var numtake = Math.max(mainconfig.numberOfTopics,day.values.length*mainconfig.rateOfTopics);
+        var numtake = mainconfig.numberOfTopics;
+        day.values = day.values.slice(0,numtake)}));
     termscollection.length = 0;
     nestedByTerm.forEach(c=>
         c.values.forEach(term=> {
                 term.values.forEach(day => {
                     day.values
-                        // .filter(e=>e.frequency>1)
+                        .filter(e=>e.frequency>1)
                         .forEach(e=> termscollection.push(e))
                 })
             }
@@ -951,6 +995,9 @@ function handledata(data){
             words.forEach(w=>frequency+=w.frequency);
             return {frequency: frequency,sudden: words[0].sudden,data:words}; })
         .entries(termscollection);
+
+    // remove 1st
+    nested_data.shift();
 
     //nested_data = nested_data.slice(1,nested_data.length-1);
     //slice data
@@ -987,10 +1034,44 @@ function handledata(data){
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
     console.log(startDate +" - "+endDate);
-    // fillData(endDate, startDate);
+    // fillDataYear(endDate, startDate);
 }
 
+function fillDataYear(endDate, startDate) {
+    var d = [],
+        dd = [],
+        len = TermwDay.length,
+        now = new Date(startDate),
+        last = new Date(endDate),
+        iterator = 0;
 
+    while (now <= last) {
+        var y = 0;
+        var yy = 0;
+        try {
+            var presenttime = new Date(TermwDay[iterator].date);
+            if (iterator < len && (now.getYear() === presenttime.getYear())) {
+                y = TermwDay[iterator].words;
+                yy = ArticleDay[iterator].value;
+                ++iterator;
+            }
+        }
+        catch (exc) {
+            // console.log(iterator);
+            // debugger;
+        }
+        if (y===0) {
+            y={};
+            categories.forEach(c => y[c]=[]);
+            yy = {articlenum: 0, data:[]};
+        }
+        dd.push({"key": outputFormat(new Date(now)), "value": yy});
+        d.push({"date": outputFormat(new Date(now)), "words": y});
+        now["setMonth"](now.getYear() + daystep);
+    }
+    ArticleDay = dd;
+    TermwDay = d;
+}
 
 function fillData(endDate, startDate) {
     var d = [],
@@ -1005,7 +1086,7 @@ function fillData(endDate, startDate) {
         var yy = 0;
         try {
             var presenttime = new Date(TermwDay[iterator].date);
-            if (iterator < len && (now.getMonth() == presenttime.getMonth())) {
+            if (iterator < len && (now.getMonth() === presenttime.getMonth())) {
                 y = TermwDay[iterator].words;
                 yy = ArticleDay[iterator].value;
                 ++iterator;
@@ -1040,7 +1121,7 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["0f","themonth","unclassified","durin","al","where'","there'","1","wxsusie","101516880552290731073741860124458454072type=1…","wsiconfexpo","1qevuey","you’re","agwt","grt","click","tamest_","a4we'","it'","sept","asr","rgv","a4we","wkly","txwri","wtr","gues","taken","wednesday","photo","reminder","board","TX","TWDB","thi","&","&nbsp; ","drewdarby4tx","h2o4texa","abt","2o4texa","toddahunter"," ","today","txwater","Texa","twdb","texa","(usgs)","1)","collected","study","data","water","visit"];
+    var blackw =["vietnam","vietnamese","force","months","hours","years","day","month","hour","year","day","0f","themonth","unclassified","durin","al","where'","there'","1","wxsusie","101516880552290731073741860124458454072type=1…","wsiconfexpo","1qevuey","you’re","agwt","grt","click","tamest_","a4we'","it'","sept","asr","rgv","a4we","wkly","txwri","wtr","gues","taken","wednesday","photo","reminder","board","TX","TWDB","thi","&","&nbsp; ","drewdarby4tx","h2o4texa","abt","2o4texa","toddahunter"," ","today","txwater","Texa","twdb","texa","(usgs)","1)","collected","study","data","water","visit"];
     // var blackw =[];
     termscollection_org =[];
     data.forEach(d=>{
@@ -1049,7 +1130,7 @@ function blacklist(data){
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
             correctlabel(w);
-            key = key || ((blackw.find(d=>d===w.term.toLocaleLowerCase().replace(" ",""))== undefined)) && categoriesmap[w.category]!= undefined ;
+            key = key || ((blackw.find(d=>d===w.term.toLocaleLowerCase().replace(" ",""))== undefined)&&w.term.length>3) && categoriesmap[w.category]!= undefined ;
             return key;}).forEach( w => {
             w.maincategory = w.category;
             w.term = w.term.trim();

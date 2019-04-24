@@ -5,7 +5,7 @@ $(document).ready(function () {
     //     .await(ready);
 
     d3.queue()
-        .defer(d3.json,"src/data/dataoutraw.json")
+        .defer(d3.json,"src/data/adl_out.json")
         .await((error, d)=>{data =d;
             console.log(data.length);
             // d3.queue()
@@ -28,7 +28,7 @@ $(document).ready(function () {
                     k.term = k.term.replace(/approximately |\|\||up |'s|between |—| »|~|a |well over |\$|00:\d\d|\"|\.$|\" | \(|\(|'|' | '|@|& $|$&|close to |roughly |nearly |more than |less than |around /gi,"");
                     k.term = k.term.replace(/ percent/gi,"%");
                     //console.log(" After: "+k.term);
-                    if(k.term =="")
+                    if(k.term ==="")
                         list.push(i);
                 });
                 list.sort((a,b)=>b-a);
@@ -36,7 +36,7 @@ $(document).ready(function () {
             });
             console.log(JSON.stringify(data));
             console.log("done");
-        })
+        });
     // d3.queue()
     //     .defer(d3.json,"src/data/dataout.json")
     //     .await((error, d)=>{

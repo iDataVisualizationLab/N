@@ -64,6 +64,7 @@ function forcegraph(selector,searchbox) {
             return d.key
         })
         .attr("dy", ".35em")
+        .attr("text-shadow","2px 2px 1px rgba(0, 0, 0, 0.8)")
         .style("fill", function (d) {
             return color(categories.indexOf(d.group));
         })
@@ -185,6 +186,24 @@ function computeNodes() {
     
     links2 = Object.keys(linkmap).map(d=> linkmap[d]);
     links2.sort((a,b)=>b.count-a.count);
+    function cutbyIQRv3(multi,maxlink) {
+        // nodenLink.links.sort((a, b) => a.value - b.value);
+        let templarray = links2.map(d => d.count);
+        const q1 = d3.quantile(templarray, 0.25);
+        const q3 = d3.quantile(templarray, 0.75);
+        const qmean = d3.median(templarray);
+        const iqr = q1 - q3;
+        let filtered= links2.filter(d=> (d.count<(q1+iqr*multi)));
+        let tempLinks=[];
+        let tempc =d3.nest()
+            .key(d=>d.source)
+            .rollup(d=>{
+                return d.slice(0,maxlink);})
+            .entries(filtered);
+        tempc.forEach(d=>{tempLinks = d3.merge([tempLinks,d.value])});
+        return filtered;
+    }
+    links2 = cutbyIQRv3(1.5, 3);
     links2 = links2.filter(d=> d.count>mainconfig.minlink);
     nodes2 = nodes2.filter(d=>links2.find(e=>d.key == e.source || d.key == e.target));
     console.log("link2.length = "+links2.length);

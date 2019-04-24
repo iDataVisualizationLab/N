@@ -8,11 +8,15 @@ d3.wordStream = function(){
         rotateCorner = 0,      // +-30 degree ++++++++++++++++++++++++++++++++++++++++++++++++
         font = "Arial",
         fontScale = d3.scaleLinear(),
-        frequencyScale = d3.scaleLinear(),
+        heightScale = d3.scaleLinear(),
         spiral = achemedeanSpiral,
         canvas = cloudCanvas,
         interpolation = d3.curveMonotoneX,
         seperate = true,
+        stepDetails = [],
+        layerWeight = {},
+        topics =[],
+        totalHeight =[];
         suddenmode = true;
     let wordStream = {};
 
@@ -23,7 +27,7 @@ d3.wordStream = function(){
     wordStream.boxes = function(){
         let boxWidth = size[0]/data.length;
         buildFontScale(data);
-        buildFrequencyScale(data);
+        buildHeightScale(data);
         let boxes = buildBoxes(data);
         //Get the sprite for each word
         getImageData(boxes);
@@ -58,8 +62,8 @@ d3.wordStream = function(){
         minFreq = Number.MAX_SAFE_INTEGER;
     //#region helper functions
     function buildFontScale(data){
-
-        let topics = d3.keys(data[0].words); // topics= array of topics, ["person", "location", "organization","miscellaneous"]
+        if (!topics.length)
+            topics = d3.keys(data[0].words); // topics= array of topics, ["person", "location", "organization","miscellaneous"]
         //#region scale for the font size.
         let maxFrequency = 0;
         let minFrequency = Number.MAX_SAFE_INTEGER;
@@ -83,24 +87,22 @@ d3.wordStream = function(){
         // tuong ung ra font
     }
 
-    function buildFrequencyScale(data){     // Tinh tong tat ca cac frq
-        let totalFrequencies  = calculateTotalFrequenciesABox(data);    // mang chua cac aBox cua tung Timestep
+    function buildHeightScale(data){     // Tinh tong tat ca cac frq
+        totalHeight  = calculateTotalHeightABox(data);    // mang chua cac aBox cua tung Timestep
         if (!seperate) {
-            let max = d3.max(totalFrequencies,d=>d3.sum(d3.keys(d).map(t=>d[t])));
-            let min = d3.min(totalFrequencies,d=>d3.sum(d3.keys(d).map(t=>d[t])));
-            // frequencyScale.domain([0, max]).range([0, size[1]]);        // size[1] la chieu cao cua to giay
-            frequencyScale.domain([0, max]).range([0, size[1]]);        // size[1] la chieu cao cua to giay
+            let max = d3.max(totalHeight,d=>d3.sum(topics.map(t=>d[t])));
+            let min = d3.min(totalHeight,d=>d3.sum(topics.map(t=>d[t])));
+            heightScale.domain([0, max]).range([0, size[1]]);        // size[1] la chieu cao cua to giay
         }else{
-            let max = d3.max(totalFrequencies,d=>d3.sum(d3.keys(d).map(t=>d[t])));
-            let min = d3.min(totalFrequencies,d=>d3.min(d3.keys(d).map(t=>d[t])));
-            frequencyScale.domain([min, max]).range([0, size[1]]);
+            let max = d3.max(totalHeight,d=>d3.sum(topics.map(t=>d[t])));
+            let min = d3.min(totalHeight,d=>d3.min(topics.map(t=>d[t])));
+            heightScale.domain([min, max]).range([0, size[1]]);
         }
     }
     //Convert from data to box
     function buildBoxes(data){
         //Build settings based on frequencies
-        let totalFrequencies  = calculateTotalFrequenciesABox(data);
-        let topics = d3.keys(data[0].words);
+        // topics = d3.keys(data[0].words);
         //#region creating boxes
         let numberOfBoxes = data.length;
         let boxes = {};
@@ -110,26 +112,31 @@ d3.wordStream = function(){
         topics.forEach(topic=>{
             let dataPerTopic = [];
             //Push the first point
-            dataPerTopic.push({x: 0, y:frequencyScale(totalFrequencies[0][topic])});
-            totalFrequencies.forEach((frq, i) =>{
-                dataPerTopic.push({x: (i*boxWidth) + (boxWidth>>1), y: frequencyScale(frq[topic])});
+            dataPerTopic.push({x: 0, y:heightScale(totalHeight[0][topic])});
+            totalHeight.forEach((frq, i) =>{
+                dataPerTopic.push({x: (i*boxWidth) + (boxWidth>>1), y: heightScale(frq[topic])});
             });
             //Push the last point
-            dataPerTopic.push({x: size[0], y:frequencyScale(totalFrequencies[totalFrequencies.length-1][topic])});//TODO:
+            dataPerTopic.push({x: size[0], y:heightScale(totalHeight[totalHeight.length-1][topic])});//TODO:
             allPoints.push(dataPerTopic);
         });
         var layers;
         if (!seperate) {
             layers = d3.stack()
                 .keys(topics)
-                .value((d, key, i) => frequencyScale(totalFrequencies[i][key]))
+                .value((d, key, i) => heightScale(totalHeight[i][key]))
                 .order(d3.stackOrderNone)
                 .offset(d3.stackOffsetSilhouette)
                 (data);
             var min = d3.min(layers, (d => d3.min(d, e => e[0])));
-            layers = layers.map(l => {
+            var offset = [];
+            var center_topic = d3.keys(layerWeight)[0];
+            if (center_topic){
+                offset = layers[topics.indexOf(center_topic)].map(e=>-e[0]-(e[1] - e[0])/2);
+            }
+            layers = layers.map((l) => {
                 var m = l.map((e, i) => {
-                    return {y0: e[0] - min, y: (e[1] - e[0]), x: (i * boxWidth) + (boxWidth >> 1), data: e.data}
+                    return {y0: e[0] - min+offset[i]||0, y: (e[1] - e[0]), x: (i * boxWidth) + (boxWidth >> 1), data: e.data}
                 });
                 let a = JSON.parse(JSON.stringify(m[m.length - 1]));
                 a.x = size[0];
@@ -139,12 +146,24 @@ d3.wordStream = function(){
                 m.splice(0, 0, a);
                 return m;
             });
+            console.log(layers)
+            if (center_topic) { //rescale height
+                const maxt = d3.max(layers, (d => d3.max(d, e => e.y0 + e.y)));
+                const mint = d3.min(layers, (d => d3.min(d, e => e.y0)));
+                const emerscale = d3.scaleLinear().domain([mint,maxt]).range([0,maxt-mint]);
+                layers.forEach((l, i) => {
+                    l.forEach(m => {
+                        m.y0 = emerscale(m.y0);
+                        m.y = m.y;
+                    })
+                })
+            }
         }else {
             layers = topics.map( t=>{
 
                 var layer =  d3.stack()
                 .keys([t])
-                .value((d, key, i) => totalFrequencies[i][t])
+                .value((d, key, i) => totalHeight[i][t])
                 .order(d3.stackOrderNone)
                 .offset(d3.stackOffsetSilhouette)
                 (data);
@@ -155,7 +174,7 @@ d3.wordStream = function(){
             for (var i = 1; i<layers.length;i++){
                 layers[i].offset = layers[i-1].offset + layers[i-1].max +(layers[i].max - layers[i].min)/2;
             }
-            var scale = frequencyScale.domain([layers[0].min,layers[layers.length-1].offset+layers[layers.length-1].max]).range([0,size[1]]);
+            var scale = heightScale.domain([layers[0].min,layers[layers.length-1].offset+layers[layers.length-1].max]).range([0,size[1]]);
             layers = layers.map((l,j) => {
                 var m = l.map((e, i) => {
                     return {y0: scale(e[0] + l.offset),
@@ -473,7 +492,7 @@ d3.wordStream = function(){
                     d.y0 = -d.y1;
                     d.timeStep = i;
                     d.topicIndex = z;
-                    d.streamHeight = frequencyScale(d.frequency);
+                    d.streamHeight = heightScale(d.frequency);
                     x += w;
                 }
             });
@@ -501,20 +520,27 @@ d3.wordStream = function(){
         //Only return this to test if needed
         return c.getImageData(0, 0, cw, ch);
     }
-    function calculateTotalFrequenciesABox(data){
-        let topics = d3.keys(data[0].words);
-        let totalFrequenciesABox = Array();
-        d3.map(data, function(row){
+    function calculateTotalHeightABox(data){
+        let totalFrequenciesABox = [];
+        let totalSum =[];
+        data.forEach( function(row){
+            let tsum=0;
             let aBox = {};
             topics.forEach(topic =>{
-                let totalFrequency = 0;
-                row.words[topic].forEach(element => {
-                    totalFrequency += element.frequency;
-                });
-                aBox[topic] = totalFrequency;
+                aBox[topic] = d3.sum(row.words[topic],element=>element.frequency)* (layerWeight[topic]||1);
+                tsum+=aBox[topic];
             });
             totalFrequenciesABox.push(aBox);
+            totalSum.push(tsum);
         });
+        if (stepDetails) {
+            totalFrequenciesABox.forEach((ab,i)=>{
+                const scaleStep = d3.scaleLinear().range([0,stepDetails[i]||1]).domain([0,1]);
+                topics.forEach(topic =>{
+                    ab[topic] = scaleStep(ab[topic]/totalSum[i]);
+                })
+            })
+        }
         return totalFrequenciesABox;
     }
     //#endregion
@@ -549,6 +575,7 @@ d3.wordStream = function(){
     }
     //#endregion
     //#region exposed methods to test, should be deleted
+
     wordStream.getImageData = getImageData;
     wordStream.cloudCollide = cloudCollide;
     wordStream.place = place;
@@ -574,7 +601,7 @@ d3.wordStream = function(){
         return arguments.length ? (font = _, wordStream): font;
     }
     wordStream.frequencyScale = function(_){
-        return arguments.length ? (frequencyScale = _, wordStream) : frequencyScale;
+        return arguments.length ? (heightScale = _, wordStream) : heightScale;
     }
     wordStream.spiral = function(_){
         return arguments.length ? (spiral = spirals[_]|| _, wordStream) : spiral;
@@ -611,6 +638,14 @@ d3.wordStream = function(){
     };
     wordStream.seperate = function (_) {
         return arguments.length ? (seperate = _, wordStream) : seperate;
+
+    };
+    wordStream.stepDetails = function (_) {
+        return arguments.length ? (stepDetails = _, wordStream) : stepDetails;
+
+    };
+    wordStream.layerWeight = function (_) {
+        return arguments.length ? (layerWeight = _, wordStream) : layerWeight;
 
     };
     //#endregion

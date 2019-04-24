@@ -158,14 +158,14 @@ function wordCloud(selector,config) {
         var dataWidth;
         var width;
         // document.getElementById("mainsvg").setAttribute("width",width);
-        var font = "Impact";
+        var font = "Arial";
         var interpolation = d3.curveCardinal;
         var bias = 200;
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
-        var max = 25;
+        var min = 15;
+        var max = 40;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -213,8 +213,12 @@ function wordCloud(selector,config) {
             .maxFontSize(max)
             .data(data)
             .font(font)
-            .suddenmode(true)
+            .suddenmode(false)
             .seperate(mainconfig.seperate);
+        // if (config.stepDetails)
+        //     ws = ws.stepDetails(config.stepDetails);
+        // if (config.layerWeight)
+        //     ws = ws.layerWeight(config.layerWeight);
         var boxes = ws.boxes(),
             minFreq = ws.minFreq(),
             maxFreq = ws.maxFreq();
@@ -255,6 +259,31 @@ function wordCloud(selector,config) {
                 .attr("class", "lengendtext")
                 .style("text-anchor", "middle")
                 .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
+                .text(d => d.key);
+        }else{
+            var legend = d3.keys(categoriesgroup).map((d,i) => {
+                return {'key': d, 'pos': i*20}
+            });
+            var legendg = timeline.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + (20) + "," + 20 + ")")
+                .append("g")
+                .attr("class", "sublegend")
+                .selectAll(".lengendgtext")
+                .data(legend)
+                .enter()
+                .append("g")
+                .attr("class", "lengendgtext")
+                .attr("transform", d => "translate(0," + d.pos + ")");
+            legendg.append("circle")
+                .attrs({class: "lengendmark",
+                    cx: 0,
+                    cy: 0,
+                    r:5})
+                .style("fill",(d,i)=>color(i));
+            legendg.append("text")
+                .attr("class", "lengendtext")
+                .attrs({dx:10,dy:5})
                 .text(d => d.key);
         }
         // =============== Get BOUNDARY and LAYERPATH ===============
@@ -313,7 +342,7 @@ function wordCloud(selector,config) {
                 return color(i);
             })
             .attrs({
-                'fill-opacity': 0.1,      // = 1 if full color
+                'fill-opacity': 0.03,      // = 1 if full color
                 // stroke: 'black',
                 'stroke-width': 0.3,
                 topic: function(d, i){return topics[i];}
@@ -336,7 +365,7 @@ function wordCloud(selector,config) {
 
         var opacity = d3.scaleLog()
             .domain([minFreq, maxFreq])
-            .range([0.4,1]);
+            .range([0.5,1]);
 
         // Add moi chu la 1 element <g>, xoay g dung d.rotate
         var placed = true; // = false de hien thi nhung tu ko dc dien
@@ -503,39 +532,39 @@ function wordCloud(selector,config) {
                 .selectAll('.stackimgg')
                 .data(points.slice(1, points.length-1))
                 .enter()
-                    .append('g')
-                    .attr('class','stackimgg')
-                    .attr('transform',d=>'translate('+d.x+',0)');
+                .append('g')
+                .attr('class','stackimgg')
+                .attr('transform',d=>'translate('+d.x+',0)');
             // var max = 0;
             // var min = 0;
             var img = wimg.selectAll('.stackimg')
                 .data(d => d.data)
-                    .enter()
+                .enter()
                 .append('a')
                 .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
                 .attrs({"xlink:href": (d => d.url||d.link),
                     'target':"_blank"})
                 .attr('class','stackimg')
-                    .append('rect')
-                    //.attr('class','stackimg')
-                    // .attr('d', area)
-                    //.style('fill', prevColor)
-                    .attr("fill",d => "url(#"+d.time+")")
-                    .attr('y',(d,i)=>{
-                        var y = i*boxwidth*2/3;
-                        // max = max< y? y:max;
-                        // min = min> y? y:min;
-                        return y;})
-                    .attrs({
-                        'fill-opacity': 1,
-                        topic: topic,
-                        wordStream: true,
-                        x: 0,
-                        width: boxwidth,
-                        height: boxwidth*2/3
+                .append('rect')
+                //.attr('class','stackimg')
+                // .attr('d', area)
+                //.style('fill', prevColor)
+                .attr("fill",d => "url(#"+d.time+")")
+                .attr('y',(d,i)=>{
+                    var y = i*boxwidth*2/3;
+                    // max = max< y? y:max;
+                    // min = min> y? y:min;
+                    return y;})
+                .attrs({
+                    'fill-opacity': 1,
+                    topic: topic,
+                    wordStream: true,
+                    x: 0,
+                    width: boxwidth,
+                    height: boxwidth*2/3
 
-                    });
-                // .attr('xlink:href',d=>d.url);
+                });
+            // .attr('xlink:href',d=>d.url);
 
             wimg.transition().duration(600)
                 .attr('transform', (d, i)=> 'translate('+d.x+',-'+d.data.length*boxwidth*2/3/2+')');
@@ -598,6 +627,452 @@ function wordCloud(selector,config) {
         }
     }
 }
+// function wordCloud(selector,config) {
+//     function draw(data) {
+//         //d3.select(selector).select('svg').selectAll('.cloud').remove();
+//         var dataWidth;
+//         var width;
+//         // document.getElementById("mainsvg").setAttribute("width",width);
+//         var font = "Impact";
+//         var interpolation = d3.curveCardinal;
+//         var bias = 200;
+//         var offsetLegend = 50;
+//         var axisPadding = 10;
+//         var margins = {top: 0, right: 0, bottom: 0, left: 0};
+//         var min = 10;
+//         var max = 25;
+//         lineColor.domain([min, max]);
+//         width = config.width;
+//         var height = config.height;
+//         height = height - margins.top - margins.bottom;
+//
+//         //set svg data.
+//         svg.attrs({
+//             width: width,
+//             height: height
+//         });
+//         svg.call(wordTip);
+//         var area = d3.area()
+//             .curve(interpolation)
+//             .x(function (d) {
+//                 return (d.x);
+//             })
+//             .y0(function (d) {
+//                 return d.y0;
+//             })
+//             .y1(function (d) {
+//                 return (d.y0 + d.y);
+//             });
+//
+//         //Draw the word cloud
+//
+//         var mainGroup = svg.append('g')
+//             .attr('class','cloud')
+//             .attr('transform', 'translate(' + margins.left + ',' + (margins.top) + ')');
+//         var wordStreamG = mainGroup.append('g');
+//         var k = 0;
+//         // if (pop) {
+//         //     dataWidth = data.length * 20
+//         // }
+//         // else {
+//         //     dataWidth = data.length * 100;
+//         // }
+//
+//         //Layout data
+//         var ws = d3.wordStream()
+//             .size([width - margins.left - margins.right, height])
+//             .interpolate(interpolation)
+//             .fontScale(d3.scaleLinear())
+//             .frequencyScale(d3.scaleLinear())
+//             .minFontSize(min)
+//             .maxFontSize(max)
+//             .data(data)
+//             .font(font)
+//             .suddenmode(true)
+//             .seperate(mainconfig.seperate);
+//         var boxes = ws.boxes(),
+//             minFreq = ws.minFreq(),
+//             maxFreq = ws.maxFreq();
+//
+//         //Display data
+//
+//         //var color = d3.scaleOrdinal(d3.schemeCategory10);
+//         //Display time axes
+//         // var dates = [];
+//         // boxes.data.forEach(row => {
+//         //     dates.push(row.date);
+//         // });
+//
+//
+//         // var xrange = x.range();
+//         var boxwidth = ~~(width/data.length);
+//         // x.range([xrange[0] + boxwidth, width - boxwidth])
+//         mainGroup.attr('transform', 'translate(' + margins.left + ',' + margins.top + ')');
+//         var overclick = wordStreamG.append('rect')
+//             .attr('class','wsoverlay').attrs({width:width, height:height})
+//             .style("fill", "none")
+//             .style("pointer-events", "all");
+//
+//         if (mainconfig.seperate) {
+//             var legend = boxes.layers.map(d => {
+//                 return {'key': d.key, 'pos': d.offset}
+//             });
+//
+//             var legendg = timeline.append("g")
+//                 .attr("class", "legend")
+//                 .attr("transform", "translate(" + (-10) + "," + 0 + ")")
+//                 .append("g")
+//                 .attr("class", "sublegend")
+//                 .selectAll(".lengendtext")
+//                 .data(legend)
+//                 .enter()
+//                 .append("text")
+//                 .attr("class", "lengendtext")
+//                 .style("text-anchor", "middle")
+//                 .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
+//                 .text(d => d.key);
+//         }
+//         // =============== Get BOUNDARY and LAYERPATH ===============
+//         var lineCardinal = d3.line()
+//             .x(function(d) { return d.x; })
+//             .y(function(d) { return d.y; })
+//             .curve(interpolation);
+//
+//         var boundary = [];
+//         for (var i = 0; i < boxes.layers[0].length; i ++){
+//             var tempPoint = Object.assign({}, boxes.layers[0][i]);
+//             tempPoint.y = tempPoint.y0;
+//             boundary.push(tempPoint);
+//         }
+//
+//         for (var i = boxes.layers[boxes.layers.length-1].length-1; i >= 0; i --){
+//             var tempPoint2 = Object.assign({}, boxes.layers[boxes.layers.length-1][i]);
+//             tempPoint2.y = tempPoint2.y + tempPoint2.y0;
+//             boundary.push(tempPoint2);
+//         }       // Add next (8) elements
+//
+//         var lenb = boundary.length;
+//
+//         // Get the string for path
+//
+//         var combined = lineCardinal( boundary.slice(0,lenb/2))
+//             + "L"
+//             + lineCardinal( boundary.slice(lenb/2, lenb))
+//                 .substring(1,lineCardinal( boundary.slice(lenb/2, lenb)).length)
+//             + "Z";
+//
+//
+//         // ============== DRAW CURVES =================
+//
+//         var topics = boxes.topics;
+//         var stokepath = mainGroup.selectAll('.stokepath')
+//             .data(boxes.layers)
+//             .attr('d', area)
+//             .style('fill', function (d, i) {
+//                 return color(i);
+//             })
+//
+//             .attrs({
+//                 'fill-opacity': 0.1,      // = 1 if full color
+//                 // stroke: 'black',
+//                 'stroke-width': 0.3,
+//                 topic: function(d, i){return topics[i];}
+//             });
+//         stokepath.exit().remove();
+//         stokepath
+//             .enter()
+//             .append('path')
+//             .attr('class','stokepath')
+//             .attr('d', area)
+//             .style('fill', function (d, i) {
+//                 return color(i);
+//             })
+//             .attrs({
+//                 'fill-opacity': 0.1,      // = 1 if full color
+//                 // stroke: 'black',
+//                 'stroke-width': 0.3,
+//                 topic: function(d, i){return topics[i];}
+//             });
+//         // ARRAY OF ALL WORDS
+//         var allWords = [];
+//         d3.map(boxes.data, function(row){
+//             boxes.topics.forEach(topic=>{
+//                 allWords = allWords.concat(row.words[topic]);
+//             });
+//         });
+//         //Color based on term
+//         // var terms = [];
+//         // for(i=0; i< allWords.length; i++){
+//         //     terms.concat(allWords[i].text);
+//         // }
+//
+//         // Unique term de to mau cho cac chu  cung noi dung co cung mau
+//
+//
+//         var opacity = d3.scaleLog()
+//             .domain([minFreq, maxFreq])
+//             .range([0.4,1]);
+//
+//         // Add moi chu la 1 element <g>, xoay g dung d.rotate
+//         var placed = true; // = false de hien thi nhung tu ko dc dien
+//
+//         var gtext = mainGroup.selectAll('.gtext')
+//             .data(allWords)
+//             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+')rotate('+d.rotate+')';}});
+//
+//         var stext = gtext.selectAll('.stext')
+//             .transition()
+//             .duration(600)
+//             .text(function(d){return d.text;})
+//             .attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+//             .attrs({
+//                 topic: function(d){return d.topic;},
+//                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
+//             })
+//             .styles({
+//                 'font-family': font,
+//                 'font-size': function(d){return d.fontSize + "px";},
+//                 'fill': function(d){return color(d.topicIndex)},//function(d){return color(d.topicIndex);},
+//                 'fill-opacity': function(d){return opacity(d.frequency)},
+//                 'text-anchor': 'middle',
+//                 'alignment-baseline': 'middle'
+//             })
+//             .duration(1000);
+//         gtext.exit().remove();
+//         gtext.enter()
+//             .append('g')
+//             .attr('class','gtext')
+//             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+') rotate('+d.rotate+')';}})
+//             .append('text')
+//             .attr("class",'stext')
+//             .transition().duration(600).styleTween('font-size', function(d){return d.fontSize + "px";} )// add text vao g
+//             .text(function(d){return d.text;})
+//             .attrs({
+//                 topic: function(d){return d.topic;},
+//                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
+//             })
+//             .styles({
+//                 'font-family': font,
+//                 'font-size': function(d){return d.fontSize + "px";},
+//                 'fill': function(d){return color(d.topicIndex)},
+//                 'fill-opacity': function(d){return opacity(d.frequency)},
+//                 'text-anchor': 'middle',
+//                 'alignment-baseline': 'middle'
+//             });
+//         gtext.exit().selectAll('*').remove();
+//         gtext.exit().remove();
+//         // When click a term
+//         //Try
+//         var prevColor;
+//         //Highlight
+//         mainGroup.selectAll('.stext').on('mouseenter', function(d){
+//             var thisText = d3.select(this);
+//             thisText.style('cursor', 'pointer');
+//             prevColor = thisText.attr('fill')||thisText.style('fill');
+//
+//             var text = thisText.text();
+//             var topic = thisText.attr('topic');
+//             mainGroup.selectAll('.stext').style('fill-opacity', 0.2);
+//             var allTexts = mainGroup.selectAll('.stext').filter(t =>{
+//                 var sameTerm = t && t.text === text &&  t.topic === topic;
+//                 var sameArticle = false;
+//                 t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title===tt.title)!==undefined)));
+//                 return sameTerm || sameArticle;
+//             });
+//             allTexts.style('fill-opacity', 1);
+//             // var allSubjects = allTexts.filter(t=> t && t.text === text &&  t.topic === topic);
+//             // allSubjects.attrs({
+//             //     stroke: prevColor,
+//             //     'stroke-width': 1.5
+//             // });
+//
+//             wordTip.show(d);
+//         });
+//
+//         mainGroup.selectAll('.stext').on('mouseleave', function(d){
+//             var thisText = d3.select(this);
+//             thisText.style('cursor', 'default');
+//             var text = thisText.text();
+//             var topic = thisText.attr('topic');
+//             var allTexts = mainGroup.selectAll('.stext').filter(t =>
+//                 t && !t.cloned
+//             );
+//
+//             allTexts
+//                 .style('fill-opacity', function(d){return opacity(d.frequency)});
+//             wordTip.hide();
+//         });
+//         //Click
+//         mainGroup.selectAll('.stext').style("fill", function (d, i) {
+//
+//         });
+//         mainGroup.selectAll('.stext').on('click', function(d){
+//
+//             var thisText = d3.select(this);
+//             var text = thisText.text();
+//             var topic = thisText.attr('topic');
+//             var allTexts = mainGroup.selectAll('.stext').filter(t =>{
+//                 var sameTerm = t && t.text === text &&  t.topic === topic;
+//                 var sameArticle = false;
+//                 t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title==tt.title)!=undefined)));
+//                 return sameTerm || sameArticle;
+//             });
+//             // d3.selectAll(".article")
+//             //     .filter(a=>  allTexts._groups[0].find(d=> outputFormat(d.__data__.data[0].time)==a.key) != undefined)
+//             //     .style("fill","#ffc62a")
+//             //     .style("filter","url(#glow)");
+//             //Select the data for the stream layers
+//             var streamLayer = d3.select("path[topic='"+ topic+"']" ).datum();
+//             //Push all points
+//             var points = Array();
+//
+//             streamLayer.forEach((elm,i) => {
+//                 var item = elm.data.words[topic].filter(f=>f.text==text)[0];
+//                 if (item == undefined)
+//                     item =[];
+//                 else
+//                     item = item.data.map(t=>ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title))
+//                 points.push({
+//                     x: elm.x,
+//                     y: boxwidth/3*item.length,
+//                     data: item,
+//                     n:0,
+//                 });
+//             });
+//             allTexts._groups[0].forEach(t => {
+//                 let data = t.__data__;
+//                 let fontSize = data.fontSize;
+//                 let thePoint = points[data.timeStep+1];//+1 since we added 1 to the first point and 1 to the last point.
+//                 let delta = 0;
+//                 if (data.text !== text)
+//                     delta = thePoint.n;
+//                 points[data.timeStep+1].n = points[data.timeStep+1].n  + (fontSize+5);
+//                 //Set it to visible.
+//                 //Clone the nodes.
+//                 let clonedNode = t.cloneNode(true);
+//                 d3.select(clonedNode).attrs({
+//                     visibility: "visible",
+//                     stroke: 'none',
+//                     'stroke-size': 0,
+//                 });
+//                 let clonedParentNode = t.parentNode.cloneNode(false);
+//                 clonedParentNode.appendChild(clonedNode);
+//
+//                 t.parentNode.parentNode.appendChild(clonedParentNode);
+//                 var cloner = d3.select(clonedParentNode).attrs({
+//                     cloned: true,
+//                     topic: topic
+//                 });
+//                 cloner.transition().duration(1000).attrs({
+//                     transform: function(){return 'translate('+thePoint.x+','+(thePoint.y+height/2+delta+fontSize/2)+')';},
+//                 });
+//             });
+//
+//
+//             // points[0].y = points[1].y;//First point
+//             // points[points.length-1].y = points[points.length-2].y;//Last point
+//             var wimg = wordStreamG
+//                 .append('g')
+//                 .attr('class','stackg')
+//                 .attr('transform','translate(0,'+height/2+')')
+//                 .selectAll('.stackimgg')
+//                 .data(points.slice(1, points.length-1))
+//                 .enter()
+//                     .append('g')
+//                     .attr('class','stackimgg')
+//                     .attr('transform',d=>'translate('+d.x+',0)');
+//             // var max = 0;
+//             // var min = 0;
+//             var img = wimg.selectAll('.stackimg')
+//                 .data(d => d.data)
+//                     .enter()
+//                 .append('a')
+//                 .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+//                 .attrs({"xlink:href": (d => d.url||d.link),
+//                     'target':"_blank"})
+//                 .attr('class','stackimg')
+//                     .append('rect')
+//                     //.attr('class','stackimg')
+//                     // .attr('d', area)
+//                     //.style('fill', prevColor)
+//                     .attr("fill",d => "url(#"+d.time+")")
+//                     .attr('y',(d,i)=>{
+//                         var y = i*boxwidth*2/3;
+//                         // max = max< y? y:max;
+//                         // min = min> y? y:min;
+//                         return y;})
+//                     .attrs({
+//                         'fill-opacity': 1,
+//                         topic: topic,
+//                         wordStream: true,
+//                         x: 0,
+//                         width: boxwidth,
+//                         height: boxwidth*2/3
+//
+//                     });
+//                 // .attr('xlink:href',d=>d.url);
+//
+//             wimg.transition().duration(600)
+//                 .attr('transform', (d, i)=> 'translate('+d.x+',-'+d.data.length*boxwidth*2/3/2+')');
+//             wordStreamG.select('.stackg');
+//             //Hide all other texts
+//             var allOtherTexts = mainGroup.selectAll('.stext').filter(t =>{
+//                 return t && !t.cloned ;
+//             });
+//             allOtherTexts.attr('visibility', 'hidden');
+//             mainGroup.selectAll('.stokepath').attr('visibility', 'hidden');
+//             d3.select('.sublegend').attr('visibility', 'hidden');
+//         });
+//
+//         overclick.on('click',()=>{
+//             d3.select('.sublegend').attr('visibility', 'visible');
+//             mainGroup.selectAll('.stokepath').attr('visibility', 'visible');
+//             wordStreamG.selectAll('.stackg').remove();
+//             mainGroup.selectAll('.stext').filter(t=>{
+//                 return t && !t.cloned && t.placed;
+//             }).attrs({
+//                 visibility: 'visible'
+//             });
+//             //Remove the cloned element
+//             document.querySelectorAll("g[cloned='true']").forEach(node=>{
+//                 node.parentNode.removeChild(node);
+//             });
+//             //Remove the added path for it
+//             document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+//                 node.parentNode.removeChild(node);
+//             });
+//
+//         });
+//
+//         // topics.forEach(topic=>{
+//         //     d3.select("path[topic='"+ topic+"']" ).on('click', function(){
+//         //         wordStreamG.selectAll('.stackg').remove();
+//         //         mainGroup.selectAll('.stext').filter(t=>{
+//         //             return t && !t.cloned && t.placed;
+//         //         }).attrs({
+//         //             visibility: 'visible'
+//         //         });
+//         //         //Remove the cloned element
+//         //         document.querySelectorAll("g[cloned='true']").forEach(node=>{
+//         //             node.parentNode.removeChild(node);
+//         //         });
+//         //         //Remove the added path for it
+//         //         document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+//         //             node.parentNode.removeChild(node);
+//         //         });
+//         //         d3.selectAll(".article")
+//         //             .style("fill","lightblue")
+//         //             .style("filter","");
+//         //     });
+//         //
+//         // });
+//     }
+//     return {
+//         update: function (words) {
+//             draw(words);
+//         }
+//     }
+// }
 function ready (error, dataf){
     //spinner = new Spinner(opts).spin(document.getElementById('timelinewImg'));
     if (error) throw error;
@@ -972,7 +1447,7 @@ function blacklist(data){
             numterm++;
             var key = false;
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
+            key = key || ((blackw.find(d=> d===w.term)=== undefined)) && categoriesmap[w.category]!== undefined ;
             return key;}).forEach( w => {
                 w.maincategory = w.category;
                 w.category = categoriesmap[w.category]||w.category;

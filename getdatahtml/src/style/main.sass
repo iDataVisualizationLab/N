@@ -10,7 +10,7 @@ body
 
 .d3-tip
   padding: 5px
-  pointer-events: none
+  pointer-events: none !important
   background-color: rgb(255, 255, 255)
   border: 0.5px solid black
   border-radius: 5px
@@ -69,6 +69,16 @@ body
     stroke-opacity: 0.3
     stroke: black
 
+.labelx.axisLabel
+  fill: black
+  font-size: 16px
+
+//.nodeText2
+//  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.8)
+
+#slide-out
+  svg
+    background-color: #444
 
 @keyframes spinner-line-fade-more
   0%, 100%

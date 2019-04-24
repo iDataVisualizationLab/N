@@ -68,6 +68,15 @@ body {
   stroke: black;
 }
 
+.labelx.axisLabel {
+  fill: black;
+  font-size: 16px;
+}
+
+#slide-out svg {
+  background-color: #444;
+}
+
 @keyframes spinner-line-fade-more {
   0%, 100% {
     opacity: 0;
