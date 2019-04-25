@@ -8,6 +8,7 @@ function forcegraph(selector,searchbox) {
                 // console.log(data)
                 nodes2 = data.result.nodes;
                 links2 = data.result.links;
+                M.toast({html: 'Network done and ready to discover!'})
                 var svg2main = d3.select(selector).select('svg');
                 var margin = { top: 5, right: 5, bottom: 5, left: 5 },
                     width = $(selector).width() - margin.left - margin.right,
