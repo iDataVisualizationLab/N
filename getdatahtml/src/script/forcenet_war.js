@@ -1,156 +1,160 @@
 let calforce = new Worker ('src/script/force_cal_worker.js');
-calforce.addEventListener('message',({data})=> {
-    switch (data.action) {
-        case 'computeNodes':
-            var svg2main = d3.select(selector).select('svg');
-            var margin = { top: -5, right: -5, bottom: -5, left: -5 },
-                width = $(selector).width() - margin.left - margin.right,
-                height = $(selector).height() - margin.top - margin.bottom;
 
-            svg2main.attrs({width: width, height: height});
-            svg2main.select('g').remove();
-            var svg2 = svg2main.append('g')
-                .attr("class", "focus")
-                .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
-            var rect = svg2.append("rect")
-                .attr("width", width)
-                .attr("height", height)
-                .style("fill", "none")
-                .style("pointer-events", "all");
-            var collisionForce = rectCollide()
-                .size(function (d) {
-                    return [d.size.w, d.size.h] }).strength(0.8);
+function forcegraph(selector,searchbox) {
+    calforce.postMessage({action: 'computeNodes',input: {term: termscollection_org, config: mainconfig}});
+    calforce.addEventListener('message',({data})=> {
+        switch (data.action) {
+            case 'computeNodes':
+                // console.log(data)
+                nodes2 = data.result.nodes;
+                links2 = data.result.links;
+                var svg2main = d3.select(selector).select('svg');
+                var margin = { top: 5, right: 5, bottom: 5, left: 5 },
+                    width = $(selector).width() - margin.left - margin.right,
+                    height = $(selector).height() - margin.top - margin.bottom;
 
-            // computeNodes();
-            var linkScale = d3.scaleLinear()
-                .range([0.1, 3])
-                .domain([Math.round(mainconfig.minlink)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
-            var drag = d3.drag()
-                .subject(function (d) { return d; })
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended);
+                svg2main.attrs({width: width, height: height});
+                svg2main.select('g').remove();
+                var svg2 = svg2main.append('g')
+                    .attr("class", "focus")
+                    .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+                var rect = svg2.append("rect")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .style("fill", "none")
+                    .style("pointer-events", "all");
+                var collisionForce = rectCollide()
+                    .size(function (d) {
+                        return [d.size.w, d.size.h] }).strength(0.8);
 
-            var zoom = d3.zoom()
-                .scaleExtent([0, 10])
-                .on("zoom", zoomed);
+                // computeNodes();
+                var linkScale = d3.scaleLinear()
+                    .range([0.1, 3])
+                    .domain([Math.round(mainconfig.minlink)-0.4, Math.max(d3.max(links2,d=>d.count),10)]);
+                var drag = d3.drag()
+                    .subject(function (d) { return d; })
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended);
 
-            svg2.call(zoom);
+                var zoom = d3.zoom()
+                    .scaleExtent([0, 10])
+                    .on("zoom", zoomed);
+
+                svg2.call(zoom);
 
 
 /// The second force directed layout ***********
 
-            var container = svg2.append("g");
+                var container = svg2.append("g");
 
 
 
-            var link2 = container.selectAll(".link2")
-                .data(links2)
-                .enter().append("line")
-                .attr("class", "link2")
-                .style("stroke", "black")
-                .style("stroke-opacity", 0.3)
-                .style("stroke-width", function (d) {
-                    return 0.3 + linkScale(d.count);
-                });
-            var scalefomtsize = d3.scaleLinear().domain(d3.extent(nodes2,d=>d.frequency)).range([12,25]);
-            var node2 = container.selectAll(".nodeText2")
-                .data(nodes2)
-                .enter().append("g");
-
-            node2.append("text")
-                .attr("class", "nodeText2")
-                .text(function (d) {
-                    return d.key;
-                })
-                .attr("dy", ".35em")
-                .style("fill", function (d) {
-                    return color(categories.indexOf(d.group));
-                })
-                .style("text-anchor", "middle")
-                .style("font-weight", function (d) {
-                    return d.isSearchTerm ? "bold" : "";
-                })
-                .attr("dy", ".21em")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", d=> scalefomtsize(d.frequency))
-                .on('contextmenu', function(d){
-                    d3.event.preventDefault();
-                    $(searchbox).val(d.key);
-                    M.Sidenav.getInstance($(selector)).close();
-                    setTimeout(function () {
-                        // do calculations
-                        // update graph
-                        // clear spinner
-                        searchWord();
-                    }, 0);
-                });
-            node2.call(drag);
-            node2.nodes().forEach(d=>{
-                let e= d3.select(d).node().getBoundingClientRect();
-                d.__data__.size = {w: e.width,h: e.height*2};
-            });
-            var force2 = d3.forceSimulation()
-                .force("charge", d3.forceManyBody().strength(-20 ))
-                .force("gravity", d3.forceManyBody(0.15))
-                .force('collision',collisionForce)
-                .alpha(1)
-                .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("link", d3.forceLink().id(function(d) { return d.key }).distance(70));
-            force2.nodes(nodes2);
-            force2.force("link").links(links2);
-            force2.on("tick", function () {
-                link2.attr("x1", function (d) {
-                    return d.source.x;
-                })
-                    .attr("y1", function (d) {
-                        return d.source.y;
-                    })
-                    .attr("x2", function (d) {
-                        return d.target.x;
-                    })
-                    .attr("y2", function (d) {
-                        return d.target.y;
+                var link2 = container.selectAll(".link2")
+                    .data(links2)
+                    .enter().append("line")
+                    .attr("class", "link2")
+                    .style("stroke", "black")
+                    .style("stroke-opacity", 0.3)
+                    .style("stroke-width", function (d) {
+                        return 0.3 + linkScale(d.count);
                     });
+                var scalefomtsize = d3.scaleLinear().domain(d3.extent(nodes2,d=>d.frequency)).range([12,25]);
+                var node2 = container.selectAll(".nodeText2")
+                    .data(nodes2)
+                    .enter().append("g");
+
+                node2.append("text")
+                    .attr("class", "nodeText2")
+                    .text(function (d) {
+                        return d.key;
+                    })
+                    .attr("dy", ".35em")
+                    .style("fill", function (d) {
+                        return color(categories.indexOf(d.group));
+                    })
+                    .style("text-anchor", "middle")
+                    .style("font-weight", function (d) {
+                        return d.isSearchTerm ? "bold" : "";
+                    })
+                    .attr("dy", ".21em")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", d=> scalefomtsize(d.frequency))
+                    .on('contextmenu', function(d){
+                        d3.event.preventDefault();
+                        $(searchbox).val(d.key);
+                        M.Sidenav.getInstance($(selector)).close();
+                        setTimeout(function () {
+                            // do calculations
+                            // update graph
+                            // clear spinner
+                            searchWord();
+                        }, 0);
+                    });
+                node2.call(drag);
+                node2.nodes().forEach(d=>{
+                    let e= d3.select(d).node().getBoundingClientRect();
+                    d.__data__.size = {w: e.width,h: e.height*2};
+                });
+                var force2 = d3.forceSimulation()
+                    .force("charge", d3.forceManyBody().strength(-20 ))
+                    .force("gravity", d3.forceManyBody(0.15))
+                    .force('collision',collisionForce)
+                    .alpha(1)
+                    .force("center", d3.forceCenter(width / 2, height / 2))
+                    .force("link", d3.forceLink().id(function(d) { return d.key }).distance(70));
+                force2.nodes(nodes2);
+                force2.force("link").links(links2);
+                force2.on("tick", function () {
+                    link2.attr("x1", function (d) {
+                        return d.source.x;
+                    })
+                        .attr("y1", function (d) {
+                            return d.source.y;
+                        })
+                        .attr("x2", function (d) {
+                            return d.target.x;
+                        })
+                        .attr("y2", function (d) {
+                            return d.target.y;
+                        });
 
 
-                node2
-                    .attr('transform', d => `translate(${d.x},${d.y})`);
-            });
-            zoom.scaleTo(svg2, 0.5);
-        function zoomed() {
-            const currentTransform = d3.event.transform;
-            container.attr("transform", currentTransform);
-            //slider.property("value", currentTransform.k);
+                    node2
+                        .attr('transform', d => `translate(${d.x},${d.y})`);
+                });
+                zoom.scaleTo(svg2, 0.5);
+            function zoomed() {
+                const currentTransform = d3.event.transform;
+                container.attr("transform", currentTransform);
+                //slider.property("value", currentTransform.k);
+            }
+
+            function dragstarted(d) {
+                d3.select(this).classed("dragging", true);
+                if (!d3.event.active) force2.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(d) {
+                d.fx = d3.event.x;
+                d.fy = d3.event.y;
+                // d3.select(this).attr('transform', d => {
+                //     d.x = d3.event.x;
+                //     d.y = d3.event.y;
+                //     return 'translate('+ d.x+','+d.y+')'});
+            }
+
+            function dragended(d) {
+                d3.select(this).classed("dragging", false);
+                if (!d3.event.active) force2.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+                break;
         }
-
-        function dragstarted(d) {
-            d3.select(this).classed("dragging", true);
-            if (!d3.event.active) force2.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
-
-        function dragged(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-            // d3.select(this).attr('transform', d => {
-            //     d.x = d3.event.x;
-            //     d.y = d3.event.y;
-            //     return 'translate('+ d.x+','+d.y+')'});
-        }
-
-        function dragended(d) {
-            d3.select(this).classed("dragging", false);
-            if (!d3.event.active) force2.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
-            break;
-    }
-});
-function forcegraph(selector,searchbox) {
-    calforce.postMessage({action: 'computeNodes',input: {term: termscollection_org, config: mainconfig}});
+    });
 }
 function computeNodes(termscollection_org) {
     var nested_data = d3.nest()

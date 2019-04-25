@@ -212,10 +212,14 @@ function wordCloud(selector,config) {
 
         //Draw the word cloud
 
-        var mainGroup = svg.append('g')
-            .attr('class','cloud')
-            .attr('transform', 'translate(' + margins.left + ',' + (margins.top) + ')');
-        var wordStreamG = mainGroup.append('g');
+        var mainGroup = svg.select('g.cloud').attr('transform', 'translate(' + margins.left + ',' + (margins.top) + ')');
+        var wordStreamG = mainGroup.select('g');
+        if (mainGroup.empty()) {
+            mainGroup = svg.append('g')
+                .attr('class', 'cloud')
+                .attr('transform', 'translate(' + margins.left + ',' + (margins.top) + ')');
+            wordStreamG = mainGroup.append('g');
+        }
         var k = 0;
         // if (pop) {
         //     dataWidth = data.length * 20
@@ -262,50 +266,78 @@ function wordCloud(selector,config) {
             .attr('class','wsoverlay').attrs({width:width, height:height})
             .style("fill", "none")
             .style("pointer-events", "all");
-
+        if (timeline.select("g.legend").empty())
+            timeline.append('g')
+            .attr("class", "legend")
         if (mainconfig.seperate) {
             var legend = boxes.layers.map(d => {
                 return {'key': d.key, 'pos': d.offset}
             });
-
-            var legendg = timeline.append("g")
-                .attr("class", "legend")
+            var legendg = timeline.select("g.legend")
                 .attr("transform", "translate(" + (-10) + "," + 0 + ")")
-                .append("g")
-                .attr("class", "sublegend")
-                .selectAll(".lengendtext")
-                .data(legend)
-                .enter()
-                .append("text")
-                .attr("class", "lengendtext")
-                .style("text-anchor", "middle")
-                .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)")
-                .text(d => d.key);
+                .selectAll("g.lengendgtext")
+                .data(legend,d=>d.key)
+                    .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)");
+            if (legendg.empty()) {
+                legendg = timeline.select("g.legend")
+                    .attr("transform", "translate(" + (-10) + "," + 0 + ")")
+                    .selectAll("g.lengendgtext")
+                    .data(legend)
+                    .enter().append("g")
+                    .attr("class", "lengendgtext")
+                    .attr("transform", d => "translate(0," + d.pos + ") rotate(-90)");
+                legendg.append("circle")
+                    .attrs({
+                        class: "lengendmark",
+                        cx: 0,
+                        cy: 0,
+                        r: 5
+                    })
+                    .style("fill", (d, i) => color(i));
+                legendg.append("text")
+                    .attr("class", "lengendtext")
+                    .attrs({dx: 10, dy: 5})
+                    .text(d => d.key);
+            }else {
+                legendg.select("text.lengendtext")
+                    .attrs({dx: 10, dy: 5})
+                    .text(d => d.key);
+            }
         }else{
             var legend = d3.keys(categoriesgroup).map((d,i) => {
                 return {'key': d, 'pos': i*20}
             });
-            var legendg = timeline.append("g")
-                .attr("class", "legend")
+            var legendg = timeline.select("g.legend")
                 .attr("transform", "translate(" + (20) + "," + 20 + ")")
-                .append("g")
-                .attr("class", "sublegend")
-                .selectAll(".lengendgtext")
-                .data(legend)
-                .enter()
-                .append("g")
-                .attr("class", "lengendgtext")
+                .selectAll("g.lengendgtext")
+                .data(legend,d=>d.key)
                 .attr("transform", d => "translate(0," + d.pos + ")");
-            legendg.append("circle")
-                .attrs({class: "lengendmark",
-                    cx: 0,
-                    cy: 0,
-                    r:5})
-                .style("fill",(d,i)=>color(i));
-            legendg.append("text")
-                .attr("class", "lengendtext")
-                .attrs({dx:10,dy:5})
-                .text(d => d.key);
+            if (legendg.empty()) {
+                var legendg = timeline.select("g.legend")
+                    .attr("transform", "translate(" + (20) + "," + 20 + ")")
+                    .selectAll("g.lengendgtext")
+                    .data(legend)
+                    .enter()
+                    .append("g")
+                    .attr("class", "lengendgtext")
+                    .attr("transform", d => "translate(0," + d.pos + ")");
+                legendg.append("circle")
+                    .attrs({
+                        class: "lengendmark",
+                        cx: 0,
+                        cy: 0,
+                        r: 5
+                    })
+                    .style("fill", (d, i) => color(i));
+                legendg.append("text")
+                    .attr("class", "lengendtext")
+                    .attrs({dx: 10, dy: 5})
+                    .text(d => d.key);
+            }else{
+                legendg.select("text.lengendtext")
+                    .attrs({dx: 10, dy: 5})
+                    .text(d => d.key);
+            }
         }
         // =============== Get BOUNDARY and LAYERPATH ===============
         var lineCardinal = d3.line()
@@ -392,12 +424,14 @@ function wordCloud(selector,config) {
         var placed = true; // = false de hien thi nhung tu ko dc dien
 
         var gtext = mainGroup.selectAll('.gtext')
-            .data(allWords)
+            .data(allWords,d=>d.text);
+        gtext.transition()
+            .duration(1000)
             .attrs({transform: function(d){return 'translate('+d.x+', '+d.y+')rotate('+d.rotate+')';}});
 
-        var stext = gtext.selectAll('.stext')
+        var stext = gtext.select('.stext')
             .transition()
-            .duration(600)
+            .duration(1000)
             .text(function(d){return d.text;})
             .attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
@@ -411,8 +445,7 @@ function wordCloud(selector,config) {
                 'fill-opacity': function(d){return opacity(d.frequency)},
                 'text-anchor': 'middle',
                 'alignment-baseline': 'middle'
-            })
-            .duration(1000);
+            });
         gtext.exit().remove();
         gtext.enter()
             .append('g')
@@ -434,8 +467,6 @@ function wordCloud(selector,config) {
                 'text-anchor': 'middle',
                 'alignment-baseline': 'middle'
             });
-        gtext.exit().selectAll('*').remove();
-        gtext.exit().remove();
         // When click a term
         //Try
         var prevColor;
@@ -686,27 +717,37 @@ function ready (error, dataf){
         render();
     }, 0);
 }
-
+function init (){
+    var margin = {top: 20, right: 100, bottom: 100, left: 100};
+    var width = $("#timelinewImg").width() - margin.left - margin.right;
+}
 function render (){
     d3.selectAll("toogle").property("disabled",true);
-    d3.selectAll("#timelinewImg").selectAll('svg').remove();
+    // d3.selectAll("#timelinewImg").selectAll('svg').remove();
     handledata(data);
 
     var margin = {top: 20, right: 100, bottom: 100, left: 100};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
+
     var numDays = Math.floor((new Date(endDate).getYear() - new Date(startDate).getYear()));;
     width = Math.max(width,mainconfig.wstep*(numDays));
     var height = svgHeight - margin.bottom - margin.top;
 
     // parse the date / time
 
-
-    timeline = d3.select("#timelinewImg")
-        .append('svg')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", svgHeight)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    if (timeline){
+        timeline.attr("width", width + margin.left + margin.right)
+            .attr("height", svgHeight)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    }else {
+        timeline = d3.select("#timelinewImg")
+            .append('svg')
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", svgHeight)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    }
     var rc = 1;
 // set the ranges
     //var x = d3.scaleTime().range([0, width]);
@@ -733,93 +774,121 @@ function render (){
         .tickSize(-height)
         .scale(x);
     var y = d3.scaleLinear().range([height/2, 0]);
-    var simulation = d3.forceSimulation()
-        .force("y", d3.forceY(height*wscale/2).strength(0.05));
-    svg = timeline.append("g")
-        .attr("transform", "translate(" + 0 + "," + height*wscale + ")")
-        .attr("id","tagCloud")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height*(1-wscale));
-    svg.append("g")
-        .attr("class", "grid")
-        .call(gridlineNodes)
-        .attr("transform", "translate("+x.bandwidth()/2+",0)");
+    if (svg){
+        svg .attr("width", width)
+            .attr("height", height * (1 - wscale));
+        svg.select('.grid')
+            .call(gridlineNodes)
+            .attr("transform", "translate(" + x.bandwidth() / 2 + ",0)");
+    }else {
+        svg = timeline.append("g")
+            .attr("transform", "translate(" + 0 + "," + height * wscale + ")")
+            .attr("id", "tagCloud")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height * (1 - wscale));
+        svg.append("g")
+            .attr("class", "grid")
+            .call(gridlineNodes)
+            .attr("transform", "translate(" + x.bandwidth() / 2 + ",0)");
+    }
     var configwc = {width: width,height: height*(1-wscale), stepDetails: ArticleDay.map(d=>Math.pow(d.value.articlenum,0.6)), layerWeight: {NUMBER:3}};
     myWordCloud = wordCloud('#tagCloud',configwc);
 
     myWordCloud.update(TermwDay);
-    timeline.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + height*wscale + ")")
+    if (timeline.select('g.axis').empty()) {
+        timeline.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height * wscale + ")")
+            // chaper mark----
+            // .call(d3.axisTop(d3.scaleLinear().domain([0.5,data.length-0.5]).range(x.range()))
+            //     // .tickValues(d3.range(14))
+            //     .tickFormat(d=>(d!=0.5&&d!=(data.length-0.5))?data[d-1].title:"")
+            // )
+            .call(d3.axisTop(x)
+            //.ticks(d3.timeMonday.every(1))
+                .tickFormat(d3.timeFormat("%Y")))
+            .selectAll("text")
+            .style("text-anchor", "middle")
+            // .attr("dx", (-mainconfig.wstep)+"px")
+            .attr("dy", "-.15em");
+        let subaxis = timeline.append("g")
+            .attr("class", "axisAtr")
+            .attr("transform", "translate(0," + height + ")");
+
+        subaxis.call(d3.axisBottom(xdistribution))
+            .selectAll("text")
+            .style("text-anchor", "middle")
+        subaxis.append("text")
+            .attr("x", 10)
+            .attr("dy", '-1em')
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .attr('class', 'labelx axisLabel')
+            .text('Number of documents per year');
+        // xdistribution
+        // Scale the range of the data
+        //x.domain(d3.extent(data, function(d) { return d.time; }));
+        //y.domain([0, d3.max(data, function(d) { return d.close; })]);
+        // simulation.force("x", d3.forceX(d => x(outputFormat(d.time))).strength(0.05));
+
+        // simulation.force("x", d3.forceX(d => x(d.key)).strength(0.05))
+        //     .force("collide", d3.forceCollide(d=>rcscale(d.value.articlenum)));
+        //bubbles
+        var defs = d3.select("#timelinewImg").select('g').append("defs");
+        var filter = defs.append("filter")
+            .attr("id", "glow");
+        filter.append("feGaussianBlur")
+            .attr("stdDeviation", "3.5")
+            .attr("result", "coloredBlur");
+        var feMerge = filter.append("feMerge");
+        feMerge.append("feMergeNode")
+            .attr("in", "coloredBlur");
+        feMerge.append("feMergeNode")
+            .attr("in", "SourceGraphic");
+        var pic = defs.selectAll(".circle-pattern")
+            .data(data).enter().append("pattern")
+            .attr("id", function (d) {
+                return d.time;
+            })
+            .attr("height", "100%")
+            .attr("width", "100%")
+            .attr("class", "circle-pattern")
+            .attr("patternContentUnits", "objectBoundingBox")
+            .append("image")
+            .attr("height", 1).attr("width", 1)
+            .attr("preserveAspectRatio", "none")
+            .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+            .attr("xlink:href", function (d) {
+                return mainconfig.renderpic ? d.urlToImage : "";
+            });
+
+        pic.on("error", function () {
+            let el = d3.select(this);
+            el.attr("xlink:href", "src/img/bb.jpg");
+            el.on("error", null);
+        });
+    }else {
+        timeline.select('g.axis').attr("transform", "translate(0," + height * wscale + ")")
         // chaper mark----
         // .call(d3.axisTop(d3.scaleLinear().domain([0.5,data.length-0.5]).range(x.range()))
         //     // .tickValues(d3.range(14))
         //     .tickFormat(d=>(d!=0.5&&d!=(data.length-0.5))?data[d-1].title:"")
         // )
-        .call(d3.axisTop(x)
-        //.ticks(d3.timeMonday.every(1))
-            .tickFormat(d3.timeFormat("%Y")))
-        .selectAll("text")
-        .style("text-anchor", "middle")
-        // .attr("dx", (-mainconfig.wstep)+"px")
-        .attr("dy", "-.15em");
-    let subaxis = timeline.append("g")
-        .attr("class", "axisAtr")
-        .attr("transform", "translate(0," + height + ")");
+            .call(d3.axisTop(x)
+            //.ticks(d3.timeMonday.every(1))
+                .tickFormat(d3.timeFormat("%Y")))
+            .selectAll("text")
+            .style("text-anchor", "middle")
+            // .attr("dx", (-mainconfig.wstep)+"px")
+            .attr("dy", "-.15em");
+        let subaxis = timeline.select("g.axisAtr")
+            .attr("transform", "translate(0," + height + ")");
 
-    subaxis.call(d3.axisBottom(xdistribution))
-        .selectAll("text")
-        .style("text-anchor", "middle")
-    subaxis.append("text")
-            .attr("x", 10)
-            .attr("dy", '-1em')
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "start")
-            .attr('class','labelx axisLabel')
-            .text('Number of documents per year');
-    // xdistribution
-    // Scale the range of the data
-    //x.domain(d3.extent(data, function(d) { return d.time; }));
-    //y.domain([0, d3.max(data, function(d) { return d.close; })]);
-    // simulation.force("x", d3.forceX(d => x(outputFormat(d.time))).strength(0.05));
-
-    // simulation.force("x", d3.forceX(d => x(d.key)).strength(0.05))
-    //     .force("collide", d3.forceCollide(d=>rcscale(d.value.articlenum)));
-    //bubbles
-    var defs = d3.select("#timelinewImg").select('g').append("defs");
-    var filter = defs.append("filter")
-        .attr("id","glow");
-    filter.append("feGaussianBlur")
-        .attr("stdDeviation","3.5")
-        .attr("result","coloredBlur");
-    var feMerge = filter.append("feMerge");
-    feMerge.append("feMergeNode")
-        .attr("in","coloredBlur");
-    feMerge.append("feMergeNode")
-        .attr("in","SourceGraphic");
-    var pic = defs.selectAll(".circle-pattern")
-        .data(data).enter().append("pattern")
-        .attr("id", function (d) {
-            return d.time;
-        })
-        .attr("height", "100%")
-        .attr("width", "100%")
-        .attr("class","circle-pattern")
-        .attr("patternContentUnits", "objectBoundingBox")
-        .append("image")
-        .attr("height", 1).attr("width", 1)
-        .attr("preserveAspectRatio", "none")
-        .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-        .attr("xlink:href", function (d) {
-            return mainconfig.renderpic? d.urlToImage:"";
-        });
-
-    pic.on("error", function(){
-        let el = d3.select(this);
-        el.attr("xlink:href", "src/img/bb.jpg");
-        el.on("error", null);
-    });
+        subaxis.call(d3.axisBottom(xdistribution))
+            .selectAll(".tick text")
+            .style("text-anchor", "middle");
+    }
     // var circles = timeline.selectAll(".img")
     //     .data(data)
     //     .enter().append("circle")

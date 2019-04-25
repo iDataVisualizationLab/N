@@ -1,4 +1,5 @@
 importScripts("https://d3js.org/d3.v4.min.js");
+importScripts("../../lib/underscore-min.js");
 
 let nodes2, link2,mainconfig;
 
@@ -7,7 +8,7 @@ addEventListener('message',function ({data}) {
         case "computeNodes":
             mainconfig = data.input.config;
             computeNodes(data.input.term);
-            postMessage({action:'computeNodes', result: {nodes: nodes2, link: link2}});
+            postMessage({action:'computeNodes', result: {nodes: nodes2, links: links2}});
             break;
     }
 });
