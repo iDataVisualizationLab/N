@@ -13,7 +13,7 @@ var categoriesgroup ={
 // var categoriesgroup ={
 //     "usgs": ["usgs"],
 //     "twitter":["twitter"]};
-var color = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.keys(categoriesgroup));
+var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
 var parseTime = (d => Date.parse(d));
