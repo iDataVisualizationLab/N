@@ -83,15 +83,15 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th >Source(s)</th>';
-        str += '<th >Title</th>';
+        str += '<th >File</th>';
+        str += '<th >Summary</th>';
         str + "</tr>";
 
         (d.data||d.value.data).forEach(t => {
             var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
             str += "<tr>";
-            str += "<td>" + ar.source + "</td>";
-            str += "<td class=pct>" + (ar.body||ar.title) + "</td>";
+            str += "<td>" + ar.title + "</td>";
+            str += "<td class=pct>" + (ar.body.split('. ').find(sentence=>sentence.match(new RegExp((d.text||d.key),'g')))) + "</td>";
             str + "</tr>";
         });
 
@@ -136,7 +136,8 @@ $(document).ready(function () {
     spinner.spin(document.body);
     d3.queue()
     // .defer(d3.json,"src/data/twittwaterv2.json")
-        .defer(d3.json,"src/data/war/F3011AF.json")
+    //     .defer(d3.json,"src/data/war/F3011AF.json")
+        .defer(d3.json,"src/data/war/F3011AFwithBody.json")
         .await(ready);
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
@@ -718,7 +719,7 @@ function ready (error, dataf){
     }, 0);
 }
 function init (){
-    var margin = {top: 20, right: 100, bottom: 100, left: 100};
+    var margin = {top: 20, right: 20, bottom: 0, left: 20};
     var width = $("#timelinewImg").width() - margin.left - margin.right;
 }
 function render (){
@@ -1241,3 +1242,42 @@ document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.sidenav');
     sidenav = M.Sidenav.init(elems, options);
 });
+
+
+function saveResults() {
+    var filename = "vietnamwar.csv";
+    var type = "csv";
+    // word stream format to array
+    rows = TermwDay.map((d,i)=> {
+        const filesArray = getfilenames(i)
+        return [d.date,filesArray.length,filesArray.join('|'),getfields(d)].join(',')})
+    let str = "Year,Total number of file per year,Files,"+d3.keys(categoriesgroup).join(',')+'\n'; // title
+    str += rows.join("\n");
+
+    var file = new Blob([str], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+    }
+}
+function getfilenames (i){
+    return ArticleDay[i].value.data.map(f=>f.filename);
+}
+function getfields(w){
+    return d3.keys(categoriesgroup).map(c=>{
+        if (w.words[c])
+            return w.words[c].map(t=>t.text+'|'+t.frequency).join('|');
+        else
+            return "";
+    }).join(',');
+}
