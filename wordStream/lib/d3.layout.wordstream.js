@@ -146,7 +146,7 @@ d3.wordStream = function(){
                 m.splice(0, 0, a);
                 return m;
             });
-            console.log(layers)
+
             if (center_topic) { //rescale height
                 const maxt = d3.max(layers, (d => d3.max(d, e => e.y0 + e.y)));
                 const mint = d3.min(layers, (d => d3.min(d, e => e.y0)));
