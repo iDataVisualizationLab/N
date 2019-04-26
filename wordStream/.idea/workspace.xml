@@ -19,55 +19,82 @@
     <session id="97850068">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
-          <entry key="project.open.time.0" value="6" />
+          <entry key="project.closed" value="13" />
+          <entry key="project.open.time.0" value="11" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="10" />
+          <entry key="project.open.time.4" value="2" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="1" />
-          <entry key="JSON" value="12" />
-          <entry key="JavaScript" value="35" />
+          <entry key="HTML" value="8" />
+          <entry key="JSON" value="33" />
+          <entry key="JavaScript" value="54" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="SCSS" value="1" />
+          <entry key="Sass" value="1" />
+          <entry key="TypeScript" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="32" />
-          <entry key="JSON" value="14" />
-          <entry key="JavaScript" value="2700" />
+          <entry key="HTML" value="68" />
+          <entry key="JSON" value="209" />
+          <entry key="JavaScript" value="8366" />
+          <entry key="Sass" value="92" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/script/mainwar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="26" column="17" lean-forward="true" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+            <state relative-caret-position="379">
+              <caret line="93" column="115" selection-start-line="93" selection-start-column="115" selection-end-line="93" selection-end-column="115" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/script/warformat.js">
+        <entry file="file://$PROJECT_DIR$/warindex.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1054">
-              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+            <state relative-caret-position="24">
+              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/war/datafrequency.json">
+        <entry file="file://$PROJECT_DIR$/src/script/forcenet_war.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="113755" selection-start-column="113755" selection-end-column="113755" />
+            <state relative-caret-position="170">
+              <caret line="10" column="66" selection-start-line="10" selection-start-column="66" selection-end-line="10" selection-end-column="66" />
+              <folding>
+                <element signature="n#!!block;n#computeNodes#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/data/GAB/bombing.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret column="1146" selection-start-column="1146" selection-end-column="1146" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2448">
+              <caret line="145" column="34" selection-start-line="145" selection-start-column="34" selection-end-line="145" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -75,40 +102,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/script/mainwar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="173" column="19" selection-start-line="173" selection-start-column="19" selection-end-line="173" selection-end-column="19" />
+            <state relative-caret-position="1122">
+              <caret line="66" column="61" selection-start-line="66" selection-start-column="61" selection-end-line="66" selection-end-column="61" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/script/main.js">
+        <entry file="file://$PROJECT_DIR$/src/script/warformat.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="895" column="12" selection-start-line="895" selection-start-column="4" selection-end-line="895" selection-end-column="12" />
-              <folding>
-                <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="143">
+              <caret line="68" column="77" lean-forward="true" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="77" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/script/twitter.js">
+        <entry file="file://$PROJECT_DIR$/src/style/main.sass">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="56" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="56" />
+            <state relative-caret-position="1275">
+              <caret line="75" selection-start-line="75" selection-start-column="2" selection-end-line="76" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -125,37 +138,41 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>data</find>
-      <find>ready (</find>
-      <find>width =</find>
-      <find>endDate</find>
-      <find>startDate</find>
-      <find>start</find>
-      <find>startda</find>
-      <find>numda</find>
-      <find>frequ</find>
-      <find>endDate =</find>
-      <find>.freq</find>
+      <find>numberOfTopics</find>
+      <find>wor</find>
       <find>wordCloud</find>
-      <find>.date</find>
-      <find>width =</find>
-      <find>wscale</find>
-      <find>sudden</find>
-      <find>config.</find>
-      <find>wordc</find>
-      <find>height</find>
-      <find>height =</find>
-      <find>freq</find>
-      <find>title</find>
-      <find>d3.nest()</find>
-      <find>termwday</find>
-      <find>.time</find>
-      <find>d.time</find>
-      <find>item = item.data.map(t=&gt;ArticleDay.filter(f=&gt; f.key == outputFormat(t.time))[0].value.data.find(f=&gt; f.title == t.title))</find>
-      <find>handle</find>
-      <find>Arial</find>
-      <find>font</find>
+      <find>finan</find>
+      <find>sqrt</find>
+      <find>innerBoxes</find>
+      <find>layer</find>
+      <find>timeline</find>
+      <find>umber of</find>
+      <find>force</find>
+      <find>node2</find>
+      <find>0 3px 3px</find>
+      <find>color</find>
+      <find>stroke</find>
+      <find>stack</find>
+      <find>main</find>
+      <find>link2</find>
+      <find>nodes2</find>
+      <find>world</find>
+      <find>wordStreamG</find>
+      <find>.cloud</find>
+      <find>cloud</find>
+      <find>render</find>
+      <find>forcegr</find>
+      <find>heightScale</find>
+      <find>margin</find>
+      <find>d3.jso</find>
+      <find>}</find>
+      <find>d3.json</find>
+      <find>reg</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>&quot;filename&quot;</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -173,31 +190,39 @@
         <option value="$PROJECT_DIR$/src/script/timearc2.js" />
         <option value="$PROJECT_DIR$/src/script/forcegraph.js" />
         <option value="$PROJECT_DIR$/src/script/main2.js" />
-        <option value="$PROJECT_DIR$/src/script/convert.js" />
-        <option value="$PROJECT_DIR$/src/script/main.js" />
         <option value="$PROJECT_DIR$/src/script/main3.js" />
         <option value="$PROJECT_DIR$/src/data/twittwaterv2.json" />
-        <option value="$PROJECT_DIR$/quantum.html" />
         <option value="$PROJECT_DIR$/src/script/quantumdata.js" />
         <option value="$PROJECT_DIR$/voronoi/script/forcenet.js" />
         <option value="$PROJECT_DIR$/src/data/dataWatViz.txt" />
         <option value="$PROJECT_DIR$/src/data/dataWatViz.json" />
         <option value="$PROJECT_DIR$/voronoi/script/quantumdata.js" />
         <option value="$PROJECT_DIR$/src/data/collectionwatviz.json" />
-        <option value="$PROJECT_DIR$/lib/d3.layout.wordstream.js" />
-        <option value="$PROJECT_DIR$/src/style/main.sass" />
         <option value="$PROJECT_DIR$/lib/d3.layout.cloud.js" />
         <option value="$PROJECT_DIR$/src/script/watVizeveident.js" />
-        <option value="$PROJECT_DIR$/watvizevident.html" />
         <option value="$PROJECT_DIR$/src/style/main.css" />
-        <option value="$PROJECT_DIR$/src/script/forcenet.js" />
         <option value="$PROJECT_DIR$/src/script/main4.js" />
         <option value="$PROJECT_DIR$/getdata.js" />
         <option value="$PROJECT_DIR$/src/script/gabChange.js" />
-        <option value="$PROJECT_DIR$/src/script/warformat.js" />
-        <option value="$PROJECT_DIR$/src/data/war/datafrequency.json" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/data/war/dataOR.json" />
+        <option value="$PROJECT_DIR$/src/data/war/datafrequency.json" />
+        <option value="$PROJECT_DIR$/src/data/war/dataWarout.json" />
+        <option value="$PROJECT_DIR$/src/script/convert.js" />
+        <option value="$PROJECT_DIR$/src/script/warformat.js" />
+        <option value="$PROJECT_DIR$/src/warindex.html" />
+        <option value="$PROJECT_DIR$/src/script/main.js" />
+        <option value="$PROJECT_DIR$/lib/d3.layout.wordstreamv1.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/lib/d3.layout.wordstream.js" />
+        <option value="$PROJECT_DIR$/src/script/forcenet.js" />
+        <option value="$PROJECT_DIR$/src/style/main.sass" />
+        <option value="$PROJECT_DIR$/quantum.html" />
+        <option value="$PROJECT_DIR$/watvizevident.html" />
+        <option value="$PROJECT_DIR$/voronoi/script/force_cal_worker.js" />
+        <option value="$PROJECT_DIR$/src/script/force_cal_worker.js" />
+        <option value="$PROJECT_DIR$/src/script/forcenet_war.js" />
+        <option value="$PROJECT_DIR$/warindex.html" />
+        <option value="$PROJECT_DIR$/src/data/war/summaryfd1.json" />
         <option value="$PROJECT_DIR$/src/script/mainwar.js" />
       </list>
     </option>
@@ -214,11 +239,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="2576" />
-    <option name="height" value="1096" />
+    <option name="width" value="1616" />
+    <option name="height" value="916" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -249,6 +274,13 @@
               <item name="getdatahtml" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="getdatahtml" type="b2602c69:ProjectViewProjectNode" />
+              <item name="getdatahtml" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="GAB" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="getdatahtml" type="b2602c69:ProjectViewProjectNode" />
@@ -309,22 +341,25 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://E:/nvtng/Projects/GitHub/N/getdatahtml/src/script/mainwar.js" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../example/Soil-master" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\script" />
+      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml" />
+      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\data" />
+      <recent name="E:\nvtng\Projects\getdatahtml\src\data" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\data\war" />
+      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\lib" />
       <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\data" />
       <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\voronoi\data" />
       <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\voronoi\script" />
-      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\voronoi" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\nvtng\Projects\GitHub\N\getdatahtml\src\data" />
-      <recent name="E:\nvtng\Projects\getdatahtml\src\data" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -339,7 +374,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.Unnamed">
+  <component name="RunManager" selected="JavaScript Debug.warindex.html">
     <configuration name="Unnamed" type="JavascriptDebugType" factoryName="JavaScript Debug" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:64320/getdatahtml/index.html">
       <method v="2" />
     </configuration>
@@ -347,6 +382,9 @@
       <method v="2" />
     </configuration>
     <configuration name="quantum" type="JavascriptDebugType" factoryName="JavaScript Debug" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:64320/getdatahtml/quantum.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="warindex.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:64320/getdatahtml/warindex.html">
       <method v="2" />
     </configuration>
     <configuration name="watvizevident.html" type="JavascriptDebugType" factoryName="JavaScript Debug" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:64320/getdatahtml/watvizevident.html">
@@ -364,9 +402,11 @@
       <item itemvalue="JavaScript Debug.watvizevident.html" />
       <item itemvalue="Node.js.main.js" />
       <item itemvalue="Node.js.gabChange.js" />
+      <item itemvalue="JavaScript Debug.warindex.html" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.warindex.html" />
         <item itemvalue="Node.js.gabChange.js" />
         <item itemvalue="Node.js.main.js" />
       </list>
@@ -406,32 +446,39 @@
       <workItem from="1550281640590" duration="108000" />
       <workItem from="1551478198326" duration="32406000" />
       <workItem from="1552430589959" duration="1095000" />
-      <workItem from="1554150658643" duration="13151000" />
+      <workItem from="1554150658643" duration="13738000" />
+      <workItem from="1554215447426" duration="19656000" />
+      <workItem from="1554571818356" duration="154000" />
+      <workItem from="1555617190470" duration="1275000" />
+      <workItem from="1555974323755" duration="2362000" />
+      <workItem from="1556035589266" duration="2921000" />
+      <workItem from="1556040156910" duration="58484000" />
+      <workItem from="1556167003188" duration="7538000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="388662000" />
+    <option name="totallyTimeSpent" value="481639000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1096" extended-state="0" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.0945946" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2525707" />
       <window_info id="Structure" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Event Log" order="0" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.5012854" side_tool="true" visible="true" weight="0.31897712" />
       <window_info anchor="bottom" id="Version Control" order="1" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="2" weight="0.32928476" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.49871466" weight="0.4078062" />
       <window_info anchor="bottom" id="Docker" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="4" />
-      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.32936078" />
       <window_info anchor="bottom" id="Run" order="6" />
-      <window_info anchor="bottom" id="Debug" order="7" visible="true" weight="0.30633438" />
-      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49871466" weight="0.31897712" />
       <window_info anchor="bottom" id="TODO" order="10" />
-      <window_info anchor="right" id="JSON Viewer" order="0" weight="0.3297587" />
+      <window_info anchor="right" id="JSON Viewer" order="0" weight="0.32961783" />
       <window_info anchor="right" id="Commander" order="1" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
@@ -468,7 +515,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>573</line>
+          <line>1048</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -483,12 +530,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>223</line>
+          <line>698</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>793</line>
+          <line>1268</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -518,17 +565,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>791</line>
+          <line>1266</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/main.js</url>
-          <line>306</line>
+          <line>781</line>
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/forcenet.js</url>
-          <line>80</line>
+          <line>81</line>
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -598,187 +645,74 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>785</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="217" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>821</line>
-          <properties lambdaOrdinal="-1" />
+          <line>970</line>
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>842</line>
-          <properties lambdaOrdinal="-1" />
+          <line>991</line>
           <option name="timeStamp" value="225" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>803</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="227" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>850</line>
-          <properties lambdaOrdinal="-1" />
+          <line>999</line>
           <option name="timeStamp" value="229" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>866</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="230" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>651</line>
-          <properties lambdaOrdinal="-1" />
+          <line>734</line>
           <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>223</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="232" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>689</line>
-          <properties lambdaOrdinal="-1" />
+          <line>796</line>
           <option name="timeStamp" value="233" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>875</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="234" />
+          <line>1177</line>
+          <option name="timeStamp" value="239" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>917</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="235" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
-          <line>930</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="236" />
+          <url>file://$PROJECT_DIR$/src/script/convert.js</url>
+          <line>22</line>
+          <option name="timeStamp" value="241" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/script/warformat.js</url>
-          <line>62</line>
+          <line>57</line>
+          <option name="timeStamp" value="244" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/warformat.js</url>
+          <line>103</line>
+          <option name="timeStamp" value="247" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/lib/d3.layout.wordstream.js</url>
+          <line>111</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/lib/d3.layout.wordstream.js</url>
+          <line>136</line>
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/lib/d3.layout.wordstream.js</url>
+          <line>149</line>
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/script/mainwar.js</url>
+          <line>685</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="237" />
+          <option name="timeStamp" value="253" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/data/datacrashcar.json" />
-    <entry file="file://$PROJECT_DIR$/src/script/TimeArcsconvert.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="19" column="29" lean-forward="true" selection-end-line="86" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/timearc2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="22" column="53" selection-start-line="22" selection-start-column="53" selection-end-line="22" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="14865" column="4" selection-start-line="14865" selection-start-column="4" selection-end-line="14865" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/forcegraph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1887">
-          <caret line="111" column="32" selection-start-line="111" selection-start-column="32" selection-end-line="111" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataout.json">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret column="21546099" selection-start-column="21546099" selection-end-column="21546099" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="12359">
-          <caret column="727260" selection-start-column="727260" selection-end-column="727260" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/autocomplete.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/twittwater.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret column="11789" selection-start-column="11788" selection-end-column="11789" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/data.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret column="586259" selection-start-column="586253" selection-end-column="586259" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataIoT.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret column="1903480" selection-start-column="1903472" selection-end-column="1903480" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/img/bb.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quantum.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="63" column="18" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voronoi/data/quantumar.csv">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataWatViz.txt" />
-    <entry file="file://$PROJECT_DIR$/src/data/dataWatVizout.json" />
-    <entry file="https://d3js.org/d3-selection-multi.v1.min.js">
-      <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voronoi/script/quantumdata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="47" column="17" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voronoi/script/forcenet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="154" column="29" selection-start-line="154" selection-start-column="29" selection-end-line="154" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/voronoi/voronoi.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -793,13 +727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10914">
           <caret column="642486" selection-start-column="642486" selection-end-column="642486" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="87" column="24" lean-forward="true" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -831,13 +758,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/watvizevident.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="115" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="115" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/collect.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-19" />
@@ -860,27 +780,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/style/main.sass">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/convert.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="25" selection-end-line="63" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/twitter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="56" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/dataWatViz.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="808">
@@ -895,11 +794,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="410">
           <caret line="607" lean-forward="true" selection-start-line="607" selection-end-line="607" />
-          <folding>
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -910,25 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/main2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="577" column="50" selection-start-line="577" selection-start-column="45" selection-end-line="577" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1180">
-          <caret line="768" column="15" selection-start-line="768" selection-start-column="6" selection-end-line="768" selection-end-column="15" />
-          <folding>
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/script/main4.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="707">
@@ -936,77 +811,231 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="http://localhost:64320/getdatahtml/src/script/warformat.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/adl_out.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/voronoi/script/quantumdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3026">
+          <caret line="178" selection-start-line="178" selection-end-line="648" selection-end-column="1" />
+          <folding>
+            <element signature="e#5878#24127#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/war/dataWar_OR_out.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/war/dataWarout.json">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55573">
+          <caret line="3269" column="9" selection-start-line="3269" selection-start-column="5" selection-end-line="3269" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/war/summaryandcleanedfd1.json">
+      <provider selected="true" editor-type-id="LargeFileEditor">
         <state>
-          <caret column="6496" selection-start-column="6488" selection-end-column="6496" />
+          <caret column="87" selection-start-column="76" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/war/dataOR.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="51" column="6" selection-start-line="51" selection-start-column="2" selection-end-line="51" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/twitter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="56" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="56" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/data/war/datafrequency.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="113755" selection-start-column="113755" selection-end-column="113755" />
+        <state relative-caret-position="1439">
+          <caret column="131348" selection-start-column="131348" selection-end-column="131348" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="26" column="17" lean-forward="true" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/data/war/testwar_short2.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/main.js">
+    <entry file="file://$PROJECT_DIR$/src/script/convert.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="895" column="12" selection-start-line="895" selection-start-column="4" selection-end-line="895" selection-end-column="12" />
-          <folding>
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="357">
+          <caret line="36" column="46" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="http://localhost:64320/getdatahtml/src/script/mainwar.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/script/warformat.js">
+    <entry file="file://$PROJECT_DIR$/src/script/forcegraph.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/main.scss">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/underscore-min.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/quantumdata.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+        <state relative-caret-position="72">
+          <caret line="238" column="23" selection-start-line="238" selection-start-column="23" selection-end-line="238" selection-end-column="23" />
+          <folding>
+            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/war/dataOR.json">
+    <entry file="file://$PROJECT_DIR$/src/script/main2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="42" column="15572" selection-start-line="42" selection-start-column="15572" selection-end-line="42" selection-end-column="15572" />
+        <state relative-caret-position="184">
+          <caret line="904" column="25" selection-start-line="904" selection-start-column="21" selection-end-line="904" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstreamv1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="617" column="2" selection-start-line="617" selection-start-column="2" selection-end-line="617" selection-end-column="2" />
           <folding>
-            <element signature="e#1#2438#0" />
-            <element signature="e#2440#23541#0" />
-            <element signature="e#23543#47635#0" />
-            <element signature="e#47637#83749#0" />
-            <element signature="e#83751#113373#0" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="904" column="4" selection-start-line="904" selection-start-column="4" selection-end-line="904" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="1479" selection-start-line="1479" selection-end-line="1479" />
+          <folding>
+            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h5#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantum.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/watvizevident.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="51" lean-forward="true" selection-start-line="8" selection-start-column="51" selection-end-line="8" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/force_cal_worker.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="28" lean-forward="true" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2448">
+          <caret line="145" column="34" selection-start-line="145" selection-start-column="34" selection-end-line="145" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/forcenet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="66" column="61" selection-start-line="66" selection-start-column="61" selection-end-line="66" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/main.sass">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="75" selection-start-line="75" selection-start-column="2" selection-end-line="76" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/forcenet_war.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="66" selection-start-line="10" selection-start-column="66" selection-end-line="10" selection-end-column="66" />
+          <folding>
+            <element signature="n#!!block;n#computeNodes#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/GAB/bombing.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret column="1146" selection-start-column="1146" selection-end-column="1146" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="10" column="54" lean-forward="true" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/warindex.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/war/summaryfd1_out.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/war/summaryfd1.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="5007" column="131" lean-forward="true" selection-start-line="5007" selection-start-column="131" selection-end-line="5007" selection-end-column="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/war/F3011AF.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret column="1696" lean-forward="true" selection-start-column="1696" selection-end-column="1696" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/script/warformat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="68" column="77" lean-forward="true" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/script/mainwar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="173" column="19" selection-start-line="173" selection-start-column="19" selection-end-line="173" selection-end-column="19" />
+        <state relative-caret-position="379">
+          <caret line="93" column="115" selection-start-line="93" selection-start-column="115" selection-end-line="93" selection-end-column="115" />
         </state>
       </provider>
     </entry>
