@@ -145,8 +145,8 @@ $(document).ready(function () {
     d3.queue()
     // .defer(d3.json,"src/data/twittwaterv2.json")
     //     .defer(d3.json,"src/data/war/F3011AF.json")
-    //     .defer(d3.json,"src/data/war/F3011AFwithBody.json")
-        .defer(d3.json,"src/data/war/F3011AFwithBody_method2.json")
+        .defer(d3.json,"src/data/war/F3011AFwithBody.json")
+        // .defer(d3.json,"src/data/war/F3011AFwithBody_method2.json")
         .await(ready);
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
