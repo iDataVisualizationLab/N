@@ -75,7 +75,10 @@ $(document).ready(function(){
     $('.collapsible').collapsible();
     $('.tabs').tabs({'onShow':function(){
             if ($('#demo').css('display')!=="none") {
-                $('video')[0].pause();
+                $('#videoIn').each(function(index) {
+                    $(this).attr('src', $(this).attr('src'));
+                    return false;
+                });
                 initialize();
             }
     }});
