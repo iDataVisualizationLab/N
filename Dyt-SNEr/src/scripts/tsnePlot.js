@@ -68,18 +68,18 @@ d3.Tsneplot = function () {
             })
             .transition()
             .duration(Math.min(runopt.simDuration,500)/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
-            .attr('transform', 'translate(40,' + (maxlist + 1) * sizebox + ")")
+            .attr('transform', 'translate(40,' + (maxlist + 0.5) * sizebox + ")")
             .remove();
         // ENTER
         const newdiv = dataTop.enter().append("g")
             .attr('class',d=> 'top10_item '+fixstr(d.name));
         newdiv
-            .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
+            .attr('transform', 'translate(0,' + (maxlist + 0.5) * sizebox + ")")
             .style('opacity', 0)
             .transition('update')
             .duration((d, i) => Math.min(runopt.simDuration,500)/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
             .style('opacity', 1)
-            .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
+            .attr('transform', (d, i) => 'translate(0,' + (i + 0.5) * sizebox + ")");
         newdiv.append('rect').attrs(
             {class : 'detailDecoration',
                 y: -(sizebox-2)/2,
@@ -107,7 +107,7 @@ d3.Tsneplot = function () {
         dataTop
             .transition()
             .duration((d, i) => runopt.simDuration/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
-            .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
+            .attr('transform', (d, i) => 'translate(0,' + (i + 0.5) * sizebox + ")");
 
         const gd = dataTop.select('.gd').datum(d=>d);
         gd.select("path")
