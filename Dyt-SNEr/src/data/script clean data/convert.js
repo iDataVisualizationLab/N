@@ -14,9 +14,18 @@ Promise.all([
         .key(d=>d.state)
         .key(d=>d.industry).entries(files[1]);
 
-    var nestsLabor = d3.nest()
+    // var nestsLaborAll = d3.nest()
+    //     .key(d=>d.state)
+    //     .key(d=>d.Measure)
+    //     .rollup(d=>d[0]).entries(files[0]);
+
+    var nestsLabor =  d3.nest()
         .key(d=>d.state)
-        .rollup(d=>d[0]).entries(files[0]);
+        .rollup(d=>d[0]).entries(files[0].filter(d=>d.Measure ==="labor force"));
+
+    var nestsUnemploymentrate =  d3.nest()
+        .key(d=>d.state)
+        .rollup(d=>d[0]).entries(files[0].filter(d=>d.Measure ==="unemployment rate"));
 
     data["Countries"] = _.intersection(nests.map(d=>d.key) , nestsLabor.map(d=>d.key));
     data["Countries"] = _.without(data["Countries"],'District of Columbia')
@@ -64,13 +73,42 @@ Promise.all([
                 }
                 data["YearsData"][ti]['s'+si][ci] = v;
             });
+            console.log(c+' '+ti)
+            var nextVar = data["Variables"].length;
+            if (data["YearsData"][ti]===undefined)
+                data["YearsData"][ti]={};
+            if (data["YearsData"][ti]['s'+nextVar]===undefined)
+                data["YearsData"][ti]['s'+nextVar]=[];
+            var v = nestsUnemploymentrate.find(d=>d.key===c);
+            if (v) {
+                v =v.value.data[ti]/100;
+                if (instanceLabor[ti] !== 1 && v !== 1) {
+                    min = v < min ? v : min;
+                    // if(v>1)
+                    //    console.log(s+': '+v+' '+t+' '+c)
+                    max = v > max ? v : max;
+                } else {
+                    console.log(v);
+                    console.log(instance.find(d => d.key === s).values[0].data[ti]);
+                    console.log('0_0')
+                }
+            }else{
+                v=0;
+            }
+            data["YearsData"][ti]['s'+nextVar][ci] = v;
+
         });
     });
+    data["Variables"].push("Unemployment rate")
+
+
+    // normalize
     data["YearsData"].forEach(y=>{
         Object.keys(y).forEach(s=>{
             y[s] = y[s].map(d=>(d)/(max));
         })
-    })
+    });
+
 
     console.log(JSON.stringify(data))
     // normalize
@@ -83,27 +121,28 @@ Promise.all([
     // handle error here
 })
 
-// var tables = $('table.regular-data');
-// var nests = [];
-// var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-// for (var i=0;i<tables.length;i++){
-//     var nestitem ={}
-//     var titles = tables[i].querySelector('pre').innerText.split('\n');
-//     var state = titles[2].split(':')[1].trim();
-//     var industry = titles[5].split(':')[1].trim();
-//     var arr = tables[i].querySelectorAll('tbody tr');
-//     nestitem.data =[];
-//     nestitem.time =[];
-//     for (var j=0;j<arr.length;j++) {
-//         var year = arr[j].querySelector('th').textContent;
-//         var numbers = arr[j].querySelectorAll('td');
-//         for (var z=0;z<numbers.length;z++) {
-//             nestitem.data.push(++numbers[z].textContent.split('(')[0]);
-//             nestitem.time.push(months[z]+' '+year);
-//         }
-//     }
-//     nestitem.state = state;
-//     nestitem.industry = industry;
-//
-//     nests.push(nestitem);
-// }
+var tables = $('table.regular-data');
+var nests = [];
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+for (var i=0;i<tables.length;i++){
+    var nestitem ={}
+    var titles = tables[i].querySelector('pre').innerText.split('\n');
+    var state = titles[2].split(':')[1].trim();
+    var type = titles[5].split(':')[1].trim();
+    var type_label = titles[5].split(':')[0].trim();
+    var arr = tables[i].querySelectorAll('tbody tr');
+    nestitem.data =[];
+    nestitem.time =[];
+    for (var j=0;j<arr.length;j++) {
+        var year = arr[j].querySelector('th').textContent;
+        var numbers = arr[j].querySelectorAll('td');
+        for (var z=0;z<numbers.length;z++) {
+            nestitem.data.push(++numbers[z].textContent.split('(')[0]);
+            nestitem.time.push(months[z]+' '+year);
+        }
+    }
+    nestitem.state = state;
+    nestitem[type_label] = type;
+
+    nests.push(nestitem);
+}
