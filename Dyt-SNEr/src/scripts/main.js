@@ -109,13 +109,21 @@ $(document).ready(function(){
         d3.select('.cover').classed('hidden', false);
         const choice = this.value;
         const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
+        playchange();
         setTimeout(() => {
             readData(choice).then((d)=>{
+                d.YearsData.forEach(e=> {
+                    if (e.Scagnostics0) delete e.Scagnostics0
+                    for (var key in e){
+                        e[key] = e[key].map(it=>it==="NaN"?0:it);
+                    }
+                });
                 dataRaw = d;
                 d3.select(".currentData")
                     .text(choicetext);
                 maxtimestep = dataRaw.YearsData.length;
                 TSneplot.axis(d.Variables);
+                d3.select('.averageSUm').selectAll('*').remove();
                 resetRequest();
                 d3.select('.cover').classed('hidden', true);});
         },0);
@@ -223,7 +231,8 @@ function initTsne () {
 
 function step (index){
     let arr = _.zip.apply(_, (d3.values(dataRaw.YearsData[index])));
-    arr.forEach((d,i)=>d.name = dataRaw.Countries[i]);
+    arr.forEach((d,i)=>{
+        d.name = dataRaw.Countries[i]});
     TSneplot.data(arr).draw(index);
 }
 
@@ -244,18 +253,20 @@ function request(){
     },simDuration);
 }
 function resetRequest (){
-    pausechange();
+    // pausechange();
+    playchange();
     interval2.stop();
     TSneplot.remove();
     TSneplot.reset(true);
     timestep = 0;
+    pausechange();
     request();
 }
 
 function pauseRequest(){
     // clearInterval(interval2);
     var e = d3.select('.pause').node();
-    if (e.value=="false"){
+    if (e.value==="false"){
         playchange();
     }else {
         pausechange();

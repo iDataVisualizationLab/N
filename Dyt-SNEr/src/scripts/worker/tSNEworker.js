@@ -3,7 +3,7 @@ importScripts("../tsne.js");
 importScripts("../../lib/underscore-min.js");
 importScripts("https://unpkg.com/simple-statistics@2.2.0/dist/simple-statistics.min.js");
 importScripts("../../lib/jLouvain.js");
-
+importScripts("../../lib/scagnosticsnd.min.js");
 
 
 let tsne,sol,
@@ -49,15 +49,15 @@ addEventListener('message',function ({data}){
                 stop = ((cost - cost_first) <stopCondition)&&(cost - cost_first) >0;
                 hostname = data.value.map(d=>d.name);
                 //jLouvain-------
-                community.nodes(hostname).edges(convertLink(tsne.getProbability(),hostname));
-                var result  = community();
+                var result = findGroups(data.value,'outlier');
+                groups = result;
                 postMessage({action:'cluster', result: result});
                 //---------------
                 store_step = initStore(hostname,tsne.getSolution(),result);
                 store_step_temp = copyStore(store_step);
                 //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 if (stop)
-                    geTopComand(cost,tsne.getSolution(),community());
+                    geTopComand(cost,tsne.getSolution(),groups);
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
                 break;
             case "updateData":
@@ -79,15 +79,19 @@ addEventListener('message',function ({data}){
                         //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                     }
                     //jLouvain-------
-                    community.edges(convertLink(tsne.getProbability(), hostname));
-                    var result = community();
+                    // community.edges(convertLink(tsne.getProbability(), hostname));
+                    // var result = community();
+                    var result = findGroups(data.value,'outlier')
+                    groups = result;
                     // postMessage({action: 'cluster', result: result});
                     //---------------
                     if (stop)
                         geTopComand(cost,tsne.getSolution(),result);
                 }else{
                     stop = true;
-                    geTopComand(costa[requestIndex], store_step.map((d,i)=>d[requestIndex]),store_step.map((d,i)=>d.cluster[requestIndex]))
+                    groups = {};
+                    store_step.forEach((d,i)=>groups[d.name] = d.cluster[requestIndex])
+                    geTopComand(costa[requestIndex], store_step.map((d,i)=>d[requestIndex]),groups)
                 }
 
                 postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
@@ -95,8 +99,10 @@ addEventListener('message',function ({data}){
             case "updateTracker":
                 console.log(requestIndex+"_"+currentMaxIndex)
                 if (requestIndex > currentMaxIndex ||currentMaxIndex===0 ) {
-                    updateStore(tsne.getSolution(), community(),cost);
-                    store_step_temp = copyStore(store_step);
+                    currentMaxIndex = requestIndex;
+                    currentLastIndex = currentMaxIndex-1;
+                    updateStore(tsne.getSolution(), groups,cost);
+                    currentLastIndex = currentMaxIndex;
                 }
                 postMessage({action:data.action,  status:"done", top10: getTop10 (store_step,requestIndex) });
                 break;
@@ -107,7 +113,7 @@ addEventListener('message',function ({data}){
                 if (!stop){
                     for (let i = 0; (i < stepnumber)&&(!stop); i++) {
                         const cost_old = tsne.step();
-                        stop = ((cost_old - cost) <stopCondition)&&(cost_old - cost) >0;
+                        stop = (((cost_old - cost) <stopCondition)&&(cost_old - cost) >0)||isNaN(cost_old);
                         cost = cost_old;
                         countstack++;
                         sol = tsne.getSolution();
@@ -118,13 +124,13 @@ addEventListener('message',function ({data}){
                         // }
                     }
                         //jLouvain-------
-                        community.edges(convertLink(tsne.getProbability(), hostname));
-                        var result = community();
+                        // community.edges(convertLink(tsne.getProbability(), hostname));
+                        // var result = community();
                         // postMessage({action: 'cluster', result: result, maxloop: countstack, status: stop?"stable":"done"});
                         postMessage({action: 'imform',status: stop?"stable":"done"});
                         //---------------
                     if (stop)
-                        geTopComand(cost,sol,result);
+                        geTopComand(cost,sol,groups);
                         // postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
                 }else {
                     postMessage({action: 'stable'});
@@ -216,4 +222,38 @@ function convertLink (P,ids) {
         for (let j = i+1; j < N; j++)
             links.push({source: ids[i], target:ids[j], weight: P[i*N+j]});
     return links;
+}
+let scagOptions ={
+    startBinGridSize: 30,
+    minBins: 20,
+    maxBins: 100,
+    outlyingCoefficient: 1.5,
+    incrementA:2,
+    incrementB:0,
+    decrementA:0.5,
+    decrementB:0,
+};
+function findGroups(data,method) {
+    switch (method) {
+        case 'jLouvain':
+            return getComunity ();
+        case 'outlier':
+            return outlier (data);
+        default:
+            return outlier (data);
+    }
+}
+function outlier (data) {
+    let scag = scagnosticsnd(data.map(d=>{
+        var temp = d;
+        d.data = d.name;
+        return temp;
+    }), scagOptions);
+    let outlyingPoints = scag.outlyingPoints.map(d=>d.data);
+    let group = data.map(d=> outlyingPoints.find(e=>e===d.name)===undefined?0:1);
+    return _.object(hostname,group);
+}
+function getComunity (){
+    community.nodes(hostname).edges(convertLink(tsne.getProbability(),hostname));
+    return community();
 }

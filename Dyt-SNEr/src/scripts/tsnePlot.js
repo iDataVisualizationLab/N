@@ -62,12 +62,12 @@ d3.Tsneplot = function () {
         dataTop.exit()
             .interrupt().selectAll("*").interrupt();
         dataTop.exit()  .transition()
-            .duration(runopt.simDuration/3)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
+            .duration(Math.min(runopt.simDuration,500)/3)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
             .attr('transform', function (d) {
                 return 'translate(40,' + getTransformation(d3.select(this).attr('transform')).translateY + ')'
             })
             .transition()
-            .duration(runopt.simDuration/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
+            .duration(Math.min(runopt.simDuration,500)/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
             .attr('transform', 'translate(40,' + (maxlist + 1) * sizebox + ")")
             .remove();
         // ENTER
@@ -77,7 +77,7 @@ d3.Tsneplot = function () {
             .attr('transform', 'translate(0,' + (maxlist + 1) * sizebox + ")")
             .style('opacity', 0)
             .transition('update')
-            .duration((d, i) => runopt.simDuration/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
+            .duration((d, i) => Math.min(runopt.simDuration,500)/2)//Math.min(runopt.simDuration/50*(i+1),runopt.simDuration/20))
             .style('opacity', 1)
             .attr('transform', (d, i) => 'translate(0,' + (i + 1) * sizebox + ")");
         newdiv.append('rect').attrs(
