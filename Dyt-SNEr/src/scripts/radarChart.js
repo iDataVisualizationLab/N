@@ -154,20 +154,20 @@ function RadarChart(id, data, options) {
             // .style("filter", "url(#glow)");
 
         //Text indicating at what % each level is
-        axisGrid.selectAll(".axisLabel")
-            .data(d3.range(1, (cfg.levels + 1)).reverse())
-            .enter().append("text")
-            .attr("class", "axisLabel")
-            .attr("x", 4)
-            .attr("y", function (d) {
-                return -d * radius / cfg.levels;
-            })
-            .attr("dy", "0.4em")
-            .style("font-size", "10px")
-            .attr("fill", "#737373")
-            .text(function (d, i) {
-                return Format((maxValue * d / cfg.levels));
-            });
+        // axisGrid.selectAll(".axisLabel")
+        //     .data(d3.range(1, (cfg.levels + 1)).reverse())
+        //     .enter().append("text")
+        //     .attr("class", "axisLabel")
+        //     .attr("x", 4)
+        //     .attr("y", function (d) {
+        //         return -d * radius / cfg.levels;
+        //     })
+        //     .attr("dy", "0.4em")
+        //     .style("font-size", "10px")
+        //     .attr("fill", "#737373")
+        //     .text(function (d, i) {
+        //         return Format((maxValue * d / cfg.levels));
+        //     });
 
         /////////////////////////////////////////////////////////
         //////////////////// Draw the axes //////////////////////
