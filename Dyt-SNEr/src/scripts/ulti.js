@@ -89,7 +89,8 @@ function creatContain(contain,colorScaleList,colorArr,callback){
 }
 function createColorbox(g) {
     const boxs = g.selectAll('div.colorscale-swatch').data(function(d)
-    {const name = d.val;
+    {
+        const name = d.val;
         let colors;
         if (d.type==='d3') {
             colors = colorScaleList.d3colorChosefunc(name)
@@ -99,7 +100,7 @@ function createColorbox(g) {
 
         if (d.invert)
             colors = colors.reverse();
-        this.parentNode.__data__.arrColor = colors;
+        (this.parentNode.__data__||this.__data__).arrColor = colors;
         return colors;
     });
     boxs.exit().remove();
@@ -107,7 +108,7 @@ function createColorbox(g) {
         .attr('class','colorscale-swatch')
         .merge(boxs)
         .styles(function (d,i){
-            const n = this.parentNode.__data__.arrColor.length;
+            const n = (this.parentNode.__data__||this.__data__).arrColor.length;
             return {
                 'background-color': d,
                 'width': `${(1/n)*100}%`

@@ -461,12 +461,14 @@ body.light {
 .pickercontain {
   margin: 0px auto;
 }
-.pickercontain .colorscale-label {
-  font-weight: 600;
-  font-size: 12px;
+.pickercontain .colorscale-label, .pickercontain .colorscale-header {
   display: inline-block;
   width: 25%;
   text-align: start;
+}
+.pickercontain .colorscale-label {
+  font-weight: 600;
+  font-size: 12px;
 }
 .pickercontain .colorscale-palette-container {
   display: inline-block;

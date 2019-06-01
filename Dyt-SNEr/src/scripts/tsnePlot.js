@@ -150,6 +150,7 @@ d3.Tsneplot = function () {
             .classed('new',true)
             .attrs(graphicopt.top10.details.clulster.attr)
             .styles(graphicopt.top10.details.clulster.style)
+            .merge(newg)
             .style("fill",
                 d=>{
                     return colorCategory(d.val)}
