@@ -30,12 +30,12 @@ Promise.all([
     data["Countries"] = _.intersection(nests.map(d=>d.key) , nestsLabor.map(d=>d.key));
     data["Countries"] = _.without(data["Countries"],'District of Columbia')
     data["Variables"] = nests[0].values.map(d=>d.key);
-    // data["Variables"] = ["Mining, Logging and Construction","Manufacturing","Information","Financial Activities","Professional and Business Services","Education and Health Services","Leisure and Hospitality","Other Services"];
+
     nests.forEach(n=>{
         data["Variables"] = _.intersection(data["Variables"],n.values.map(d=>d.key));
     });
     data["Variables"] = _.without(data["Variables"],'Total Nonfarm','Total Private','Service-Providing','Private Service Providing')
-
+    data["Variables"] = ["Mining, Logging and Construction","Manufacturing","Information","Financial Activities","Professional and Business Services","Education and Health Services","Leisure and Hospitality","Other Services"];
     var limitTime = nests[0].values[0].values[0].data.indexOf(1);
     data["TimeMatch"] = nests[0].values[0].values[0].time.slice(0,limitTime);
 
