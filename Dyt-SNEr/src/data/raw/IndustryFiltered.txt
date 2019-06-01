@@ -8,7 +8,5 @@
 70000000	Leisure and Hospitality 
 70720000	Accommodation and Food 
 80000000	Other Services 
-90000000	Government 
-90920000	State Government 
-90930000	Local Government 
+90000000	Government
 9093a000	State Employment 
