@@ -176,6 +176,7 @@ function onClickRadarColor (d){
     TSneplot.RadarColor(d);
 }
 function onClickClusterColor (d){
+    changeClusterColor(d);
     TSneplot.ClusterColor(d);
 }
 function RangechangeVal(val) {
