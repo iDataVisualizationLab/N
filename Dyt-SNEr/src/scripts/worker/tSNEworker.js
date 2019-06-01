@@ -203,7 +203,10 @@ let maxstack = 10;
 //     });
 // }
 function getTop10 (store,requestIndex) {
-    return _(store).sortBy(d=>d.dis[requestIndex||currentMaxIndex]).reverse().slice(0,50).map(data=>{
+    var datasort = _(store).sortBy(d=>d.dis[requestIndex||currentMaxIndex]);
+    if (group_mode==="outlier")
+        datasort = _(datasort).sortBy(d=>d.cluster[requestIndex||currentMaxIndex].val);
+    return datasort.reverse().slice(0,50).map(data=>{
         const NCluster = (requestIndex||currentMaxIndex) +1;
         //if (NCluster>maxstack-1){
         const startpos = Math.max(NCluster - maxstack,0);
