@@ -66,9 +66,9 @@ let width = 2000,
             const n = this.n;
             if (d3[`scheme${name}`]) {
                 if (typeof (d3[`scheme${name}`][0]) != 'string')
-                    colors=  d3[`scheme${name}`][n];
+                    colors=  d3[`scheme${name}`][n].slice();
                 else
-                    colors=  d3[`scheme${name}`];
+                    colors=  d3[`scheme${name}`].slice();
                 } else {
                     const interpolate = d3[`interpolate${name}`];
                     colors = [];
@@ -81,7 +81,7 @@ let width = 2000,
     },colorArr = {Radar: [
         {val: 'rainbow',type:'custom',label: 'Rainbow'},
         {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true}],
-        Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'RdBu',type:'d3',label: 'Blue2Red'}]};
+        Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'Paired',type:'d3',label: 'Blue2Red'}]};
 let arrColor = colorScaleList.rainbow;
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
