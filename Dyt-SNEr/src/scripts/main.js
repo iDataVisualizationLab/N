@@ -109,6 +109,7 @@ $(document).ready(function(){
         d3.select('.cover').classed('hidden', false);
         const choice = this.value;
         const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
+        d3.select('#currentData').text(choicetext);
         playchange();
         setTimeout(() => {
             readData(choice).then((d)=>{
