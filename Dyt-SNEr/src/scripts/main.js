@@ -59,8 +59,27 @@ let width = 2000,
     runopt ={
         zoom:60,
         simDuration: 1000,
+    }, colorScaleList = {
+        n: 10,
+        rainbow: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+        d3colorChosefunc: function(name){
+            const n = this.n;
+            if (d3[`scheme${name}`]) {
+                if (typeof (d3[`scheme${name}`][0]) != 'string')
+                    colors=  d3[`scheme${name}`][n];
+                else
+                    colors=  d3[`scheme${name}`];
+                } else {
+                    const interpolate = d3[`interpolate${name}`];
+                    colors = [];
+                    for (let i = 0; i < n; ++i) {
+                        colors.push(d3.rgb(interpolate(i / (n - 1))).hex());
+                    }
+            }
+            return colors;
+        },
     };
-let arrColor = ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"];
+let arrColor = colorScaleList.rainbow;
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw;
@@ -132,7 +151,17 @@ $(document).ready(function(){
         },0);
     });
     d3.select("#DarkTheme").on("click",switchTheme);
+    // color scale create
+    creatContain( d3.select('#RadarColor').select('.pickercontain'),colorScaleList,[{val: 'rainbow',type:'custom',label: 'Rainbow'},{val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true}],onClickRadarColor);
+    creatContain( d3.select('#ClusterColor').select('.pickercontain'),colorScaleList,
+        [{val: 'Category10',type:'d3',label: 'D3'},{val: 'RdBu',type:'d3',label: 'Blue2Red'}],onClickClusterColor);
 });
+function onClickRadarColor (d){
+    TSneplot.RadarColor(d);
+}
+function onClickClusterColor (d){
+    TSneplot.ClusterColor(d);
+}
 function RangechangeVal(val) {
     controlTime.el.value =val;
     root.style.setProperty('--sideVal', (val/(maxtimestep-1)*100)+'%' );

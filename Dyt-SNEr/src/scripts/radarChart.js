@@ -91,29 +91,29 @@ function RadarChart(id, data, options) {
 
     //Filter for the outside glow
     if (first) {
-        const rg = svg.append("defs").append("radialGradient")
-            .attr("id", "rGradient2");
-        const limitcolor = 1;
-        const legntharrColor = arrColor.length-1;
-        const opGradientScale = d3.scaleLinear().domain([0,legntharrColor]).range([0.4,0.8]);
-        rg.append("stop")
-            .attr("offset",'0%')
-            .attr("stop-color", arrColor[limitcolor])
-            .attr("stop-opacity",opGradientScale(0));
-
-        arrColor.forEach((d,i)=> {
-            if (i > (limitcolor - 1)) {
-                rg.append("stop")
-                    .attr("offset", i / legntharrColor * 100 + "%")
-                    .attr("stop-color", d)
-                    .attr("stop-opacity", 0.8);
-                if (i != legntharrColor)
-                    rg.append("stop")
-                        .attr("offset", (i + 1) / legntharrColor * 100 + "%")
-                        .attr("stop-color", arrColor[i + 1])
-                        .attr("stop-opacity", opGradientScale(i+1));
-            }
-        });
+        // const rg = svg.append("defs").append("radialGradient")
+        //     .attr("id", "rGradient2");
+        // const limitcolor = 1;
+        // const legntharrColor = arrColor.length-1;
+        // const opGradientScale = d3.scaleLinear().domain([0,legntharrColor]).range([0.4,0.8]);
+        // rg.append("stop")
+        //     .attr("offset",'0%')
+        //     .attr("stop-color", arrColor[limitcolor])
+        //     .attr("stop-opacity",opGradientScale(0));
+        //
+        // arrColor.forEach((d,i)=> {
+        //     if (i > (limitcolor - 1)) {
+        //         rg.append("stop")
+        //             .attr("offset", i / legntharrColor * 100 + "%")
+        //             .attr("stop-color", d)
+        //             .attr("stop-opacity", 0.8);
+        //         if (i != legntharrColor)
+        //             rg.append("stop")
+        //                 .attr("offset", (i + 1) / legntharrColor * 100 + "%")
+        //                 .attr("stop-color", arrColor[i + 1])
+        //                 .attr("stop-opacity", opGradientScale(i+1));
+        //     }
+        // });
         //Filter for the outside glow
         var filter = g.append('defs').append('filter').attr('id', 'glow'),
             feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '2.5').attr('result', 'coloredBlur'),

@@ -232,6 +232,49 @@ d3.Tsneplot = function () {
             .angle(function(d,i) {  return angleSlice[i]; });
     }
 
+    function UpdateGradient() {
+        let rdef = svg.select('defs.gradient');
+        let rg,rg2;
+        if (rdef.empty()){
+            rdef = svg.append("defs").attr('class','gradient')
+           rg = rdef
+               .append("radialGradient")
+                .attr("id", "rGradient");
+           rg2 = rdef.append("radialGradient")
+                .attr("id", "rGradient2");
+        }
+        else {
+            rg = rdef.select('#rGradient');
+            rg2 = rdef.select('#rGradient2');
+        }
+        createGradient(rg,0);
+        createGradient(rg2,1);
+        function createGradient(rg,limitcolor) {
+            rg.selectAll('stop').remove();
+            const legntharrColor = arrColor.length - 1;
+            rg.append("stop")
+                .attr("offset", "0%")
+                .attr("stop-opacity", 0);
+            rg.append("stop")
+                .attr("offset", (limitcolor - 1) / legntharrColor * 100 + "%")
+                .attr("stop-color", arrColor[limitcolor])
+                .attr("stop-opacity", 0);
+            arrColor.forEach((d, i) => {
+                if (i > (limitcolor - 1)) {
+                    rg.append("stop")
+                        .attr("offset", i / legntharrColor * 100 + "%")
+                        .attr("stop-color", d)
+                        .attr("stop-opacity", i / legntharrColor);
+                    if (i != legntharrColor)
+                        rg.append("stop")
+                            .attr("offset", (i + 1) / legntharrColor * 100 + "%")
+                            .attr("stop-color", arrColor[i + 1])
+                            .attr("stop-opacity", i / legntharrColor);
+                }
+            });
+        }
+    }
+
     Tsneplot.init = function(){
         // tsne.postMessage({action:"inittsne",value:option});
 
@@ -255,30 +298,7 @@ d3.Tsneplot = function () {
             .attr("width", graphicopt.widthG())
             .attr("height", graphicopt.heightG());
         // gradient
-        const rg = svg.append("defs").append("radialGradient")
-            .attr("id", "rGradient");
-        const limitcolor = 0;
-        const legntharrColor = arrColor.length-1;
-        rg.append("stop")
-            .attr("offset","0%")
-            .attr("stop-opacity", 0);
-        rg.append("stop")
-            .attr("offset", (limitcolor-1) / legntharrColor * 100 + "%")
-            .attr("stop-color", arrColor[limitcolor])
-            .attr("stop-opacity", 0);
-        arrColor.forEach((d,i)=>{
-            if (i>(limitcolor-1)) {
-                rg.append("stop")
-                    .attr("offset", i / legntharrColor * 100 + "%")
-                    .attr("stop-color", d)
-                    .attr("stop-opacity", i / legntharrColor);
-                if (i != legntharrColor)
-                    rg.append("stop")
-                        .attr("offset", (i + 1) / legntharrColor * 100 + "%")
-                        .attr("stop-color", arrColor[i + 1])
-                        .attr("stop-opacity", i / legntharrColor);
-            }
-        });
+        UpdateGradient();
         // END gradient
         glowEffect = svg.append('defs').append('filter').attr('id', 'glowTSne'),
             feGaussianBlur = glowEffect.append('feGaussianBlur').attr('stdDeviation', 2.5).attr('result', 'coloredBlur'),
@@ -619,6 +639,14 @@ d3.Tsneplot = function () {
     };
     Tsneplot.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, Tsneplot) : returnEvent;
+    };
+
+    Tsneplot.RadarColor = function (_) {
+        return arguments.length ? (arrColor = _.arrColor,UpdateGradient(), Tsneplot) : arrColor;
+    };
+
+    Tsneplot.ClusterColor = function (_) {
+        return arguments.length ? (colorCategory = d3.scaleOrdinal(_.arrColor), Tsneplot) : colorCategory;
     };
     return Tsneplot;
 };

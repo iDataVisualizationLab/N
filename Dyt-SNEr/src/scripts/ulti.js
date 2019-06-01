@@ -70,7 +70,49 @@ function switchTheme(){
     return
 }
 
+function creatContain(contain,colorScaleList,colorArr,callback){
+    const  n = colorScaleList.n;
+    const ul = contain.append('ul').style('width','100%');
+    const colorListitems = ul.selectAll('li').data(colorArr)
+        .enter().append('li')
+        .attr('class','colorScale div');
+    colorListitems.append('div')
+        .attr('class','colorscale-label')
+        .text(d=>d.label)
+    const colorpalette = colorListitems.append('div')
+        .attr('class','colorscale-palette-container')
+        .append('div')
+        .attr('class','colorscale-block')
+        .on('click',callback)
+        .call(createColorbox);
 
+}
+function createColorbox(g) {
+    const boxs = g.selectAll('div.colorscale-swatch').data(function(d)
+    {const name = d.val;
+        let colors;
+        if (d.type==='d3') {
+            colors = colorScaleList.d3colorChosefunc(name)
+        }else{
+            colors = colorScaleList[name];
+        }
+
+        if (d.invert)
+            colors = colors.reverse();
+        this.parentNode.__data__.arrColor = colors;
+        return colors;
+    });
+    boxs.exit().remove();
+    boxs.enter().append('div')
+        .attr('class','colorscale-swatch')
+        .merge(boxs)
+        .styles(function (d,i){
+            const n = this.parentNode.__data__.arrColor.length;
+            return {
+                'background-color': d,
+                'width': `${(1/n)*100}%`
+            }})
+}
 // var sheet = document.createElement('style'),
 //     $rangeInput = $('.rangecustom input'),
 //     prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
