@@ -197,7 +197,7 @@ Promise.all([
         });
     });
 
-    max = 20;
+    max = Math.min(20,max);
     invalidTime = Infinity;
     // normalize
     data["YearsData"].forEach((y,i)=>{

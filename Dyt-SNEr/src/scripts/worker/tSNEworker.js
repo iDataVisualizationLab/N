@@ -244,13 +244,18 @@ function findGroups(data,method) {
     }
 }
 function outlier (data) {
-    let scag = scagnosticsnd(data.map(d=>{
-        var temp = d;
-        d.data = d.name;
-        return temp;
-    }), scagOptions);
-    let outlyingPoints = scag.outlyingPoints.map(d=>d.data);
-    let group = data.map(d=> outlyingPoints.find(e=>e===d.name)===undefined?0:1);
+    let group
+    try {
+        let scag = scagnosticsnd(data.map(d => {
+            var temp = d;
+            d.data = d.name;
+            return temp;
+        }), scagOptions);
+        let outlyingPoints = scag.outlyingPoints.map(d => d.data);
+        group = data.map(d => outlyingPoints.find(e => e === d.name) === undefined ? 0 : 1);
+    }catch(e){
+        group = data.map(d =>0);
+    }
     return _.object(hostname,group);
 }
 function getComunity (){
