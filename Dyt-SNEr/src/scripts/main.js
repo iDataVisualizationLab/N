@@ -1,7 +1,7 @@
 let width = 2000,
     height = 1000,
     TsneConfig = {
-        epsilon : 10, // epsilon is learning rate (10 = default)
+            epsilon : 10, // epsilon is learning rate (10 = default)
             perplexity : 30, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
@@ -17,6 +17,7 @@ let width = 2000,
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
         dotRadius: 3,
+        group_mode: 'outlier',
         display:{
           symbol:{
               type: 'path',
@@ -123,6 +124,7 @@ $(document).ready(function(){
                 d3.select(".currentData")
                     .text(choicetext);
                 maxtimestep = dataRaw.YearsData.length;
+                console.log(maxtimestep)
                 TSneplot.axis(d.Variables);
                 d3.select('.averageSUm').selectAll('*').remove();
                 resetRequest();
@@ -196,11 +198,12 @@ function initDemo(){
 
 function init() {
     initTsne ();
+    const choice = d3.select('#datacom').node().value;
+    const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
+    d3.select('#currentData').text(choicetext);
 
-    readData('EmploymentRate').then((d)=>{
+    readData(choice).then((d)=>{
         dataRaw = d;
-        d3.select("#currentData")
-            .text('Unemployment Rate');
         timestep = 0;
         maxtimestep = dataRaw.YearsData.length;
         initTime (maxtimestep);
@@ -301,6 +304,16 @@ function changeShape(d){
         TsnePlotopt.display.symbol.radius =30;
     }
     TSneplot.displaystyle(TsnePlotopt.display)
+}
+
+function changeGroup_mode(d){
+    if (d.checked) {
+        TsnePlotopt.group_mode ="jLouvain";
+    }else {
+        TsnePlotopt.group_mode ="outlier";
+    }
+    TSneplot.group_mode(TsnePlotopt.group_mode);
+    resetRequest();
 }
 
 function pausechange(){

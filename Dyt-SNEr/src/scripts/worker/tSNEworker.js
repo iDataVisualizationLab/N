@@ -19,7 +19,8 @@ let tsne,sol,
     stopCondition =0.00001,
     community = jLouvain(),
     currentMaxIndex =0,
-    requestIndex = 0;
+    requestIndex = 0,
+    group_mode='outlier';
 let geTopComand = _.once(stepstable);
 let average;
 function stepstable (cost , solution,community){
@@ -49,7 +50,7 @@ addEventListener('message',function ({data}){
                 stop = ((cost - cost_first) <stopCondition)&&(cost - cost_first) >0;
                 hostname = data.value.map(d=>d.name);
                 //jLouvain-------
-                var result = findGroups(data.value,'outlier');
+                var result = findGroups(data.value,group_mode);
                 groups = result;
                 postMessage({action:'cluster', result: result});
                 //---------------
@@ -64,7 +65,6 @@ addEventListener('message',function ({data}){
                 geTopComand = _.once(stepstable);
                 countstack = 0;
                 requestIndex = data.index;
-                console.log(requestIndex+"_"+currentMaxIndex);
                 average = calAverage (data.value);
                 postMessage({action: 'mean', val: average});
                 if (requestIndex > currentMaxIndex ) {
@@ -81,7 +81,7 @@ addEventListener('message',function ({data}){
                     //jLouvain-------
                     // community.edges(convertLink(tsne.getProbability(), hostname));
                     // var result = community();
-                    var result = findGroups(data.value,'outlier')
+                    var result = findGroups(data.value,group_mode)
                     groups = result;
                     // postMessage({action: 'cluster', result: result});
                     //---------------
@@ -108,6 +108,9 @@ addEventListener('message',function ({data}){
                 break;
             case "option":
                 stepnumber = data.value;
+                break;
+            case "group_mode":
+                group_mode = data.value;
                 break;
             case "step":
                 if (!stop){

@@ -41,6 +41,7 @@ d3.Tsneplot = function () {
     let needUpdate = false;
     let first = true;
     let returnEvent;
+    let group_mode = "outlier";
     function updateSummary(data){
         const data_new = data.map((d,i)=>{return {axis:axis[i],value:d.mean,origin:d}});
         data_new.type = "statistics";
@@ -174,11 +175,9 @@ d3.Tsneplot = function () {
     let caltime;
     let geTopComand = _.once(Tsneplot.getTop10);
     tsne.addEventListener('message',({data})=>{
-        console.log(data)
         switch (data.status) {
             case 'stable':
                 isStable = true;
-                console.log('lopps: '+ data.maxloop);
                 geTopComand();
                 isBusy = false;
                 break;
@@ -318,6 +317,7 @@ d3.Tsneplot = function () {
         graphicopt.eventpad.eventpadtotalwidth = graphicopt.top10.width - sizebox;
         graphicopt.eventpad.maxstack = Math.floor(graphicopt.eventpad.eventpadtotalwidth /graphicopt.eventpad.size);
         tsne.postMessage({action:"maxstack",value:graphicopt.eventpad.maxstack});
+        tsne.postMessage({action:"group_mode",value:group_mode});
         graphicopt.top10.details.clulster.attr.width = graphicopt.eventpad.size;
         graphicopt.top10.details.clulster.attr.height = graphicopt.eventpad.size;
         panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-130, sizebox*50.5)+"px");
@@ -444,6 +444,7 @@ d3.Tsneplot = function () {
         isBusy = true;
         isStable = false;
         // svg.style('visibility','visible');
+        tsne.postMessage({action:"group_mode",value:group_mode});
         tsne.postMessage({action:"initDataRaw",value:arr});//.initDataRaw(arr);
         drawEmbedding(arr);
         // for (let  i =0; i<40;i++)
@@ -606,6 +607,15 @@ d3.Tsneplot = function () {
     };
     Tsneplot.axis = function (_) {
         return arguments.length ? (axis = _, Tsneplot) : axis;
+    };
+    Tsneplot.group_mode = function (_) {
+        if (arguments.length){
+            isBusy = true;
+            group_mode = _;
+            tsne.postMessage({action:"group_mode",value:group_mode});
+            return Tsneplot;
+        }
+        return group_mode;
     };
     Tsneplot.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, Tsneplot) : returnEvent;

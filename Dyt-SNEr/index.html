@@ -47,10 +47,10 @@
                     <div  class="row s12 valign-wrapper">
                         <label for="datacom" class="col s4"> Dataset: </label>
                         <select id="datacom" class="col s7">
-                            <option value="EmploymentRate" selected="selected">Unemployment Rate</option>
+                            <option value="EmploymentRate">Unemployment Rate</option>
                             <option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>
                             <option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>
-                            <option value="EmploymentRate(updated)HIghDim_T" >EmploymentRate netchange (1990-2011)</option>
+                            <option value="EmploymentRate(updated)HIghDim_T" selected="selected" >EmploymentRate netchange (1990-2011)</option>
                             <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
                             <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
                             <!--<option value="WorldTerrorism" >World Terrorism</option>-->
@@ -82,7 +82,19 @@
 
                         </p>
                     </div>
+                    <div  class="row s12 valign-wrapper">
+                        <label for="displaySymbol" class="col s4">Cluster mode: </label>
+                        <p class="switch col s7" id ="displaySymbol">
 
+                            <label>
+                                <span class="true">Outlier</span>
+                                <input type="checkbox" onchange="changeGroup_mode(this)">
+                                <span class="lever"></span>
+                                <span class="false">jLouvain</span>
+                            </label>
+
+                        </p>
+                    </div>
                 </div>
             </li>
             <li>
