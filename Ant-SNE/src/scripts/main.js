@@ -535,6 +535,6 @@ function update(data,tableDiv) {
         arrColor: arrColor,
     };
     tdAll.filter((d,i)=>(typeof d !=='string')).attr('class','radar').each(function(d,i) {
-        setTimeout( ()=>miniRadarChart(d3.select(this),[d],i,opt),10);
+        miniRadarChart(d3.select(this),[d],i,opt);
     });
 }
