@@ -533,9 +533,6 @@ body.light {
   overflow: auto;
   font-size: smaller;
 }
-#tablelist thead {
-  background-color: cornflowerblue;
-}
 #tablelist thead th {
   font-weight: normal;
   padding: 5px;
