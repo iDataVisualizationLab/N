@@ -528,9 +528,20 @@ body.light {
   border-bottom: none;
 }
 
+#tablelist {
+  width: 100%;
+  overflow: auto;
+}
+#tablelist thead {
+  background-color: cornflowerblue;
+}
+#tablelist thead th {
+  padding: 5px;
+}
 #tablelist td.radar {
-  max-width: 50px;
-  padding: 2px;
+  max-width: 20px;
+  max-height: 50px;
+  padding: 1px;
 }
 #tablelist td.radar svg {
   transform: translateX(-25%);

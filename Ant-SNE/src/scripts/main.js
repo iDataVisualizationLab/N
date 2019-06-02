@@ -530,7 +530,7 @@ function update(data,tableDiv) {
     tdAll.filter(d=>typeof d ==='string').text(d =>
     {try { return d.toFixed(2)}catch (e) {return d}});
     const opt = {
-        radraradius: 50,
+        radraradius: 30,
         levels:6,
         arrColor: arrColor,
     };

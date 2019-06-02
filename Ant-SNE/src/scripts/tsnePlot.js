@@ -35,7 +35,7 @@ d3.Tsneplot = function () {
         scaleX_small = d3.scaleLinear(),
         scaleY_small = d3.scaleLinear(),
         store={},
-        ss = 1,
+        ssscale = 1,
         tx = 0,
         ty =0;
     let needUpdate = false;
@@ -43,6 +43,12 @@ d3.Tsneplot = function () {
     let returnEvent;
     let group_mode = "outlier";
     function updateSummary(data){
+        // const data_new = dataRaw.Variables.map((s,si)=>{
+        //     let dataarr = _.flatten(dataRaw.YearsDataTrue.map(d=>d['v'+si].map(e=>e/100)));
+        //     return {axis:s, value: ss.mean(dataarr),origin: {mean: ss.mean(dataarr),q1: ss.min(dataarr),q3: ss.max(dataarr)}};
+        // })
+
+
         const data_new = data.map((d,i)=>{return {axis:axis[i],value:d.mean,origin:d}});
         data_new.type = "statistics";
         RadarChart('.averageSUm',[data_new],{levels:6,w:graphicopt.summary.size,h:graphicopt.summary.size});
@@ -351,7 +357,7 @@ d3.Tsneplot = function () {
             .attr('class','graph')
             //.attr('transform',`translate(${graphicopt.widthG()/2},${graphicopt.heightG() /2})`);
         function zoomed() {
-            ss = d3.zoomTransform(this).k;
+            ssscale = d3.zoomTransform(this).k;
             tx = d3.zoomTransform(this).x;
             ty = d3.zoomTransform(this).y;
             if (store.Y) updateEmbedding(store.Y,store.cost,store.iteration,true);
@@ -360,7 +366,7 @@ d3.Tsneplot = function () {
             .on("zoom", zoomed);
         svg.call(zoom);
 
-        ss= graphicopt.scalezoom;
+        ssscale= graphicopt.scalezoom;
         svg.call(zoom.translateBy, graphicopt.widthG() / 2,graphicopt.heightG() / 2);
 
         graphicopt.step = function () {
@@ -399,15 +405,15 @@ d3.Tsneplot = function () {
             group
                 .interrupt().attr("transform", function(d, i) {
                     return "translate(" +
-                        (Y[i][0]*runopt.zoom*ss+tx) + "," +
-                        (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
+                        (Y[i][0]*runopt.zoom*ssscale+tx) + "," +
+                        (Y[i][1]*runopt.zoom*ssscale+ty) + ")"; });
         }else{
             group.transition().duration(runopt.simDuration*1.1)
                 .ease(d3.easeLinear)
                 .attr("transform", function(d, i) {
                 return "translate(" +
-                    (Y[i][0]*runopt.zoom*ss+tx) + "," +
-                    (Y[i][1]*runopt.zoom*ss+ty) + ")"; });
+                    (Y[i][0]*runopt.zoom*ssscale+tx) + "," +
+                    (Y[i][1]*runopt.zoom*ssscale+ty) + ")"; });
         }
         //let curentHostpos = currenthost.node().getBoundingClientRect();
 

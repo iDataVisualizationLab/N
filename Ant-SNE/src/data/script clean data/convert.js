@@ -1,45 +1,45 @@
-Promise.all([
-    d3.json("../EmploymentRate.json"),
-]).then(function(files) {
-    // files[0] will contain file1.csv
-    // files[1] will contain file2.csv
-    var data =files[0];
-
-    let scagOptions ={
-        startBinGridSize: 30,
-        minBins: 20,
-        maxBins: 100,
-        outlyingCoefficient: 1.5,
-        incrementA:2,
-        incrementB:0,
-        decrementA:0.5,
-        decrementB:0,
-    };
-    data["YearsDataScag"] =[];
-    data["YearsDataTrue"]||data["YearsData"].forEach((dd)=> {
-        let scag = scagnosticsnd(data["Countries"].map((d,id) => {
-            var temp = data["Variables"].map((s, si) => {
-                return (dd['v'+si]||dd['s'+si])[id];
-            });
-            temp.data = d;
-            return temp;
-        }), scagOptions);
-        let outlyingPoints = scag.outlyingPoints.map(d => d.data);
-        let tempObject = []
-        data["Countries"].forEach(d => tempObject.push( outlyingPoints.find(e => e === d) === undefined ? 0 : 1));
-        data["YearsDataScag"].push(tempObject)
-    })
-    console.log(JSON.stringify(data))
-    console.log(JSON.stringify(data))
-    // normalize
-
-
-
-
-
-}).catch(function(err) {
-    // handle error here
-})
+// Promise.all([
+//     d3.json("../EmploymentRate.json"),
+// ]).then(function(files) {
+//     // files[0] will contain file1.csv
+//     // files[1] will contain file2.csv
+//     var data =files[0];
+//
+//     let scagOptions ={
+//         startBinGridSize: 30,
+//         minBins: 20,
+//         maxBins: 100,
+//         outlyingCoefficient: 1.5,
+//         incrementA:2,
+//         incrementB:0,
+//         decrementA:0.5,
+//         decrementB:0,
+//     };
+//     data["YearsDataScag"] =[];
+//     data["YearsDataTrue"]||data["YearsData"].forEach((dd)=> {
+//         let scag = scagnosticsnd(data["Countries"].map((d,id) => {
+//             var temp = data["Variables"].map((s, si) => {
+//                 return (dd['v'+si]||dd['s'+si])[id];
+//             });
+//             temp.data = d;
+//             return temp;
+//         }), scagOptions);
+//         let outlyingPoints = scag.outlyingPoints.map(d => d.data);
+//         let tempObject = []
+//         data["Countries"].forEach(d => tempObject.push( outlyingPoints.find(e => e === d) === undefined ? 0 : 1));
+//         data["YearsDataScag"].push(tempObject)
+//     })
+//     console.log(JSON.stringify(data))
+//     console.log(JSON.stringify(data))
+//     // normalize
+//
+//
+//
+//
+//
+// }).catch(function(err) {
+//     // handle error here
+// })
 
 
 // Promise.all([
@@ -215,113 +215,113 @@ Promise.all([
 //     nests.push(nestitem);
 // }
 
-// Promise.all([
-//     d3.text("../raw/state.txt"),
-//     d3.text("../raw/IndustryFiltered.txt"),
-//     d3.tsv("../raw/fullstatecode.txt"),
-//     d3.csv("../raw/employ1.txt"),
-// ]).then(function(files) {
-//     // files[0] will contain file1.csv
-//     // files[1] will contain file2.csv
-//     var data ={};
-//     data["Variables"] = [];
-//     data["Countries"] = files[0].split('\n').filter(d=>d!=="").map(d=>d.trim());
-//     data["YearsData"] = [];
-//     data["YearsDataTrue"] = [];
-//     data["TimeMatch"] =files[3].columns.filter(d=> d!=='Series ID' && d.match("Annual ")===null);
-//     data["TimeMatch"].shift();
-//     states = files[2];
-//     var industries = files[1].split('\n').filter(d=>d!="").map(d=> {return {code: d.split('\t')[0],value:d.split('\t')[1].trim()}});
-//     data["Variables"] = industries.map(d=>d.value);
-//     // data["Variables"].shift();
-//     function generatecode(pre,state,industry){
-//         const statecode = states.find(d=>d['state_name']===state)['state_code'];
-//         const inscode = industries.find(d=>d['value']===industry)['code'];
-//         return pre+statecode+'00000'+inscode+'01';
-//     }
-//     dataRaw = files[3]
-//     var min = Infinity;
-//     var max = -Infinity;
-//     var arALL =[]
-//     data["Countries"].forEach((c,ci)=>{
-//         data["TimeMatch"].forEach((t,ti)=> {
-//             data["Variables"].forEach((s, si) => {
-//                 if (data["YearsDataTrue"][ti]===undefined)
-//                     data["YearsDataTrue"][ti]={};
-//                 if (data["YearsDataTrue"][ti]['v'+si]===undefined)
-//                     data["YearsDataTrue"][ti]['v'+si]=[];
-//                 var code = generatecode('SMS',c,s);
-//                 instance = dataRaw.find(d=>d['Series ID']===code);
-//                 var v = 0;
-//                 if (instance) {
-//                     v = + instance[t].split('(')[0];
-//                     v = Math.abs(v);
-//                     min = v < min ? v : min;
-//                     max = v > max ? v : max;
-//                     arALL.push(v)
-//                 }
-//                 data["YearsDataTrue"][ti]['v'+si][ci] = v;
-//             });
-//
-//         });
-//     });
-//
-//     max = Math.min(20,max);
-//     invalidTime = Infinity;
-//     // normalize
-//     data["YearsDataTrue"].forEach((yy,i)=>{
-//         let invalidKey = 0;
-//         data["Variables"].forEach((s, si) => {
-//             if (data["YearsData"][i]===undefined)
-//                 data["YearsData"][i]={};
-//             if (data["YearsData"][i]['s'+si]===undefined)
-//                 data["YearsData"][i]['s'+si]=[];
-//
-//             data["YearsData"][i]['s'+si] = yy['v'+si].map(d=>{invalidKey+=d; return (Math.min(d,max))/(max)});
-//             invalidKey = (data["YearsData"][i]['s'+si].indexOf(0)!==-1)||invalidKey;
-//         });
-//         if (invalidKey===0)
-//             invalidTime = i<invalidTime?i:invalidTime;
-//     });
-//     console.log(invalidTime);
-//     invalidTime =  data["YearsData"].length-2;
-//     data["YearsData"] = data["YearsData"].slice(0,invalidTime);
-//     data["YearsDataTrue"] = data["YearsDataTrue"].slice(0,invalidTime);
-//     data["TimeMatch"] = data["TimeMatch"].slice(0,invalidTime);
-//     let scagOptions ={
-//         startBinGridSize: 30,
-//         minBins: 20,
-//         maxBins: 100,
-//         outlyingCoefficient: 1.5,
-//         incrementA:2,
-//         incrementB:0,
-//         decrementA:0.5,
-//         decrementB:0,
-//     };
-//     data["YearsDataScag"] =[];
-//     data["YearsDataTrue"].forEach((dd)=> {
-//         let scag = scagnosticsnd(data["Countries"].map((d,id) => {
-//             var temp = data["Variables"].map((s, si) => {
-//                return dd['v'+si][id];
-//             });
-//             temp.data = d;
-//             return temp;
-//         }), scagOptions);
-//         let outlyingPoints = scag.outlyingPoints.map(d => d.data);
-//         let tempObject = []
-//         data["Countries"].forEach(d => tempObject.push( outlyingPoints.find(e => e === d) === undefined ? 0 : 1));
-//         data["YearsDataScag"].push(tempObject)
-//     })
-//     console.log(JSON.stringify(data))
-//     // normalize
-//
-//
-//
-//
-//
-// }).catch(function(err) {
-//     // handle error here
-// })
+Promise.all([
+    d3.text("../raw/state.txt"),
+    d3.text("../raw/IndustryFiltered.txt"),
+    d3.tsv("../raw/fullstatecode.txt"),
+    d3.csv("../raw/employ1.txt"),
+]).then(function(files) {
+    // files[0] will contain file1.csv
+    // files[1] will contain file2.csv
+    var data ={};
+    data["Variables"] = [];
+    data["Countries"] = files[0].split('\n').filter(d=>d!=="").map(d=>d.trim());
+    data["YearsData"] = [];
+    data["YearsDataTrue"] = [];
+    data["TimeMatch"] =files[3].columns.filter(d=> d!=='Series ID' && d.match("Annual ")===null);
+    data["TimeMatch"].shift();
+    states = files[2];
+    var industries = files[1].split('\n').filter(d=>d!="").map(d=> {return {code: d.split('\t')[0],value:d.split('\t')[1].trim()}});
+    data["Variables"] = industries.map(d=>d.value);
+    // data["Variables"].shift();
+    function generatecode(pre,state,industry){
+        const statecode = states.find(d=>d['state_name']===state)['state_code'];
+        const inscode = industries.find(d=>d['value']===industry)['code'];
+        return pre+statecode+'00000'+inscode+'01';
+    }
+    dataRaw = files[3]
+    var min = Infinity;
+    var max = -Infinity;
+    var arALL =[]
+    data["Countries"].forEach((c,ci)=>{
+        data["TimeMatch"].forEach((t,ti)=> {
+            data["Variables"].forEach((s, si) => {
+                if (data["YearsDataTrue"][ti]===undefined)
+                    data["YearsDataTrue"][ti]={};
+                if (data["YearsDataTrue"][ti]['v'+si]===undefined)
+                    data["YearsDataTrue"][ti]['v'+si]=[];
+                var code = generatecode('SMS',c,s);
+                instance = dataRaw.find(d=>d['Series ID']===code);
+                var v = 0;
+                if (instance) {
+                    v = + instance[t].split('(')[0];
+                    v = Math.abs(v);
+                    min = v < min ? v : min;
+                    max = v > max ? v : max;
+                    arALL.push(v)
+                }
+                data["YearsDataTrue"][ti]['v'+si][ci] = v;
+            });
+
+        });
+    });
+
+    max = Math.min(20,max);
+    invalidTime = Infinity;
+    // normalize
+    data["YearsDataTrue"].forEach((yy,i)=>{
+        let invalidKey = 0;
+        data["Variables"].forEach((s, si) => {
+            if (data["YearsData"][i]===undefined)
+                data["YearsData"][i]={};
+            if (data["YearsData"][i]['s'+si]===undefined)
+                data["YearsData"][i]['s'+si]=[];
+
+            data["YearsData"][i]['s'+si] = yy['v'+si].map(d=>{invalidKey+=d; return (Math.min(d,max))/(max)});
+            invalidKey = (data["YearsData"][i]['s'+si].indexOf(0)!==-1)||invalidKey;
+        });
+        if (invalidKey===0)
+            invalidTime = i<invalidTime?i:invalidTime;
+    });
+    console.log(invalidTime);
+    invalidTime =  data["YearsData"].length-2;
+    data["YearsData"] = data["YearsData"].slice(0,invalidTime);
+    data["YearsDataTrue"] = data["YearsDataTrue"].slice(0,invalidTime);
+    data["TimeMatch"] = data["TimeMatch"].slice(0,invalidTime);
+    let scagOptions ={
+        startBinGridSize: 30,
+        minBins: 20,
+        maxBins: 100,
+        outlyingCoefficient: 1.5,
+        incrementA:2,
+        incrementB:0,
+        decrementA:0.5,
+        decrementB:0,
+    };
+    data["YearsDataScag"] =[];
+    data["YearsDataTrue"].forEach((dd)=> {
+        let scag = scagnosticsnd(data["Countries"].map((d,id) => {
+            var temp = data["Variables"].map((s, si) => {
+               return dd['v'+si][id];
+            });
+            temp.data = d;
+            return temp;
+        }), scagOptions);
+        let outlyingPoints = scag.outlyingPoints.map(d => d.data);
+        let tempObject = []
+        data["Countries"].forEach(d => tempObject.push( outlyingPoints.find(e => e === d) === undefined ? 0 : 1));
+        data["YearsDataScag"].push(tempObject)
+    })
+    console.log(JSON.stringify(data))
+    // normalize
+
+
+
+
+
+}).catch(function(err) {
+    // handle error here
+})
 //
 // var tables = $('table.regular-data');
 // var nests = [];
