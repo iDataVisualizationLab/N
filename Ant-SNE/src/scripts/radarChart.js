@@ -12,7 +12,7 @@ function RadarChart(id, data, options) {
         margin: {top: 20, right: 55, bottom: 10, left: 55}, //The margins of the SVG
         levels: 3,				//How many levels or inner circles should there be drawn
         maxValue: 1, 			//What is the value that the biggest circle will represent
-        labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
+        labelFactor: 1.15, 	//How much farther than the radius of the outer circle should the labels be placed
         wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
         opacityArea: 0.35, 	//The opacity of the area of the blob
         dotRadius: 4, 			//The size of the colored circles of each blog
@@ -420,7 +420,7 @@ function RadarChart(id, data, options) {
     function wrap(text, width) {
         text.each(function() {
             var text = d3.select(this),
-                words = text.text().split(/\s+/).reverse(),
+                words = text.text().trim().split(/\s+/).reverse(),
                 word,
                 line = [],
                 lineNumber = 0,
