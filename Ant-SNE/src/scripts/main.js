@@ -455,7 +455,7 @@ function handleOutlier (dataRaw,serviceid){
     tables[0] =  { table: 'Ranking by Outliers Top '+listopt.limitRows+' from '+dataRaw.TimeMatch[listopt.limitColums[0]]+' to '+dataRaw.TimeMatch[listopt.limitColums[1]-1], rows: []}
     tables[0].header = ["States"];
     dataRaw.TimeMatch.slice(listopt.limitColums[0],listopt.limitColums[1]).forEach(d=>tables[0].header.push(d));
-    tables[0].rows = countiesOutlier.map(d=>
+    tables[0].rows = countiesOutlier.slice(0,listopt.limitRows).map(d=>
     {
         // d.arr = (dataRaw.YearsDataTrue||dataRaw.YearsData).map(y=>(y['v'+serviceid]||y['s'+serviceid])[d.id])
         d.arr = dataRaw.YearsData.slice(listopt.limitColums[0],listopt.limitColums[1]).map(y=>{
