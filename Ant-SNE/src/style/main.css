@@ -13,6 +13,11 @@ body .mainContain {
 }
 body .mainContain.active {
   display: block;
+  width: 100%;
+}
+
+.overflowAuto {
+  overflow: auto;
 }
 
 label {
@@ -521,6 +526,14 @@ body.light {
 
 .collapsible-body {
   border-bottom: none;
+}
+
+#tablelist td.radar {
+  max-width: 50px;
+  padding: 2px;
+}
+#tablelist td.radar svg {
+  transform: translateX(-25%);
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -156,3 +156,4 @@ function createColorbox(g) {
 //     $rangeInput.val(index + 1).trigger('input');
 //
 // });
+

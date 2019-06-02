@@ -56,6 +56,10 @@ let width = 2000,
             size: 200
         }
 },controlTime,
+    listopt = {
+        limitRows: 10,
+        limitColums: [0,10],
+    },
     runopt ={
         zoom:60,
         simDuration: 1000,
@@ -174,6 +178,12 @@ $(document).ready(function(){
                     console.log(maxtimestep)
                     TSneplot.axis(d.Variables);
                     d3.select('.averageSUm').selectAll('*').remove();
+                    //remove later
+                    var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>2009&&(new Date(d)).getFullYear()<2012);
+                    var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
+                    var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
+                    listopt.limitColums = [lowlimit,highlimit];
+
                     handleOutlier (dataRaw,currentService);
                     resetRequest();
                     d3.select('.cover').classed('hidden', true);
@@ -200,6 +210,7 @@ function changeClusterColor(d) {
 }
 function onClickRadarColor (d){
     changeRadarColor(d);
+    arrColor=d;
     TSneplot.RadarColor(d);
 }
 function onClickClusterColor (d){
@@ -282,6 +293,12 @@ function init() {
         initTime (maxtimestep);
         RangechangeVal(0);
         TSneplot.axis(d.Variables);
+
+        //remove later
+        var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>2009&&(new Date(d)).getFullYear()<2012);
+        var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
+        var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
+        listopt.limitColums = [lowlimit,highlimit];
         handleOutlier (dataRaw,currentService);
         request();
         d3.select('.cover').classed('hidden',true);
@@ -424,7 +441,9 @@ function fixRangeTime (){
 }
 
 function handleOutlier (dataRaw,serviceid){
-    let countiesOutlier = _.unzip(dataRaw.YearsDataScag).map((d,id)=>{
+    if (serviceid===-1)
+        listopt.limitColums =[0,dataRaw.TimeMatch.length];
+    let countiesOutlier = _.unzip(dataRaw.YearsDataScag.slice(listopt.limitColums[0],listopt.limitColums[1])).map((d,id)=>{
         var temp = {};
         temp.key = dataRaw.Countries[id];
         temp.id = id;
@@ -432,17 +451,21 @@ function handleOutlier (dataRaw,serviceid){
         return temp});
     countiesOutlier.sort((a,b)=>b.value-a.value);
     var tables = [];
-    tables[0] =  { table: 'Ranking by Outliers display service: '+dataRaw.Variables[serviceid], rows: []}
+    tables[0] =  { table: 'Ranking by Outliers Top '+listopt.limitRows+' from '+dataRaw.TimeMatch[listopt.limitColums[0]]+' to '+dataRaw.TimeMatch[listopt.limitColums[1]-1], rows: []}
+    tables[0].header = ["States"];
+    dataRaw.TimeMatch.slice(listopt.limitColums[0],listopt.limitColums[1]).forEach(d=>tables[0].header.push(d));
     tables[0].rows = countiesOutlier.map(d=>
     {
-        d.arr = (dataRaw.YearsDataTrue||dataRaw.YearsData).map(y=>(y['v'+serviceid]||y['s'+serviceid])[d.id])
+        // d.arr = (dataRaw.YearsDataTrue||dataRaw.YearsData).map(y=>(y['v'+serviceid]||y['s'+serviceid])[d.id])
+        d.arr = dataRaw.YearsData.slice(listopt.limitColums[0],listopt.limitColums[1]).map(y=>{
+            var temp = dataRaw.Variables.map((s,si)=> y['s'+si][d.id]);
+        temp.key = d.key; return temp})
         return d;})
     update(tables,d3.select('.tablelistContain'))
 }
 
 // list html
 function update(data,tableDiv) {
-    var tablekeys = _.flatten(['Countries',dataRaw.TimeMatch]);
 
     // Select all divs in the table div, and then apply new data
     const divs = tableDiv.selectAll('div')
@@ -474,7 +497,7 @@ function update(data,tableDiv) {
         .append('tr')
         .selectAll('th')
         // Table column headers (here constant, but could be made dynamic)
-        .data(tablekeys)
+        .data(d=>d.header)
         .enter().append('th')
         .text(d => d);
 
@@ -498,11 +521,18 @@ function update(data,tableDiv) {
     // Bind data to table cells (td becomes update selection)
     const td = tr.selectAll('td')
     // After the .data() is executed below, the td becomes a d3 update selection
-        .data(d => _.flatten([d.key,d.arr]));   // return inherited data item
+        .data(d => _.flatten([d.key,d.arr],true));   // return inherited data item
 
     // Use the enter method of the update selection to add td elements
-    td.enter().append('td')
-        .merge(td).text(d => {try { return d.toFixed(2)}catch (e) {return d}
-
-    });
+    const tdAll =td.enter().append('td')
+        .merge(td);
+    tdAll.filter(d=>typeof d ==='string').text(d =>
+    {try { return d.toFixed(2)}catch (e) {return d}});
+    const opt = {
+        radraradius: 50,
+        levels:6,
+        arrColor: arrColor,
+    };
+    tdAll.filter((d,i)=>(typeof d !=='string')).attr('class','radar').each(function(d,i) {
+        miniRadarChart(d3.select(this),[d],i,opt)});
 }
