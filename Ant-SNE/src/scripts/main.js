@@ -255,7 +255,7 @@ function rangeMove(t) {
 
 function initDemo(){
     width = $('#tSNE').width();
-    height = d3.max([Math.max( window.innerHeight, document.body.clientHeight )-280, 300]);
+    height = d3.max([Math.max( window.innerHeight, document.body.clientHeight )-180, 300]);
     // scatterConfig.width = $('#mainPlot').width();
     // netConfig.width = widthSvg;
     init();
