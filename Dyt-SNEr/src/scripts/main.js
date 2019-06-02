@@ -2,7 +2,7 @@ let width = 2000,
     height = 1000,
     TsneConfig = {
             epsilon : 10, // epsilon is learning rate (10 = default)
-            perplexity : 30, // roughly how many neighbors each point influences (30 = default)
+            perplexity : 20, // roughly how many neighbors each point influences (30 = default)
             dim : 2, // dimensionality of the embedding (2 = default)
             maxtries: 1000
     },

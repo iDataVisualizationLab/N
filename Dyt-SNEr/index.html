@@ -44,6 +44,7 @@
             <!--<li class="active">-->
                 <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>-->
                 <div class="settingContain active">
+                    <h6>- Setting</h6>
                     <div  class="row s12 valign-wrapper no_magrin list">
                         <label for="datacom" class="col s4"> Dataset: </label>
                         <select id="datacom" class="col s7">
@@ -56,24 +57,6 @@
                             <!--<option value="WorldTerrorism" >World Terrorism</option>-->
                             <!--<option value="LifeExpectancy">Life Expectancy</option>-->
                         </select>
-                    </div>
-                    <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="simDurationUI" class="col s4">Transition duration: </label>
-                        <p class="col s7">
-                            <input type="number" id="simDurationUI" min="10" max="2000" />
-                        </p>
-                    </div>
-                    <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="detailLevel_Epsilon" class="col s4"> Epsilon: </label>
-                        <p class="range-field col s7">
-                            <input type="range" id="detailLevel_Epsilon" min="2" max="100" />
-                        </p>
-                    </div>
-                    <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="detailLevel_Perplexity" class="col s4"> Perplexity: </label>
-                        <p class="range-field col s7">
-                        <input type="range" id="detailLevel_Perplexity" min="5" max="50" />
-                        </p>
                     </div>
                     <div  class="row s12 valign-wrapper no_magrin list">
                         <label for="displaySymbol" class="col s4">Detail display: </label>
@@ -139,6 +122,33 @@
 
                         <!--</p>-->
                     <!--</div>-->
+                    <div  class="row s12 valign-wrapper no_magrin">
+                        <ul class="collapsible insideSetting " style="width: 100%;">
+                            <li>
+                                <div class="collapsible-header"><h6>- t-SNE setting</h6></div>
+                                <div class="collapsible-body">
+                                <div  class="row s12 valign-wrapper no_magrin list">
+                                    <label for="simDurationUI" class="col s4">Transition duration: </label>
+                                    <p class="col s7">
+                                        <input type="number" id="simDurationUI" min="10" max="2000" />
+                                    </p>
+                                </div>
+                                <div  class="row s12 valign-wrapper no_magrin list">
+                                    <label for="detailLevel_Epsilon" class="col s4">Learning rate: </label>
+                                    <p class="range-field col s7">
+                                        <input type="range" id="detailLevel_Epsilon" min="2" max="100" />
+                                    </p>
+                                </div>
+                                <div  class="row s12 valign-wrapper no_magrin list">
+                                    <label for="detailLevel_Perplexity" class="col s4"> Perplexity: </label>
+                                    <p class="range-field col s7">
+                                        <input type="range" id="detailLevel_Perplexity" min="5" max="50" />
+                                    </p>
+                                </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
             <!--</li>-->
