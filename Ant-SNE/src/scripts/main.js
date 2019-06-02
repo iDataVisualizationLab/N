@@ -274,9 +274,13 @@ function init() {
         initTime (maxtimestep);
         RangechangeVal(0);
         TSneplot.axis(d.Variables);
+        handleOutlier (dataRaw,0)
         request();
         d3.select('.cover').classed('hidden',true);
     });
+
+
+
 }
 function initTime (max){
     controlTime.el.min = 0;
@@ -408,5 +412,89 @@ function fixRangeTime (){
     controlTime.el.addEventListener("touchstart", controlTime._handleRangeMousedownTouchstartBound);
     $('#timespan').on('change',function(){
         timestep = this.value;
+    });
+}
+
+function handleOutlier (dataRaw,serviceid){
+    let countiesOutlier = _.unzip(dataRaw.YearsDataScag).map((d,id)=>{
+        var temp = {};
+        temp.key = dataRaw.Countries[id];
+        temp.id = id;
+        temp.value = d3.sum(d);
+        return temp});
+    countiesOutlier.sort((a,b)=>b.value-a.value);
+    var tables = [];
+    tables[0] =  { table: 'Ranking by Outliers display service: '+dataRaw.Variables[serviceid], rows: []}
+    tables[0].rows = countiesOutlier.map(d=>
+    {
+        d.arr = (dataRaw.YearsDataTrue||dataRaw.YearsData).map(y=>(y['v'+serviceid]||y['s'+serviceid])[d.id])
+        return d;})
+    update(tables,d3.select('.tablelistContain'))
+}
+
+// list html
+function update(data,tableDiv) {
+    var tablekeys = _.flatten(['Countries',dataRaw.TimeMatch]);
+
+    // Select all divs in the table div, and then apply new data
+    const divs = tableDiv.selectAll('div')
+    // After .data() is executed below, divs becomes a d3 update selection
+        .data(data, d => d.table);
+
+    // Use the exit method of the d3 update selection to remove any deleted table div and contents (which would be absent in the data array just applied)
+    divs.exit().remove();
+
+    // Use the enter metod of the d3 update selection to add new ('entering') items present in the
+    // data array just applied
+    const divsEnter = divs
+        .enter().append('div')
+        .attr('id', d => `${ d.table }-Div`)
+        .attr('class', 'well');
+
+    // Add title in new div(s)
+    divsEnter.append('h5').text(d => d.table);
+
+    divs.selectAll('h5').text(d => `${ d.table }`);
+
+    // Add table in new div(s)
+    const tableEnter = divsEnter.append('table')
+        .attr('id', d => d.table)
+        .attr('class', 'table table-condensed table-striped table-bordered');
+
+    // Append table head in new table(s)
+    tableEnter.append('thead')
+        .append('tr')
+        .selectAll('th')
+        // Table column headers (here constant, but could be made dynamic)
+        .data(tablekeys)
+        .enter().append('th')
+        .text(d => d);
+
+    // Append table body in new table(s)
+    tableEnter.append('tbody');
+
+    // Select all tr elements in the divs update selection
+    let tr = divs.merge(divsEnter).select('table').select('tbody').selectAll('tr')
+    // After the .data() is executed below, tr becomes a d3 update selection
+        .data(
+            d =>  d.rows, // Return inherited data item
+            d => d.key    // 'key' function to disable default by-index evaluation
+        );
+
+    // Use the exit method of the update selection to remove table rows without associated data
+    tr.exit().remove();
+
+    // Use the enter method to add table rows corresponding to new data
+    let trn = tr.enter().append('tr');
+    tr = tr.merge(trn)
+    // Bind data to table cells (td becomes update selection)
+    const td = tr.selectAll('td')
+    // After the .data() is executed below, the td becomes a d3 update selection
+        .data(d => _.flatten([d.key,d.arr]));   // return inherited data item
+
+    // Use the enter method of the update selection to add td elements
+    td.enter().append('td')
+        .merge(td).text(d => {try { return d.toFixed(2)}catch (e) {return d}
+
     });
 }
