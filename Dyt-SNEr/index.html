@@ -43,8 +43,11 @@
             <!--</li>-->
             <!--<li class="active">-->
                 <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>-->
-                <div class="settingContain active">
-                    <h6>- Setting</h6>
+        <div  class="row s12 valign-wrapper no_magrin">
+            <ul class="collapsible insideSetting expandable " style="width: 100%;box-shadow: none;">
+                <li class="settingContain active">
+                    <div class="collapsible-header" style="padding-top: 0px;"><h6>- Setting</h6></div>
+                    <div class="collapsible-body">
                     <div  class="row s12 valign-wrapper no_magrin list">
                         <label for="datacom" class="col s4"> Dataset: </label>
                         <select id="datacom" class="col s7">
@@ -122,10 +125,9 @@
 
                         <!--</p>-->
                     <!--</div>-->
-                    <div  class="row s12 valign-wrapper no_magrin">
-                        <ul class="collapsible insideSetting " style="width: 100%;">
-                            <li>
-                                <div class="collapsible-header"><h6>- t-SNE setting</h6></div>
+
+                            <li class="settingContain active">
+                                <div class="collapsible-header" style="padding-top: 0px;"><h6>- t-SNE setting</h6></div>
                                 <div class="collapsible-body">
                                 <div  class="row s12 valign-wrapper no_magrin list">
                                     <label for="simDurationUI" class="col s4">Transition duration: </label>

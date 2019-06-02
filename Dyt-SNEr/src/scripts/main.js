@@ -96,6 +96,10 @@ $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
+    var elem = document.querySelector('.collapsible.expandable');
+    var instance = M.Collapsible.init(elem, {
+        accordion: false
+    });
     $('.tabs').tabs({'onShow':function(){
             if ($('#demo').css('display')!=="none") {
                 $('#videoIn').each(function(index) {

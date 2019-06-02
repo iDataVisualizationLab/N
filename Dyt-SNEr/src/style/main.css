@@ -519,4 +519,8 @@ body.light {
   margin: 0;
 }
 
+.collapsible-body {
+  border-bottom: none;
+}
+
 /*# sourceMappingURL=main.css.map */
