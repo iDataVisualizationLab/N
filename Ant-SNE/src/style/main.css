@@ -531,11 +531,13 @@ body.light {
 #tablelist {
   width: 100%;
   overflow: auto;
+  font-size: smaller;
 }
 #tablelist thead {
   background-color: cornflowerblue;
 }
 #tablelist thead th {
+  font-weight: normal;
   padding: 5px;
 }
 #tablelist td.radar {

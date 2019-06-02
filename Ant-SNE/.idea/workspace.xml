@@ -33,8 +33,8 @@
         <counts>
           <entry key="CSS" value="14" />
           <entry key="HTML" value="64" />
-          <entry key="JavaScript" value="2227" />
-          <entry key="Sass" value="172" />
+          <entry key="JavaScript" value="2231" />
+          <entry key="Sass" value="177" />
         </counts>
       </usages-collector>
     </session>
@@ -44,8 +44,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="351" column="84" selection-start-line="351" selection-start-column="84" selection-end-line="351" selection-end-column="84" />
+            <state relative-caret-position="72">
+              <caret line="348" column="51" selection-start-line="348" selection-start-column="51" selection-end-line="348" selection-end-column="51" />
               <folding>
                 <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
@@ -56,20 +56,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="532" column="23" selection-start-line="532" selection-start-column="23" selection-end-line="532" selection-end-column="23" />
+            <state relative-caret-position="102">
+              <caret line="485" column="30" lean-forward="true" selection-start-line="485" selection-start-column="30" selection-end-line="485" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/style/sass/main.sass">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="461" column="18" selection-start-line="461" selection-start-column="18" selection-end-line="461" selection-end-column="18" />
+            <state relative-caret-position="59">
+              <caret line="458" column="20" selection-start-line="458" selection-start-column="20" selection-end-line="458" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -79,15 +79,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="374">
               <caret line="220" column="63" selection-start-line="220" selection-start-column="59" selection-end-line="220" selection-end-column="63" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/script clean data/cleandata.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="57" lean-forward="true" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -177,9 +168,9 @@
       <find>set</find>
       <find>ss</find>
       <find>ss =</find>
+      <find>ss.</find>
       <find>YearsDataTrue</find>
       <find>miniRadarChart</find>
-      <find>ss.</find>
       <find>minnnn</find>
     </findStrings>
     <replaceStrings>
@@ -206,8 +197,8 @@
         <option value="$PROJECT_DIR$/src/data/raw/IndustryFiltered.txt" />
         <option value="$PROJECT_DIR$/src/data/script clean data/convert.js" />
         <option value="$PROJECT_DIR$/src/data/EmploymentRate(updated)HIghDim_T.json" />
-        <option value="$PROJECT_DIR$/src/scripts/main.js" />
         <option value="$PROJECT_DIR$/src/style/sass/main.sass" />
+        <option value="$PROJECT_DIR$/src/scripts/main.js" />
       </list>
     </option>
   </component>
@@ -325,7 +316,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.cleandata.html">
+  <component name="RunManager" selected="JavaScript Debug.index.html">
     <configuration name="cleandata.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/Ant-SNE/src/data/script clean data/cleandata.html">
       <method v="2" />
     </configuration>
@@ -338,8 +329,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript Debug.cleandata.html" />
         <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="JavaScript Debug.cleandata.html" />
       </list>
     </recent_temporary>
   </component>
@@ -353,19 +344,19 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1559445755848</updated>
-      <workItem from="1559445756981" duration="32682000" />
+      <workItem from="1559445756981" duration="33754000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32682000" />
+    <option name="totallyTimeSpent" value="33754000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-43" y="21" width="1400" height="856" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2880597" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2880597" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
@@ -374,7 +365,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.39972338" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39972338" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -528,19 +519,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="351" column="84" selection-start-line="351" selection-start-column="84" selection-end-line="351" selection-end-column="84" />
-          <folding>
-            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#div#2;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/tsnePlot.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -552,16 +530,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="57" lean-forward="true" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/script clean data/convert.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="217" selection-start-line="217" selection-end-line="217" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -586,17 +554,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+    <entry file="file://$PROJECT_DIR$/src/data/script clean data/convert.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="532" column="23" selection-start-line="532" selection-start-column="23" selection-end-line="532" selection-end-column="23" />
+        <state relative-caret-position="119">
+          <caret line="217" selection-start-line="217" selection-end-line="217" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="348" column="51" selection-start-line="348" selection-start-column="51" selection-end-line="348" selection-end-column="51" />
+          <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#div#2;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/style/sass/main.sass">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="461" column="18" selection-start-line="461" selection-start-column="18" selection-end-line="461" selection-end-column="18" />
+        <state relative-caret-position="59">
+          <caret line="458" column="20" selection-start-line="458" selection-start-column="20" selection-end-line="458" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="485" column="30" lean-forward="true" selection-start-line="485" selection-start-column="30" selection-end-line="485" selection-end-column="30" />
         </state>
       </provider>
     </entry>

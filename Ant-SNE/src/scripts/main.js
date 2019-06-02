@@ -484,9 +484,9 @@ function update(data,tableDiv) {
         .attr('class', 'well');
 
     // Add title in new div(s)
-    divsEnter.append('h5').text(d => d.table);
+    divsEnter.append('h6').text(d => d.table);
 
-    divs.selectAll('h5').text(d => `${ d.table }`);
+    divs.selectAll('h6').text(d => `${ d.table }`);
 
     // Add table in new div(s)
     const tableEnter = divsEnter.append('table')
@@ -530,7 +530,7 @@ function update(data,tableDiv) {
     tdAll.filter(d=>typeof d ==='string').text(d =>
     {try { return d.toFixed(2)}catch (e) {return d}});
     const opt = {
-        radraradius: 30,
+        radraradius: 20,
         levels:6,
         arrColor: arrColor,
     };
