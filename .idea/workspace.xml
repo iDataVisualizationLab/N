@@ -15,10 +15,11 @@
     <session id="367669999">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="8" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.1" value="5" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.open.time.1" value="6" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -58,7 +59,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/just4presentation/radarChart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3689">
+            <state relative-caret-position="3774">
               <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -164,8 +165,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1016" />
-    <option name="y" value="112" />
+    <option name="x" value="319" />
     <option name="width" value="1400" />
     <option name="height" value="856" />
   </component>
@@ -174,7 +174,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -206,6 +205,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -213,7 +213,7 @@
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Ant-SNE" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
   </component>
@@ -273,16 +273,18 @@
       <workItem from="1557002280482" duration="840000" />
       <workItem from="1557100909225" duration="75000" />
       <workItem from="1557448696603" duration="126000" />
+      <workItem from="1559445713199" duration="9000" />
+      <workItem from="1559445740081" duration="16000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22413000" />
+    <option name="totallyTimeSpent" value="22438000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1016" y="112" width="1400" height="856" extended-state="0" />
+    <frame x="319" y="0" width="1400" height="856" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2761194" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28507462" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -384,7 +386,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/just4presentation/radarChart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3689">
+        <state relative-caret-position="3774">
           <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
           <folding>
             <element signature="n#!!doc" expanded="true" />

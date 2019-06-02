@@ -109,6 +109,13 @@ $(document).ready(function(){
                 initialize();
             }
     }});
+    if (d3.select('#demoTab a').classed('active')){
+        $('#videoIn').each(function(index) {
+            $(this).attr('src', $(this).attr('src'));
+            return false;
+        });
+        initialize();
+    }
         // $('#zoomInit').on('change', function () {
         //     runopt.zoom = this.value;
         //     TSneplot.runopt(runopt);
@@ -248,7 +255,7 @@ function rangeMove(t) {
 
 function initDemo(){
     width = $('#tSNE').width();
-    height = d3.max([document.body.clientHeight-280, 300]);
+    height = d3.max([Math.max( window.innerHeight, document.body.clientHeight )-280, 300]);
     // scatterConfig.width = $('#mainPlot').width();
     // netConfig.width = widthSvg;
     init();
