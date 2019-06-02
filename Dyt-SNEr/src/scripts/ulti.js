@@ -75,12 +75,14 @@ function creatContain(contain,colorScaleList,colorArr,callback){
     const ul = contain.append('ul').style('width','100%');
     const colorListitems = ul.selectAll('li').data(colorArr)
         .enter().append('li')
-        .attr('class','colorScale div');
+        .attr('class','colorScale div row s12 valign-wrapper');
     colorListitems.append('div')
-        .attr('class','colorscale-label')
+        .attr('class','col s4 colorscale-label')
+        // .attr('class','colorscale-label')
         .text(d=>d.label)
     const colorpalette = colorListitems.append('div')
-        .attr('class','colorscale-palette-container')
+        .attr('class','col s7 colorscale-palette-container')
+        // .attr('class','colorscale-palette-container')
         .append('div')
         .attr('class','colorscale-block')
         .on('click',callback)

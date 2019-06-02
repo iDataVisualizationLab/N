@@ -32,8 +32,8 @@
     </div>
 </nav>
 <div id="mySidenav" class="sidenavs">
-    <div class="row s12">
-        <ul class="collapsible">
+    <div class="row s12 active">
+        <!--<ul class="collapsible">-->
             <!--<li>-->
                 <!--<div class="collapsible-header search-wrapper focused">-->
                     <!--<input type="text" id="search" placeholder="Search ...">-->
@@ -41,10 +41,10 @@
                 <!--</div>-->
                 <!--<div class="collapsible-body"><span>Resevered for hierarchy.</span></div>-->
             <!--</li>-->
-            <li class="active">
-                <div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>
-                <div class="collapsible-body">
-                    <div  class="row s12 valign-wrapper">
+            <!--<li class="active">-->
+                <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>-->
+                <div class="settingContain active">
+                    <div  class="row s12 valign-wrapper no_magrin list">
                         <label for="datacom" class="col s4"> Dataset: </label>
                         <select id="datacom" class="col s7">
                             <option value="EmploymentRate">Unemployment Rate</option>
@@ -57,19 +57,19 @@
                             <!--<option value="LifeExpectancy">Life Expectancy</option>-->
                         </select>
                     </div>
-                    <div  class="row s12 valign-wrapper">
+                    <div  class="row s12 valign-wrapper no_magrin list">
                         <label for="simDurationUI" class="col s4">Delay: </label>
                         <p class="col s7">
                             <input type="number" id="simDurationUI" min="10" max="2000" />
                         </p>
                     </div>
-                    <div  class="row s12 valign-wrapper">
-                        <label for="zoomInit" class="col s4"> Zoom init: </label>
+                    <div  class="row s12 valign-wrapper no_magrin list">
+                        <label for="detailLevel" class="col s4"> Perplexity: </label>
                         <p class="range-field col s7">
-                            <input type="range" id="zoomInit" min="1" max="80" />
+                        <input type="range" id="detailLevel" min="10" max="50" />
                         </p>
                     </div>
-                    <div  class="row s12 valign-wrapper">
+                    <div  class="row s12 valign-wrapper no_magrin list">
                         <label for="displaySymbol" class="col s4">Detail display: </label>
                         <p class="switch col s7" id ="displaySymbol">
 
@@ -82,43 +82,13 @@
 
                         </p>
                     </div>
-                    <div  class="row s12 valign-wrapper">
-                        <label for="displaySymbol" class="col s4">Cluster mode: </label>
-                        <p class="switch col s7" id ="displaySymbol">
-
-                            <label>
-                                <span class="true">Outlier</span>
-                                <input type="checkbox" onchange="changeGroup_mode(this)">
-                                <span class="lever"></span>
-                                <span class="false">jLouvain</span>
-                            </label>
-
-                        </p>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header"><i class="material-icons">settings</i>  Advance</div>
-                <div class="collapsible-body">
-                    <div  class="row s12 valign-wrapper">
-                        <label for="detailLevel" class="col s4"> Perplexity: </label>
-                        <p class="range-field col s7">
-                            <input type="range" id="detailLevel" min="10" max="50" />
-                        </p>
-                    </div>
-
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header"><i class="material-icons">help</i>Style</div>
-                <div class="collapsible-body">
-                    <div class="row s12">
-                        <ul class="collapsible">
+                    <div class="row s12 no_magrin">
+                        <ul class="collapsible insideSetting ">
                             <li id="RadarColor">
                                 <div class="collapsible-header">
-                                    <div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">
-                                        <div class="colorscale-header">Radar</div>
-                                        <div class="colorscale-palette-container">
+                                    <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
+                                        <label for="radarColorPicker" class="col s4"> Radar color scheme: </label>
+                                        <div id = "radarColorPicker" class="colorscale-palette-container col s7">
                                             <div class="colorscale-block">
 
                                             </div>
@@ -133,9 +103,9 @@
                             </li>
                             <li id="ClusterColor">
                                 <div class="collapsible-header">
-                                    <div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">
-                                        <div class="colorscale-header">Cluster</div>
-                                        <div class="colorscale-palette-container">
+                                    <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
+                                        <label for="radarColorPicker" class="col s4"> Cluster color scheme: </label>
+                                        <div id="clusterColorPicker" class="colorscale-palette-container col s7">
                                             <div class="colorscale-block">
 
                                             </div>
@@ -150,16 +120,85 @@
                             </li>
                         </ul>
                     </div>
+                    <!--<div  class="row s12 valign-wrapper">-->
+                        <!--<label for="displaySymbol" class="col s4">Cluster mode: </label>-->
+                        <!--<p class="switch col s7" id ="displaySymbol">-->
+
+                            <!--<label>-->
+                                <!--<span class="true">Outlier</span>-->
+                                <!--<input type="checkbox" onchange="changeGroup_mode(this)">-->
+                                <!--<span class="lever"></span>-->
+                                <!--<span class="false">jLouvain</span>-->
+                            <!--</label>-->
+
+                        <!--</p>-->
+                    <!--</div>-->
                 </div>
-            </li>
-            <li>
-                <div class="collapsible-header"><i class="material-icons">help</i>Controls</div>
-                <div class="collapsible-body">
-                    <strong>Zoom</strong>: Scroll mouse button to zoom.<br/>
-                    <strong>Setting</strong>: Use tab setting to adjust the delay speed, zoom and change the visualization.<br/>
-                </div>
-            </li>
-        </ul>
+
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Advance</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<div  class="row s12 valign-wrapper">-->
+                        <!--<label for="detailLevel" class="col s4"> Perplexity: </label>-->
+                        <!--<p class="range-field col s7">-->
+                            <!--<input type="range" id="detailLevel" min="10" max="50" />-->
+                        <!--</p>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">help</i>Style</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<div class="row s12">-->
+                        <!--<ul class="collapsible">-->
+                            <!--<li id="RadarColor">-->
+                                <!--<div class="collapsible-header">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">-->
+                                        <!--<div class="colorscale-header">Radar</div>-->
+                                        <!--<div class="colorscale-palette-container">-->
+                                            <!--<div class="colorscale-block">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="collapsible-body">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li id="ClusterColor">-->
+                                <!--<div class="collapsible-header">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">-->
+                                        <!--<div class="colorscale-header">Cluster</div>-->
+                                        <!--<div class="colorscale-palette-container">-->
+                                            <!--<div class="colorscale-block">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="collapsible-body">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">help</i>Controls</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<strong>Zoom</strong>: Scroll mouse button to zoom.<br/>-->
+                    <!--<strong>Setting</strong>: Use tab setting to adjust the delay speed, zoom and change the visualization.<br/>-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
     </div>
 </div>
 <div id="Maincontent" class="row s12">

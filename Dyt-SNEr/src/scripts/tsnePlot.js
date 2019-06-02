@@ -150,11 +150,7 @@ d3.Tsneplot = function () {
             .classed('new',true)
             .attrs(graphicopt.top10.details.clulster.attr)
             .styles(graphicopt.top10.details.clulster.style)
-            .merge(newg)
-            .style("fill",
-                d=>{
-                    return colorCategory(d.val)}
-            ).attr('x',(d,i)=>i*graphicopt.eventpad.size)
+            .attr('x',(d,i)=>i*graphicopt.eventpad.size)
             .style('opacity',0)
             .on('mouseover',function(d){
                 const name = this.parentNode.parentNode.__data__.name;
@@ -168,6 +164,10 @@ d3.Tsneplot = function () {
                 // console.log(this.parentNode.parentNode.__data__.name)
             })
             .merge(newg)
+            .style("fill",
+                d=>{
+                    return colorCategory(d.val)}
+            )
             .transition()
             .duration(runopt.simDuration)
             .style('opacity',1)

@@ -402,6 +402,20 @@ body.light
 #subzone
   padding-top: 5px
 
+.settingContain
+  display: block
+  padding: 10px
+  .list
+    min-height: 60px
+  .insideSetting
+    padding: 0px
+    box-shadow: none
+    .collapsible-header
+      padding: 0px
+    :not(.active) .collapsible-header
+      border-bottom: none
+    .collapsible-body
+      padding: 0px
 .pickercontain
   margin: 0px auto
   .colorscale-label, .colorscale-header
@@ -409,9 +423,11 @@ body.light
     width: 25%
     text-align: start
   .colorscale-label
-    font-weight: 600
-    font-size: 12px
-
+    font-size: 0.8rem
+    //font-size: 12px
+  li
+    padding: 5px 0px
+    margin: 0
   .colorscale-palette-container
     display: inline-block
     text-align: start
@@ -425,3 +441,5 @@ body.light
         margin: 0px auto
         display: inline-block
         cursor: pointer
+.no_magrin
+  margin: 0

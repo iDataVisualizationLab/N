@@ -458,6 +458,27 @@ body.light {
   padding-top: 5px;
 }
 
+.settingContain {
+  display: block;
+  padding: 10px;
+}
+.settingContain .list {
+  min-height: 60px;
+}
+.settingContain .insideSetting {
+  padding: 0px;
+  box-shadow: none;
+}
+.settingContain .insideSetting .collapsible-header {
+  padding: 0px;
+}
+.settingContain .insideSetting :not(.active) .collapsible-header {
+  border-bottom: none;
+}
+.settingContain .insideSetting .collapsible-body {
+  padding: 0px;
+}
+
 .pickercontain {
   margin: 0px auto;
 }
@@ -467,8 +488,11 @@ body.light {
   text-align: start;
 }
 .pickercontain .colorscale-label {
-  font-weight: 600;
-  font-size: 12px;
+  font-size: 0.8rem;
+}
+.pickercontain li {
+  padding: 5px 0px;
+  margin: 0;
 }
 .pickercontain .colorscale-palette-container {
   display: inline-block;
@@ -485,6 +509,10 @@ body.light {
   margin: 0px auto;
   display: inline-block;
   cursor: pointer;
+}
+
+.no_magrin {
+  margin: 0;
 }
 
 /*# sourceMappingURL=main.css.map */
