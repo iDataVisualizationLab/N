@@ -190,7 +190,8 @@ d3.Tsneplot = function () {
             case 'step':
                     store.Y = data.result.solution;
                     store.cost = data.result.cost;
-                    updateEmbedding(store.Y, store.cost);
+                    store.iteration = data.iteration;
+                    updateEmbedding(store.Y, store.cost,store.iteration);
                 break;
 
             case "updateTracker":
@@ -327,6 +328,8 @@ d3.Tsneplot = function () {
         panel = d3.select("#subzone").style('top',graphicopt.offset.top+'px');
         panel.select(".details").append("span").text('t-SNE cost: ');
         panel.select(".details").append("span").attr('class','cost');
+        panel.select(".details").append("span").text(',     iteration: ');
+        panel.select(".details").append("span").attr('class','iteration');
 
         const sizegraph = sizebox - 6;
         scaleX_small.range([0,sizegraph]);
@@ -351,7 +354,7 @@ d3.Tsneplot = function () {
             ss = d3.zoomTransform(this).k;
             tx = d3.zoomTransform(this).x;
             ty = d3.zoomTransform(this).y;
-            if (store.Y) updateEmbedding(store.Y,store.cost,true);
+            if (store.Y) updateEmbedding(store.Y,store.cost,store.iteration,true);
         }
         var zoom = d3.zoom()
             .on("zoom", zoomed);
@@ -385,8 +388,9 @@ d3.Tsneplot = function () {
                 );
     }
 
-    function updateEmbedding(Y,cost,skiptransition) {
+    function updateEmbedding(Y,cost,iteration,skiptransition) {
         d3.select("#subzone").select('.cost').text(cost.toFixed(2));
+        d3.select("#subzone").select('.iteration').text(iteration);
         // get current solution
         // var Y = tsne.getSolution();
         // move the groups accordingly

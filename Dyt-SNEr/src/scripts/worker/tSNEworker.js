@@ -25,7 +25,7 @@ let geTopComand = _.once(stepstable);
 let average;
 function stepstable (cost , solution,community){
     postMessage({action: 'cluster', result: community});
-    postMessage({action:'step', result: {cost: cost, solution: solution}, maxloop: countstack, status: "stable"});
+    postMessage({action:'step', result: {cost: cost, solution: solution}, iteration: countstack, status: "stable"});
 }
 addEventListener('message',function ({data}){
         switch (data.action) {
@@ -59,7 +59,7 @@ addEventListener('message',function ({data}){
                 //postMessage({action:'step', result: {cost: cost, solution: tsne.getSolution()}});
                 if (stop)
                     geTopComand(cost,tsne.getSolution(),groups);
-                postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
+                postMessage({action:data.action, status:stop?"stable":"done", iteration: countstack});
                 break;
             case "updateData":
                 geTopComand = _.once(stepstable);
@@ -94,7 +94,7 @@ addEventListener('message',function ({data}){
                     geTopComand(costa[requestIndex], store_step.map((d,i)=>d[requestIndex]),groups)
                 }
 
-                postMessage({action:data.action, status:stop?"stable":"done", maxloop: countstack});
+                postMessage({action:data.action, status:stop?"stable":"done", iteration: countstack});
                 break;
             case "updateTracker":
                 console.log(requestIndex+"_"+currentMaxIndex)
@@ -129,12 +129,12 @@ addEventListener('message',function ({data}){
                         //jLouvain-------
                         // community.edges(convertLink(tsne.getProbability(), hostname));
                         // var result = community();
-                        // postMessage({action: 'cluster', result: result, maxloop: countstack, status: stop?"stable":"done"});
+                        // postMessage({action: 'cluster', result: result, iteration: countstack, status: stop?"stable":"done"});
                         postMessage({action: 'imform',status: stop?"stable":"done"});
                         //---------------
                     if (stop)
                         geTopComand(cost,sol,groups);
-                        // postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", maxloop: countstack});
+                        // postMessage({action: 'step', result: {cost: cost, solution: sol}, status: stop?"stable":"done", iteration: countstack});
                 }else {
                     postMessage({action: 'stable'});
                 }

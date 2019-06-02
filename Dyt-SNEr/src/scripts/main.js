@@ -110,12 +110,19 @@ $(document).ready(function(){
         //     TSneplot.runopt(runopt);
         // });
         // $('#zoomInit')[0].value = runopt.zoom;
-        $('#detailLevel').on('change', function () {
+        $('#detailLevel_Perplexity').on('change', function () {
             TsneConfig.perplexity = this.value;
             TSneplot.option(TsneConfig);
             resetRequest();
         });
-        $('#detailLevel')[0].value = TsneConfig.perplexity;
+        $('#detailLevel_Perplexity')[0].value = TsneConfig.perplexity;
+
+    $('#detailLevel_Epsilon').on('change', function () {
+        TsneConfig.epsilon = this.value;
+        TSneplot.option(TsneConfig);
+        resetRequest();
+    });
+    $('#detailLevel_Epsilon')[0].value = TsneConfig.epsilon;
 
         $('#simDurationUI').on('change', function () {
             simDuration = this.value;

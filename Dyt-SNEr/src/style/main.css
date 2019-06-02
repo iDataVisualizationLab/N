@@ -91,7 +91,11 @@ label {
   left: 10px;
   position: absolute;
   transition: 0.5s;
-  padding-right: 10px;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+.subpanel .details {
+  margin-top: 3px;
 }
 
 .sidenavs {

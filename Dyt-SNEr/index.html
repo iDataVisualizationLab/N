@@ -58,15 +58,21 @@
                         </select>
                     </div>
                     <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="simDurationUI" class="col s4">Delay: </label>
+                        <label for="simDurationUI" class="col s4">Transition duration: </label>
                         <p class="col s7">
                             <input type="number" id="simDurationUI" min="10" max="2000" />
                         </p>
                     </div>
                     <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="detailLevel" class="col s4"> Perplexity: </label>
+                        <label for="detailLevel_Epsilon" class="col s4"> Epsilon: </label>
                         <p class="range-field col s7">
-                        <input type="range" id="detailLevel" min="10" max="50" />
+                            <input type="range" id="detailLevel_Epsilon" min="2" max="100" />
+                        </p>
+                    </div>
+                    <div  class="row s12 valign-wrapper no_magrin list">
+                        <label for="detailLevel_Perplexity" class="col s4"> Perplexity: </label>
+                        <p class="range-field col s7">
+                        <input type="range" id="detailLevel_Perplexity" min="5" max="50" />
                         </p>
                     </div>
                     <div  class="row s12 valign-wrapper no_magrin list">
