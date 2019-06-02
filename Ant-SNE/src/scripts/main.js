@@ -57,7 +57,7 @@ let width = 2000,
         }
 },controlTime,
     listopt = {
-        limitRows: 10,
+        limitRows: 20,
         limitColums: [0,10],
         limitYear: [2000,2011], // change year limit in list ranking here
     },
