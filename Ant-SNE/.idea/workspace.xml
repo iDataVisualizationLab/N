@@ -29,7 +29,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="47" />
-          <entry key="JavaScript" value="944" />
+          <entry key="JavaScript" value="990" />
         </counts>
       </usages-collector>
     </session>
@@ -55,8 +55,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="429" column="71" selection-start-line="429" selection-start-column="71" selection-end-line="429" selection-end-column="71" />
+            <state relative-caret-position="272">
+              <caret line="117" column="49" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -129,6 +129,9 @@
       <find>true</find>
       <find>tables</find>
       <find>YearsDataTrue</find>
+      <find>handleOutlier</find>
+      <find>list</find>
+      <find>playchange</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -270,12 +273,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1559445755848</updated>
-      <workItem from="1559445756981" duration="11308000" />
+      <workItem from="1559445756981" duration="11896000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11308000" />
+    <option name="totallyTimeSpent" value="11896000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="45" width="1400" height="856" extended-state="0" />
@@ -318,7 +321,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/main.js</url>
-          <line>256</line>
+          <line>263</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
@@ -354,21 +357,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/main.js</url>
-          <line>476</line>
+          <line>483</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/main.js</url>
-          <line>490</line>
+          <line>111</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="16" />
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/main.js</url>
-          <line>429</line>
-          <properties />
-          <option name="timeStamp" value="17" />
+          <line>110</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -432,9 +435,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
-      <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/EmploymentRate(updated)HIghDim_T.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -449,10 +449,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+      <provider selected="true" editor-type-id="httpFileEditor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="429" column="71" selection-start-line="429" selection-start-column="71" selection-end-line="429" selection-end-column="71" />
+        <state relative-caret-position="272">
+          <caret line="117" column="49" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="49" />
         </state>
       </provider>
     </entry>

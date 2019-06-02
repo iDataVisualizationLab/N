@@ -85,7 +85,7 @@ let width = 2000,
 let arrColor = colorScaleList.rainbow;
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
-let dataRaw;
+let dataRaw,currentService =0;
 let TSneplot = d3.Tsneplot();
 
 const svg = d3.select('#tSNEcontent');
@@ -101,12 +101,19 @@ $(document).ready(function(){
         accordion: false
     });
     $('.tabs').tabs({'onShow':function(){
-            if ($('#demo').css('display')!=="none") {
+
+            if (this.$activeTabLink.text()==='Demo') {
                 $('#videoIn').each(function(index) {
                     $(this).attr('src', $(this).attr('src'));
                     return false;
                 });
                 initialize();
+            }else{
+                try{
+                    playchange();
+                }catch(e){
+
+                }
             }
     }});
     if (d3.select('#demoTab a').classed('active')){
@@ -167,6 +174,7 @@ $(document).ready(function(){
                     console.log(maxtimestep)
                     TSneplot.axis(d.Variables);
                     d3.select('.averageSUm').selectAll('*').remove();
+                    handleOutlier (dataRaw,currentService);
                     resetRequest();
                     d3.select('.cover').classed('hidden', true);
                 });
@@ -274,7 +282,7 @@ function init() {
         initTime (maxtimestep);
         RangechangeVal(0);
         TSneplot.axis(d.Variables);
-        handleOutlier (dataRaw,0)
+        handleOutlier (dataRaw,currentService);
         request();
         d3.select('.cover').classed('hidden',true);
     });
