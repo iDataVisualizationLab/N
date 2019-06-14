@@ -460,6 +460,7 @@ d3.Tsneplot = function () {
     };
 
     Tsneplot.pause  = function (){
+        if (intervalUI)
         clearInterval(intervalUI);
         // clearInterval(intervalCalculate);
     };
