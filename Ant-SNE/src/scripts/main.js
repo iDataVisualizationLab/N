@@ -60,6 +60,7 @@ let width = 2000,
         limitRows: 20,
         limitColums: [0,10],
         limitYear: [2000,2011], // change year limit in list ranking here
+        // limitYear: [1998,2001],
     },
     runopt ={
         zoom:60,
@@ -180,7 +181,7 @@ $(document).ready(function(){
                     TSneplot.axis(d.Variables);
                     d3.select('.averageSUm').selectAll('*').remove();
                     //remove later
-                    var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[0]+1));
+                    var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
                     var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
                     var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
                     listopt.limitColums = [lowlimit,highlimit];
@@ -296,7 +297,7 @@ function init() {
         TSneplot.axis(d.Variables);
 
         //remove later
-        var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>1999&&(new Date(d)).getFullYear()<2012);
+        var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
         var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
         var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
         listopt.limitColums = [lowlimit,highlimit];
