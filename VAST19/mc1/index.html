@@ -2,10 +2,13 @@
 <html>
 <head>
     <!--Import Google Icon Font-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="src/style/materialize.css"  media="screen,projection"/>
+    <link href="src/style/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="src/style/main.css"/>
+    <link type="text/css" rel="stylesheet" href="src/style/other.css"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -18,11 +21,11 @@
     <div class="nav-wrapper" id="header">
 
         <div class="brand-logo center input-field col s12 inline" style="font-size: 1.5rem;">
-            Ant-SNE: Tracking community and multivariate outliers via animated t-SNE
+            Minichalenge 1
         </div>
         <div class="row s5 left">
             <ul id="nav-mobile" class="tabs tabs-transparent" id="mainTab">
-                <li class="tab"><a href="#video">Video</a></li>
+                <li class="tab"><a href="#video">Report</a></li>
                 <li class="tab" id="demoTab"><a class="active" href="#demo">Demo</a></li>
                 <li class="tab" id="tablelistTab"><a  href="#tablelist">List</a></li>
             </ul>
@@ -49,109 +52,101 @@
                 <li class="settingContain active">
                     <div class="collapsible-header" style="padding-top: 0px;"><h6>- Setting</h6></div>
                     <div class="collapsible-body">
-                    <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="datacom" class="col s4"> Dataset: </label>
-                        <select id="datacom" class="col s7">
-                            <option value="EmploymentRate">Unemployment Rate</option>
-                            <option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>
-                            <option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>
-                            <option value="EmploymentRate(updated)HIghDim_T" selected="selected" >EmploymentRate netchange (1990-2011)</option>
-                            <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
-                            <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
-                            <!--<option value="WorldTerrorism" >World Terrorism</option>-->
-                            <!--<option value="LifeExpectancy">Life Expectancy</option>-->
-                        </select>
-                    </div>
-                    <div  class="row s12 valign-wrapper no_magrin list">
-                        <label for="displaySymbol" class="col s4">Detail display: </label>
-                        <p class="switch col s7" id ="displaySymbol">
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="datacom" class="col s4"> Dataset: </label>
+                            <select id="datacom" class="col s7">
+                                <!--<option value="EmploymentRate">Unemployment Rate</option>-->
+                                <!--<option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>-->
+                                <!--<option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>-->
+                                <option value="mc1-reports-data" data="csv" selected="selected" >report damaged</option>
+                                <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
+                                <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
+                                <!--<option value="WorldTerrorism" >World Terrorism</option>-->
+                                <!--<option value="LifeExpectancy">Life Expectancy</option>-->
+                            </select>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Detail display: </label>
+                            <p class="switch col s7" id ="displaySymbol">
 
-                                <label>
-                                    <span class="true">Radar</span>
-                                    <input type="checkbox" onchange="changeShape(this)">
-                                    <span class="lever"></span>
-                                    <span class="false">Dot</span>
-                                </label>
+                                    <label>
+                                        <span class="true">Radar</span>
+                                        <input type="checkbox" onchange="changeShape(this)">
+                                        <span class="lever"></span>
+                                        <span class="false">Dot</span>
+                                    </label>
 
-                        </p>
-                    </div>
-                    <div class="row s12 no_magrin">
-                        <ul class="collapsible insideSetting ">
-                            <li id="RadarColor">
-                                <div class="collapsible-header">
-                                    <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
-                                        <label for="radarColorPicker" class="col s4"> Radar color scheme: </label>
-                                        <div id = "radarColorPicker" class="colorscale-palette-container col s7">
-                                            <div class="colorscale-block">
+                            </p>
+                        </div>
+                        <div class="row s12 no_magrin">
+                            <ul class="collapsible insideSetting ">
+                                <li id="RadarColor">
+                                    <div class="collapsible-header">
+                                        <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
+                                            <label for="radarColorPicker" class="col s4"> Radar color scheme: </label>
+                                            <div id = "radarColorPicker" class="colorscale-palette-container col s7">
+                                                <div class="colorscale-block">
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="collapsible-body">
-                                    <div  class="row s12 valign-wrapper pickercontain">
+                                    <div class="collapsible-body">
+                                        <div  class="row s12 valign-wrapper pickercontain">
 
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li id="ClusterColor">
-                                <div class="collapsible-header">
-                                    <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
-                                        <label for="radarColorPicker" class="col s4"> Cluster color scheme: </label>
-                                        <div id="clusterColorPicker" class="colorscale-palette-container col s7">
-                                            <div class="colorscale-block">
+                                </li>
+                                <li id="ClusterColor">
+                                    <div class="collapsible-header">
+                                        <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
+                                            <label for="radarColorPicker" class="col s4"> Cluster color scheme: </label>
+                                            <div id="clusterColorPicker" class="colorscale-palette-container col s7">
+                                                <div class="colorscale-block">
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="collapsible-body">
-                                    <div  class="row s12 valign-wrapper pickercontain">
+                                    <div class="collapsible-body">
+                                        <div  class="row s12 valign-wrapper pickercontain">
 
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<div  class="row s12 valign-wrapper">-->
+                            <!--<label for="displaySymbol" class="col s4">Cluster mode: </label>-->
+                            <!--<p class="switch col s7" id ="displaySymbol">-->
+
+                                <!--<label>-->
+                                    <!--<span class="true">Outlier</span>-->
+                                    <!--<input type="checkbox" onchange="changeGroup_mode(this)">-->
+                                    <!--<span class="lever"></span>-->
+                                    <!--<span class="false">jLouvain</span>-->
+                                <!--</label>-->
+
+                            <!--</p>-->
+                        <!--</div>-->
                     </div>
-                    <!--<div  class="row s12 valign-wrapper">-->
-                        <!--<label for="displaySymbol" class="col s4">Cluster mode: </label>-->
-                        <!--<p class="switch col s7" id ="displaySymbol">-->
-
-                            <!--<label>-->
-                                <!--<span class="true">Outlier</span>-->
-                                <!--<input type="checkbox" onchange="changeGroup_mode(this)">-->
-                                <!--<span class="lever"></span>-->
-                                <!--<span class="false">jLouvain</span>-->
-                            <!--</label>-->
-
-                        <!--</p>-->
-                    <!--</div>-->
-
-                            <li class="settingContain active">
-                                <div class="collapsible-header" style="padding-top: 0px;"><h6> t-SNE settings: </h6></div>
-                                <div class="collapsible-body">
-                                <div  class="row s12 valign-wrapper no_magrin list">
-                                    <label for="simDurationUI" class="col s4">Transition duration: </label>
-                                    <p class="col s7">
-                                        <input type="number" id="simDurationUI" min="10" max="2000" />
-                                    </p>
-                                </div>
-                                <div  class="row s12 valign-wrapper no_magrin list">
-                                    <label for="detailLevel_Epsilon" class="col s4">Learning rate: </label>
-                                    <p class="range-field col s7">
-                                        <input type="range" id="detailLevel_Epsilon" min="2" max="100" />
-                                    </p>
-                                </div>
-                                <div  class="row s12 valign-wrapper no_magrin list">
-                                    <label for="detailLevel_Perplexity" class="col s4"> Perplexity: </label>
-                                    <p class="range-field col s7">
-                                        <input type="range" id="detailLevel_Perplexity" min="5" max="50" />
-                                    </p>
-                                </div>
-                                </div>
-                            </li>
-                        </ul>
+                </li>
+                <li class="settingContain active">
+                    <div class="collapsible-header" style="padding-top: 0px;"><h6>- Radar control</h6></div>
+                    <div class="collapsible-body">
+                        <div id="RadarController"></div>
+                        <div id="RadarController_Table">
+                            <table class="display" width="100%"></table>
+                        </div>
+                        <div id="RadarController_Table_toolbar">
+                            <button value = false class ="menuBtn saveProfile modal-trigger" id="saveProfile" onclick="downloadProfile(this)" href="#savedialog_profile"><i class="fas fa-download"></i> Save</button>
+                            <input id="profile_input_file" class="none" type="file" style="display: none;"/>
+                            <button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>
+                        </div>
                     </div>
+                </li>
+            </ul>
+        </div>
                 </div>
 
             <!--</li>-->
@@ -308,24 +303,7 @@
             <div class="col s12 m12">
                 <div class="col s12 m12">
                     <div class="card-image center-align relative" id="tSNE">
-                        <svg id="tSNEcontent" class="active"></svg>
-                        <div id ="subzone" class="subpanel card-panel active">
-                            <h6>Rank of entries</h6>
-                            <div class="top10DIV">
-                                <svg class="top10" >
-
-                                </svg>
-                            </div>
-                            <div class="details" ></div>
-                        </div>
-                        <div class="rightPanel card-panel active right">
-                            <div class="details" ></div>
-                            <div class="averageSUm">
-                                <!--<svg class="averageSumPlot" >-->
-
-                                <!--</svg>-->
-                            </div>
-                        </div>
+                        <svg id="RadarMapcontent" class="active"></svg>
                     </div>
                 </div>
             </div>
@@ -350,12 +328,16 @@
 <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 <script src="https://d3js.org/d3-queue.v3.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@2.2.0/dist/simple-statistics.min.js"></script>
+<script src="src/lib/jquery.dataTables.min.js"></script>
 <script src="src/lib/TimerInterval.js"></script>
 <script src="src/lib/underscore-min.js"></script>
 <script src="src/scripts/radarChart.js"></script>
-<script src="src/scripts/miniradarchart.js"></script>
-<script src="src/scripts/tsnePlot.js"></script>
+<script src="src/scripts/radarMap.js"></script>
+
 <script src="src/scripts/ulti.js"></script>
+<script src="src/scripts/setting.js"></script>
+<script src="src/scripts/radarController.js"></script>
+
 <script src="src/scripts/main.js"></script>
 
 </body>
