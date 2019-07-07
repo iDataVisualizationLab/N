@@ -552,6 +552,7 @@ d3.radarMap = function () {
             .merge(lables)
             .attr('y',d=>rowscale(+d[0]))
             .style('font-size',"12px")
+            .style('fill',"currentColor")
             .attr('dy',"1em")
             .attr('text-anchor',"end")
             .text(d=>d[1]);
@@ -626,7 +627,7 @@ d3.radarMap = function () {
         if (arguments.length){
             isBusy = true;
             group_mode = _;
-            tsne.postMessage({action:"group_mode",value:group_mode});
+            // tsne.postMessage({action:"group_mode",value:group_mode});
             return radarMap;
         }
         return group_mode;

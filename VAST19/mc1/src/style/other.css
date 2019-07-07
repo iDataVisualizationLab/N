@@ -153,3 +153,7 @@ table.dataTable td {
     background-color: white;
     border-radius: 10px;
 }
+
+.radarStroke {
+    stroke: currentColor;
+}

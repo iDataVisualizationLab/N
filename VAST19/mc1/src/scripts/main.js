@@ -299,7 +299,7 @@ function init() {
         selectedVariable = _.without(d3.keys(dataRaw[0]),'time','location');
 
         initSchema(selectedVariable);
-        MetricController.graphicopt({width:315,height:315})
+        MetricController.graphicopt({width:290,height:290})
             .div(d3.select('#RadarController'))
             .tablediv(d3.select('#RadarController_Table'))
             .axisSchema(serviceFullList)
