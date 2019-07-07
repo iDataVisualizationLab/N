@@ -64,6 +64,7 @@ let width = 2000,
     }, colorScaleList = {
         n: 10,
         rainbow: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+        soil: ['#4A8FC2', '#609ABB', '#71A2B3', '#87AFAC', '#98B9A5', '#AAC29B', '#BBCF93', '#CEDB8C', '#E2E888', '#F4F581', '#F8F076', '#F7DA6A', '#F4C461', '#F0AE57', '#EC994C', '#E98544', '#E5713C', '#E05C33', '#DC472D', '#D53327'],
         d3colorChosefunc: function(name){
             const n = this.n;
             if (d3[`scheme${name}`]) {
@@ -82,7 +83,8 @@ let width = 2000,
         },
     },colorArr = {Radar: [
         {val: 'rainbow',type:'custom',label: 'Rainbow'},
-        {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true}],
+        {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true},
+            {val: 'soil',type:'custom',label: 'Custom 1'},],
         Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'Paired',type:'d3',label: 'Blue2Red'}]};
 let arrColor = colorScaleList.rainbow;
 let formatTime = d3.timeFormat("%b %Y");
