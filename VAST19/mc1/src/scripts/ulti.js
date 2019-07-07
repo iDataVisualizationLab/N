@@ -66,13 +66,13 @@ function closeNav() {
 }
 
 function switchTheme(){
-    if (this.value==="light"){
-        this.value = "dark";
+    if (this.getAttribute('value')==="light"){
+        this.setAttribute('value', "dark");
         this.text = "Light";
         d3.select('body').classed('light',false);
         return;
     }
-    this.value = "light";
+    this.setAttribute('value',"light");
     this.text = "Dark";
     d3.select('body').classed('light',true);
     return
