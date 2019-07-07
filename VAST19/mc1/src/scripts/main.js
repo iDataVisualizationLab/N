@@ -196,8 +196,9 @@ $(document).ready(function(){
         creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
         creatContain(d3.select('#ClusterColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Cluster, onClickClusterColor);
 });
-
+let profile={};
 function changeRadarColor(d) {
+    profile.radarcolor = d.val;
     d3.select('#RadarColor')
         .select('.collapsible-header .colorscale-block').datum(d)
         .call(createColorbox);

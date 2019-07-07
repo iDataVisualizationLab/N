@@ -318,7 +318,18 @@
     </div>
 </div>
 
-
+<div id="savedialog_profile" class="modal custom">
+    <div class="modal-content">
+        <div class="input-field col s6">
+            <input placeholder="radar chart" id="savename_profile" type="text" class="validate">
+            <label for="savename_profile">File name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat teal" onclick="onSaveProfile()" style="color: rgba(255, 255, 255, 0.9);">Save</a>
+    </div>
+</div>
 
 
 <!--JavaScript at end of body for optimized loading-->
@@ -336,6 +347,7 @@
 
 <script src="src/scripts/ulti.js"></script>
 <script src="src/scripts/setting.js"></script>
+<script src="src/scripts/store.js"></script>
 <script src="src/scripts/radarController.js"></script>
 
 <script src="src/scripts/main.js"></script>
