@@ -111,7 +111,6 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("id", d => removeWhitespace(d.properties.Nbrhood))
                     // // .attr("class", "regionPath")
                     // .classed("unselected", d => d.properties.Nbrhood !== "Palace Hills")
-                    // .classed("selected", d => d.properties.Nbrhood === "Palace Hills")
                     .on("mouseover", mouseover)
                     .on("mousemove", mousemove)
                     .on("mouseleave", mouseleave)
@@ -222,11 +221,11 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             const item = d3.select("#" + removeWhitespace(d.properties.Nbrhood));
             if (item.classed("selected")) {
                 item.classed("selected", false);
-                d3.selectAll(".radarlinkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', true).classed('selected', false);
+                d3.selectAll(".linkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', true).classed('selected', false);
             }else {
                 item.classed("selected", true);
-                d3.selectAll(".radarlinkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', false).classed('selected', true);
-                d3.selectAll(".radarlinkLineg:not(.disable):not(.selected)").filter(e => +e.loc !== d.properties.Id).classed('disable', true);
+                d3.selectAll(".linkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', false).classed('selected', true);
+                d3.selectAll(".linkLineg:not(.disable):not(.selected)").filter(e => +e.loc !== d.properties.Id).classed('disable', true);
             }
             // toggleHeatmap("heatmap" + (index + 1));
             // for (let region of regionNameList) {

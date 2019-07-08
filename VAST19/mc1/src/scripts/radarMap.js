@@ -616,6 +616,7 @@ d3.radarMap = function () {
         let datapointN = datapoint
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
+            .classed('selected',d=>d.loc==='20')
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
             .on('mouseover',mouseover)
             .on('mouseleave',mouseleave)
@@ -623,11 +624,11 @@ d3.radarMap = function () {
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
         function mouseover (d) {
             d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',true);
-            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',0.2);
+            d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',0.2);
         }
         function mouseleave (d) {
             d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',false);
-            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',1);
+            d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',1);
         }
     }
     function fixstr(s) {
