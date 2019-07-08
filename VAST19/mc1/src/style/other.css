@@ -235,3 +235,7 @@ table.dataTable th:not(:first-child) {
 #currentData:before {
     content:"Dataset: ";
 }
+
+#RadarMapcontent .disable{
+    display: none;
+}

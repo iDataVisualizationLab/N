@@ -211,7 +211,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             // .style("stroke", "black")
                 .style("opacity", 0.5);
 
-            d3.selectAll(".radarlinkLineg").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',0.2);
+            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',0.2);
         }
 
 
@@ -219,9 +219,15 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
         function click(d) {
 
             // d3.selectAll("#regMap path").classed("selected",false).style("fill","lightgrey");
-            d3.select("#" + removeWhitespace(d.properties.Nbrhood)).attr("class","selected");
-
-
+            const item = d3.select("#" + removeWhitespace(d.properties.Nbrhood));
+            if (item.classed("selected")) {
+                item.classed("selected", false);
+                d3.selectAll(".radarlinkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', true).classed('selected', false);
+            }else {
+                item.classed("selected", true);
+                d3.selectAll(".radarlinkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', false).classed('selected', true);
+                d3.selectAll(".radarlinkLineg:not(.disable):not(.selected)").filter(e => +e.loc !== d.properties.Id).classed('disable', true);
+            }
             // toggleHeatmap("heatmap" + (index + 1));
             // for (let region of regionNameList) {
             //     let index = regionNameList.indexOf(region);
@@ -252,7 +258,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             d3.select(this)
             // .style("stroke", "black")
                 .style("opacity", 1);
-            d3.selectAll(".radarlinkLineg").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',1);
+            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',1);
         }
 
         // });
