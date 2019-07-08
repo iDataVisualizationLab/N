@@ -110,8 +110,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("class","geoPath")
                     .attr("id", d => removeWhitespace(d.properties.Nbrhood))
                     // // .attr("class", "regionPath")
-                    .classed("unselected", d => d.properties.Nbrhood !== "Palace Hills")
-                    .classed("selected", d => d.properties.Nbrhood === "Palace Hills")
+                    // .classed("unselected", d => d.properties.Nbrhood !== "Palace Hills")
+                    // .classed("selected", d => d.properties.Nbrhood === "Palace Hills")
                     .on("mouseover", mouseover)
                     .on("mousemove", mousemove)
                     .on("mouseleave", mouseleave)
@@ -205,9 +205,6 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
 
         }
 
-        function removeWhitespace(str) {
-            return str.replace(/\s+/g, '');
-        }
 
         function mouseover(d) {
             d3.select(this)
@@ -222,18 +219,18 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
         function click(d) {
 
             // d3.selectAll("#regMap path").classed("selected",false).style("fill","lightgrey");
-            d3.select("#" + removeWhitespace(d.properties.Nbrhood)).attr("class","selected").style('fill',"#2171b5");
+            d3.select("#" + removeWhitespace(d.properties.Nbrhood)).attr("class","selected");
 
 
             // toggleHeatmap("heatmap" + (index + 1));
-            for (let region of regionNameList) {
-                let index = regionNameList.indexOf(region);
-                if (d.properties.Nbrhood === region) {
-                    draw_heatmap(alldata[index],index+1);
-                    // d3.select("#" + "heatmap" + (regionNameList.indexOf(region)+1)).classed("displayed",true);
-                    // toggleHeatmap(d.properties.Nbrhood);
-                }
-            }
+            // for (let region of regionNameList) {
+            //     let index = regionNameList.indexOf(region);
+            //     if (d.properties.Nbrhood === region) {
+            //         draw_heatmap(alldata[index],index+1);
+            //         // d3.select("#" + "heatmap" + (regionNameList.indexOf(region)+1)).classed("displayed",true);
+            //         // toggleHeatmap(d.properties.Nbrhood);
+            //     }
+            // }
 
 
         }

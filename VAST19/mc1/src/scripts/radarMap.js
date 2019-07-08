@@ -576,8 +576,16 @@ d3.radarMap = function () {
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
+            .on('mouseover',mouseover)
+            .on('mouseleave',mouseleave)
             .each(d=>
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
+        function mouseover (d) {
+            d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',true);
+        }
+        function mouseleave (d) {
+            d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',false);
+        }
     }
     function fixstr(s) {
         return s.replace(/ |-|#/gi,'');

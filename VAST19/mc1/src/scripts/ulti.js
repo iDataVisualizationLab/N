@@ -17,6 +17,11 @@ function readConf(choice) {
 function fixstr(s) {
     return 'a'+s.replace(/ |-|#/gi,''); // avoid number
 }
+
+function removeWhitespace(str) {
+    return str.replace(/\s+/g, '');
+}
+
 function getTransformation(transform) {
     // Create a dummy g for calculation purposes only. This will never
     // be appended to the DOM and will be discarded once this function
