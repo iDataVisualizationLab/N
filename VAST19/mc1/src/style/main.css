@@ -147,8 +147,9 @@ label {
   border: none;
 }
 .sidenavs .collapsible .collapsible-header {
+  padding: 0px 10px;
   background-color: transparent;
-  font-size: large;
+  font-size: medium;
 }
 .sidenavs .collapsible .collapsible-body {
   padding: 1rem;
@@ -473,7 +474,7 @@ body.light {
   padding: 10px;
 }
 .settingContain .list {
-  min-height: 60px;
+  min-height: 2rem;
 }
 .settingContain .insideSetting {
   padding: 0px;
