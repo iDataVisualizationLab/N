@@ -18,6 +18,7 @@ let width = 2000,
         heightView: function(){return this.height*this.scalezoom},
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
+        fixscreence: false,
         dotRadius: 3,
         group_mode: 'outlier',
         display:{
@@ -498,8 +499,10 @@ function changeMean(d){
 function changeTimeunit(d){
     if (d.checked) {
         listopt.time.unit = "Minute";
+        listopt.time.rate = 5;
     }else {
         listopt.time.unit = "Hour";
+        listopt.time.rate = 1;
     }
 
     let formatTime =getformattime (listopt.time.rate,listopt.time.unit);
