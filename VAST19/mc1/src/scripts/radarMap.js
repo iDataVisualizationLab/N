@@ -544,6 +544,7 @@ d3.radarMap = function () {
 
     let timescale = d3.scaleTime().range([0, graphicopt.widthG()]);
     let rowscale = d3.scaleLinear().range([0, radaropt.h]);
+    let timeFormat;
     function drawEmbedding(data) {
         timescale.domain(d3.extent(data,d=>d.time));
 
@@ -583,11 +584,11 @@ d3.radarMap = function () {
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
         function mouseover (d) {
             d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',true);
-            d3.selectAll(".radarlinkLineg").filter(e=> (e.loc !==d.loc)&&(e.time !==d.time)).transition(200).style('opacity',0.2);
+            d3.selectAll(".radarlinkLineg").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',0.2);
         }
         function mouseleave (d) {
             d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',false);
-            d3.selectAll(".radarlinkLineg").filter(e=> (e.loc !==d.loc)&&(e.time !==d.time)).transition(200).style('opacity',1);
+            d3.selectAll(".radarlinkLineg").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',1);
         }
     }
     function fixstr(s) {
@@ -669,6 +670,10 @@ d3.radarMap = function () {
 
     radarMap.rowMap = function (_) {
         return arguments.length ? (rowMap = _ , radarMap) : rowMap;
+    };
+
+    radarMap.timeFormat = function (_) {
+        return arguments.length ? (timeFormat = _ , radarMap) : timeFormat;
     };
 
     return radarMap;

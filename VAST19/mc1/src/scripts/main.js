@@ -319,7 +319,6 @@ function init() {
             .onChangeValue(onSchemaUpdate)
             .init();
         schema = MetricController.schema();
-        RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList);
         listopt.limitColums = [0,10];
         let formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
@@ -327,6 +326,7 @@ function init() {
         databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
         // data.push({'key':(data.length+1)+'',values:databyTime})
         // Loadtostore();
+        RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);
