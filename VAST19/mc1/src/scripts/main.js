@@ -496,6 +496,10 @@ function changeMean(d){
     RadarMapplot.radaropt({summary: old}).draw();
 }
 
+function changeFitscreen(d){
+    RadarMapplot.fitscreen(d.checked);
+}
+
 function changeTimeunit(d){
     if (d.checked) {
         listopt.time.unit = "Minute";

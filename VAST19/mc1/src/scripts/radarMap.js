@@ -545,11 +545,37 @@ d3.radarMap = function () {
     let timescale = d3.scaleTime().range([0, graphicopt.widthG()]);
     let rowscale = d3.scaleLinear().range([0, radaropt.h]);
     let timeFormat;
+    function updatePosition() {
+        let timerange = d3.extent(arr,d=>d.time);
+        let time_axis = d3.axisTop();
+        let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
+        if (graphicopt.fitscreen){
+            svg.attrs({
+                width: graphicopt.width,
+            });
+            timescale.range([0,graphicopt.widthG()]).domain(timerange);
+            time_axis = time_axis.ticks(graphicopt.widthG()/100);
+        }else {
+            svg.attrs({
+                width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
+            });
+            timescale.range([0, width_needed]).domain(timerange);
+            time_axis = time_axis.ticks(width_needed/100);
+        }
+        time_axis = time_axis.scale(timescale);
+        let timeAxis = g.select('.gAxis')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis);
+
+        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
+
+    }
     function drawEmbedding(data) {
         let timerange = d3.extent(data,d=>d.time);
         let time_axis = d3.axisTop();
         let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
-        if (graphicopt.fixscreence){
+        if (graphicopt.fitscreen){
             svg.attrs({
                 width: graphicopt.width,
             });
@@ -663,6 +689,10 @@ d3.radarMap = function () {
             return radarMap;
         }
         return option;
+    };
+
+    radarMap.fitscreen = function (_) {
+        return arguments.length ? (graphicopt.fitscreen = _,updatePosition(), radarMap) : graphicopt.fitscreen;
     };
     radarMap.runopt = function (_) {
         return arguments.length ? (runopt = _, radarMap) : runopt;
