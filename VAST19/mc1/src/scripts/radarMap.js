@@ -520,7 +520,7 @@ d3.radarMap = function () {
     function handledata(data){
         arr = [];
         data.forEach(d=>d.values.forEach(e=>arr.push(e.arr)));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arr,d=>d.density)).range([0.025,1]);
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arr.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
         return arr;
     }
     function changeshape (){

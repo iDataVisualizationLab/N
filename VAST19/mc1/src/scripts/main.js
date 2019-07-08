@@ -302,7 +302,9 @@ function init() {
         dataRaw = d;
         timestep = 0;
         dataRaw.location = locs;
-        // dataRaw.location[Object.keys(locs).length+1]="Total";
+
+        dataRaw.location[Object.keys(locs).length+1]="Total";
+
         dataBytime = d3.nest()
             .key(function(d) { return d.time; })
             .key(function(d) { return d.location; })
@@ -325,7 +327,7 @@ function init() {
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
         data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
         databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
-        // data.push({'key':(data.length+1)+'',values:databyTime})
+        data.push({'key':(data.length+1)+'',values:databyTime})
         // Loadtostore();
         RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
         handleOutlier (data,currentService);
@@ -508,12 +510,11 @@ function changeTimeunit(d){
         listopt.time.unit = "Hour";
         listopt.time.rate = 1;
     }
-
     let formatTime =getformattime (listopt.time.rate,listopt.time.unit);
     listopt.limitTime = d3.extent(dataRaw,d=>d.time);
     data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
     databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
-    // data.push({'key':(data.length+1)+'',values:databyTime})
+    data.push({'key':(data.length+1)+'',values:databyTime})
     // Loadtostore();
     RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
     handleOutlier (data,currentService);
