@@ -155,8 +155,8 @@ label {
   padding: 0.5rem 0.1rem;
 }
 .sidenavs .collapsible .collapsible-body label {
-  padding-left: 0;
-  margin-left: 0;
+  padding-left: auto;
+  margin-left: 5px;
 }
 .sidenavs select {
   padding: 0;

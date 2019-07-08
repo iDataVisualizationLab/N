@@ -164,9 +164,9 @@ table.dataTable td, table.dataTable th{
 .radarStroke {
     stroke: currentColor;
 }
-/*table.dataTable th:first-child {*/
-    /*width: 100% !important;*/
-/*}*/
+table.dataTable th:not(:first-child) {
+    width: 100% !important;
+}
 
 
 /*map*/
