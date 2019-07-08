@@ -17,7 +17,7 @@ d3.radarMap = function () {
             summary: {size:30}
         },
         radaropt = {
-            summary:true,
+            summary:{},
             mini:true,
             levels:6,
             gradient:true,
@@ -632,6 +632,16 @@ d3.radarMap = function () {
         }else
             return graphicopt;
     };
+    radarMap.radaropt = function (_) {
+        if (arguments.length) {
+            for(var i in _){
+                if('undefined' !== typeof _[i]){ radaropt[i] = _[i]; }
+            }
+            return radarMap
+        }else
+            return radaropt;
+    };
+
     radarMap.option = function (_) {
         if (arguments.length){
             isBusy = true;

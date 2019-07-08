@@ -143,6 +143,45 @@
                             <input id="profile_input_file" class="none" type="file" style="display: none;"/>
                             <button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>
                         </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Min-max: </label>
+                            <p class="switch col s7" id ="displayMinMax">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeMinMax(this)">
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Quantile: </label>
+                            <p class="switch col s7" id ="displayQuantile">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeQuantile(this)" checked>
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Mean: </label>
+                            <p class="switch col s7" id ="displayMean">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeMean(this)">
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
                     </div>
                 </li>
             </ul>

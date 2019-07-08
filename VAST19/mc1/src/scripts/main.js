@@ -478,6 +478,23 @@ function changeShape(d){
     changeGroup_mode(d)
 }
 
+function changeMinMax(d){
+    let old = RadarMapplot.radaropt().summary;
+    old.minmax = d.checked;
+    RadarMapplot.radaropt({summary: old}).draw();
+}
+function changeQuantile(d){
+    let old = RadarMapplot.radaropt().summary;
+    old.quantile = d.checked;
+    RadarMapplot.radaropt({summary: old}).draw();
+
+}
+function changeMean(d){
+    let old = RadarMapplot.radaropt().summary;
+    old.mean = d.checked;
+    RadarMapplot.radaropt({summary: old}).draw();
+}
+
 function changeGroup_mode(d){
     if (d.checked) {
         RadarMapopt.group_mode ="jLouvain";

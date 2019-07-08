@@ -395,12 +395,12 @@ function RadarChart(id, data, options) {
         blobWrapperg.select('clipPath')
             .select('path')
             .transition('expand').ease(d3.easePolyInOut)
-            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
+            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
         //Create the outlines
         blobWrapper.append("clipPath")
             .attr("id",(d,i)=>"sum"+correctId (id))
             .append("path")
-            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
+            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
         blobWrapper.append("rect")
             .style('fill', 'url(#rGradient2)')
             .attr("clip-path",( d,i)=>"url(#sum"+correctId (id)+")")
@@ -410,7 +410,7 @@ function RadarChart(id, data, options) {
             .attr("height",(radius)*2);
         blobWrapper.append("path")
             .attr("class", "radarStroke")
-            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d))
+            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d))
             .style("fill", "none")
             .transition()
             .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
