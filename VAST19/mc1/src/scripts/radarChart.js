@@ -3,6 +3,7 @@
 /////////////// Written by Nadieh Bremer ////////////////
 ////////////////// VisualCinnamon.com ///////////////////
 /////////// Inspired by the code of alangrafu ///////////
+////////////// Modified by Ngan IDVL 2019 ///////////////
 /////////////////////////////////////////////////////////
 
 function RadarChart(id, data, options) {
@@ -368,22 +369,22 @@ function RadarChart(id, data, options) {
                 .attr("d", d =>radarLine(d))
                 .styles({"fill":'none',
                     'stroke':'black',
-                    'stroke-width':0.5,
-                    'stroke-dasharray': '1 2'});
+                    'stroke-dasharray': '1 2'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
         function drawQuantileArea(paths){
             return paths
                 .attr("d", d =>radialAreaQuantile(d))
                 .styles({"fill":'none',
-                    'stroke':'black',
-                    'stroke-width':0.2});
+                    'stroke':'black'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
         //update the outlines
         blobWrapperg.select('.radarLine').transition().call(drawMeanLine);
         blobWrapperg.select('.radarQuantile').transition().call(drawQuantileArea);
         blobWrapperpath.style("fill", "none").transition()
             .attr("d", d => radialAreaGenerator(d))
-            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
             .style("stroke", (d, i) => cfg.color(i));
         blobWrapperg.select('clipPath')
             .select('path')
@@ -406,7 +407,7 @@ function RadarChart(id, data, options) {
             .attr("d", d => radialAreaGenerator(d))
             .style("fill", "none")
             .transition()
-            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
             //.style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
             .style("stroke", (d, i) => cfg.color(i));
         blobWrapper

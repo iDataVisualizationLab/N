@@ -296,7 +296,7 @@ function init() {
 
         conf = init_profile;
         variablesNames.forEach(d=>{ window[d] = conf[d]});
-
+        d3.select('#RadarColor').selectAll('.colorscale-block').filter(c=>c.val===conf.profile.radarcolor).dispatch('click');
         d.sort((a,b)=>a.time-b.time); // sort time
         dataRaw = d;
         timestep = 0;
@@ -373,13 +373,14 @@ function handleDatabyKey (data,range,formatTime,listkey) {
     let nestFunc = d3.nest();
     listkey.forEach(k=> nestFunc = (k!=="time")?nestFunc.key(function(d){return d[k]}):nestFunc.key(function(d){return formatTime(d.time)}))
     return nestFunc
-        .rollup(d=>{return {num: d.length,val: onStatictis(d),data:d }})
+        .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),data:d }})
         .entries(data_filtered);
 }
 let selectedVariable=[];
-function onStatictis (data){ //array objects
+function onStatictis (data,skey,extra){ //array objects
+    skey = skey||'mean';
     let temp ={};
-    selectedVariable.forEach(k=>temp[k] = d3.mean(data.map(e=>e[k])));
+    selectedVariable.forEach(k=>temp[k] = d3[skey](data.map(e=>e[k]).sort((a,b)=>a-b),extra));
     // temp.time = data[0].time;
     return temp;
 }
@@ -522,7 +523,7 @@ function handleOutlier (data,serviceid){ // nest data
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
     data.forEach(loc=>loc.values.forEach(t=> {
-        t.arr=objecttoArrayRadar(t.value.val);
+        t.arr = objecttoArrayRadar(t.value);
         t.arr.time = new Date(t.key);
         t.arr.density = t.value.num;
         t.arr.loc = loc.key;
@@ -542,6 +543,13 @@ function handleOutlier (data,serviceid){ // nest data
 
 let schema;
 function objecttoArrayRadar(o){
-    return schema.axisList.map(s=>{return {axis: s.data.text, value: s.scale(o[s.data.text])}});
+    return schema.axisList.map(s=>{return {
+        axis: s.data.text,
+        value: s.scale(o.val[s.data.text]),
+        minval: s.scale(o.minval[s.data.text]),
+        maxval: s.scale(o.maxval[s.data.text]),
+        q1: s.scale(o.q1[s.data.text]),
+        q3: s.scale(o.q3[s.data.text])
+    }});
 }
 // list html
