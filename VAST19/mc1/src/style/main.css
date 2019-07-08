@@ -4,7 +4,7 @@
 }
 
 body {
-  font: 12px sans-serif;
+  font: 12px Arial;
   background-color: #232b33;
   color: white;
 }
@@ -31,7 +31,7 @@ label {
 }
 #header a,
 #header .brand-logo {
-  font-family: sans-serif;
+  font-family: Arial;
   color: #ffffff;
 }
 #header img {
@@ -152,7 +152,11 @@ label {
   font-size: medium;
 }
 .sidenavs .collapsible .collapsible-body {
-  padding: 1rem;
+  padding: 0.5rem 0.1rem;
+}
+.sidenavs .collapsible .collapsible-body label {
+  padding-left: 0;
+  margin-left: 0;
 }
 .sidenavs select {
   padding: 0;
@@ -506,6 +510,8 @@ body.light {
   margin: 0;
 }
 .pickercontain .colorscale-palette-container {
+  padding-left: 0;
+  padding-right: 0;
   display: inline-block;
   text-align: start;
   width: 75%;

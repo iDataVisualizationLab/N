@@ -127,6 +127,11 @@ input[type=text].inputHolder:focus,  input[type=search]:focus{
 .axis.disable {
     display: none;
 }
+
+#RadarController svg {
+    margin: auto;
+}
+
 table.dataTable {
     font-size: 12px;
 }
@@ -159,9 +164,9 @@ table.dataTable td, table.dataTable th{
 .radarStroke {
     stroke: currentColor;
 }
-table.dataTable th {
-    width: 100% !important;
-}
+/*table.dataTable th:first-child {*/
+    /*width: 100% !important;*/
+/*}*/
 
 
 /*map*/

@@ -312,7 +312,7 @@ function init() {
         selectedVariable = _.without(d3.keys(dataRaw[0]),'time','location');
 
         // initSchema(selectedVariable);
-        MetricController.graphicopt({width:290,height:290})
+        MetricController.graphicopt({width:317,height:317})
             .div(d3.select('#RadarController'))
             .tablediv(d3.select('#RadarController_Table'))
             .axisSchema(serviceFullList)
@@ -468,11 +468,11 @@ function playchange(){
 
 function changeShape(d){
     if (d.checked) {
-        RadarMapopt.display.symbol.type ="circle";
-        RadarMapopt.display.symbol.radius =3;
-    }else {
         RadarMapopt.display.symbol.type ="path";
         RadarMapopt.display.symbol.radius =30;
+    }else {
+        RadarMapopt.display.symbol.type ="circle";
+        RadarMapopt.display.symbol.radius =3;
     }
     RadarMapplot.displaystyle(RadarMapopt.display)
     changeGroup_mode(d)

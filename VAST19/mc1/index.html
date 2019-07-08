@@ -50,7 +50,7 @@
         <div  class="row s12 valign-wrapper no_magrin">
             <ul class="collapsible insideSetting expandable " style="width: 100%;box-shadow: none;">
                 <li class="settingContain active">
-                    <div class="collapsible-header" style="padding-top: 0px;"><span>- Setting</span></div>
+                    <div class="collapsible-header" style="padding-top: 0px;"><span>Setting</span></div>
                     <div class="collapsible-body">
                         <div  class="row s12 valign-wrapper no_magrin list">
                             <label for="datacom" class="col s4"> Dataset: </label>
@@ -65,25 +65,12 @@
                                 <!--<option value="LifeExpectancy">Life Expectancy</option>-->
                             </select>
                         </div>
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Gradient display: </label>
-                            <p class="switch col s7" id ="displaySymbol">
-
-                                    <label>
-                                        <span class="true">On</span>
-                                        <input type="checkbox" onchange="changeShape(this)">
-                                        <span class="lever"></span>
-                                        <span class="false">Off</span>
-                                    </label>
-
-                            </p>
-                        </div>
                         <div class="row s12 no_magrin">
                             <ul class="collapsible insideSetting ">
                                 <li id="RadarColor">
                                     <div class="collapsible-header">
                                         <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
-                                            <label for="radarColorPicker" class="col s4"> Radar color scheme: </label>
+                                            <label for="radarColorPicker" class="col s4"> Radar color: </label>
                                             <div id = "radarColorPicker" class="colorscale-palette-container col s7">
                                                 <div class="colorscale-block">
 
@@ -97,7 +84,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li id="ClusterColor">
+                                <li id="ClusterColor" style="display: none">
                                     <div class="collapsible-header">
                                         <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
                                             <label for="radarColorPicker" class="col s4"> Cluster color scheme: </label>
@@ -116,6 +103,19 @@
                                 </li>
                             </ul>
                         </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Gradient display: </label>
+                            <p class="switch col s7" id ="displaySymbol">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeShape(this)" checked>
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
                         <!--<div  class="row s12 valign-wrapper">-->
                             <!--<label for="displaySymbol" class="col s4">Cluster mode: </label>-->
                             <!--<p class="switch col s7" id ="displaySymbol">-->
@@ -132,7 +132,7 @@
                     </div>
                 </li>
                 <li class="settingContain active">
-                    <div class="collapsible-header" style="padding-top: 0px;"><span>- Radar control</span></div>
+                    <div class="collapsible-header" style="padding-top: 0px;"><span>Radar control</span></div>
                     <div class="collapsible-body">
                         <div  class="row s12 valign-wrapper no_magrin list">
                             <label for="displaySymbol" class="col s4">Min-max: </label>
@@ -173,11 +173,11 @@
 
                             </p>
                         </div>
-                        <div id="RadarController"></div>
-                        <div id="RadarController_Table">
+                        <div id="RadarController" class="row s12 valign-wrapper list"></div>
+                        <div id="RadarController_Table" class="row s12 valign-wrapper list">
                             <table class="display" width="100%"></table>
                         </div>
-                        <div id="RadarController_Table_toolbar">
+                        <div id="RadarController_Table_toolbar" class="row s12 valign-wrapper list">
                             <button value = false class ="menuBtn saveProfile modal-trigger" id="saveProfile" onclick="downloadProfile(this)" href="#savedialog_profile"><i class="fas fa-download"></i> Save</button>
                             <input id="profile_input_file" class="none" type="file" style="display: none;"/>
                             <button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>
@@ -365,25 +365,25 @@
             </div>
         </div>
 
-        <div id="controlPanel" class="card">
-            <div id="colorLegend">
+        <!--<div id="controlPanel" class="card">-->
+            <!--<div id="colorLegend">-->
 
-            </div>
-            <div id="selectMobile">
+            <!--</div>-->
+            <!--<div id="selectMobile">-->
 
-                <input type="checkbox" name="mobileSelect" id="allMobile" onclick=selectAllMobile()>Select all mobile sensors
-            </div>
-            <div id="selectStatic">
-                <input type="checkbox" name="staticSelect" id="allStatic" onclick=selectAllStatic()>Select all static sensors
-            </div>
-            <div id="selectAll">
-                <input type="checkbox" name="allSelect" id="allSensor" onclick=selectAll()>Select all sensors
-            </div>
-            <div >
-                <input type="button" id="clearAll" value="Clear chart" onclick="clearAll()"/>
-            </div>
+                <!--<input type="checkbox" name="mobileSelect" id="allMobile" onclick=selectAllMobile()>Select all mobile sensors-->
+            <!--</div>-->
+            <!--<div id="selectStatic">-->
+                <!--<input type="checkbox" name="staticSelect" id="allStatic" onclick=selectAllStatic()>Select all static sensors-->
+            <!--</div>-->
+            <!--<div id="selectAll">-->
+                <!--<input type="checkbox" name="allSelect" id="allSensor" onclick=selectAll()>Select all sensors-->
+            <!--</div>-->
+            <!--<div >-->
+                <!--<input type="button" id="clearAll" value="Clear chart" onclick="clearAll()"/>-->
+            <!--</div>-->
 
-        </div>
+        <!--</div>-->
 
     </div>
     <div id="tablelist" class= "row mainContain">
