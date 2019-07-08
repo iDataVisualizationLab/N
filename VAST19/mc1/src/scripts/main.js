@@ -286,14 +286,20 @@ function init() {
     const choice = d3.select('#datacom').node().value;
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
+    Promise.all([
+        readConf(choice+"_conf"),
+        readConf(choice+"_prof"),
+        readData(choice,'csv'),
+    ]).then(([locs,init_profile,d])=>{
 
-    readConf(choice+"_conf").then((locs)=> {
-        readData(choice,'csv').then((d)=>{
+        conf = init_profile;
+        variablesNames.forEach(d=>{ window[d] = conf[d]});
+
         d.sort((a,b)=>a.time-b.time); // sort time
         dataRaw = d;
         timestep = 0;
         dataRaw.location = locs;
-            dataRaw.location[Object.keys(locs).length+1]="Total";
+        dataRaw.location[Object.keys(locs).length+1]="Total";
         dataBytime = d3.nest()
             .key(function(d) { return d.time; })
             .key(function(d) { return d.location; })
@@ -303,7 +309,7 @@ function init() {
         maxtimestep = dataBytime.length;
         selectedVariable = _.without(d3.keys(dataRaw[0]),'time','location');
 
-        initSchema(selectedVariable);
+        // initSchema(selectedVariable);
         MetricController.graphicopt({width:290,height:290})
             .div(d3.select('#RadarController'))
             .tablediv(d3.select('#RadarController_Table'))
@@ -318,11 +324,10 @@ function init() {
         data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
         databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
         data.push({'key':(data.length+1)+'',values:databyTime})
-            // Loadtostore();
+        // Loadtostore();
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);
-        })
     });
 
 
