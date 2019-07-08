@@ -583,9 +583,11 @@ d3.radarMap = function () {
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
         function mouseover (d) {
             d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',true);
+            d3.selectAll(".radarlinkLineg").filter(e=> (e.loc !==d.loc)&&(e.time !==d.time)).transition(200).style('opacity',0.2);
         }
         function mouseleave (d) {
             d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',false);
+            d3.selectAll(".radarlinkLineg").filter(e=> (e.loc !==d.loc)&&(e.time !==d.time)).transition(200).style('opacity',1);
         }
     }
     function fixstr(s) {
