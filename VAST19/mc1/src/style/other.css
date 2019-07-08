@@ -190,6 +190,10 @@ table.dataTable th {
     stroke: #bbbbbb;
 }
 
+#map .tstooltip {
+    position: absolute;
+}
+
 #controlPanel{
     width:500px;
     height:300px;

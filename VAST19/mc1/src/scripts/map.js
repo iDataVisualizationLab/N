@@ -209,14 +209,12 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             return str.replace(/\s+/g, '');
         }
 
-        function mouseover() {
-            // mapTip
-            //     .transition()
-            //     .duration(200)
-            //     .style("opacity", 1)
+        function mouseover(d) {
             d3.select(this)
             // .style("stroke", "black")
-                .style("opacity", 0.5)
+                .style("opacity", 0.5);
+
+            d3.selectAll(".radarlinkLineg").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',0.2);
         }
 
 
@@ -244,18 +242,20 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             mapTip
                 .html("Region: " + d.properties.Nbrhood + "<br>"
                     + "ID  : " + d.properties.Id)
+                .style("opacity", 1)
                 .style("left", (d3.mouse(this)[0] + 30) + "px")
                 .style("top", (d3.mouse(this)[1]) + 20 + "px")
         }
 
-        function mouseleave() {
+        function mouseleave(d) {
             mapTip
                 .transition()
                 .duration(200)
                 .style("opacity", 0)
             d3.select(this)
             // .style("stroke", "black")
-                .style("opacity", 1)
+                .style("opacity", 1);
+            d3.selectAll(".radarlinkLineg").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',1);
         }
 
         // });
