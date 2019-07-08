@@ -380,7 +380,7 @@ let selectedVariable=[];
 function onStatictis (data,skey,extra){ //array objects
     skey = skey||'mean';
     let temp ={};
-    selectedVariable.forEach(k=>temp[k] = d3[skey](data.map(e=>e[k]).sort((a,b)=>a-b),extra));
+    selectedVariable.forEach(k=>temp[k] = ss[skey](data.map(e=>e[k]).filter(e=>e).sort((a,b)=>a-b),extra));
     // temp.time = data[0].time;
     return temp;
 }
