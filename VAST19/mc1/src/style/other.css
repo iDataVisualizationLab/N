@@ -162,3 +162,55 @@ table.dataTable td, table.dataTable th{
 table.dataTable th {
     width: 100% !important;
 }
+
+
+/*map*/
+#map{
+    width: fit-content;
+    padding: 20px;
+}
+
+#dot{
+    padding-left: 20px;
+    padding-top: 25px;
+    cursor: pointer;
+}
+
+
+.text-labels {
+    font-weight: 900;
+}
+
+.geoPath{
+    fill:lightgrey;
+}
+
+#map #regMap path{
+    fill: lightgray;
+    stroke: #bbbbbb;
+}
+
+#controlPanel{
+    width:500px;
+    height:300px;
+    margin:auto;
+    display:inline-block;
+    cursor:pointer;
+}
+
+.unselected{
+    fill:lightgrey;
+}
+.selected{
+    border-color:black;
+    fill:#2171b5;
+}
+
+.sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    /*padding: 50px;*/
+    /*font-size: 20px;*/
+}

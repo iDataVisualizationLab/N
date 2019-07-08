@@ -97,6 +97,8 @@ let MetricController = radarController();
 const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
+    $( "#map" ).draggable();
+    $("#controlPanel").draggable();
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
     $('.modal').modal();
