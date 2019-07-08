@@ -363,7 +363,7 @@ function RadarChart(id, data, options) {
             .append("path")
             .attr("class", "radarStroke outlying")
             .call(drawOutlying);
-    }else if (cfg.gradient && cfg.summary){
+    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile)){
         function drawMeanLine(paths){
             return paths
                 .attr("d", d =>radarLine(d))

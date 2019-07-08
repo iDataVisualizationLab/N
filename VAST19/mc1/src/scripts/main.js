@@ -495,6 +495,23 @@ function changeMean(d){
     RadarMapplot.radaropt({summary: old}).draw();
 }
 
+function changeTimeunit(d){
+    if (d.checked) {
+        listopt.time.unit = "Minute";
+    }else {
+        listopt.time.unit = "Hour";
+    }
+
+    let formatTime =getformattime (listopt.time.rate,listopt.time.unit);
+    listopt.limitTime = d3.extent(dataRaw,d=>d.time);
+    data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
+    databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
+    // data.push({'key':(data.length+1)+'',values:databyTime})
+    // Loadtostore();
+    RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
+    handleOutlier (data,currentService);
+}
+
 function changeGroup_mode(d){
     if (d.checked) {
         RadarMapopt.group_mode ="jLouvain";

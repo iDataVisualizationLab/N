@@ -65,6 +65,32 @@
                                 <!--<option value="LifeExpectancy">Life Expectancy</option>-->
                             </select>
                         </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Time unit: </label>
+                            <p class="switch col s7" id ="timeUnit">
+
+                                <label>
+                                    <span class="true">Hour</span>
+                                    <input type="checkbox" onchange="changeTimeunit(this)">
+                                    <span class="lever"></span>
+                                    <span class="false">Minute</span>
+                                </label>
+
+                            </p>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Gradient display: </label>
+                            <p class="switch col s7" id ="displaySymbol">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeShape(this)" checked>
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
                         <div class="row s12 no_magrin">
                             <ul class="collapsible insideSetting ">
                                 <li id="RadarColor">
@@ -102,19 +128,6 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Gradient display: </label>
-                            <p class="switch col s7" id ="displaySymbol">
-
-                                <label>
-                                    <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeShape(this)" checked>
-                                    <span class="lever"></span>
-                                    <span class="false">On</span>
-                                </label>
-
-                            </p>
                         </div>
                         <!--<div  class="row s12 valign-wrapper">-->
                             <!--<label for="displaySymbol" class="col s4">Cluster mode: </label>-->

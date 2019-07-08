@@ -17,7 +17,7 @@ d3.radarMap = function () {
             summary: {size:30}
         },
         radaropt = {
-            summary:{},
+            summary:{quantile:true},
             mini:true,
             levels:6,
             gradient:true,
