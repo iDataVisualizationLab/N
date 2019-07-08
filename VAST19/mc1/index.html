@@ -50,7 +50,7 @@
         <div  class="row s12 valign-wrapper no_magrin">
             <ul class="collapsible insideSetting expandable " style="width: 100%;box-shadow: none;">
                 <li class="settingContain active">
-                    <div class="collapsible-header" style="padding-top: 0px;"><h6>- Setting</h6></div>
+                    <div class="collapsible-header" style="padding-top: 0px;"><span>- Setting</span></div>
                     <div class="collapsible-body">
                         <div  class="row s12 valign-wrapper no_magrin list">
                             <label for="datacom" class="col s4"> Dataset: </label>
@@ -132,17 +132,8 @@
                     </div>
                 </li>
                 <li class="settingContain active">
-                    <div class="collapsible-header" style="padding-top: 0px;"><h6>- Radar control</h6></div>
+                    <div class="collapsible-header" style="padding-top: 0px;"><span>- Radar control</span></div>
                     <div class="collapsible-body">
-                        <div id="RadarController"></div>
-                        <div id="RadarController_Table">
-                            <table class="display" width="100%"></table>
-                        </div>
-                        <div id="RadarController_Table_toolbar">
-                            <button value = false class ="menuBtn saveProfile modal-trigger" id="saveProfile" onclick="downloadProfile(this)" href="#savedialog_profile"><i class="fas fa-download"></i> Save</button>
-                            <input id="profile_input_file" class="none" type="file" style="display: none;"/>
-                            <button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>
-                        </div>
                         <div  class="row s12 valign-wrapper no_magrin list">
                             <label for="displaySymbol" class="col s4">Min-max: </label>
                             <p class="switch col s7" id ="displayMinMax">
@@ -181,6 +172,15 @@
                                 </label>
 
                             </p>
+                        </div>
+                        <div id="RadarController"></div>
+                        <div id="RadarController_Table">
+                            <table class="display" width="100%"></table>
+                        </div>
+                        <div id="RadarController_Table_toolbar">
+                            <button value = false class ="menuBtn saveProfile modal-trigger" id="saveProfile" onclick="downloadProfile(this)" href="#savedialog_profile"><i class="fas fa-download"></i> Save</button>
+                            <input id="profile_input_file" class="none" type="file" style="display: none;"/>
+                            <button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>
                         </div>
                     </div>
                 </li>
@@ -312,9 +312,9 @@
         </div>
         <div id="header2" class="row s12 marginBottom0">
             <!--<h1>HPCC Explorer</h1>-->
-            <div class="col valign-wrapper">
-                <h6 id="currentData"> Unemployment Rate </h6>
-            </div>
+            <!--<div class="col valign-wrapper">-->
+                <!--<h6 id="currentData"> Unemployment Rate </h6>-->
+            <!--</div>-->
             <!--<div class="controls">-->
                 <!--<div id="controlHolder"  class="controlHolder valign-wrapper">-->
                     <!--<div class = "rangecustomOut">-->
@@ -333,19 +333,17 @@
 
 
             <!--</div>-->
+            <div class="controls">
+                <div id="controlHolder"  class="controlHolder valign-wrapper">
+                    <button onclick="pauseRequest()" value = false class ="waves-effect waves-light btn btn-floating pause"><i class="material-icons">pause</i></button>
+                    <button onclick="resetRequest()" class ="waves-effect waves-light btn btn-floating rotatehover  red darken-4 "><i class="material-icons">refresh</i></button>
+                </div>
+
+            </div>
             <div id="legendHolder"  class="legendHolder">
             </div>
 
             <div style="clear:both;"></div>
-        </div>
-        <div class="row overflowAuto" style="margin-bottom: 0px;">
-            <div class="col s12 m12">
-                <div class="col s12 m12">
-                    <div class="card-image center-align relative" id="tSNE">
-                        <svg id="RadarMapcontent" class="active"></svg>
-                    </div>
-                </div>
-            </div>
         </div>
         <div id="map">
             <svg width="550px" height="450px">
@@ -357,6 +355,16 @@
                 <g id="regMap"></g>
             </svg>
         </div>
+        <div class="row s12 overflowAuto marginBottom0" style="margin-bottom: 0px;">
+            <div class="col s12 m12">
+                <div class="col s12 m12">
+                    <div class="card-image center-align relative" id="tSNE">
+                        <svg id="RadarMapcontent" class="active"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="controlPanel" class="card">
             <div id="colorLegend">
 

@@ -168,6 +168,9 @@ table.dataTable th {
 #map{
     width: fit-content;
     padding: 20px;
+    z-index: 2;
+    position: absolute;
+    right:0;
 }
 
 #dot{
