@@ -21,7 +21,7 @@ body .mainContain.active {
 }
 
 label {
-  color: white;
+  color: currentColor;
 }
 
 #header {

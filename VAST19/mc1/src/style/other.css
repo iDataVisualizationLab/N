@@ -223,3 +223,7 @@ table.dataTable th {
     /*padding: 50px;*/
     /*font-size: 20px;*/
 }
+
+#currentData:before {
+    content:"Dataset: ";
+}
