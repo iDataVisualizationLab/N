@@ -127,7 +127,9 @@ input[type=text].inputHolder:focus,  input[type=search]:focus{
 .axis.disable {
     display: none;
 }
-
+table.dataTable {
+    font-size: 12px;
+}
 table.dataTable thead {
     background-color: var(--colorMain2_light);
     color: black;
@@ -145,7 +147,7 @@ table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:
     background-color: rgba(var(--colorMain2),0.5);
 }
 
-table.dataTable td {
+table.dataTable td, table.dataTable th{
     padding: 2px;
     line-height: 1rem;
 }
@@ -156,4 +158,7 @@ table.dataTable td {
 
 .radarStroke {
     stroke: currentColor;
+}
+table.dataTable th {
+    width: 100% !important;
 }

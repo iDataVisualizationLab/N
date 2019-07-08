@@ -240,17 +240,14 @@ function uploadProfile(){
         reader.onload = (function(theFile) {
             return function(e) {
                 // Render thumbnail.
-                d3.json(e.target.result,function (error, data) {
-                    if (error){
-                    }else{
-                        if (data.serviceLists[0].sub[0].angle ===undefined)
+                d3.json(e.target.result).then(function (data) {
+                        if (data.serviceFullList[0].angle ===undefined)
                             throw "wrong file";
                         conf = data;
                         variablesNames.forEach(d=>{ window[d] = conf[d]});
                         // relink object
-                        serviceFullList = serviceLists2serviceFullList(serviceLists);
+                        // serviceFullList = serviceLists2serviceFullList(serviceLists);
                         MetricController.axisSchema(serviceFullList).update();
-                    }
                 })
                 // span.innerHTML = ['<img class="thumb" src="', e.target.result,
                 //     '" title="', escape(theFile.name), '"/>'].join('');

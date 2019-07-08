@@ -5,12 +5,14 @@ var conf={};
 variablesNames.forEach(d=>conf[d] = window[d]);
 
 //***********************
-Loadtostore();
+
 
 //***********************
 
 function SaveStore() {
-    variablesNames.forEach(d=>{ conf[d] = window[d];saveConf(d);});
+    variablesNames.forEach(d=>{ conf[d] = window[d];
+    // saveConf(d);
+    });
 }
 function checkInvalidStore(){
     var retrievedObject = localStorage.getItem('serviceFullList');

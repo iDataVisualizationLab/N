@@ -4,7 +4,7 @@
 }
 
 body {
-  font: 14px Helvetica, sans-serif;
+  font: 12px sans-serif;
   background-color: #232b33;
   color: white;
 }
@@ -31,7 +31,7 @@ label {
 }
 #header a,
 #header .brand-logo {
-  font-family: Helvetica, sans-serif;
+  font-family: sans-serif;
   color: #ffffff;
 }
 #header img {

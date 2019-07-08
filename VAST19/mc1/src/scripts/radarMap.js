@@ -322,7 +322,11 @@ d3.radarMap = function () {
         g = svg.append("g")
             .attr('class','pannel')
             .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
-            // .attr("clip-path", "url(#clip)");
+        g.append("g")
+            .attr("class", "x gAxis")
+            .attr("transform", "translate(0, 10)");
+
+        // .attr("clip-path", "url(#clip)");
         // const rect = g.append('rect').attr("rx", 10)
         //     .attr("ry", 10)
         //     .attr("width", graphicopt.widthG()-2)
@@ -541,6 +545,14 @@ d3.radarMap = function () {
     let rowscale = d3.scaleLinear().range([0, radaropt.h]);
     function drawEmbedding(data) {
         timescale.domain(d3.extent(data,d=>d.time));
+
+        let time_axis = d3.axisTop()
+            .scale(timescale);
+        let timeAxis = g.select('.gAxis')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis);
+
         rowscale.range([0,radaropt.h]);
         let rowlabel = _.pairs(rowMap);
 
@@ -551,11 +563,11 @@ d3.radarMap = function () {
             .attr('class','linkLable_text')
             .merge(lables)
             .attr('y',d=>rowscale(+d[0]))
-            .style('font-size',"12px")
+            .style('font-size',"11px")
             .style('fill',"currentColor")
-            .attr('dy',"1em")
+            .attr('dy',"1.5em")
             .attr('text-anchor',"end")
-            .text(d=>d[1]);
+            .text(d=>d.join('  '));
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);

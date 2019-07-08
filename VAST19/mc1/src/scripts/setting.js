@@ -1,1 +1,1 @@
-let serviceList,serviceListattr,thresholds,undefinedValue,serviceFullList;
+var serviceList,serviceListattr,thresholds,undefinedValue,serviceFullList;

@@ -99,6 +99,7 @@ $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
+    $('.modal').modal();
     var elem = document.querySelector('.collapsible.expandable');
     var instance = M.Collapsible.init(elem, {
         accordion: false
@@ -196,7 +197,7 @@ $(document).ready(function(){
         creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
         creatContain(d3.select('#ClusterColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Cluster, onClickClusterColor);
 });
-let profile={};
+var profile={};
 function changeRadarColor(d) {
     profile.radarcolor = d.val;
     d3.select('#RadarColor')
@@ -292,6 +293,7 @@ function init() {
         dataRaw = d;
         timestep = 0;
         dataRaw.location = locs;
+            dataRaw.location[Object.keys(locs).length+1]="Total";
         dataBytime = d3.nest()
             .key(function(d) { return d.time; })
             .key(function(d) { return d.location; })
@@ -314,7 +316,9 @@ function init() {
         let formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
         data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
-
+        databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
+        data.push({'key':(data.length+1)+'',values:databyTime})
+            // Loadtostore();
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);
@@ -335,7 +339,7 @@ function onSchemaUpdate(schema_new){
     // updateSummaryChartAll();
     // // }
     //
-    // SaveStore();
+    SaveStore();
 }
 function initSchema(){
     let angle = Math.PI*2/ selectedVariable.length;

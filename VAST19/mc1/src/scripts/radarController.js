@@ -420,7 +420,7 @@ let radarController = function () {
                 let table = tablediv.select("table");
                 table.selectAll('*').remove();
                 let header = table.append("thead").append('tr')
-                    .selectAll('th').data(['Service name','Angle ( '+"\u00B0 "+')','']).enter()
+                    .selectAll('th').data(['Damaged category','Angle ( '+"\u00B0 "+')','']).enter()
                     .append('th').text(d=>d);
 
                 let rows = table.append('tbody').selectAll('tr')
@@ -458,6 +458,7 @@ let radarController = function () {
                         { "orderDataType": "dom-disablebtn" },
                     ]
                 } );
+                console.log('init done');
             }
             // </editor-fold>
         }catch (e) {
@@ -479,6 +480,10 @@ let radarController = function () {
             .style('transform',function (d, i) {
                 return "rotate(" + toDegrees(d.angle()) + "deg)"});
         axis.select('.dragpoint').datum(d=>d);
+        axis.select('.angleValue').text(function (d) {
+            return toDegrees(d.angle()).toFixed(0) + '\u00B0';
+        });
+
         let rows = tablediv.select('tbody').selectAll('tr')
             .data(radarcomp.axisList,d=>d.text||d.data.text);
         rows.each(function(){
