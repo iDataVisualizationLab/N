@@ -623,11 +623,11 @@ d3.radarMap = function () {
             .each(d=>
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
         function mouseover (d) {
-            d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',true);
+            d3.selectAll('.geoPath:not(#'+removeWhitespace(rowMap[d.loc])+')').classed('nothover',true);
             d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',0.2);
         }
         function mouseleave (d) {
-            d3.selectAll('#'+removeWhitespace(rowMap[d.loc])+'.geoPath').classed('selected',false);
+            d3.selectAll('.geoPath:not(#'+removeWhitespace(rowMap[d.loc])+')').classed('nothover',false);
             d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',1);
         }
     }

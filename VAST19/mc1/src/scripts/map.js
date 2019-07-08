@@ -206,9 +206,10 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
 
 
         function mouseover(d) {
-            d3.select(this)
+            d3.selectAll('.geoPath').classed('nothover',true);
+            d3.select(this).classed('nothover',false);
             // .style("stroke", "black")
-                .style("opacity", 0.5);
+            //     .style("opacity", 0.5);
 
             d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',0.2);
         }
@@ -253,10 +254,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             mapTip
                 .transition()
                 .duration(200)
-                .style("opacity", 0)
-            d3.select(this)
-            // .style("stroke", "black")
-                .style("opacity", 1);
+                .style("opacity", 0);
+            d3.selectAll('.geoPath').classed('nothover',false);
             d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',1);
         }
 

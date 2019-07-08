@@ -192,6 +192,9 @@ table.dataTable th:not(:first-child) {
 .geoPath{
     fill:lightgrey;
 }
+.geoPath.nothover {
+    opacity: 0.2;
+}
 
 #map #regMap path{
     fill: lightgray;
