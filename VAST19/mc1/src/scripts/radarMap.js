@@ -52,6 +52,10 @@ d3.radarMap = function () {
     let first = true;
     let returnEvent;
     let group_mode = "outlier";
+
+    //event register
+    let mouseoverEvent, mouseleaveEvent;
+
     function updateSummary(data){
         // const data_new = dataRaw.Variables.map((s,si)=>{
         //     let dataarr = _.flatten(dataRaw.YearsDataTrue.map(d=>d['v'+si].map(e=>e/100)));
@@ -521,6 +525,10 @@ d3.radarMap = function () {
         let arrN = [];
         data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
         radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
+        let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="20"),e=>e.density)).range(radaropt.densityScale.domain());
+        arrN.filter(e=>e.loc==="20").forEach(e=>{e.density_true = e.density;
+            e.density = desnsityScale(e.density_true);
+        })
         return arrN;
     }
     function handledataIcon(data){
@@ -587,12 +595,15 @@ d3.radarMap = function () {
         if (graphicopt.fitscreen){
             svg.attrs({
                 width: graphicopt.width,
+                height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
+            const height_needed = (arrIcon.length+2) * radaropt.h;
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
+                height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
             });
             timescale.range([0, width_needed]).domain(timerange);
             time_axis = time_axis.ticks(width_needed/100);
@@ -645,18 +656,10 @@ d3.radarMap = function () {
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
             .classed('selected',d=>d.loc==='20')
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
-            .on('mouseover',mouseover)
-            .on('mouseleave',mouseleave)
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
             .each(d=>
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
-        function mouseover (d) {
-            d3.selectAll('.geoPath:not(#'+removeWhitespace(rowMap[d.loc])+')').classed('nothover',true);
-            d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',0.2);
-        }
-        function mouseleave (d) {
-            d3.selectAll('.geoPath:not(#'+removeWhitespace(rowMap[d.loc])+')').classed('nothover',false);
-            d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(timeFormat(e.time).toString() !==timeFormat(d.time).toString())).style('opacity',1);
-        }
     }
     function fixstr(s) {
         return s.replace(/ |-|#/gi,'');
@@ -742,6 +745,14 @@ d3.radarMap = function () {
     };
     radarMap.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, radarMap) : returnEvent;
+    };
+
+    radarMap.onmouseover = function (_) {
+        return arguments.length ? (mouseoverEvent = _, radarMap) : mouseoverEvent;
+    };
+
+    radarMap.onmouseleave = function (_) {
+        return arguments.length ? (mouseleaveEvent = _, radarMap) : mouseleaveEvent;
     };
 
     radarMap.RadarColor = function (_) {

@@ -665,37 +665,37 @@ function RadarChart(id, data, options) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
                 return Math.round(v).toFixed(2);
             });
-        var legendg = cfg.legend.map(function (d, i) {
-            return Object.keys(d).map(function (k) {
-                return {key: k, value: d[k], index: i}
-            })
-        }).filter(d => d.length = 0);
-
-        var subaxisg = axisGrid.selectAll(".axisLabelsub")
-            .data(legendg);
-        subaxisg.exit().remove();
-
-        subaxisg.enter().append('g').attr('class', 'axisLabelsub');
-        var subaxis = axisGrid.selectAll(".axisLabelsub");
-        subaxis.selectAll('.axisLabelsubt')
-            .data(d => d)
-            .enter().append("text")
-            .attr("class", "axisLabelsubt")
-            .attr("x", function (d, i) {
-                return d.key * radius / cfg.levels * Math.cos(angleSlice[d.index] - Math.PI / 2);
-            })
-            .attr("y", function (d, i) {
-                return d.key * radius / cfg.levels * Math.sin(angleSlice[d.index] - Math.PI / 2);
-            })
-            // .attr("x", d => {4+d.key*radius/cfg.levels})
-            // .attr("y", function(d){return -d.key*radius/cfg.levels;})
-            .attr("dy", "0.2em")
-            .attr("font-family", "sans-serif")
-            .style("font-size", "12px")
-            .attr("fill", "#111")
-            .text(function (d) {
-                return d.value;
-            });
+        // var legendg = cfg.legend.map(function (d, i) {
+        //     return Object.keys(d).map(function (k) {
+        //         return {key: k, value: d[k], index: i}
+        //     })
+        // }).filter(d => d.length = 0);
+        //
+        // var subaxisg = axisGrid.selectAll(".axisLabelsub")
+        //     .data(legendg);
+        // subaxisg.exit().remove();
+        //
+        // subaxisg.enter().append('g').attr('class', 'axisLabelsub');
+        // var subaxis = axisGrid.selectAll(".axisLabelsub");
+        // subaxis.selectAll('.axisLabelsubt')
+        //     .data(d => d)
+        //     .enter().append("text")
+        //     .attr("class", "axisLabelsubt")
+        //     .attr("x", function (d, i) {
+        //         return d.key * radius / cfg.levels * Math.cos(angleSlice[d.index] - Math.PI / 2);
+        //     })
+        //     .attr("y", function (d, i) {
+        //         return d.key * radius / cfg.levels * Math.sin(angleSlice[d.index] - Math.PI / 2);
+        //     })
+        //     // .attr("x", d => {4+d.key*radius/cfg.levels})
+        //     // .attr("y", function(d){return -d.key*radius/cfg.levels;})
+        //     .attr("dy", "0.2em")
+        //     .attr("font-family", "sans-serif")
+        //     .style("font-size", "12px")
+        //     .attr("fill", "#111")
+        //     .text(function (d) {
+        //         return d.value;
+        //     });
     }
     function correctId (id){
         if (typeof (id) === "string") {

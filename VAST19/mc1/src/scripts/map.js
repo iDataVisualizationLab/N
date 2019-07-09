@@ -129,18 +129,18 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("font-size", "8pt");
 
                 //load data for static sensors and plot them on to the map
-                d3.csv("src/data/StaticSensorLocations.csv").then(location => {
-                    mapSvg.enter()
-                        .data(location)
-                        .append("image")
-                        .attr("class", "statIcon")
-                        .attr("width", 10)
-                        .attr("height", 10)
-                        .attr("xlink:href", iconpath+"meter.svg")
-                        .attr("transform", d => {
-                            return "translate(" + projection([d.Long, d.Lat]) + ")";
-                        });
-                });
+                // d3.csv("src/data/StaticSensorLocations.csv").then(location => {
+                //     mapSvg.enter()
+                //         .data(location)
+                //         .append("image")
+                //         .attr("class", "statIcon")
+                //         .attr("width", 10)
+                //         .attr("height", 10)
+                //         .attr("xlink:href", iconpath+"meter.svg")
+                //         .attr("transform", d => {
+                //             return "translate(" + projection([d.Long, d.Lat]) + ")";
+                //         });
+                // });
 
 
                 mapSvg.enter()
@@ -170,7 +170,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
 
 
                 // add map legend
-                let iconFiles = [{"Nuclear plant": iconpath+"radiation.svg"}, {"Hospital": iconpath+"hospital.svg"}, {"Static sensor": iconpath+"meter.svg"}];
+                // let iconFiles = [{"Nuclear plant": iconpath+"radiation.svg"}, {"Hospital": iconpath+"hospital.svg"}, {"Static sensor": iconpath+"meter.svg"}];
+                let iconFiles = [{"Nuclear plant": iconpath+"radiation.svg"}, {"Hospital": iconpath+"hospital.svg"}];
                 let legendSvg = d3.select("#map g.legendGroup");
                 legendSvg.selectAll("image")
                     .data(iconFiles)

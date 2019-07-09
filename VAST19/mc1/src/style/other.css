@@ -205,7 +205,7 @@ table.dataTable th:not(:first-child) {
 }
 
 #map #regMap .selected{
-    fill: #2171b5;
+    fill: #979b9d;
 }
 
 #controlPanel{
@@ -240,4 +240,8 @@ table.dataTable th:not(:first-child) {
 
 #RadarMapcontent .disable{
     display: none;
+}
+
+#d3-tip-mc1 {
+    pointer-events: none!important;
 }
