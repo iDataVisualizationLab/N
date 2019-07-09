@@ -33,7 +33,7 @@ d3.radarMap = function () {
         },
         runopt,
         axis,
-        arr = [],
+        arr = [],arrIcon=[],
         isBusy = false,
         isStable = false;
         // tsne = new tsnejs.tSNE(graphicopt.opt);
@@ -518,10 +518,16 @@ d3.radarMap = function () {
 
 
     function handledata(data){
-        arr = [];
-        data.forEach(d=>d.values.forEach(e=>arr.push(e.arr)));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arr.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
-        return arr;
+        let arrN = [];
+        data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
+        return arrN;
+    }
+    function handledataIcon(data){
+        let arrN = [];
+        data.forEach(e=>arrN.push(e.arr));
+        // radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
+        return arrN;
     }
     function changeshape (){
         const selector = g.selectAll(".linkLineg");
@@ -595,20 +601,34 @@ d3.radarMap = function () {
             .call(time_axis);
 
         rowscale.range([0,radaropt.h]);
-        let rowlabel = _.pairs(rowMap);
-
-        let lables = g.selectAll(".linkLable_text")
-            .data(rowlabel,d=>+d[0]);
+        arrIcon.forEach(e=>e.text = e.loc+" "+rowMap[e.loc]);
+        let lables = g.selectAll(".linkLable_textg")
+            .data(arrIcon,d=>+d.loc);
         lables.exit();
-        lables.enter().append('text')
-            .attr('class','linkLable_text')
-            .merge(lables)
-            .attr('y',d=>rowscale(+d[0]))
+
+        let Nlabel = lables.enter().append('g')
+            .attr('class','linkLable_textg');
+
+        Nlabel.append('text')
+            .attr('class','linkLable_text');
+
+        Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
+            .attr('x',radaropt.w)
             .style('font-size',"11px")
             .style('fill',"currentColor")
             .attr('dy',"1.5em")
-            .attr('text-anchor',"end")
-            .text(d=>d.join('  '));
+            .attr('text-anchor',"start")
+            .text(d=>d.text);
+
+        Nlabel.append('g')
+            .attr('class',d=>'linkLable_radar '+fixstr(d.id));
+
+        Nlabel.merge(lables).select('.linkLable_radar')
+            .attr('class',d=>'linkLable_radar '+fixstr(d.id))
+            .each(d=>
+            RadarChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
+
+        Nlabel.merge(lables).attr('transform',d=>'translate('+(-graphicopt.margin.left)+','+rowscale(+d.loc)+')');
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);
@@ -638,7 +658,9 @@ d3.radarMap = function () {
         return arguments.length ? (arr = handledata(_), radarMap) : arr;
 
     };
-
+    radarMap.dataIcon = function (_) {
+        return arguments.length ? (arrIcon = handledataIcon(_), radarMap) : arrIcon;
+    };
     radarMap.schema = function (_) {
         return arguments.length ? (radaropt.schema = _, radarMap) : radaropt.schema;
 
@@ -701,6 +723,7 @@ d3.radarMap = function () {
     radarMap.axis = function (_) {
         return arguments.length ? (axis = _, radarMap) : axis;
     };
+
     radarMap.group_mode = function (_) {
         if (arguments.length){
             isBusy = true;
