@@ -525,7 +525,10 @@ d3.radarMap = function () {
     }
     function handledataIcon(data){
         let arrN = [];
-        data.forEach(e=>arrN.push(e.arr));
+        data.forEach(e=>{
+            e.arr.density_true = e.arr.density;
+            arrN.push(e.arr);
+        });
         // radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
         return arrN;
     }
@@ -601,7 +604,11 @@ d3.radarMap = function () {
             .call(time_axis);
 
         rowscale.range([0,radaropt.h]);
-        arrIcon.forEach(e=>e.text = e.loc+" "+rowMap[e.loc]);
+        let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
+        arrIcon.forEach(e=>{
+            e.density = desnsityScale(e.density_true);
+            e.text = e.loc+" "+rowMap[e.loc];
+        });
         let lables = g.selectAll(".linkLable_textg")
             .data(arrIcon,d=>+d.loc);
         lables.exit();

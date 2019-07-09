@@ -296,9 +296,9 @@ function RadarChart(id, data, options) {
         });
 
     if(cfg.roundStrokes) {
-        radarLine.curve(d3.curveCardinalClosed.tension(0.5));
-        radialAreaGenerator.curve(d3.curveCardinalClosed.tension(0.5));
-        radialAreaQuantile.curve(d3.curveCardinalClosed.tension(0.5));
+        radarLine.curve(d3.curveCardinalClosed.tension(0.3));
+        radialAreaGenerator.curve(d3.curveCardinalClosed.tension(0.3));
+        radialAreaQuantile.curve(d3.curveCardinalClosed.tension(0.3));
     }
 
 
