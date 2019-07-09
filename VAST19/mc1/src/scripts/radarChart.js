@@ -648,6 +648,8 @@ function RadarChart(id, data, options) {
             .attr("fill", "#111")
             .text(function (d, i) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
+                if (cfg.schema)
+                    v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
                 return Math.round(v).toFixed(2);
             });
         axisLabel.exit().remove();
@@ -663,6 +665,8 @@ function RadarChart(id, data, options) {
             .attr("fill", "#111")
             .text(function (d, i) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
+                if (cfg.schema)
+                    v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
                 return Math.round(v).toFixed(2);
             });
         // var legendg = cfg.legend.map(function (d, i) {
@@ -670,9 +674,9 @@ function RadarChart(id, data, options) {
         //         return {key: k, value: d[k], index: i}
         //     })
         // }).filter(d => d.length = 0);
-        //
+
         // var subaxisg = axisGrid.selectAll(".axisLabelsub")
-        //     .data(legendg);
+        //     .data(cfg.schema);
         // subaxisg.exit().remove();
         //
         // subaxisg.enter().append('g').attr('class', 'axisLabelsub');
