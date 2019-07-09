@@ -68,6 +68,7 @@ let radarController = function () {
     }
     // FUNCTION ZONE
     let onChangeValueFunc = function(){};
+    let onChangeFilterFunc = function(){};
 
     // TODO: REPLACE
 
@@ -92,95 +93,99 @@ let radarController = function () {
     let idleTimeout,
         idleDelay = 350;
     function getBrush(d) {
-        return d3.brush(radarcomp.axis[d].scale)
-            .extent([[-10, 0], [10, h]])
+        return d3.brushY(radarcomp.axis[d.data.text].scale)
+            .extent( [ [-10,-rScale(1)], [10,-rScale(0)] ] )
             .on("brush end", brushended);
     }
     function brushended() {
-        var actives = [],
-            extents = [];
-        svg.selectAll(".brush")
+        var actives = [];
+        svg.selectAll(".axis")
             .filter(function(d) {
-                radarcomp.axis[d].filter = d3.brushSelection(this);
-                return radarcomp.axis[d].filter;
+                if (d3.brushSelection(this))
+                    radarcomp.axis[d.data.text].filter = d3.brushSelection(this).map(v=>radarcomp.axis[d.data.text].scale.invert(-rScale.invert(v)-0.5)).sort((a,b)=>a-b);
+                else
+                    radarcomp.axis[d.data.text].filter = null;
+                return radarcomp.axis[d.data.text].filter;
+
             })
             .each(function(d) {
                 // Get extents of brush along each active selection axis (the Y axes)
+                console.log(d.filter)
                 actives.push(d);
-                extents.push(radarcomp.axis[d].filter.map(radarcomp.axis[d].scale.invert).sort((a,b)=>a-b));
             });
-        var b = svg.selectAll('.dimension').nodes()
-            .forEach(function(element, i) {
-                var dimension = d3.select(element).data()[0];
-                if (_.include(actives, dimension)) {
-                    var extent = extents[actives.indexOf(dimension)];
-                    d3.select(element)
-                        .selectAll('text')
-                        .style('font-weight', 'bold')
-                        .style('font-size', '13px')
-                        .style('display', function() {
-                            var value = d3.select(this).data()[0];
-                            return extent[0] <= value && value <= extent[1] ? null : "none"
-                        });
-                } else {
-                    d3.select(element)
-                        .selectAll('text')
-                        .style('font-size', null)
-                        .style('font-weight', null)
-                        .style('display', null);
-                }
-                d3.select(element)
-                    .selectAll('.label')
-                    .style('display', null);
-            });
-        ;
-        // bold dimensions with label
-        svg.selectAll('.label')
-            .style("font-weight", function(dimension) {
-                if (_.include(actives, dimension)) return "bold";
-                return null;
-            });
-        // Get lines within extents
-        // var selected = [];
-        // data
-        //     .filter(function(d) {
-        //         return !_.contains(excluded_groups, d.group);
-        //     })
-        //     .map(function(d) {
-        //         return actives.every(function(p, dimension) {
-        //             return extents[dimension][0] <= d[p] && d[p] <= extents[dimension][1];
-        //         }) ? selected.push(d) : null;
+        onChangeFilterFunc(radarcomp);
+        // var b = svg.selectAll('.dimension').nodes()
+        //     .forEach(function(element, i) {
+        //         var dimension = d3.select(element).data()[0];
+        //         if (_.include(actives, dimension)) {
+        //             var extent = extents[actives.indexOf(dimension)];
+        //             d3.select(element)
+        //                 .selectAll('text')
+        //                 .style('font-weight', 'bold')
+        //                 .style('font-size', '13px')
+        //                 .style('display', function() {
+        //                     var value = d3.select(this).data()[0];
+        //                     return extent[0] <= value && value <= extent[1] ? null : "none"
+        //                 });
+        //         } else {
+        //             d3.select(element)
+        //                 .selectAll('text')
+        //                 .style('font-size', null)
+        //                 .style('font-weight', null)
+        //                 .style('display', null);
+        //         }
+        //         d3.select(element)
+        //             .selectAll('.label')
+        //             .style('display', null);
         //     });
-        // // free text search
-        // var query = d3.select("#search").node().value;
-        // if (query.length > 0) {
-        //     selected = search(selected, query);
-        // }
-        // if (selected.length < data.length && selected.length > 0) {
-        //     d3.select("#keep-data").attr("disabled", null);
-        //     d3.select("#exclude-data").attr("disabled", null);
-        // } else {
-        //     d3.select("#keep-data").attr("disabled", "disabled");
-        //     d3.select("#exclude-data").attr("disabled", "disabled");
-        // };
+        // ;
+        // // bold dimensions with label
+        // svg.selectAll('.label')
+        //     .style("font-weight", function(dimension) {
+        //         if (_.include(actives, dimension)) return "bold";
+        //         return null;
+        //     });
+        // // Get lines within extents
+        // // var selected = [];
+        // // data
+        // //     .filter(function(d) {
+        // //         return !_.contains(excluded_groups, d.group);
+        // //     })
+        // //     .map(function(d) {
+        // //         return actives.every(function(p, dimension) {
+        // //             return extents[dimension][0] <= d[p] && d[p] <= extents[dimension][1];
+        // //         }) ? selected.push(d) : null;
+        // //     });
+        // // // free text search
+        // // var query = d3.select("#search").node().value;
+        // // if (query.length > 0) {
+        // //     selected = search(selected, query);
+        // // }
+        // // if (selected.length < data.length && selected.length > 0) {
+        // //     d3.select("#keep-data").attr("disabled", null);
+        // //     d3.select("#exclude-data").attr("disabled", null);
+        // // } else {
+        // //     d3.select("#keep-data").attr("disabled", "disabled");
+        // //     d3.select("#exclude-data").attr("disabled", "disabled");
+        // // };
+        // //
+        // // // total by food group
+        // // var tallies = _(selected)
+        // //     .groupBy(function(d) { return d.group; });
+        // //
+        // // // include empty groups
+        // // _(colors.domain()).each(function(v,k) {tallies[v] = tallies[v] || []; });
         //
-        // // total by food group
-        // var tallies = _(selected)
-        //     .groupBy(function(d) { return d.group; });
-        //
-        // // include empty groups
-        // _(colors.domain()).each(function(v,k) {tallies[v] = tallies[v] || []; });
-
-        // var s = d3.event.selection;
-        // if (!s) {
-        //     if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
-        //     x.domain(x0);
-        //     y.domain(y0);
-        // } else {
-        //     x.domain([s[0][0], s[1][0]].map(x.invert, x));
-        //     y.domain([s[1][1], s[0][1]].map(y.invert, y));
-        //     svg.select(".brush").call(brush.move, null);
-        // }
+        // // var s = d3.event.selection;
+        // // if (!s) {
+        // //     if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+        // //     x.domain(x0);
+        // //     y.domain(y0);
+        // // } else {
+        // //     x.domain([s[0][0], s[1][0]].map(x.invert, x));
+        // //     y.domain([s[1][1], s[0][1]].map(y.invert, y));
+        // //     svg.select(".brush").call(brush.move, null);
+        // // }
     }
     function idled() {
         idleTimeout = null;
@@ -287,7 +292,7 @@ let radarController = function () {
                     Format = d3.format('');
                 rScale.range([0,radius]);
                 //Draw the background circles
-                axisGrid.   selectAll(".levels")
+                axisGrid.selectAll(".gridCircle")
                     .data(d3.range(0, (graphicopt.levels)).reverse())
                     .enter()
                     .append("circle")
@@ -318,6 +323,9 @@ let radarController = function () {
                     .append("g")
                     .attr("class", "axis")
                     .classed('disable',d=>d.data.enable)
+                    .call(d=>d3.brushY()
+                        .extent( [ [-10,-rScale(1)], [10,-rScale(0)] ] )
+                        .on("end", brushended)(d))
                     .style('transform-origin','0,0')
                     .style('transform',function (d, i) {
                         return "rotate(" + toDegrees(d.angle()) + "deg)"});
@@ -708,6 +716,11 @@ let radarController = function () {
 
     radarController.onChangeValue = function (_) {
         return arguments.length ? (onChangeValueFunc = _, radarController) : onChangeValueFunc;
+
+    };
+
+    radarController.onChangeFilterFunc = function (_) {
+        return arguments.length ? (onChangeFilterFunc = _, radarController) : onChangeFilterFunc;
 
     };
 

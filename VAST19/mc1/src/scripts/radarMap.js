@@ -643,6 +643,8 @@ d3.radarMap = function () {
 
         Nlabel.merge(lables).select('.linkLable_radar')
             .attr('class',d=>'linkLable_radar '+fixstr(d.id))
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
             .each(d=>
             RadarChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 

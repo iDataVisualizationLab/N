@@ -321,15 +321,22 @@ function init() {
             .tablediv(d3.select('#RadarController_Table'))
             .axisSchema(serviceFullList)
             .onChangeValue(onSchemaUpdate)
-            .init();
+            .onChangeFilterFunc(onfilterdata);
         schema = MetricController.schema();
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
         data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
         databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
+        let dataSumAll = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,[]);
+
         databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location']);
+        databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
         handleDataIcon (databyLoc);
+
+        MetricController.data(handleDataSumAll(dataSumAll))
+            .init();
+
         data.push({'key':(data.length+1)+'',values:databyTime})
         // Loadtostore();
         RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
@@ -340,6 +347,30 @@ function init() {
 
 
 
+}
+function onfilterdata(schema) {
+
+    data_filtered = dataRaw.filter(d=>schema.axisList.map(s=> s.filter!=null?(d[s.data.text]>=s.filter[0])&&(d[s.data.text]<=s.filter[1]):true).reduce((p,c)=>c&&p))
+    dataBytime = d3.nest()
+        .key(function(d) { return d.time; })
+        .key(function(d) { return d.location; })
+        .entries(data_filtered);
+
+    data = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['location','time']);
+    databyTime = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['time']);
+    let dataSumAll = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,[]);
+
+    databyLoc = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['location']);
+    databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
+    handleDataIcon (databyLoc);
+
+    MetricController.data(handleDataSumAll(dataSumAll));
+
+    data.push({'key':(data.length+1)+'',values:databyTime})
+    // Loadtostore();
+    handleOutlier (data,currentService);
+    // request();
+    d3.select('.cover').classed('hidden',true);
 }
 function onSchemaUpdate(schema_new){
     serviceFullList.forEach(ser=>{
@@ -562,14 +593,21 @@ function fixRangeTime (){
         timestep = this.value;
     });
 }
+function handleDataSumAll (data){ // nest data
+    let arr = objecttoArrayRadar(data);
+    arr.density = data.num;
+    arr.loc = data.key;
+    arr.id = fixstr(data.key+'_all');
+    return arr;
+}
 function handleDataIcon (data){ // nest data
     data.sort((a,b)=>(+a.key)-(+b.key));
     // if (serviceid===-1)
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
     data.forEach(t=> {
-        t.arr = objecttoArrayRadar(t.value);
-        t.arr.density = t.value.num;
+        t.arr = objecttoArrayRadar(t.value||t.values);
+        t.arr.density = (t.value||t.values).num;
         t.arr.loc = t.key;
         t.arr.id = fixstr(t.key+'_all');
     });
@@ -582,9 +620,9 @@ function handleOutlier (data){ // nest data
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
     data.forEach(loc=>loc.values.forEach(t=> {
-        t.arr = objecttoArrayRadar(t.value);
+        t.arr = objecttoArrayRadar(t.value||t.values);
         t.arr.time = new Date(t.key);
-        t.arr.density = t.value.num;
+        t.arr.density = (t.value||t.values).num;
         t.arr.loc = loc.key;
         t.arr.id = fixstr(loc.key+'_'+(+t.arr.time));
     }));
