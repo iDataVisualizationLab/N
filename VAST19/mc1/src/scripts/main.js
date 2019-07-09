@@ -216,6 +216,7 @@ function onClickRadarColor (d){
     changeRadarColor(d);
     arrColor=d;
     RadarMapplot.RadarColor(d);
+    MetricController.updatecolor(arrColor);
 }
 function onClickClusterColor (d){
     changeClusterColor(d);
@@ -315,7 +316,7 @@ function init() {
         selectedVariable = _.without(d3.keys(dataRaw[0]),'time','location');
 
         // initSchema(selectedVariable);
-        MetricController.graphicopt({width:317,height:317})
+        MetricController.graphicopt({width:317,height:317,arrColor: arrColor})
             .div(d3.select('#RadarController'))
             .tablediv(d3.select('#RadarController_Table'))
             .axisSchema(serviceFullList)
@@ -608,7 +609,7 @@ function onmouseoverRadar (d) {
     d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
     tool_tip.show();
-    RadarChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5})
+    RadarChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor})
 }
 function onmouseleaveRadar (d) {
     d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);

@@ -41,7 +41,31 @@ let radarController = function () {
         .domain(graphicopt.arrThresholds)
         .range(graphicopt.arrColor)
         .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
+    function updatecolorscale (){
+        let colorLength = graphicopt.arrColor.length-1;
+        var dif = 1 / (graphicopt.levels-2);
+        var right = 1 + dif;
+        graphicopt.arrThresholds = [-dif];
+        for (var i=0;i<colorLength-1;i++)
+            graphicopt.arrThresholds.push(i/(colorLength-1));
+        graphicopt.arrThresholds.push(right);
+        colorTemperature
+            .domain(graphicopt.arrThresholds)
+            .range(graphicopt.arrColor)
+            .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
 
+        /////////////////////////////////////////////////////////
+        /////////////// Draw the Circular grid //////////////////
+        /////////////////////////////////////////////////////////
+        //Wrapper for the grid & axes
+        if (svg)
+            svg.select(".axisWrapper").selectAll(".gridCircle")
+                .style("stroke", function (d) {
+                    var v = (d) / (graphicopt.levels-1);
+                    return graphicopt.gradient? '#d0d0d0': colorTemperature(v);
+                });
+
+    }
     // FUNCTION ZONE
     let onChangeValueFunc = function(){};
 
@@ -669,6 +693,12 @@ let radarController = function () {
     radarController.div = function (_) {
         return arguments.length ? (div = _, radarController) : div;
 
+    };
+
+    radarController.updatecolor = function (_) {
+        graphicopt.arrColor = _;
+        updatecolorscale();
+        return radarController;
     };
 
     radarController.tablediv = function (_) {
