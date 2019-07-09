@@ -421,8 +421,6 @@ let radarController = function () {
                     let dAngle = Math.atan2(-newpos.y,-newpos.x)-Math.PI/2;
                     // let dAngle = Math.atan2(d3.event.sourceEvent.y-radius,d3.event.sourceEvent.x-radius);
                     updateAngle(this.parentElement,dAngle);
-                    console.log(dAngle)
-                    console.log(toDegrees(d.angle()).toFixed(0))
                     tablediv.selectAll('.angle').filter(e=>e.text===d.data.text).select('input').attr('value',toDegrees(d.angle()).toFixed(0));
                     // d3.select(this.parentElement).transition().style('transform',function (d, i) {
                     //     let newAngle = positiveAngle(dAngle);
@@ -510,7 +508,7 @@ let radarController = function () {
         }catch (e) {
             return e;
         }
-
+        return radarController;
     };
     function toDegrees(rad) {
         return rad * (180/Math.PI)%360;
@@ -543,6 +541,8 @@ let radarController = function () {
     };
     radarController.drawSummary = function(hindex){
         let data = [handledataRate(hindex)];
+        if (data[0].length===0)
+            data[0] = arr;
         data = data.map(ditem=>{
             const ditem_filtered = ditem.filter(d=>radarcomp.axis[d.axis].data.enable);
             let temp = _.sortBy(ditem_filtered,d=>getAngle(d));

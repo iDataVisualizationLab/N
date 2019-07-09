@@ -334,8 +334,7 @@ function init() {
         databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
         handleDataIcon (databyLoc);
 
-        MetricController.data(handleDataSumAll(dataSumAll))
-            .init();
+        MetricController.data(handleDataSumAll(dataSumAll)).init().drawSummary();
 
         data.push({'key':(data.length+1)+'',values:databyTime})
         // Loadtostore();
@@ -364,7 +363,7 @@ function onfilterdata(schema) {
     databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
     handleDataIcon (databyLoc);
 
-    MetricController.data(handleDataSumAll(dataSumAll));
+    MetricController.data(handleDataSumAll(dataSumAll)).drawSummary();
 
     data.push({'key':(data.length+1)+'',values:databyTime})
     // Loadtostore();
@@ -379,6 +378,7 @@ function onSchemaUpdate(schema_new){
     });
     schema = schema_new;
     RadarMapplot.schema(serviceFullList).draw();
+    MetricController.drawSummary();
     // Radarplot.schema(serviceFullList);
     // updateSummaryChartAll();
     // // }
