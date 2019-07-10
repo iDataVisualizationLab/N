@@ -91,8 +91,7 @@ let arrColor = colorScaleList.rainbow;
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw,dataBytime,currentService =0;
-let RadarMapplot  = d3.radarMap();
-let MetricController = radarController();
+let CircleMapplot  = d3.circleMap();
 
 
 const initialize = _.once(initDemo);
@@ -132,19 +131,19 @@ $(document).ready(function(){
     }
         // $('#zoomInit').on('change', function () {
         //     runopt.zoom = this.value;
-        //     RadarMapplot.runopt(runopt);
+        //     CircleMapplot.runopt(runopt);
         // });
         // $('#zoomInit')[0].value = runopt.zoom;
     //     $('#detailLevel_Perplexity').on('change', function () {
     //         TsneConfig.perplexity = this.value;
-    //         RadarMapplot.option(TsneConfig);
+    //         CircleMapplot.option(TsneConfig);
     //         resetRequest();
     //     });
     //     // $('#detailLevel_Perplexity')[0].value = TsneConfig.perplexity;
     //
     // $('#detailLevel_Epsilon').on('change', function () {
     //     TsneConfig.epsilon = this.value;
-    //     RadarMapplot.option(TsneConfig);
+    //     CircleMapplot.option(TsneConfig);
     //     resetRequest();
     // });
     // $('#detailLevel_Epsilon')[0].value = TsneConfig.epsilon;
@@ -152,7 +151,7 @@ $(document).ready(function(){
         // $('#simDurationUI').on('change', function () {
         //     simDuration = this.value;
         //     runopt.simDuration = simDuration;
-        //     RadarMapplot.runopt(runopt);
+        //     CircleMapplot.runopt(runopt);
         //     interval2.pause(simDuration);
         //     if (playing)
         //         interval2.resume(simDuration);
@@ -179,7 +178,7 @@ $(document).ready(function(){
                         .text(choicetext);
                     maxtimestep = dataRaw.YearsData.length;
                     console.log(maxtimestep)
-                    RadarMapplot.axis(d.Variables);
+                    CircleMapplot.axis(d.Variables);
                     d3.select('.averageSUm').selectAll('*').remove();
                     //remove later
                     var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
@@ -187,7 +186,8 @@ $(document).ready(function(){
                     var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
                     listopt.limitColums = [lowlimit,highlimit];
 
-                    handleOutlier (dataRaw,currentService);
+                    data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
+                    handleOutlier (data,currentService);
                     resetRequest();
                     d3.select('.cover').classed('hidden', true);
                 }));
@@ -215,12 +215,11 @@ function changeClusterColor(d) {
 function onClickRadarColor (d){
     changeRadarColor(d);
     arrColor=d;
-    RadarMapplot.RadarColor(d);
-    MetricController.updatecolor(arrColor);
+    CircleMapplot.RadarColor(d);
 }
 function onClickClusterColor (d){
     changeClusterColor(d);
-    RadarMapplot.ClusterColor(d);
+    CircleMapplot.ClusterColor(d);
 }
 function RangechangeVal(val) {
     controlTime.el.value =val;
@@ -291,62 +290,38 @@ function init() {
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
     Promise.all([
-        readConf(choice+"_conf"),
-        readConf(choice+"_prof"),
-        readData(choice,'csv'),
-    ]).then(([locs,init_profile,d])=>{
-
-        conf = init_profile;
-        variablesNames.forEach(d=>{ window[d] = conf[d]});
-        d3.select('#RadarColor').selectAll('.colorscale-block').filter(c=>c.val===conf.profile.radarcolor).dispatch('click');
-        d.sort((a,b)=>a.time-b.time); // sort time
+        // readConf(choice+"_conf"),
+        // readConf(choice+"_prof"),
+        readData(choice,'json'),
+    ]).then(([d,init_profile])=>{
+        d.sort((a,b)=>a.time-b.time);
+        d.forEach(t=>t.time=new Date(t.time));
         dataRaw = d;
-        timestep = 0;
+        selectedVariable = ['val'];
+
+        globalScale.domain([0,d3.max(dataRaw,e=>e.q3)]);
+        let locs ={};
+        _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b)).forEach(e=>locs[e]=e);
         dataRaw.location = locs;
-
-        dataRaw.location[Object.keys(locs).length+1]="Total";
-
-        dataBytime = d3.nest()
-            .key(function(d) { return d.time; })
-            .key(function(d) { return d.location; })
-            .entries(dataRaw);
-
-        dataRaw.TimeMatch = dataBytime.map(d=>d.key);
-        maxtimestep = dataBytime.length;
-        selectedVariable = _.without(d3.keys(dataRaw[0]),'time','location');
-
-        // initSchema(selectedVariable);
-        MetricController.graphicopt({width:317,height:317,arrColor: arrColor})
-            .div(d3.select('#RadarController'))
-            .tablediv(d3.select('#RadarController_Table'))
-            .axisSchema(serviceFullList)
-            .onChangeValue(onSchemaUpdate)
-            .onChangeFilterFunc(onfilterdata);
-        schema = MetricController.schema();
+        timestep = 0;
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
-        data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
-        databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
+        data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
+
         let dataSumAll = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,[]);
 
-        databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location']);
-        databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
-        handleDataIcon (databyLoc);
+        // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
+        // databyLoc.push({'key':'-1',values:dataSumAll});
+        // handleDataIcon (databyLoc);
 
-        MetricController.data(handleDataSumAll(dataSumAll)).init().drawSummary();
-
-        data.push({'key':(data.length+1)+'',values:databyTime})
-        // Loadtostore();
-        RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
+        CircleMapplot.rowMap(locs).timeFormat(formatTime)
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);
     });
-
-
-
 }
+
 function onfilterdata(schema) {
 
     data_filtered = dataRaw.filter(d=>schema.axisList.map(s=> s.filter!=null?(d[s.data.text]>=s.filter[0])&&(d[s.data.text]<=s.filter[1]):true).reduce((p,c)=>c&&p))
@@ -363,7 +338,7 @@ function onfilterdata(schema) {
     databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
     handleDataIcon (databyLoc);
 
-    MetricController.data(handleDataSumAll(dataSumAll)).drawSummary();
+
 
     data.push({'key':(data.length+1)+'',values:databyTime})
     // Loadtostore();
@@ -377,8 +352,7 @@ function onSchemaUpdate(schema_new){
         ser.enable = schema_new.axis[ser.text].data.enable;
     });
     schema = schema_new;
-    RadarMapplot.schema(serviceFullList).draw();
-    MetricController.drawSummary();
+    CircleMapplot.schema(serviceFullList).draw();
     // Radarplot.schema(serviceFullList);
     // updateSummaryChartAll();
     // // }
@@ -399,7 +373,7 @@ function initSchema(){
 function getformattime (rate,unit){
     return d3["time"+unit].every(rate);
 }
-function handleDatabyKey (data,range,formatTime,listkey) {
+function handleDatabyKey (data,range,formatTime,listkey,calstatics) {
     let data_filtered;
     if (range===undefined){
         data_filtered = data;
@@ -409,8 +383,13 @@ function handleDatabyKey (data,range,formatTime,listkey) {
     }
     let nestFunc = d3.nest();
     listkey.forEach(k=> nestFunc = (k!=="time")?nestFunc.key(function(d){return d[k]}):nestFunc.key(function(d){return formatTime(d.time)}))
+    if (calstatics)
+        nestFunc = nestFunc
+            .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),data:d }});
+    else
+        nestFunc = nestFunc
+            .rollup(d=>{return d[0]});
     return nestFunc
-        .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),data:d }})
         .entries(data_filtered);
 }
 let selectedVariable=[];
@@ -437,8 +416,8 @@ function initRadarMap () {
  RadarMapopt.height = height;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
- RadarMapplot.graphicopt(RadarMapopt);
- RadarMapplot.svg(RadarMapopt.svg).dispatch(dispatch).init();
+ CircleMapplot.graphicopt(RadarMapopt);
+ CircleMapplot.svg(RadarMapopt.svg).dispatch(dispatch).init();
 
 }
 
@@ -446,7 +425,7 @@ function step (index){
     let arr = _.zip.apply(_, (d3.values(dataRaw.YearsData[index])));
     arr.forEach((d,i)=>{
         d.name = dataRaw.Countries[i]});
-    RadarMapplot.data(arr).draw(index);
+    CircleMapplot.data(arr).draw(index);
 }
 
 
@@ -458,7 +437,7 @@ function request(){
             step(timestep);
             isBusy = true
             timestep++;
-            // RadarMapplot.getTop10();
+            // CircleMapplot.getTop10();
         }else{
             if (isBusy)
                 interval2.pause();
@@ -469,8 +448,8 @@ function resetRequest (){
     // pausechange();
     playchange();
     interval2.stop();
-    RadarMapplot.remove();
-    RadarMapplot.reset(true);
+    CircleMapplot.remove();
+    CircleMapplot.reset(true);
     timestep = 0;
     pausechange();
     // request();
@@ -497,7 +476,7 @@ dispatch.on("calDone",function (tst){
 function playchange(){
     var e = d3.select('.pause').node();
     interval2.pause();
-    RadarMapplot.pause();
+    CircleMapplot.pause();
     playing = false;
     e.value = "true";
     $(e).addClass('active');
@@ -512,46 +491,43 @@ function changeShape(d){
         RadarMapopt.display.symbol.type ="circle";
         RadarMapopt.display.symbol.radius =3;
     }
-    RadarMapplot.displaystyle(RadarMapopt.display)
+    CircleMapplot.displaystyle(RadarMapopt.display)
     changeGroup_mode(d)
 }
 
 function changeMinMax(d){
-    let old = RadarMapplot.radaropt().summary;
+    let old = CircleMapplot.radaropt().summary;
     old.minmax = d.checked;
-    RadarMapplot.radaropt({summary: old}).draw();
+    CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeQuantile(d){
-    let old = RadarMapplot.radaropt().summary;
+    let old = CircleMapplot.radaropt().summary;
     old.quantile = d.checked;
-    RadarMapplot.radaropt({summary: old}).draw();
+    CircleMapplot.radaropt({summary: old}).draw();
 
 }
 function changeMean(d){
-    let old = RadarMapplot.radaropt().summary;
+    let old = CircleMapplot.radaropt().summary;
     old.mean = d.checked;
-    RadarMapplot.radaropt({summary: old}).draw();
+    CircleMapplot.radaropt({summary: old}).draw();
 }
 
 function changeFitscreen(d){
-    RadarMapplot.fitscreen(d.checked);
+    CircleMapplot.fitscreen(d.checked);
 }
 
 function changeTimeunit(d){
     if (d.checked) {
         listopt.time.unit = "Minute";
-        listopt.time.rate = 5;
+        listopt.time.rate = 10;
     }else {
         listopt.time.unit = "Hour";
         listopt.time.rate = 1;
     }
     let formatTime =getformattime (listopt.time.rate,listopt.time.unit);
     listopt.limitTime = d3.extent(dataRaw,d=>d.time);
-    data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
-    databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
-    data.push({'key':(data.length+1)+'',values:databyTime})
-    // Loadtostore();
-    RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
+
+    CircleMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
     handleOutlier (data,currentService);
 }
 
@@ -561,14 +537,14 @@ function changeGroup_mode(d){
     }else {
         RadarMapopt.group_mode ="outlier";
     }
-    RadarMapplot.group_mode(RadarMapopt.group_mode);
+    CircleMapplot.group_mode(RadarMapopt.group_mode);
     resetRequest();
 }
 
 function pausechange(){
     var e = d3.select('.pause').node();
     if (interval2) interval2.resume();
-    RadarMapplot.resume();
+    CircleMapplot.resume();
     playing = true;
     e.value = "false";
     $(e).removeClass('active');
@@ -612,7 +588,7 @@ function handleDataIcon (data){ // nest data
         t.arr.id = fixstr(t.key+'_all');
     });
 
-    RadarMapplot.dataIcon(data);
+    CircleMapplot.dataIcon(data);
 }
 function handleOutlier (data){ // nest data
     data.sort((a,b)=>(+a.key)-(+b.key));
@@ -620,26 +596,24 @@ function handleOutlier (data){ // nest data
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
     data.forEach(loc=>loc.values.forEach(t=> {
-        t.arr = objecttoArrayRadar(t.value||t.values);
+        t.arr = objecttoArrayRadar(t.value||t.values) ;
         t.arr.time = new Date(t.key);
         t.arr.density = (t.value||t.values).num;
         t.arr.loc = loc.key;
         t.arr.id = fixstr(loc.key+'_'+(+t.arr.time));
     }));
 
-    RadarMapplot.data(data).draw();
+    CircleMapplot.data(data).draw();
 }
 
 let schema;
+let globalScale = d3.scaleLinear().range([0,1]);
 function objecttoArrayRadar(o){
-    return schema.axisList.map(s=>{return {
-        axis: s.data.text,
-        value: s.scale(o.val[s.data.text]),
-        minval: s.scale(o.minval[s.data.text]),
-        maxval: s.scale(o.maxval[s.data.text]),
-        q1: s.scale(o.q1[s.data.text]),
-        q3: s.scale(o.q3[s.data.text])
-    }});
+    return {value: globalScale(o.val),
+            minval: globalScale(o.minval),
+            maxval: globalScale(o.maxval),
+            q1: globalScale(o.q1),
+            q3: globalScale(o.q3)};
 }
 // list html
 
