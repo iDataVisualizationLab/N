@@ -1,0 +1,34 @@
+function handleDatabyKey2 (data,range,formatTime,listkey) {
+    let data_filtered;
+    if (range===undefined){
+        data_filtered = data;
+    }else {
+        const tempTimescale = d3.scaleTime().domain(range).range([0,1]);
+        data_filtered = data.filter(d=> (tempTimescale(d.time)> 0 || tempTimescale(d.time)=== 0) && (tempTimescale(d.time)< 1 || tempTimescale(d.time)=== 1));
+    }
+    let nestFunc = d3.nest();
+    listkey.forEach(k=> nestFunc = (k!=="time")?nestFunc.key(function(d){return d[k]}):nestFunc.key(function(d){return formatTime(d.time)}))
+    return nestFunc
+        .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),data:d }})
+        .entries(data_filtered);
+}
+dataRaw = d;
+        selectedVariable = ['val'];
+
+        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]);
+        let locs ={};
+        _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b)).forEach(e=>locs[e]=e);
+        dataRaw.location = locs;
+        timestep = 0;
+        listopt.limitColums = [0,10];
+        formatTime =getformattime (listopt.time.rate,listopt.time.unit);
+        listopt.limitTime = d3.extent(dataRaw,d=>d.time);
+selectedVariable = ['Value'];
+var data = handleDatabyKey2(dataRaw,listopt.limitTime,formatTime,['time','Sensor-id'])	;
+data.forEach(d=>d.values.forEach(e=>{e.value["maxval"] = e.value["maxval"].Value;e.value["minval"] = e.value["minval"].Value;e.value["q1"] = e.value["q1"].Value;e.value["q3"] = e.value["q3"].Value;e.value["val"] = e.value["val"].Value;}));
+data.forEach(d=>d.values.forEach(e=>{e.value["Sensor-id"] = e.key}));
+data.forEach(d=>d.values.forEach(e=>{e.value["time"] = d.key}));
+data.forEach(d=>d.values.forEach(e=>{e.value["users"] = _.unique(e.value.data,t=>t['User-id']).map(t=>t['User-id']);}));
+data.forEach(d=>d.values.forEach(e=>{delete e.value.data;}));
+dataN =[];
+data.forEach(d=>d.values.forEach(e=>{dataN.push(e.value);}));

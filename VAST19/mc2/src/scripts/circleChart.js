@@ -19,7 +19,7 @@ function CircleChart(id, data, options) {
         opacityArea: 0.35, 	//The opacity of the area of the blob
         dotRadius: 4, 			//The size of the colored circles of each blog
         opacityCircles: 0.1, 	//The opacity of the circles of each blob
-        strokeWidth: 2, 		//The width of the stroke around each blob
+        strokeWidth: 1, 		//The width of the stroke around each blob
         roundStrokes: true,	//If true the area and stroke will follow a round path (cardinal-closed)
         isNormalize: true,
         mini:false, //mini mode
@@ -88,7 +88,7 @@ function CircleChart(id, data, options) {
 
 
     //Scale for the radius
-    rScale = d3.scaleLinear()
+    rScale = d3.scaleSqrt()
         .range([0, radius])
         .domain([minValue, maxValue]);
 
@@ -108,9 +108,10 @@ function CircleChart(id, data, options) {
     var g = svg.select("#radarGroup");
     if (svg.empty()) {
         first = true;
-        svg = d3.select(id).append("svg")
-            .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
-            .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+        svg = d3.select(id)
+            .append("g")
+            // .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
+            // .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
             .attr("class", "radar" + id.replace(".","").replace("."," "))
             .style("overflow",'visible');
         //Append a g element
@@ -134,18 +135,18 @@ function CircleChart(id, data, options) {
     if (first && !cfg.mini) {
 
         //Filter for the outside glow
-        var filter = g.append('defs').append('filter').attr('id', 'glow'),
-            feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '2.5').attr('result', 'coloredBlur'),
-            feMerge = filter.append('feMerge'),
-            feMergeNode_1 = feMerge.append('feMergeNode').attr('in', 'coloredBlur'),
-            feMergeNode_2 = feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
-
-        //Filter for the outside glow
-        var filter = g.append('defs').append('filter').attr('id', 'glow2'),
-            feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '1').attr('result', 'coloredBlur'),
-            feMerge = filter.append('feMerge'),
-            feMergeNode_1 = feMerge.append('feMergeNode').attr('in', 'coloredBlur'),
-            feMergeNode_2 = feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+        // var filter = g.append('defs').append('filter').attr('id', 'glow'),
+        //     feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '2.5').attr('result', 'coloredBlur'),
+        //     feMerge = filter.append('feMerge'),
+        //     feMergeNode_1 = feMerge.append('feMergeNode').attr('in', 'coloredBlur'),
+        //     feMergeNode_2 = feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+        //
+        // //Filter for the outside glow
+        // var filter = g.append('defs').append('filter').attr('id', 'glow2'),
+        //     feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '1').attr('result', 'coloredBlur'),
+        //     feMerge = filter.append('feMerge'),
+        //     feMergeNode_1 = feMerge.append('feMergeNode').attr('in', 'coloredBlur'),
+        //     feMergeNode_2 = feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
 
         /////////////////////////////////////////////////////////
         /////////////// Draw the Circular grid //////////////////
@@ -219,8 +220,8 @@ function CircleChart(id, data, options) {
         })
         .outerRadius(function(d,i) {
             return rScale(d.maxval)||undefinedValue;
-        }).startAngle(0)
-        .endAngle(Math.PI*2);
+        }).startAngle(Math.PI/2)
+        .endAngle(Math.PI*3/2);
 
     let radialAreaQuantile = d3.arc()
         .innerRadius(function(d,i) {
@@ -228,8 +229,8 @@ function CircleChart(id, data, options) {
         })
         .outerRadius(function(d,i) {
             return rScale(d.q3)||undefinedValue;
-        }).startAngle(0)
-        .endAngle(Math.PI*2);
+        }).startAngle(-Math.PI/2)
+        .endAngle(Math.PI/2);
 
 
 

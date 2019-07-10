@@ -293,16 +293,27 @@ function init() {
         // readConf(choice+"_conf"),
         // readConf(choice+"_prof"),
         readData(choice,'json'),
-    ]).then(([d,init_profile])=>{
+        readData(choice+'_static','json'),
+    ]).then(([d,statics])=>{
         d.sort((a,b)=>a.time-b.time);
+        statics.sort((a,b)=>a.time-b.time);
         d.forEach(t=>t.time=new Date(t.time));
         dataRaw = d;
         selectedVariable = ['val'];
 
-        globalScale.domain([0,d3.max(dataRaw,e=>e.q3)]);
+        // globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
+        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]);
+        // globalScale.domain([0,5000]);
         let locs ={};
-        _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b)).forEach(e=>locs[e]=e);
+        let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
+        let count = 1;
+        locslists.forEach(e=>{locs[e]=count; count++;});
+        statics.forEach(e=>{
+                e["Sensor-id"]= 's'+e["Sensor-id"];
+                dataRaw.push(e)});
+        _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (a.replace('s',''))-(b.replace('s',''))).forEach(e=>{locs[e]=count; count++;});
         dataRaw.location = locs;
+
         timestep = 0;
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
@@ -315,7 +326,7 @@ function init() {
         // databyLoc.push({'key':'-1',values:dataSumAll});
         // handleDataIcon (databyLoc);
 
-        CircleMapplot.rowMap(locs).timeFormat(formatTime)
+        CircleMapplot.rowMap(locs).timeFormat(formatTime);
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);

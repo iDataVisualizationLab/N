@@ -526,9 +526,9 @@ d3.circleMap = function () {
         data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
         radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="-1"),d=>d.density)).range([0.025,1]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="-1"),e=>e.density)).range(radaropt.densityScale.domain());
-        arrN.filter(e=>e.loc==="20").forEach(e=>{e.density_true = e.density;
+        arrN.filter(e=>e.loc==="-1").forEach(e=>{e.density_true = e.density;
             e.density = desnsityScale(e.density_true);
-        })
+        });
         return arrN;
     }
     function handledataIcon(data){
@@ -566,15 +566,20 @@ d3.circleMap = function () {
         let timerange = d3.extent(arr,d=>d.time);
         let time_axis = d3.axisTop();
         let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
+        rowscale.range([0,radaropt.h]);
         if (graphicopt.fitscreen){
             svg.attrs({
                 width: graphicopt.width,
+                height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
+            rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+2)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
+            const height_needed = (_.unique(arr,d=>d.loc).length+2) * radaropt.h;
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
+                height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
             });
             timescale.range([0, width_needed]).domain(timerange);
             time_axis = time_axis.ticks(width_needed/100);
@@ -590,6 +595,7 @@ d3.circleMap = function () {
     }
     function drawEmbedding(data) {
         let timerange = d3.extent(data,d=>d.time);
+        rowscale.range([0,radaropt.h]);
         let time_axis = d3.axisTop();
         let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
         if (graphicopt.fitscreen){
@@ -598,6 +604,7 @@ d3.circleMap = function () {
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
+            rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+2)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
             const height_needed = (_.unique(data,d=>d.loc).length+2) * radaropt.h;
@@ -614,7 +621,6 @@ d3.circleMap = function () {
             .transition()
             .call(time_axis);
 
-        rowscale.range([0,radaropt.h]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
         arrIcon.forEach(e=>{
             e.density = desnsityScale(e.density_true);
@@ -659,9 +665,16 @@ d3.circleMap = function () {
             .classed('selected',d=>d.loc==='-1')
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
             .on('mouseover',mouseoverEvent)
-            .on('mouseleave',mouseleaveEvent)
-            .each(d=>
-                CircleChart(".linkLineg."+fixstr(d.id),[d],radaropt));
+            .on('mouseleave',mouseleaveEvent);
+        let promiseq = []
+        for (var s = 0; s < data.length%200;s++) {
+            promiseq.push(new Promise(function() {
+                    datapointN.filter((d, i) => i % 200 === s)
+                        .each(d =>
+                            CircleChart(".linkLineg." + fixstr(d.id), [d], radaropt));
+            }));
+        }
+        Promise.all(promiseq);
     }
     function fixstr(s) {
         return s.replace(/ |-|#/gi,'');
