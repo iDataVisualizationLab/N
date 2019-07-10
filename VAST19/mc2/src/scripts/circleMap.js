@@ -622,12 +622,14 @@ d3.circleMap = function () {
             .call(time_axis);
 
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
-        arrIcon.forEach(e=>{
-            e.density = desnsityScale(e.density_true);
-            e.text = e.loc+" "+rowMap[e.loc];
-        });
+        // arrIcon.forEach(e=>{
+        //     e.density = desnsityScale(e.density_true);
+        //     e.text = e.loc;
+        // });
+        arrIcon = _.unique(data,d=>d.loc);
+        arrIcon.sort((a,b)=>rowMap[a.loc]-rowMap[b.loc]);
         let lables = g.selectAll(".linkLable_textg")
-            .data(arrIcon,d=>+d.loc);
+            .data(arrIcon,d=>d.loc);
         lables.exit();
 
         let Nlabel = lables.enter().append('g')
@@ -642,19 +644,19 @@ d3.circleMap = function () {
             .style('fill',"currentColor")
             .attr('dy',"1.5em")
             .attr('text-anchor',"start")
-            .text(d=>d.text);
+            .text(d=>d.loc);
 
-        Nlabel.append('g')
-            .attr('class',d=>'linkLable_radar '+fixstr(d.id));
+        // Nlabel.append('g')
+        //     .attr('class',d=>'linkLable_radar '+fixstr(d.id));
+        //
+        // Nlabel.merge(lables).select('.linkLable_radar')
+        //     .attr('class',d=>'linkLable_radar '+fixstr(d.id))
+            // .on('mouseover',mouseoverEvent)
+            // .on('mouseleave',mouseleaveEvent)
+            // .each(d=>
+            // CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 
-        Nlabel.merge(lables).select('.linkLable_radar')
-            .attr('class',d=>'linkLable_radar '+fixstr(d.id))
-            .on('mouseover',mouseoverEvent)
-            .on('mouseleave',mouseleaveEvent)
-            .each(d=>
-            CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
-
-        Nlabel.merge(lables).attr('transform',d=>'translate('+(-graphicopt.margin.left)+','+rowscale(+d.loc)+')');
+        Nlabel.merge(lables).attr('transform',d=>'translate('+(-graphicopt.margin.left)+','+rowscale(rowMap[d.loc])+')');
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);
@@ -663,7 +665,7 @@ d3.circleMap = function () {
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
             .classed('selected',d=>d.loc==='-1')
-            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
+            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
             .on('mouseover',mouseoverEvent)
             .on('mouseleave',mouseleaveEvent);
         let promiseq = []

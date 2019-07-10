@@ -320,8 +320,6 @@ function init() {
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
         data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
 
-        let dataSumAll = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,[]);
-
         // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
         // databyLoc.push({'key':'-1',values:dataSumAll});
         // handleDataIcon (databyLoc);

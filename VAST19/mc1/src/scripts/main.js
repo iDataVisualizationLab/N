@@ -65,7 +65,7 @@ let width = 2000,
     }, colorScaleList = {
         n: 10,
         rainbow: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
-        soil: ["#4A8FC2", "#76A5B1", "#9DBCA2", "#C3D392", "#E8EC83", "#F8E571", "#F2B659", "#EB8C47", "#EB8C47", "#D63128"],
+        soil: ["#4A8FC2", "#76A5B1", "#9DBCA2", "#C3D392", "#E8EC83", "#F8E571", "#F2B659", "#ebc05a", "#eb6424", "#D63128"],
         d3colorChosefunc: function(name){
             const n = this.n;
             if (d3[`scheme${name}`]) {
@@ -85,7 +85,7 @@ let width = 2000,
     },colorArr = {Radar: [
         {val: 'rainbow',type:'custom',label: 'Rainbow'},
         {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true},
-            {val: 'soil',type:'custom',label: 'Custom 1'},],
+            {val: 'soil',type:'custom',label: 'RedYelBlu'},],
         Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'Paired',type:'d3',label: 'Blue2Red'}]};
 let arrColor = colorScaleList.rainbow;
 let formatTime = d3.timeFormat("%b %Y");
@@ -338,7 +338,7 @@ function init() {
 
         data.push({'key':(data.length+1)+'',values:databyTime})
         // Loadtostore();
-        RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
+        RadarMapplot.rowMap(dataRaw.location).timeRange(listopt.limitTime).schema(serviceFullList).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);

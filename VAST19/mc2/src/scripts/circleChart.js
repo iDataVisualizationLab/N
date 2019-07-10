@@ -60,9 +60,10 @@ function CircleChart(id, data, options) {
         range = [minValue,maxValue]
     }
     if (cfg.markedLegend) scaleMarkedLegend = d3.scaleLinear().domain(range).range(cfg.markedLegend);
-    var dif = 1 / (cfg.levels-2);
-    var right = 1 + dif;
-    
+    // var dif = 1 / (cfg.levels-2);
+    // var right = 1 + dif;
+    var dif = 0;
+    var right = 1;
     var colorLength = cfg.arrColor.length-1;
     cfg.arrThresholds = [-dif];
     for (var i=0;i<colorLength-1;i++)

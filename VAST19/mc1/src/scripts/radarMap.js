@@ -254,48 +254,48 @@ d3.radarMap = function () {
             .angle(function(d,i) {  return angleSlice[i]; });
     }
 
-    function UpdateGradient() {
-        let rdef = svg.select('defs.gradient');
-        let rg,rg2;
-        if (rdef.empty()){
-            rdef = svg.append("defs").attr('class','gradient')
-            rg = rdef
-                .append("radialGradient")
-                .attr("id", "rGradient");
-            rg2 = rdef.append("radialGradient")
-                .attr("id", "rGradient2");
-        }
-        else {
-            rg = rdef.select('#rGradient');
-            rg2 = rdef.select('#rGradient2');
-        }
-        createGradient(rg,0);
-        createGradient(rg2,1);
-        function createGradient(rg,limitcolor) {
-            rg.selectAll('stop').remove();
-            const legntharrColor = arrColor.length - 1;
-            rg.append("stop")
-                .attr("offset", "0%")
-                .attr("stop-opacity", 0);
-            rg.append("stop")
-                .attr("offset", (limitcolor - 1) / legntharrColor * 100 + "%")
-                .attr("stop-color", arrColor[limitcolor])
-                .attr("stop-opacity", 0);
-            arrColor.forEach((d, i) => {
-                if (i > (limitcolor - 1)) {
-                    rg.append("stop")
-                        .attr("offset", i / legntharrColor * 100 + "%")
-                        .attr("stop-color", d)
-                        .attr("stop-opacity", i / legntharrColor);
-                    if (i != legntharrColor)
-                        rg.append("stop")
-                            .attr("offset", (i + 1) / legntharrColor * 100 + "%")
-                            .attr("stop-color", arrColor[i + 1])
-                            .attr("stop-opacity", i / legntharrColor);
-                }
-            });
-        }
-    }
+        // function UpdateGradient() {
+        //     let rdef = svg.select('defs.gradient');
+        //     let rg,rg2;
+        //     if (rdef.empty()){
+        //         rdef = svg.append("defs").attr('class','gradient')
+        //         rg = rdef
+        //             .append("radialGradient")
+        //             .attr("id", "rGradient");
+        //         rg2 = rdef.append("radialGradient")
+        //             .attr("id", "rGradient2");
+        //     }
+        //     else {
+        //         rg = rdef.select('#rGradient');
+        //         rg2 = rdef.select('#rGradient2');
+        //     }
+        //     createGradient(rg,0);
+        //     createGradient(rg2,1);
+        //     function createGradient(rg,limitcolor) {
+        //         rg.selectAll('stop').remove();
+        //         const legntharrColor = arrColor.length - 1;
+        //         rg.append("stop")
+        //             .attr("offset", "0%")
+        //             .attr("stop-opacity", 0);
+        //         rg.append("stop")
+        //             .attr("offset", (((limitcolor - 1) / legntharrColor+0.3) * 100) + "%")
+        //             .attr("stop-color", arrColor[limitcolor])
+        //             .attr("stop-opacity", 0);
+        //         arrColor.forEach((d, i) => {
+        //             if (i > (limitcolor - 1)) {
+        //                 rg.append("stop")
+        //                     .attr("offset", (i / legntharrColor+0.3) * 100 + "%")
+        //                     .attr("stop-color", d)
+        //                     .attr("stop-opacity", i / legntharrColor);
+        //                 if (i != legntharrColor)
+        //                     rg.append("stop")
+        //                         .attr("offset", ((i + 1) / legntharrColor+0.3) * 100 + "%")
+        //                         .attr("stop-color", arrColor[i + 1])
+        //                         .attr("stop-opacity", i / legntharrColor);
+        //             }
+        //         });
+        //     }
+        // }
 
     radarMap.init = function(){
         // tsne.postMessage({action:"inittsne",value:option});
@@ -316,7 +316,7 @@ d3.radarMap = function () {
         //     .attr("width", graphicopt.widthG())
         //     .attr("height", graphicopt.heightG());
         // gradient
-        UpdateGradient();
+        UpdateGradient(svg);
         // END gradient
         glowEffect = svg.append('defs').append('filter').attr('id', 'glowTSne'),
             feGaussianBlur = glowEffect.append('feGaussianBlur').attr('stdDeviation', 2.5).attr('result', 'coloredBlur'),
@@ -563,20 +563,20 @@ d3.radarMap = function () {
     let rowscale = d3.scaleLinear().range([0, radaropt.h]);
     let timeFormat;
     function updatePosition() {
-        let timerange = d3.extent(arr,d=>d.time);
+        // let timerange = d3.extent(arr,d=>d.time);
         let time_axis = d3.axisTop();
-        let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
+        let width_needed = timeFormat.range(timescale.domain()[0],timescale.domain()[1]).length * radaropt.w;
         if (graphicopt.fitscreen){
             svg.attrs({
                 width: graphicopt.width,
             });
-            timescale.range([0,graphicopt.widthG()]).domain(timerange);
+            timescale.range([0,graphicopt.widthG()]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
             });
-            timescale.range([0, width_needed]).domain(timerange);
+            timescale.range([0, width_needed]);
             time_axis = time_axis.ticks(width_needed/100);
         }
         time_axis = time_axis.scale(timescale);
@@ -589,15 +589,14 @@ d3.radarMap = function () {
 
     }
     function drawEmbedding(data) {
-        let timerange = d3.extent(data,d=>d.time);
         let time_axis = d3.axisTop();
-        let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
+        let width_needed = timeFormat.range(timescale.domain()[0],timescale.domain()[1]).length * radaropt.w;
         if (graphicopt.fitscreen){
             svg.attrs({
                 width: graphicopt.width,
                 height: graphicopt.height,
             });
-            timescale.range([0,graphicopt.widthG()]).domain(timerange);
+            timescale.range([0,graphicopt.widthG()]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
             const height_needed = (arrIcon.length+2) * radaropt.h;
@@ -605,7 +604,7 @@ d3.radarMap = function () {
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
                 height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
             });
-            timescale.range([0, width_needed]).domain(timerange);
+            timescale.range([0, width_needed]);
             time_axis = time_axis.ticks(width_needed/100);
         }
         time_axis = time_axis.scale(timescale);
@@ -758,7 +757,7 @@ d3.radarMap = function () {
     };
 
     radarMap.RadarColor = function (_) {
-        return arguments.length ? (arrColor = _.arrColor,UpdateGradient(), radarMap) : arrColor;
+        return arguments.length ? (arrColor = _.arrColor,UpdateGradient(svg), radarMap) : arrColor;
     };
 
     radarMap.ClusterColor = function (_) {
@@ -771,6 +770,10 @@ d3.radarMap = function () {
 
     radarMap.timeFormat = function (_) {
         return arguments.length ? (timeFormat = _ , radarMap) : timeFormat;
+    };
+
+    radarMap.timeRange = function (_) {
+        return arguments.length ? (timescale.domain([new Date(_[0]),new Date(_[1])]) , radarMap) : timescale.range();
     };
 
     return radarMap;

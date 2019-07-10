@@ -175,11 +175,11 @@ function createGradient(rg,limitcolor,arrColor) {
     const legntharrColor = arrColor.length - 1;
     rg.append("stop")
         .attr("offset", "0%")
-        .attr("stop-opacity", 0);
+        .attr("stop-opacity", 0.5);
     rg.append("stop")
         .attr("offset", (limitcolor - 1) / legntharrColor * 100 + "%")
         .attr("stop-color", arrColor[limitcolor])
-        .attr("stop-opacity", 0);
+        .attr("stop-opacity", 0.5);
     arrColor.forEach((d, i) => {
         if (i > (limitcolor - 1)) {
             rg.append("stop")
