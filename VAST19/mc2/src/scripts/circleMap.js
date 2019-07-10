@@ -590,7 +590,8 @@ d3.circleMap = function () {
             .transition()
             .call(time_axis);
 
-        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
+        g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+10+','+rowscale(rowMap[d.loc])+')')
+        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
 
     }
     function drawEmbedding(data) {
@@ -639,7 +640,7 @@ d3.circleMap = function () {
             .attr('class','linkLable_text');
 
         Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
-            .attr('x',radaropt.w)
+            .attr('x',-radaropt.w)
             .style('font-size',"11px")
             .style('fill',"currentColor")
             .attr('dy',"1.5em")
@@ -656,7 +657,7 @@ d3.circleMap = function () {
             // .each(d=>
             // CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 
-        Nlabel.merge(lables).attr('transform',d=>'translate('+(-graphicopt.margin.left)+','+rowscale(rowMap[d.loc])+')');
+        Nlabel.merge(lables).attr('transform',d=>'translate('+10+','+rowscale(rowMap[d.loc])+')');
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);

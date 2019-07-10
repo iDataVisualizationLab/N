@@ -298,6 +298,7 @@ function init() {
         d.sort((a,b)=>a.time-b.time);
         statics.sort((a,b)=>a.time-b.time);
         d.forEach(t=>t.time=new Date(t.time));
+        statics.forEach(t=>t.time=new Date(t.time));
         dataRaw = d;
         selectedVariable = ['val'];
 
@@ -600,7 +601,7 @@ function handleDataIcon (data){ // nest data
     CircleMapplot.dataIcon(data);
 }
 function handleOutlier (data){ // nest data
-    data.sort((a,b)=>(+a.key)-(+b.key));
+    data.sort((a,b)=>(dataRaw.location[a.key])-(dataRaw.location[b.key]));
     // if (serviceid===-1)
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
