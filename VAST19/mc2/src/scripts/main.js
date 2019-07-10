@@ -9,7 +9,7 @@ let width = 2000,
         // limitYear: [1998,2001],
     },
     RadarMapopt  = {
-        margin: {top: 0, right: 50, bottom: 0, left: 120},
+        margin: {top: 10, right: 50, bottom: 0, left: 120},
         offset: {top: 0},
         width: width,
         height: height,
@@ -283,7 +283,7 @@ function initDemo(){
     // netConfig.width = widthSvg;
     init();
 }
-
+// let ssss;
 function init() {
     initRadarMap();
     const choice = d3.select('#datacom').node().value;
@@ -293,8 +293,9 @@ function init() {
         // readConf(choice+"_conf"),
         // readConf(choice+"_prof"),
         readData(choice,'json'),
-        readData(choice+'_static','json'),
+        readData(choice+'_static','json')
     ]).then(([d,statics])=>{
+        // ssss = statics.slice();
         d.sort((a,b)=>a.time-b.time);
         statics.sort((a,b)=>a.time-b.time);
         d.forEach(t=>t.time=new Date(t.time));
@@ -309,6 +310,7 @@ function init() {
         let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
         let count = 1;
         locslists.forEach(e=>{locs[e]=count; count++;});
+        console.log(count)
         statics.forEach(e=>{
                 e["Sensor-id"]= 's'+e["Sensor-id"];
                 dataRaw.push(e)});
@@ -325,7 +327,7 @@ function init() {
         // databyLoc.push({'key':'-1',values:dataSumAll});
         // handleDataIcon (databyLoc);
 
-        CircleMapplot.rowMap(locs).timeFormat(formatTime);
+        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
         handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);
@@ -583,6 +585,8 @@ function handleDataSumAll (data){ // nest data
     let arr = objecttoArrayRadar(data);
     arr.density = data.num;
     arr.loc = data.key;
+    arr.user = data.user;
+    arr.regions = data.regions;
     arr.id = fixstr(data.key+'_all');
     return arr;
 }
@@ -609,6 +613,8 @@ function handleOutlier (data){ // nest data
         t.arr = objecttoArrayRadar(t.value||t.values) ;
         t.arr.time = new Date(t.key);
         t.arr.density = (t.value||t.values).num;
+        t.arr.user = (t.value||t.values).user;
+        t.arr.regions = (t.value||t.values).regions;
         t.arr.loc = loc.key;
         t.arr.id = fixstr(loc.key+'_'+(+t.arr.time));
     }));
@@ -626,15 +632,39 @@ function objecttoArrayRadar(o){
             q3: globalScale(o.q3)};
 }
 // list html
-
+let tempStore ={};
 function onmouseoverRadar (d) {
-    d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',true);
+    // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
+    d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
-    tool_tip.show();
-    RadarChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor})
+
+    if ((tempStore.loc!==d.loc)&& !isNaN(+d['Sensor-id'])) {
+        readMobileData(d.loc).then(data =>{
+            tempStore.loc = d.loc;
+            tempStore.data=data;
+            // d3.select('#map g#regMap').select('.mobileSensor').transition()
+        });
+    }else {
+
+    }
+
+    // tool_tip.show();
+    // RadarChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor})
 }
 function onmouseleaveRadar (d) {
-    d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
+    // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
+    d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
-    tool_tip.hide();
+    // tool_tip.hide();
 }
+
+// // calculate location
+// if (tempStore.loc!==d.loc) {
+//     readMobileData(d.loc).then(data =>{
+//         tempStore.loc = d.loc;
+//         tempStore.data=data;
+//         tempStore.nest = d3.nest().key(e=>formatTime(e.time)).rollup(t=>_.unique(t.map(e=>geocoder([e.Long,e.Lat]))).filter(d=>d).map(e=>e.properties.Nbrhood)).object(data);
+//         dataRaw.filter(e=>e["Sensor-id"]===d.loc).forEach(e=>e.regions = tempStore.nest[formatTime(e.time)+''].slice());
+//         console.log('done')
+//     });
+// }

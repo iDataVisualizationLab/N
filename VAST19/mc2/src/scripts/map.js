@@ -29,6 +29,10 @@ const regionNameList =
 
 const iconpath = "src/images/Icon/";
 // load data for time series
+
+let geocoder = d3.geoRasterCoder()
+    .size(2048);
+
 d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
     data.forEach(d=>{
         d.Timestamp = parse(d.Timestamp);
@@ -73,10 +77,10 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
 
             const geoPath = d3.geoPath()
                 .projection(projection);
-
+            geocoder.features(geojson.features);
             //Scaling and translating.
             const b = geoPath.bounds(geojson),
-                s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+                s = 1 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
                 t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
 
             projection.scale(s).translate(t);
@@ -91,6 +95,9 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     {Lat: 0.182990, Long: -119.855580},
                     {Lat: 0.041470, Long: -119.828610},
                     {Lat: 0.065250, Long: -119.744800}];
+
+            // long lat to region
+            // console.log(hospitalLocation.map(e=>geocoder([e.Long,e.Lat]).properties.Nbrhood));
             const radiationStation = [{Lat: 0.162679, Long: -119.784825}];
             const mobileSensors = [];
             for (let i = 1; i < 51; i++) {
@@ -212,7 +219,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             // .style("stroke", "black")
             //     .style("opacity", 0.5);
 
-            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> +e.loc !==d.properties.Id).transition(200).style('opacity',0.2);
+            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> !e.regions.find(f=>f===d.properties.Nbrhood)).transition(200).style('opacity',0.2);
         }
 
 
