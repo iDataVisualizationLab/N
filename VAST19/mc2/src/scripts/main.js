@@ -638,7 +638,7 @@ function onmouseoverRadar (d) {
     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
 
-    if ((tempStore.loc!==d.loc)&& !isNaN(+d['Sensor-id'])) {
+    if ((tempStore.loc!==d.loc)&& !isNaN(+d.loc)) {
         readMobileData(d.loc).then(data =>{
             tempStore.loc = d.loc;
             tempStore.data=data;

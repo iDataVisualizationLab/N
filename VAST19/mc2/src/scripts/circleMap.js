@@ -17,7 +17,7 @@ d3.circleMap = function () {
             summary: {size:30}
         },
         radaropt = {
-            summary:{quantile:true},
+            summary:{quantile:true,minmax:true},
             mini:true,
             levels:6,
             gradient:true,
