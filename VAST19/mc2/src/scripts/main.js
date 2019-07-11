@@ -108,7 +108,7 @@ $(document).ready(function(){
     });
     $('.tabs').tabs({'onShow':function(){
 
-            if (this.$activeTabLink.text()==='Demo') {
+            if (this.$activeTabLink.text()==='Mini-Challenge 2') {
                 $('#videoIn').each(function(index) {
                     $(this).attr('src', $(this).attr('src'));
                     return false;
@@ -591,7 +591,7 @@ function handleDataSumAll (data){ // nest data
     let arr = objecttoArrayRadar(data);
     arr.density = data.num;
     arr.loc = data.key;
-    arr.user = data.user;
+    arr.users = data.users;
     arr.regions = data.regions;
     arr.id = fixstr(data.key+'_all');
     return arr;
@@ -619,7 +619,7 @@ function handleOutlier (data){ // nest data
         t.arr = objecttoArrayRadar(t.value||t.values) ;
         t.arr.time = new Date(t.key);
         t.arr.density = (t.value||t.values).num;
-        t.arr.user = (t.value||t.values).user;
+        t.arr.users = (t.value||t.values).users;
         t.arr.regions = (t.value||t.values).regions;
         t.arr.loc = loc.key;
         t.arr.id = fixstr(loc.key+'_'+(+t.arr.time));
@@ -701,7 +701,7 @@ function animationShift(index,g){
 function onmouseleaveRadar (d) {
     d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0);
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
-    if (d.regions.length)
+    if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
     d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);

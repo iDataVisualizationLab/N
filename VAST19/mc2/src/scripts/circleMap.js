@@ -526,7 +526,7 @@ d3.circleMap = function () {
         data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
         radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="all"),d=>d.density)).range([0.025,1]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="all"),e=>e.density)).range(radaropt.densityScale.domain());
-        arrN.filter(e=>e.loc==="-1").forEach(e=>{e.density_true = e.density;
+        arrN.filter(e=>e.loc==="all").forEach(e=>{e.density_true = e.density;
             e.density = desnsityScale(e.density_true);
         });
         return arrN;
@@ -670,7 +670,7 @@ d3.circleMap = function () {
             .on('mouseover',mouseoverEvent)
             .on('mouseleave',mouseleaveEvent);
         let promiseq = []
-        for (var s = 0; s < data.length%200;s++) {
+        for (var s = 0; s < 199;s++) {
             promiseq.push(new Promise(function() {
                     datapointN.filter((d, i) => i % 200 === s)
                         .each(d =>
