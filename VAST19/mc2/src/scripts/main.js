@@ -638,19 +638,20 @@ function onmouseoverRadar (d) {
     if (d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
-
-    if ((tempStore.loc!==d.loc)&& !isNaN(+d.loc)) {
-        readMobileData(d.loc).then(data =>{
-            tempStore.loc = d.loc;
-            tempStore.data=data;
-            tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
-            onEnableCar (tempStore.dataShort);
-            lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
-        });
-    }else if(!isNaN(+d.loc)) {
-        tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
-        onEnableCar (tempStore.dataShort);
-        lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
+    if (!isNaN(+d.loc)){
+        if ((tempStore.loc!==d.loc)) {
+            readMobileData(d.loc).then(data =>{
+                tempStore.loc = d.loc;
+                tempStore.data=data;
+                tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
+                onEnableCar (tempStore.dataShort);
+                lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
+            });
+        }else {
+            tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
+            onEnableCar(tempStore.dataShort);
+            lineGraph('.lineChart_tip', tempStore.dataShort, {w: 400, h: 200});
+        }
     }else {
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
     }
