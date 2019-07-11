@@ -298,9 +298,9 @@ function init() {
         readData(choice+'_sum_time','json')
     ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
         // ssss = statics.slice();
-        d.forEach(t=>t.time=new Date(t.time));
-        statics.forEach(t=>t.time=new Date(t.time));
-        summaryByTime.forEach(t=>t.time=new Date(t.time));
+        // d.forEach(t=>t.time=new Date(t.time));
+        // statics.forEach(t=>t.time=new Date(t.time));
+        // summaryByTime.forEach(t=>t.time=new Date(t.time));
         d.sort((a,b)=>a.time-b.time);
         statics.sort((a,b)=>a.time-b.time);
         summaryByTime.sort((a,b)=>a.time-b.time);
