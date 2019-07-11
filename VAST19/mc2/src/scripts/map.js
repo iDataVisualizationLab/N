@@ -32,7 +32,7 @@ const iconpath = "src/images/Icon/";
 
 let geocoder = d3.geoRasterCoder()
     .size(2048);
-
+let projectionFunc;
 d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
     data.forEach(d=>{
         d.Timestamp = parse(d.Timestamp);
@@ -85,6 +85,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
 
             projection.scale(s).translate(t);
 
+            projectionFunc = projection;
 
             const hospitalLocation =
                 [{Lat: 0.180960, Long: -119.959400},
@@ -143,6 +144,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         .attr("class", "statIcon")
                         .attr("width", 10)
                         .attr("height", 10)
+                        .attr('x',-5)
+                        .attr('y',-5)
                         .attr("xlink:href", iconpath+"meter.svg")
                         .attr("transform", d => {
                             return "translate(" + projection([d.Long, d.Lat]) + ")";
@@ -158,6 +161,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("width", 15)
                     .attr("height", 15)
                     .attr("xlink:href", iconpath+"hospital.svg")
+                    .attr('x',-7.5)
+                    .attr('y',-7.5)
                     .attr("transform", d => {
                         return "translate(" + projection([d.Long, d.Lat]) + ")";
                     });
@@ -170,6 +175,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("class", "radIcon")
                     .attr("width", 15)
                     .attr("height", 15)
+                    .attr('x',-7.5)
+                    .attr('y',-7.5)
                     .attr("xlink:href", iconpath+"radiation.svg")
                     .attr("transform", d => {
                         return "translate(" + projection([d.Long, d.Lat]) + ")";

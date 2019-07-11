@@ -635,25 +635,57 @@ function objecttoArrayRadar(o){
 let tempStore ={};
 function onmouseoverRadar (d) {
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
-    d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
+    if (d.regions.length)
+        d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
 
     if ((tempStore.loc!==d.loc)&& !isNaN(+d.loc)) {
         readMobileData(d.loc).then(data =>{
             tempStore.loc = d.loc;
             tempStore.data=data;
-            // d3.select('#map g#regMap').select('.mobileSensor').transition()
+            onEnableCar (_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''))));
         });
     }else {
-
+        onEnableCar (_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''))));
     }
 
     // tool_tip.show();
     // RadarChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor})
 }
+
+function onEnableCar (darr){
+    // d3.select('#map g#regMap').select('.mobileSensor').remove();
+    let cm = d3.select('#map g#regMap')
+        .selectAll('.mobileSensor')
+        .data([darr]);
+    cm.exit().remove();
+    cm.enter()
+        .append("path")
+        .attr("class", "mobileSensor")
+        .attr("fill", 'none')
+        .attr("stroke", 'black')
+        .attr("stroke-width", 3)
+        .attr('marker-end','url(#head)')
+        .merge(cm)
+        .attr('d',d3.line()
+            .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
+            .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
+}
+
+function animationShift(index,g){
+    let instance = d3.active(g)
+        .attr("transform", d => {
+            return "translate(" + projectionFunc([d.Long, d.Lat]) + ")";
+        });
+    if (d3.select(g).datum()[index+1])
+        instance.transition()
+        .on('start',function(){animationShift(index+1,g);});
+}
+
 function onmouseleaveRadar (d) {
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
-    d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
+    if (d.regions.length)
+        d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
     // tool_tip.hide();
 }
