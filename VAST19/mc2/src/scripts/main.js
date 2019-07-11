@@ -638,6 +638,7 @@ function onmouseoverRadar (d) {
     if (d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
+    tool_tip.show();
     if (!isNaN(+d.loc)){
         if ((tempStore.loc!==d.loc)) {
             readMobileData(d.loc).then(data =>{
@@ -655,8 +656,6 @@ function onmouseoverRadar (d) {
     }else {
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
     }
-
-    tool_tip.show();
     tooltip_cof.schema = serviceFullList;
     tooltip_cof.arrColor = arrColor;
     tooltip_cof.markedLegend = globalScale.domain();
@@ -707,7 +706,7 @@ function lineGraph(div,data,options){
     var opt = {
         w: 300,				//Width of the circle
         h: 100,				//Height of the circle
-        margin: {top: 0, right: 0, bottom: 20, left: 50}, //The margins of the SVG
+        margin: {top: 10, right: 0, bottom: 20, left: 50}, //The margins of the SVG
         levels: 3,				//How many levels or inner circles should there be drawn
         maxValue: 1, 			//What is the value that the biggest circle will represent
         minValue: 0, 			//What is the value that the biggest circle will represent
