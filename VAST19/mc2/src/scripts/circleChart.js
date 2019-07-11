@@ -59,7 +59,7 @@ function CircleChart(id, data, options) {
         }));
         range = [minValue,maxValue]
     }
-    if (cfg.markedLegend) scaleMarkedLegend = d3.scaleSqrt().domain(range).range(cfg.markedLegend);
+    if (cfg.markedLegend) scaleMarkedLegend = d3.scaleLinear().domain(range).range(cfg.markedLegend);
     // var dif = 1 / (cfg.levels-2);
     // var right = 1 + dif;
     var dif = 0;
@@ -580,9 +580,9 @@ function CircleChart(id, data, options) {
             .style("font-size", "12px")
             .attr("fill", "#111")
             .text(function (d, i) {
-                var v = (maxValue - minValue) * d / cfg.levels + minValue;
+                var v = radius / cfg.levels * d;
                 if (cfg.markedLegend) {
-                    v = scaleMarkedLegend(v);
+                    v = scaleMarkedLegend(rScale.invert(v));
                 }
                 // if (cfg.schema)
                 //     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
@@ -600,9 +600,9 @@ function CircleChart(id, data, options) {
             .style("font-size", "12px")
             .attr("fill", "#111")
             .text(function (d, i) {
-                var v = (maxValue - minValue) * d / cfg.levels + minValue;
+                var v = radius / cfg.levels * d;
                 if (cfg.markedLegend) {
-                    v = scaleMarkedLegend(v);
+                    v = scaleMarkedLegend(rScale.invert(v));
                 }
                 // if (cfg.schema)
                 //     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
