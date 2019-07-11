@@ -146,10 +146,10 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         .attr("height", 10)
                         .attr('x',-5)
                         .attr('y',-5)
-                        .attr("xlink:href", iconpath+"meter.svg")
                         .attr("transform", d => {
                             return "translate(" + projection([d.Long, d.Lat]) + ")";
-                        });
+                        })
+                        .attr("xlink:href", iconpath+"meter.svg");
                 });
 
 

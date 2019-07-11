@@ -645,12 +645,14 @@ function onmouseoverRadar (d) {
             tempStore.data=data;
             onEnableCar (_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''))));
         });
-    }else {
+    }else if(!isNaN(+d.loc)) {
         onEnableCar (_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''))));
+    }else {
+        d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
     }
 
-    // tool_tip.show();
-    // RadarChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor})
+    tool_tip.show();
+    CircleChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor,markedLegend:globalScale.domain()})
 }
 
 function onEnableCar (darr){
@@ -667,6 +669,7 @@ function onEnableCar (darr){
         .attr("stroke-width", 3)
         .attr('marker-end','url(#head)')
         .merge(cm)
+        .style('opacity',1)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
@@ -683,11 +686,13 @@ function animationShift(index,g){
 }
 
 function onmouseleaveRadar (d) {
+    d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0);
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
     if (d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
-    // tool_tip.hide();
+    d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);
+    tool_tip.hide();
 }
 
 // // calculate location

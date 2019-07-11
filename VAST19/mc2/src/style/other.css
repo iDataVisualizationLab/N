@@ -210,7 +210,6 @@ table.dataTable th:not(:first-child) {
 #map #regMap .selected{
     fill: #979b9d;
 }
-
 #controlPanel{
     width:500px;
     height:300px;
@@ -247,4 +246,12 @@ table.dataTable th:not(:first-child) {
 
 #d3-tip-mc1 {
     pointer-events: none!important;
+}
+
+.radarChart_tip {
+    background-color: white;
+    border: 0.5px solid black;
+    border-radius: 5px;
+    margin-left: 50px;
+    margin-top: 10px;
 }

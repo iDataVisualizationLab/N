@@ -59,7 +59,7 @@ function CircleChart(id, data, options) {
         }));
         range = [minValue,maxValue]
     }
-    if (cfg.markedLegend) scaleMarkedLegend = d3.scaleLinear().domain(range).range(cfg.markedLegend);
+    if (cfg.markedLegend) scaleMarkedLegend = d3.scaleSqrt().domain(range).range(cfg.markedLegend);
     // var dif = 1 / (cfg.levels-2);
     // var right = 1 + dif;
     var dif = 0;
@@ -110,9 +110,9 @@ function CircleChart(id, data, options) {
     if (svg.empty()) {
         first = true;
         svg = d3.select(id)
-            .append("g")
-            // .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
-            // .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+            .append("svg")
+            .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
+            .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
             .attr("class", "radar" + id.replace(".","").replace("."," "))
             .style("overflow",'visible');
         //Append a g element
@@ -581,9 +581,12 @@ function CircleChart(id, data, options) {
             .attr("fill", "#111")
             .text(function (d, i) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
-                if (cfg.schema)
-                    v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
-                return Math.round(v).toFixed(2);
+                if (cfg.markedLegend) {
+                    v = scaleMarkedLegend(v);
+                }
+                // if (cfg.schema)
+                //     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
+                return Math.round(v);
             });
         axisLabel.exit().remove();
         axisLabel.enter().append("text")
@@ -598,9 +601,12 @@ function CircleChart(id, data, options) {
             .attr("fill", "#111")
             .text(function (d, i) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
-                if (cfg.schema)
-                    v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
-                return Math.round(v).toFixed(2);
+                if (cfg.markedLegend) {
+                    v = scaleMarkedLegend(v);
+                }
+                // if (cfg.schema)
+                //     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
+                return Math.round(v);
             });
         // var legendg = cfg.legend.map(function (d, i) {
         //     return Object.keys(d).map(function (k) {
