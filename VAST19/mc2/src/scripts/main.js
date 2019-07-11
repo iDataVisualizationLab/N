@@ -643,16 +643,23 @@ function onmouseoverRadar (d) {
         readMobileData(d.loc).then(data =>{
             tempStore.loc = d.loc;
             tempStore.data=data;
-            onEnableCar (_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''))));
+            tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
+            onEnableCar (tempStore.dataShort);
+            lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
         });
     }else if(!isNaN(+d.loc)) {
-        onEnableCar (_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''))));
+        tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
+        onEnableCar (tempStore.dataShort);
+        lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
     }else {
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
     }
 
     tool_tip.show();
-    CircleChart('.radarChart_tip',[d],{width:300,height:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor,markedLegend:globalScale.domain()})
+    tooltip_cof.schema = serviceFullList;
+    tooltip_cof.arrColor = arrColor;
+    tooltip_cof.markedLegend = globalScale.domain();
+    CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
 
 function onEnableCar (darr){
@@ -695,6 +702,100 @@ function onmouseleaveRadar (d) {
     tool_tip.hide();
 }
 
+function lineGraph(div,data,options){
+    var opt = {
+        w: 300,				//Width of the circle
+        h: 100,				//Height of the circle
+        margin: {top: 0, right: 0, bottom: 20, left: 50}, //The margins of the SVG
+        levels: 3,				//How many levels or inner circles should there be drawn
+        maxValue: 1, 			//What is the value that the biggest circle will represent
+        minValue: 0, 			//What is the value that the biggest circle will represent
+        labelFactor: 1.15, 	//How much farther than the radius of the outer circle should the labels be placed
+        wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
+        opacityArea: 0.35, 	//The opacity of the area of the blob
+        dotRadius: 4, 			//The size of the colored circles of each blog
+        opacityCircles: 0.1, 	//The opacity of the circles of each blob
+        strokeWidth: 1, 		//The width of the stroke around each blob
+        roundStrokes: true,	//If true the area and stroke will follow a round path (cardinal-closed)
+        isNormalize: true,
+        mini:false, //mini mode
+        schema: undefined,
+        color: function(){return 'black'},	//Color function
+        arrColor: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+    };
+
+    if('undefined' !== typeof options){
+        for(var i in options){
+            if('undefined' !== typeof options[i]){ opt[i] = options[i]; }
+        }//for i
+    }//if
+
+    let g;
+    let svg = d3.select(div).select('svg');
+    if (svg.empty()) {
+        svg = d3.select(div).append('svg')
+            .attr('width',opt.w)
+            .attr('height',opt.h);
+        g = svg.append('g').attr('class','tipg').attr('transform','translate('+opt.margin.left+','+opt.margin.top+')');
+        // 3. Call the x axis in a group tag
+        g.append("g")
+            .attr("class", "x axis");
+
+        // 4. Call the y axis in a group tag
+        g.append("g")
+            .attr("class", "y axis");
+    }else{
+        g = svg.select('g.tipg');
+    }
+    var width = opt.w-opt.margin.left-opt.margin.right;
+    var height = opt.h-opt.margin.top-opt.margin.bottom;
+    // 5. X scale will use the index of our data
+    var xScale = d3.scaleTime()
+        .domain(d3.extent(data,d=>d.time)) // input
+        .range([0, width]); // output
+
+// 6. Y scale will use the randomly generate number
+    var yScale = d3.scaleLinear()
+        .domain(d3.extent(data,d=>d.Value)) // input
+        .range([height, 0]); // output
+
+// 7. d3's line generator
+    var line = d3.line()
+        .x(function(d) { return xScale(d.time); }) // set the x values for the line generator
+        .y(function(d) { return yScale(d.Value); }) // set the y values for the line generator
+        .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+    // 3. Call the x axis in a group tag
+    g.select("g.x.axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+// 4. Call the y axis in a group tag
+    g.select("g.y.axis")
+        .call(d3.axisLeft(yScale).ticks(5)); // Create an axis component with d3.axisLeft
+
+// 9. Append the path, bind the data, and call the line generator
+    let pathg = g.select("path.line");
+    if (pathg.empty())
+        pathg = g.append('path').attr("class", "line");
+    pathg.datum(data) // 10. Binds data to the line
+        .attr("d", line)
+        .style('stroke','black')
+        .style('stroke-width',1)
+        .style('fill','none')
+    ; // 11. Calls the line generator
+
+// 12. Appends a circle for each datapoint
+    let dot = g.selectAll(".dot").data(data);
+    dot.exit().remove();
+    dot.enter().append("circle") // Uses the enter().append() method
+        .attr("class", "dot") // Assign a class for styling
+        .merge(dot)
+        .attr("cx", function(d, i) { return xScale(d.time) })
+        .attr("cy", function(d) { return yScale(d.Value) })
+        .attr("r", 2)
+
+}
 // // calculate location
 // if (tempStore.loc!==d.loc) {
 //     readMobileData(d.loc).then(data =>{

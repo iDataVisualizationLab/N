@@ -172,7 +172,7 @@ function CircleChart(id, data, options) {
             }).style("stroke-width", 0.3)
             .style("stroke-opacity", 1)
             .style("fill-opacity", cfg.opacityCircles)
-            .style("visibility", (d, i) => ((cfg.bin || cfg.gradient) && i == 0) ? "hidden" : "visible");
+            // .style("visibility", (d, i) => ((cfg.bin || cfg.gradient) && i == 0) ? "hidden" : "visible");
         // .style("filter", "url(#glow)");
 
         //Text indicating at what % each level is
@@ -570,7 +570,7 @@ function CircleChart(id, data, options) {
     //Text indicating at what % each level is
     if (cfg.showText) {
         var axisLabel = axisGrid.selectAll(".axisLabel")
-            .data(d3.range(1, (cfg.levels)).reverse())
+            .data(d3.range(1, (cfg.levels+1)).reverse())
             .attr("x", 4)
             .attr("y", function (d) {
                 return -d * radius / cfg.levels;
