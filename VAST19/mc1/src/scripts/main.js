@@ -109,7 +109,7 @@ $(document).ready(function(){
     });
     $('.tabs').tabs({'onShow':function(){
 
-            if (this.$activeTabLink.text()==='Demo') {
+            if (this.$activeTabLink.text()==='Mini-Challenge 1') {
                 $('#videoIn').each(function(index) {
                     $(this).attr('src', $(this).attr('src'));
                     return false;
