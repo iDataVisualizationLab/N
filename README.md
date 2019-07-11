@@ -14,4 +14,6 @@ VN war: https://idatavisualizationlab.github.io/N/wordStream/VNwarindex.html
 
 Quantum papers: https://idatavisualizationlab.github.io/N/wordStream/quantum.html
 
-VAST 2019: mini 1: https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html
+VAST 2019: mini challenge 1: https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html
+
+VAST 2019: mini challenge 2: https://idatavisualizationlab.github.io/N/VAST19/mc2/index.html
