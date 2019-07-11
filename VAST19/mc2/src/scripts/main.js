@@ -293,13 +293,17 @@ function init() {
         // readConf(choice+"_conf"),
         // readConf(choice+"_prof"),
         readData(choice,'json'),
-        readData(choice+'_static','json')
-    ]).then(([d,statics])=>{
+        readData(choice+'_static','json'),
+        readData(choice+'_sum','json'),
+        readData(choice+'_sum_time','json')
+    ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
         // ssss = statics.slice();
-        d.sort((a,b)=>a.time-b.time);
-        statics.sort((a,b)=>a.time-b.time);
         d.forEach(t=>t.time=new Date(t.time));
         statics.forEach(t=>t.time=new Date(t.time));
+        summaryByTime.forEach(t=>t.time=new Date(t.time));
+        d.sort((a,b)=>a.time-b.time);
+        statics.sort((a,b)=>a.time-b.time);
+        summaryByTime.sort((a,b)=>a.time-b.time);
         dataRaw = d;
         selectedVariable = ['val'];
 
@@ -315,12 +319,14 @@ function init() {
                 e["Sensor-id"]= 's'+e["Sensor-id"];
                 dataRaw.push(e)});
         _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (a.replace('s',''))-(b.replace('s',''))).forEach(e=>{locs[e]=count; count++;});
+        locs.all = count; // summary
         dataRaw.location = locs;
 
         timestep = 0;
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
+        summaryByTime.forEach(d=>dataRaw.push(d));
         data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
 
         // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
@@ -635,7 +641,7 @@ function objecttoArrayRadar(o){
 let tempStore ={};
 function onmouseoverRadar (d) {
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
-    if (d.regions.length)
+    if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
     tool_tip.show();

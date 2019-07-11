@@ -524,8 +524,8 @@ d3.circleMap = function () {
     function handledata(data){
         let arrN = [];
         data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="-1"),d=>d.density)).range([0.025,1]);
-        let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="-1"),e=>e.density)).range(radaropt.densityScale.domain());
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="all"),d=>d.density)).range([0.025,1]);
+        let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="all"),e=>e.density)).range(radaropt.densityScale.domain());
         arrN.filter(e=>e.loc==="-1").forEach(e=>{e.density_true = e.density;
             e.density = desnsityScale(e.density_true);
         });
@@ -665,7 +665,7 @@ d3.circleMap = function () {
         let datapointN = datapoint
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
-            .classed('selected',d=>d.loc==='-1')
+            .classed('selected',d=>d.loc==='all')
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
             .on('mouseover',mouseoverEvent)
             .on('mouseleave',mouseleaveEvent);
