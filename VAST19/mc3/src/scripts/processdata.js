@@ -1,23 +1,3 @@
-const regionNameList =
-    ['Palace Hills',
-        'Northwest',
-        'Old Town',
-        'Safe Town',
-        'Southwest',
-        'Downtown',
-        'Wilson Forest',
-        'Scenic Vista',
-        'Broadview',
-        'Chapparal',
-        'Terrapin Springs',
-        'Pepper Mill',
-        'Cheddarford',
-        'Easton',
-        'Weston',
-        'Southton',
-        'Oak Willow',
-        'East Parton',
-        'West Parton'];
 
 var termsList = {"sewer_and_water": ["discharged", "discharge", "drain", "drainage", "flood", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
 
@@ -40,10 +20,45 @@ var termsList = {"sewer_and_water": ["discharged", "discharge", "drain", "draina
     "fire": ["fire", "smoke"]
 };
 
-var catergogry = ['user','location','hastash','userlink'];
+let catergogryObject = {
+    'user':{
+        'extractFunc': _.partial(getObject,'account')
+    },
+    'location':{
+        'extractFunc': _.partial(getObject,'location')
+    },
+    'event':{
+        'extractFunc': function(data){return extractWords('message',this.keywords,data)},
+        'keywords': ['earthquake','tsunami','flood']
+    },
+    'resource':{
+        'extractFunc': function(data){return extractWords('message',this.keywords,data)},
+        'keywords': _.flatten(_.map(termsList,function(term, key){ return term; }))
+    },
+    // 'hashtash':{
+    //     'extractFunc': _.partial(extractWords,'message',this.keywords),
+    //     'keywords': ['earthquake','tsunami','flood']
+    // }
+};
 
-for (var d in termsList){
-    category.push(d);
+let catergogryList = _.map(catergogryObject,(v,k)=>{return {key: k, value: v}});
+function getObject (key,data) {
+    let temp={};
+    if (_.isArray(data[key]))
+        data[key].forEach(d=>temp[d] = 1);
+    else
+        temp[data[key]] = 1;
+    return temp;
+}
+function extractWords (key,terms,data) {
+    let message = data[key];
+    let reg =   new RegExp(terms.join('|'),'gi');
+    const all_matched = _.unique(message.match(reg)); // take only 1
+    let collection = {}
+    all_matched.forEach(term=>collection[term] = 1);
+    // const getWordsFreq = words => words.forEach(word => collection[word] = ++collection[word] || 1);
+    // getWordsFreq (all_matched);
+    return collection;
 }
 
 

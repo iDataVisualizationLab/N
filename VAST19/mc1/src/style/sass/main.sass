@@ -435,7 +435,7 @@ body.light
     text-align: start
   .colorscale-label
     font-size: 0.8rem
-    //font-size: 12px
+  //font-size: 12px
   li
     padding: 5px 0px
     margin: 0
@@ -475,3 +475,33 @@ body.light
     padding: 1px
     svg
       transform: translateX(-25%)
+
+.d3-tip
+  h6
+    font-size: 12px
+    padding-left: 5px
+  b
+    font-weight: 900
+  .header
+    margin-bottom: 0
+  .reportNum
+    background-color: #e7e7e7
+    border-radius: 5px
+  .tip-divtable
+    margin: 10px
+    position: absolute
+    bottom: 180px
+  table
+    width: unset
+    border: 1px solid #cccc
+    thead
+      background-color: #f1f1f1
+      border-bottom: unset
+    thead,tr
+      line-height: 0.5rem
+      td,th
+        padding: 0.5rem
+    tbody
+      tr
+        td:nth-child(even)
+          text-align: right
