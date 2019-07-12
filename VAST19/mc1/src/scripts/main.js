@@ -595,6 +595,7 @@ function fixRangeTime (){
 }
 function handleDataSumAll (data){ // nest data
     let arr = objecttoArrayRadar(data);
+    arr.data = data;
     arr.density = data.num;
     arr.loc = data.key;
     arr.id = fixstr(data.key+'_all');
@@ -608,6 +609,7 @@ function handleDataIcon (data){ // nest data
     data.forEach(t=> {
         t.arr = objecttoArrayRadar(t.value||t.values);
         t.arr.density = (t.value||t.values).num;
+        t.arr.data = (t.value||t.values);
         t.arr.loc = t.key;
         t.arr.id = fixstr(t.key+'_all');
     });
@@ -625,6 +627,7 @@ function handleOutlier (data){ // nest data
         t.arr.density = (t.value||t.values).num;
         t.arr.loc = loc.key;
         t.arr.id = fixstr(loc.key+'_'+(+t.arr.time));
+        t.arr.data = (t.value||t.values);
     }));
 
     RadarMapplot.data(data).draw();
@@ -647,6 +650,7 @@ function onmouseoverRadar (d) {
     d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
     tool_tip.show();
+    tooltipBox (d);
     RadarChart('.radarChart_tip',[d],{w:300,h:300,margin: {top: 15, right: 25, bottom: 25, left: 25},schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5,arrColor:arrColor})
 }
 function onmouseleaveRadar (d) {

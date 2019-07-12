@@ -9,25 +9,23 @@ var ySlider = 125;
 var valueSlider = 30;
 var valueMax = 30;
 function setupSliderScale(svg) {
-  xScaleSlider = d3.scale.linear()
+  xScaleSlider = d3.scaleLinear()
     .domain([0, valueMax])
     .range([xSlider, 120]);
 
-  brush = d3.svg.brush()
-    .x(xScaleSlider)
-    .extent([valueSlider, valueSlider])
+  brush = d3.brushX(xScaleSlider)
+    .extent([0,0],[valueSlider, valueSlider])
     .on("brush", brushed)
-    .on("brushend", brushend);
+    .on("end", brushend);
 
   svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + ySlider + ")")
     .attr("font-family", "sans-serif")
     .attr("font-size", "10px")
-    .call(d3.svg.axis()
+    .call(d3.axisBottom()
       .scale(xScaleSlider)
       .ticks(5)
-      .orient("bottom")
       .tickFormat(function(d) { return d; })
       .tickSize(0)
       .tickPadding(5))

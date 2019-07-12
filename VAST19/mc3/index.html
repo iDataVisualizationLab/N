@@ -63,7 +63,8 @@
                                 <!--<option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>-->
                                 <!--<option value="mc2-static-notlocation" data="csv" selected="selected" >Mini Challlenge 1</option>-->
                                 <!--<option value="raw\MobileSensorReadings" data="csv" selected="selected" >Mini Challlenge 1</option>-->
-                                <option value="raw\YInt" data="csv" selected="selected" >Mini Challlenge 3</option>
+                                <option value="raw\YInt_test" data="csv" selected="selected" >Mini Challlenge 3</option>
+                                <!--<option value="raw\YInt" data="csv" selected="selected" >Mini Challlenge 3</option>-->
                                 <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
                                 <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
                                 <!--<option value="WorldTerrorism" >World Terrorism</option>-->
@@ -298,6 +299,9 @@
         <div class="cover">
             <div class="spinnerC center">
                 <h3>loading...</h3>
+                <div class="progress" id="load_data">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
                 <div class="preloader-wrapper big active">
                     <div class="spinner-layer spinner-blue">
                         <div class="circle-clipper left">
@@ -457,7 +461,17 @@
 <script src="src/lib/FileSaver.min.js"></script>
 <script src="src/lib/TimerInterval.js"></script>
 <script src="src/lib/underscore-min.js"></script>
+
+
+<!--timearc zone-->
+<script src="src/scripts/sliderRelationship.js"></script>
+<script src="src/scripts/streamGraph.js"></script>
+<script src="src/scripts/stopList.js"></script>
 <script src="src/scripts/TimeArc.js"></script>
+
+<!--timearc zone-->
+
+
 <!--<script src="src/scripts/circleChart.js"></script>-->
 <!--<script src="src/scripts/circleMap.js"></script>-->
 

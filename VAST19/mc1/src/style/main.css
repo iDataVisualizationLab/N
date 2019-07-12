@@ -553,14 +553,39 @@ body.light {
 #tablelist td.radar svg {
   transform: translateX(-25%);
 }
-#d3-tip-mc1 {
-  pointer-events: none!important;
-  background-color: white;
-  border: 1px solid #545454;
+
+.d3-tip h6 {
+  font-size: 12px;
+  padding-left: 5px;
+}
+.d3-tip b {
+  font-weight: 900;
+}
+.d3-tip .reportNum {
+  background-color: #e7e7e7;
   border-radius: 5px;
-  margin-left: 50px;
-  margin-top: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.d3-tip .tip-divtable {
+  margin: 10px;
+  position: absolute;
+  bottom: 180px;
+}
+.d3-tip table {
+  width: unset;
+  border: 1px solid #cccc;
+}
+.d3-tip table thead {
+  background-color: #f1f1f1;
+  border-bottom: unset;
+}
+.d3-tip table thead, .d3-tip table tr {
+  line-height: 0.5rem;
+}
+.d3-tip table thead td, .d3-tip table thead th, .d3-tip table tr td, .d3-tip table tr th {
+  padding: 0.5rem;
+}
+.d3-tip table tbody tr td:nth-child(even) {
+  text-align: right;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -241,16 +241,15 @@ table.dataTable th:not(:first-child) {
 #RadarMapcontent .disable{
     display: none;
 }
-
-#d3-tip-mc1 {
-    pointer-events: none!important;
-}
 .d3-tip{
     z-index: 99;
 }
-.radarChart_tip {
-    /*background-color: white;*/
-    border: 0.5px solid black;
+#d3-tip-mc1 {
+    pointer-events: none!important;
+    background-color: white;
+    border: 1px solid #545454;
     border-radius: 5px;
+    margin-left: 50px;
     margin-top: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

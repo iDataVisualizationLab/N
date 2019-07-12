@@ -294,26 +294,38 @@ function init() {
         readDatacsv(choice,'csv')
     ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
         // ssss = statics.slice();
-        d.forEach(t=> {
-            t.date=new Date(t.time);
-            t.category={};
-            catergogryList.forEach(c=>{
-                let temp = c.value.extractFunc(t);
-                if (!_.isEmpty(temp))
-                    t.category[c.key] = c.value.extractFunc(t);
-            })
+        let count=0;
+        let totalcount=d.length;
+        let queueProcess = d.map((t,i)=> {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    t.date = new Date(t.time);
+                    t.category = {};
+                    catergogryList.forEach(c => {
+                        let temp = c.value.extractFunc(t);
+                        if (!_.isEmpty(temp))
+                            t.category[c.key] = c.value.extractFunc(t);
+                    });
+                    updateProcessBar(count++/totalcount);
+                    resolve(t);
+                },0);
+            });
         });
+        return Promise.all(queueProcess);
+    }).then ((d)=>{
         dataRaw = d;
         timestep = 0;
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
-        listopt.limitTime = d3.extent(dataRaw,d=>d.data);
+        listopt.limitTime = d3.extent(dataRaw,d=>d.date);
 
         TimeArc.runopt(listopt).data(dataRaw).draw();
         d3.select('.cover').classed('hidden',true);
     });
 }
-
+function updateProcessBar(rate){
+    d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
+}
 function onfilterdata(schema) {
 
     data_filtered = dataRaw.filter(d=>schema.axisList.map(s=> s.filter!=null?(d[s.data.text]>=s.filter[0])&&(d[s.data.text]<=s.filter[1]):true).reduce((p,c)=>c&&p))
