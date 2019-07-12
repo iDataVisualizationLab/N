@@ -16,11 +16,11 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="5" />
-          <entry key="project.open.time.0" value="5" />
+          <entry key="project.open.time.0" value="6" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="8" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -29,7 +29,7 @@
           <entry key="CSV" value="2" />
           <entry key="HTML" value="1" />
           <entry key="JSON" value="4" />
-          <entry key="JavaScript" value="57" />
+          <entry key="JavaScript" value="58" />
           <entry key="SVG" value="1" />
           <entry key="Sass" value="2" />
         </counts>
@@ -39,7 +39,7 @@
           <entry key="CSS" value="402" />
           <entry key="HTML" value="452" />
           <entry key="JSON" value="11" />
-          <entry key="JavaScript" value="7708" />
+          <entry key="JavaScript" value="7774" />
           <entry key="Sass" value="87" />
         </counts>
       </usages-collector>
@@ -70,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="67" column="124" lean-forward="true" selection-start-line="66" selection-start-column="8" selection-end-line="67" selection-end-column="124" />
+            <state relative-caret-position="413">
+              <caret line="361" column="13" selection-start-line="361" selection-start-column="4" selection-end-line="361" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -79,7 +79,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/radarController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10132">
+            <state relative-caret-position="722">
               <caret line="596" column="29" selection-start-line="596" selection-start-column="29" selection-end-line="596" selection-end-column="29" />
             </state>
           </provider>
@@ -124,7 +124,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/radarMap.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
+            <state relative-caret-position="345">
               <caret line="603" column="24" selection-start-line="603" selection-start-column="24" selection-end-line="603" selection-end-column="24" />
             </state>
           </provider>
@@ -150,19 +150,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.init();</find>
-      <find>.init</find>
-      <find>initRadarMap</find>
-      <find>handleOutlier</find>
-      <find>RadarMapplot</find>
-      <find>rowMap</find>
-      <find>handleou</find>
-      <find>create</find>
-      <find>gradient</find>
       <find>custom1</find>
       <find>.time</find>
       <find>timescale</find>
-      <find>init(</find>
       <find>UpdateGradient</find>
       <find>color</find>
       <find>tool_tip</find>
@@ -180,6 +170,16 @@
       <find>gAxist</find>
       <find>draw</find>
       <find>gaxist</find>
+      <find>filter</find>
+      <find>onschema</find>
+      <find>data.push</find>
+      <find>data.length</find>
+      <find>handledata</find>
+      <find>'20</find>
+      <find>20</find>
+      <find>init(</find>
+      <find>rowscale</find>
+      <find>handleDataIcon</find>
     </findStrings>
     <replaceStrings>
       <replace>RadarMapplot</replace>
@@ -206,11 +206,11 @@
         <option value="$PROJECT_DIR$/src/scripts/radarController.js" />
         <option value="$PROJECT_DIR$/src/scripts/ulti.js" />
         <option value="$PROJECT_DIR$/src/scripts/tooltip.js" />
-        <option value="$PROJECT_DIR$/src/scripts/main.js" />
         <option value="$PROJECT_DIR$/src/style/main.css" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/scripts/radarChart.js" />
         <option value="$PROJECT_DIR$/src/style/other.css" />
+        <option value="$PROJECT_DIR$/src/scripts/main.js" />
         <option value="$PROJECT_DIR$/src/scripts/radarMap.js" />
       </list>
     </option>
@@ -229,7 +229,7 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="619" />
-    <option name="y" value="99" />
+    <option name="y" value="83" />
     <option name="width" value="1783" />
     <option name="height" value="964" />
   </component>
@@ -239,6 +239,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -299,7 +300,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -363,22 +363,24 @@
       <workItem from="1562894229783" duration="375000" />
       <workItem from="1562895813090" duration="4454000" />
       <workItem from="1562904307743" duration="1292000" />
+      <workItem from="1562957340971" duration="1062000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="136593000" />
+    <option name="totallyTimeSpent" value="137655000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14904611" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15023847" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.12567714" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.12567714" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -474,7 +476,8 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/scripts/radarMap.js</url>
           <line>603</line>
-          <option name="timeStamp" value="115" />
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="117" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -553,9 +556,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="http://localhost:64320/mc1/src/scripts/main.js">
-      <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/jquery-ui.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -607,17 +607,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/radarController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10132">
-          <caret line="596" column="29" selection-start-line="596" selection-start-column="29" selection-end-line="596" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3332">
           <caret line="196" column="23" selection-start-line="196" selection-start-column="9" selection-end-line="196" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/tooltip.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
         </state>
       </provider>
     </entry>
@@ -642,23 +642,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/tooltip.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
-        </state>
-      </provider>
+    <entry file="http://localhost:64320/mc1/src/scripts/main.js">
+      <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="67" column="124" lean-forward="true" selection-start-line="66" selection-start-column="8" selection-end-line="67" selection-end-column="124" />
+        <state relative-caret-position="413">
+          <caret line="361" column="13" selection-start-line="361" selection-start-column="4" selection-end-line="361" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/radarController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="596" column="29" selection-start-line="596" selection-start-column="29" selection-end-line="596" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/radarMap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
+        <state relative-caret-position="345">
           <caret line="603" column="24" selection-start-line="603" selection-start-column="24" selection-end-line="603" selection-end-column="24" />
         </state>
       </provider>
