@@ -285,55 +285,55 @@ function init() {
     const choice = d3.select('#datacom').node().value;
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
-    // Promise.all([
-    //     // readConf(choice+"_conf"),
-    //     // readConf(choice+"_prof"),
-    //     readData(choice,'json'),
-    //     readData(choice+'_static','json'),
-    //     readData(choice+'_sum','json'),
-    //     readData(choice+'_sum_time','json')
-    // ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
-    //     // ssss = statics.slice();
-    //     d.forEach(t=>t.time=new Date(t.time));
-    //     statics.forEach(t=>t.time=new Date(t.time));
-    //     summaryByTime.forEach(t=>t.time=new Date(t.time));
-    //     d.sort((a,b)=>a.time-b.time);
-    //     statics.sort((a,b)=>a.time-b.time);
-    //     summaryByTime.sort((a,b)=>a.time-b.time);
-    //     dataRaw = d;
-    //     selectedVariable = ['val'];
-    //
-    //     // globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
-    //     globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]).nice();
-    //     // globalScale.domain([0,5000]);
-    //     let locs ={};
-    //     let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
-    //     let count = 1;
-    //     locslists.forEach(e=>{locs[e]=count; count++;});
-    //     console.log(count)
-    //     statics.forEach(e=>{
-    //             e["Sensor-id"]= 's'+e["Sensor-id"];
-    //             dataRaw.push(e)});
-    //     _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (a.replace('s',''))-(b.replace('s',''))).forEach(e=>{locs[e]=count; count++;});
-    //     locs.all = count; // summary
-    //     dataRaw.location = locs;
-    //
-    //     timestep = 0;
-    //     listopt.limitColums = [0,10];
-    //     formatTime =getformattime (listopt.time.rate,listopt.time.unit);
-    //     listopt.limitTime = d3.extent(dataRaw,d=>d.time);
-    //     summaryByTime.forEach(d=>dataRaw.push(d));
-    //     data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
-    //
-    //     // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
-    //     // databyLoc.push({'key':'-1',values:dataSumAll});
-    //     // handleDataIcon (databyLoc);
-    //
-    //     CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
-    //     handleOutlier (data,currentService);
-    //     // request();
-    //     d3.select('.cover').classed('hidden',true);
-    // });
+    Promise.all([
+        // readConf(choice+"_conf"),
+        // readConf(choice+"_prof"),
+        // readData(choice,'json'),
+        // readData(choice+'_static','json'),
+        // readData(choice+'_sum','json'),
+        readDatacsv(choice,'csv')
+    ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
+        // ssss = statics.slice();
+        d.forEach(t=>t.time=new Date(t.time));
+        statics.forEach(t=>t.time=new Date(t.time));
+        summaryByTime.forEach(t=>t.time=new Date(t.time));
+        d.sort((a,b)=>a.time-b.time);
+        statics.sort((a,b)=>a.time-b.time);
+        summaryByTime.sort((a,b)=>a.time-b.time);
+        dataRaw = d;
+        selectedVariable = ['val'];
+
+        // globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
+        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]).nice();
+        // globalScale.domain([0,5000]);
+        let locs ={};
+        let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
+        let count = 1;
+        locslists.forEach(e=>{locs[e]=count; count++;});
+        console.log(count)
+        statics.forEach(e=>{
+                e["Sensor-id"]= 's'+e["Sensor-id"];
+                dataRaw.push(e)});
+        _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (a.replace('s',''))-(b.replace('s',''))).forEach(e=>{locs[e]=count; count++;});
+        locs.all = count; // summary
+        dataRaw.location = locs;
+
+        timestep = 0;
+        listopt.limitColums = [0,10];
+        formatTime =getformattime (listopt.time.rate,listopt.time.unit);
+        listopt.limitTime = d3.extent(dataRaw,d=>d.time);
+        summaryByTime.forEach(d=>dataRaw.push(d));
+        data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
+
+        // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
+        // databyLoc.push({'key':'-1',values:dataSumAll});
+        // handleDataIcon (databyLoc);
+
+        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
+        handleOutlier (data,currentService);
+        // request();
+        d3.select('.cover').classed('hidden',true);
+    });
 }
 
 function onfilterdata(schema) {
