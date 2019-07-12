@@ -554,6 +554,11 @@ body.light {
   transform: translateX(-25%);
 }
 
+svg .grid {
+  stroke-width: 0.1px;
+  stroke: #cccc;
+}
+
 .d3-tip h6 {
   font-size: 12px;
   padding-left: 5px;
@@ -569,7 +574,7 @@ body.light {
   padding: 0.5rem;
 }
 .d3-tip table tbody tr:nth-child(even) {
-  text-align: end;
+  align: right;
 }
 
 /*# sourceMappingURL=main.css.map */
