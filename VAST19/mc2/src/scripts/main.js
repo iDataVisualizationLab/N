@@ -681,7 +681,8 @@ function onmouseoverRadar (d) {
     tooltip_cof.summary.minmax = sys.minmax;
     tooltip_cof.summary.quantile = sys.quantile;
     tooltip_cof.summary.std = sys.std;
-    tooltip_cof.summary.median = sys.media;
+    tooltip_cof.summary.median = sys.median;
+    tooltip_cof.summary.mean = !sys.median;
     tooltipBox (d)
     CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
