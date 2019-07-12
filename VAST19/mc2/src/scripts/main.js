@@ -541,7 +541,10 @@ function changeMean(d){
 function changeFitscreen(d){
     CircleMapplot.fitscreen(d.checked);
 }
-
+function changeHeightMap(d) {
+    console.log(d.value);
+    CircleMapplot.scalescreen(+d.value);
+}
 function changeTimeunit(d){
     if (d.checked) {
         listopt.time.unit = "Minute";

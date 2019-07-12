@@ -583,7 +583,11 @@ d3.circleMap = function () {
             rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+2)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            const height_needed = (_.unique(arr,d=>d.loc).length+2) * radaropt.h;
+            let height_needed = (_.unique(arr,d=>d.loc).length+2) * radaropt.h;
+            if (graphicopt.customheight){
+                height_needed = graphicopt.customheight;
+                rowscale.range([0,(graphicopt.customheight-graphicopt.margin.top-graphicopt.margin.bottom)/(_.unique(arr,d=>d.loc).length+2)]);
+            }
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
                 height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
@@ -619,7 +623,10 @@ d3.circleMap = function () {
             rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+2)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            const height_needed = (_.unique(data,d=>d.loc).length+2) * radaropt.h;
+            let height_needed = (_.unique(data,d=>d.loc).length+2) * radaropt.h;
+            if (graphicopt.customheight){
+                height_needed = graphicopt.customheight;
+            }
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
                 height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
@@ -657,12 +664,12 @@ d3.circleMap = function () {
             .attr('class','linkLable_text');
 
         Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
-            .attr('x',-radaropt.w)
+            .attr('x',-radaropt.w*2-10)
             .style('font-size',"11px")
             .style('fill',"currentColor")
             .attr('dy',"1.5em")
             .attr('text-anchor',"start")
-            .text(d=>d.loc);
+            .text(d=>isNaN(+d.loc)?(d.loc!=='all'?('Static - '+d.loc.replace('s','')):'All Sensor'):('Mobile - '+d.loc));
 
         // Nlabel.append('g')
         //     .attr('class',d=>'linkLable_radar '+fixstr(d.id));
@@ -759,6 +766,9 @@ d3.circleMap = function () {
         return option;
     };
 
+    radarMap.scalescreen = function (_) {
+        return arguments.length ? (graphicopt.customheight = _,updatePosition(), radarMap) : graphicopt.fitscreen;
+    };
     radarMap.fitscreen = function (_) {
         return arguments.length ? (graphicopt.fitscreen = _,updatePosition(), radarMap) : graphicopt.fitscreen;
     };
