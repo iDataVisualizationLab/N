@@ -561,7 +561,7 @@ body.light {
 .d3-tip .tip-divtable {
   margin: 10px;
   position: absolute;
-  bottom: 0;
+  bottom: 180px;
 }
 .d3-tip table {
   width: unset;
