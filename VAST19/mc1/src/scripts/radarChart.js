@@ -650,7 +650,7 @@ function RadarChart(id, data, options) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
                 if (cfg.schema)
                     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
-                return Math.round(v).toFixed(2);
+                return v;
             });
         axisLabel.exit().remove();
         axisLabel.enter().append("text")
@@ -667,7 +667,7 @@ function RadarChart(id, data, options) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
                 if (cfg.schema)
                     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
-                return Math.round(v).toFixed(2);
+                return v;
             });
         // var legendg = cfg.legend.map(function (d, i) {
         //     return Object.keys(d).map(function (k) {

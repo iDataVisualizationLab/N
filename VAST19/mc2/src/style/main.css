@@ -554,11 +554,16 @@ body.light {
   transform: translateX(-25%);
 }
 
+.d3-tip h6 {
+  font-size: 12px;
+  padding-left: 5px;
+}
 .d3-tip table {
+  border: #cccc;
   margin: 5px;
 }
 .d3-tip table thead, .d3-tip table tr {
-  line-height: 1rem;
+  line-height: 0.5rem;
 }
 .d3-tip table thead td, .d3-tip table thead th, .d3-tip table tr td, .d3-tip table tr th {
   padding: 0.5rem;
