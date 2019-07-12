@@ -308,7 +308,7 @@ function init() {
         selectedVariable = ['val'];
 
         // globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
-        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]);
+        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]).nice();
         // globalScale.domain([0,5000]);
         let locs ={};
         let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));

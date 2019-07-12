@@ -88,7 +88,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             projectionFunc = projection;
 
             const hospitalLocation =
-                [{Lat: 0.180960, Long: -119.959400},
+                    [{Lat: 0.180960, Long: -119.959400},
                     {Lat: 0.153120, Long: -119.915900},
                     {Lat: 0.151090, Long: -119.909520},
                     {Lat: 0.121800, Long: -119.904300},

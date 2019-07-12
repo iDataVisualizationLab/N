@@ -298,34 +298,34 @@ function init() {
         d.sort((a,b)=>a.time-b.time);
         d.forEach(t=>t.time=new Date(t.time));
         dataRaw = d;
-        selectedVariable = ['val'];
-
-        globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
-        // globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]);
-        // globalScale.domain([0,5000]);
-        let locs ={};
-        let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
-        locslists.forEach(e=>locs[e]=e);
-        statics.forEach(e=>{
-            e["Sensor-id"]= e["Sensor-id"]+locslists.length-1;
-            dataRaw.push(e)});
-        _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b)).forEach(e=>locs[e]='static-'+(e-locslists.length+1));
-        dataRaw.location = locs;
-
-        timestep = 0;
-        listopt.limitColums = [0,10];
+        // selectedVariable = ['val'];
+        //
+        // globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
+        // // globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]);
+        // // globalScale.domain([0,5000]);
+        // let locs ={};
+        // let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
+        // locslists.forEach(e=>locs[e]=e);
+        // statics.forEach(e=>{
+        //     e["Sensor-id"]= e["Sensor-id"]+locslists.length-1;
+        //     dataRaw.push(e)});
+        // _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b)).forEach(e=>locs[e]='static-'+(e-locslists.length+1));
+        // dataRaw.location = locs;
+        //
+        // timestep = 0;
+        // listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.time);
-        data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
-
-        let dataSumAll = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,[]);
-
-        // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
-        // databyLoc.push({'key':'-1',values:dataSumAll});
-        // handleDataIcon (databyLoc);
-
-        CircleMapplot.rowMap(locs).timeFormat(formatTime);
-        handleOutlier (data,currentService);
+        // data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
+        //
+        // let dataSumAll = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,[]);
+        //
+        // // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
+        // // databyLoc.push({'key':'-1',values:dataSumAll});
+        // // handleDataIcon (databyLoc);
+        //
+        // CircleMapplot.rowMap(locs).timeFormat(formatTime);
+        // handleOutlier (data,currentService);
         // request();
         d3.select('.cover').classed('hidden',true);
     });
