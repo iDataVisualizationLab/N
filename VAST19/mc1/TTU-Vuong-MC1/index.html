@@ -46,15 +46,15 @@
         <img id="radarChart" src="images/f2.png" class="full">
         <p class="caption"><span>Figure 2. Examples of Radar design for hourly multivariate summary of 3 regions: Palace Hills, Safe Town, and Southon.</span></p>
 
-        <div> Due to the limited screen display and a large number of data entries, we revise the radar chart to embed the transformed color scale directly into the inside area of the radar. Our customized radar adopts the box plot layout which shows the five-number summary: minimum (inner curve), first quartile, median (dashed curve), third quartile, and maximum (outer curve). This allows users to quickly spot the multivariate values (<i>shake intensitive</i> and various <i>types of damage</i>) as depicted in Figure 2. In the examples in the report show the hourly summary (from left to right) of various regions (top down) of St. Himark</div>
+        <div> Due to the limited screen display and a large number of data entries, we revise the radar chart to embed the transformed color scale directly into the inside area of the radar. Our customized radar adopts the box plot layout which shows the five-number summary: minimum (inner curve), first quartile, mean (dashed curve), third quartile, and maximum (outer curve). This allows users to quickly spot the multivariate values (<i>shake intensitive</i> and various <i>types of damage</i>) as depicted in Figure 2. In the examples in the report show the hourly summary (from left to right) of various regions (top-down) of St. Himark</div>
     </div>    
 </page>
 <page size="A3">
      <div class="pageContent">
          <img id="radarChart" src="images/f3.png" class="full">
-         <p class="caption"><span>Figure 3. Radar controll: Color selection, radar band selection, radar value fitering, and angle vs. variable selection.</span></p>
+         <p class="caption"><span>Figure 3. Radar control: Color selection, radar band selection, radar value filtering, and angle vs. variable selection.</span></p>
 
-         <div> In the control panel, we allow users to fully customize the radar layout, including color scales (blue for low damage and red for high damage), radar inner and outer curves (min+max vs. q1+q3), value filtering (such as only high <i>shake intensitive</i>), and  angles of each dimension (how to order variables on the radar). We intentionally put the <i>shake intensitive</i> on the top of radar chart as this is an important measurement.</div>
+         <div> In the control panel, we allow users to fully customize the radar layout, including color scales (blue for low damage and red for high damage), radar inner and outer curves (min+max vs. q1+q3), value filtering (such as only high <i>shake intensitive</i>), and  angles of each dimension (how to order variables on the radar). We intentionally put the <i>shake intensitive</i> on the top of the radar chart as this is an important measurement.</div>
 
             <h4>Questions</h4>
 
@@ -63,28 +63,87 @@
         <img id="radarChart" src="images/f4.png" class="full">
          <p class="caption"><span>Figure 4. Overview of all regions, all types of damage for the entire time span.</span></p>
 
-         <div> Figure 4 shows the overview of St. Himark for the entire time spane (5 days). The orientation of 6 variables is shown in Figure 2. Inner curve is Q1 and Outer curve is Q3 of each variablea. Regions are listed top-town. The last row summarizes all regions by hour. </div>
+         <div> Figure 4 shows the overview of St. Himark for the entire time span (5 days). The orientation of 6 variables is shown in Figure 2. Inner curve is Q1 and Outer curve is Q3 of each variable. Regions are listed top-down. The last row summarizes all regions by hour. </div>
 
         <img id="radarChart" src="images/f5.png" class="full">
          <p class="caption"><span>Figure 5. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
-         <div> By filtering only the report with <i>shake intensitive</i> &ge; 3 (using the radar control in Figure 3), we can easily detect 3 earthquake events as shown in Figure 5. The border thickness of the radar charts encodes the number of reports in that hour. In particular, the first earthquake is the lightest while the second earthquake is the most serious (encoded by the height of <i>shake intensitive</i>, the top variable) and received most attentions (most number of report) as also shown in the city summary at the bottom row. </div>
+         <div> By filtering only the report with <i>shake intensitive</i> &ge; 3 (using the radar control in Figure 3), we can easily detect 3 earthquake events as shown in Figure 5. The border thickness of the radar charts encodes the number of reports in that hour. In particular, the first earthquake is the lightest while the second earthquake is the most serious (encoded by the height of <i>shake intensitive</i>, the top variable) and received the most attention (most number of the report) as also shown in the city summary at the bottom row. </div>
+    </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
 
-          <img id="radarChart" src="images/f6.png" class="full">
-         <p class="caption"><span>Figure 6. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
-         <div> . </div>
+          <img id="radarChart" src="images/f9.png" class="full">
+          <img id="radarChart" src="images/f10.png" class="full">
+         <p class="caption"><span>Figure 6. Summary of all damage categories for each region. Curves from inside out are minimum, first quartile, mean (dashed curve), third quartile, and maximum.</span></p> 
+         <div> By clicking on the thumbnails in front of region names, we can obtain an enlarged version which summarizes different types of damages reported by citizens:<br>
+            - The <i>First row</i> is the 4 regions with the highest <i>shake intensitive</i> with the mean around 5.<br>
+             - The <i>Second row</i> is the 4 regions with the 2nd highest <i>shake intensitive</i> with the mean around 2.5. These regions are geographically close on the map. <br>
+             - Wilson Forest does not have medical reports since it has very few residents and no hospital. <br><br>  
+         </div>
 
-          <img id="radarChart" src="images/f7.png" class="full">
-         <p class="caption"><span>Figure 7. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
-         <div> . </div>
+   </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
 
+         <img id="radarChart" src="images/f_power.png" class="full">
+         <img id="radarChart" src="images/f_road.png" class="full">
+         <img id="radarChart" src="images/f_medical.png" class="full">
+         <img id="radarChart" src="images/f_building.png" class="full">
+         <img id="radarChart" src="images/f_water.png" class="full">
+         <p class="caption"><span>Figure 7. Overview of all regions: Filtering by damage categories (> 8).</span></p> 
+         <div> We now investigate the individual damage categories. Figure 7 shows the results of applying the filter on different types of damage. We can notice that<br>
+                    - <i>Power damage</i> is high for several regions, highest for Old Town and Scenic Vista.<br>
+                    - <i>Road damage</i> is highest for Old Town, Scenic Vista, and Broadview.<br>
+                    - <i>Medical damage</i> is only reported in the regions with hospitals, and hardest hit for Old Town at <i>1am on Thu 09</i> in the <b>2nd earthquake</b>.<br>
+                    - <i>Building damage</i> is hardest hit for Broadview at <i>11pm on Wed 08</i>.<br>
+                    - <i>Sewer and water damage</i> is strongly reported for Old Town at the end of the <b>3rd earthquake</b> and for Scenic Vista at the end of the <b>2nd earthquake</b>.<br><br>
+          </div>
 
+         
 
+   </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
 
         <div class="question">2 - Use visual analytics to show uncertainty in the data. Compare the reliability of neighborhood reports. Which neighborhoods are providing reliable reports? Provide a rationale for your response. Limit your response to 1000 words and 10 images.</div>
 
+        <img id="radarChart" src="images/ff8.png" class="full">
+         <p class="caption"><span>Figure 8. Overview of all regions by every 5 minutes.</span></p> 
+        <div> To show the uncertainty in the data, we refine the radar chart for every 5 minutes. We argue that the conditions might significantly vary within an hour but not within a few minutes. By comparing the damage reported within 5 minutes (using Q1 and Q3 statistics depicted as the thickness of the bands on radar graphs), we would be able to visualize the reliability of the reports on the same region. Figure 8 shows the overview of St. Himark by reports of every 5 minutes. The reliability of information varies by location and by time.<br><br>
+          </div>
+
+
+          <img id="radarChart" src="images/ff9.png" class="full">
+         <p class="caption"><span>Figure 9. Overview of all regions by every 5 minutes.</span></p> 
+        <div> We first zoom into the 2nd Earthquake as depicted in Figure 9. Thicker bands mean the strong variance between Q1 and Q3 in a given 5 minutes. Thinner bands indicate Q1 and Q3 values of the damages are similar (small difference). We can easily realize that<br> 
+            - The reports in many regions are unreliable before the earthquake (Box 1 and Box 2) but become reliable during the earthquake (Box 3 and Box 4) <br>
+            - The reports in a few regions (such as Palace Hills) are still unreliable during the earthquake (Box 5).  <br><br>
+          </div>
+   </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
+        <img id="radarChart" src="images/ff10.png" class="full">
+         <p class="caption"><span>Figure 10. Overview of all regions by every 5 minutes.</span></p> 
+        <div> Similar stories can be also derived in the last earthquake as shown in Figure 10.<br> 
+            - The reports in Old Town (Box 1) and Downtown (Box 2) become more reliable during the earthquake (Box 3 and Box 4) <br>
+            - The reports of Palace Hills are still unreliable during the 3rd earthquake (Box 5).  <br><br>
+          </div>
+  
 
         <div class="question">3 - How do conditions change over time? How does uncertainty in change over time? Describe the key changes you see. Limit your response to 500 words and 8 images.</div>
 
+        <img id="radarChart" src="images/5minutes1.png" class="full">
+        <img id="radarChart" src="images/5minutes2.png" class="full">
+        <img id="radarChart" src="images/5minutes3.png" class="full">
+         <p class="caption"><span>Figure 8. Overview of all regions by every 5 minutes for the earthquake events.</span></p> 
+        <div> Now, we zoom into the earthquakes: each radar chart represents a 5-minute summary. Figure 8 depicts that: <br>
+                    - The reports are more consistent across all locations during the earthquakes (citizens were more honest when the earthquake happened). <br>
+                    - The reports for earthquake 2 and 3 are more consistent compared to those of earthquake 1.
+          </div>
 
     </div>
 </page>
