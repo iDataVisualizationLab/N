@@ -12,7 +12,7 @@ let radarController = function () {
             roundStrokes: true,
             labelFactor: 1.05,
             levels: 6,
-            arrColor: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+            arrColor: ["#110000", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
             arrThresholds: [],
             opacityCircles: 0.1,
             wrapWidth: 60,
