@@ -617,7 +617,7 @@ d3.radarMap = function () {
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
         arrIcon.forEach(e=>{
             e.density = desnsityScale(e.density_true);
-            e.text = e.loc+" "+rowMap[e.loc];
+            e.text = (e.loc!=='20'? e.loc +" ":'')+rowMap[e.loc];
         });
         let lables = g.selectAll(".linkLable_textg")
             .data(arrIcon,d=>+d.loc);
