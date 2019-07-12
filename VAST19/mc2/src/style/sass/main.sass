@@ -478,6 +478,11 @@ body.light
 
 .d3-tip
   table
-    padding: 5px
-    th,tr
-      line-height: 1.5rem
+    margin: 5px
+    thead,tr
+      line-height: 1rem
+      td,th
+        padding: 0.5rem
+    tbody
+      tr:nth-child(even)
+        text-align: end

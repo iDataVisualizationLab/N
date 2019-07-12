@@ -40,7 +40,7 @@ function tooltipBox (data){
     ];
 
     let tr = table.append('tbody').selectAll('tr')
-        .data(mm.map(k=>[k.text,data.data[k.key]]))
+        .data(mm.map(k=>[k.text,data.data[k.key].toFixed(2)]))
         .enter().append('tr')
         .selectAll('td').data(d=>d)
         .enter().append('td').text(d=>d);
