@@ -215,6 +215,13 @@ function CircleChart(id, data, options) {
         .startAngle(0)
         .endAngle(Math.PI*2);
 
+    var radarLineMedian = d3.arc()
+        .innerRadius(0)
+        .outerRadius(function(d) {
+            return rScale(d.median)||undefinedValue; })
+        .startAngle(0)
+        .endAngle(Math.PI*2);
+
     var radialAreaGenerator = d3.arc()
         .innerRadius(function(d,i) {
             return rScale(d.minval)||undefinedValue;
@@ -232,6 +239,14 @@ function CircleChart(id, data, options) {
             return rScale(d.q3)||undefinedValue;
         }).startAngle(-Math.PI/2)
         .endAngle(Math.PI/2);
+    let radialAreaStd = d3.arc()
+        .innerRadius(function(d,i) {
+            return rScale(d.median-d.std)||undefinedValue;
+        })
+        .outerRadius(function(d,i) {
+            return rScale(d.median+d.std)||undefinedValue;
+        }).startAngle(Math.PI/2)
+        .endAngle(Math.PI*3/2);
 
 
 
@@ -296,13 +311,20 @@ function CircleChart(id, data, options) {
             .append("path")
             .attr("class", "radarStroke outlying")
             .call(drawOutlying);
-    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile)){
+    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile||cfg.summary.std||cfg.summary.median)){
         function drawMeanLine(paths){
             return paths
                 .attr("d", d =>radarLine(d))
                 .styles({"fill":'none',
                     'stroke':'black',
                     'stroke-dasharray': '1 2'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
+        }
+        function drawMedianLine(paths){
+            return paths
+                .attr("d", d =>radarLineMedian(d))
+                .styles({"fill":'none',
+                    'stroke':'black'})
                 .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
         function drawQuantileArea(paths){
@@ -312,28 +334,41 @@ function CircleChart(id, data, options) {
                     'stroke':'black'})
                 .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
+        function drawStdArea(paths){
+            return paths
+                .attr("d", d =>radialAreaStd(d))
+                .styles({"fill":'none',
+                    'stroke':'black'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
+        }
         //update the outlines
         if (cfg.summary.mean)
             blobWrapperg.select('.radarLine').transition().call(drawMeanLine);
+        else if (cfg.summary.median)
+            blobWrapperg.select('.radarLine').transition().call(drawMedianLine);
         else
             blobWrapperg.select('.radarLine').remove();
         if (cfg.summary.quantile && cfg.summary.minmax)
             blobWrapperg.select('.radarQuantile').transition().call(drawQuantileArea);
         else
             blobWrapperg.select('.radarQuantile').remove();
+        if (cfg.summary.median && cfg.summary.std)
+            blobWrapperg.select('.radarStd').transition().call(drawQuantileArea);
+        else
+            blobWrapperg.select('.radarStd').remove();
         blobWrapperpath.style("fill", "none").transition()
-            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d))
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)))
             .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
             .style("stroke", (d, i) => cfg.color(i));
         blobWrapperg.select('clipPath')
             .select('path')
             .transition('expand').ease(d3.easePolyInOut)
-            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)));
         //Create the outlines
         blobWrapper.append("clipPath")
             .attr("id",(d,i)=>"sum"+correctId (id))
             .append("path")
-            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)));
         blobWrapper.append("rect")
             .style('fill', 'url(#rGradient2)')
             .attr("clip-path",( d,i)=>"url(#sum"+correctId (id)+")")
@@ -343,7 +378,7 @@ function CircleChart(id, data, options) {
             .attr("height",(radius)*2);
         blobWrapper.append("path")
             .attr("class", "radarStroke")
-            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d))
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)))
             .style("fill", "none")
             .transition()
             .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
@@ -355,6 +390,12 @@ function CircleChart(id, data, options) {
         if (cfg.summary.quantile && cfg.summary.minmax)
             blobWrapper
             .append("path").classed('radarQuantile',true).style("fill", "none").call(drawQuantileArea);
+        if (cfg.summary.median)
+            blobWrapper
+                .append("path").classed('radarLine',true).style("fill", "none").call(drawMedianLine);
+        if (cfg.summary.std && cfg.summary.median)
+            blobWrapper
+                .append("path").classed('radarStd',true).style("fill", "none").call(drawStdArea);
     }
     else {
         if (cfg.gradient) {

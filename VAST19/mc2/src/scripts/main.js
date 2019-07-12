@@ -513,6 +513,14 @@ function changeShape(d){
     changeGroup_mode(d)
 }
 
+function changeStaticsMode(d){
+    let old = CircleMapplot.radaropt().summary;
+        old.minmax = d.checked;
+        old.quantile = d.checked;
+        old.median = !d.checked;
+        old.std = !d.checked;
+    CircleMapplot.radaropt({summary: old}).draw();
+}
 function changeMinMax(d){
     let old = CircleMapplot.radaropt().summary;
     old.minmax = d.checked;
@@ -636,7 +644,10 @@ function objecttoArrayRadar(o){
             minval: globalScale(o.minval),
             maxval: globalScale(o.maxval),
             q1: globalScale(o.q1),
-            q3: globalScale(o.q3)};
+            q3: globalScale(o.q3),
+            median: globalScale(o.median),
+            std: globalScale(o.std),
+    };
 }
 // list html
 let tempStore ={};
@@ -666,6 +677,11 @@ function onmouseoverRadar (d) {
     tooltip_cof.schema = serviceFullList;
     tooltip_cof.arrColor = arrColor;
     tooltip_cof.markedLegend = globalScale.domain();
+    let sys = CircleMapplot.radaropt().summary;
+    tooltip_cof.summary.minmax = sys.minmax;
+    tooltip_cof.summary.quantile = sys.quantile;
+    tooltip_cof.summary.std = sys.std;
+    tooltip_cof.summary.median = sys.media;
     tooltipBox (d)
     CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
