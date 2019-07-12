@@ -294,44 +294,22 @@ function init() {
         readDatacsv(choice,'csv')
     ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
         // ssss = statics.slice();
-        d.forEach(t=>t.time=new Date(t.time));
-        statics.forEach(t=>t.time=new Date(t.time));
-        summaryByTime.forEach(t=>t.time=new Date(t.time));
-        d.sort((a,b)=>a.time-b.time);
-        statics.sort((a,b)=>a.time-b.time);
-        summaryByTime.sort((a,b)=>a.time-b.time);
+        d.forEach(t=> {
+            t.date=new Date(t.time);
+            t.category={};
+            catergogryList.forEach(c=>{
+                let temp = c.value.extractFunc(t);
+                if (!_.isEmpty(temp))
+                    t.category[c.key] = c.value.extractFunc(t);
+            })
+        });
         dataRaw = d;
-        selectedVariable = ['val'];
-
-        // globalScale.domain([0,d3.max(dataRaw,e=>(e.q3-e.q1)*1.5+e.q3)]);
-        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]).nice();
-        // globalScale.domain([0,5000]);
-        let locs ={};
-        let locslists = _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b));
-        let count = 1;
-        locslists.forEach(e=>{locs[e]=count; count++;});
-        console.log(count)
-        statics.forEach(e=>{
-                e["Sensor-id"]= 's'+e["Sensor-id"];
-                dataRaw.push(e)});
-        _.unique(statics,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (a.replace('s',''))-(b.replace('s',''))).forEach(e=>{locs[e]=count; count++;});
-        locs.all = count; // summary
-        dataRaw.location = locs;
-
         timestep = 0;
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
-        listopt.limitTime = d3.extent(dataRaw,d=>d.time);
-        summaryByTime.forEach(d=>dataRaw.push(d));
-        data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id','time']);
+        listopt.limitTime = d3.extent(dataRaw,d=>d.data);
 
-        // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
-        // databyLoc.push({'key':'-1',values:dataSumAll});
-        // handleDataIcon (databyLoc);
-
-        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
-        handleOutlier (data,currentService);
-        // request();
+        TimeArc.runopt(listopt).data(dataRaw).draw();
         d3.select('.cover').classed('hidden',true);
     });
 }

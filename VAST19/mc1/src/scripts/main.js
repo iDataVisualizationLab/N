@@ -304,7 +304,7 @@ function init() {
         timestep = 0;
         dataRaw.location = locs;
 
-        dataRaw.location[Object.keys(locs).length+1]="Total";
+        dataRaw.location['all']="Total";
 
         dataBytime = d3.nest()
             .key(function(d) { return d.time; })
@@ -331,12 +331,12 @@ function init() {
         let dataSumAll = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,[]);
 
         databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location']);
-        databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
+        databyLoc.push({'key':'all',values:dataSumAll});
         handleDataIcon (databyLoc);
 
         MetricController.data(handleDataSumAll(dataSumAll)).init().drawSummary();
 
-        data.push({'key':(data.length+1)+'',values:databyTime})
+        data.push({'key':'all',values:databyTime});
         // Loadtostore();
         RadarMapplot.rowMap(dataRaw.location).timeRange(listopt.limitTime).schema(serviceFullList).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
         handleOutlier (data,currentService);
@@ -360,12 +360,12 @@ function onfilterdata(schema) {
     let dataSumAll = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,[]);
 
     databyLoc = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['location']);
-    databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
+    databyLoc.push({'key':'all',values:dataSumAll});
     handleDataIcon (databyLoc);
 
     MetricController.data(handleDataSumAll(dataSumAll)).drawSummary();
 
-    data.push({'key':(data.length+1)+'',values:databyTime})
+    data.push({'key':'all',values:databyTime})
     // Loadtostore();
     handleOutlier (data,currentService);
     // request();
@@ -549,7 +549,7 @@ function changeTimeunit(d){
     listopt.limitTime = d3.extent(dataRaw,d=>d.time);
     data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
     databyTime = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['time']);
-    data.push({'key':(data.length+1)+'',values:databyTime})
+    data.push({'key':'all',values:databyTime})
     // Loadtostore();
     RadarMapplot.rowMap(dataRaw.location).schema(serviceFullList).timeFormat(formatTime);
     handleOutlier (data,currentService);
