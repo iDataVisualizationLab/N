@@ -554,11 +554,6 @@ body.light {
   transform: translateX(-25%);
 }
 
-svg .grid {
-  stroke-width: 0.1px;
-  stroke: #cccc;
-}
-
 .d3-tip h6 {
   font-size: 12px;
   padding-left: 5px;
