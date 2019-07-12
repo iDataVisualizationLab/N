@@ -621,6 +621,7 @@ function handleOutlier (data){ // nest data
         t.arr.density = (t.value||t.values).num;
         t.arr.users = (t.value||t.values).users;
         t.arr.regions = (t.value||t.values).regions;
+        t.arr.data = (t.value||t.values);
         t.arr.loc = loc.key;
         t.arr.id = fixstr(loc.key+'_'+(+t.arr.time));
     }));
@@ -665,6 +666,7 @@ function onmouseoverRadar (d) {
     tooltip_cof.schema = serviceFullList;
     tooltip_cof.arrColor = arrColor;
     tooltip_cof.markedLegend = globalScale.domain();
+    tooltipBox (d)
     CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
 
@@ -707,6 +709,7 @@ function onmouseleaveRadar (d) {
     d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);
     tool_tip.hide();
 }
+
 
 function lineGraph(div,data,options){
     var opt = {
