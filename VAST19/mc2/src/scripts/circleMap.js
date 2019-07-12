@@ -331,9 +331,9 @@ d3.circleMap = function () {
             .attr("class", "x gAxist grid")
             .attr("transform", "translate(0, 10)")
             .styles({
-                'stroke-width':'0.1px',
+                'stroke-width':'1px',
                 'stroke':'#ababab',
-                'stroke-dasharray': 2.5
+                'stroke-dasharray': 1
             });
         g.append("g")
             .attr("class", "x gAxis")
@@ -600,7 +600,7 @@ d3.circleMap = function () {
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
             .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)));
-        
+
         g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+10+','+rowscale(rowMap[d.loc])+')')
         g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
 

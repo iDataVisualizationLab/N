@@ -568,7 +568,7 @@ body.light {
 .d3-tip table thead td, .d3-tip table thead th, .d3-tip table tr td, .d3-tip table tr th {
   padding: 0.5rem;
 }
-.d3-tip table tbody tr:nth-child(even) {
+.d3-tip table tbody tr td:nth-child(even) {
   align: right;
 }
 

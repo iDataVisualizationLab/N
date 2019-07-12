@@ -331,9 +331,9 @@ d3.radarMap = function () {
             .attr("class", "x gAxist grid")
             .attr("transform", "translate(0, 10)")
             .styles({
-                'stroke-width':'0.1px',
+                'stroke-width':'1px',
                 'stroke':'#ababab',
-                'stroke-dasharray': 2.5
+                'stroke-dasharray': 1
             });
         g.append("g")
             .attr("class", "x gAxis")
