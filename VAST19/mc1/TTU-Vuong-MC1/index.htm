@@ -54,11 +54,28 @@
          <img id="radarChart" src="images/f3.png" class="full">
          <p class="caption"><span>Figure 3. Radar controll: Color selection, radar band selection, radar value fitering, and angle vs. variable selection.</span></p>
 
-         <div> In the control panel, we allow users to fully customize the radar layout, including color scales (blue for low damage and red for high damage), radar inner and outer curves (min+max vs. q1+q3), value filtering (such as only high <i>shake intensitive</i>), and  angles of each dimension (how to order variables on the radar).</div>
+         <div> In the control panel, we allow users to fully customize the radar layout, including color scales (blue for low damage and red for high damage), radar inner and outer curves (min+max vs. q1+q3), value filtering (such as only high <i>shake intensitive</i>), and  angles of each dimension (how to order variables on the radar). We intentionally put the <i>shake intensitive</i> on the top of radar chart as this is an important measurement.</div>
 
             <h4>Questions</h4>
 
         <div class="question">1- Emergency responders will base their initial response on the earthquake shake map. Use visual analytics to determine how their response should change based on damage reports from citizens on the ground. How would you prioritize neighborhoods for response? Which parts of the city are hardest hit? Limit your response to 1000 words and 10 images.</div>
+
+        <img id="radarChart" src="images/f4.png" class="full">
+         <p class="caption"><span>Figure 4. Overview of all regions, all types of damage for the entire time span.</span></p>
+
+         <div> Figure 4 shows the overview of St. Himark for the entire time spane (5 days). The orientation of 6 variables is shown in Figure 2. Inner curve is Q1 and Outer curve is Q3 of each variablea. Regions are listed top-town. The last row summarizes all regions by hour. </div>
+
+        <img id="radarChart" src="images/f5.png" class="full">
+         <p class="caption"><span>Figure 5. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
+         <div> By filtering only the report with <i>shake intensitive</i> &ge; 3 (using the radar control in Figure 3), we can easily detect 3 earthquake events as shown in Figure 5. The border thickness of the radar charts encodes the number of reports in that hour. In particular, the first earthquake is the lightest while the second earthquake is the most serious (encoded by the height of <i>shake intensitive</i>, the top variable) and received most attentions (most number of report) as also shown in the city summary at the bottom row. </div>
+
+          <img id="radarChart" src="images/f6.png" class="full">
+         <p class="caption"><span>Figure 6. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
+         <div> . </div>
+
+          <img id="radarChart" src="images/f7.png" class="full">
+         <p class="caption"><span>Figure 7. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
+         <div> . </div>
 
 
 
