@@ -561,6 +561,9 @@ body.light {
 .d3-tip b {
   font-weight: 900;
 }
+.d3-tip .header {
+  margin-bottom: 0;
+}
 .d3-tip .reportNum {
   background-color: #e7e7e7;
   border-radius: 5px;
