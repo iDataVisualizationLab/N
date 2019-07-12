@@ -64,8 +64,8 @@ let width = 2000,
         simDuration: 1000,
     }, colorScaleList = {
         n: 10,
-        rainbow: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
-        soil: ["#4A8FC2", "#76A5B1", "#9DBCA2", "#C3D392", "#E8EC83", "#F8E571", "#F2B659", "#ebc05a", "#eb6424", "#D63128"],
+        rainbow: ["#000066", "#4400ff", "#00ddff", "#00ddaa", "#00dd00", "#aadd00", "#ffcc00", "#ff8800", "#ff0000", "#660000"],
+        soil: ["#2244AA","#4A8FC2", "#76A5B1", "#9DBCA2", "#C3D392", "#F8E571", "#F2B659", "#eb6424", "#D63128", "#660000"],
         d3colorChosefunc: function(name){
             const n = this.n;
             if (d3[`scheme${name}`]) {
