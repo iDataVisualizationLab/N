@@ -245,7 +245,9 @@ table.dataTable th:not(:first-child) {
 #d3-tip-mc1 {
     pointer-events: none!important;
 }
-
+.d3-tip{
+    z-index: 99;
+}
 .radarChart_tip {
     /*background-color: white;*/
     border: 0.5px solid black;
