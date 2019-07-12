@@ -1,0 +1,138 @@
+function handleDatabyKey2 (data,range,formatTime,listkey) {
+    let data_filtered;
+    if (range===undefined){
+        data_filtered = data;
+    }else {
+        const tempTimescale = d3.scaleTime().domain(range).range([0,1]);
+        data_filtered = data.filter(d=> (tempTimescale(d.time)> 0 || tempTimescale(d.time)=== 0) && (tempTimescale(d.time)< 1 || tempTimescale(d.time)=== 1));
+    }
+    let nestFunc = d3.nest();
+    listkey.forEach(k=> nestFunc = (k!=="time")?nestFunc.key(function(d){return d[k]}):nestFunc.key(function(d){return formatTime(d.time)}))
+    return nestFunc
+        .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),data:d }})
+        .entries(data_filtered);
+}
+dataRaw = d;
+        selectedVariable = ['val'];
+
+        globalScale.domain([0,d3.max(dataRaw,e=>e.maxval)]);
+        let locs ={};
+        _.unique(dataRaw,e=>e["Sensor-id"]).map(e=>e["Sensor-id"]).sort((a,b)=> (+a)-(+b)).forEach(e=>locs[e]=e);
+        dataRaw.location = locs;
+        timestep = 0;
+        listopt.limitColums = [0,10];
+        formatTime =getformattime (listopt.time.rate,listopt.time.unit);
+        listopt.limitTime = d3.extent(dataRaw,d=>d.time);
+selectedVariable = ['Value'];
+var data = handleDatabyKey2(dataRaw,listopt.limitTime,formatTime,['time','Sensor-id'])	;
+data.forEach(d=>d.values.forEach(e=>{e.value["maxval"] = e.value["maxval"].Value;e.value["minval"] = e.value["minval"].Value;e.value["q1"] = e.value["q1"].Value;e.value["q3"] = e.value["q3"].Value;e.value["val"] = e.value["val"].Value;}));
+data.forEach(d=>d.values.forEach(e=>{e.value["Sensor-id"] = e.key}));
+data.forEach(d=>d.values.forEach(e=>{e.value["time"] = d.key}));
+data.forEach(d=>d.values.forEach(e=>{e.value["users"] = _.unique(e.value.data,t=>t['User-id']).map(t=>t['User-id']);}));
+data.forEach(d=>d.values.forEach(e=>{delete e.value.data;}));
+dataN =[];
+data.forEach(d=>d.values.forEach(e=>{dataN.push(e.value);}));
+
+
+
+function convertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+        }
+
+        str += line + '\r\n';
+    }
+
+    return str;
+}
+
+function exportCSVFile(headers, items, fileTitle) {
+    if (headers) {
+        items.unshift(headers);
+    }
+
+    // Convert Object to JSON
+    var jsonObject = JSON.stringify(items);
+
+    var csv = this.convertToCSV(jsonObject);
+
+    var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilenmae);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
+
+let headers ={};
+Object.keys(data[i].values[0]).forEach(d=>headers[d]=d)
+data.forEach((d,i)=>{
+exportCSVFile(headers , data[i].values, 'm'+data[i].key)});
+
+
+
+selectedVariable = ['Value'];
+dataN =[];
+for (var i=1;i<51;i++)
+	readMobileData(i).then(d =>{
+               var data = handleDatabyKey2(d,listopt.limitTime,formatTime,['']);
+		data[0].value["maxval"] = data[0].value["maxval"].Value;
+		data[0].value["minval"] = data[0].value["minval"].Value;
+		data[0].value["q1"] = data[0].value["q1"].Value;
+		data[0].value["q3"] = data[0].value["q3"].Value;
+		data[0].value["val"] = data[0].value["val"].Value;
+		data[0].value["Sensor-id"] = data[0].value.data[0]["Sensor-id"];
+		data[0].value["users"] = _.unique(data[0].value.data,t=>t['User-id']).map(t=>t['User-id']);
+		data[0].value.regions = _.unique(_.unique(data[0].value.data,t=>t['Long']+''+t['Lat']).map(t=>geocoder([t.Long,t.Lat])).filter(t=>t).map(t=>t.properties.Nbrhood));
+		delete data[0].value.data;
+		dataN.push(data[0].value);
+console.log('done');
+        });
+
+
+dataN.sort((a,b)=>((+a["Sensor-id"])-(+b["Sensor-id"])));
+rm = {12:[0.20764,-119.81556],
+15:[0.16849,-119.79033],
+13:[0.15979,-119.80715],
+11:[0.04147,-119.82861],
+6:[0.1218,-119.9043],
+1:[0.15689,-119.9594],
+9:[0.18299,-119.85558],
+14:[0.1218,-119.79265],
+4:[0.15109,-119.90952]};
+readDatacsv('raw/StaticSensorReadings','csv').then(function(tt){
+	var data = handleDatabyKey2(tt,listopt.limitTime,formatTime,['Sensor-id'])	;
+	data.sort((a,b)=>((+a.key)-(+b.key)));
+	data.forEach(d=>{
+	d.value["maxval"] = d.value["maxval"].Value;
+		d.value["minval"] = d.value["minval"].Value;
+		d.value["q1"] = d.value["q1"].Value;
+		d.value["q3"] = d.value["q3"].Value;
+		d.value["val"] = d.value["val"].Value;
+		d.value["Sensor-id"] = 's'+d.key;
+		d.value.regions = [geocoder([rm[d.key][1],rm[d.key][0]]).properties.Nbrhood];
+		delete d.value.data;
+		dataN.push(d.value);
+	})
+
+})
+;

@@ -15,7 +15,7 @@ function miniRadarChart(div, data, subfix, options) {
             return 'black'
         },	//Color function
         schema: undefined,
-        arrColor: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+        arrColor: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#000000"],
     };
 
     //Put all of the options into a variable called cfg

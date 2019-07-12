@@ -4,7 +4,7 @@
 }
 
 body {
-  font: 14px Helvetica, sans-serif;
+  font: 12px Arial;
   background-color: #232b33;
   color: white;
 }
@@ -21,7 +21,7 @@ body .mainContain.active {
 }
 
 label {
-  color: white;
+  color: currentColor;
 }
 
 #header {
@@ -31,7 +31,7 @@ label {
 }
 #header a,
 #header .brand-logo {
-  font-family: Helvetica, sans-serif;
+  font-family: Arial;
   color: #ffffff;
 }
 #header img {
@@ -114,7 +114,7 @@ label {
   background: rgba(0, 0, 0, 0.21);
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 80px;
+  padding-top: 60px;
 }
 .sidenavs a {
   padding: 8px 8px 8px 32px;
@@ -147,11 +147,16 @@ label {
   border: none;
 }
 .sidenavs .collapsible .collapsible-header {
+  padding: 0px 10px;
   background-color: transparent;
-  font-size: large;
+  font-size: medium;
 }
 .sidenavs .collapsible .collapsible-body {
-  padding: 1rem;
+  padding: 0.5rem 0.1rem;
+}
+.sidenavs .collapsible .collapsible-body label {
+  padding-left: auto;
+  margin-left: 5px;
 }
 .sidenavs select {
   padding: 0;
@@ -473,7 +478,7 @@ body.light {
   padding: 10px;
 }
 .settingContain .list {
-  min-height: 60px;
+  min-height: 2rem;
 }
 .settingContain .insideSetting {
   padding: 0px;
@@ -505,6 +510,8 @@ body.light {
   margin: 0;
 }
 .pickercontain .colorscale-palette-container {
+  padding-left: 0;
+  padding-right: 0;
   display: inline-block;
   text-align: start;
   width: 75%;
@@ -545,6 +552,15 @@ body.light {
 }
 #tablelist td.radar svg {
   transform: translateX(-25%);
+}
+#d3-tip-mc1 {
+  pointer-events: none!important;
+  background-color: white;
+  border: 1px solid #545454;
+  border-radius: 5px;
+  margin-left: 50px;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 /*# sourceMappingURL=main.css.map */

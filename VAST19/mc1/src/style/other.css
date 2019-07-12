@@ -128,6 +128,13 @@ input[type=text].inputHolder:focus,  input[type=search]:focus{
     display: none;
 }
 
+#RadarController svg {
+    margin: auto;
+}
+
+table.dataTable {
+    font-size: 12px;
+}
 table.dataTable thead {
     background-color: var(--colorMain2_light);
     color: black;
@@ -145,7 +152,7 @@ table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:
     background-color: rgba(var(--colorMain2),0.5);
 }
 
-table.dataTable td {
+table.dataTable td, table.dataTable th{
     padding: 2px;
     line-height: 1rem;
 }
@@ -156,4 +163,94 @@ table.dataTable td {
 
 .radarStroke {
     stroke: currentColor;
+}
+table.dataTable th:not(:first-child) {
+    width: 100% !important;
+}
+
+
+/*map*/
+#map{
+    width: fit-content;
+    padding: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+#dot{
+    padding-left: 20px;
+    padding-top: 25px;
+    cursor: pointer;
+}
+
+
+.text-labels {
+    font-weight: 900;
+}
+
+.geoPath{
+    fill:lightgrey;
+}
+.geoPath.nothover {
+    opacity: 0.2;
+}
+
+#map #regMap path{
+    fill: lightgray;
+    stroke: #bbbbbb;
+}
+
+#map .tstooltip {
+    position: absolute;
+}
+
+#map #regMap .selected{
+    fill: #979b9d;
+}
+
+#controlPanel{
+    width:500px;
+    height:300px;
+    margin:auto;
+    display:inline-block;
+    cursor:pointer;
+}
+
+
+.unselected{
+    fill:lightgrey;
+}
+.selected{
+    border-color:black;
+    fill:#2171b5;
+}
+
+.sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    /*padding: 50px;*/
+    /*font-size: 20px;*/
+}
+
+#currentData:before {
+    content:"Dataset: ";
+}
+
+#RadarMapcontent .disable{
+    display: none;
+}
+
+#d3-tip-mc1 {
+    pointer-events: none!important;
+}
+.d3-tip{
+    z-index: 99;
+}
+.radarChart_tip {
+    /*background-color: white;*/
+    border: 0.5px solid black;
+    border-radius: 5px;
+    margin-top: 10px;
 }

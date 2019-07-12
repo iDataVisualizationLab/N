@@ -17,6 +17,11 @@ function readConf(choice) {
 function fixstr(s) {
     return 'a'+s.replace(/ |-|#/gi,''); // avoid number
 }
+
+function removeWhitespace(str) {
+    return str.replace(/\s+/g, '');
+}
+
 function getTransformation(transform) {
     // Create a dummy g for calculation purposes only. This will never
     // be appended to the DOM and will be discarded once this function
@@ -170,11 +175,11 @@ function createGradient(rg,limitcolor,arrColor) {
     const legntharrColor = arrColor.length - 1;
     rg.append("stop")
         .attr("offset", "0%")
-        .attr("stop-opacity", 0);
+        .attr("stop-opacity", 0.5);
     rg.append("stop")
         .attr("offset", (limitcolor - 1) / legntharrColor * 100 + "%")
         .attr("stop-color", arrColor[limitcolor])
-        .attr("stop-opacity", 0);
+        .attr("stop-opacity", 0.5);
     arrColor.forEach((d, i) => {
         if (i > (limitcolor - 1)) {
             rg.append("stop")
@@ -240,17 +245,14 @@ function uploadProfile(){
         reader.onload = (function(theFile) {
             return function(e) {
                 // Render thumbnail.
-                d3.json(e.target.result,function (error, data) {
-                    if (error){
-                    }else{
-                        if (data.serviceLists[0].sub[0].angle ===undefined)
+                d3.json(e.target.result).then(function (data) {
+                        if (data.serviceFullList[0].angle ===undefined)
                             throw "wrong file";
                         conf = data;
                         variablesNames.forEach(d=>{ window[d] = conf[d]});
                         // relink object
-                        serviceFullList = serviceLists2serviceFullList(serviceLists);
+                        // serviceFullList = serviceLists2serviceFullList(serviceLists);
                         MetricController.axisSchema(serviceFullList).update();
-                    }
                 })
                 // span.innerHTML = ['<img class="thumb" src="', e.target.result,
                 //     '" title="', escape(theFile.name), '"/>'].join('');

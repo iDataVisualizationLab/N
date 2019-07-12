@@ -3,6 +3,7 @@
 /////////////// Written by Nadieh Bremer ////////////////
 ////////////////// VisualCinnamon.com ///////////////////
 /////////// Inspired by the code of alangrafu ///////////
+////////////// Modified by Ngan IDVL 2019 ///////////////
 /////////////////////////////////////////////////////////
 
 function RadarChart(id, data, options) {
@@ -18,7 +19,7 @@ function RadarChart(id, data, options) {
         opacityArea: 0.35, 	//The opacity of the area of the blob
         dotRadius: 4, 			//The size of the colored circles of each blog
         opacityCircles: 0.1, 	//The opacity of the circles of each blob
-        strokeWidth: 1, 		//The width of the stroke around each blob
+        strokeWidth: 2, 		//The width of the stroke around each blob
         roundStrokes: true,	//If true the area and stroke will follow a round path (cardinal-closed)
         isNormalize: true,
         mini:false, //mini mode
@@ -295,9 +296,9 @@ function RadarChart(id, data, options) {
         });
 
     if(cfg.roundStrokes) {
-        radarLine.curve(d3.curveCardinalClosed.tension(0.5));
-        radialAreaGenerator.curve(d3.curveCardinalClosed.tension(0.5));
-        radialAreaQuantile.curve(d3.curveCardinalClosed.tension(0.5));
+        radarLine.curve(d3.curveCardinalClosed.tension(0.3));
+        radialAreaGenerator.curve(d3.curveCardinalClosed.tension(0.3));
+        radialAreaQuantile.curve(d3.curveCardinalClosed.tension(0.3));
     }
 
 
@@ -362,38 +363,44 @@ function RadarChart(id, data, options) {
             .append("path")
             .attr("class", "radarStroke outlying")
             .call(drawOutlying);
-    }else if (cfg.gradient && cfg.summary){
+    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile)){
         function drawMeanLine(paths){
             return paths
                 .attr("d", d =>radarLine(d))
                 .styles({"fill":'none',
                     'stroke':'black',
-                    'stroke-width':0.5,
-                    'stroke-dasharray': '1 2'});
+                    'stroke-dasharray': '1 2'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
         function drawQuantileArea(paths){
             return paths
                 .attr("d", d =>radialAreaQuantile(d))
                 .styles({"fill":'none',
-                    'stroke':'black',
-                    'stroke-width':0.2});
+                    'stroke':'black'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
         //update the outlines
-        blobWrapperg.select('.radarLine').transition().call(drawMeanLine);
-        blobWrapperg.select('.radarQuantile').transition().call(drawQuantileArea);
+        if (cfg.summary.mean)
+            blobWrapperg.select('.radarLine').transition().call(drawMeanLine);
+        else
+            blobWrapperg.select('.radarLine').remove();
+        if (cfg.summary.quantile && cfg.summary.minmax)
+            blobWrapperg.select('.radarQuantile').transition().call(drawQuantileArea);
+        else
+            blobWrapperg.select('.radarQuantile').remove();
         blobWrapperpath.style("fill", "none").transition()
-            .attr("d", d => radialAreaGenerator(d))
-            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d))
+            .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
             .style("stroke", (d, i) => cfg.color(i));
         blobWrapperg.select('clipPath')
             .select('path')
             .transition('expand').ease(d3.easePolyInOut)
-            .attr("d", d =>radialAreaGenerator(d));
+            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
         //Create the outlines
         blobWrapper.append("clipPath")
             .attr("id",(d,i)=>"sum"+correctId (id))
             .append("path")
-            .attr("d", d => radialAreaGenerator(d));
+            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d));
         blobWrapper.append("rect")
             .style('fill', 'url(#rGradient2)')
             .attr("clip-path",( d,i)=>"url(#sum"+correctId (id)+")")
@@ -403,16 +410,17 @@ function RadarChart(id, data, options) {
             .attr("height",(radius)*2);
         blobWrapper.append("path")
             .attr("class", "radarStroke")
-            .attr("d", d => radialAreaGenerator(d))
+            .attr("d", d => (cfg.summary.minmax)? radialAreaGenerator(d): radialAreaQuantile(d))
             .style("fill", "none")
             .transition()
-            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
             //.style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
             .style("stroke", (d, i) => cfg.color(i));
-        blobWrapper
+        if (cfg.summary.mean)
+            blobWrapper
             .append("path").classed('radarLine',true).style("fill", "none").call(drawMeanLine);
-
-        blobWrapper
+        if (cfg.summary.quantile && cfg.summary.minmax)
+            blobWrapper
             .append("path").classed('radarQuantile',true).style("fill", "none").call(drawQuantileArea);
     }
     else {
@@ -640,7 +648,9 @@ function RadarChart(id, data, options) {
             .attr("fill", "#111")
             .text(function (d, i) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
-                return Math.round(v).toFixed(2);
+                if (cfg.schema)
+                    v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
+                return v;
             });
         axisLabel.exit().remove();
         axisLabel.enter().append("text")
@@ -655,39 +665,41 @@ function RadarChart(id, data, options) {
             .attr("fill", "#111")
             .text(function (d, i) {
                 var v = (maxValue - minValue) * d / cfg.levels + minValue;
-                return Math.round(v).toFixed(2);
+                if (cfg.schema)
+                    v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
+                return v;
             });
-        var legendg = cfg.legend.map(function (d, i) {
-            return Object.keys(d).map(function (k) {
-                return {key: k, value: d[k], index: i}
-            })
-        }).filter(d => d.length = 0);
+        // var legendg = cfg.legend.map(function (d, i) {
+        //     return Object.keys(d).map(function (k) {
+        //         return {key: k, value: d[k], index: i}
+        //     })
+        // }).filter(d => d.length = 0);
 
-        var subaxisg = axisGrid.selectAll(".axisLabelsub")
-            .data(legendg);
-        subaxisg.exit().remove();
-
-        subaxisg.enter().append('g').attr('class', 'axisLabelsub');
-        var subaxis = axisGrid.selectAll(".axisLabelsub");
-        subaxis.selectAll('.axisLabelsubt')
-            .data(d => d)
-            .enter().append("text")
-            .attr("class", "axisLabelsubt")
-            .attr("x", function (d, i) {
-                return d.key * radius / cfg.levels * Math.cos(angleSlice[d.index] - Math.PI / 2);
-            })
-            .attr("y", function (d, i) {
-                return d.key * radius / cfg.levels * Math.sin(angleSlice[d.index] - Math.PI / 2);
-            })
-            // .attr("x", d => {4+d.key*radius/cfg.levels})
-            // .attr("y", function(d){return -d.key*radius/cfg.levels;})
-            .attr("dy", "0.2em")
-            .attr("font-family", "sans-serif")
-            .style("font-size", "12px")
-            .attr("fill", "#111")
-            .text(function (d) {
-                return d.value;
-            });
+        // var subaxisg = axisGrid.selectAll(".axisLabelsub")
+        //     .data(cfg.schema);
+        // subaxisg.exit().remove();
+        //
+        // subaxisg.enter().append('g').attr('class', 'axisLabelsub');
+        // var subaxis = axisGrid.selectAll(".axisLabelsub");
+        // subaxis.selectAll('.axisLabelsubt')
+        //     .data(d => d)
+        //     .enter().append("text")
+        //     .attr("class", "axisLabelsubt")
+        //     .attr("x", function (d, i) {
+        //         return d.key * radius / cfg.levels * Math.cos(angleSlice[d.index] - Math.PI / 2);
+        //     })
+        //     .attr("y", function (d, i) {
+        //         return d.key * radius / cfg.levels * Math.sin(angleSlice[d.index] - Math.PI / 2);
+        //     })
+        //     // .attr("x", d => {4+d.key*radius/cfg.levels})
+        //     // .attr("y", function(d){return -d.key*radius/cfg.levels;})
+        //     .attr("dy", "0.2em")
+        //     .attr("font-family", "sans-serif")
+        //     .style("font-size", "12px")
+        //     .attr("fill", "#111")
+        //     .text(function (d) {
+        //         return d.value;
+        //     });
     }
     function correctId (id){
         if (typeof (id) === "string") {

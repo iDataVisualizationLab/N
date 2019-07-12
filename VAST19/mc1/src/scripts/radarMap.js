@@ -17,6 +17,7 @@ d3.radarMap = function () {
             summary: {size:30}
         },
         radaropt = {
+            summary:{quantile:true},
             mini:true,
             levels:6,
             gradient:true,
@@ -32,7 +33,7 @@ d3.radarMap = function () {
         },
         runopt,
         axis,
-        arr = [],
+        arr = [],arrIcon=[],
         isBusy = false,
         isStable = false;
         // tsne = new tsnejs.tSNE(graphicopt.opt);
@@ -51,6 +52,10 @@ d3.radarMap = function () {
     let first = true;
     let returnEvent;
     let group_mode = "outlier";
+
+    //event register
+    let mouseoverEvent, mouseleaveEvent;
+
     function updateSummary(data){
         // const data_new = dataRaw.Variables.map((s,si)=>{
         //     let dataarr = _.flatten(dataRaw.YearsDataTrue.map(d=>d['v'+si].map(e=>e/100)));
@@ -249,48 +254,48 @@ d3.radarMap = function () {
             .angle(function(d,i) {  return angleSlice[i]; });
     }
 
-    function UpdateGradient() {
-        let rdef = svg.select('defs.gradient');
-        let rg,rg2;
-        if (rdef.empty()){
-            rdef = svg.append("defs").attr('class','gradient')
-            rg = rdef
-                .append("radialGradient")
-                .attr("id", "rGradient");
-            rg2 = rdef.append("radialGradient")
-                .attr("id", "rGradient2");
-        }
-        else {
-            rg = rdef.select('#rGradient');
-            rg2 = rdef.select('#rGradient2');
-        }
-        createGradient(rg,0);
-        createGradient(rg2,1);
-        function createGradient(rg,limitcolor) {
-            rg.selectAll('stop').remove();
-            const legntharrColor = arrColor.length - 1;
-            rg.append("stop")
-                .attr("offset", "0%")
-                .attr("stop-opacity", 0);
-            rg.append("stop")
-                .attr("offset", (limitcolor - 1) / legntharrColor * 100 + "%")
-                .attr("stop-color", arrColor[limitcolor])
-                .attr("stop-opacity", 0);
-            arrColor.forEach((d, i) => {
-                if (i > (limitcolor - 1)) {
-                    rg.append("stop")
-                        .attr("offset", i / legntharrColor * 100 + "%")
-                        .attr("stop-color", d)
-                        .attr("stop-opacity", i / legntharrColor);
-                    if (i != legntharrColor)
-                        rg.append("stop")
-                            .attr("offset", (i + 1) / legntharrColor * 100 + "%")
-                            .attr("stop-color", arrColor[i + 1])
-                            .attr("stop-opacity", i / legntharrColor);
-                }
-            });
-        }
-    }
+        // function UpdateGradient() {
+        //     let rdef = svg.select('defs.gradient');
+        //     let rg,rg2;
+        //     if (rdef.empty()){
+        //         rdef = svg.append("defs").attr('class','gradient')
+        //         rg = rdef
+        //             .append("radialGradient")
+        //             .attr("id", "rGradient");
+        //         rg2 = rdef.append("radialGradient")
+        //             .attr("id", "rGradient2");
+        //     }
+        //     else {
+        //         rg = rdef.select('#rGradient');
+        //         rg2 = rdef.select('#rGradient2');
+        //     }
+        //     createGradient(rg,0);
+        //     createGradient(rg2,1);
+        //     function createGradient(rg,limitcolor) {
+        //         rg.selectAll('stop').remove();
+        //         const legntharrColor = arrColor.length - 1;
+        //         rg.append("stop")
+        //             .attr("offset", "0%")
+        //             .attr("stop-opacity", 0);
+        //         rg.append("stop")
+        //             .attr("offset", (((limitcolor - 1) / legntharrColor+0.3) * 100) + "%")
+        //             .attr("stop-color", arrColor[limitcolor])
+        //             .attr("stop-opacity", 0);
+        //         arrColor.forEach((d, i) => {
+        //             if (i > (limitcolor - 1)) {
+        //                 rg.append("stop")
+        //                     .attr("offset", (i / legntharrColor+0.3) * 100 + "%")
+        //                     .attr("stop-color", d)
+        //                     .attr("stop-opacity", i / legntharrColor);
+        //                 if (i != legntharrColor)
+        //                     rg.append("stop")
+        //                         .attr("offset", ((i + 1) / legntharrColor+0.3) * 100 + "%")
+        //                         .attr("stop-color", arrColor[i + 1])
+        //                         .attr("stop-opacity", i / legntharrColor);
+        //             }
+        //         });
+        //     }
+        // }
 
     radarMap.init = function(){
         // tsne.postMessage({action:"inittsne",value:option});
@@ -311,7 +316,7 @@ d3.radarMap = function () {
         //     .attr("width", graphicopt.widthG())
         //     .attr("height", graphicopt.heightG());
         // gradient
-        UpdateGradient();
+        UpdateGradient(svg);
         // END gradient
         glowEffect = svg.append('defs').append('filter').attr('id', 'glowTSne'),
             feGaussianBlur = glowEffect.append('feGaussianBlur').attr('stdDeviation', 2.5).attr('result', 'coloredBlur'),
@@ -322,7 +327,19 @@ d3.radarMap = function () {
         g = svg.append("g")
             .attr('class','pannel')
             .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
-            // .attr("clip-path", "url(#clip)");
+        g.append("g")
+            .attr("class", "x gAxist grid")
+            .attr("transform", "translate(0, 10)")
+            .styles({
+                'stroke-width':'1px',
+                'stroke':'#ababab',
+                'stroke-dasharray': 1
+            });
+        g.append("g")
+            .attr("class", "x gAxis")
+            .attr("transform", "translate(0, 10)");
+
+        // .attr("clip-path", "url(#clip)");
         // const rect = g.append('rect').attr("rx", 10)
         //     .attr("ry", 10)
         //     .attr("width", graphicopt.widthG()-2)
@@ -513,10 +530,23 @@ d3.radarMap = function () {
 
 
     function handledata(data){
-        arr = [];
-        data.forEach(d=>d.values.forEach(e=>arr.push(e.arr)));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arr,d=>d.density));
-        return arr;
+        let arrN = [];
+        data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.05,1]);
+        let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="20"),e=>e.density)).range(radaropt.densityScale.domain());
+        arrN.filter(e=>e.loc==="20").forEach(e=>{e.density_true = e.density;
+            e.density = desnsityScale(e.density_true);
+        })
+        return arrN;
+    }
+    function handledataIcon(data){
+        let arrN = [];
+        data.forEach(e=>{
+            e.arr.density_true = e.arr.density;
+            arrN.push(e.arr);
+        });
+        // radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
+        return arrN;
     }
     function changeshape (){
         const selector = g.selectAll(".linkLineg");
@@ -539,23 +569,101 @@ d3.radarMap = function () {
 
     let timescale = d3.scaleTime().range([0, graphicopt.widthG()]);
     let rowscale = d3.scaleLinear().range([0, radaropt.h]);
-    function drawEmbedding(data) {
-        timescale.domain(d3.extent(data,d=>d.time));
-        rowscale.range([0,radaropt.h]);
-        let rowlabel = _.pairs(rowMap);
+    let timeFormat;
+    function updatePosition() {
+        // let timerange = d3.extent(arr,d=>d.time);
+        let time_axis = d3.axisTop();
+        let width_needed = timeFormat.range(timescale.domain()[0],timescale.domain()[1]).length * radaropt.w;
+        if (graphicopt.fitscreen){
+            svg.attrs({
+                width: graphicopt.width,
+            });
+            timescale.range([0,graphicopt.widthG()]);
+            time_axis = time_axis.ticks(graphicopt.widthG()/100);
+        }else {
+            svg.attrs({
+                width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
+            });
+            timescale.range([0, width_needed]);
+            time_axis = time_axis.ticks(width_needed/100);
+        }
+        time_axis = time_axis.scale(timescale);
+        let timeAxis = g.select('.gAxis')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis);
+        let timeAxis2 = g.select('.gAxist')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
-        let lables = g.selectAll(".linkLable_text")
-            .data(rowlabel,d=>+d[0]);
+        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
+
+    }
+    function drawEmbedding(data) {
+        let time_axis = d3.axisTop();
+        let width_needed = timeFormat.range(timescale.domain()[0],timescale.domain()[1]).length * radaropt.w;
+        if (graphicopt.fitscreen){
+            svg.attrs({
+                width: graphicopt.width,
+                height: graphicopt.height,
+            });
+            timescale.range([0,graphicopt.widthG()]);
+            time_axis = time_axis.ticks(graphicopt.widthG()/100);
+        }else {
+            const height_needed = (arrIcon.length+2) * radaropt.h;
+            svg.attrs({
+                width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
+                height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
+            });
+            timescale.range([0, width_needed]);
+            time_axis = time_axis.ticks(width_needed/100);
+        }
+        time_axis = time_axis.scale(timescale);
+        let timeAxis = g.select('.gAxis')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis);
+        let timeAxis2 = g.select('.gAxist')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
+
+        rowscale.range([0,radaropt.h]);
+        let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
+        arrIcon.forEach(e=>{
+            e.density = desnsityScale(e.density_true);
+            e.text = (e.loc!=='20'? e.loc +" ":'')+rowMap[e.loc];
+        });
+        let lables = g.selectAll(".linkLable_textg")
+            .data(arrIcon,d=>+d.loc);
         lables.exit();
-        lables.enter().append('text')
-            .attr('class','linkLable_text')
-            .merge(lables)
-            .attr('y',d=>rowscale(+d[0]))
-            .style('font-size',"12px")
+
+        let Nlabel = lables.enter().append('g')
+            .attr('class','linkLable_textg');
+
+        Nlabel.append('text')
+            .attr('class','linkLable_text');
+
+        Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
+            .attr('x',radaropt.w)
+            .style('font-size',"11px")
             .style('fill',"currentColor")
-            .attr('dy',"1em")
-            .attr('text-anchor',"end")
-            .text(d=>d[1]);
+            .attr('dy',"1.5em")
+            .attr('text-anchor',"start")
+            .text(d=>d.text);
+
+        Nlabel.append('g')
+            .attr('class',d=>'linkLable_radar '+fixstr(d.id));
+
+        Nlabel.merge(lables).select('.linkLable_radar')
+            .attr('class',d=>'linkLable_radar '+fixstr(d.id))
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
+            .each(d=>
+            RadarChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
+
+        Nlabel.merge(lables).attr('transform',d=>'translate('+(-graphicopt.margin.left)+','+rowscale(+d.loc)+')');
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);
@@ -563,7 +671,10 @@ d3.radarMap = function () {
         let datapointN = datapoint
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
+            .classed('selected',d=>d.loc==='20')
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
             .each(d=>
                 RadarChart(".linkLineg."+fixstr(d.id),[d],radaropt));
     }
@@ -574,7 +685,9 @@ d3.radarMap = function () {
         return arguments.length ? (arr = handledata(_), radarMap) : arr;
 
     };
-
+    radarMap.dataIcon = function (_) {
+        return arguments.length ? (arrIcon = handledataIcon(_), radarMap) : arrIcon;
+    };
     radarMap.schema = function (_) {
         return arguments.length ? (radaropt.schema = _, radarMap) : radaropt.schema;
 
@@ -608,6 +721,16 @@ d3.radarMap = function () {
         }else
             return graphicopt;
     };
+    radarMap.radaropt = function (_) {
+        if (arguments.length) {
+            for(var i in _){
+                if('undefined' !== typeof _[i]){ radaropt[i] = _[i]; }
+            }
+            return radarMap
+        }else
+            return radaropt;
+    };
+
     radarMap.option = function (_) {
         if (arguments.length){
             isBusy = true;
@@ -617,12 +740,17 @@ d3.radarMap = function () {
         }
         return option;
     };
+
+    radarMap.fitscreen = function (_) {
+        return arguments.length ? (graphicopt.fitscreen = _,updatePosition(), radarMap) : graphicopt.fitscreen;
+    };
     radarMap.runopt = function (_) {
         return arguments.length ? (runopt = _, radarMap) : runopt;
     };
     radarMap.axis = function (_) {
         return arguments.length ? (axis = _, radarMap) : axis;
     };
+
     radarMap.group_mode = function (_) {
         if (arguments.length){
             isBusy = true;
@@ -636,8 +764,16 @@ d3.radarMap = function () {
         return arguments.length ? (returnEvent = _, radarMap) : returnEvent;
     };
 
+    radarMap.onmouseover = function (_) {
+        return arguments.length ? (mouseoverEvent = _, radarMap) : mouseoverEvent;
+    };
+
+    radarMap.onmouseleave = function (_) {
+        return arguments.length ? (mouseleaveEvent = _, radarMap) : mouseleaveEvent;
+    };
+
     radarMap.RadarColor = function (_) {
-        return arguments.length ? (arrColor = _.arrColor,UpdateGradient(), radarMap) : arrColor;
+        return arguments.length ? (arrColor = _.arrColor,UpdateGradient(svg), radarMap) : arrColor;
     };
 
     radarMap.ClusterColor = function (_) {
@@ -646,6 +782,14 @@ d3.radarMap = function () {
 
     radarMap.rowMap = function (_) {
         return arguments.length ? (rowMap = _ , radarMap) : rowMap;
+    };
+
+    radarMap.timeFormat = function (_) {
+        return arguments.length ? (timeFormat = _ , radarMap) : timeFormat;
+    };
+
+    radarMap.timeRange = function (_) {
+        return arguments.length ? (timescale.domain([new Date(_[0]),new Date(_[1])]) , radarMap) : timescale.range();
     };
 
     return radarMap;

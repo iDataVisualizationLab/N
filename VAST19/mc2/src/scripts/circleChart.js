@@ -1,0 +1,691 @@
+/////////////////////////////////////////////////////////
+/////////////// The Radar Chart Function ////////////////
+/////////////// Written by Nadieh Bremer ////////////////
+////////////////// VisualCinnamon.com ///////////////////
+/////////// Inspired by the code of alangrafu ///////////
+////////////// Modified by Ngan IDVL 2019 ///////////////
+/////////////////////////////////////////////////////////
+
+function CircleChart(id, data, options) {
+    var cfg = {
+        w: 300,				//Width of the circle
+        h: 300,				//Height of the circle
+        margin: {top: 20, right: 55, bottom: 10, left: 55}, //The margins of the SVG
+        levels: 3,				//How many levels or inner circles should there be drawn
+        maxValue: 1, 			//What is the value that the biggest circle will represent
+        minValue: 0, 			//What is the value that the biggest circle will represent
+        labelFactor: 1.15, 	//How much farther than the radius of the outer circle should the labels be placed
+        wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
+        opacityArea: 0.35, 	//The opacity of the area of the blob
+        dotRadius: 4, 			//The size of the colored circles of each blog
+        opacityCircles: 0.1, 	//The opacity of the circles of each blob
+        strokeWidth: 1, 		//The width of the stroke around each blob
+        roundStrokes: true,	//If true the area and stroke will follow a round path (cardinal-closed)
+        isNormalize: true,
+        mini:false, //mini mode
+        schema: undefined,
+        color: function(){return 'black'},	//Color function
+        arrColor: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+    };
+
+    //Put all of the options into a variable called cfg
+    if('undefined' !== typeof options){
+        for(var i in options){
+            if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
+        }//for i
+    }//if
+
+
+    var undefinedValue =0;
+    //If the supplied maxValue is smaller than the actual one, replace by the max in the data
+    var maxValue,minValue,range,arrThresholds,colorTemperature,opaTemperature,allAxis,rScale,scaleMarkedLegend;
+    // NEW SETTING
+    //If the supplied maxValue is smaller than the actual one, replace by the max in the data
+
+    if (cfg.isNormalize){
+        minValue = 0;
+        maxValue = 1;
+        range = [minValue,maxValue];
+    } else {
+        maxValue = Math.max(cfg.maxValue, d3.max(data, function (i) {
+            return d3.max(i.map(function (o) {
+                return o.value;
+            }))
+        }));
+        minValue = Math.min(cfg.minValue, d3.min(data, function (i) {
+            return d3.min(i.map(function (o) {
+                return o.value;
+            }))
+        }));
+        range = [minValue,maxValue]
+    }
+    if (cfg.markedLegend) scaleMarkedLegend = d3.scaleLinear().domain(range).range(cfg.markedLegend);
+    // var dif = 1 / (cfg.levels-2);
+    // var right = 1 + dif;
+    var dif = 0;
+    var right = 1;
+    var colorLength = cfg.arrColor.length-1;
+    cfg.arrThresholds = [-dif];
+    for (var i=0;i<colorLength-1;i++)
+        cfg.arrThresholds.push(i/(colorLength-1));
+    cfg.arrThresholds.push(right);
+    colorTemperature = d3.scaleLinear()
+        .domain(cfg.arrThresholds)
+        .range(cfg.arrColor)
+        .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
+
+
+    if (cfg.schema){
+        range = [0,1];
+
+    }
+
+    // Re-adjust angles
+    minValue = range[0]-dif*(range[1]-range[0]);
+    maxValue = range[1]+dif*(range[1]-range[0]);
+
+    var radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
+        Format = d3.format('.0%');			 	//Percentage formatting
+
+
+    //Scale for the radius
+    rScale = d3.scaleSqrt()
+        .range([0, radius])
+        .domain([minValue, maxValue]);
+
+    /////////////////////////////////////////////////////////
+    //////////// Create the container SVG and g /////////////
+    /////////////////////////////////////////////////////////
+
+    //Remove whatever chart with the same id/class was present before
+    d3.select(id).selectAll("svg").nodes().forEach(d=>{
+        if (d3.select(d).attr("class")!==("radar"+id.replace(".","").replace("."," ")))
+            d3.select(d).remove();
+    });
+
+    //Initiate the radar chart SVG
+    var first = false;
+    var svg = d3.select(id).select(".radar"+id.replace(".",""));
+    var g = svg.select("#radarGroup");
+    if (svg.empty()) {
+        first = true;
+        svg = d3.select(id)
+            .append("svg")
+            .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
+            .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+            .attr("class", "radar" + id.replace(".","").replace("."," "))
+            .style("overflow",'visible');
+        //Append a g element
+        g = svg.append("g")
+            .attr("id","radarGroup")
+            .attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
+    }
+
+
+    /////////////////////////////////////////////////////////
+    ////////// Glow filter for some extra pizzazz ///////////
+    /////////////////////////////////////////////////////////
+    function toDegrees(rad) {
+        let deg = rad * (180/Math.PI)%360;
+        return deg;
+    }
+    function toRadian(deg) {
+        return deg * (Math.PI/180);
+    }
+    //Filter for the outside glow
+    if (first && !cfg.mini) {
+
+        //Filter for the outside glow
+        // var filter = g.append('defs').append('filter').attr('id', 'glow'),
+        //     feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '2.5').attr('result', 'coloredBlur'),
+        //     feMerge = filter.append('feMerge'),
+        //     feMergeNode_1 = feMerge.append('feMergeNode').attr('in', 'coloredBlur'),
+        //     feMergeNode_2 = feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+        //
+        // //Filter for the outside glow
+        // var filter = g.append('defs').append('filter').attr('id', 'glow2'),
+        //     feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation', '1').attr('result', 'coloredBlur'),
+        //     feMerge = filter.append('feMerge'),
+        //     feMergeNode_1 = feMerge.append('feMergeNode').attr('in', 'coloredBlur'),
+        //     feMergeNode_2 = feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+        /////////////////////////////////////////////////////////
+        /////////////// Draw the Circular grid //////////////////
+        /////////////////////////////////////////////////////////
+
+        //Wrapper for the grid & axes
+        var axisGrid = g.append("g").attr("class", "axisWrapper");
+
+        //Draw the background circles
+        axisGrid.selectAll(".levels")
+            .data(d3.range(1, (cfg.levels + 1)).reverse())
+            .enter()
+            .append("circle")
+            .attr("class", "gridCircle")
+            .attr("r", function (d, i) {
+                return radius / cfg.levels * d;
+            })
+            .style("fill", "#CDCDCD")
+            .style("stroke", function (d, i) {
+                var v = (maxValue - minValue) * d / cfg.levels + minValue;
+                return colorTemperature(v);
+            }).style("stroke-width", 0.3)
+            .style("stroke-opacity", 1)
+            .style("fill-opacity", cfg.opacityCircles)
+            // .style("visibility", (d, i) => ((cfg.bin || cfg.gradient) && i == 0) ? "hidden" : "visible");
+        // .style("filter", "url(#glow)");
+
+        //Text indicating at what % each level is
+        // axisGrid.selectAll(".axisLabel")
+        //     .data(d3.range(1, (cfg.levels + 1)).reverse())
+        //     .enter().append("text")
+        //     .attr("class", "axisLabel")
+        //     .attr("x", 4)
+        //     .attr("y", function (d) {
+        //         return -d * radius / cfg.levels;
+        //     })
+        //     .attr("dy", "0.4em")
+        //     .style("font-size", "10px")
+        //     .attr("fill", "#737373")
+        //     .text(function (d, i) {
+        //         return Format((maxValue * d / cfg.levels));
+        //     });
+    }
+
+
+    /////////////////////////////////////////////////////////
+    ///////////// Draw the radar chart blobs ////////////////
+    /////////////////////////////////////////////////////////
+    if (cfg.bin) {
+        var densityscale = cfg.scaleDensity;
+        var scaleStroke = d3.scaleLinear()
+            .domain([0,1])
+            .range([0,5]);
+        data.forEach(d=> d.forEach((v,i)=> {
+            v.minval = d3.min(d.bin.val,v=>v[i]);
+            v.maxval = d3.max(d.bin.val,v=>v[i]);}));
+    }
+    //The radial line function
+    //The radial line function
+
+    var radarLine = d3.arc()
+        .innerRadius(0)
+        .outerRadius(function(d) {
+            return rScale(d.value||d)||undefinedValue; })
+        .startAngle(0)
+        .endAngle(Math.PI*2);
+
+    var radarLineMedian = d3.arc()
+        .innerRadius(0)
+        .outerRadius(function(d) {
+            return rScale(d.median)||undefinedValue; })
+        .startAngle(0)
+        .endAngle(Math.PI*2);
+
+    var radialAreaGenerator = d3.arc()
+        .innerRadius(function(d,i) {
+            return rScale(d.minval)||undefinedValue;
+        })
+        .outerRadius(function(d,i) {
+            return rScale(d.maxval)||undefinedValue;
+        }).startAngle(Math.PI/2)
+        .endAngle(Math.PI*3/2);
+
+    let radialAreaQuantile = d3.arc()
+        .innerRadius(function(d,i) {
+            return rScale(d.q1)||undefinedValue;
+        })
+        .outerRadius(function(d,i) {
+            return rScale(d.q3)||undefinedValue;
+        }).startAngle(-Math.PI/2)
+        .endAngle(Math.PI/2);
+    let radialAreaStd = d3.arc()
+        .innerRadius(function(d,i) {
+            return rScale(d.median-d.std)||undefinedValue;
+        })
+        .outerRadius(function(d,i) {
+            return rScale(d.median+d.std)||undefinedValue;
+        }).startAngle(Math.PI/2)
+        .endAngle(Math.PI*3/2);
+
+
+
+    //Create a wrapper for the blobs
+    var blobWrapperg = g.selectAll(".radarWrapper")
+        .data(data);
+    //Create the outlines
+    blobWrapperg.exit().remove();
+    var blobWrapper = blobWrapperg
+        .enter().append("g")
+        .attr("class", "radarWrapper");
+
+    //function update
+    function drawCluster(paths){
+        paths.attr("d", d => {
+            d.forEach((v,i)=>{
+                let temp = d.bin.val.map(ve=>ve[allAxis.findIndex(e=>e.text===v.axis)]);
+                let mean = d3.mean(temp);
+                let std = d3.deviation(temp)||0;
+                v.minval =  mean - std/2;
+                v.maxval =  mean + std/2;
+            });
+
+            return radialAreaGenerator(d);}).transition()
+            .style("stroke", (d, i) => cfg.color(i))
+            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .style("fill-opacity", d => densityscale(d.bin.val.length))
+            .style("fill", (d, i) => cfg.color(i));
+    }
+    function drawOutlying(paths){
+        paths.attr("d", d => radarLine(d)).transition()
+            .style("stroke", (d, i) => 'black')
+            .style("stroke-width", () => cfg.strokeWidth + "px")
+            //.style("fill-opacity", d => 1)
+            .style("fill", 'none');
+    }
+    function drawMeanLine(paths){
+        return paths
+            .attr("d", d =>radarLine(d))
+            .styles({"fill":'none',
+                'stroke':'black',
+                'stroke-width':0.5,
+                'stroke-dasharray': '1 2'});
+    }
+
+    //update the outlines
+    var blobWrapperpath = blobWrapperg.select(".radarStroke");
+    if (cfg.bin) { // bin type
+        // area radar shape
+        blobWrapperpath.filter(d=>d.type!=="outlying")
+            .classed("outlying",false)
+            .call(drawCluster);
+        blobWrapperpath.filter(d=>d.type==="outlying")
+            .classed("outlying",true)
+            .call(drawOutlying);
+        //Create the outlines
+        blobWrapper.filter(d=>d.type!=="outlying")
+            .append("path")
+            .attr("class", "radarStroke")
+            .call(drawCluster);
+        blobWrapper.filter(d=>d.type==="outlying")
+            .append("path")
+            .attr("class", "radarStroke outlying")
+            .call(drawOutlying);
+    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile||cfg.summary.std||cfg.summary.median)){
+        function drawMeanLine(paths){
+            return paths
+                .attr("d", d =>radarLine(d))
+                .styles({"fill":'none',
+                    'stroke':'black',
+                    'stroke-dasharray': '1 2'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
+        }
+        function drawMedianLine(paths){
+            return paths
+                .attr("d", d =>radarLineMedian(d))
+                .styles({"fill":'none',
+                    'stroke':'black'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
+        }
+        function drawQuantileArea(paths){
+            return paths
+                .attr("d", d =>radialAreaQuantile(d))
+                .styles({"fill":'none',
+                    'stroke':'black'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
+        }
+        function drawStdArea(paths){
+            return paths
+                .attr("d", d =>radialAreaStd(d))
+                .styles({"fill":'none',
+                    'stroke':'black'})
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
+        }
+        //update the outlines
+        if (cfg.summary.mean)
+            blobWrapperg.select('.radarLine').transition().call(drawMeanLine);
+        else if (cfg.summary.median)
+            blobWrapperg.select('.radarLine').transition().call(drawMedianLine);
+        else
+            blobWrapperg.select('.radarLine').remove();
+        if (cfg.summary.quantile && cfg.summary.minmax)
+            blobWrapperg.select('.radarQuantile').transition().call(drawQuantileArea);
+        else
+            blobWrapperg.select('.radarQuantile').remove();
+        if (cfg.summary.median && cfg.summary.std)
+            blobWrapperg.select('.radarStd').transition().call(drawQuantileArea);
+        else
+            blobWrapperg.select('.radarStd').remove();
+        blobWrapperpath.style("fill", "none").transition()
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)))
+            .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
+            .style("stroke", (d, i) => cfg.color(i));
+        blobWrapperg.select('clipPath')
+            .select('path')
+            .transition('expand').ease(d3.easePolyInOut)
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)));
+        //Create the outlines
+        blobWrapper.append("clipPath")
+            .attr("id",(d,i)=>"sum"+correctId (id))
+            .append("path")
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)));
+        blobWrapper.append("rect")
+            .style('fill', 'url(#rGradient2)')
+            .attr("clip-path",( d,i)=>"url(#sum"+correctId (id)+")")
+            .attr("x",-radius)
+            .attr("y",-radius)
+            .attr("width",(radius)*2)
+            .attr("height",(radius)*2);
+        blobWrapper.append("path")
+            .attr("class", "radarStroke")
+            .attr("d", d => (cfg.summary.quantile && cfg.summary.minmax)? radialAreaGenerator(d): ((cfg.summary.median && cfg.summary.std)? radialAreaStd(d): radialAreaQuantile(d)))
+            .style("fill", "none")
+            .transition()
+            .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
+            //.style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
+            .style("stroke", (d, i) => cfg.color(i));
+        if (cfg.summary.mean)
+            blobWrapper
+            .append("path").classed('radarLine',true).style("fill", "none").call(drawMeanLine);
+        if (cfg.summary.quantile && cfg.summary.minmax)
+            blobWrapper
+            .append("path").classed('radarQuantile',true).style("fill", "none").call(drawQuantileArea);
+        if (cfg.summary.median)
+            blobWrapper
+                .append("path").classed('radarLine',true).style("fill", "none").call(drawMedianLine);
+        if (cfg.summary.std && cfg.summary.median)
+            blobWrapper
+                .append("path").classed('radarStd',true).style("fill", "none").call(drawStdArea);
+    }
+    else {
+        if (cfg.gradient) {
+            blobWrapperg.select('clipPath')
+                .select('path')
+                .transition('expand').ease(d3.easePolyInOut)
+                .attr("d", d => radarLine(d));
+            //Create the outlines
+            blobWrapper.append("clipPath")
+                .attr("id", (d, i) => "sum" + correctId(id))
+                .append("path")
+                .attr("d", d => radarLine(d));
+            blobWrapper.append("rect")
+                .style('fill', 'url(#rGradient2)')
+                .attr("clip-path", (d, i) => "url(#sum" + correctId(id) + ")")
+                .attr("x", -radius)
+                .attr("y", -radius)
+                .attr("width", (radius) * 2)
+                .attr("height", (radius) * 2);
+            blobWrapper.append("path")
+                .attr("class", "radarStroke")
+                .attr("d", d => radarLine(d))
+                .style("fill", "none")
+                .transition()
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
+                //.style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
+                .style("stroke", (d, i) => cfg.color(i));
+        }else {
+            blobWrapperpath.transition().attr("d", d => radarLine(d))
+                .style("fill", "none")
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
+                .style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
+                .style("stroke", (d, i) => cfg.color(i));
+            //Create the outlines
+            blobWrapper.append("path")
+                .attr("class", "radarStroke")
+                .attr("d", d => radarLine(d))
+                .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")
+                .style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
+                .style("stroke", (d, i) => cfg.color(i))
+                .style("fill", "none");
+        }
+    }
+    blobWrapperpath = g.selectAll(".radarWrapper").selectAll(".radarStroke");
+    // if (cfg.bin) {
+    //     var listhost = [];
+    //     data.forEach(d=>{
+    //         d.bin.name.forEach(n=>{listhost.push(n)});
+    //     });
+    //     blobWrapperpath.on("mouseenter",mouseenterfunctionbold );
+    // }
+
+
+    //Update the circles
+    // blobWrapper = g.selectAll(".radarWrapper");
+    //Append the circles
+    // var circleWrapper = blobWrapper.selectAll(".radarCircle")
+    //     .data(function(d,i) {
+    //         d.forEach(function(d2){
+    //             d2.index=i;
+    //         });
+    //         return d;
+    //     })
+    //     .attr("r", function(d){
+    //         if (cfg.radiuschange)
+    //             return 1+Math.pow((d.index+2),0.3);
+    //         return cfg.dotRadius;
+    //     });
+    // circleWrapper.transition()
+    //     .attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice[i] - Math.PI/2); })
+    //     .attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice[i] - Math.PI/2); })
+    //     // .style("fill", function(d,i,j) {  return cfg.color(d.index); })
+    //     .style("fill", function(d){
+    //         return colorTemperature(d.value);
+    //     })
+    //     .style("fill-opacity", 0.5)
+    //     .style("stroke", "#000")
+    //     .style("stroke-width", 0.2)
+    //     .style("visibility", (d, i) => (cfg.bin ) ? "hidden" : "visible");
+    // circleWrapper.exit().remove();
+    // circleWrapper
+    //     .enter().append("circle")
+    //     .attr("class", "radarCircle")
+    //     .attr("r", function(d){
+    //         if (cfg.radiuschange)
+    //             return 1+Math.pow((d.index+2),0.3);
+    //         return cfg.dotRadius;
+    //     })
+    //     .attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice[i] - Math.PI/2); })
+    //     .attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice[i] - Math.PI/2); })
+    //     // .style("fill", function(d,i,j) {  return cfg.color(d.index); })
+    //     .style("fill", function(d){
+    //         return colorTemperature(d.value);
+    //     })
+    //     .style("fill-opacity", 0.5)
+    //     .style("stroke", "#000")
+    //     .style("stroke-width", 0.2)
+    //     .style("visibility", (d, i) => (cfg.bin ) ? "hidden" : "visible");
+
+    /////////////////////////////////////////////////////////
+    //////// Append invisible circles for tooltip ///////////
+    /////////////////////////////////////////////////////////
+
+    //Wrapper for the invisible circles on top
+
+    if (!cfg.bin&&!cfg.gradient&&cfg.showHelperPoint) {
+        var blobCircleWrapperg = g.selectAll(".radarCircleWrapper")
+            .data(data);
+        blobCircleWrapperg.exit().remove();
+        blobCircleWrapperg.enter().append("g")
+            .attr("class", "radarCircleWrapper");
+        var blobCircleWrapper = g.selectAll(".radarCircleWrapper");
+        //Append a set of invisible circles on top for the mouseover pop-up
+        var blobCircleWrappergg = blobCircleWrapper.selectAll(".radarInvisibleCircle")
+            .data(function (d, i) {
+                return d;
+            })
+            .attr("r", cfg.dotRadius * 1.5)
+            .attr("cx", function (d, i) {
+                return rScale(d.value) * Math.cos(getAngle(d,i) - Math.PI / 2);
+            })
+            .attr("cy", function (d, i) {
+                return rScale(d.value) * Math.sin(getAngle(d,i) - Math.PI / 2);
+            })
+            .style("fill", "none")
+            .style("pointer-events", "all")
+            .on("mouseenter", function (d, i) {
+                newX = parseFloat(d3.select(this).attr('cx')) - 10;
+                newY = parseFloat(d3.select(this).attr('cy')) - 10;
+
+                tooltip
+                    .attr('x', newX)
+                    .attr('y', newY)
+                    .text(Format(d.value))
+                    .transition().duration(200)
+                    .style('opacity', 1);
+            })
+            .on("mouseleave", function () {
+                tooltip.transition().duration(200)
+                    .style("opacity", 0);
+            });
+        blobCircleWrappergg.exit().remove();
+        blobCircleWrappergg
+            .enter().append("circle")
+            .attr("class", "radarInvisibleCircle")
+            .attr("r", cfg.dotRadius * 1.5)
+            .attr("cx", function (d, i) {
+                return rScale(d.value) * Math.cos(getAngle(d,i) - Math.PI / 2);
+            })
+            .attr("cy", function (d, i) {
+                return rScale(d.value) * Math.sin(getAngle(d,i) - Math.PI / 2);
+            })
+            .style("fill", "none")
+            .style("pointer-events", "all")
+            .on("mouseenter", function (d, i) {
+                newX = parseFloat(d3.select(this).attr('cx')) - 10;
+                newY = parseFloat(d3.select(this).attr('cy')) - 10;
+
+                tooltip
+                    .attr('x', newX)
+                    .attr('y', newY)
+                    .text(Format(d.value))
+                    .transition().duration(200)
+                    .style('opacity', 1);
+            })
+            .on("mouseleave", function () {
+                tooltip.transition().duration(200)
+                    .style("opacity", 0);
+            });
+    }
+
+    //Set up the small tooltip for when you hover over a circle
+    var tooltip = g.selectAll(".tooltip");
+    if (first) {
+        tooltip = g.append("text")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+    }
+    function getAngle(d,i){
+        return (allAxis.find(a=>a.text===d.axis)||allAxis[i]).angle;
+    }
+    /////////////////////////////////////////////////////////
+    /////////////////// Helper Function /////////////////////
+    /////////////////////////////////////////////////////////
+
+    //Taken from http://bl.ocks.org/mbostock/7555321
+    //Wraps SVG text
+    function wrap(text, width) {
+        text.each(function() {
+            var text = d3.select(this),
+                words = text.text().trim().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.4, // ems
+                y = text.attr("y"),
+                x = text.attr("x"),
+                dy = parseFloat(text.attr("dy")),
+                tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                }
+            }
+        });
+    }//wrap
+    //Text indicating at what % each level is
+    if (cfg.showText) {
+        var axisLabel = axisGrid.selectAll(".axisLabel")
+            .data(d3.range(1, (cfg.levels+1)).reverse())
+            .attr("x", 4)
+            .attr("y", function (d) {
+                return -d * radius / cfg.levels;
+            })
+            .attr("dy", "0.4em")
+            .attr("font-family", "sans-serif")
+            .style("font-size", "12px")
+            .attr("fill", "#111")
+            .text(function (d, i) {
+                var v = radius / cfg.levels * d;
+                if (cfg.markedLegend) {
+                    v = scaleMarkedLegend(rScale.invert(v));
+                }
+                // if (cfg.schema)
+                //     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
+                return Math.round(v);
+            });
+        axisLabel.exit().remove();
+        axisLabel.enter().append("text")
+            .attr("class", "axisLabel")
+            .attr("x", 4)
+            .attr("y", function (d) {
+                return -d * radius / cfg.levels;
+            })
+            .attr("dy", "0.2em")
+            .attr("font-family", "sans-serif")
+            .style("font-size", "12px")
+            .attr("fill", "#111")
+            .text(function (d, i) {
+                var v = radius / cfg.levels * d;
+                if (cfg.markedLegend) {
+                    v = scaleMarkedLegend(rScale.invert(v));
+                }
+                // if (cfg.schema)
+                //     v = d3.scaleLinear().range(cfg.schema[0].range).domain([0,1])(v);
+                return Math.round(v);
+            });
+        // var legendg = cfg.legend.map(function (d, i) {
+        //     return Object.keys(d).map(function (k) {
+        //         return {key: k, value: d[k], index: i}
+        //     })
+        // }).filter(d => d.length = 0);
+
+        // var subaxisg = axisGrid.selectAll(".axisLabelsub")
+        //     .data(cfg.schema);
+        // subaxisg.exit().remove();
+        //
+        // subaxisg.enter().append('g').attr('class', 'axisLabelsub');
+        // var subaxis = axisGrid.selectAll(".axisLabelsub");
+        // subaxis.selectAll('.axisLabelsubt')
+        //     .data(d => d)
+        //     .enter().append("text")
+        //     .attr("class", "axisLabelsubt")
+        //     .attr("x", function (d, i) {
+        //         return d.key * radius / cfg.levels * Math.cos(angleSlice[d.index] - Math.PI / 2);
+        //     })
+        //     .attr("y", function (d, i) {
+        //         return d.key * radius / cfg.levels * Math.sin(angleSlice[d.index] - Math.PI / 2);
+        //     })
+        //     // .attr("x", d => {4+d.key*radius/cfg.levels})
+        //     // .attr("y", function(d){return -d.key*radius/cfg.levels;})
+        //     .attr("dy", "0.2em")
+        //     .attr("font-family", "sans-serif")
+        //     .style("font-size", "12px")
+        //     .attr("fill", "#111")
+        //     .text(function (d) {
+        //         return d.value;
+        //     });
+    }
+    function correctId (id){
+        if (typeof (id) === "string") {
+            return id.replace(".", "");
+        }else {
+            return "Gen"
+        }
+    }
+}//RadarChart
