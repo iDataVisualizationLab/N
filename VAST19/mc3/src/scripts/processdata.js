@@ -27,8 +27,23 @@ var termsList = {"sewer_and_water": ["discharged", "discharge", "drain", "draina
 
     "medical": ["medical", "red cross", "food", "emergency", "urgent", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
 
-    "buildings": ["collapse", "housing", "house"]};
+    "buildings": ["collapse", "housing", "house"],
 
-var catergogry = [
-    'user','location','sewer_and_water','power/energy','roads_and_bridges','medical','buildings'
-]
+    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter" ],
+
+    "grounds": ["mudslide", "rupture", "landslides", "liquefaction",  "liquifactjheion"],
+
+    "flooding": ["tsunami", "flood"],
+
+    "aftershock": ["aftershock"],
+
+    "fire": ["fire", "smoke"]
+};
+
+var catergogry = ['user','location','hastash','userlink'];
+
+for (var d in termsList){
+    category.push(d);
+}
+
+

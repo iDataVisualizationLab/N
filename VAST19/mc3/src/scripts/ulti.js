@@ -20,9 +20,7 @@ function readMobileData(choice) {
 function readDatacsv(choice,type) {
     type = type||"json";
     return d3[type]("src/data/" + choice + "."+type, function (data) {
-        data.time = new Date(data.Timestamp);
-        delete data.Timestamp;
-        _.without(Object.keys(data),'time',' User-id','User-id','Units','Sensor-id','regions').forEach(k=>data[k] = (data[k]==="")?undefined:(+data[k]));
+        data.time = new Date(data.time);
         return data;
     });
 }
@@ -156,46 +154,7 @@ function createColorbox(g) {
                 'width': `${(1/n)*100}%`
             }})
 }
-// var sheet = document.createElement('style'),
-//     $rangeInput = $('.rangecustom input'),
-//     prefs = ['webkit-slider-runnable-track', 'moz-range-track', 'ms-track'];
-//
-// document.body.appendChild(sheet);
-//
-// var getTrackStyle = function (el) {
-//     var curVal = el.value,
-//         style = '';
-//     const number_item =$('.range-labels li').length
-//     const widthl = $('.range-labels').width();
-//     const val = (curVal)/number_item*100;
-//     // Set active label
-//     $('.range-labels li').removeClass('active selected');
-//
-//     var curLabel = $('.range-labels').find('li:nth-child(' + curVal + ')');
-//
-//     curLabel.addClass('active selected');
-//     curLabel.prevAll().addClass('selected');
-//
-//     // Change background gradient
-//     for (var i = 0; i < prefs.length; i++) {
-//         style += '.range {background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #fff ' + val + '%, #fff 100%)}';
-//         style += '.range input::-' + prefs[i] + '{background: linear-gradient(to right, #37adbf 0%, #37adbf ' + val + '%, #b2b2b2 ' + val + '%, #b2b2b2 100%)}';
-//     }
-//
-//     return style;
-// }
-//
-// // $rangeInput.on('input', function () {
-// //     sheet.textContent = getTrackStyle(this);
-// // });
-//
-// // Change input value on label click
-// $('.range-labels li').on('click', function () {
-//     var index = $(this).index();
-//
-//     $rangeInput.val(index + 1).trigger('input');
-//
-// });
+
 
 function createGradient(rg,limitcolor,arrColor) {
     rg.selectAll('stop').remove();
