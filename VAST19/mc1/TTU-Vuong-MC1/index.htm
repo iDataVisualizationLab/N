@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TTU VAST 2019 MC3</title>
+    <title> Ngan VAST 2019 MC1</title>
     <style>
         @import "styles.css";
     </style>
@@ -13,58 +13,60 @@
         <img src="images/ttu.jpg" class="ttu">
         <img src="images/idvl.png" class="idvl">
         <div class="title">
-            Entry Name:  <span style="font-weight: bold">"TTU-Nguyen-MC3"<br>
+            Entry Name:  <span style="font-weight: bold">"TTU-Vuong-MC1"<br>
             VAST Challenge 2019<br>
-            <span style="text-decoration: underline">Mini-Challenge 3<br><br></span> </span>
+            <span style="text-decoration: underline">Mini-Challenge 1<br><br></span> </span>
         </div>
 
         <h4><span>Team Members:</span></h4>
-        <span>Huyen Nguyen, IDV Lab, Texas Tech University, </span><span><a href="mailto:huyen.nguyen@ttu.edu">huyen.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
-        <span>Tommy Dang, IDV Lab, Texas Tech University, </span><span><a href="mailto:tommy.dang@ttu.edu">tommy.dang@ttu.edu</a></span>
+        <span>Ngan Vuong, iDV Lab, Texas Tech University, </span><span><a href="mailto:huyen.nguyen@ttu.edu">ngan.v.t.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
+        <span>Tommy Dang, iDV Lab, Texas Tech University, </span><span><a href="mailto:tommy.dang@ttu.edu">tommy.dang@ttu.edu</a></span>
 
         <h4>Student Team: <span style="font-weight: normal">YES</span></h4>
         <h4>Tools Used:</h4>
         <span>HTML, CSS, JavaScript<br> D3.js <br> GitHub: </span><span><a
-            href="https://idatavisualizationlab.github.io/VAST2019mc3/">https://idatavisualizationlab.github.io/VAST2019mc3/</a></span>
+            href="https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc1">https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc1</a></span>
 
         <h4>Approximately how many hours were spent working on this submission in total?</h4>
-        <span>320 hours.</span>
+        <span>100 hours</span>
 
         <h4>May we post your submission in the Visual Analytics Benchmark Repository after VAST Challenge 2019 is complete?<span style="font-weight: normal"> YES</span></h4>
 
         <h4>Video</h4>
         <span>
-            <a href="https://idatavisualizationlab.github.io/VAST2019mc3/">https://idatavisualizationlab.github.io/VAST2019mc3/</a>
+            <a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html">https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html</a>
         </span><br><br>
         <hr>
         <h4>System Overview</h4>
-        <img id="overviewFig" src="images/overview.png" class="full">
-        <p class="caption"><span>Figure 1. System overview</span></p>
-        <h4>Questions</h4>
-        <div>The City has been using Y*INT to communicate with its citizens, even post-earthquake. However, City
-            officials needs additional information to determine the best way to allocate emergency resources across
-            all neighborhoods of St. Himark. Your task, using your visual analytics on the community Y*INT data, is
-            to determine the types of problems that are occurring across the St. Himark. Then, advise the City on how
-            to prioritize the distribution of resources.  Keep in mind that not all sources on Y*INT are reliable,
-            and that priorities may change over time as the state of neighborhoods also changes.<br><br></div>
+        <img id="overviewFig" src="images/f1.png" class="full">
+        <p class="caption"><span>Figure 1. Our visual interface: (left) control panel, (top) Main view, and (bottom) St. Himark map </span></p>
+        <h4>Radar chart design:</h4>    
+        
 
-        <div class="question">1- Using  visual analytics, characterize conditions across the city and recommend how
-            resources
-            should be
-            allocated at 5 hours and 30 hours after the earthquake.  Include evidence from the data to support these
-            recommendations.  Consider how to allocate resources such as road crews, sewer repair crews, power, and rescue teams. Limit your response to 1000 words and 12 images.</div>
+        <img id="radarChart" src="images/f2.png" class="full">
+        <p class="caption"><span>Figure 2. Examples of Radar design for hourly multivariate summary of 3 regions: Palace Hills, Safe Town, and Southon.</span></p>
+
+        <div> Due to the limited screen display and a large number of data entries, we revise the radar chart to embed the transformed color scale directly into the inside area of the radar. Our customized radar adopts the box plot layout which shows the five-number summary: minimum (inner curve), first quartile, median (dashed curve), third quartile, and maximum (outer curve). This allows users to quickly spot the multivariate values (<i>shake intensitive</i> and various <i>types of damage</i>) as depicted in Figure 2. In the examples in the report show the hourly summary (from left to right) of various regions (top down) of St. Himark</div>
+    </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
+         <img id="radarChart" src="images/f3.png" class="full">
+         <p class="caption"><span>Figure 3. Radar controll: Color selection, radar band selection, radar value fitering, and angle vs. variable selection.</span></p>
+
+         <div> In the control panel, we allow users to fully customize the radar layout, including color scales (blue for low damage and red for high damage), radar inner and outer curves (min+max vs. q1+q3), value filtering (such as only high <i>shake intensitive</i>), and  angles of each dimension (how to order variables on the radar).</div>
+
+            <h4>Questions</h4>
+
+        <div class="question">1- Emergency responders will base their initial response on the earthquake shake map. Use visual analytics to determine how their response should change based on damage reports from citizens on the ground. How would you prioritize neighborhoods for response? Which parts of the city are hardest hit? Limit your response to 1000 words and 10 images.</div>
 
 
-        <div class="question">2 - Identify at least 3 times when conditions change in a way that warrants a re-allocation of
-            city
-            resources.  What were the conditions before and after the inflection point?  What locations were affected?  Which resources are involved? Limit your response to 1000 words and 10 images.</div>
 
 
-        <div class="question">3 - Take the pulse of the community.  How has the earthquake affected life in St. Himark?
-            What is the community experiencing outside the realm of the first two questions? Show decision makers summary information and relevant/characteristic examples. Limit your response to 800 words and 8 images.</div>
+        <div class="question">2 - Use visual analytics to show uncertainty in the data. Compare the reliability of neighborhood reports. Which neighborhoods are providing reliable reports? Provide a rationale for your response. Limit your response to 1000 words and 10 images.</div>
 
-        <div class="question">4 - The data for this challenge can be analyzed either as a
-            static collection or as a dynamic stream of data, as it would occur in a real emergency.  Describe how you analyzed the data - as a static collection or a stream.  How do you think this choice affected your analysis? Limit your response to 200 words and 3 images.</div>
+
+        <div class="question">3 - How do conditions change over time? How does uncertainty in change over time? Describe the key changes you see. Limit your response to 500 words and 8 images.</div>
 
 
     </div>
