@@ -27,16 +27,17 @@ function tooltipBox (data){
     let id = isNaN(+data.loc)?+data.loc.replace('s',''):+data.loc;
     let headertext = type==="Summary"? type: type+' - ID: '+id;
     d3.select('.tootltip_text').append('h6').text(headertext);
-    let table = d3.select('.tootltip_text').append('table').attr('class','tip-table');
-    table.append('thead').selectAll('th')
-        .data(['Measurment','Value']).enter().append('th').text(d=>d);
+    let table = d3.select('.tootltip_text').append('div').attr('class','tip-divtable')
+        .append('table').attr('class','tip-table');
+    // table.append('thead').selectAll('th')
+    //     .data(['Measurment','Value']).enter().append('th').text(d=>d);
     let mm = [
         {key:'minval',text:'Min'},
         {key:'maxval',text:'Max'},
         {key:'val',text:'Mean'},
-        {key:'q1',text:'Quantile 25%'},
-        {key:'q3',text:'Quantile 75%'},
-        {key:'std',text:'Standard Deviation'}
+        {key:'q1',text:'Q1'},
+        {key:'q3',text:'Q2'},
+        {key:'std',text:'Std'}
     ];
 
     let tr = table.append('tbody').selectAll('tr')

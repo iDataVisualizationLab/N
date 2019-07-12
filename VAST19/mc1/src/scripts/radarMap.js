@@ -328,6 +328,14 @@ d3.radarMap = function () {
             .attr('class','pannel')
             .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
         g.append("g")
+            .attr("class", "x gAxist grid")
+            .attr("transform", "translate(0, 10)")
+            .styles({
+                'stroke-width':'1px',
+                'stroke':'#ababab',
+                'stroke-dasharray': 1
+            });
+        g.append("g")
             .attr("class", "x gAxis")
             .attr("transform", "translate(0, 10)");
 
@@ -524,7 +532,7 @@ d3.radarMap = function () {
     function handledata(data){
         let arrN = [];
         data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.05,1]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="20"),e=>e.density)).range(radaropt.densityScale.domain());
         arrN.filter(e=>e.loc==="20").forEach(e=>{e.density_true = e.density;
             e.density = desnsityScale(e.density_true);
@@ -584,6 +592,10 @@ d3.radarMap = function () {
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
             .call(time_axis);
+        let timeAxis2 = g.select('.gAxist')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
         g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
 
@@ -612,6 +624,10 @@ d3.radarMap = function () {
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
             .call(time_axis);
+        let timeAxis2 = g.select('.gAxist')
+            .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
+            .transition()
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
         rowscale.range([0,radaropt.h]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
