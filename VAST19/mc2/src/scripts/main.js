@@ -762,7 +762,8 @@ function lineGraph(div,data,options){
 
 // 6. Y scale will use the randomly generate number
     var yScale = d3.scaleLinear()
-        .domain(d3.extent(data,d=>d.Value)) // input
+        .domain(globalScale.domain()) // input
+        // .domain(d3.extent(data,d=>d.Value)) // input
         .range([height, 0]); // output
 
 // 7. d3's line generator
