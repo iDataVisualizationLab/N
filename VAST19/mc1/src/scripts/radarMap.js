@@ -595,7 +595,7 @@ d3.radarMap = function () {
         let timeAxis2 = g.select('.gAxist')
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
-            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)));
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
         g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(d.loc)+')')
 
@@ -627,7 +627,7 @@ d3.radarMap = function () {
         let timeAxis2 = g.select('.gAxist')
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
-            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)));
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
         rowscale.range([0,radaropt.h]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());

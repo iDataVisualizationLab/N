@@ -599,7 +599,7 @@ d3.circleMap = function () {
         let timeAxis2 = g.select('.gAxist')
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
-            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)));
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
         g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+10+','+rowscale(rowMap[d.loc])+')')
         g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
@@ -636,7 +636,7 @@ d3.circleMap = function () {
         let timeAxis2 = g.select('.gAxist')
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
-            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)));
+            .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
 
 
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());

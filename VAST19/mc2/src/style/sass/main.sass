@@ -480,9 +480,16 @@ body.light
   h6
     font-size: 12px
     padding-left: 5px
+  .tip-divtable
+    margin: 10px
+    position: absolute
+    bottom: 0
   table
-    border: #cccc
-    margin: 5px
+    width: unset
+    border: 1px solid #cccc
+    thead
+      background-color: #f1f1f1
+      border-bottom: unset
     thead,tr
       line-height: 0.5rem
       td,th
@@ -490,4 +497,4 @@ body.light
     tbody
       tr
         td:nth-child(even)
-          align: right
+          text-align: right
