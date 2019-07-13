@@ -515,7 +515,7 @@ function changeShape(d){
 }
 
 function changeStaticsMode(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
         old.minmax = d.value=="true";
         old.quantile = d.value=="true";
         old.median = d.value=="false";
@@ -523,20 +523,29 @@ function changeStaticsMode(d){
     CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeMinMax(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
     old.minmax = d.checked;
     CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeQuantile(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
     old.quantile = d.checked;
     CircleMapplot.radaropt({summary: old}).draw();
 
 }
 function changeMean(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
     old.mean = d.checked;
     CircleMapplot.radaropt({summary: old}).draw();
+}
+let old;
+function changeStd(d){
+    old = CircleMapplot.radaropt().summary;
+    if (d.checked) {
+        CircleMapplot.radaropt({summary: {std:true}}).draw();
+    }else {
+        CircleMapplot.radaropt({summary: old}).draw();
+    }
 }
 
 function changeFitscreen(d){

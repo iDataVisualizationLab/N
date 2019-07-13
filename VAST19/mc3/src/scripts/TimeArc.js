@@ -135,12 +135,12 @@ d3.TimeArc = function () {
             // .charge(-12)
             //.linkStrength(5)
             // .linkDistance(0)
-            .force("link", d3.forceLink().distance(0).strength(5))
+            .force("link", d3.forceLink().distance(0))
             // .gravity(0.01)
             .force('x', d3.forceX(graphicopt.widthG() / 2).strength(0.015))
             .force('y',  d3.forceY(graphicopt.heightG() / 2).strength(0.015))
             //.friction(0.95)
-            .alpha(0.05)
+            // .alphaTarget(0.9)
             .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2)) ;
         // .size([width, height]);
         colorCatergory.domain(catergogryList.map(d=>d.key));
@@ -257,7 +257,7 @@ d3.TimeArc = function () {
             detactTimeSeries();
         });
 
-
+        force.restart();
         for (var i = 0; i < termArray.length / 10; i++) {
             optArray.push(termArray[i].term);
         }
@@ -1153,30 +1153,28 @@ d3.TimeArc = function () {
         // var y4 = 62;
         var rr = 6;
         let yscale = d3.scaleLinear().range([20,34]);
-        let legendg = svg.selectAll('g.legendg')
+        let legendg = svg.selectAll('g.nodeLegend')
             .data(catergogryList)
             .enter()
             .append('g')
-            .attr('class','legendg')
+            .attr('class','nodeLegend')
             .attr('transform',(d,i)=>'translate('+xx+','+yscale(i)+')');
 
         legendg.append("circle")
-            .attr("class", "nodeLegend")
             .attr("cx", 0)
             .attr("cy", 0)
             .attr("r", rr)
             .style("fill",d=>colorCatergory(d.key));
 
         legendg.append("text")
-            .attr("class", "nodeLegend")
             .attr("x", xx+10)
             .attr("y", 0)
-            .text(d=>d.text)
             .attr("dy", ".21em")
             .attr("font-family", "sans-serif")
             .attr("font-size", "11px")
             .style("text-anchor", "left")
-            .style("fill",d=>colorCatergory(d.key));
+            .style("fill",d=>colorCatergory(d.key))
+            .text(d=>{console.log(d.key); return d.text});
     }
 
     function removeColorLegend() {

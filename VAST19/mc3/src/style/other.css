@@ -254,6 +254,10 @@ table.dataTable th:not(:first-child) {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.linkArc {
+    fill: none;
+    stroke: black;
+}
 /*.radarChart_tip {*/
     /*border: 0.5px solid black;*/
     /*border-radius: 5px;*/
