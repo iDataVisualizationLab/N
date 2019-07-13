@@ -45,6 +45,7 @@ function setupSliderScale(svg) {
 
   slider = svg.append("g")
     .attr("class", "slider")
+    .attr("transform", "translate(0," + ySlider + ")")
     .call(brush);
 
   slider.selectAll(".extent,.resize")

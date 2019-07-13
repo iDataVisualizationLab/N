@@ -1,0 +1,62 @@
+.timearc .nodeText {
+    background: #91877b;
+    text-shadow: 0 11px 10 rgba(255, 255, 255, 1);
+}
+
+.timearc .node {
+    stroke: #fff;
+    stroke-width: 1px;
+    stroke-opacity: 0.6;
+}
+.timearc .link {
+    stroke: #555;
+    stroke-opacity: .9;
+}
+.timearc .linkArc {
+    fill: none;
+    stroke: #000;
+}
+
+.timearc .node text {
+    font: 9px helvetica;
+}
+
+<!-- For the slider -->
+.timearc .axis {
+    font: 5 sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.timearc .axis .domain {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .25;
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+
+.timearc .axis .halo {
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.timearc .slider .handle {
+    fill: #666;
+    stroke: #000;
+    stroke-opacity: .25;
+    stroke-width: 1px;
+    cursor: crosshair;
+}
+
+
+.timearc h3 {
+    color: #1ABC9C;
+    text-align:center;
+    font-style: italic;
+    font-size: 14px;
+    font-family: "Helvetica";
+}

@@ -120,7 +120,8 @@ d3.TimeArc = function () {
     timeArc.init = function(){
 //---End Insert------
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
-        svg.attrs({
+        svg.classed('timearc',true)
+            .attrs({
             width: graphicopt.width,
             height: graphicopt.height,
             // overflow: "visible",
@@ -137,11 +138,11 @@ d3.TimeArc = function () {
             // .linkDistance(0)
             .force("link", d3.forceLink().distance(0))
             // .gravity(0.01)
-            .force('x', d3.forceX(graphicopt.widthG() / 2).strength(0.015))
-            .force('y',  d3.forceY(graphicopt.heightG() / 2).strength(0.015))
+            .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2))
+            .force('x', d3.forceX(0).strength(0.015))
+            .force('y',  d3.forceY(0).strength(0.015))
             //.friction(0.95)
             // .alphaTarget(0.9)
-            .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2));
         force.stop();
         // .size([width, height]);
         colorCatergory.domain(catergogryList.map(d=>d.key));
@@ -562,7 +563,7 @@ d3.TimeArc = function () {
             nod.maxTimeIndex = termArray3[i].isConnectedmaxTimeIndex;
             nod.month = termArray3[i].isConnectedmaxTimeIndex;
             nod.x = xStep + xScale(nod.month);   // 2016 initialize x position
-            nod.y = height / 2;
+            nod.y = graphicopt.heightG() / 2;
             if (nodeY_byName[nod.name] != undefined)
                 nod.y = nodeY_byName[nod.name];
 
@@ -732,7 +733,7 @@ d3.TimeArc = function () {
         }
 
         // var linear = (150+numNode)/200;
-        var hhh = Math.min(height / numNode, 20);
+        var hhh = Math.min(graphicopt.heightG() / numNode, 20);
 
         yScale = d3.scaleLinear()
             .range([0, hhh * 1.25])
@@ -1092,7 +1093,11 @@ d3.TimeArc = function () {
             return 0;
         });
 
-        var step = Math.min((height - 25) / (numNode + 1), 15);
+        // var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
+        if (graphicopt.fixscreence)
+            var step = (graphicopt.heightG() - 25) / (numNode + 1);
+        else
+            var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
         //var totalH = termArray.length*step;
         for (var i = 0; i < termArray.length; i++) {
             nodes[termArray[i].nodeId].y = 12 + i * step;
@@ -1274,7 +1279,7 @@ d3.TimeArc = function () {
             .style("fill", "#aaa")
             .style("fill-opacity", 0.2)
             .attr("x", xStep)
-            .attr("y", height-25)
+            .attr("y", graphicopt.heightG()-25)
             .attr("width", XGAP_* listX.length)
             .attr("height", 16)
             .on("mouseout", function(){
@@ -1381,8 +1386,8 @@ d3.TimeArc = function () {
             .style("fill-opacity", 0)
             .attr("x", xStep)
             .attr("y", 0)
-            .attr("width", width)
-            .attr("height", height)
+            .attr("width", graphicopt.widthG())
+            .attr("height", graphicopt.heightG())
             .on('mousemove', function(){
                 coordinate = d3.mouse(this);
                 lMonth = Math.floor((coordinate[0]-xStep)/XGAP_);

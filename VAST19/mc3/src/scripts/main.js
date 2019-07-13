@@ -18,7 +18,7 @@ let width = 2000,
         heightView: function(){return this.height*this.scalezoom},
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-        fixscreence: false,
+        fixscreence: true,
         dotRadius: 3,
         group_mode: 'outlier',
         display:{
