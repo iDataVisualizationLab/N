@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> Ngan VAST 2019 MC1</title>
+    <title> Ngan VAST 2019 MC2</title>
     <style>
         @import "styles.css";
     </style>
@@ -13,9 +13,9 @@
         <img src="images/ttu.jpg" class="ttu">
         <img src="images/idvl.png" class="idvl">
         <div class="title">
-            Entry Name:  <span style="font-weight: bold">"TTU-Vuong-MC1"<br>
+            Entry Name:  <span style="font-weight: bold">"TTU-Vuong-MC2"<br>
             VAST Challenge 2019<br>
-            <span style="text-decoration: underline">Mini-Challenge 1<br><br></span> </span>
+            <span style="text-decoration: underline">Mini-Challenge 2<br><br></span> </span>
         </div>
 
         <h4><span>Team Members:</span></h4>
@@ -25,9 +25,9 @@
         <h4>Student Team: <span style="font-weight: normal">YES</span></h4>
         <h4>Tools Used:</h4>
         <span>HTML, CSS, JavaScript<br> D3.js <br> GitHub: </span><span><a
-            href="https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc1">https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc1</a>>
+            href="https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc2">https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc2</a>
             <br> Web demo: </span><span><a
-            href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html</a></span>
+            href="https://idatavisualizationlab.github.io/N/VAST19/mc2/index.html">https://idatavisualizationlab.github.io/N/VAST19/mc2/index.html</a></span>
 
         <h4>Approximately how many hours were spent working on this submission in total?</h4>
         <span>100 hours</span>
@@ -36,117 +36,124 @@
 
         <h4>Video</h4>
         <span>
-            <a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html">https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html</a>
+            <a href="https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html">https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html</a>
         </span>
         <br><br>
         <hr>
         <h4>System Overview</h4>
-        <img id="overviewFig" src="images/f1.png" class="full">
+        <img id="overviewFig" src="images/f_0_1.png" class="full">
         <p class="caption"><span>Figure 1. Our visual interface: (left) control panel, (top) Main view, and (bottom) St. Himark map </span></p>
         <h4>Radar chart design:</h4>    
         
 
-        <img id="radarChart" src="images/f2.png" class="full">
-        <p class="caption"><span>Figure 2. Examples of Radar design for hourly multivariate summary of 3 regions: Palace Hills, Safe Town, and Southon.</span></p>
+        <img id="radarChart" src="images/f_0_2.png" class="full">
+        <p class="caption"><span>Figure 2. Examples of circular chart design for hourly summary of 3 mobile sensors: mobile sensor 10, mobile sensor 21, and mobile sensor 45.</span></p>
 
-        <div> Due to the limited screen display and a large number of data entries, we revise the radar chart to embed the transformed color scale directly into the inside area of the radar. Our customized radar adopts the box plot layout which shows the five-number summary: minimum (inner curve), first quartile, mean (dashed curve), third quartile, and maximum (outer curve). This allows users to quickly spot the multivariate values (<i>shake intensitive</i> and various <i>types of damage</i>) as depicted in Figure 2. In the examples in the report show the hourly summary (from left to right) of various regions (top-down) of St. Himark</div>
+        <div> Due to the large number of sensor readings, we revise the Rosemary chart to embed the transformed color scale directly into the inside area of the pies. Our customized chart adopts the box plot layout which shows the five-number summary: minimum (inner ring), first quartile (Q1), mean (dashed curve), third quartile (Q3), and maximum (outer ring). This allows users to quickly spot the ranges of sensor readings as depicted in Figure 2. The examples in the report will show the hourly summary (from left to right) of various sensors (top-down) of St. Himark</div>
     </div>    
 </page>
 <page size="A3">
      <div class="pageContent">
-         <img id="radarChart" src="images/f3.png" class="full">
-         <p class="caption"><span>Figure 3. Radar control: Color selection, radar band selection, radar value filtering, and angle vs. variable selection.</span></p>
-
-         <div> In the control panel, we allow users to fully customize the radar layout, including color scales (blue for low damage and red for high damage), radar inner and outer curves (min+max vs. q1+q3), value filtering (such as only high <i>shake intensitive</i>), and  angles of each dimension (how to order variables on the radar). We intentionally put the <i>shake intensitive</i> on the top of the radar chart as this is an important measurement.</div>
-
-            <h4>Questions</h4>
-
-        <div class="question">1- Emergency responders will base their initial response on the earthquake shake map. Use visual analytics to determine how their response should change based on damage reports from citizens on the ground. How would you prioritize neighborhoods for response? Which parts of the city are hardest hit? Limit your response to 1000 words and 10 images.</div>
-
-        <img id="radarChart" src="images/f4.png" class="full">
-         <p class="caption"><span>Figure 4. Overview of all regions, all types of damage for the entire time span.</span></p>
-
-         <div> Figure 4 shows the overview of St. Himark for the entire time span (5 days). The orientation of 6 variables is shown in Figure 2. Inner curve is Q1 and Outer curve is Q3 of each variable. Regions are listed top-down. The last row summarizes all regions by hour. </div>
-
-        <img id="radarChart" src="images/f5.png" class="full">
-         <p class="caption"><span>Figure 5. Overview of all regions: Filter <i>shake intensitive</i> &ge; 3.</span></p> 
-         <div> By filtering only the report with <i>shake intensitive</i> &ge; 3 (using the radar control in Figure 3), we can easily detect 3 earthquake events as shown in Figure 5. The border thickness of the radar charts encodes the number of reports in that hour. In particular, the first earthquake is the lightest while the second earthquake is the most serious (encoded by the height of <i>shake intensitive</i>, the top variable) and received the most attention (most number of the report) as also shown in the city summary at the bottom row. </div>
-    </div>    
-</page>
-<page size="A3">
-     <div class="pageContent">
-
-          <img id="radarChart" src="images/f9.png" class="full">
-          <img id="radarChart" src="images/f10.png" class="full">
-         <p class="caption"><span>Figure 6. Summary of all damage categories for each region. Curves from inside out are minimum, first quartile, mean (dashed curve), third quartile, and maximum.</span></p> 
-         <div> By clicking on the thumbnails in front of region names, we can obtain an enlarged version which summarizes different types of damages reported by citizens:<br>
-            - The <i>First row</i> is the 4 regions with the highest <i>shake intensitive</i> with the mean around 5.<br>
-             - The <i>Second row</i> is the 4 regions with the 2nd highest <i>shake intensitive</i> with the mean around 2.5. These regions are geographically close on the map. <br>
-             - Wilson Forest does not have medical reports since it has very few residents and no hospital. <br><br>  
-         </div>
-
-   </div>    
-</page>
-<page size="A3">
-     <div class="pageContent">
-
-         <img id="radarChart" src="images/f_power.png" class="full">
-         <img id="radarChart" src="images/f_road.png" class="full">
-         <img id="radarChart" src="images/f_medical.png" class="full">
-         <img id="radarChart" src="images/f_building.png" class="full">
-         <img id="radarChart" src="images/f_water.png" class="full">
-         <p class="caption"><span>Figure 7. Overview of all regions: Filtering by damage categories (> 8).</span></p> 
-         <div> We now investigate the individual damage categories. Figure 7 shows the results of applying the filter on different types of damage. We can notice that<br>
-                    - <i>Power damage</i> is high for several regions, highest for Old Town and Scenic Vista.<br>
-                    - <i>Road damage</i> is highest for Old Town, Scenic Vista, and Broadview.<br>
-                    - <i>Medical damage</i> is only reported in the regions with hospitals, and hardest hit for Old Town at <i>1am on Thu 09</i> in the <b>2nd earthquake</b>.<br>
-                    - <i>Building damage</i> is hardest hit for Broadview at <i>11pm on Wed 08</i>.<br>
-                    - <i>Sewer and water damage</i> is strongly reported for Old Town at the end of the <b>3rd earthquake</b> and for Scenic Vista at the end of the <b>2nd earthquake</b>.<br><br>
-          </div>
-
          
 
-   </div>    
+        <h4>Questions</h4>
+
+        <div class="question">1- Visualize radiation measurements over time from both static and mobile sensors to identify areas where radiation over background is detected. Characterize changes over time.</div>
+
+        <img id="radarChart" src="images/f_1_1.png" class="full">
+         <p class="caption"><span>Figure 3. Overview of all regions, both dynamic and static sensors for the entire time span.</span></p>
+
+         <div> Figure 3 shows the overview of St. Himark for the entire time span (5 days). Regions are listed top-down. The last row summarizes all sensors by hour. We can easily notice the high sensor readings connected to the earthquakes. <br><br></div>
+
+        <img id="radarChart" src="images/f_1_2.png" class="full">
+         <p class="caption"><span>Figure 4. Sensor readings for Wilson Forest.</span></p> 
+         When users mouse over a region on the map, all sensor readings for that region will be highlighted in the main view. Figure 4 is an example when Wilson Forest is selected. 
+
+ </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
+         <img id="radarChart" src="images/f_1_3.png" class="full">
+         <p class="caption"><span>Figure 5. Sensor readings for Old Town.</span></p> 
+
+         <div> Figure 5 is an example when Old Town is selected. The arrow points to 4pm on Wed 08 with the high readings of the dynamic sensor 10. <br><br></div>
+    
+
+        <div class="question">2 - Use visual analytics to represent and analyze uncertainty in the measurement of radiation across the city. <br>
+a. Compare uncertainty of the static sensors to the mobile sensors. What anomalies can you see? Are there sensors that are too uncertain to trust?<br>
+b. Which regions of the city have greater uncertainty of radiation measurement? Use visual analytics to explain your rationale.<br>
+c. What effects do you see in the sensor readings after the earthquake and other major events? What effect do these events have on uncertainty?<br>
+        </div>
+
+        <img id="radarChart" src="images/f_2_1.png" class="full">
+         <p class="caption"><span>Figure 6. Overview of all sensors by every hour.</span></p> 
+        <div> To show the uncertainty in the data, we refine the Rosemary chart to show min vs max (at the bottom) and Q1 vs. Q3 (on the top). As shown in Figure 6, 50 dynamic sensors are listed on the top and statics and 8 static sensors are listed at the bottom, the thumnails next to the sensor ids summarize the sensor reading over the entire time span. The larger bands indicate higher variance in the sensors reading over the given period of time. The static sensors tend to be more reliable than the dynamic sensors by looking at the thumbnails or the time series charts. A group of high values and high variances sensors are highlighted in the red box on the left.<br><br> 
+
+        </div> 
+    </div>     
 </page>
 <page size="A3">
      <div class="pageContent">
 
-        <div class="question">2 - Use visual analytics to show uncertainty in the data. Compare the reliability of neighborhood reports. Which neighborhoods are providing reliable reports? Provide a rationale for your response. Limit your response to 1000 words and 10 images.</div>
+        <img id="radarChart" src="images/f_2_2.png" class="full">
+         <p class="caption"><span>Figure 7. Details view of Dynamic sensor 3.</span></p> 
+        <div> By investigating of the such sensors, we found out that the dynamic sensor 3 is not reliable as it oftenly has fuctuated readings as show in the line graph within the popup window. The trajectory of the car is also printed on the St. Himark map.<br><br>     
 
-        <img id="radarChart" src="images/ff8.png" class="full">
-         <p class="caption"><span>Figure 8. Overview of all regions by every 5 minutes.</span></p> 
-        <div> To show the uncertainty in the data, we refine the radar chart for every 5 minutes. We argue that the conditions might significantly vary within an hour but not within a few minutes. By comparing the damage reported within 5 minutes (using Q1 and Q3 statistics depicted as the thickness of the bands on radar graphs), we would be able to visualize the reliability of the reports on the same region. Figure 8 shows the overview of St. Himark by reports of every 5 minutes. The reliability of information varies by location and by time.<br><br>
+            As also shown in Figure 4 and Figure 5, Wilson Forest and Old Town have high sensor readings and high variance from 3pm to 9pm on Wed 08 and from 6pm of Thu 09 to 6am on Fri 10 respectively. These are also the time periods of 2nd and the 3rd earthquakes occured to St. Himark. Therefore, earthquakes may have the negative impacts on the radiation levels. <br><br>
           </div>
 
-
-          <img id="radarChart" src="images/ff9.png" class="full">
-         <p class="caption"><span>Figure 9. Overview of all regions by every 5 minutes.</span></p> 
-        <div> We first zoom into the 2nd Earthquake as depicted in Figure 9. Thicker bands mean the strong variance between Q1 and Q3 in a given 5 minutes. Thinner bands indicate Q1 and Q3 values of the damages are similar (small difference). We can easily realize that<br> 
-            - The reports in many regions are unreliable before the earthquake (Box 1 and Box 2) but become reliable during the earthquake (Box 3 and Box 4) <br>
-            - The reports in a few regions (such as Palace Hills) are still unreliable during the earthquake (Box 5).  <br><br>
-          </div>
-   </div>    
-</page>
-<page size="A3">
-     <div class="pageContent">
-        <img id="radarChart" src="images/ff10.png" class="full">
-         <p class="caption"><span>Figure 10. Overview of all regions by every 5 minutes.</span></p> 
-        <div> Similar stories can be also derived in the last earthquake as shown in Figure 10.<br> 
-            - The reports in Old Town (Box 1) and Downtown (Box 2) become more reliable during the earthquake (Box 3 and Box 4) <br>
-            - The reports of Palace Hills are still unreliable during the 3rd earthquake (Box 5).  <br><br>
-          </div>
   
+ </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">
+        <div class="question">3 - Given the uncertainty you observed in question 2, are the radiation measurements reliable enough to locate areas of concern?<br>
+a. Highlight potential locations of contamination, including the locations of contaminated cars. Should St. Himark officials be worried about contaminated cars moving around the city?<br>
+b. Estimate how many cars may have been contaminated when coolant leaked from the Always Safe plant. Use visual analysis of radiation measurements to determine if any have left the area.<br>
+c. Indicated where you would deploy more sensors to improve radiation monitoring in the city. Would you recommend more static sensors or more mobile sensors or both? Use your visualization of radiation measurement uncertainty to justify your recommendation.<br> </div>
 
-        <div class="question">3 - How do conditions change over time? How does uncertainty in change over time? Describe the key changes you see. Limit your response to 500 words and 8 images.</div>
+        <img id="radarChart" src="images/f_3_1.png" class="full">
+        <img id="radarChart" src="images/f_3_2.png" class="full">
+        <img id="radarChart" src="images/f_3_3.png" class="full">
+    </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">    
+        <img id="radarChart" src="images/f_3_4.png" class="full">
+        <img id="radarChart" src="images/f_3_5.png" class="full">
+        <img id="radarChart" src="images/f_3_6.png" class="full">
+    </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">   
 
-        <img id="radarChart" src="images/5minutes1.png" class="full">
-        <img id="radarChart" src="images/5minutes2.png" class="full">
-        <img id="radarChart" src="images/5minutes3.png" class="full">
-         <p class="caption"><span>Figure 8. Overview of all regions by every 5 minutes for the earthquake events.</span></p> 
-        <div> Now, we zoom into the earthquakes: each radar chart represents a 5-minute summary. Figure 8 depicts that: <br>
-                    - The reports are more consistent across all locations during the earthquakes (citizens were more honest when the earthquake happened). <br>
-                    - The reports for earthquake 2 and 3 are more consistent compared to those of earthquake 1. 
+         <img id="radarChart" src="images/f_3_7.png" class="full">
+        <img id="radarChart" src="images/f_3_8.png" class="full">
+         <p class="caption"><span>Figure 8. Detailed readings of 8 dynamic sensors (with high readings): sensors 21, 22, 24, 25, 27, 28, and 45.</span></p> 
+        <div> Figure 8 shows the deatils of 8 sensors with with high readings on Fri 10. Here are some observations: <br>
+                    - They all have similar routes at the end: passing through Scenic Vista and then Wilson Forest. <br>
+                    - Sensor 45 originated from Safe Town, close to the Always Safe plant, and may carried some radiation from there. Sensor 45 might be attached to the contaminated car. <br>
+         </div>  
+
+ </div>    
+</page>
+<page size="A3">
+     <div class="pageContent">   
+
+         <img id="radarChart" src="images/f_3_10.png" class="full">
+         <p class="caption"><span>Figure 9. Detailed readings of 2 dynamic sensors (with high readings): sensors 13 and 32.</span></p> 
+        <div> Figure 8 shows the deatils of 2 sensors. They both came in and contaiminated, and then leaving in a few hours. <br><br>
+         </div>  
+         
+         
+          <div>           
+             We decided to look into the hour when the readings started raising, shown in the next Figure (Figure 10).   <br><br>    
           </div>
+
+        <div class="question">4 - Summarize the state of radiation measurements at the end of the available period. Use your novel visualizations and analysis approaches to suggest a course of action for the city. Use visual analytics to compare the static sensor network to the mobile sensor network. What are the strengths and weaknesses of each approach? How do they support each other? <br> </div>
+
+         <div class="question">5 - The data for this challenge can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Describe how you analyzed the data - as a static collection or a stream. How do you think this choice affected your analysis?  <br> </div>
+  
            
     </div>
 </page>
