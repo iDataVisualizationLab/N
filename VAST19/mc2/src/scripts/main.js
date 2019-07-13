@@ -194,7 +194,7 @@ $(document).ready(function(){
             }, 0);
         });
         d3.select("#DarkTheme").on("click", switchTheme);
-        changeRadarColor(colorArr.Radar[0]);
+        changeRadarColor(colorArr.Radar[2]);
         changeClusterColor(colorArr.Cluster[0]);
         // color scale create
         creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
