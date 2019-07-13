@@ -14,7 +14,7 @@ function setupSliderScale(svg) {
     .range([xSlider, 120]);
 
   brush = d3.brushX(xScaleSlider)
-    .extent([0,0],[valueSlider, valueSlider])
+    .extent([[xSlider,-5],[120, 5]])
     .on("brush", brushed)
     .on("end", brushend);
 
