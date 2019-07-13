@@ -917,8 +917,8 @@ d3.TimeArc = function () {
     }
 
 
-    function searchNode() {
-        searchTerm = document.getElementById('search').value;
+    function searchNode(value) {
+        searchTerm = value;
         valueSlider = 2;
         handle.attr("cx", xScaleSlider(valueSlider));
 
@@ -1106,6 +1106,8 @@ d3.TimeArc = function () {
 
         updateTransition(1000);
     }
+
+    timeArc.searchNode = searchNode;
 
     timeArc.svg = function (_) {
         return arguments.length ? (svg = _, timeArc) : svg;
