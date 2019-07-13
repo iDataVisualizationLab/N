@@ -70,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="652" column="13" selection-start-line="652" selection-start-column="13" selection-end-line="652" selection-end-column="13" />
+            <state relative-caret-position="181">
+              <caret line="334" column="22" selection-start-line="334" selection-start-column="8" selection-end-line="334" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -89,7 +89,7 @@
         <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="176" column="29" lean-forward="true" selection-start-line="176" selection-start-column="29" selection-end-line="176" selection-end-column="29" />
+              <caret line="176" column="29" selection-start-line="176" selection-start-column="29" selection-end-line="176" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -124,8 +124,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/radarMap.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="510" column="38" selection-start-line="510" selection-start-column="26" selection-end-line="510" selection-end-column="38" />
+            <state relative-caret-position="-91">
+              <caret line="633" column="15" selection-start-line="633" selection-start-column="8" selection-end-line="633" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -150,8 +150,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.time</find>
-      <find>timescale</find>
       <find>UpdateGradient</find>
       <find>color</find>
       <find>tool_tip</find>
@@ -180,6 +178,8 @@
       <find>onmouseoverRadar</find>
       <find>rowscale</find>
       <find>scaleOrdinal</find>
+      <find>arrIcon</find>
+      <find>dataIcon</find>
     </findStrings>
     <replaceStrings>
       <replace>RadarMapplot</replace>
@@ -363,12 +363,12 @@
       <workItem from="1562894229783" duration="375000" />
       <workItem from="1562895813090" duration="4454000" />
       <workItem from="1562904307743" duration="1292000" />
-      <workItem from="1562957340971" duration="6575000" />
+      <workItem from="1562957340971" duration="7748000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="143168000" />
+    <option name="totallyTimeSpent" value="144341000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
@@ -631,13 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="652" column="13" selection-start-line="652" selection-start-column="13" selection-end-line="652" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/style/sass/main.sass">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -655,14 +648,21 @@
     <entry file="file://$PROJECT_DIR$/src/scripts/ulti.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="176" column="29" lean-forward="true" selection-start-line="176" selection-start-column="29" selection-end-line="176" selection-end-column="29" />
+          <caret line="176" column="29" selection-start-line="176" selection-start-column="29" selection-end-line="176" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="334" column="22" selection-start-line="334" selection-start-column="8" selection-end-line="334" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/radarMap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="510" column="38" selection-start-line="510" selection-start-column="26" selection-end-line="510" selection-end-column="38" />
+        <state relative-caret-position="-91">
+          <caret line="633" column="15" selection-start-line="633" selection-start-column="8" selection-end-line="633" selection-end-column="15" />
         </state>
       </provider>
     </entry>

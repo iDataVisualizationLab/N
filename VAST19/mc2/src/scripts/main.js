@@ -331,7 +331,7 @@ function init() {
 
         // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
         // databyLoc.push({'key':'-1',values:dataSumAll});
-        // handleDataIcon (databyLoc);
+        handleDataIcon (summaryBySensor);
 
         CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
         handleOutlier (data,currentService);
@@ -608,15 +608,18 @@ function handleDataSumAll (data){ // nest data
     return arr;
 }
 function handleDataIcon (data){ // nest data
-    data.sort((a,b)=>(+a.key)-(+b.key));
+    data.sort((a,b)=>(dataRaw.location[a.key])-(dataRaw.location[b.key]));
     // if (serviceid===-1)
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
     data.forEach(t=> {
-        t.arr = objecttoArrayRadar(t.value||t.values);
-        t.arr.density = (t.value||t.values).num;
-        t.arr.loc = t.key;
-        t.arr.id = fixstr(t.key+'_all');
+        t.arr = objecttoArrayRadar(t);
+        t.arr.density = (t).num;
+        t.arr.loc = t['Sensor-id'];
+        t.arr.users = (t).users;
+        t.arr.regions = (t).regions;
+        t.arr.data = (t);
+        t.arr.id = fixstr(t['Sensor-id']+'_all');
     });
 
     CircleMapplot.dataIcon(data);
