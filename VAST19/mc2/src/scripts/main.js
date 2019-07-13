@@ -539,6 +539,9 @@ function changeMean(d){
 }
 
 function changeFitscreen(d){
+    if (d.checked){
+        $('#displayHeight')[0].value = RadarMapopt.height;
+    }
     CircleMapplot.fitscreen(d.checked);
 }
 function changeHeightMap(d) {
