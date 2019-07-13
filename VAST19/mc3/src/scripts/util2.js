@@ -110,7 +110,7 @@ let ulti = function() {
 
     var listX
     ulti.drawTimeLegend = () => {
-        listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
+        listX = timeScaleIndex.ticks(timeformat).map( (t,i)=>{
                 return {
                     x: xStep + xScale(i),
                     year: t
@@ -163,18 +163,15 @@ let ulti = function() {
             });
     }
 
-    function updateTimeLegend() {
+    ulti.updateTimeLegend = () => {
         console.log("updateTimeLegend");
-        var listX = [];
-        for (var i = minYear; i < maxYear; i++) {
-            for (var j = 0; j < 12; j++) {
-                var xx = xStep + xScale((i - minYear) * 12 + j);
-                var obj = {};
-                obj.x = xx;
-                obj.year = i;
-                listX.push(obj);
+        listX = timeScaleIndex.ticks(timeformat).map( (t,i)=>{
+                return {
+                    x: xStep + xScale(i),
+                    year: t
+                }
             }
-        }
+        )
 
         svg.selectAll(".timeLegendLine").data(listX).transition().duration(250)
             .style("stroke-dasharray", function (d, i) {
@@ -336,13 +333,13 @@ let ulti = function() {
                 coordinate = d3.mouse(this);
                 lMonth = Math.floor((coordinate[0] - xStep) / XGAP_);
                 updateTransition(250);
-                updateTimeLegend();
+                ulti.updateTimeLegend();
             });
         updateTransition(250);
-        updateTimeLegend();
+        ulti.updateTimeLegend();
     }
 
-    function getColor(category, count) {
+    ulti.getColor = (category, count)=>{
         var minSat = 80;
         var maxSat = 180;
         var percent = count / maxCount[category];
@@ -361,7 +358,7 @@ let ulti = function() {
 
     }
 
-    function colorFaded(d) {
+    ulti.colorFaded = (d) => {
         var minSat = 80;
         var maxSat = 230;
         var step = (maxSat - minSat) / maxDepth;
@@ -459,7 +456,7 @@ let ulti = function() {
     ulti.timeformat = function (_) {
         return arguments.length ? (timeformat = _, ulti) : timeformat;
     };
-ulti.XGAP_ = function (_) {
+    ulti.XGAP_ = function (_) {
         return arguments.length ? (XGAP_ = _, ulti) : XGAP_;
     };
 
@@ -481,6 +478,18 @@ ulti.XGAP_ = function (_) {
 
     ulti.timeScaleIndex = function (_) {
         return arguments.length ? (timeScaleIndex = _, ulti) : timeScaleIndex;
+    };
+
+    ulti.updateTransition = function (_) {
+        return arguments.length ? (updateTransition = _, ulti) : updateTransition;
+    };
+
+    ulti.maxCount = function (_) {
+        return arguments.length ? (maxCount = _, ulti) : maxCount;
+    };
+
+    ulti.tran = function (_) {
+        return arguments.length ? (maxCount = _, ulti) : maxCount;
     };
 
     ulti.graphicopt = function (_) {

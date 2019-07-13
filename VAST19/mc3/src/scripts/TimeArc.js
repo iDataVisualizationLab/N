@@ -60,8 +60,7 @@ d3.TimeArc = function () {
     function updateTimeScale() {
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
-        timeScaleIndex.range([0, timeScaleIndex.ticks(runopt.timeformat).length -1]);
-        ultiFunc.timeScaleIndex(timeScaleIndex);
+        timeScaleIndex.range([0, timeScaleIndex.ticks(runopt.timeformat).length]);
     }
 
     var totalTimeSteps = 12 * (maxYear - minYear);
@@ -118,7 +117,6 @@ d3.TimeArc = function () {
             return m * XGAP_;
         }
     }
-    let ultiFunc = ulti();
     timeArc.init = function(){
 //---End Insert------
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
@@ -137,15 +135,15 @@ d3.TimeArc = function () {
             // .charge(-12)
             //.linkStrength(5)
             // .linkDistance(0)
-            .force("link", d3.forceLink().distance(0).strength(5))
+            .force("link", d3.forceLink().distance(0))
             // .gravity(0.01)
             .force('x', d3.forceX(graphicopt.widthG() / 2).strength(0.015))
             .force('y',  d3.forceY(graphicopt.heightG() / 2).strength(0.015))
             //.friction(0.95)
-            .alphaTarget(0.05)
+            .alpha(0.05)
             .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2)) ;
         // .size([width, height]);
-        ultiFunc.graphicopt({width:graphicopt.widthG(),height:graphicopt.heightG()}).svg(svg).xStep(xStep).XGAP_(XGAP_).xScale(xScale);
+        colorCatergory.domain(catergogryList.map(d=>d.key));
 //---Insert-------
     };
 
@@ -180,7 +178,7 @@ d3.TimeArc = function () {
         arr.forEach(function (d) {
             // Process date
             d.date = new Date(d["time"]);
-            var m = timeScaleIndex(runopt.timeformat(d.date));
+            var m = Math.round(timeScaleIndex(runopt.timeformat(d.date)));
             d.__timestep__ = m;
             d.__terms__ = {};
             for (let c in d.category) {
@@ -217,10 +215,10 @@ d3.TimeArc = function () {
 
         readTermsAndRelationships();
 
-        ultiFunc.dataLength(data.length).drawColorLegend();
-        ultiFunc.drawTimeLegend();
-        ultiFunc.drawTimeBox(); // This box is for brushing
-        ultiFunc.drawLensingButton();
+        drawColorLegend();
+        drawTimeLegend();
+        drawTimeBox(); // This box is for brushing
+        drawLensingButton();
 
         computeNodes();
         computeLinks();
@@ -236,7 +234,7 @@ d3.TimeArc = function () {
         force.force('link').distance = (function (l) {
             if (searchTerm != "") {
                 if (l.source.name == searchTerm || l.target.name == searchTerm) {
-                    var order = isContainedInteger(listMonth, l.m)
+                    var order = isContainedInteger(listMonth, l.__timestep__)
                     return (12 * order);
                 }
                 else
@@ -254,9 +252,7 @@ d3.TimeArc = function () {
         force.nodes(nodes)
             .force('link').links(links);
 
-        force.tick =  function () {
-            update();
-        };
+        force.on("tick", timeArc.update);
         force.on("end", function () {
             detactTimeSeries();
         });
@@ -268,11 +264,15 @@ d3.TimeArc = function () {
         optArray = optArray.sort();
         $(function () {
             $("#search").autocomplete({
-                source: optArray
+                data: Array2Object(optArray)
             });
         });
     };
-
+    function Array2Object (arr){
+        let temp={};
+        arr.forEach(d=>temp[d]=null);
+        return temp;
+    }
     function recompute() {
         var bar = document.getElementById('progBar'),
             fallback = document.getElementById('downloadProgress'),
@@ -336,27 +336,28 @@ d3.TimeArc = function () {
         // removeList["russia"] =1;
         // removeList["china"] =1;
 
-        removeList["barack obama"] = 1;
-        removeList["john mccain"] = 1;
-        removeList["mitt romney"] = 1;
-        //  removeList["hillary clinton"] =1;
-        //  removeList["paul ryan"] =1;
-        removeList["sarah palin"] = 1;
-        removeList["israel"] = 1;
-
-
-        removeList["source"] = 1;
-        removeList["person"] = 1;
-        removeList["location"] = 1;
-        removeList["organization"] = 1;
-        removeList["miscellaneous"] = 1;
-
-        removeList["muckreads weekly deadly force"] = 1
-        removeList["propublica"] = 1;
-        removeList["white this alabama judge has figured out how"] = 1;
-        removeList["dea ’s facebook impersonato"] = 1;
-        removeList["dismantle roe"] = 1;
-        removeList["huffington post"] = 1;
+        removeList["<Location with-held due to contract>"] = 1;
+        // removeList["barack obama"] = 1;
+        // removeList["john mccain"] = 1;
+        // removeList["mitt romney"] = 1;
+        // //  removeList["hillary clinton"] =1;
+        // //  removeList["paul ryan"] =1;
+        // removeList["sarah palin"] = 1;
+        // removeList["israel"] = 1;
+        //
+        //
+        // removeList["source"] = 1;
+        // removeList["person"] = 1;
+        // removeList["location"] = 1;
+        // removeList["organization"] = 1;
+        // removeList["miscellaneous"] = 1;
+        //
+        // removeList["muckreads weekly deadly force"] = 1
+        // removeList["propublica"] = 1;
+        // removeList["white this alabama judge has figured out how"] = 1;
+        // removeList["dea ’s facebook impersonato"] = 1;
+        // removeList["dismantle roe"] = 1;
+        // removeList["huffington post"] = 1;
 
 
         termArray = [];
@@ -412,7 +413,6 @@ d3.TimeArc = function () {
 
         //if (searchTerm)
         numberInputTerms = termArray.length;
-        ultiFunc.numberInputTerms(numberInputTerms);
         console.log("numberInputTerms=" + numberInputTerms);
 
         // Compute relationship **********************************************************
@@ -427,29 +427,26 @@ d3.TimeArc = function () {
         relationship = {};
         relationshipMaxMax = 0;
         data2.forEach(function (d) {
-            var year = d.date.getFullYear();
-            if (year >= minYear && year <= maxYear) {
-                var m = d.m;
-                for (var term1 in d) {
-                    if (selectedTerms[term1]) {   // if the term is in the selected 100 terms
-                        for (var term2 in d) {
-                            if (selectedTerms[term2]) {   // if the term is in the selected 100 terms
-                                if (!relationship[term1 + "__" + term2]) {
-                                    relationship[term1 + "__" + term2] = new Object();
-                                    relationship[term1 + "__" + term2].max = 1;
+            var m = d.__timestep__;
+            for (var term1 in d.__terms__) {
+                if (selectedTerms[term1]) {   // if the term is in the selected 100 terms
+                    for (var term2 in d.__terms__) {
+                        if (selectedTerms[term2]) {   // if the term is in the selected 100 terms
+                            if (!relationship[term1 + "__" + term2]) {
+                                relationship[term1 + "__" + term2] = new Object();
+                                relationship[term1 + "__" + term2].max = 1;
+                                relationship[term1 + "__" + term2].maxTimeIndex = m;
+                            }
+                            if (!relationship[term1 + "__" + term2][m])
+                                relationship[term1 + "__" + term2][m] = 1;
+                            else {
+                                relationship[term1 + "__" + term2][m]++;
+                                if (relationship[term1 + "__" + term2][m] > relationship[term1 + "__" + term2].max) {
+                                    relationship[term1 + "__" + term2].max = relationship[term1 + "__" + term2][m];
                                     relationship[term1 + "__" + term2].maxTimeIndex = m;
-                                }
-                                if (!relationship[term1 + "__" + term2][m])
-                                    relationship[term1 + "__" + term2][m] = 1;
-                                else {
-                                    relationship[term1 + "__" + term2][m]++;
-                                    if (relationship[term1 + "__" + term2][m] > relationship[term1 + "__" + term2].max) {
-                                        relationship[term1 + "__" + term2].max = relationship[term1 + "__" + term2][m];
-                                        relationship[term1 + "__" + term2].maxTimeIndex = m;
 
-                                        if (relationship[term1 + "__" + term2].max > relationshipMaxMax) // max over time
-                                            relationshipMaxMax = relationship[term1 + "__" + term2].max;
-                                    }
+                                    if (relationship[term1 + "__" + term2].max > relationshipMaxMax) // max over time
+                                        relationshipMaxMax = relationship[term1 + "__" + term2].max;
                                 }
                             }
                         }
@@ -652,7 +649,6 @@ d3.TimeArc = function () {
                 return getColor(d.group, d.max);
             });
 
-
     }
 
     function computeLinks() {
@@ -724,7 +720,7 @@ d3.TimeArc = function () {
                             var l = new Object();
                             l.source = sourceNodeId;
                             l.target = targetNodeId;
-                            l.m = m;
+                            l.__timestep__ = m;
                             //l.value = linkScale(relationship[term1+"__"+term2][m]); 
                             links.push(l);
                             if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2)
@@ -748,7 +744,7 @@ d3.TimeArc = function () {
         links.forEach(function (l) {
             var term1 = nodes[l.source].name;
             var term2 = nodes[l.target].name;
-            var month = l.m;
+            var month = l.__timestep__;
             l.value = linkScale(relationship[term1 + "__" + term2][month]);
         });
 
@@ -807,8 +803,8 @@ d3.TimeArc = function () {
         links.forEach(function (l) {
             if (searchTerm != "") {
                 if (nodes[l.source].name == searchTerm || nodes[l.target].name == searchTerm) {
-                    if (isContainedInteger(listMonth, l.m) < 0)
-                        listMonth.push(l.m);
+                    if (isContainedInteger(listMonth, l.__timestep__) < 0)
+                        listMonth.push(l.__timestep__);
                 }
             }
         });
@@ -838,14 +834,14 @@ d3.TimeArc = function () {
                         if (!list[l.target.name]) {
                             list[l.target.name] = new Object();
                             list[l.target.name].count = 1;
-                            list[l.target.name].year = l.m;
+                            list[l.target.name].year = l.__timestep__;
                             list[l.target.name].linkcount = l.count;
                         }
                         else {
                             list[l.target.name].count++;
                             if (l.count > list[l.target.name].linkcount) {
                                 list[l.target.name].linkcount = l.count;
-                                list[l.target.name].year = l.m;
+                                list[l.target.name].year = l.__timestep__;
                             }
                         }
                         return 1;
@@ -854,14 +850,14 @@ d3.TimeArc = function () {
                         if (!list[l.source.name]) {
                             list[l.source.name] = new Object();
                             list[l.source.name].count = 1;
-                            list[l.source.name].year = l.m;
+                            list[l.source.name].year = l.__timestep__;
                             list[l.source.name].linkcount = l.count;
                         }
                         else {
                             list[l.source.name].count++;
                             if (l.count > list[l.source.name].linkcount) {
                                 list[l.source.name].linkcount = l.count;
-                                list[l.source.name].year = l.m;
+                                list[l.source.name].year = l.__timestep__;
                             }
                         }
                         return 1;
@@ -962,13 +958,13 @@ d3.TimeArc = function () {
             return "M" + d.target.x + "," + d.target.y + "A" + dr + "," + dr + " 0 0,1 " + d.source.x + "," + d.source.y;
     }
 
-    function update() {
+    timeArc.update = ()=> {
         nodes.forEach(function (d) {
             // if (searchTerm!="")
             //    d.x += (xScale(d.month)-d.x)*0.1;
             //else
             //     d.x += (xScale(d.month)-d.x)*0.005;
-            d.x += (width / 2 - d.x) * 0.005;
+            d.x += (graphicopt.widthG() / 2 - d.x) * 0.005;
 
             if (d.parentNode >= 0) {
                 d.y += (nodes[d.parentNode].y - d.y) * 0.5;
@@ -1016,7 +1012,7 @@ d3.TimeArc = function () {
         // if (force.alpha()<0.03)
         //     force.stop();
 
-        ultiFunc.updateTimeLegend();
+        updateTimeLegend();
     }
 
     function updateTransition(durationTime) {
@@ -1072,8 +1068,8 @@ d3.TimeArc = function () {
                 return area(d.monthly);
             });
         linkArcs.transition().duration(250).attr("d", linkArc);
-        ultiFunc.updateTimeLegend();
-        ultiFunc.updateTimeBox(durationTime);
+        updateTimeLegend();
+        updateTimeBox(durationTime);
     }
 
     function detactTimeSeries() {
@@ -1128,6 +1124,10 @@ d3.TimeArc = function () {
     timeArc.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, timeArc) : returnEvent;
     };
+
+    timeArc.catergogryList = function (_) {
+        return arguments.length ? (catergogryList = _, timeArc) : catergogryList;
+    };
     timeArc.graphicopt = function (_) {
         if (arguments.length) {
             for(var i in _){
@@ -1137,6 +1137,405 @@ d3.TimeArc = function () {
         }else
             return graphicopt;
     };
+
+
+    //<editor-fold decs = funcs>
+    var diameter = 1000,
+        radius = diameter / 2,
+        innerRadius = radius - 120;
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    // Add color legend
+    function drawColorLegend() {
+        var xx = 6;
+        // var y1 = 20;
+        // var y2 = 34;
+        // var y3 = 48;
+        // var y4 = 62;
+        var rr = 6;
+        let yscale = d3.scaleLinear().range([20,34]);
+        let legendg = svg.selectAll('g.legendg')
+            .data(catergogryList)
+            .enter()
+            .append('g')
+            .attr('class','legendg')
+            .attr('transform',(d,i)=>'translate('+xx+','+yscale(i)+')');
+
+        legendg.append("circle")
+            .attr("class", "nodeLegend")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", rr)
+            .style("fill",d=>colorCatergory(d.key));
+
+        legendg.append("text")
+            .attr("class", "nodeLegend")
+            .attr("x", xx+10)
+            .attr("y", 0)
+            .text(d=>d.text)
+            .attr("dy", ".21em")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px")
+            .style("text-anchor", "left")
+            .style("fill",d=>colorCatergory(d.key));
+    }
+
+    function removeColorLegend() {
+        svg.selectAll(".nodeLegend").remove();
+    }
+
+    function drawTimeLegend() {
+        listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
+                return {
+                    x: xStep + xScale(i),
+                    year: t
+                }
+            }
+        );
+
+        svg.selectAll(".timeLegendLine").data(listX)
+            .enter().append("line")
+            .attr("class", "timeLegendLine")
+            .style("stroke", "000")
+            .style("stroke-dasharray", "1, 2")
+            .style("stroke-opacity", 1)
+            .style("stroke-width", 0.2)
+            .attr("x1", function(d){ return d.x; })
+            .attr("x2", function(d){ return d.x; })
+            .attr("y1", function(d){ return 0; })
+            .attr("y2", function(d){ return height; });
+        svg.selectAll(".timeLegendText").data(listX)
+            .enter().append("text")
+            .attr("class", "timeLegendText")
+            .style("fill", "#000000")
+            .style("text-anchor","start")
+            .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
+            .attr("x", function(d){ return d.x; })
+            .attr("y", function(d,i) {
+                if (i%12==0)
+                    return height-7;
+                else
+                    return height-15;
+            })
+            .attr("dy", ".21em")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .text(function(d,i) {
+                if (i%12==0)
+                    return d.year;
+                else
+                    return months[i%12];
+            });
+    }
+    let listX;
+    function updateTimeLegend() {
+        console.log("updateTimeLegend");
+        listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
+                return {
+                    x: xStep + xScale(i),
+                    year: t
+                }
+            }
+        )
+
+        svg.selectAll(".timeLegendLine").data(listX).transition().duration(250)
+            .style("stroke-dasharray",  function(d,i){
+                if (!isLensing)
+                    return "1, 2";
+                else
+                    return i%12==0 ? "2, 1" : "1, 3"})
+            .style("stroke-opacity", function(d,i){
+                if (i%12==0)
+                    return 1;
+                else {
+                    if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
+                        return 1;
+                    else
+                        return 0;
+                }
+            })
+            .attr("x1", function(d){return d.x; })
+            .attr("x2", function(d){ return d.x; });
+        svg.selectAll(".timeLegendText").data(listX).transition().duration(250)
+            .style("fill-opacity", function(d,i){
+                if (i%12==0)
+                    return 1;
+                else {
+                    if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
+                        return 1;
+                    else
+                        return 0;
+                }
+            })
+            .attr("x", function(d,i){
+                return d.x; });
+    }
+
+    function drawTimeBox(){
+        svg.append("rect")
+            .attr("class", "timeBox")
+            .style("fill", "#aaa")
+            .style("fill-opacity", 0.2)
+            .attr("x", xStep)
+            .attr("y", height-25)
+            .attr("width", XGAP_* listX.length)
+            .attr("height", 16)
+            .on("mouseout", function(){
+                isLensing = false;
+                coordinate = d3.mouse(this);
+                lMonth = Math.floor((coordinate[0]-xStep)/XGAP_);
+                updateTransition(250);
+            })
+            .on("mousemove", function(){
+                isLensing = true;
+                coordinate = d3.mouse(this);
+                lMonth = Math.floor((coordinate[0]-xStep)/XGAP_);
+                updateTransition(250);
+            });
+    }
+
+    function updateTimeBox(durationTime){
+        var maxY=0;
+        for (var i=0; i< nodes.length; i++) {
+            if (nodes[i].y>maxY)
+                maxY = nodes[i].y;
+        }
+        svg.selectAll(".timeBox").transition().duration(durationTime)
+            .attr("y", maxY+12);
+        svg.selectAll(".timeLegendText").transition().duration(durationTime)
+            .style("fill-opacity", function(d,i){
+                if (i%12==0)
+                    return 1;
+                else {
+                    if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
+                        return 1;
+                    else
+                        return 0;
+                }
+            })
+            .attr("y", function(d,i) {
+                if (i%12==0)
+                    return maxY+21;
+                else
+                    return maxY+21;
+            })
+            .attr("x", function(d,i){
+                return d.x; });
+    }
+
+    var buttonLensingWidth =80;
+    var buttonheight =15;
+    var roundConner = 4;
+    var colorHighlight = "#fc8";
+    var buttonColor = "#ddd";
+
+    function drawLensingButton(){
+        svg.append('rect')
+            .attr("class", "lensingRect")
+            .attr("x", 1)
+            .attr("y", 170)
+            .attr("rx", roundConner)
+            .attr("ry", roundConner)
+            .attr("width", buttonLensingWidth)
+            .attr("height", buttonheight)
+            .style("stroke", "#000")
+            .style("stroke-width", 0.1)
+            .style("fill", buttonColor)
+            .on('mouseover', function(d2){
+                svg.selectAll(".lensingRect")
+                    .style("fill", colorHighlight);
+            })
+            .on('mouseout', function(d2){
+                svg.selectAll(".lensingRect")
+                    .style("fill", buttonColor);
+            })
+            .on('click', turnLensing);
+        svg.append('text')
+            .attr("class", "lensingText")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px")
+            .attr("x", buttonLensingWidth/2)
+            .attr("y", 181)
+            .text("Lensing")
+            .style("text-anchor", "middle")
+            .style("fill", "#000")
+            .on('mouseover', function(d2){
+                svg.selectAll(".lensingRect")
+                    .style("fill", colorHighlight);
+            })
+            .on('mouseout', function(d2){
+                svg.selectAll(".lensingRect")
+                    .style("fill", buttonColor);
+            })
+            .on('click', turnLensing);
+    }
+    function turnLensing() {
+        isLensing = !isLensing;
+        svg.selectAll('.lensingRect')
+            .style("stroke-width", function(){
+                return isLensing ? 1 : 0.1;
+            });
+        svg.selectAll('.lensingText')
+            .style("font-weight", function() {
+                return isLensing ? "bold" : "";
+            });
+        svg.append('rect')
+            .attr("class", "lensingRect")
+            .style("fill-opacity", 0)
+            .attr("x", xStep)
+            .attr("y", 0)
+            .attr("width", width)
+            .attr("height", height)
+            .on('mousemove', function(){
+                coordinate = d3.mouse(this);
+                lMonth = Math.floor((coordinate[0]-xStep)/XGAP_);
+                updateTransition(250);
+                updateTimeLegend();
+            });
+        updateTransition(250);
+        updateTimeLegend();
+    }
+    let colorCatergory = d3.scaleOrdinal(d3.schemeCategory10);
+    function getColor(category, count) {
+        var minSat = 80;
+        var maxSat = 180;
+        var percent = count/maxCount[category];
+        var sat = minSat+Math.round(percent*(maxSat-minSat));
+
+        return colorCatergory(category)
+        // if (category=="person")
+        //     return "rgb("+sat+", "+255+", "+sat+")" ; // leaf node
+        // else if (category=="location")
+        //     return "rgb("+255+", "+sat+", "+sat+")" ; // leaf node
+        // else if (category=="organization")
+        //     return "rgb("+sat+", "+sat+", "+255+")" ; // leaf node
+        // else if (category=="miscellaneous")
+        //     return "rgb("+(215)+", "+(215)+", "+(sat)+")" ; // leaf node
+        // else
+        //     return "#000000";
+
+    }
+
+    function colorFaded(d) {
+        var minSat = 80;
+        var maxSat = 230;
+        var step = (maxSat-minSat)/maxDepth;
+        var sat = Math.round(maxSat-d.depth*step);
+
+        //console.log("maxDepth = "+maxDepth+"  sat="+sat+" d.depth = "+d.depth+" step="+step);
+        return d._children ? "rgb("+sat+", "+sat+", "+sat+")"  // collapsed package
+            : d.children ? "rgb("+sat+", "+sat+", "+sat+")" // expanded package
+                : "#aaaacc"; // leaf node
+    }
+
+
+    function getBranchingAngle1(radius3, numChild) {
+        if (numChild<=2){
+            return Math.pow(radius3,2);
+        }
+        else
+            return Math.pow(radius3,1);
+    }
+
+    function getRadius(d) {
+        // console.log("scaleCircle = "+scaleCircle +" scaleRadius="+scaleRadius);
+        return d._children ? scaleCircle*Math.pow(d.childCount1, scaleRadius)// collapsed package
+            : d.children ? scaleCircle*Math.pow(d.childCount1, scaleRadius) // expanded package
+                : scaleCircle;
+        // : 1; // leaf node
+    }
+
+
+    function childCount1(level, n) {
+        count = 0;
+        if(n.children && n.children.length > 0) {
+            count += n.children.length;
+            n.children.forEach(function(d) {
+                count += childCount1(level + 1, d);
+            });
+            n.childCount1 = count;
+        }
+        else{
+            n.childCount1 = 0;
+        }
+        return count;
+    };
+
+    function childCount2(level, n) {
+        var arr = [];
+        if(n.children && n.children.length > 0) {
+            n.children.forEach(function(d) {
+                arr.push(d);
+            });
+        }
+        arr.sort(function(a,b) { return parseFloat(a.childCount1) - parseFloat(b.childCount1) } );
+        var arr2 = [];
+        arr.forEach(function(d, i) {
+            d.order1 = i;
+            arr2.splice(arr2.length/2,0, d);
+        });
+        arr2.forEach(function(d, i) {
+            d.order2 = i;
+            childCount2(level + 1, d);
+            d.idDFS = nodeDFSCount++;   // this set DFS id for nodes
+        });
+
+    };
+
+    d3.select(self.frameElement).style("height", diameter + "px");
+
+    /*
+    function tick(event) {
+      link_selection.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+      var force_influence = 0.9;
+      node_selection
+        .each(function(d) {
+          d.x += (d.treeX - d.x) * (force_influence); //*event.alpha;
+          d.y += (d.treeY - d.y) * (force_influence); //*event.alpha;
+        });
+     // circles.attr("cx", function(d) { return d.x; })
+      //    .attr("cy", function(d) { return d.y; });
+
+    }*/
+
+
+// Toggle children on click.
+    function click(d) {
+
+    }
+
+    /*
+    function collide(alpha) {
+      var quadtree = d3.geom.quadtree(tree_nodes);
+      return function(d) {
+        quadtree.visit(function(quad, x1, y1, x2, y2) {
+        if (quad.point && (quad.point !== d) && (quad.point !== d.parent) && (quad.point.parent !== d)) {
+             var rb = getRadius(d) + getRadius(quad.point),
+            nx1 = d.x - rb,
+            nx2 = d.x + rb,
+            ny1 = d.y - rb,
+            ny2 = d.y + rb;
+
+            var x = d.x - quad.point.x,
+                y = d.y - quad.point.y,
+                l = Math.sqrt(x * x + y * y);
+              if (l < rb) {
+              l = (l - rb) / l * alpha;
+              d.x -= x *= l;
+              d.y -= y *= l;
+              quad.point.x += x;
+              quad.point.y += y;
+            }
+          }
+          return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+        });
+      };
+    }
+    */
+
+    //</funcs>
     return timeArc;
 }
 
