@@ -1174,7 +1174,7 @@ d3.TimeArc = function () {
             .attr("font-size", "11px")
             .style("text-anchor", "left")
             .style("fill",d=>colorCatergory(d.key))
-            .text(d=>{console.log(d.key); return d.text});
+            .text(d=>d.key);
     }
 
     function removeColorLegend() {
