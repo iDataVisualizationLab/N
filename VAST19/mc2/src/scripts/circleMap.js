@@ -14,7 +14,8 @@ d3.circleMap = function () {
             widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
             heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
             dotRadius: 2,
-            summary: {size:30}
+            summary: {size:30},
+            fitscreen:true
         },
         radaropt = {
             summary:{quantile:true,minmax:true},
@@ -647,15 +648,16 @@ d3.circleMap = function () {
 
 
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrIcon,e=>e.density_true)).range(radaropt.densityScale.domain());
-        // arrIcon.forEach(e=>{
-        //     e.density = desnsityScale(e.density_true);
-        //     e.text = e.loc;
-        // });
-        arrIcon = _.unique(data,d=>d.loc);
+        arrIcon.forEach(e=>{
+            e.density = desnsityScale(e.density_true);
+            e.text = e.loc;
+        });
+
+        // arrIcon = _.unique(data,d=>d.loc);
         arrIcon.sort((a,b)=>rowMap[a.loc]-rowMap[b.loc]);
         let lables = g.selectAll(".linkLable_textg")
             .data(arrIcon,d=>d.loc);
-        lables.exit();
+        lables.exit().remove();
 
         let Nlabel = lables.enter().append('g')
             .attr('class','linkLable_textg');
@@ -664,24 +666,24 @@ d3.circleMap = function () {
             .attr('class','linkLable_text');
 
         Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
-            .attr('x',-radaropt.w*2-10)
+            .attr('x',radaropt.w)
             .style('font-size',"11px")
             .style('fill',"currentColor")
             .attr('dy',"1.5em")
             .attr('text-anchor',"start")
             .text(d=>isNaN(+d.loc)?(d.loc!=='all'?('Static - '+d.loc.replace('s','')):'All Sensor'):('Mobile - '+d.loc));
 
-        // Nlabel.append('g')
-        //     .attr('class',d=>'linkLable_radar '+fixstr(d.id));
-        //
-        // Nlabel.merge(lables).select('.linkLable_radar')
-        //     .attr('class',d=>'linkLable_radar '+fixstr(d.id))
-            // .on('mouseover',mouseoverEvent)
-            // .on('mouseleave',mouseleaveEvent)
-            // .each(d=>
-            // CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
+        Nlabel.append('g')
+            .attr('class',d=>'linkLable_radar '+fixstr(d.id));
 
-        Nlabel.merge(lables).attr('transform',d=>'translate('+10+','+rowscale(rowMap[d.loc])+')');
+        Nlabel.merge(lables).select('.linkLable_radar')
+            .attr('class',d=>'linkLable_radar '+fixstr(d.id))
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
+            .each(d=>
+            CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
+
+        Nlabel.merge(lables).attr('transform',d=>'translate('+(-radaropt.w*3)+','+rowscale(rowMap[d.loc])+')');
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);

@@ -87,7 +87,7 @@ let width = 2000,
         {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true},
             {val: 'soil',type:'custom',label: 'RedYelBlu'},],
         Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'Paired',type:'d3',label: 'Blue2Red'}]};
-let arrColor = colorScaleList.rainbow;
+let arrColor = colorScaleList.soil;
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw,dataBytime,currentService =0;
@@ -194,7 +194,7 @@ $(document).ready(function(){
             }, 0);
         });
         d3.select("#DarkTheme").on("click", switchTheme);
-        changeRadarColor(colorArr.Radar[0]);
+        changeRadarColor(colorArr.Radar[2]);
         changeClusterColor(colorArr.Cluster[0]);
         // color scale create
         creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
@@ -331,7 +331,7 @@ function init() {
 
         // databyLoc = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['Sensor-id']);
         // databyLoc.push({'key':'-1',values:dataSumAll});
-        // handleDataIcon (databyLoc);
+        handleDataIcon (summaryBySensor);
 
         CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
         handleOutlier (data,currentService);
@@ -436,6 +436,7 @@ function initRadarMap () {
  RadarMapopt.svg.call(tool_tip);
  CircleMapplot.graphicopt(RadarMapopt);
  CircleMapplot.svg(RadarMapopt.svg).dispatch(dispatch).init();
+    $('#displayHeight')[0].value = RadarMapopt.height;
 
 }
 
@@ -514,31 +515,43 @@ function changeShape(d){
 }
 
 function changeStaticsMode(d){
-    let old = CircleMapplot.radaropt().summary;
-        old.minmax = d.checked;
-        old.quantile = d.checked;
-        old.median = !d.checked;
-        old.std = !d.checked;
+    old = CircleMapplot.radaropt().summary;
+        old.minmax = d.value=="true";
+        old.quantile = d.value=="true";
+        old.median = d.value=="false";
+        old.std = d.value=="false";
     CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeMinMax(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
     old.minmax = d.checked;
     CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeQuantile(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
     old.quantile = d.checked;
     CircleMapplot.radaropt({summary: old}).draw();
 
 }
 function changeMean(d){
-    let old = CircleMapplot.radaropt().summary;
+    old = CircleMapplot.radaropt().summary;
     old.mean = d.checked;
     CircleMapplot.radaropt({summary: old}).draw();
 }
+let old;
+function changeStd(d){
+    old = CircleMapplot.radaropt().summary;
+    if (d.checked) {
+        CircleMapplot.radaropt({summary: {std:true}}).draw();
+    }else {
+        CircleMapplot.radaropt({summary: old}).draw();
+    }
+}
 
 function changeFitscreen(d){
+    if (d.checked){
+        $('#displayHeight')[0].value = RadarMapopt.height;
+    }
     CircleMapplot.fitscreen(d.checked);
 }
 function changeHeightMap(d) {
@@ -608,15 +621,18 @@ function handleDataSumAll (data){ // nest data
     return arr;
 }
 function handleDataIcon (data){ // nest data
-    data.sort((a,b)=>(+a.key)-(+b.key));
+    data.sort((a,b)=>(dataRaw.location[a.key])-(dataRaw.location[b.key]));
     // if (serviceid===-1)
     //     listopt.limitColums =[0,dataRaw.TimeMatch.length];
 
     data.forEach(t=> {
-        t.arr = objecttoArrayRadar(t.value||t.values);
-        t.arr.density = (t.value||t.values).num;
-        t.arr.loc = t.key;
-        t.arr.id = fixstr(t.key+'_all');
+        t.arr = objecttoArrayRadar(t);
+        t.arr.density = (t).num;
+        t.arr.loc = t['Sensor-id'];
+        t.arr.users = (t).users;
+        t.arr.regions = (t).regions;
+        t.arr.data = (t);
+        t.arr.id = fixstr(t['Sensor-id']+'_all');
     });
 
     CircleMapplot.dataIcon(data);
@@ -666,13 +682,13 @@ function onmouseoverRadar (d) {
                 tempStore.loc = d.loc;
                 tempStore.data=data;
                 tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
-                onEnableCar (tempStore.dataShort);
-                lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
+                onEnableCar (d.time?tempStore.dataShort:tempStore.data);
+                lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
             });
         }else {
             tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
-            onEnableCar(tempStore.dataShort);
-            lineGraph('.lineChart_tip', tempStore.dataShort, {w: 400, h: 200});
+            onEnableCar(d.time?tempStore.dataShort:tempStore.data);
+            lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
         }
     }else {
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);

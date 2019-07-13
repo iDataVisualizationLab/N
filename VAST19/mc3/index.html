@@ -384,6 +384,20 @@
             <div class="col s12 m12">
                 <div class="col s12 m12">
                     <div class="card-image center-align relative" id="tSNE">
+                        <input type="checkbox" id="checkbox1" value="value2" class="check" onclick="TimeArc.update()">
+                        <label for="checkbox1">Area graph only</label>
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <input id="search">
+                        <button type="button" onclick="searchNode()">Search</button>
+
+                        <progress value="0" max="100" id="progBar">
+    <span id="downloadProgress">
+        <!-- Your fallback goes here -->
+    </span>
+                        </progress>
+                        <label id="progUpdate">
+                            <!-- Success Message -->
+                        </label>
                         <svg id="RadarMapcontent" class="active"></svg>
                     </div>
                 </div>

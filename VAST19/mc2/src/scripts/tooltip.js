@@ -36,7 +36,8 @@ function tooltipBox (data){
         {key:'maxval',text:'Max'},
         {key:'val',text:'Mean'},
         {key:'q1',text:'Q1'},
-        {key:'q3',text:'Q2'},
+        {key:'q3',text:'Q3'},
+        {key:'median',text:'Median'},
         {key:'std',text:'Std'}
     ];
 

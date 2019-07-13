@@ -215,6 +215,13 @@ function CircleChart(id, data, options) {
         .startAngle(0)
         .endAngle(Math.PI*2);
 
+    var drawStdLine = d3.arc()
+        .innerRadius(0)
+        .outerRadius(function(d) {
+            return rScale(d.std||d)||undefinedValue; })
+        .startAngle(0)
+        .endAngle(Math.PI*2);
+
     var radarLineMedian = d3.arc()
         .innerRadius(0)
         .outerRadius(function(d) {
@@ -311,7 +318,7 @@ function CircleChart(id, data, options) {
             .append("path")
             .attr("class", "radarStroke outlying")
             .call(drawOutlying);
-    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile||cfg.summary.std||cfg.summary.median)){
+    }else if (cfg.gradient && cfg.summary && (cfg.summary.minmax||cfg.summary.quantile||(cfg.summary.std&&cfg.summary.median))){
         function drawMeanLine(paths){
             return paths
                 .attr("d", d =>radarLine(d))
@@ -402,12 +409,12 @@ function CircleChart(id, data, options) {
             blobWrapperg.select('clipPath')
                 .select('path')
                 .transition('expand').ease(d3.easePolyInOut)
-                .attr("d", d => radarLine(d));
+                .attr("d", d => cfg.summary.std? drawStdLine(d):radarLine(d));
             //Create the outlines
             blobWrapper.append("clipPath")
                 .attr("id", (d, i) => "sum" + correctId(id))
                 .append("path")
-                .attr("d", d => radarLine(d));
+                .attr("d", d => cfg.summary.std? drawStdLine(d):radarLine(d));
             blobWrapper.append("rect")
                 .style('fill', 'url(#rGradient2)')
                 .attr("clip-path", (d, i) => "url(#sum" + correctId(id) + ")")
@@ -417,7 +424,7 @@ function CircleChart(id, data, options) {
                 .attr("height", (radius) * 2);
             blobWrapper.append("path")
                 .attr("class", "radarStroke")
-                .attr("d", d => radarLine(d))
+                .attr("d", d => cfg.summary.std? drawStdLine(d):radarLine(d))
                 .style("fill", "none")
                 .transition()
                 .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px")

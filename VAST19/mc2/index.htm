@@ -140,7 +140,7 @@
 
                                 <label>
                                     <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeFitscreen(this)">
+                                    <input type="checkbox" onchange="changeFitscreen(this)" checked>
                                     <span class="lever"></span>
                                     <span class="false">On</span>
                                 </label>
@@ -172,17 +172,20 @@
                     <div class="collapsible-header" style="padding-top: 0px;"><span>Radar control</span></div>
                     <div class="collapsible-body">
                         <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Measurement: </label>
-                            <p class="switch col s7" id ="displayMinMax">
-
-                                <label>
-                                    <span class="true">Std</span>
-                                    <input type="checkbox" onchange="changeStaticsMode(this)" checked>
-                                    <span class="lever"></span>
-                                    <span class="false">Quantile</span>
-                                </label>
-
-                            </p>
+                            <label for="displayMinMax" class="col s4"> Dataset: </label>
+                            <select id="displayMinMax" class="col s7" onchange="changeStaticsMode(this)">
+                                <!--<option value="EmploymentRate">Unemployment Rate</option>-->
+                                <!--<option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>-->
+                                <!--<option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>-->
+                                <!--<option value="mc2-static-notlocation" data="csv" selected="selected" >Mini Challlenge 1</option>-->
+                                <!--<option value="raw\MobileSensorReadings" data="csv" selected="selected" >Mini Challlenge 1</option>-->
+                                <option value="false" data="json" >Median vs Std</option>
+                                <option value="true" data="json" selected="selected" >Quantile vs Min-Max</option>
+                                <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
+                                <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
+                                <!--<option value="WorldTerrorism" >World Terrorism</option>-->
+                                <!--<option value="LifeExpectancy">Life Expectancy</option>-->
+                            </select>
                         </div>
                         <!--<div  class="row s12 valign-wrapper no_magrin list">-->
                             <!--<label for="displaySymbol" class="col s4">Quantile: </label>-->
@@ -204,6 +207,19 @@
                                 <label>
                                     <span class="true">Off</span>
                                     <input type="checkbox" onchange="changeMean(this)">
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Std: </label>
+                            <p class="switch col s7" id ="displayStd">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeStd(this)">
                                     <span class="lever"></span>
                                     <span class="false">On</span>
                                 </label>

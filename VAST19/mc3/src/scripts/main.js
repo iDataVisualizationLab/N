@@ -421,7 +421,7 @@ function initTimeArc () {
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
-    TimeArc.svg(RadarMapopt.svg).dispatch(dispatch).init();
+    TimeArc.svg(RadarMapopt.svg).dispatch(dispatch).catergogryList(catergogryList).init();
 
 }
 
