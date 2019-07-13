@@ -5,7 +5,7 @@
 
 d3.circleMap = function () {
     let graphicopt = {
-            margin: {top: 15, right: 0, bottom: 0, left: 0},
+            margin: {top: 15, right: 0, bottom: 15, left: 0},
             width: 1000,
             height: 600,
             scalezoom: 10,
