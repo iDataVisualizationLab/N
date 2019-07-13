@@ -669,13 +669,13 @@ function onmouseoverRadar (d) {
                 tempStore.loc = d.loc;
                 tempStore.data=data;
                 tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
-                onEnableCar (tempStore.dataShort);
-                lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
+                onEnableCar (d.time?tempStore.dataShort:tempStore.data);
+                lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
             });
         }else {
             tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
-            onEnableCar(tempStore.dataShort);
-            lineGraph('.lineChart_tip', tempStore.dataShort, {w: 400, h: 200});
+            onEnableCar(d.time?tempStore.dataShort:tempStore.data);
+            lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
         }
     }else {
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
