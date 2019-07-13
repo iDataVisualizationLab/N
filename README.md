@@ -25,3 +25,7 @@ VAST 2019: mini challenge 2 report: https://idatavisualizationlab.github.io/N/VA
 VAST 2019: mini challenge 3: https://idatavisualizationlab.github.io/N/VAST19/mc3/index.html
 
 VAST 2019: mini challenge 3 report: https://idatavisualizationlab.github.io/N/VAST19/mc3/TTU-Vuong-MC3/index.htm
+
+VAST 2019: grand challenge: https://idatavisualizationlab.github.io/N/VAST19/gc/index.html
+
+VAST 2019: grand challenge report: https://idatavisualizationlab.github.io/N/VAST19/gc/TTU-Vuong-GC/index.htm
