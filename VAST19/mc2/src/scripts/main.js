@@ -87,7 +87,7 @@ let width = 2000,
         {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true},
             {val: 'soil',type:'custom',label: 'RedYelBlu'},],
         Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'Paired',type:'d3',label: 'Blue2Red'}]};
-let arrColor = colorScaleList.rainbow;
+let arrColor = colorScaleList.soil;
 let formatTime = d3.timeFormat("%b %Y");
 let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw,dataBytime,currentService =0;
@@ -515,10 +515,10 @@ function changeShape(d){
 
 function changeStaticsMode(d){
     let old = CircleMapplot.radaropt().summary;
-        old.minmax = d.checked;
-        old.quantile = d.checked;
-        old.median = !d.checked;
-        old.std = !d.checked;
+        old.minmax = d.value=="true";
+        old.quantile = d.checked=="true";
+        old.median = d.checked=="false";
+        old.std = d.checked=="false";
     CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeMinMax(d){
