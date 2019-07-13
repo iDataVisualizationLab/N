@@ -179,15 +179,21 @@ c. Indicated where you would deploy more sensors to improve radiation monitoring
 <page size="A3">
      <div class="pageContent"> 
 
-         <div> Figure 12 shows the cars exiting the contaminated area and their reading was reduced significantly. However, a), b), and c) represent very different exit patterns: a) sudden decrease on the move, b) decrease while standing in the same location for the entire hour, and c) reduce by levels (ladder pattern). <br> <br>
+         <div> Figure 12 shows the cars exiting the contaminated area and their reading was reduced significantly. However, a), b), and c) represent very different exit patterns: <br> 
+            a) sudden decrease on the move. This indecates that the cars are moving out of the contaminated area<br>
+            b) decrease while standing in the same location for the entire hour. This indecates that the radioactive contamination has been collected and carried out of the current location, and <br>c) reduce by levels (ladder pattern). This might indecates that the radioactive contamination has been partially collected. <br> <br>
          </div>  
 
            <div>           
              The city should deploy more static sensors along Scenic Vista to Wilson Forest since this is the contaminated route of many cars (shown in Figure 8).<br>
              - This area is far from the city center and received less attention.<br>
-             - This area is frequently affected by the earthquake.<br>
-             - This seems to be a common route for many cars.  <br><br>    
+             - This area is frequently affected by the earthquake. <br><br>    
           </div>
+
+        <img id="radarChart" src="images/f_3_40.png" class="full">
+        <p class="caption"><span>Figure 13. Mobile sensor 20 with unsual high readings.</span></p>   
+        <div>  Figure 13 highlights sensor readings which suggested that the radioactive contamination inflated by the earthquake at 3pm on Wed 08. The car was stucked in Scenic Vista (as we investigate the later hours) <br><br></div>
+
 
         <div class="question">4 - Summarize the state of radiation measurements at the end of the available period. Use your novel visualizations and analysis approaches to suggest a course of action for the city. Use visual analytics to compare the static sensor network to the mobile sensor network. What are the strengths and weaknesses of each approach? How do they support each other? <br> </div>
 
@@ -195,6 +201,14 @@ c. Indicated where you would deploy more sensors to improve radiation monitoring
         <p class="caption"><span>Figure 12. The last hour of sensor readings.</span></p> 
 
          <div>  Figure 12 shows the last hour of the readings. Dynamic sensor readings are low while static sensors readings are missing. <br><br></div>
+
+
+         <img id="radarChart" src="images/f_4_2.png" class="full">
+        <p class="caption"><span>Figure 13. The last hour of sensor readings for dynamic sensors 21, 25, 27, and 28. We highlighted the increasing trend of the readings toward the end of the available period.</span></p> 
+
+         <div>  For the cars exiting Wilson Forest, we observe an increasing trend of radiation readings toward the end of the available period. Figure 13 shows the last hour of the readings of sensors: 21, 25, 27, and 28. This suggests that these cars/trucks collected the radioactive contamination from Wilson Forest and dump those in a remote area outside of the St. Himark limits.<br><br></div>
+
+
 
          <div>  The city should deploy the following course of actions: <br>
             - Automatically detect high sensor reading fluctuation. For example, if the sudden increase of readings is consistent, there should be a mechanism to notify the city officers for further investigation and timely actions. <br>
