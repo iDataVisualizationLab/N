@@ -681,12 +681,12 @@ function onmouseoverRadar (d) {
             readMobileData(d.loc).then(data =>{
                 tempStore.loc = d.loc;
                 tempStore.data=data;
-                tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
+                tempStore.dataShort=tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''));
                 onEnableCar (d.time?tempStore.dataShort:tempStore.data);
                 lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
             });
         }else {
-            tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
+            tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
             onEnableCar(d.time?tempStore.dataShort:tempStore.data);
             lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
         }
@@ -700,8 +700,8 @@ function onmouseoverRadar (d) {
     tooltip_cof.summary.minmax = sys.minmax;
     tooltip_cof.summary.quantile = sys.quantile;
     tooltip_cof.summary.std = sys.std;
-    tooltip_cof.summary.median = sys.median;
-    tooltip_cof.summary.mean = !sys.median;
+    tooltip_cof.summary.median = true;
+    tooltip_cof.summary.mean = false;
     tooltipBox (d)
     CircleChart('.radarChart_tip',[d],tooltip_cof);
 }

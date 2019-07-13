@@ -331,7 +331,8 @@ function CircleChart(id, data, options) {
             return paths
                 .attr("d", d =>radarLineMedian(d))
                 .styles({"fill":'none',
-                    'stroke':'black'})
+                    'stroke':'black',
+                    'stroke-dasharray': '1 2'})
                 .style("stroke-width", (d) => ( (cfg.densityScale && d.density !==undefined ? cfg.densityScale(d.density) :1) * cfg.strokeWidth) + "px");
         }
         function drawQuantileArea(paths){

@@ -141,7 +141,8 @@ d3.TimeArc = function () {
             .force('y',  d3.forceY(graphicopt.heightG() / 2).strength(0.015))
             //.friction(0.95)
             // .alphaTarget(0.9)
-            .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2)) ;
+            .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2));
+        force.stop();
         // .size([width, height]);
         colorCatergory.domain(catergogryList.map(d=>d.key));
 //---Insert-------
@@ -252,10 +253,9 @@ d3.TimeArc = function () {
         force.nodes(nodes)
             .force('link').links(links);
 
-        force.on("tick", timeArc.update);
         force.on("end", function () {
             detactTimeSeries();
-        });
+        }).on("tick", timeArc.update);
 
         force.restart();
         for (var i = 0; i < termArray.length / 10; i++) {
@@ -1200,7 +1200,7 @@ d3.TimeArc = function () {
             .attr("x1", function(d){ return d.x; })
             .attr("x2", function(d){ return d.x; })
             .attr("y1", function(d){ return 0; })
-            .attr("y2", function(d){ return height; });
+            .attr("y2", function(d){ return graphicopt.heightG(); });
         svg.selectAll(".timeLegendText").data(listX)
             .enter().append("text")
             .attr("class", "timeLegendText")
@@ -1210,9 +1210,9 @@ d3.TimeArc = function () {
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
                 if (i%12==0)
-                    return height-7;
+                    return graphicopt.heightG()-7;
                 else
-                    return height-15;
+                    return graphicopt.heightG()-15;
             })
             .attr("dy", ".21em")
             .attr("font-family", "sans-serif")
