@@ -135,7 +135,7 @@ d3.TimeArc = function () {
             // .charge(-12)
             //.linkStrength(5)
             // .linkDistance(0)
-            .force("link", d3.forceLink().distance(0))
+            .force("link", d3.forceLink().distance(0).strength(5))
             // .gravity(0.01)
             .force('x', d3.forceX(graphicopt.widthG() / 2).strength(0.015))
             .force('y',  d3.forceY(graphicopt.heightG() / 2).strength(0.015))

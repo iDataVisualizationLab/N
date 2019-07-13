@@ -517,9 +517,9 @@ function changeShape(d){
 function changeStaticsMode(d){
     let old = CircleMapplot.radaropt().summary;
         old.minmax = d.value=="true";
-        old.quantile = d.checked=="true";
-        old.median = d.checked=="false";
-        old.std = d.checked=="false";
+        old.quantile = d.value=="true";
+        old.median = d.value=="false";
+        old.std = d.value=="false";
     CircleMapplot.radaropt({summary: old}).draw();
 }
 function changeMinMax(d){
