@@ -130,31 +130,80 @@ c. Indicated where you would deploy more sensors to improve radiation monitoring
          <img id="radarChart" src="images/f_3_7.png" class="full">
         <img id="radarChart" src="images/f_3_8.png" class="full">
          <p class="caption"><span>Figure 8. Detailed readings of 8 dynamic sensors (with high readings): sensors 21, 22, 24, 25, 27, 28, and 45.</span></p> 
-        <div> Figure 8 shows the deatils of 8 sensors with with high readings on Fri 10. Here are some observations: <br>
+        <div> Figure 8 shows the details of 8 sensors with with high readings on Fri 10. Here are some observations: <br>
                     - They all have similar routes at the end: passing through Scenic Vista and then Wilson Forest. <br>
-                    - Sensor 45 originated from Safe Town, close to the Always Safe plant, and may carried some radiation from there. Sensor 45 might be attached to the contaminated car. <br>
+                    - Sensor 45 visited Safe Town, close to the Always Safe plant, and may carried some radiation from there. Sensor 45 might be attached to the contaminated car. We investigate this in the next figure.<br>
          </div>  
-
- </div>    
+</div>    
 </page>
 <page size="A3">
      <div class="pageContent">   
+         <img id="radarChart" src="images/f_3_20.png" class="full">
+        <img id="radarChart" src="images/f_3_21.png" class="full">
+         <p class="caption"><span>Figure 9. Detailed readings of sensor 45: (top) visit the Always Safe plant and (down) leave the Always Safe plant.</span></p> 
+        <div> Figure 9 shows the car attaching sensor 45 visited the Always Safe plant at 1pm Tue 07 and left around 4pm of the same day. <br>
+         </div>  
+
+ 
 
          <img id="radarChart" src="images/f_3_10.png" class="full">
-         <p class="caption"><span>Figure 9. Detailed readings of 2 dynamic sensors (with high readings): sensors 13 and 32.</span></p> 
-        <div> Figure 8 shows the deatils of 2 sensors. They both came in and contaiminated, and then leaving in a few hours. <br><br>
+         <p class="caption"><span>Figure 10. Detailed readings of 2 dynamic sensors (with high readings): sensors 13 and 32.</span></p> 
+
+</div>    
+</page>
+<page size="A3">
+     <div class="pageContent"> 
+
+        <div> On a separated investigation, Figure 10 shows the details of 2 sensors 13 and 32. They both came in and contaiminated, and then leaving in the same day. The radiation contaimination is reduced as they left the Always Safe plant. <br><br>
+
+        So, there are 3 cars which may have been contaminated when coolant leaked from the Always Safe plant: sensors 13, 32, and 45. 
          </div>  
          
          
           <div>           
-             We decided to look into the hour when the readings started raising, shown in the next Figure (Figure 10).   <br><br>    
+             We decided to look into the hour when the readings started raising, shown in the next Figure (Figure 11).   <br><br>    
+          </div>
+
+          <img id="radarChart" src="images/f_3_30.png" class="full">
+         <p class="caption"><span>Figure 11. Detailed readings of sensor 45, 21, 29, and 25 at 7pm, Thu 09.</span></p> 
+        <div> Figure 11 shows the readings of sensor 45, 21, 29, and 25 at 7pm, Thu 09. We can see the sudden increase of readings as they entered Wilson Forest. The contaiminated location is maked on the map at the red circle.<br>
+         </div>  
+
+          <img id="radarChart" src="images/f_3_31.png" class="full">
+         <p class="caption"><span>Figure 12. Detailed readings of sensor 22, 24, 21, 28, 45, and 29.</span></p> 
+    </div>    
+</page>
+<page size="A3">
+     <div class="pageContent"> 
+
+         <div> Figure 12 shows the cars exiting the contaiminated area and their reading were reduced significantly. However, a), b), and c) represent very different exit patterns: a) sudden decreas on the move, b) decrease while standing in the same location for the entire hour, and c) reduce by levels (ladder pattern) <br> <br>
+         </div>  
+
+           <div>           
+             The city should deploy more static sensors along Scenic Vista to Wilson Forest since this is the contaiminated route of many cars (shown in Figure 8).<br>
+             - This area is far from the city center and received less attentions.<br>
+             - This area is frequenly affected by the earthquake.<br>
+             - This seems to be a common route for many cars.  <br><br>    
           </div>
 
         <div class="question">4 - Summarize the state of radiation measurements at the end of the available period. Use your novel visualizations and analysis approaches to suggest a course of action for the city. Use visual analytics to compare the static sensor network to the mobile sensor network. What are the strengths and weaknesses of each approach? How do they support each other? <br> </div>
 
-         <div class="question">5 - The data for this challenge can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Describe how you analyzed the data - as a static collection or a stream. How do you think this choice affected your analysis?  <br> </div>
-  
+        <img id="radarChart" src="images/f_4_1.png" class="full">
+        <p class="caption"><span>Figure 12. The last hour of sensor readings.</span></p> 
+
+         <div>  Figure 12 shows the last hour of th readings. Dynamic sensor readings are low while static sensors readings are missing. <br><br></div>
+
+         <div>  The city should deploy the following course of actions: <br>
+            - Automatically detect high sensor reading fuctuation. For example, if the sudden increase of readings is consistent, there should be a mechanism to notify the city officers for futher investigation and timely actions. <br>
+            - Combine dynamic and static sensor readings. If the cars drive a near by a static sensor, we should perform cross-validation to possibly (1) remove or auto-correct the malfunctional sensors (could be dynamic or static) (2) use the static sensor to verify if dynamic sensor and the car is contaiminated (3) The crosstalks can be also applied for dynamic to dynamic sensors: the two cars visit the same locations at small time interval (does not need to be at the same time). <br><br>
+         </div>
+
+         <div class="question">5 - The data for this challenge can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Describe how you analyzed the data - as a static collection or a stream. How do you think this choice affected your analysis?  <br><br>  </div>
+            Switching to real-time data does not affect our visual analytics solution since the charts for every hour are built independently. For the current hour, the data can be accumulated in real-time and the five-number summary (minimum, Q1, mean ,Q3, and maximum) can be updated and re-plotted on-the-fly without effecting historical data and drawings. <br>
+
+            Therefore, wen think that this choice would not affect our analysis. <br>
            
+           <h4>THE END</h4>
     </div>
 </page>
 
