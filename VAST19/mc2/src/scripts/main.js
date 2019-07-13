@@ -436,6 +436,7 @@ function initRadarMap () {
  RadarMapopt.svg.call(tool_tip);
  CircleMapplot.graphicopt(RadarMapopt);
  CircleMapplot.svg(RadarMapopt.svg).dispatch(dispatch).init();
+    $('#displayHeight')[0].value = RadarMapopt.height;
 
 }
 
