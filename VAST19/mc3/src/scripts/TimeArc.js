@@ -1219,7 +1219,7 @@ d3.TimeArc = function () {
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
-                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
+                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return graphicopt.heightG()-7;
                 else
                     return graphicopt.heightG()-15;
@@ -1228,8 +1228,8 @@ d3.TimeArc = function () {
             .attr("font-family", "sans-serif")
             .attr("font-size", "12px")
             .text(function(d,i) {
-                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
-                    return formatTimeUlti[timeHigherUnit](d.year);
+                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+                    return multiFormat(d.year);
                 else
                     return formatTimeUlti[runopt.time.unit](d.year);
             });
@@ -1252,7 +1252,7 @@ d3.TimeArc = function () {
                 else
                     return (formatTimeUlti[runopt.time.unit](d.year)<d.year) ? "2, 1" : "1, 3"})
             .style("stroke-opacity", function(d,i){
-                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
+                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
@@ -1265,7 +1265,7 @@ d3.TimeArc = function () {
             .attr("x2", function(d){ return d.x; });
         svg.selectAll(".timeLegendText").data(listX).transition().duration(250)
             .style("fill-opacity", function(d,i){
-                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
+                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)

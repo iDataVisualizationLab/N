@@ -260,3 +260,15 @@ var formatTimeUlti ={Millisecond : d3.timeFormat(".%L"),
     Week : d3.timeFormat("%b %d"),
     Month : d3.timeFormat("%B"),
     Year : d3.timeFormat("%Y")};
+function multiFormatUnit(date) {
+    return (d3.timeSecond(date) < date ? 'Millisecond'
+        : d3.timeMinute(date) < date ? 'Second'
+            : d3.timeHour(date) < date ? 'Minute'
+                : d3.timeDay(date) < date ? 'Hour'
+                    : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? 'Day' : 'Week')
+                        : d3.timeYear(date) < date ? 'Month'
+                            : 'Year');
+}
+function multiFormat(date) {
+    return formatTimeUlti[multiFormatUnit(date)](date);
+}
