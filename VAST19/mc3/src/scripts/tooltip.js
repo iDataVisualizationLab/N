@@ -20,12 +20,11 @@ function cotenttip (hideLine){
     return str;
 }
 
-let mesageTable ;
 function updateTable (data){
 
-    let table = d3.select('#messages_table');
-    table.selectAll('*').remove();
-    if (table.select('th').empty()) {
+    let tablediv = d3.select('#messages_table');
+    tablediv.selectAll('*').remove();
+    let table = tablediv.append('table');
         let header = table.append("thead").append('tr')
             .selectAll('th').data(['Time', 'User', 'Message']).enter()
             .append('th').text(d => d);
@@ -36,17 +35,10 @@ function updateTable (data){
         rows.append('td').attr('class', 'text').text(d => d.time);
         rows.append('td').attr('class', 'text').text(d => d.account);
         rows.append('td').attr('class', 'text').html(d => d.html);
-        if(mesageTable){
-            mesageTable .rows()
-                .invalidate()
-                .draw();
-        }else{
-            mesageTable = $(table.node()).DataTable({
+      $(table.node()).DataTable({
                 "order": [[1, "asc"]]
             });
-        }
 
-    }
     // else {
     //     let rows = table.select('tbody').selectAll('tr')
     //         .data(data, d => d.time+d.account);
