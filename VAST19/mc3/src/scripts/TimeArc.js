@@ -1606,14 +1606,16 @@ d3.TimeArc = function () {
     }
 
     function brushed() {
+        console.log(valueSlider)
+        if (!d3.event.sourceEvent) return;
         //console.log("Slider brushed ************** valueSlider="+valueSlider);
         if (d3.event.sourceEvent) { // not a programmatic event
+            if (xScaleSlider.invert(d3.event.selection[1])===valueSlider) return;
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
-            d3.select(this).transition().call(d3.event.target.move, [0,valueSlider].map(xScaleSlider));
+            handle.attr("cx", xScaleSlider(valueSlider));
+            d3.select(this).call(d3.event.target.move, [0,valueSlider].map(xScaleSlider));
         }
-        console.log(valueSlider)
-        handle.attr("cx", xScaleSlider(valueSlider));
     }
     function brushend() {
         // console.log("Slider brushed ************** valueSlider="+valueSlider);
