@@ -63,7 +63,8 @@ d3.TimeArc = function () {
         console.log('hiegher level: '+timeHigherUnit)
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
-        timeScaleIndex.range([0, timeScaleIndex.ticks(runopt.timeformat).length]);
+        totalTimeSteps = timeScaleIndex.ticks(runopt.timeformat).length;
+        timeScaleIndex.range([0, totalTimeSteps-1]);
     }
 
     var totalTimeSteps = 12 * (maxYear - minYear);
@@ -304,7 +305,7 @@ d3.TimeArc = function () {
         function alertFunc() {
             readTermsAndRelationships();
             computeNodes();
-            computeLinks()
+            computeLinks();
             force.nodes(nodes)
                 .force('link').links(links);
             force.restart();
@@ -320,7 +321,7 @@ d3.TimeArc = function () {
                 return d;
         });
 
-        var selected = {}
+        var selected = {};
         if (searchTerm && searchTerm != "") {
             data2.forEach(function (d) {
                 for (var term1 in d.__terms__) {
@@ -368,7 +369,7 @@ d3.TimeArc = function () {
         for (var att in terms) {
             var e = {};
             e.term = att;
-            if (removeList[e.term] || (searchTerm && searchTerm != "" && !selected[e.term])) // remove list **************
+            if (removeList[e.term] || (searchTerm && searchTerm !== "" && !selected[e.term])) // remove list **************
                 continue;
 
             var maxNet = 0;
@@ -923,8 +924,7 @@ d3.TimeArc = function () {
     function searchNode(value) {
         searchTerm = value;
         valueSlider = 2;
-        handle.attr("cx", xScaleSlider(valueSlider));
-
+        slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
         recompute();
     }
 
@@ -1229,7 +1229,7 @@ d3.TimeArc = function () {
             .attr("font-size", "12px")
             .text(function(d,i) {
                 if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
-                    return formatTimeUlti[timetimeHigherUnit](d.year);
+                    return formatTimeUlti[timeHigherUnit](d.year);
                 else
                     return formatTimeUlti[runopt.time.unit](d.year);
             });
@@ -1243,7 +1243,7 @@ d3.TimeArc = function () {
                     year: t
                 }
             }
-        )
+        );
 
         svg.selectAll(".timeLegendLine").data(listX).transition().duration(250)
             .style("stroke-dasharray",  function(d,i){
@@ -1606,14 +1606,14 @@ d3.TimeArc = function () {
             .attr("cursor", "ew-resize")
             .attr("r", 5)
             .attr("cx", xScaleSlider(valueSlider));
+        slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
     }
 
     function brushed() {
-        console.log(valueSlider)
         if (!d3.event.sourceEvent) return;
         //console.log("Slider brushed ************** valueSlider="+valueSlider);
         if (d3.event.sourceEvent) { // not a programmatic event
-            if (xScaleSlider.invert(d3.event.selection[1])===valueSlider) return;
+            if (xScaleSlider.invert(d3.event.selection[1])===valueSlider && xScaleSlider.invert(d3.event.selection[0])===0) return;
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
             handle.attr("cx", xScaleSlider(valueSlider));
@@ -1626,6 +1626,6 @@ d3.TimeArc = function () {
     }
     //</funcs>
     return timeArc;
-}
+};
 
 

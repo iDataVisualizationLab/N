@@ -85,12 +85,12 @@
                             <!--</p>-->
                         <!--</div>-->
                         <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Gradient display: </label>
-                            <p class="switch col s7" id ="displaySymbol">
+                            <label for="displayArea" class="col s4">Area graph: </label>
+                            <p class="switch col s7" id ="displayArea">
 
                                 <label>
                                     <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeShape(this)" checked>
+                                    <input type="checkbox" id="checkbox1" value="value2" onchange="TimeArc.update()">
                                     <span class="lever"></span>
                                     <span class="false">On</span>
                                 </label>
@@ -384,22 +384,22 @@
             <div class="col s12 m12">
                 <div class="col s12 m12">
                     <div class="card-image center-align relative" id="tSNE">
-                        <input type="checkbox" id="checkbox1" value="value2" class="check" onclick="TimeArc.update()">
-                        <label for="checkbox1">Area graph only</label>
-                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                        <div class="input-field">
-                            <input type="text"  id="search" class="autocomplete" placeholder="Search">
-                        </div>
-                        <button type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
+                        <div class = 'row s12'>
+                                <div class="input-field col">
+                                    <input type="text"  id="search" class="autocomplete inputHolder" placeholder="Search">
+                                </div>
+                                <button class="col" type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
 
-                        <progress value="0" max="100" id="progBar">
-    <span id="downloadProgress">
-        <!-- Your fallback goes here -->
-    </span>
-                        </progress>
-                        <label id="progUpdate">
-                            <!-- Success Message -->
-                        </label>
+                                <progress class="col" value="0" max="100" id="progBar">
+                                <span id="downloadProgress">
+                                    <!-- Your fallback goes here -->
+                                </span>
+                                </progress>
+                                <label id="progUpdate">
+                                    <!-- Success Message -->
+                                </label>
+
+                        </div>
                         <svg id="RadarMapcontent" class="active"></svg>
                     </div>
                 </div>

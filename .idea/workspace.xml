@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="" />
+    <list default="true" id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="updateUI">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" beforeDir="false" afterPath="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -49,10 +52,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/just4presentation/index.html">
+        <entry file="file://$PROJECT_DIR$/VAST19/mc3/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
+              <caret line="392" column="49" selection-start-line="392" selection-start-column="49" selection-end-line="392" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -81,17 +84,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contour/volcano.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="20741" selection-start-column="20741" selection-end-column="20741" />
+            <state relative-caret-position="148">
+              <caret line="1230" column="16" selection-start-line="1230" selection-start-column="16" selection-end-line="1230" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/index.html">
+        <entry file="file://$PROJECT_DIR$/VAST19/mc3/src/style/other.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+            <state relative-caret-position="126">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -141,21 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>handledata</find>
-      <find>radarsize</find>
-      <find>arrColor</find>
-      <find>d.value</find>
-      <find>minValue</find>
-      <find>rScale</find>
-      <find>allAxis</find>
-      <find>path</find>
-      <find>cfg.bin</find>
-      <find>d.name</find>
-      <find>color</find>
-      <find>circle</find>
-      <find>id</find>
-      <find>name</find>
-      <find>transla</find>
       <find>allaxis</find>
       <find>gridCircle</find>
       <find>axis</find>
@@ -173,6 +161,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -186,26 +175,22 @@
         <option value="$PROJECT_DIR$/Scagnostic/scagnostics.min.js" />
         <option value="$PROJECT_DIR$/Scagnostic/scagnostics3d.min.js" />
         <option value="$PROJECT_DIR$/Scagnostic/scagnosticsnd.min.js" />
+        <option value="$PROJECT_DIR$/VAST19/mc3/index.html" />
+        <option value="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="692" />
     <option name="y" value="116" />
     <option name="width" value="1400" />
-    <option name="height" value="856" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -286,6 +271,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -318,11 +304,13 @@
     <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
       <method v="2" />
     </configuration>
-    <configuration name="main.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/examples">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="main.js" type="NodeJSConfigurationType" temporary="true" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/examples">
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Node.js.main.js" />
       <item itemvalue="JavaScript Debug.index.html" />
       <item itemvalue="JavaScript Debug.index.html (1)" />
     </list>
@@ -359,6 +347,21 @@
       <workItem from="1562357260503" duration="39000" />
       <workItem from="1563013776701" duration="1238000" />
     </task>
+    <task id="LOCAL-00003" summary="updateUI">
+      <created>1563117491587</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1563117491587</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updateUI">
+      <created>1563117896980</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1563117896980</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -374,14 +377,15 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.28077456" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.49963742" visible="true" weight="0.28074867" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4981871" weight="0.328877" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003626" side_tool="true" visible="true" weight="0.28074867" />
+      <window_info anchor="bottom" id="GraphQL" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -391,8 +395,9 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updateUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="updateUI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -406,6 +411,12 @@
           <url>file://$PROJECT_DIR$/just4presentation/main.js</url>
           <line>304</line>
           <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js</url>
+          <line>1230</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -470,7 +481,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/just4presentation/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
+        <state relative-caret-position="147">
           <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
         </state>
       </provider>
@@ -487,7 +498,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/just4presentation/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5202">
+        <state relative-caret-position="6426">
           <caret line="306" column="65" selection-start-line="306" selection-start-column="65" selection-end-line="306" selection-end-column="65" />
         </state>
       </provider>
@@ -501,7 +512,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="168">
           <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
         </state>
       </provider>
