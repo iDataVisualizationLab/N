@@ -20,6 +20,7 @@ function cotenttip (hideLine){
     return str;
 }
 
+let mesageTable ;
 function updateTable (data){
 
     let table = d3.select('#messages_table');
@@ -35,9 +36,16 @@ function updateTable (data){
         rows.append('td').attr('class', 'text').text(d => d.time);
         rows.append('td').attr('class', 'text').text(d => d.account);
         rows.append('td').attr('class', 'text').html(d => d.html);
-        $(table.node()).DataTable({
-            "order": [[1, "asc"]]
-        });
+        if(mesageTable){
+            mesageTable .rows()
+                .invalidate()
+                .draw();
+        }else{
+            mesageTable = $(table.node()).DataTable({
+                "order": [[1, "asc"]]
+            });
+        }
+
     }
     // else {
     //     let rows = table.select('tbody').selectAll('tr')

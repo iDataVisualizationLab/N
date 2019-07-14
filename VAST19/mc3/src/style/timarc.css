@@ -61,6 +61,6 @@
     font-family: "Helvetica";
 }
 
-#messages_table th:not(:first-child) {
-    width: unset
+#messages_table.dataTable th:not(:first-child) {
+    width: unset !important;
 }
