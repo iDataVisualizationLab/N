@@ -1229,7 +1229,7 @@ d3.TimeArc = function () {
             .attr("font-size", "12px")
             .text(function(d,i) {
                 if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
-                    return formatTimeUlti[timetimeHigherUnit](d.year);
+                    return formatTimeUlti[timeHigherUnit](d.year);
                 else
                     return formatTimeUlti[runopt.time.unit](d.year);
             });
@@ -1243,7 +1243,7 @@ d3.TimeArc = function () {
                     year: t
                 }
             }
-        )
+        );
 
         svg.selectAll(".timeLegendLine").data(listX).transition().duration(250)
             .style("stroke-dasharray",  function(d,i){
