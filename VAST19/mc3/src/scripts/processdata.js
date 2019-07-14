@@ -1,5 +1,26 @@
 
-var termsList = {"sewer_and_water": ["discharged", "discharge", "drain", "drainage", "flood", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
+var termsList = {
+    'local_area': ['Palace Hills',
+        'Northwest',
+        'Old Town',
+        'Safe Town',
+        'Southwest',
+        'Downtown',
+        'Wilson Forest',
+        'Scenic Vista',
+        'Broadview',
+        'Chapparal',
+        'Terrapin Springs',
+        'Pepper Mill',
+        'Cheddarford',
+        'Easton',
+        'Weston',
+        'Southton',
+        'Oak Willow',
+        'East Parton',
+        'West Parton'],
+
+    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "flood", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -20,6 +41,12 @@ var termsList = {"sewer_and_water": ["discharged", "discharge", "drain", "draina
     "fire": ["fire", "smoke"]
 };
 
+var collections = {
+    'location': ['local_area'],
+    'event': ['earthquake','grounds','flooding','aftershock','fire'],
+    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','buildings']
+}
+
 let catergogryObject = {
     'user':{
         'extractFunc': _.partial(getObject,'account')
@@ -29,18 +56,20 @@ let catergogryObject = {
     },
     'event':{
         'extractFunc': function(data){return extractWords('message',this.keywords,data)},
-        'keywords': ['earthquake','tsunami','flood']
+        'keywords': getTermsArray('event')
     },
     'resource':{
         'extractFunc': function(data){return extractWords('message',this.keywords,data)},
-        'keywords': _.flatten(_.map(termsList,function(term, key){ return term; }))
+        'keywords': getTermsArray('resource')
     },
     // 'hashtash':{
     //     'extractFunc': _.partial(extractWords,'message',this.keywords),
     //     'keywords': ['earthquake','tsunami','flood']
     // }
 };
-
+function getTermsArray(header){
+    return _.flatten(collections[header].map(d=>termsList[d]));
+}
 let catergogryList = _.map(catergogryObject,(v,k)=>{return {key: k, value: v}});
 function getObject (key,data) {
     let temp={};
