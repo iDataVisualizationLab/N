@@ -1105,6 +1105,7 @@ d3.TimeArc = function () {
         for (var i = 0; i < termArray.length; i++) {
             nodes[termArray[i].nodeId].y = 12 + i * step;
         }
+        force.alpha(0);
         force.stop();
 
         updateTransition(1000);
