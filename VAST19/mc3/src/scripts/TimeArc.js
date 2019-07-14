@@ -63,7 +63,8 @@ d3.TimeArc = function () {
         console.log('hiegher level: '+timeHigherUnit)
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
-        timeScaleIndex.range([0, timeScaleIndex.ticks(runopt.timeformat).length]);
+        totalTimeSteps = timeScaleIndex.ticks(runopt.timeformat).length;
+        timeScaleIndex.range([0, totalTimeSteps-1]);
     }
 
     var totalTimeSteps = 12 * (maxYear - minYear);
