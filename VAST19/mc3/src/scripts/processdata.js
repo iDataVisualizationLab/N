@@ -105,4 +105,14 @@ function extractWords (key,terms,data) {
 //     return collection;
 // }
 
-
+function markWord (message,keys){
+    keys.forEach(k=>message = message.replace(new RegExp(k.text,'gi'),generatemark(k)));
+    return message;
+}
+function generatemark(category){
+    let str = '<mark class="entity" style="background:'+category.color+';">';
+    str += '$&';
+    str += '<span>'+category.group+'</span>';
+    str += '</mark>';
+    return str;
+}

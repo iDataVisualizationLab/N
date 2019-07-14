@@ -165,7 +165,6 @@ d3.TimeArc = function () {
             return d.yNode + yScale(d.value);
         });
 
-    var optArray = [];   // FOR search box
 
     var numberInputTerms = 0;
     var listMonth;
@@ -263,19 +262,16 @@ d3.TimeArc = function () {
         }).on("tick", timeArc.update);
 
         force.restart();
-        for (var i = 0; i < termArray.length / 10; i++) {
-            optArray.push(termArray[i].term);
-        }
-        optArray = optArray.sort();
+
         $(function () {
             $("#search").autocomplete({
-                data: Array2Object(optArray)
+                data: Array2Object(termArray)
             });
         });
     };
     function Array2Object (arr){
         let temp={};
-        arr.forEach(d=>temp[d]=null);
+        arr.forEach(d=>temp[d.term]= null);
         return temp;
     }
     function recompute() {
@@ -751,6 +747,7 @@ d3.TimeArc = function () {
             var term2 = nodes[l.target].name;
             var month = l.__timestep__;
             l.value = linkScale(relationship[term1 + "__" + term2][month]);
+            l.message = data2.filter(d=>d.__terms__[term1]&&d.__terms__[term2]);
         });
 
         console.log("DONE links relationshipMaxMax2=" + relationshipMaxMax2);
@@ -832,37 +829,24 @@ d3.TimeArc = function () {
         if (force.alpha() == 0) {
             var list = new Object();
             list[d.name] = new Object();
-
+            d.messagearr = [];
             svg.selectAll(".linkArc")
                 .style("stroke-opacity", function (l) {
-                    if (l.source.name == d.name) {
-                        if (!list[l.target.name]) {
-                            list[l.target.name] = new Object();
-                            list[l.target.name].count = 1;
-                            list[l.target.name].year = l.__timestep__;
-                            list[l.target.name].linkcount = l.count;
+                    let name;
+                    if ((name=l.target.name,l.source.name == d.name) || (name=l.source.name,l.target.name == d.name)) {
+                        if (!list[name]) {
+                            list[name] = new Object();
+                            list[name].count = 1;
+                            list[name].year = l.__timestep__;
+                            list[name].linkcount = l.count;
+                            d.messagearr =_.unique(_.flatten([ d.messagearr,l.message]));
                         }
                         else {
-                            list[l.target.name].count++;
-                            if (l.count > list[l.target.name].linkcount) {
-                                list[l.target.name].linkcount = l.count;
-                                list[l.target.name].year = l.__timestep__;
-                            }
-                        }
-                        return 1;
-                    }
-                    else if (l.target.name == d.name) {
-                        if (!list[l.source.name]) {
-                            list[l.source.name] = new Object();
-                            list[l.source.name].count = 1;
-                            list[l.source.name].year = l.__timestep__;
-                            list[l.source.name].linkcount = l.count;
-                        }
-                        else {
-                            list[l.source.name].count++;
-                            if (l.count > list[l.source.name].linkcount) {
-                                list[l.source.name].linkcount = l.count;
-                                list[l.source.name].year = l.__timestep__;
+                            list[name].count++;
+                            if (l.count > list[name].linkcount) {
+                                list[name].linkcount = l.count;
+                                list[name].year = l.__timestep__;
+                                d.messagearr =_.unique(_.flatten( [d.messagearr,l.message]));
                             }
                         }
                         return 1;
@@ -870,6 +854,9 @@ d3.TimeArc = function () {
                     else
                         return 0.01;
                 });
+            mouseoverTerm([d,d3.keys(list).map(l=>{
+                let cat = termArray3.find(t=>t.term===l).category;
+                return{color:colorCatergory(cat), text:l, group:cat}})]);
             nodeG.style("fill-opacity", function (n) {
                 if (list[n.name])
                     return 1;
@@ -918,6 +905,7 @@ d3.TimeArc = function () {
                 return "translate(" + n.xConnected + "," + n.y + ")"
             })
         }
+        mouseoutTerm(d);
     }
 
 
@@ -1135,7 +1123,12 @@ d3.TimeArc = function () {
     timeArc.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, timeArc) : returnEvent;
     };
-
+    timeArc.mouseoverTerm = function (_) {
+        return arguments.length ? (mouseoverTerm = _, timeArc) : mouseoverTerm;
+    };
+    timeArc.mouseoutTerm = function (_) {
+        return arguments.length ? (mouseoutTerm = _, timeArc) : mouseoutTerm;
+    };
     timeArc.catergogryList = function (_) {
         return arguments.length ? (catergogryList = _, timeArc) : catergogryList;
     };

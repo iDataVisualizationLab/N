@@ -60,3 +60,7 @@
     font-size: 14px;
     font-family: "Helvetica";
 }
+
+#messages_table th:not(:first-child) {
+    width: unset
+}

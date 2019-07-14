@@ -424,7 +424,7 @@ function initTimeArc () {
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
-    TimeArc.svg(RadarMapopt.svg).dispatch(dispatch).catergogryList(catergogryList).init();
+ TimeArc.svg(RadarMapopt.svg).mouseoverTerm(onmouseoverRadar).mouseoutTerm(onmouseleaveRadar).catergogryList(catergogryList).init();
 
 }
 
@@ -628,33 +628,34 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
-function onmouseoverRadar (d) {
+function onmouseoverRadar ([d,list]) {
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
-    if (d.regions&&d.regions.length)
-        d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
-    d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
-    tool_tip.show();
-    if (!isNaN(+d.loc)){
-        if ((tempStore.loc!==d.loc)) {
-            readMobileData(d.loc).then(data =>{
-                tempStore.loc = d.loc;
-                tempStore.data=data;
-                tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
-                onEnableCar (tempStore.dataShort);
-                lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
-            });
-        }else {
-            tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
-            onEnableCar(tempStore.dataShort);
-            lineGraph('.lineChart_tip', tempStore.dataShort, {w: 400, h: 200});
-        }
-    }else {
-        d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
-    }
-    tooltip_cof.schema = serviceFullList;
-    tooltip_cof.arrColor = arrColor;
-    tooltip_cof.markedLegend = globalScale.domain();
-    CircleChart('.radarChart_tip',[d],tooltip_cof);
+    // if (d.regions&&d.regions.length)
+    //     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
+    // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
+    d.messagearr.forEach(e=>e.html = markWord(e.message,list));
+    updateTable (d.messagearr);
+    // if (!isNaN(+d.loc)){
+    //     if ((tempStore.loc!==d.loc)) {
+    //         readMobileData(d.loc).then(data =>{
+    //             tempStore.loc = d.loc;
+    //             tempStore.data=data;
+    //             tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
+    //             onEnableCar (tempStore.dataShort);
+    //             lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
+    //         });
+    //     }else {
+    //         tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
+    //         onEnableCar(tempStore.dataShort);
+    //         lineGraph('.lineChart_tip', tempStore.dataShort, {w: 400, h: 200});
+    //     }
+    // }else {
+    //     d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
+    // }
+    // tooltip_cof.schema = serviceFullList;
+    // tooltip_cof.arrColor = arrColor;
+    // tooltip_cof.markedLegend = globalScale.domain();
+    // CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
 
 function onEnableCar (darr){
@@ -688,12 +689,12 @@ function animationShift(index,g){
 }
 
 function onmouseleaveRadar (d) {
-    d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0);
-    // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
-    if (d.regions&&d.regions.length)
-        d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
-    d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
-    d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);
+    // d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0);
+    // // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
+    // if (d.regions&&d.regions.length)
+    //     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
+    // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
+    // d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);
     tool_tip.hide();
 }
 
