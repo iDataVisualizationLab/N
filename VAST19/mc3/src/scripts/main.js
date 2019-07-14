@@ -291,7 +291,8 @@ function init() {
         .then(([d])=>{
         // ssss = statics.slice();
         let count=0;
-        let totalcount=d.length;
+        let totalcount = d.length;
+        let updatecondition = 0.1;
         let queueProcess = d.map((t,i)=> {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -302,7 +303,11 @@ function init() {
                         if (!_.isEmpty(temp))
                             t.category[c.key] = c.value.extractFunc(t);
                     });
-                    updateProcessBar(count++/totalcount);
+                    count++;
+                    if (count/totalcount>updatecondition){
+                        updateProcessBar(updatecondition);
+                        updatecondition+=0.1;
+                    }
                     resolve(t);
                 },0);
             });
