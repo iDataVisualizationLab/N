@@ -631,9 +631,11 @@ let tempStore ={};
 function onmouseoverRadar ([d,list]) {
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
     // if (d.regions&&d.regions.length)
-    //     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
+    d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true);
     // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
-    d.messagearr.forEach(e=>e.html = markWord(e.message,list));
+    d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
+    d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list));
+    d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list));
     updateTable (d.messagearr);
     // if (!isNaN(+d.loc)){
     //     if ((tempStore.loc!==d.loc)) {
@@ -690,7 +692,7 @@ function animationShift(index,g){
 
 function onmouseleaveRadar (d) {
     // d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0);
-    // // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
+    d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',false);
     // if (d.regions&&d.regions.length)
     //     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);

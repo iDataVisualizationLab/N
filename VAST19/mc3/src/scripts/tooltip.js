@@ -26,15 +26,16 @@ function updateTable (data){
     tablediv.selectAll('*').remove();
     let table = tablediv.append('table');
         let header = table.append("thead").append('tr')
-            .selectAll('th').data(['Time', 'User', 'Message']).enter()
+            .selectAll('th').data(['Time','Location', 'User', 'Message']).enter()
             .append('th').text(d => d);
 
         let rows = table.append('tbody').selectAll('tr')
             .data(data, d => d.time+d.account)
             .enter().append('tr');
         rows.append('td').attr('class', 'text').text(d => d.time);
-        rows.append('td').attr('class', 'text').text(d => d.account);
-        rows.append('td').attr('class', 'text').html(d => d.html);
+        rows.append('td').attr('class', 'text').html(d => d.htmlLocation);
+        rows.append('td').attr('class', 'text').html(d => d.htmlUser);
+        rows.append('td').attr('class', 'text').html(d => d.htmlMessage);
       $(table.node()).DataTable({
                 "order": [[1, "asc"]]
             });

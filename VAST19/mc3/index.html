@@ -100,7 +100,7 @@
                         </div>
                         <div class="row s12 no_magrin">
                             <ul class="collapsible insideSetting ">
-                                <li id="RadarColor">
+                                <li id="RadarColor" style="display: none">
                                     <div class="collapsible-header">
                                         <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
                                             <label for="radarColorPicker" class="col s4"> Radar color: </label>
@@ -164,59 +164,7 @@
                         <!--</div>-->
                     </div>
                 </li>
-                <li class="settingContain active">
-                    <div class="collapsible-header" style="padding-top: 0px;"><span>Radar control</span></div>
-                    <div class="collapsible-body">
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Min-max: </label>
-                            <p class="switch col s7" id ="displayMinMax">
 
-                                <label>
-                                    <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeMinMax(this)" checked>
-                                    <span class="lever"></span>
-                                    <span class="false">On</span>
-                                </label>
-
-                            </p>
-                        </div>
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Quantile: </label>
-                            <p class="switch col s7" id ="displayQuantile">
-
-                                <label>
-                                    <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeQuantile(this)" checked>
-                                    <span class="lever"></span>
-                                    <span class="false">On</span>
-                                </label>
-
-                            </p>
-                        </div>
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Average: </label>
-                            <p class="switch col s7" id ="displayMean">
-
-                                <label>
-                                    <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeMean(this)">
-                                    <span class="lever"></span>
-                                    <span class="false">On</span>
-                                </label>
-
-                            </p>
-                        </div>
-                        <div id="RadarController" class="row s12 valign-wrapper list"></div>
-                        <div id="RadarController_Table" class="row s12 valign-wrapper list">
-                            <table class="display" width="100%"></table>
-                        </div>
-                        <!--<div id="RadarController_Table_toolbar" class="row s12 valign-wrapper list">-->
-                            <!--<button value = false class ="menuBtn saveProfile modal-trigger" id="saveProfile" onclick="downloadProfile(this)" href="#savedialog_profile"><i class="fas fa-download"></i> Save</button>-->
-                            <!--<input id="profile_input_file" class="none" type="file" style="display: none;"/>-->
-                            <!--<button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>-->
-                        <!--</div>-->
-                    </div>
-                </li>
             </ul>
         </div>
                 </div>
