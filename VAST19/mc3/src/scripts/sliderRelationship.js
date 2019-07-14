@@ -55,23 +55,25 @@ function setupSliderScale(svg) {
     .attr("y",ySlider-5)
     .attr("height", 10);
 
- handle = slider.append("circle")
-    .attr("class", "handle")
-    .attr("transform", "translate(0," + ySlider + ")")
+ handle = slider.selectAll(".handle--custom")
+     .data([{type: "e"}])
+     .enter().append("circle")
+     .attr("class", "handle--custom")
+     .attr("stroke", "#000")
+     .attr("cursor", "ew-resize")
     .attr("r", 5)
     .attr("cx", xScaleSlider(valueSlider));
 }
 
 function brushed() {
   //console.log("Slider brushed ************** valueSlider="+valueSlider);
-  valueSlider = brush.extent()[0];
+  if (!d3.event.selection) return; // Ignore empty selections.
   if (d3.event.sourceEvent) { // not a programmatic event
-    valueSlider = Math.max(xScaleSlider.invert(d3.mouse(this)[0]),0.5);
+    valueSlider = Math.max(d3.event.selection.map(xScaleSlider.invert));
     valueSlider = Math.min(valueSlider, valueMax);
-    brush.extent([valueSlider, valueSlider]);
+    d3.select(this).transition().call(d3.event.target.move, [valueSlider,valueSlider].map(xScaleSlider));
   }
   handle.attr("cx", xScaleSlider(valueSlider));
-  
 }
 function brushend() {
   // console.log("Slider brushed ************** valueSlider="+valueSlider);

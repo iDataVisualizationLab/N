@@ -50,15 +50,30 @@ function getObject (key,data) {
         temp[data[key]] = 1;
     return temp;
 }
+// function extractWords (key,terms,data) {
+//     let message = data[key];
+//     let reg =   new RegExp(terms.join('|'),'gi');
+//     const all_matched = _.unique(message.match(reg));
+//     return all_matched;
+// }
+
 function extractWords (key,terms,data) {
     let message = data[key];
-    let reg =   new RegExp(terms.join('|'),'gi');
-    const all_matched = _.unique(message.match(reg)); // take only 1
-    let collection = {}
-    all_matched.forEach(term=>collection[term] = 1);
-    // const getWordsFreq = words => words.forEach(word => collection[word] = ++collection[word] || 1);
-    // getWordsFreq (all_matched);
+    let collection = {};
+    terms.forEach(k=>{
+        if (new RegExp(k,'i').test(message))
+            collection[k] = 1;
+    });
     return collection;
 }
+
+// function extractWords (key,terms,data) {
+//     let message = data[key];
+//     let reg =   new RegExp(terms.join('|'),'gi');
+//     const all_matched = _.unique(message.match(reg)); // take only 1
+//     let collection = {};
+//     all_matched.forEach(term=>collection[term] = 1);
+//     return collection;
+// }
 
 

@@ -19,18 +19,18 @@ function readMobileData(choice) {
 
 function readDatacsv(choice,type) {
     type = type||"json";
-    return d3[type]("src/data/" + choice + "."+type, function (data) {
-        data.time = new Date(data.time);
-        return data;
-    });
+    return d3[type]("src/data/" + choice + "."+type);
 }
-function readData(choice,type) {
-    type = type||"json";
-    return d3[type]("src/data/" + choice + "."+type, function (data) {
-        data.time = new Date(data.time);
-        delete data.Timestamp;
-        _.without(Object.keys(data),'time',' User-id','User-id','Units','Sensor-id','regions','users','regions').forEach(k=>data[k] = (data[k]==="")?undefined:(+data[k]));
-        return data;
+function readData(choice) {
+    return d3.csv("src/data/" + choice + ".csv", function (t) {
+        t.date = new Date(t.time);
+        t.category = {};
+        catergogryList.forEach(c => {
+            let temp = c.value.extractFunc(t);
+            if (!_.isEmpty(temp))
+                t.category[c.key] = c.value.extractFunc(t);
+        });
+        return t;
     });
 }
 function readConf(choice) {

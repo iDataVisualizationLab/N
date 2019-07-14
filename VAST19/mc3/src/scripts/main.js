@@ -155,46 +155,46 @@ $(document).ready(function(){
 
     });
 
-        d3.select('#datacom').on("change", function () {
-            d3.select('.cover').classed('hidden', false);
-            const choice = this.value;
-            const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
-            d3.select('#currentData').text(choicetext);
-            playchange();
-            setTimeout(() => {
-                readConf(choice+"_conf").then((conf)=> readData(choice).then((d) => {
-                    d.YearsData.forEach(e => {
-                        if (e.Scagnostics0) delete e.Scagnostics0
-                        for (var key in e) {
-                            e[key] = e[key].map(it => it === "NaN" ? 0 : it);
-                        }
-                    });
-                    dataRaw = d;
-                    d3.select(".currentData")
-                        .text(choicetext);
-                    maxtimestep = dataRaw.YearsData.length;
-                    console.log(maxtimestep)
-                    CircleMapplot.axis(d.Variables);
-                    d3.select('.averageSUm').selectAll('*').remove();
-                    //remove later
-                    var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
-                    var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
-                    var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
-                    listopt.limitColums = [lowlimit,highlimit];
+    d3.select('#datacom').on("change", function () {
+        d3.select('.cover').classed('hidden', false);
+        const choice = this.value;
+        const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
+        d3.select('#currentData').text(choicetext);
+        playchange();
+        setTimeout(() => {
+            readConf(choice+"_conf").then((conf)=> readData(choice).then((d) => {
+                d.YearsData.forEach(e => {
+                    if (e.Scagnostics0) delete e.Scagnostics0
+                    for (var key in e) {
+                        e[key] = e[key].map(it => it === "NaN" ? 0 : it);
+                    }
+                });
+                dataRaw = d;
+                d3.select(".currentData")
+                    .text(choicetext);
+                maxtimestep = dataRaw.YearsData.length;
+                console.log(maxtimestep)
+                CircleMapplot.axis(d.Variables);
+                d3.select('.averageSUm').selectAll('*').remove();
+                //remove later
+                var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
+                var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
+                var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
+                listopt.limitColums = [lowlimit,highlimit];
 
-                    data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
-                    handleOutlier (data,currentService);
-                    resetRequest();
-                    d3.select('.cover').classed('hidden', true);
-                }));
-            }, 0);
-        });
-        d3.select("#DarkTheme").on("click", switchTheme);
-        changeRadarColor(colorArr.Radar[0]);
-        changeClusterColor(colorArr.Cluster[0]);
-        // color scale create
-        creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
-        creatContain(d3.select('#ClusterColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Cluster, onClickClusterColor);
+                data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
+                handleOutlier (data,currentService);
+                resetRequest();
+                d3.select('.cover').classed('hidden', true);
+            }));
+        }, 0);
+    });
+    d3.select("#DarkTheme").on("click", switchTheme);
+    changeRadarColor(colorArr.Radar[0]);
+    changeClusterColor(colorArr.Cluster[0]);
+    // color scale create
+    creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
+    creatContain(d3.select('#ClusterColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Cluster, onClickClusterColor);
 });
 var profile={};
 function changeRadarColor(d) {
@@ -286,13 +286,9 @@ function init() {
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
     Promise.all([
-        // readConf(choice+"_conf"),
-        // readConf(choice+"_prof"),
-        // readData(choice,'json'),
-        // readData(choice+'_static','json'),
-        // readData(choice+'_sum','json'),
         readDatacsv(choice,'csv')
-    ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
+    ])
+        .then(([d])=>{
         // ssss = statics.slice();
         let count=0;
         let totalcount=d.length;
@@ -312,14 +308,16 @@ function init() {
             });
         });
         return Promise.all(queueProcess);
-    }).then ((d)=>{
+    })
+        .then ((d)=>{
         dataRaw = d;
         timestep = 0;
         listopt.limitColums = [0,10];
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.date);
-
+            updateProcessBar(0.8);
         TimeArc.runopt(listopt).data(dataRaw).draw();
+            updateProcessBar(1);
         d3.select('.cover').classed('hidden',true);
     });
 }
