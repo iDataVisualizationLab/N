@@ -250,3 +250,13 @@ function uploadProfile(){
         reader.readAsDataURL(f);
     })
 }
+
+
+var formatTimeUlti ={Millisecond : d3.timeFormat(".%L"),
+    Second : d3.timeFormat(":%S"),
+    Minute : d3.timeFormat("%I:%M"),
+    Hour : d3.timeFormat("%I %p"),
+    Day : d3.timeFormat("%a %d"),
+    Week : d3.timeFormat("%b %d"),
+    Month : d3.timeFormat("%B"),
+    Year : d3.timeFormat("%Y")};

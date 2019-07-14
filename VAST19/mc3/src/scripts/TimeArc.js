@@ -22,7 +22,7 @@ d3.TimeArc = function () {
         timeformat: d3.timeHour.every(1)
     };
     let svg,force;
-
+    let UnitArray = ['Minute','Hour','Day','Month','Year'];
     var node_drag = d3.drag()
         .on("start", dragstart)
         .on("drag", dragmove)
@@ -51,6 +51,7 @@ d3.TimeArc = function () {
 
 
     var data, data2;
+    let timeHigherUnit;
     // var firstDate = Date.parse("2005-01-01T00:00:00");
     var numSecondADay = 24 * 60 * 60;
     var numSecondAMonth = 30 * numSecondADay;
@@ -58,6 +59,8 @@ d3.TimeArc = function () {
     var maxYear = 2015;
     var timeScaleIndex
     function updateTimeScale() {
+        timeHigherUnit = UnitArray[UnitArray.indexOf(runopt.time.unit)+1];
+        console.log('hiegher level: '+timeHigherUnit)
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
         timeScaleIndex.range([0, timeScaleIndex.ticks(runopt.timeformat).length]);
@@ -1216,7 +1219,7 @@ d3.TimeArc = function () {
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
-                if (i%12==0)
+                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
                     return graphicopt.heightG()-7;
                 else
                     return graphicopt.heightG()-15;
@@ -1225,10 +1228,10 @@ d3.TimeArc = function () {
             .attr("font-family", "sans-serif")
             .attr("font-size", "12px")
             .text(function(d,i) {
-                if (i%12==0)
-                    return d.year;
+                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
+                    return formatTimeUlti[timetimeHigherUnit](d.year);
                 else
-                    return months[i%12];
+                    return formatTimeUlti[runopt.time.unit](d.year);
             });
     }
     let listX;
@@ -1247,9 +1250,9 @@ d3.TimeArc = function () {
                 if (!isLensing)
                     return "1, 2";
                 else
-                    return i%12==0 ? "2, 1" : "1, 3"})
+                    return (formatTimeUlti[runopt.time.unit](d.year)<d.year) ? "2, 1" : "1, 3"})
             .style("stroke-opacity", function(d,i){
-                if (i%12==0)
+                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
@@ -1262,7 +1265,7 @@ d3.TimeArc = function () {
             .attr("x2", function(d){ return d.x; });
         svg.selectAll(".timeLegendText").data(listX).transition().duration(250)
             .style("fill-opacity", function(d,i){
-                if (i%12==0)
+                if (d3['time'+runopt.time.unit].every(1)(d.year)<d.year)
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
