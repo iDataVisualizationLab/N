@@ -1604,6 +1604,9 @@ d3.TimeArc = function () {
     }
 
     function brushed() {
+        if(d3.event.selection){
+            handle.attr("cx", xScaleSlider(valueSlider));
+        }
         if (!d3.event.sourceEvent) return;
         //console.log("Slider brushed ************** valueSlider="+valueSlider);
         if (d3.event.sourceEvent) { // not a programmatic event
