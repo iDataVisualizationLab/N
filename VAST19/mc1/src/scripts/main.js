@@ -99,6 +99,7 @@ const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
     $( "#map" ).draggable();
+    $(".dropdown-trigger").dropdown();
     $("#controlPanel").draggable();
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
@@ -107,29 +108,30 @@ $(document).ready(function(){
     var instance = M.Collapsible.init(elem, {
         accordion: false
     });
-    $('.tabs').tabs({'onShow':function(){
-
-            if (this.$activeTabLink.text()==='Mini-Challenge 1') {
-                $('#videoIn').each(function(index) {
-                    $(this).attr('src', $(this).attr('src'));
-                    return false;
-                });
-                initialize();
-            }else{
-                try{
-                    playchange();
-                }catch(e){
-
-                }
-            }
-    }});
-    if (d3.select('#demoTab a').classed('active')){
-        $('#videoIn').each(function(index) {
-            $(this).attr('src', $(this).attr('src'));
-            return false;
-        });
-        initialize();
-    }
+    // $('.tabs').tabs({'onShow':function(){
+    //
+    //         if (this.$activeTabLink.text()==='Mini-Challenge 1') {
+    //             $('#videoIn').each(function(index) {
+    //                 $(this).attr('src', $(this).attr('src'));
+    //                 return false;
+    //             });
+    //             initialize();
+    //         }else{
+    //             try{
+    //                 playchange();
+    //             }catch(e){
+    //
+    //             }
+    //         }
+    // }});
+    // if (d3.select('#demoTab a').classed('active')){
+    //     $('#videoIn').each(function(index) {
+    //         $(this).attr('src', $(this).attr('src'));
+    //         return false;
+    //     });
+    //     initialize();
+    // }
+    initialize();
         // $('#zoomInit').on('change', function () {
         //     runopt.zoom = this.value;
         //     RadarMapplot.runopt(runopt);
@@ -657,4 +659,13 @@ function onmouseleaveRadar (d) {
     d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
     tool_tip.hide();
+}
+function enableIframe(){
+    $('#iframeResult').addClass('active');
+    $('#demo').removeClass('active');
+}
+
+function disableIframe(){
+    $('#iframeResult').removeClass('active');
+    $('#demo').addClass('active');
 }
