@@ -112,7 +112,6 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("id", d => removeWhitespace(d.properties.Nbrhood))
                     // // .attr("class", "regionPath")
                     // .classed("unselected", d => d.properties.Nbrhood !== "Palace Hills")
-                    .on("mouseover", mouseover)
                     .on("mousemove", mousemove)
                     .on("mouseleave", mouseleave)
                     .on("click", d=>click(d));
@@ -252,7 +251,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
         function mousemove(d) {
             mapTip
                 .html("Region: " + d.properties.Nbrhood + "<br>"
-                    + "ID  : " + d.properties.Id)
+                    + "density  : " + d.density)
                 .style("opacity", 1)
                 .style("left", (d3.mouse(this)[0] + 30) + "px")
                 .style("top", (d3.mouse(this)[1]) + 20 + "px")

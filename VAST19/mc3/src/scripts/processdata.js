@@ -20,7 +20,7 @@ var termsList = {
         'East Parton',
         'West Parton'],
 
-    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "flood", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
+    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -129,7 +129,12 @@ function extractWords (key,terms,data) {
 // }
 
 function markWord (message,keys){
-    keys.forEach(k=>message = message.replace(new RegExp(k.text,'gi'),generatemark(k)));
+    keys.forEach(maink=>{
+        if (termsList[maink.text])
+            termsList[maink.text].forEach(k=>message = message.replace(new RegExp(k,'gi'),generatemark(maink)));
+        else
+            message = message.replace(new RegExp(maink.text,'gi'),generatemark(maink));
+    });
     return message;
 }
 function generatemark(category){
