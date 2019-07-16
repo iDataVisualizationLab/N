@@ -630,7 +630,7 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
-let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateBuPu).range(['#e0ecf4','#9ebcda','#8856a7']);;
+let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['#e0ecf4','#9ebcda','#8856a7']);;
 function onmouseoverRadar ([d,list]) {
     d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list));
