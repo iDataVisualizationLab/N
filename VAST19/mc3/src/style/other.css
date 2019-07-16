@@ -289,3 +289,7 @@ mark span {
     height: 100%;
     overflow: hidden;
 }
+
+.nodeLegend.fade {
+    opacity: 0.5;
+}

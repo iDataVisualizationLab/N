@@ -338,6 +338,8 @@ d3.TimeArc = function () {
         // removeList["china"] =1;
 
         removeList["<Location with-held due to contract>"] = 1;
+        catergogryObjectReject = {}
+        catergogryList.filter(e=>e.disable).forEach(e=>{catergogryObjectReject[e.key]=1});
         // removeList["barack obama"] = 1;
         // removeList["john mccain"] = 1;
         // removeList["mitt romney"] = 1;
@@ -365,7 +367,7 @@ d3.TimeArc = function () {
         for (var att in terms) {
             var e = {};
             e.term = att;
-            if (removeList[e.term] || (searchTerm && searchTerm !== "" && !selected[e.term])) // remove list **************
+            if (catergogryObjectReject[terms[att].category]||removeList[e.term] || (searchTerm && searchTerm !== "" && !selected[e.term])) // remove list **************
                 continue;
 
             var maxNet = 0;
@@ -1162,7 +1164,8 @@ d3.TimeArc = function () {
             .enter()
             .append('g')
             .attr('class','nodeLegend')
-            .attr('transform',(d,i)=>'translate('+xx+','+yscale(i)+')');
+            .attr('transform',(d,i)=>'translate('+xx+','+yscale(i)+')')
+            .on('click',onclickcategory);
 
         legendg.append("circle")
             .attr("cx", 0)
@@ -1180,7 +1183,15 @@ d3.TimeArc = function () {
             .style("fill",d=>colorCatergory(d.key))
             .text(d=>d.key);
     }
-
+    function onclickcategory(d) {
+        if(d.disable){
+            d.disable = false;
+        }else{
+            d.disable = true;
+        }
+        d3.select(this).classed('fade',d.disable);
+        recompute();
+    }
     function removeColorLegend() {
         svg.selectAll(".nodeLegend").remove();
     }
