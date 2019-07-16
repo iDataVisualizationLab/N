@@ -15,7 +15,26 @@
 </head>
 
 <body class="light">
-
+<ul id="mc1_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/TTU-Vuong-MC1/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">Demo</a></li>
+</ul>
+<ul id="mc3_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/TTU-Vuong-MC3/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc3/index.html">Demo</a></li>
+</ul>
+<ul id="mc2_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/TTU-Vuong-MC2/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="#demo" onclick="disableIframe()">Demo</a></li>
+</ul>
+<ul id="gc_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/TTU-Vuong-GC/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/gc/index.html">Demo</a></li>
+</ul>
 <nav >
 
     <div class="nav-wrapper" id="header">
@@ -24,13 +43,11 @@
             <!--Mini chalenge 2-->
         <!--</div>-->
         <div class="row s5 left">
-            <ul id="nav-mobile" class="tabs tabs-transparent" id="mainTab">
-                <li class="tab"><a href="#video">Report</a></li>
-                <!--<li class="tab" id="demoTab"><a class="active" href="#demo">Demo</a></li>-->
-                <li class="tab" ><a target="_blank" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">Mini-Challenge 1</a></li>
-                <li class="tab" id="demoTab" ><a  class="active" href="#demo" >Mini-Challenge 2</a></li>
-                <li class="tab" ><a  target="_blank" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/index.html">Mini-Challenge 3</a></li>
-                <li class="tab" ><a  target="_blank" href="https://idatavisualizationlab.github.io/N/VAST19/gc/index.html">Grand Challenge</a></li>
+            <ul id="nav-mobile" id="mainTab">
+                <li><a class="dropdown-trigger" href="#!" data-target="mc1_button">Mini-Challenge 1<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li id="demoTab" ><a  class="active dropdown-trigger" href="#!" data-target="mc2_button" >Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li ><a class="dropdown-trigger" href="#!" data-target="mc3_button">Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li ><a  class="dropdown-trigger" href="#!" data-target="gc_button">Grand Challenge<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
         </div>
         <ul class="right">
@@ -313,10 +330,11 @@
         <a class="openbtn btn-floating btn waves-effect waves-light" id="sideNavbtn" onclick="openNav()">
             <i class="material-icons">chevron_right</i></a>
     </div>
-    <div id="video" class= "container mainContain active video-container">
+    <div id="video" class= "container mainContain video-container">
             <iframe id="videoIn" src="https://www.youtube.com/embed/Yg0sAzb46EY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="height: 80%;"></iframe>
     </div>
-    <div id="demo" class= "row mainContain">
+    <iframe frameborder="0" id="iframeResult" name="iframeResult" class= "row mainContain"></iframe>
+    <div id="demo" class= "row mainContain active">
         <div class="cover">
             <div class="spinnerC center">
                 <h3>loading...</h3>

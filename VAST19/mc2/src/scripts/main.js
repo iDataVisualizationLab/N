@@ -98,6 +98,7 @@ const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
     $( "#map" ).draggable();
+    $(".dropdown-trigger").dropdown();
     $("#controlPanel").draggable();
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
@@ -106,29 +107,30 @@ $(document).ready(function(){
     var instance = M.Collapsible.init(elem, {
         accordion: false
     });
-    $('.tabs').tabs({'onShow':function(){
-
-            if (this.$activeTabLink.text()==='Mini-Challenge 2') {
-                $('#videoIn').each(function(index) {
-                    $(this).attr('src', $(this).attr('src'));
-                    return false;
-                });
-                initialize();
-            }else{
-                try{
-                    // playchange();
-                }catch(e){
-
-                }
-            }
-    }});
-    if (d3.select('#demoTab a').classed('active')){
-        $('#videoIn').each(function(index) {
-            $(this).attr('src', $(this).attr('src'));
-            return false;
-        });
-        initialize();
-    }
+    // $('.tabs').tabs({'onShow':function(){
+    //
+    //         if (this.$activeTabLink.text()==='Mini-Challenge 2') {
+    //             $('#videoIn').each(function(index) {
+    //                 $(this).attr('src', $(this).attr('src'));
+    //                 return false;
+    //             });
+    //             initialize();
+    //         }else{
+    //             try{
+    //                 // playchange();
+    //             }catch(e){
+    //
+    //             }
+    //         }
+    // }});
+    // if (d3.select('#demoTab a').classed('active')){
+    //     $('#videoIn').each(function(index) {
+    //         $(this).attr('src', $(this).attr('src'));
+    //         return false;
+    //     });
+    //     initialize();
+    // }
+    initialize();
         // $('#zoomInit').on('change', function () {
         //     runopt.zoom = this.value;
         //     CircleMapplot.runopt(runopt);
@@ -852,3 +854,13 @@ function lineGraph(div,data,options){
 //         console.log('done')
 //     });
 // }
+
+function enableIframe(){
+    $('#iframeResult').addClass('active');
+    $('#demo').removeClass('active');
+}
+
+function disableIframe(){
+    $('#iframeResult').removeClass('active');
+    $('#demo').addClass('active');
+}
