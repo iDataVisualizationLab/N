@@ -188,7 +188,7 @@ d3.TimeArc = function () {
             d.__terms__ = {};
             for (let c in d.category) {
                 for (let term in d.category[c]) {
-                    d.__terms__[term] = 1;
+                    d.__terms__[term] = d.category[c][term];
                     if (!terms[term]) {
                         terms[term] = new Object();
                         terms[term].max = 0;
@@ -196,9 +196,9 @@ d3.TimeArc = function () {
                         terms[term].category = c;
                     }
                     if (!terms[term][m])
-                        terms[term][m] = 1;
+                        terms[term][m] = d.__terms__[term];
                     else {
-                        terms[term][m]++;
+                        terms[term][m] += d.__terms__[term];
                         if (terms[term][m] > terms[term].max) {
                             terms[term].max = terms[term][m];
                             terms[term].maxTimeIndex = m;

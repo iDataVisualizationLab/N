@@ -55,18 +55,21 @@ let catergogryObject = {
         'extractFunc': _.partial(getObject,'location')
     },
     'event':{
-        'extractFunc': function(data){return extractWords('message',this.keywords,data)},
-        'keywords': getTermsArray('event')
+        'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
+        'keywords': getTermsArrayCollection('event')
     },
     'resource':{
-        'extractFunc': function(data){return extractWords('message',this.keywords,data)},
-        'keywords': getTermsArray('resource')
+        'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
+        'keywords': getTermsArrayCollection('resource')
     },
     // 'hashtash':{
     //     'extractFunc': _.partial(extractWords,'message',this.keywords),
     //     'keywords': ['earthquake','tsunami','flood']
     // }
 };
+function getTermsArrayCollection(header){
+    return collections[header].map(d=>{return {key:d, value: termsList[d]}});
+}
 function getTermsArray(header){
     return _.flatten(collections[header].map(d=>termsList[d]));
 }
@@ -86,6 +89,25 @@ function getObject (key,data) {
 //     return all_matched;
 // }
 
+function extractWordsCollection (key,terms,data) {
+    let message = data[key];
+    let collection = {};
+    terms.forEach(t=>{
+        t.value.forEach(
+            k => {
+                if (new RegExp(k, 'i').test(message)) {
+                    if(collection[t.key])
+                        collection[t.key]=1;
+                    else
+                        collection[t.key] = 1;
+                }
+
+            })
+
+    });
+    return collection;
+}
+
 function extractWords (key,terms,data) {
     let message = data[key];
     let collection = {};
@@ -95,6 +117,7 @@ function extractWords (key,terms,data) {
     });
     return collection;
 }
+
 
 // function extractWords (key,terms,data) {
 //     let message = data[key];
