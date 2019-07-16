@@ -102,7 +102,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             function draw_map(geojson) {
                 var mapSvg = d3.select('#map g#regMap')
                     .selectAll('path')
-                    .data(geojson.features);
+                    .data(geojson.features,d=>d.properties.Id);
 
                 //append path to map
                 mapSvg.enter()

@@ -630,14 +630,15 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
+let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHcl).range(d3.schemeRdBu[8]);;
 function onmouseoverRadar ([d,list]) {
-    // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
-    // if (d.regions&&d.regions.length)
-    d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true);
-    // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
     d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list));
     d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list));
+    let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
+    d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true);
+    colorLegend.domain(d3.extent(nestmap,e=>e.value));
+    nestmap.forEach(e=> d3.selectAll('.geoPath#'+e.key).style('fill',colorLegend(e.value)));
     updateTable (d.messagearr);
     // if (!isNaN(+d.loc)){
     //     if ((tempStore.loc!==d.loc)) {
