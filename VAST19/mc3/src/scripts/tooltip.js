@@ -37,7 +37,7 @@ function updateTable (data){
         rows.append('td').attr('class', 'text').html(d => d.htmlUser);
         rows.append('td').attr('class', 'text').html(d => d.htmlMessage);
       $(table.node()).DataTable({
-                "order": [[1, "asc"]]
+                "order": [[0, "asc"]]
             });
 
     // else {
@@ -51,3 +51,20 @@ function updateTable (data){
     //     tableFunc.draw();
     // }
 }
+
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var min = new Date( $('#min_time').val());
+        var max = new Date( $('#max_time').val());
+        var age = new Date( data[0]); // use data for the age column
+
+        if ( ( isNaN( min.getTime() ) && isNaN( max.getTime() ) ) ||
+            ( isNaN( min.getTime() ) && age <= max ) ||
+            ( min <= age   && isNaN( max.getTime() ) ) ||
+            ( min <= age   && age <= max ) )
+        {
+            return true;
+        }
+        return false;
+    }
+);

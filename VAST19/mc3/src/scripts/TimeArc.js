@@ -1260,8 +1260,10 @@ d3.TimeArc = function () {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return 1;
                 else {
-                    if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
+                    if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul) {
+                        console.log(i);
                         return 1;
+                    }
                     else
                         return 0;
                 }
@@ -1558,7 +1560,7 @@ d3.TimeArc = function () {
     var valueMax = 30;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()
-            .domain([0, valueMax])
+            .domain([1, valueMax])
             .range([xSlider, 120]);
 
         brush = d3.brushX(xScaleSlider)
