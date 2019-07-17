@@ -174,10 +174,10 @@ table.dataTable th:not(:first-child) {
     width: fit-content;
     padding: 20px;
     z-index: 2;
-    /*position: absolute;*/
+    position: absolute;
     /*top: 0;*/
-    /*right:0;*/
-    position: relative;
+    right:0;
+    /*position: relative;*/
 }
 
 #dot{

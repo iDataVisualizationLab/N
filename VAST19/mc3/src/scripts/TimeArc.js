@@ -1554,7 +1554,7 @@ d3.TimeArc = function () {
     var xScaleSlider;
     var xSlider = 3;
     var ySlider = 125;
-    var valueSlider = 30;
+    var valueSlider = 15;
     var valueMax = 30;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()

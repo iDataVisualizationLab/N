@@ -630,7 +630,7 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
-let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['#e0ecf4','#9ebcda','#8856a7']);;
+let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['#e0ecf4','#8856a7']);;
 function onmouseoverRadar ([d,list]) {
     d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list));
@@ -638,7 +638,7 @@ function onmouseoverRadar ([d,list]) {
     let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
     d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true).each(d=>d.density = 0);
     colorLegend.domain(d3.extent(nestmap,e=>e.value));
-    nestmap.forEach(e=> d3.selectAll('.geoPath#'+e.key).style('fill',colorLegend(e.value)).each(f=>f.density = e.value));
+    nestmap.forEach(e=> d3.selectAll('.geoPath#'+removeWhitespace(e.key)).style('fill',colorLegend(e.value)).each(f=>f.density = e.value));
     updateTable (d.messagearr);
     // if (!isNaN(+d.loc)){
     //     if ((tempStore.loc!==d.loc)) {

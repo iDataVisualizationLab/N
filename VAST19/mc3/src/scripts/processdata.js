@@ -93,14 +93,13 @@ function extractWordsCollection (key,terms,data) {
     let message = data[key];
     let collection = {};
     terms.forEach(t=>{
-        t.value.forEach(
+        t.value.find(
             k => {
-                if (new RegExp(k, 'i').test(message)) {
-                    if(collection[t.key])
-                        collection[t.key]=1;
-                    else
-                        collection[t.key] = 1;
+                if ((new RegExp(' '+k+'|^'+k,'i')).test(message)) {
+                    collection[t.key] = 1;
+                    return true;
                 }
+                return false;
 
             })
 
@@ -131,16 +130,16 @@ function extractWords (key,terms,data) {
 function markWord (message,keys){
     keys.forEach(maink=>{
         if (termsList[maink.text])
-            termsList[maink.text].forEach(k=>message = message.replace(new RegExp(k,'gi'),generatemark(maink)));
+            termsList[maink.text].forEach(k=>message = message.replace(new RegExp(' '+k+'|^'+k,'gi'),generatemark(maink,maink.text)));
         else
             message = message.replace(new RegExp(maink.text,'gi'),generatemark(maink));
     });
     return message;
 }
-function generatemark(category){
+function generatemark(category,subcategory){
     let str = '<mark class="entity" style="background:'+category.color+';">';
     str += '$&';
-    str += '<span>'+category.group+'</span>';
+    str += '<span>'+(subcategory?subcategory:category.group)+'</span>';
     str += '</mark>';
     return str;
 }
