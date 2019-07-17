@@ -292,6 +292,9 @@ function init() {
     ])
         .then(([d])=>{
         // ssss = statics.slice();
+            var sentiment = new Sentimood();
+            var analyze = sentiment.analyze;
+            d =d.filter(e=>analyze(e.message).score<0);
         let count=0;
         let totalcount = d.length;
         let updatecondition = 0.1;
@@ -633,8 +636,8 @@ let tempStore ={};
 let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['#e0ecf4','#8856a7']);;
 function onmouseoverRadar ([d,list]) {
     d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
-    // d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list));
-    d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list));
+    d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list.filter(f=>f.group==='user')));
+    d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list.filter(f=>f.group==='location')));
     let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
     d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true).each(d=>d.density = 0);
     colorLegend.domain(d3.extent(nestmap,e=>e.value));

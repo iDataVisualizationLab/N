@@ -914,6 +914,8 @@ d3.TimeArc = function () {
     function searchNode(value) {
         searchTerm = value;
         valueSlider = 2;
+        if(searchTerm==='')
+            valueSlider = 15;
         slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
         recompute();
     }
