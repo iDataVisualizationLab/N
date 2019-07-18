@@ -50,15 +50,46 @@
         <h4>System Overview</h4>
         <img id="overviewFig" src="images/overview.png" class="full">
         <p class="caption"><span>Figure 1. Our visual interface: (top-left) control zone, (top) TimeArc, (top-right) St. Himark map and (bottom) message table </span></p>
+        <div>Control zone includes <ul>
+                <li>Search box: for searching user, location or category </li>
+                <li>Category legend: click on category name to show or hide that category </li>
+                <li>Mentioned together slider: adjust lower limit of links </li>
+            </ul>
+        </div>
 
-
-        <img id="timearc" src="images/f2.png" class="full">
-        <p class="caption"><span>Figure 2. Examples of TimeArc result relating to earthquake event.</span></p>
+        <!--<img id="timearc" src="images/f2.png" class="full">-->
+        <!--<p class="caption"><span>Figure 2. Examples of TimeArc result relating to earthquake event.</span></p>-->
 
         <div> TimeArc have 2 main components: the stream graph of terms/topics and the link between 2 topics present the connection. The thicker of link display the stronger connection between them. This connection has been calculate by how coincident 2 world present in the same message. </div>
     </div>
 </page>
+<page size="A3">
+    <div class="pageContent">
+        <h4>Questions</h4>
 
-
+        <div class="question">1- Using visual analytics, characterize conditions across the city and recommend how resources should be allocated at 5 hours and 30 hours after the earthquake. Include evidence from the data to support these recommendations. Consider how to allocate resources such as road crews, sewer repair crews, power, and rescue teams. Limit your response to 1000 words and 12 images.</div>
+        <img id="earthquake" src="images/earthquaketerms.PNG" class="full">
+        <p class="caption"><span>Figure 2. Examples of locations and 'sewer_and_water' relating to earthquake event.</span></p>
+        <div>The Figure 2 shows earthquake event have 3 pulse (2pm Mon 06, 7am Wed 08, 2pm Thu 09). The 2nd pulse have strong relation ship with Downtown.
+            West Parton and Palace Hills and the 3rd pulse have more connections than the 2nd, especially with the Cheddarford, Weston and Southton.
+        </div>
+        <div> The distribution of resource can be mapping with resource name in this aplication:
+            <ul>
+                <li> road crews: roads_and_bridges</li>
+                <li> sewer repair crews: sewer_and_water</li>
+                <li> power: power/energy</li>
+                <li> rescue teams: medical</li>
+            </ul>
+            The "earthquake" term can be the reference for finding need of resource in order to prevent spam and advertisement message
+            (e.g: unuseful message in message table in Figure 1).
+        </div>
+        <img id="roads_and_bridges" src="images/road_earth.PNG" class="full">
+        <p class="caption"><span>Figure 3. "roads_and_bridges" connect with "earthquake" event.</span></p>
+        <div>
+            Road crews need to be assigned during 1 hours after 2nd earthquake pulse and 5 hours after 3rd earthquake pulse.
+            The map in Figure 3 shows 3 posible location to send Road crews: Neighbor 11,12 and 16.
+        </div>
+    </div>
+</page>
 </body>
 </html>
