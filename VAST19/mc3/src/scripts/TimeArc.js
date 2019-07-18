@@ -1097,7 +1097,8 @@ d3.TimeArc = function () {
                 graphicopt.height = termArray.length*step+12 +graphicopt.margin.top+graphicopt.margin.bottom;
             else {
                 graphicopt.height = 10 * step + 12 + graphicopt.margin.top + graphicopt.margin.bottom;
-                step = step*10-12;
+                if  (termArray.length)
+                    step = (step*10-12)/termArray.length;
             }
             svg.attr('height',graphicopt.height);
         }
