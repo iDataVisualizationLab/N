@@ -447,22 +447,7 @@ d3.circleMap = function () {
             needUpdate = true;
             if (graphicopt.display.symbol.type ==='path') {
                 drawEmbedding(arr);
-                // let newdata = g.selectAll(".linkLineg")
-                //     .data(arr, d => d.name);
-                // newdata.select('clipPath').select('path')
-                //     .transition('expand').duration(runopt.simDuration/2).ease(d3.easePolyInOut)
-                //     .attr("d", d => radarcreate(d));
-                // newdata.select('.tSNEborder')
-                //     .transition('expand').duration(runopt.simDuration/2).ease(d3.easePolyInOut)
-                //     .attr("d", d => radarcreate(d));
             }
-            // if (!isBusy) {
-            //     isBusy = true;
-            //     isStable = false;
-            //     tsne.postMessage({action: "updateData", value: arr, index: currentIndex});
-            // }
-
-
         }
     };
 
@@ -695,15 +680,36 @@ d3.circleMap = function () {
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
             .on('mouseover',mouseoverEvent)
             .on('mouseleave',mouseleaveEvent);
-        let promiseq = []
-        for (var s = 0; s < 199;s++) {
-            promiseq.push(new Promise(function() {
+        let count=0;
+        let totalcount = 199;
+        let updatecondition = 0.1;
+        updateProcessBar(0);
+        let promiseq = d3.range(0,200).map((s)=>{
+            return new Promise((resolve, reject)=> {
+                setTimeout(() => {
                     datapointN.filter((d, i) => i % 200 === s)
-                        .each(d =>
-                            CircleChart(".linkLineg." + fixstr(d.id), [d], radaropt));
-            }));
-        }
-        Promise.all(promiseq);
+                        .each(d => {
+                                CircleChart(".linkLineg." + fixstr(d.id), [d], radaropt)
+                            }
+                        );
+                    count++;
+                    if (count / totalcount > updatecondition) {
+                        console.log(updatecondition)
+                        updateProcessBar(updatecondition);
+                        updatecondition += 0.1;
+                    }
+                    resolve('done');
+                }, 1);
+            })
+        });
+        Promise.all(promiseq).then(doneProcessBar);
+    }
+    function doneProcessBar(){
+        d3.select('#load_data').classed('hidden',true);
+    }
+    function updateProcessBar(rate){
+        d3.select('#load_data').classed('hidden',false);
+        d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
     }
     function fixstr(s) {
         return s.replace(/ |-|#/gi,'');

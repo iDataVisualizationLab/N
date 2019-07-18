@@ -9,6 +9,7 @@
     <link href="src/style/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="src/style/main.css"/>
     <link type="text/css" rel="stylesheet" href="src/style/other.css"/>
+    <link type="text/css" rel="stylesheet" href="src/style/timarc.css"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -20,20 +21,20 @@
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html" onclick="enableIframe()">Video</a></li>
     <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">Demo</a></li>
 </ul>
+<ul id="mc2_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/TTU-Vuong-MC2/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc2/index.html">Demo</a></li>
+</ul>
 <ul id="mc3_button" class="dropdown-content">
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/TTU-Vuong-MC3/index.htm" onclick="enableIframe()">Report</a></li>
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/video.html" onclick="enableIframe()">Video</a></li>
     <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc3/index.html">Demo</a></li>
 </ul>
-<ul id="mc2_button" class="dropdown-content">
-    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/TTU-Vuong-MC2/index.htm" onclick="enableIframe()">Report</a></li>
-    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html" onclick="enableIframe()">Video</a></li>
-    <li><a href="#demo" onclick="disableIframe()">Demo</a></li>
-</ul>
 <ul id="gc_button" class="dropdown-content">
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/TTU-Vuong-GC/index.htm" onclick="enableIframe()">Report</a></li>
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/video.html" onclick="enableIframe()">Video</a></li>
-    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/gc/index.html">Demo</a></li>
+    <li><a href="#demo" onclick="disableIframe()">Demo</a></li>
 </ul>
 <nav >
 
@@ -45,9 +46,9 @@
         <div class="row s5 left">
             <ul id="nav-mobile" id="mainTab">
                 <li><a class="dropdown-trigger" href="#!" data-target="mc1_button">Mini-Challenge 1<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li id="demoTab" ><a  class="active dropdown-trigger" href="#!" data-target="mc2_button" >Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li ><a class="dropdown-trigger" href="#!" data-target="mc3_button">Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li ><a  class="dropdown-trigger" href="#!" data-target="gc_button">Grand Challenge<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="mc2_button">Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="mc3_button">Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li id="demoTab" ><a  class="active dropdown-trigger" href="#!" data-target="gc_button" >Grand Challenge<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
         </div>
         <ul class="right">
@@ -80,7 +81,8 @@
                                 <!--<option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>-->
                                 <!--<option value="mc2-static-notlocation" data="csv" selected="selected" >Mini Challlenge 1</option>-->
                                 <!--<option value="raw\MobileSensorReadings" data="csv" selected="selected" >Mini Challlenge 1</option>-->
-                                <option value="mc2-mobile-notlocation" data="json" selected="selected" >Mini Challlenge 2</option>
+                                <!--<option value="raw\YInt_test" data="csv" selected="selected" >Mini Challlenge 3</option>-->
+                                <option value="raw\YInt" data="csv" selected="selected" >Mini Challlenge 3</option>
                                 <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
                                 <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
                                 <!--<option value="WorldTerrorism" >World Terrorism</option>-->
@@ -101,12 +103,12 @@
                             <!--</p>-->
                         <!--</div>-->
                         <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Gradient display: </label>
-                            <p class="switch col s7" id ="displaySymbol">
+                            <label for="displayArea" class="col s4">Area graph: </label>
+                            <p class="switch col s7" id ="displayArea">
 
                                 <label>
                                     <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeShape(this)" checked>
+                                    <input type="checkbox" id="checkbox1" value="value2" onchange="TimeArc.update()">
                                     <span class="lever"></span>
                                     <span class="false">On</span>
                                 </label>
@@ -115,7 +117,7 @@
                         </div>
                         <div class="row s12 no_magrin">
                             <ul class="collapsible insideSetting ">
-                                <li id="RadarColor">
+                                <li id="RadarColor" style="display: none">
                                     <div class="collapsible-header">
                                         <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
                                             <label for="radarColorPicker" class="col s4"> Radar color: </label>
@@ -157,17 +159,11 @@
 
                                 <label>
                                     <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeFitscreen(this)" checked>
+                                    <input type="checkbox" onchange="changeFitscreen(this)">
                                     <span class="lever"></span>
                                     <span class="false">On</span>
                                 </label>
 
-                            </p>
-                        </div>
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displayHeight" class="col s4">Height: </label>
-                            <p class="switch col s7">
-                                <input type="number" id="displayHeight" min="1000" max="1870" value="1870" onchange="changeHeightMap(this)">
                             </p>
                         </div>
                         <!--<div  class="row s12 valign-wrapper">-->
@@ -185,78 +181,75 @@
                         <!--</div>-->
                     </div>
                 </li>
-                <li class="settingContain active">
-                    <div class="collapsible-header" style="padding-top: 0px;"><span>Radar control</span></div>
-                    <div class="collapsible-body">
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displayMinMax" class="col s4"> Dataset: </label>
-                            <select id="displayMinMax" class="col s7" onchange="changeStaticsMode(this)">
-                                <!--<option value="EmploymentRate">Unemployment Rate</option>-->
-                                <!--<option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>-->
-                                <!--<option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>-->
-                                <!--<option value="mc2-static-notlocation" data="csv" selected="selected" >Mini Challlenge 1</option>-->
-                                <!--<option value="raw\MobileSensorReadings" data="csv" selected="selected" >Mini Challlenge 1</option>-->
-                                <option value="false" data="json" >Median vs Std</option>
-                                <option value="true" data="json" selected="selected" >Quantile vs Min-Max</option>
-                                <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
-                                <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
-                                <!--<option value="WorldTerrorism" >World Terrorism</option>-->
-                                <!--<option value="LifeExpectancy">Life Expectancy</option>-->
-                            </select>
-                        </div>
-                        <!--<div  class="row s12 valign-wrapper no_magrin list">-->
-                            <!--<label for="displaySymbol" class="col s4">Quantile: </label>-->
-                            <!--<p class="switch col s7" id ="displayQuantile">-->
 
-                                <!--<label>-->
-                                    <!--<span class="true">Off</span>-->
-                                    <!--<input type="checkbox" onchange="changeQuantile(this)" checked>-->
-                                    <!--<span class="lever"></span>-->
-                                    <!--<span class="false">On</span>-->
-                                <!--</label>-->
-
-                            <!--</p>-->
-                        <!--</div>-->
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Average: </label>
-                            <p class="switch col s7" id ="displayMean">
-
-                                <label>
-                                    <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeMean(this)">
-                                    <span class="lever"></span>
-                                    <span class="false">On</span>
-                                </label>
-
-                            </p>
-                        </div>
-                        <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Std: </label>
-                            <p class="switch col s7" id ="displayStd">
-
-                                <label>
-                                    <span class="true">Off</span>
-                                    <input type="checkbox" onchange="changeStd(this)">
-                                    <span class="lever"></span>
-                                    <span class="false">On</span>
-                                </label>
-
-                            </p>
-                        </div>
-                        <div id="RadarController" class="row s12 valign-wrapper list"></div>
-                        <div id="RadarController_Table" class="row s12 valign-wrapper list">
-                            <table class="display" width="100%"></table>
-                        </div>
-                        <!--<div id="RadarController_Table_toolbar" class="row s12 valign-wrapper list">-->
-                            <!--<button value = false class ="menuBtn saveProfile modal-trigger" id="saveProfile" onclick="downloadProfile(this)" href="#savedialog_profile"><i class="fas fa-download"></i> Save</button>-->
-                            <!--<input id="profile_input_file" class="none" type="file" style="display: none;"/>-->
-                            <!--<button value = false class ="menuBtn loadProfile" id="loadProfile" onclick="uploadProfile(this)"><i class="fas fa-upload"></i> Load </button>-->
-                        <!--</div>-->
-                    </div>
-                </li>
             </ul>
         </div>
                 </div>
+
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Advance</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<div  class="row s12 valign-wrapper">-->
+                        <!--<label for="detailLevel" class="col s4"> Perplexity: </label>-->
+                        <!--<p class="range-field col s7">-->
+                            <!--<input type="range" id="detailLevel" min="10" max="50" />-->
+                        <!--</p>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">help</i>Style</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<div class="row s12">-->
+                        <!--<ul class="collapsible">-->
+                            <!--<li id="RadarColor">-->
+                                <!--<div class="collapsible-header">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">-->
+                                        <!--<div class="colorscale-header">Radar</div>-->
+                                        <!--<div class="colorscale-palette-container">-->
+                                            <!--<div class="colorscale-block">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="collapsible-body">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li id="ClusterColor">-->
+                                <!--<div class="collapsible-header">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">-->
+                                        <!--<div class="colorscale-header">Cluster</div>-->
+                                        <!--<div class="colorscale-palette-container">-->
+                                            <!--<div class="colorscale-block">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="collapsible-body">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">help</i>Controls</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<strong>Zoom</strong>: Scroll mouse button to zoom.<br/>-->
+                    <!--<strong>Setting</strong>: Use tab setting to adjust the delay speed, zoom and change the visualization.<br/>-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
     </div>
 </div>
 <div id="Maincontent" class="row s12">
@@ -273,6 +266,9 @@
         <div class="cover">
             <div class="spinnerC center">
                 <h3>loading...</h3>
+                <div class="progress" id="load_data">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
                 <div class="preloader-wrapper big active">
                     <div class="spinner-layer spinner-blue">
                         <div class="circle-clipper left">
@@ -316,12 +312,6 @@
                 </div>
             </div>
         </div>
-        <div class="row no_magrin s12 hidden" id="load_data">
-            <div class="progress col s11">
-                <div class="determinate col" style="width: 0%"></div>
-            </div>
-            <span class="col s1">load graphic</span>
-        </div>
         <!--<div id="header2" class="row s12 marginBottom0">-->
             <!--&lt;!&ndash;<h1>HPCC Explorer</h1>&ndash;&gt;-->
             <!--&lt;!&ndash;<div class="col valign-wrapper">&ndash;&gt;-->
@@ -361,6 +351,22 @@
             <div class="col s12 m12">
                 <div class="col s12 m12">
                     <div class="card-image center-align relative" id="tSNE">
+                        <div class = 'row s12 valign-wrapper'>
+                                <div class="input-field col">
+                                    <input type="text"  id="search" class="autocomplete inputHolder" placeholder="Search">
+                                </div>
+                                <button class="col" type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
+
+                                <progress class="col" value="0" max="100" id="progBar">
+                                <span id="downloadProgress">
+                                    <!-- Your fallback goes here -->
+                                </span>
+                                </progress>
+                                <label id="progUpdate">
+                                    <!-- Success Message -->
+                                </label>
+
+                        </div>
                         <svg id="RadarMapcontent" class="active"></svg>
                     </div>
                 </div>
@@ -382,6 +388,14 @@
                 <g id="regMap"></g>
             </svg>
         </div>
+        <div class="col s12 overflowAuto marginBottom0" style="margin-bottom: 0px;">
+            <!--<div class="row s12 m12">-->
+               <!--<svg id="minichart"></svg>-->
+            <!--</div>-->
+            <div class="col s12 m12" id = 'messages_table'>
+            </div>
+        </div>
+
         <!--<div id="controlPanel" class="card">-->
             <!--<div id="colorLegend">-->
 
@@ -433,22 +447,34 @@
 <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 <script src="https://d3js.org/d3-queue.v3.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@2.2.0/dist/simple-statistics.min.js"></script>
-<script src="src/scripts/addin.js"></script>
 <script src="src/lib/geocoder.js"></script>
 <script src="src/lib/jquery.dataTables.min.js"></script>
 <script src="src/lib/FileSaver.min.js"></script>
 <script src="src/lib/TimerInterval.js"></script>
 <script src="src/lib/underscore-min.js"></script>
-<script src="src/scripts/circleChart.js"></script>
-<script src="src/scripts/circleMap.js"></script>
 
+
+<!--timearc zone-->
+<!--<script src="src/scripts/sliderRelationship.js"></script>-->
+<script src="src/scripts/streamGraph.js"></script>
+<script src="src/scripts/stopList.js"></script>
+<script src="src/scripts/TimeArc.js"></script>
+
+<!--timearc zone-->
+
+
+<!--<script src="src/scripts/circleChart.js"></script>-->
+<!--<script src="src/scripts/circleMap.js"></script>-->
+
+<script src="src/scripts/util2.js"></script>
 <script src="src/scripts/ulti.js"></script>
 <script src="src/scripts/setting.js"></script>
 <script src="src/scripts/store.js"></script>
-<script src="src/scripts/radarController.js"></script>
+<!--<script src="src/scripts/radarController.js"></script>-->
 <script src="src/lib/d3.tip.js"></script>
 <script src="src/scripts/tooltip.js"></script>
-
+<script type="text/javascript" src="src/lib/sentimood.js"></script>
+<script src="src/scripts/processdata.js"></script>
 <script src="src/scripts/main.js"></script>
 <!--<script src="src/scripts/main-processdata.js"></script>-->
 

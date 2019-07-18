@@ -372,7 +372,9 @@ function onSchemaUpdate(schema_new){
         ser.enable = schema_new.axis[ser.text].data.enable;
     });
     schema = schema_new;
+    d3.select('.cover').classed('hidden', false);
     CircleMapplot.schema(serviceFullList).draw();
+    d3.select('.cover').classed('hidden', true);
     // Radarplot.schema(serviceFullList);
     // updateSummaryChartAll();
     // // }
@@ -517,37 +519,56 @@ function changeShape(d){
 }
 
 function changeStaticsMode(d){
-    old = CircleMapplot.radaropt().summary;
-        old.minmax = d.value=="true";
-        old.quantile = d.value=="true";
-        old.median = d.value=="false";
-        old.std = d.value=="false";
-    CircleMapplot.radaropt({summary: old}).draw();
+    d3.select('.cover').classed('hidden', false);
+    setTimeout(()=> {
+        old = CircleMapplot.radaropt().summary;
+            old.minmax = d.value=="true";
+            old.quantile = d.value=="true";
+            old.median = d.value=="false";
+            old.std = d.value=="false";
+        CircleMapplot.radaropt({summary: old}).draw();
+        d3.select('.cover').classed('hidden', true);
+    },1);
 }
 function changeMinMax(d){
-    old = CircleMapplot.radaropt().summary;
-    old.minmax = d.checked;
-    CircleMapplot.radaropt({summary: old}).draw();
+    d3.select('.cover').classed('hidden', false);
+    setTimeout(()=> {
+        old = CircleMapplot.radaropt().summary;
+        old.minmax = d.checked;
+        CircleMapplot.radaropt({summary: old}).draw();
+        d3.select('.cover').classed('hidden', true);
+    },1);
 }
 function changeQuantile(d){
-    old = CircleMapplot.radaropt().summary;
-    old.quantile = d.checked;
-    CircleMapplot.radaropt({summary: old}).draw();
-
+    d3.select('.cover').classed('hidden', false);
+    setTimeout(()=> {
+        old = CircleMapplot.radaropt().summary;
+        old.quantile = d.checked;
+        CircleMapplot.radaropt({summary: old}).draw();
+        d3.select('.cover').classed('hidden', true);
+    },1);
 }
 function changeMean(d){
-    old = CircleMapplot.radaropt().summary;
-    old.mean = d.checked;
-    CircleMapplot.radaropt({summary: old}).draw();
+    d3.select('.cover').classed('hidden', false);
+    setTimeout(()=>{
+        old = CircleMapplot.radaropt().summary;
+        old.mean = d.checked;
+        CircleMapplot.radaropt({summary: old}).draw();
+        d3.select('.cover').classed('hidden', true);
+    },1);
 }
 let old;
 function changeStd(d){
-    old = CircleMapplot.radaropt().summary;
-    if (d.checked) {
-        CircleMapplot.radaropt({summary: {std:true}}).draw();
-    }else {
-        CircleMapplot.radaropt({summary: old}).draw();
-    }
+    d3.select('.cover').classed('hidden', false);
+    setTimeout(()=>{
+        old = CircleMapplot.radaropt().summary;
+        if (d.checked) {
+            CircleMapplot.radaropt({summary: {std:true}}).draw();
+        }else {
+            CircleMapplot.radaropt({summary: old}).draw();
+        }
+        d3.select('.cover').classed('hidden', true);
+    },1);
 }
 
 function changeFitscreen(d){
@@ -863,4 +884,8 @@ function enableIframe(){
 function disableIframe(){
     $('#iframeResult').removeClass('active');
     $('#demo').addClass('active');
+}
+
+function updateProcessBar(rate){
+    d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
 }
