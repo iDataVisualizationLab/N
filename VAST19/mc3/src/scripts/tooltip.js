@@ -32,7 +32,7 @@ function updateTable (data){
         let rows = table.append('tbody').selectAll('tr')
             .data(data, d => d.time+d.account)
             .enter().append('tr');
-        rows.append('td').attr('class', 'text').text(d => d.time);
+        rows.append('td').attr('class', 'text').style('width','150px').text(d => d.time);
         rows.append('td').attr('class', 'text').html(d => d.htmlLocation);
         rows.append('td').attr('class', 'text').html(d => d.htmlUser);
         rows.append('td').attr('class', 'text').html(d => d.htmlMessage);

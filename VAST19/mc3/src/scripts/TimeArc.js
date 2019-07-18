@@ -131,7 +131,7 @@ d3.TimeArc = function () {
             // overflow: "visible",
 
         });
-
+        maxheight  = graphicopt.heightG();
 //******************* Forced-directed layout
 
 //Set up the force layout
@@ -1067,7 +1067,7 @@ d3.TimeArc = function () {
         updateTimeLegend();
         updateTimeBox(durationTime);
     }
-
+    let maxheight;
     function detactTimeSeries() {
         // console.log("DetactTimeSeries ************************************" +data);
         var termArray = [];
@@ -1090,9 +1090,15 @@ d3.TimeArc = function () {
 
         // var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
         if (graphicopt.fixscreence)
-            var step = (graphicopt.heightG() - 25) / (numNode + 1);
-        else
-            var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
+            var step = (maxheight - 25) / (numNode + 1);
+        else {
+            var step = Math.min((maxheight - 25) / (numNode + 1), 20);
+            if (termArray.length>10)
+                graphicopt.height = termArray.length*step+12 +graphicopt.margin.top+graphicopt.margin.bottom;
+            else
+                graphicopt.height = 10*step+12 +graphicopt.margin.top+graphicopt.margin.bottom;
+            svg.attr('height',graphicopt.height);
+        }
         //var totalH = termArray.length*step;
         for (var i = 0; i < termArray.length; i++) {
             nodes[termArray[i].nodeId].y = 12 + i * step;

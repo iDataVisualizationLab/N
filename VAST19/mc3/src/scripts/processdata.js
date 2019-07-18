@@ -30,20 +30,18 @@ var termsList = {
 
     "buildings": ["collapse", "housing", "house"],
 
-    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter" ],
+    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter",'aftershock','after shock' ],
 
     "grounds": ["mudslide", "rupture", "landslides", "liquefaction",  "liquifactjheion"],
 
     "flooding": ["tsunami", "flood"],
 
-    "aftershock": ["aftershock"],
-
-    "fire": ["fire", "smoke"]
+    "fire": ["fire", "smoke",'burn']
 };
 
 var collections = {
     'location': ['local_area'],
-    'event': ['earthquake','grounds','flooding','aftershock','fire'],
+    'event': ['earthquake','grounds','flooding','fire'],
     'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','buildings']
 }
 

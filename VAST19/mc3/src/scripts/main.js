@@ -18,7 +18,7 @@ let width = 2000,
         heightView: function(){return this.height*this.scalezoom},
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
-        fixscreence: true,
+        fixscreence: false,
         dotRadius: 3,
         group_mode: 'outlier',
         display:{
@@ -97,6 +97,7 @@ let TimeArc  = d3.TimeArc();
 const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
+    $('.datepicker').datepicker();
     $( "#map" ).draggable();
     $(".dropdown-trigger").dropdown();
     $("#controlPanel").draggable();
@@ -292,9 +293,11 @@ function init() {
     ])
         .then(([d])=>{
         // ssss = statics.slice();
-            var sentiment = new Sentimood();
-            var analyze = sentiment.analyze;
-            d =d.filter(e=>analyze(e.message).score<0);
+        //     var sentiment = new Sentimood();
+        //     var analyze = sentiment.analyze;
+            d =d.filter(e=>!(new RegExp('^re: ')).test(e.message));
+            // d=d.filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
+            // d =d.filter(e=>!(new RegExp('^re: ')).test(e.message)).filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
         let count=0;
         let totalcount = d.length;
         let updatecondition = 0.1;
@@ -819,4 +822,103 @@ function enableIframe(){
 function disableIframe(){
     $('#iframeResult').removeClass('active');
     $('#demo').addClass('active');
+}
+
+
+function areaChart(div,data,options){
+    var opt = {
+        w: 300,				//Width of the circle
+        h: 100,				//Height of the circle
+        margin: {top: 10, right: 0, bottom: 20, left: 50}, //The margins of the SVG
+        levels: 3,				//How many levels or inner circles should there be drawn
+        maxValue: 1, 			//What is the value that the biggest circle will represent
+        minValue: 0, 			//What is the value that the biggest circle will represent
+        labelFactor: 1.15, 	//How much farther than the radius of the outer circle should the labels be placed
+        wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
+        opacityArea: 0.35, 	//The opacity of the area of the blob
+        dotRadius: 4, 			//The size of the colored circles of each blog
+        opacityCircles: 0.1, 	//The opacity of the circles of each blob
+        strokeWidth: 1, 		//The width of the stroke around each blob
+        roundStrokes: true,	//If true the area and stroke will follow a round path (cardinal-closed)
+        isNormalize: true,
+        mini:false, //mini mode
+        schema: undefined,
+        color: function(){return 'black'},	//Color function
+        arrColor: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
+    };
+
+    if('undefined' !== typeof options){
+        for(var i in options){
+            if('undefined' !== typeof options[i]){ opt[i] = options[i]; }
+        }//for i
+    }//if
+
+    let g;
+    let svg = d3.select(div).select('svg');
+    if (svg.empty()) {
+        svg = d3.select(div).append('svg')
+            .attr('width',opt.w)
+            .attr('height',opt.h);
+        g = svg.append('g').attr('class','tipg').attr('transform','translate('+opt.margin.left+','+opt.margin.top+')');
+        // 3. Call the x axis in a group tag
+        g.append("g")
+            .attr("class", "x axis");
+
+        // 4. Call the y axis in a group tag
+        g.append("g")
+            .attr("class", "y axis");
+    }else{
+        g = svg.select('g.tipg');
+    }
+    var width = opt.w-opt.margin.left-opt.margin.right;
+    var height = opt.h-opt.margin.top-opt.margin.bottom;
+    // 5. X scale will use the index of our data
+    var xScale = d3.scaleTime()
+        .domain(d3.extent(data,d=>d.time)) // input
+        .range([0, width]); // output
+
+// 6. Y scale will use the randomly generate number
+    var yScale = d3.scaleLinear()
+        .domain(d3.extent(data,d=>d.value)) // input
+        .range([height, 0]); // output
+
+// 7. d3's line generator
+    var area = d3.area()
+        .curve(d3.curveMonotoneX)
+        .x(function(d) { return xScale(d.time); })
+        .y0(height)
+        .y1(function(d) { return yScale(d.value); });
+
+    var brush = d3.brushX()
+        .extent([[0, 0], [width, height]])
+        .on("brush end", brushed);
+    // 3. Call the x axis in a group tag
+    g.select("g.x.axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+// 4. Call the y axis in a group tag
+    g.select("g.y.axis")
+        .call(d3.axisLeft(yScale).ticks(5)); // Create an axis component with d3.axisLeft
+
+// 9. Append the path, bind the data, and call the line generator
+    let pathg = g.select("path.line");
+    if (pathg.empty()) {
+        pathg = g.append('path').attr("class", "line");
+    }
+    pathg.datum(data) // 10. Binds data to the line
+        .attr("d", area)
+        .style('fill',opt.color)
+    ; // 11. Calls the line generator
+
+// 12. Appends a circle for each datapoint
+    let dot = g.selectAll(".dot").data(data);
+    dot.exit().remove();
+    dot.enter().append("circle") // Uses the enter().append() method
+        .attr("class", "dot") // Assign a class for styling
+        .merge(dot)
+        .attr("cx", function(d, i) { return xScale(d.time) })
+        .attr("cy", function(d) { return yScale(d.Value) })
+        .attr("r", 2)
+
 }
