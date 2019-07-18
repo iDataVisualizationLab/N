@@ -61,6 +61,7 @@
         <!--<p class="caption"><span>Figure 2. Examples of TimeArc result relating to earthquake event.</span></p>-->
 
         <div> TimeArc have 2 main components: the stream graph of terms/topics and the link between 2 topics present the connection. The thicker of link display the stronger connection between them. This connection has been calculate by how coincident 2 world present in the same message. </div>
+        <div> The data using in this application is processed directly on web. The process sequence includes removing dublicate post (such as repeated posts), extract keyworks basing on category definition and aggregate post content by hour.</div>
     </div>
 </page>
 <page size="A3">
@@ -89,11 +90,21 @@
             Road crews need to be assigned during 1 hours after 2nd earthquake pulse and 5 hours after 3rd earthquake pulse.
             The map in Figure 3 shows 3 possible location to send Road crews: Neighbor 11,12 and 16.
         </div>
+    </div>
+</page>
+<page>
+    <div class="pageContent">
         <img id="watervsearth" src="images/water_earth.PNG" class="full">
         <p class="caption"><span>Figure 4. "sewer_and_water" connect with "earthquake" event.</span></p>
         <div>
             sewer repair crews need to be assigned during 5 hours after 2nd earthquake pulse.
             The map in Figure 4 shows 3 possible location to send Road crews: Neighbor 4, 17 and 19. However, base on the message content, the Oak Willow had false a report.
+        </div>
+        <img id="powervsroad" src="images/power_road.PNG" class="full">
+        <p class="caption"><span>Figure 5. "power/energy" connect with "roads_and_bridges" event.</span></p>
+        <div>
+            Different from previous resource, power doesn't have directly connection with earthqurake, but, it have strong link with road and bridge
+            According to Figure 5, 2 main locations have problem with power are: Neighbor 5 and 14.
         </div>
     </div>
 </page>
