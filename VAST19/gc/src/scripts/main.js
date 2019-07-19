@@ -158,40 +158,6 @@ $(document).ready(function(){
 
     });
 
-    d3.select('#datacom').on("change", function () {
-        d3.select('.cover').classed('hidden', false);
-        const choice = this.value;
-        const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
-        d3.select('#currentData').text(choicetext);
-        playchange();
-        setTimeout(() => {
-            readConf(choice+"_conf").then((conf)=> readData(choice).then((d) => {
-                d.YearsData.forEach(e => {
-                    if (e.Scagnostics0) delete e.Scagnostics0
-                    for (var key in e) {
-                        e[key] = e[key].map(it => it === "NaN" ? 0 : it);
-                    }
-                });
-                dataRaw = d;
-                d3.select(".currentData")
-                    .text(choicetext);
-                maxtimestep = dataRaw.YearsData.length;
-                console.log(maxtimestep)
-                CircleMapplot.axis(d.Variables);
-                d3.select('.averageSUm').selectAll('*').remove();
-                //remove later
-                var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
-                var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
-                var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
-                listopt.limitColums = [lowlimit,highlimit];
-
-                data = handleDatabyKey(dataRaw,listopt.limitTime,formatTime,['location','time']);
-                handleOutlier (data,currentService);
-                resetRequest();
-                d3.select('.cover').classed('hidden', true);
-            }));
-        }, 0);
-    });
     d3.select("#DarkTheme").on("click", switchTheme);
     changeRadarColor(colorArr.Radar[0]);
     changeClusterColor(colorArr.Cluster[0]);
@@ -284,18 +250,25 @@ function initDemo(){
 }
 // let ssss;
 function init() {
-    initTimeArc();
+    // initTimeArc();
+    initTimeLine();
     const choice = d3.select('#datacom').node().value;
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
     Promise.all([
-        readDatacsv(choice,'csv')
+        readDatacsv(choice,'csv'),
+        readData('mc1-reports-data','csv'),
     ])
-        .then(([d])=>{
+        .then(([textdata,mc1])=>{
+
+            formatTime =getformattime (listopt.time.rate,listopt.time.unit);
+            listopt.limitTime = d3.extent(mc1,d=>d.time);
+            selectedVariable = _.without(d3.keys(mc1[0]),'time','location');
+            databyTime = handleDatabyKey(mc1,listopt.limitTime,formatTime,['time'],true);
         // ssss = statics.slice();
         //     var sentiment = new Sentimood();
         //     var analyze = sentiment.analyze;
-            d =d.filter(e=>!(new RegExp('^re: ')).test(e.message));
+            d =textdata.filter(e=>!(new RegExp('^re: ')).test(e.message));
             // d=d.filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
             // d =d.filter(e=>!(new RegExp('^re: ')).test(e.message)).filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
         let count=0;
@@ -320,19 +293,33 @@ function init() {
                 },0);
             });
         });
-        return Promise.all(queueProcess);
+        return [Promise.all(queueProcess),handlemc1(databyTime)];
     })
-        .then ((d)=>{
-        dataRaw = d;
+        .then (([textdata,mc1])=>{
+        dataRaw = textdata;
         timestep = 0;
         listopt.limitColums = [0,10];
-        formatTime =getformattime (listopt.time.rate,listopt.time.unit);
-        listopt.limitTime = d3.extent(dataRaw,d=>d.date);
-            updateProcessBar(0.8);
-        TimeArc.runopt(listopt).data(dataRaw).draw();
-            updateProcessBar(1);
+        updateProcessBar(0.8);
+        TimeLine.runopt(listopt).timeFormat(formatTime).annotations(annotations).data(mc1).draw();
+        updateProcessBar(1);
+
+        // anatation
+
         d3.select('.cover').classed('hidden',true);
     });
+}
+function handlemc1 (data){ // nest data
+    data.sort((a,b)=>(new Date(a.key))-(new Date(b.key)));
+
+    data.forEach(t=> {
+        t.arr = objecttoArrayRadar(t.value||t.values);
+        t.arr.time = new Date(t.key);
+        t.arr.density = (t.value||t.values).num;
+        // t.arr.density = (t.value||t.values).data.filter(d=>d['shake_intensity']).length;
+        t.arr.id = fixstr('all_'+(+t.arr.time));
+        t.arr.data = (t.value||t.values);
+    });
+    return data;
 }
 function updateProcessBar(rate){
     d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
@@ -349,7 +336,7 @@ function onfilterdata(schema) {
     databyTime = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['time']);
     let dataSumAll = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,[]);
 
-    databyLoc = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['location']);
+    databyLoc = handleDatabyKey(data_filtered,listopt.limitTime,formatTime,['location'],true);
     databyLoc.push({'key':(data.length+1)+'',values:dataSumAll});
     handleDataIcon (databyLoc);
 
@@ -628,11 +615,11 @@ function handleOutlier (data){ // nest data
 let schema;
 let globalScale = d3.scaleLinear().range([0,1]);
 function objecttoArrayRadar(o){
-    return {value: globalScale(o.val),
-            minval: globalScale(o.minval),
-            maxval: globalScale(o.maxval),
-            q1: globalScale(o.q1),
-            q3: globalScale(o.q3)};
+    return {value: o.val.shake_intensity,
+            minval: o.minval.shake_intensity,
+            maxval: o.maxval.shake_intensity,
+            q1: o.q1.shake_intensity,
+            q3: o.q3.shake_intensity};
 }
 // list html
 let tempStore ={};
