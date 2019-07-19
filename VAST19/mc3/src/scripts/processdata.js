@@ -141,3 +141,12 @@ function generatemark(category,subcategory){
     str += '</mark>';
     return str;
 }
+
+function spamremove (data){
+    return new Promise((resolve, reject) => {
+        let dd = data.filter(d=>new RegExp(' sale|^sale | deal |deals|opotuni').test(d.message));
+        let nest_spam = d3.nest().key(d=>d.account).rollup(d=>d.length).entries(dd);
+        const spamlist = nest_spam.sort((a,b)=>b.value-a.value).filter(d=>d.value>10);
+        resolve(data.filter(d=>!spamlist.find(e=>e.key===d.account)));
+    });
+}

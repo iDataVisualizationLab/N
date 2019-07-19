@@ -320,7 +320,7 @@ function init() {
                 },0);
             });
         });
-        return Promise.all(queueProcess);
+        return Promise.all(queueProcess).then(spamremove);
     })
         .then ((d)=>{
         dataRaw = d;
