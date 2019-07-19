@@ -645,7 +645,7 @@ function onmouseoverRadar ([d,list]) {
     d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list.filter(f=>f.group==='location')));
     let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
     d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true).style('fill',colorLegend(0)).each(d=>d.density = 0);
-    colorLegend.domain([0,d3.max(nestmap,e=>e.value)]);
+    colorLegend.domain([0,Math.max(10,d3.max(nestmap,e=>e.value))]);
     colormap(colorLegend);
     nestmap.forEach(e=> d3.selectAll('.geoPath#'+removeWhitespace(e.key)).style('fill',colorLegend(e.value)).each(f=>f.density = e.value));
     updateTable (d.messagearr);
