@@ -639,7 +639,7 @@ d3.radarMap = function () {
         });
         let lables = g.selectAll(".linkLable_textg")
             .data(arrIcon,d=>+d.loc);
-        lables.exit();
+        lables.exit().remove();
 
         let Nlabel = lables.enter().append('g')
             .attr('class','linkLable_textg');
