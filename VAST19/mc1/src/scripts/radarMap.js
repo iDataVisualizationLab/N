@@ -532,7 +532,7 @@ d3.radarMap = function () {
     function handledata(data){
         let arrN = [];
         data.forEach(d=>d.values.forEach(e=>arrN.push(e.arr)));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="all"),d=>d.density)).range([0.05,1]);
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!=="all"),d=>d.density)).range([0.05,1]);
         let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="all"),e=>e.density)).range(radaropt.densityScale.domain());
         arrN.filter(e=>e.loc==="all").forEach(e=>{e.density_true = e.density;
             e.density = desnsityScale(e.density_true);
@@ -541,8 +541,9 @@ d3.radarMap = function () {
     }
     function handledataIcon(data){
         let arrN = [];
-        data.forEach(e=>{
+        data.forEach((e,i)=>{
             e.arr.density_true = e.arr.density;
+            e.arr.y = i;
             arrN.push(e.arr);
         });
         // radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc!="20"),d=>d.density)).range([0.025,1]);
@@ -611,7 +612,7 @@ d3.radarMap = function () {
             timescale.range([0,graphicopt.widthG()]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            const height_needed = (arrIcon.length+2) * radaropt.h;
+            const height_needed = (Object.keys(rowMap).length+2) * radaropt.h;
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
                 height: height_needed+graphicopt.margin.top+graphicopt.margin.bottom,
@@ -619,6 +620,7 @@ d3.radarMap = function () {
             timescale.range([0, width_needed]);
             time_axis = time_axis.ticks(width_needed/100);
         }
+
         time_axis = time_axis.scale(timescale);
         let timeAxis = g.select('.gAxis')
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")

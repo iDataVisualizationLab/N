@@ -614,8 +614,9 @@ d3.eventTimeLine = function () {
 
     }
     function drawEmbedding(data) {
+        var keyVal = 'value';
         let timerange = d3.extent(data,d=>d.time);
-        // let valueRange = d3.extent(data,d=>d.value);
+        // let valueRange = d3.extent(data,d=>d[keyVal]);
         let valueRange = [1,10];
         let time_axis = d3.axisBottom();
         let val_axis = d3.axisLeft();
@@ -672,9 +673,9 @@ d3.eventTimeLine = function () {
         var generateLine = d3.area().curve(d3.curveMonotoneX).x(function (d) {
             return timescale(d.time);
         }).y1(function (d) {
-            return rowscale(d.value);
+            return rowscale(d[keyVal]);
         }).y0(rowscale(valueRange[0]))
-            .defined(d => d.value!==undefined && !isNaN(d.value));
+            .defined(d => d[keyVal]!==undefined && !isNaN(d[keyVal]));
 
         let datapoint = g.selectAll(".linkLineg")
             .data([data],d=>d);
@@ -697,7 +698,7 @@ d3.eventTimeLine = function () {
                 return timerange(new Date(d.time));
             },
             y: function y(d) {
-                return rowscale(d.value);
+                return rowscale(d[keyVal]);
             }
         }).accessorsInverse({
             time: function date(d) {
@@ -717,7 +718,7 @@ d3.eventTimeLine = function () {
         });
         annotations.filter(d=>d.className==='gap').forEach(d=> {
                 d.subject = {
-                    height: rowscale(d3.max(data.filter(e => e.time >= formatTime(new Date(d.data.x1)) && e.time  <= formatTime(new Date(d.data.x2))), e => e.value)) - rowscale(valueRange[0]),
+                    height: rowscale(d3.max(data.filter(e => e.time >= formatTime(new Date(d.data.x1)) && e.time  <= formatTime(new Date(d.data.x2))), e => e[keyVal])) - rowscale(valueRange[0]),
                     width: (-timescale(new Date(d.data.x1)) + timescale(new Date(d.data.x2)))
                 };
                 d.dy = d.subject.height-10;

@@ -390,7 +390,7 @@ function handleDatabyKey (data,range,formatTime,listkey,calstatics) {
     listkey.forEach(k=> nestFunc = (k!=="time")?nestFunc.key(function(d){return d[k]}):nestFunc.key(function(d){return formatTime(d.time)}))
     if (calstatics)
         nestFunc = nestFunc
-            .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),data:d }});
+            .rollup(d=>{return {num: d.length,val: onStatictis(d),minval: onStatictis(d,'min'),maxval: onStatictis(d,'max'),q1: onStatictis(d,'quantile',0.25),q3: onStatictis(d,'quantile',0.75),median: onStatictis(d,'median'),data:d }});
     else
         nestFunc = nestFunc
             .rollup(d=>{return d[0]});
