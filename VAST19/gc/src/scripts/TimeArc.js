@@ -65,6 +65,7 @@ d3.TimeArc = function () {
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
         totalTimeSteps = timeScaleIndex.ticks(runopt.timeformat).length;
         timeScaleIndex.range([0, totalTimeSteps-1]);
+        XGAP_ = graphicopt.widthG()/(totalTimeSteps-1);
     }
 
     var totalTimeSteps = 12 * (maxYear - minYear);
@@ -131,6 +132,7 @@ d3.TimeArc = function () {
             // overflow: "visible",
 
         });
+        xStep = graphicopt.margin.left;
         maxheight  = graphicopt.heightG();
 //******************* Forced-directed layout
 
@@ -372,7 +374,7 @@ d3.TimeArc = function () {
 
             var maxNet = 0;
             var maxTimeIndex = -1;
-            for (var m = 1; m < totalTimeSteps; m++) {
+            for (var m = 0; m < totalTimeSteps; m++) {
                 if (terms[att][m]) {
                     var previous = 0;
                     if (terms[att][m - 1])
@@ -1097,7 +1099,7 @@ d3.TimeArc = function () {
                 graphicopt.height = termArray.length*step+12 +graphicopt.margin.top+graphicopt.margin.bottom;
             else {
                 graphicopt.height = 10 * step + 12 + graphicopt.margin.top + graphicopt.margin.bottom;
-                step = step*10-12;
+                step = (step*10-12)/(termArray.length||1);
             }
             svg.attr('height',graphicopt.height);
         }

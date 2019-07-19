@@ -219,6 +219,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             //     .style("opacity", 0.5);
 
             d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> e.regions ===undefined || !e.regions.find(f=>f===d.properties.Nbrhood)).transition(200).style('opacity',0.2);
+            onmouseovermap(d);
         }
 
 
@@ -249,12 +250,12 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
         }
 
         function mousemove(d) {
-            mapTip
-                .html("Region: " + d.properties.Nbrhood + "<br>"
-                    + "density  : " + d.density)
-                .style("opacity", 1)
-                .style("left", (d3.mouse(this)[0] + 30) + "px")
-                .style("top", (d3.mouse(this)[1]) + 20 + "px")
+            // mapTip
+            //     .html("Region: " + d.properties.Nbrhood + "<br>"
+            //         + "density  : " + d.density)
+            //     .style("opacity", 1)
+            //     .style("left", (d3.mouse(this)[0] + 30) + "px")
+            //     .style("top", (d3.mouse(this)[1]) + 20 + "px")
         }
 
         function mouseleave(d) {
@@ -264,6 +265,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                 .style("opacity", 0);
             d3.selectAll('.geoPath').classed('nothover',false);
             d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> e.regions ===undefined || !e.regions.find(f=>f===d.properties.Nbrhood)).transition(200).style('opacity',1);
+            onmouseoutmap(d);
         }
 
         // });

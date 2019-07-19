@@ -250,7 +250,7 @@ function initDemo(){
 }
 // let ssss;
 function init() {
-    // initTimeArc();
+    initTimeArc();
     initTimeLine();
     const choice = d3.select('#datacom').node().value;
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
@@ -295,12 +295,15 @@ function init() {
         });
         return [Promise.all(queueProcess),handlemc1(databyTime)];
     })
-        .then (([textdata,mc1])=>{
-        dataRaw = textdata;
+        .then (([textdataPromise,mc1])=>{
         timestep = 0;
         listopt.limitColums = [0,10];
         updateProcessBar(0.8);
         TimeLine.runopt(listopt).timeFormat(formatTime).annotations(annotations).data(mc1).draw();
+            textdataPromise.then(d=>{
+                dataRaw = d;
+                TimeArc.runopt(listopt).data(dataRaw).draw();
+            })
         updateProcessBar(1);
 
         // anatation
@@ -416,7 +419,7 @@ function initTime (max){
 function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
- RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
+ RadarMapopt.svg = d3.select('#TimeArccontent').attr("class", "timearcSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
  TimeArc.svg(RadarMapopt.svg).mouseoverTerm(onmouseoverRadar).mouseoutTerm(onmouseleaveRadar).catergogryList(catergogryList).init();

@@ -293,3 +293,7 @@ mark span {
 .nodeLegend.fade {
     opacity: 0.5;
 }
+
+svg {
+    float: left;
+}

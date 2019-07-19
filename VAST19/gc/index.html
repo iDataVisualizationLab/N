@@ -351,23 +351,32 @@
             <div class="col s12 m12">
                 <div class="col s12 m12">
                     <div class="card-image center-align relative" id="tSNE">
+                        <svg id="RadarMapcontent" class="active"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 overflowAuto marginBottom0" style="margin-bottom: 0px;">
+            <div class="col s12 m12">
+                <div class="col s12 m12">
+                    <div class="card-image center-align relative" id="timearc">
                         <div class = 'row s12 valign-wrapper'>
-                                <div class="input-field col">
-                                    <input type="text"  id="search" class="autocomplete inputHolder" placeholder="Search">
-                                </div>
-                                <button class="col" type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
+                            <div class="input-field col">
+                                <input type="text"  id="search" class="autocomplete inputHolder" placeholder="Search">
+                            </div>
+                            <button class="col" type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
 
-                                <progress class="col" value="0" max="100" id="progBar">
+                            <progress class="col" value="0" max="100" id="progBar">
                                 <span id="downloadProgress">
                                     <!-- Your fallback goes here -->
                                 </span>
-                                </progress>
-                                <label id="progUpdate">
-                                    <!-- Success Message -->
-                                </label>
+                            </progress>
+                            <label id="progUpdate">
+                                <!-- Success Message -->
+                            </label>
 
                         </div>
-                        <svg id="RadarMapcontent" class="active"></svg>
+                        <svg id="TimeArccontent" class="active"></svg>
                     </div>
                 </div>
             </div>
