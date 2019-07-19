@@ -305,7 +305,7 @@ d3.TimeArc = function () {
             force.nodes(nodes)
                 .force('link').links(links);
             force.alpha(1);
-            force.restart();d
+            force.restart();
         }
     }
 
