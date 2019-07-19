@@ -1070,6 +1070,7 @@ d3.TimeArc = function () {
     }
     let maxheight;
     function detactTimeSeries() {
+        document.getElementById('progBar').value = 100;
         $('#progUpdate').empty().append("Compute position");
         // console.log("DetactTimeSeries ************************************" +data);
         var termArray = [];

@@ -638,7 +638,7 @@ function objecttoArrayRadar(o){
 // list html
 let tempStore ={};
 let colorlength = colorScaleList['Oranges'].length;
-let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['white',colorScaleList['Oranges'][colorlength-1]]);
+let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range([colorScaleList['Oranges'][0],colorScaleList['Oranges'][colorlength-1]]);
 function onmouseoverRadar ([d,list]) {
     d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list.filter(f=>f.group==='user')));
