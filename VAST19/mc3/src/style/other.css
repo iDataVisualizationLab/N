@@ -164,8 +164,12 @@ table.dataTable td, table.dataTable th{
 .radarStroke {
     stroke: currentColor;
 }
-table.dataTable th:not(:first-child) {
-    width: 100% !important;
+/*table.dataTable th:not(:first-child) {*/
+    /*width: 100% !important;*/
+/*}*/
+table.dataTable  td{
+    word-wrap:break-word;
+    white-space: normal;
 }
 
 

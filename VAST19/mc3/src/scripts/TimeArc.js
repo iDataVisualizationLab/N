@@ -183,7 +183,7 @@ d3.TimeArc = function () {
         arr.forEach(function (d) {
             // Process date
             d.date = new Date(d["time"]);
-            var m = Math.round(timeScaleIndex(runopt.timeformat(d.date)));
+            var m = Math.floor(timeScaleIndex(runopt.timeformat(d.date)));
             d.__timestep__ = m;
             d.__terms__ = {};
             for (let c in d.category) {
@@ -750,7 +750,7 @@ d3.TimeArc = function () {
             var term2 = nodes[l.target].name;
             var month = l.__timestep__;
             l.value = linkScale(relationship[term1 + "__" + term2][month]);
-            l.message = data2.filter(d=>d.__terms__[term1]&&d.__terms__[term2]);
+            l.message = data2.filter(d=>d.__timestep__===month).filter(d=>d.__terms__[term1]&&d.__terms__[term2]);
         });
 
         console.log("DONE links relationshipMaxMax2=" + relationshipMaxMax2);
