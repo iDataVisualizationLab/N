@@ -100,9 +100,9 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             }
             colormap = function(colorScale){
                 let legendconf = {
-                    width: 100,
+                    width: 200,
                     height:20
-                }
+                };
                 let maplegend = d3.select('.map_main').select('.map_legend');
                 if (maplegend.empty()){
                     maplegend = d3.select('.map_main').append('g').attr('class','map_legendg')
@@ -126,7 +126,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("stop-color", d => d.color);
 
                 let axisScale = d3.scaleLinear()
-                    .domain(colorScale.domain())
+                    .domain([colorScale.domain()[0],colorScale.domain()[colorScale.domain().length-1]])
                     .range([0, legendconf.width]);
                 maplegend.select('.axis_legend')
                     .call(d3.axisBottom(axisScale)
