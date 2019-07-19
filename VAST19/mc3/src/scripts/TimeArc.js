@@ -287,9 +287,9 @@ d3.TimeArc = function () {
             $(fallback).empty().append("HTML5 progress tag not supported: ");
             $('#progUpdate').empty().append(loaded + "% loaded");
 
-            if (loaded == 100) {
+            if (loaded == 90) {
                 clearInterval(beginLoad);
-                $('#progUpdate').empty().append("Complete");
+                $('#progUpdate').empty().append("Compute position");
             }
         };
 
@@ -305,7 +305,7 @@ d3.TimeArc = function () {
             force.nodes(nodes)
                 .force('link').links(links);
             force.alpha(1);
-            force.restart();
+            force.restart();d
         }
     }
 

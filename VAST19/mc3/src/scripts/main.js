@@ -66,6 +66,7 @@ let width = 2000,
         n: 10,
         rainbow: ["#110066", "#4400ff", "#00cccc", "#00dd00", "#ffcc44", "#ff0000", "#660000"],
         soil: ["#4A8FC2", "#76A5B1", "#9DBCA2", "#C3D392", "#E8EC83", "#F8E571", "#F2B659", "#ebc05a", "#eb6424", "#D63128"],
+        Oranges: ["#fee6ce","#fdae6b","#e6550d"],
         d3colorChosefunc: function(name){
             const n = this.n;
             if (d3[`scheme${name}`]) {
@@ -636,37 +637,18 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
-let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['#e0ecf4','#8856a7']);;
+let colorlength = colorScaleList['Oranges'].length;
+let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(['white',colorScaleList['Oranges'][colorlength-1]]);
 function onmouseoverRadar ([d,list]) {
     d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list.filter(f=>f.group==='user')));
     d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list.filter(f=>f.group==='location')));
     let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
-    d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true).style('fill','lightgray').each(d=>d.density = 0);
-    colorLegend.domain(d3.extent(nestmap,e=>e.value));
+    d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true).style('fill',colorLegend(0)).each(d=>d.density = 0);
+    colorLegend.domain([0,d3.max(nestmap,e=>e.value)]);
+    colormap(colorLegend);
     nestmap.forEach(e=> d3.selectAll('.geoPath#'+removeWhitespace(e.key)).style('fill',colorLegend(e.value)).each(f=>f.density = e.value));
     updateTable (d.messagearr);
-    // if (!isNaN(+d.loc)){
-    //     if ((tempStore.loc!==d.loc)) {
-    //         readMobileData(d.loc).then(data =>{
-    //             tempStore.loc = d.loc;
-    //             tempStore.data=data;
-    //             tempStore.dataShort=_.unique(tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+'')));
-    //             onEnableCar (tempStore.dataShort);
-    //             lineGraph('.lineChart_tip',tempStore.dataShort,{w:400,h:200});
-    //         });
-    //     }else {
-    //         tempStore.dataShort = _.unique(tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + '')));
-    //         onEnableCar(tempStore.dataShort);
-    //         lineGraph('.lineChart_tip', tempStore.dataShort, {w: 400, h: 200});
-    //     }
-    // }else {
-    //     d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
-    // }
-    // tooltip_cof.schema = serviceFullList;
-    // tooltip_cof.arrColor = arrColor;
-    // tooltip_cof.markedLegend = globalScale.domain();
-    // CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
 
 function onEnableCar (darr){

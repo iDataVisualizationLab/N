@@ -1,3 +1,4 @@
+let colormap; // reserve for color map
 // some variables for later usage
 const regionNameList =
     ['Palace Hills',
@@ -97,7 +98,41 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             for (let i = 1; i < 51; i++) {
                 mobileSensors.push(i);
             }
+            colormap = function(colorScale){
+                let legendconf = {
+                    width: 100,
+                    height:20
+                }
+                let maplegend = d3.select('.map_main').select('.map_legend');
+                if (maplegend.empty()){
+                    maplegend = d3.select('.map_main').append('g').attr('class','map_legendg')
+                        .attr("transform", `translate(${width-legendconf.width-10},10)`)
+                        .append('svg').attr('class','map_legend').style('overflow','visible');
+                    maplegend.append('defs').append('linearGradient').attr("id", "legend_map");
+                    maplegend.append('g')
+                        .attr('class','axis_gradient_legend')
+                        .append("rect")
+                        .attr('transform', `translate(${0}, 0)`)
+                        .attr("width", legendconf.width )
+                        .attr("height", legendconf.height)
+                        .style("fill", "url(#legend_map)");
+                    maplegend.append('g').attr('class','axis_legend').attr("transform", `translate(0,${legendconf.height})`);
+                }
+                let color_gradient = maplegend.select('#legend_map');
+                color_gradient.selectAll("stop")
+                    .data(colorScale.ticks().map((t, i, n) => ({ offset: `${100*i/n.length}%`, color: colorScale(t) })))
+                    .enter().append("stop")
+                    .attr("offset", d => d.offset)
+                    .attr("stop-color", d => d.color);
 
+                let axisScale = d3.scaleLinear()
+                    .domain(colorScale.domain())
+                    .range([0, legendconf.width]);
+                maplegend.select('.axis_legend')
+                    .call(d3.axisBottom(axisScale)
+                        .ticks(3)
+                        .tickSize(-legendconf.height));
+            };
             // draw map
             function draw_map(geojson) {
                 var mapSvg = d3.select('#map g#regMap')
