@@ -1,6 +1,6 @@
 
 var termsList = {
-    'local_area': ['Palace Hills',
+    'location_in_message': ['Palace Hills',
         'Northwest',
         'Old Town',
         'Safe Town',
@@ -42,8 +42,8 @@ var termsList = {
 };
 
 var collections = {
-    'location_post': ['local_area'],
-    'location_in_message': ['local_area'],
+    'location_post': ['location_in_message'],
+    'location_in_message': ['location_in_message'],
     'event': ['earthquake','grounds','flooding','fire'],
     'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','buildings','food']
 }

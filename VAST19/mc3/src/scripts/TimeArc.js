@@ -302,7 +302,9 @@ d3.TimeArc = function () {
             readTermsAndRelationships();
             computeNodes();
             computeLinks();
-            force.nodes(nodes)
+
+            force.force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2))
+            .nodes(nodes)
                 .force('link').links(links);
             force.alpha(1);
             force.restart();

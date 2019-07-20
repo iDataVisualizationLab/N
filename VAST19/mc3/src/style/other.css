@@ -302,3 +302,10 @@ mark span {
 svg {
     float: left;
 }
+
+.light .tablediv{
+    padding: 10px;
+    background-color: #f5f5f5;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
