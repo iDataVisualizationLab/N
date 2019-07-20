@@ -122,7 +122,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         y: legendconf.height/2,
                         dy: '0.25rem',
                         'text-anchor':"end"
-                    }).text('Number of message: ');
+                    }).text('Number of messages: ');
                 }
                 let color_gradient = maplegend.select('#legend_map');
                 color_gradient.selectAll("stop")
@@ -133,9 +133,10 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
 
                 let axisScale = d3.scaleLinear()
                     .domain([colorScale.domain()[0],colorScale.domain()[colorScale.domain().length-1]])
-                    .range([0, legendconf.width]);
+                    .range([0, legendconf.width]).nice();
                 maplegend.select('.axis_legend')
                     .call(d3.axisBottom(axisScale)
+                        .ticks(Math.ceil(axisScale.domain()[1]/10))
                         .tickSize(-legendconf.height));
             };
             // draw map
