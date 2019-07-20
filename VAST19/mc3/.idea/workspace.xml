@@ -81,13 +81,13 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="255" />
-          <entry key="HTML" value="4519" />
-          <entry key="JavaScript" value="8396" />
+          <entry key="HTML" value="4564" />
+          <entry key="JavaScript" value="8582" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="4" />
+          <entry key="CSS" value="5" />
           <entry key="CSV" value="1" />
           <entry key="HTML" value="2" />
           <entry key="JavaScript" value="67" />
@@ -98,11 +98,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="369" column="71" lean-forward="true" selection-start-line="369" selection-start-column="71" selection-end-line="369" selection-end-column="71" />
+            <state relative-caret-position="253">
+              <caret line="378" column="48" lean-forward="true" selection-start-line="378" selection-start-column="48" selection-end-line="378" selection-end-column="48" />
               <folding>
                 <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#div#1;n#li#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -114,6 +114,8 @@
                 <element signature="n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#style#0;n#div#3;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#1;n#div#1;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
@@ -124,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/src/scripts/TimeArc.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="185">
-              <caret line="750" column="39" lean-forward="true" selection-start-line="750" selection-start-column="39" selection-end-line="750" selection-end-column="39" />
+              <caret line="96" column="33" lean-forward="true" selection-start-line="96" selection-start-column="33" selection-end-line="96" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -132,7 +134,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/processdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
+            <state relative-caret-position="221">
               <caret line="46" column="97" selection-start-line="46" selection-start-column="97" selection-end-line="46" selection-end-column="97" />
               <folding>
                 <element signature="n#style#0;n#mark#0;n#!!top" expanded="true" />
@@ -144,17 +146,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TTU-Vuong-MC3/index.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+            <state relative-caret-position="415">
+              <caret line="68" column="26" lean-forward="true" selection-start-line="68" selection-start-column="26" selection-end-line="68" selection-end-column="26" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
+            <state relative-caret-position="508">
+              <caret line="122" column="32" selection-start-line="122" selection-start-column="32" selection-end-line="122" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -162,8 +164,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/tooltip.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="35" column="69" selection-start-line="35" selection-start-column="69" selection-end-line="35" selection-end-column="69" />
+            <state relative-caret-position="437">
+              <caret line="36" column="70" lean-forward="true" selection-start-line="36" selection-start-column="70" selection-end-line="36" selection-end-column="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/style/timarc.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-start-column="2" selection-end-line="2" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -180,8 +191,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="68" column="2578" selection-start-line="68" selection-start-column="2578" selection-end-line="68" selection-end-column="2578" />
+            <state relative-caret-position="219">
+              <caret line="773" column="28" selection-start-line="773" selection-start-column="23" selection-end-line="773" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -198,12 +209,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>recomp</find>
-      <find>TimeArc</find>
-      <find>alpha</find>
-      <find>force</find>
-      <find>read</find>
-      <find>.scaleLi</find>
       <find>prog</find>
       <find>colormap</find>
       <find>map.js</find>
@@ -216,9 +221,7 @@
       <find>progUpdate</find>
       <find>document.getElementById('progBar')</find>
       <find>d3colorChosefunc</find>
-      <find>fod</find>
       <find>color</find>
-      <find>.map_legend</find>
       <find>.messa</find>
       <find>updatet</find>
       <find>timeScaleIndex</find>
@@ -226,8 +229,16 @@
       <find>118px</find>
       <find>width: 100%</find>
       <find>100% im</find>
+      <find>overv</find>
       <find>MAP</find>
+      <find>.map_legend</find>
       <find>118</find>
+      <find>timearc</find>
+      <find>table</find>
+      <find>xgap_</find>
+      <find>fod</find>
+      <find>width</find>
+      <find>legend</find>
     </findStrings>
     <replaceStrings>
       <replace>RadarMapplot</replace>
@@ -286,17 +297,17 @@
         <option value="$PROJECT_DIR$/src/scripts/util2.js" />
         <option value="$PROJECT_DIR$/src/scripts/sliderRelationship.js" />
         <option value="$PROJECT_DIR$/src/scripts/ulti.js" />
-        <option value="$PROJECT_DIR$/src/style/timarc.css" />
         <option value="$PROJECT_DIR$/video.html" />
         <option value="$PROJECT_DIR$/src/lib/sentimood.js" />
-        <option value="$PROJECT_DIR$/TTU-Vuong-MC3/index.htm" />
         <option value="$PROJECT_DIR$/src/scripts/processdata.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/scripts/main.js" />
-        <option value="$PROJECT_DIR$/src/scripts/map.js" />
-        <option value="$PROJECT_DIR$/src/scripts/TimeArc.js" />
         <option value="$PROJECT_DIR$/src/style/other.css" />
+        <option value="$PROJECT_DIR$/TTU-Vuong-MC3/index.htm" />
+        <option value="$PROJECT_DIR$/src/style/timarc.css" />
         <option value="$PROJECT_DIR$/src/scripts/tooltip.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/src/scripts/TimeArc.js" />
+        <option value="$PROJECT_DIR$/src/scripts/map.js" />
       </list>
     </option>
   </component>
@@ -461,24 +472,24 @@
       <workItem from="1562904307207" duration="99612000" />
       <workItem from="1563375084860" duration="34462000" />
       <workItem from="1563460630504" duration="239000" />
-      <workItem from="1563467686629" duration="22403000" />
+      <workItem from="1563467686629" duration="25316000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="355825000" />
+    <option name="totallyTimeSpent" value="358738000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49853373" visible="true" weight="0.1526232" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49853373" visible="true" weight="0.1526232" />
       <window_info id="Structure" order="1" sideWeight="0.5014663" side_tool="true" weight="0.20758018" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32851985" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32972324" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.20476706" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.20476706" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -812,13 +823,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/style/timarc.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/video.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -836,49 +840,11 @@
     <entry file="file://$PROJECT_DIR$/TTU-Vuong-MC3/styles.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/TTU-Vuong-MC3/index.htm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="http://localhost:64320/mc3/src/scripts/processdata.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/processdata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="46" column="97" selection-start-line="46" selection-start-column="97" selection-end-line="46" selection-end-column="97" />
-          <folding>
-            <element signature="n#style#0;n#mark#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="68" column="2578" selection-start-line="68" selection-start-column="2578" selection-end-line="68" selection-end-column="2578" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
-        </state>
-      </provider>
-    </entry>
     <entry file="http://localhost:64320/mc3/src/scripts/TimeArc.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/TimeArc.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="750" column="39" lean-forward="true" selection-start-line="750" selection-start-column="39" selection-end-line="750" selection-end-column="39" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/style/other.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -887,17 +853,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/TTU-Vuong-MC3/index.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="68" column="26" lean-forward="true" selection-start-line="68" selection-start-column="26" selection-end-line="68" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/timarc.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-start-column="2" selection-end-line="2" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/tooltip.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="35" column="69" selection-start-line="35" selection-start-column="69" selection-end-line="35" selection-end-column="69" />
+        <state relative-caret-position="437">
+          <caret line="36" column="70" lean-forward="true" selection-start-line="36" selection-start-column="70" selection-end-line="36" selection-end-column="70" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="369" column="71" lean-forward="true" selection-start-line="369" selection-start-column="71" selection-end-line="369" selection-end-column="71" />
+        <state relative-caret-position="253">
+          <caret line="378" column="48" lean-forward="true" selection-start-line="378" selection-start-column="48" selection-end-line="378" selection-end-column="48" />
           <folding>
             <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#style#0;n#div#0;n#div#1;n#li#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -909,8 +889,41 @@
             <element signature="n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#div#3;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#1;n#div#1;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/TimeArc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="96" column="33" lean-forward="true" selection-start-line="96" selection-start-column="33" selection-end-line="96" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/processdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="46" column="97" selection-start-line="46" selection-start-column="97" selection-end-line="46" selection-end-column="97" />
+          <folding>
+            <element signature="n#style#0;n#mark#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="773" column="28" selection-start-line="773" selection-start-column="23" selection-end-line="773" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="508">
+          <caret line="122" column="32" selection-start-line="122" selection-start-column="32" selection-end-line="122" selection-end-column="32" />
         </state>
       </provider>
     </entry>

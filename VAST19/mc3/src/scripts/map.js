@@ -117,6 +117,12 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         .attr("height", legendconf.height)
                         .style("fill", "url(#legend_map)");
                     maplegend.append('g').attr('class','axis_legend').attr("transform", `translate(0,${legendconf.height})`);
+                    maplegend.append('text').attrs({
+                        x: -10,
+                        y: legendconf.height/2,
+                        dy: '0.25rem',
+                        'text-anchor':"end"
+                    }).text('Number of message: ');
                 }
                 let color_gradient = maplegend.select('#legend_map');
                 color_gradient.selectAll("stop")

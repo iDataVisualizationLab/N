@@ -37,7 +37,11 @@ function updateTable (data){
         rows.append('td').attr('class', 'text').html(d => d.htmlUser);
         rows.append('td').attr('class', 'text').html(d => d.htmlMessage);
       $(table.node()).DataTable({
-                "order": [[0, "asc"]]
+                "order": [[0, "asc"]],
+          "pageLength": 100,
+          "columnDefs": [
+              { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 }
+          ]
             });
 
     // else {

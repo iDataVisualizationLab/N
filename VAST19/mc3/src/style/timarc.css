@@ -1,6 +1,6 @@
-#messages_table .dataTable th:not(:first-child) {
-    width: unset !important;
-}
+/*#messages_table .dataTable th:not(:first-child) {*/
+    /*width: unset !important;*/
+/*}*/
 
 #messages_table table.dataTable td{
     line-height: 1.5rem;
