@@ -56,8 +56,8 @@ let catergogryObject = {
         'extractFunc': _.partial(getObject,'location')
     },
     'location_in_message':{
-        'extractFunc': function(data){return extractWords('message',this.keywords,data)},
-        'keywords': termsList['local_area']
+        'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
+        'keywords': getTermsArrayCollection('location_in_message')
     },
     'event':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},

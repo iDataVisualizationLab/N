@@ -82,7 +82,7 @@
         <counts>
           <entry key="CSS" value="265" />
           <entry key="HTML" value="4565" />
-          <entry key="JavaScript" value="8810" />
+          <entry key="JavaScript" value="8832" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -132,11 +132,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/processdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="54" column="18" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="18" />
+            <state relative-caret-position="403">
+              <caret line="59" column="64" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
               <folding>
                 <element signature="n#style#0;n#mark#0;n#!!top" expanded="true" />
               </folding>
@@ -189,11 +189,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="642" column="99" lean-forward="true" selection-start-line="642" selection-start-column="99" selection-end-line="642" selection-end-column="99" />
+            <state relative-caret-position="253">
+              <caret line="643" column="85" selection-start-line="643" selection-start-column="82" selection-end-line="643" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -233,13 +233,13 @@
       <find>s_wrapper .dataTables_filter input</find>
       <find>fod</find>
       <find>location</find>
-      <find>118</find>
       <find>legend</find>
       <find>clear:both</find>
       <find>spam</find>
       <find>yscale</find>
-      <find>mouseover</find>
       <find>return collections[header].m</find>
+      <find>118</find>
+      <find>mouseover</find>
     </findStrings>
     <replaceStrings>
       <replace>RadarMapplot</replace>
@@ -307,8 +307,8 @@
         <option value="$PROJECT_DIR$/src/scripts/map.js" />
         <option value="$PROJECT_DIR$/src/style/other.css" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/src/scripts/processdata.js" />
         <option value="$PROJECT_DIR$/src/scripts/main.js" />
+        <option value="$PROJECT_DIR$/src/scripts/processdata.js" />
       </list>
     </option>
   </component>
@@ -473,12 +473,12 @@
       <workItem from="1562904307207" duration="99612000" />
       <workItem from="1563375084860" duration="34462000" />
       <workItem from="1563460630504" duration="239000" />
-      <workItem from="1563467686629" duration="27442000" />
+      <workItem from="1563467686629" duration="27782000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="360864000" />
+    <option name="totallyTimeSpent" value="361204000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
@@ -868,13 +868,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/tooltip.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="36" column="70" lean-forward="true" selection-start-line="36" selection-start-column="70" selection-end-line="36" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/map.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="474">
@@ -912,20 +905,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/processdata.js">
+    <entry file="file://$PROJECT_DIR$/src/scripts/tooltip.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="54" column="18" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="18" />
-          <folding>
-            <element signature="n#style#0;n#mark#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="437">
+          <caret line="36" column="70" lean-forward="true" selection-start-line="36" selection-start-column="70" selection-end-line="36" selection-end-column="70" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="642" column="99" lean-forward="true" selection-start-line="642" selection-start-column="99" selection-end-line="642" selection-end-column="99" />
+        <state relative-caret-position="253">
+          <caret line="643" column="85" selection-start-line="643" selection-start-column="82" selection-end-line="643" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/processdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="59" column="64" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
+          <folding>
+            <element signature="n#style#0;n#mark#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

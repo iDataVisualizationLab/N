@@ -640,7 +640,7 @@ let tempStore ={};
 let colorLegend_array = colorScaleList['Oranges'];
 let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(colorLegend_array);
 function onmouseoverRadar ([d,list]) {
-    d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list.filter(l=>l!='location_post')));
+    d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list.filter(l=>l.group!='location_post')));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list.filter(f=>f.group==='user')));
     d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list.filter(f=>f.group==='location_post')));
     let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
