@@ -748,7 +748,7 @@ d3.TimeArc = function () {
         }
 
         // var linear = (150+numNode)/200;
-        var hhh = Math.min(graphicopt.heightG() / numNode, 20);
+        var hhh = Math.min(Math.max(graphicopt.heightG() / numNode,20), 30);
 
         yScale = d3.scaleLinear()
             .range([0, hhh * 1.25])
