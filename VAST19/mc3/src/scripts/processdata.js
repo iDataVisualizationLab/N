@@ -50,22 +50,27 @@ var collections = {
 
 let catergogryObject = {
     'user':{
-        'extractFunc': _.partial(getObject,'account')
-    },
-    'location_post':{
-        'extractFunc': _.partial(getObject,'location')
+        'extractFunc': _.partial(getObject,'account'),
+        colororder: 2
     },
     'event':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
-        'keywords': getTermsArrayCollection('event')
+        'keywords': getTermsArrayCollection('event'),
+        colororder: 3
     },
     'resource':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
-        'keywords': getTermsArrayCollection('resource')
+        'keywords': getTermsArrayCollection('resource'),
+        colororder: 0
+    },
+    'location_post':{
+        'extractFunc': _.partial(getObject,'location'),
+        colororder: 1
     },
     'location_in_message':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
-        'keywords': getTermsArrayCollection('location_in_message')
+        'keywords': getTermsArrayCollection('location_in_message'),
+        colororder: 4
     }
     // 'hashtash':{
     //     'extractFunc': _.partial(extractWords,'message',this.keywords),

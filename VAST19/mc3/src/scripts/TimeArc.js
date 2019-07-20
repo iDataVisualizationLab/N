@@ -149,7 +149,10 @@ d3.TimeArc = function () {
             // .alphaTarget(0.9)
         force.stop();
         // .size([width, height]);
-        colorCatergory.domain(catergogryList.map(d=>d.key));
+        catergogryList.forEach((d,i)=> d.order = i);
+
+        colorCatergory.domain(catergogryList.sort((a,b)=>a.value.colororder-b.value.colororder).map(d=>d.key));
+        catergogryList.sort((a,b)=>a.order-b.order);
 //---Insert-------
     };
 
