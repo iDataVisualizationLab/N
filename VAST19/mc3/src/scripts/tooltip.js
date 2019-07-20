@@ -21,7 +21,6 @@ function cotenttip (hideLine){
 }
 
 function updateTable (data,list){
-    console.log(data[0]);
     let tablediv = d3.select('#messages_table');
     tablediv.selectAll('*').remove();
     let table = tablediv.append('table');
@@ -44,7 +43,6 @@ function updateTable (data,list){
           "columnDefs": [
               { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 },
               {"render": function ( data, type, row ) {
-                  console.log(type);
                     return markWord(data,list.filter(f=>f.group==='location (of the message)'));}, "targets": 1},
               {"render": function ( data, type, row ) {
                       return markWord(data,list.filter(f=>f.group==='user'));}, "targets": 2},

@@ -1089,6 +1089,7 @@ d3.TimeArc = function () {
                 for (var i = 0; i < d.monthly.length; i++) {
                     d.monthly[i].yNode = d.y;     // Copy node y coordinate
                 }
+                console.log(d.monthly)
                 return area(d.monthly);
             });
         linkArcs.attr("d", linkArc);
