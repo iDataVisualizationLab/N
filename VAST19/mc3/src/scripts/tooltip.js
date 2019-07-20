@@ -21,7 +21,7 @@ function cotenttip (hideLine){
 }
 
 function updateTable (data,list){
-
+    console.log(data[0]);
     let tablediv = d3.select('#messages_table');
     tablediv.selectAll('*').remove();
     let table = tablediv.append('table');
