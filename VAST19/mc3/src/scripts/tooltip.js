@@ -20,7 +20,7 @@ function cotenttip (hideLine){
     return str;
 }
 
-function updateTable (data){
+function updateTable (data,list){
 
     let tablediv = d3.select('#messages_table');
     tablediv.selectAll('*').remove();
@@ -33,16 +33,28 @@ function updateTable (data){
             .data(data, d => d.time+d.account)
             .enter().append('tr');
         rows.append('td').attr('class', 'text').style('max-width','150px').text(d => d.time);
-        rows.append('td').attr('class', 'text').style('max-width','200px').html(d => d.htmlLocation);
-        rows.append('td').attr('class', 'text').html(d => d.htmlUser);
-        rows.append('td').attr('class', 'text').html(d => d.htmlMessage);
-      $(table.node()).DataTable({
+        rows.append('td').attr('class', 'text').style('max-width','200px').html(d => d.location);
+        rows.append('td').attr('class', 'text').html(d => d.account);
+        rows.append('td').attr('class', 'text').html(d => d.message);
+
+      let table_object = $(table.node()).DataTable({
                 "order": [[0, "asc"]],
-          "pageLength": 100,
+          "pageLength": 10,
+          "deferRender": true,
           "columnDefs": [
-              { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 }
+              { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 },
+              {"render": function ( data, type, row ) {
+                  console.log(type);
+                    return markWord(data,list.filter(f=>f.group==='location (of the message)'));}, "targets": 1},
+              {"render": function ( data, type, row ) {
+                      return markWord(data,list.filter(f=>f.group==='user'));}, "targets": 2},
+              {"render": function ( data, type, row ) {
+                      return markWord(data,list.filter(l=>l.group!='location (of the message)'));}, "targets": 3}
           ]
             });
+    // table_object.on('preDraw',function( settings ) {
+    //     console.log( table_object.page());
+    // })
 
     // else {
     //     let rows = table.select('tbody').selectAll('tr')

@@ -99,10 +99,10 @@ d3.TimeArc = function () {
     var coordinate = [0, 0];
     var XGAP_ = 12; // gap between months on xAxis
 
-    let mouseoverTerm = ()=>{};
-    let mouseoutTerm = ()=>{};
-    let mouseoverLink = ()=>{};
-    let mouseoutLink = ()=>{};
+    let mouseover_dispath = ()=>{};
+    let mouseout_dispath = ()=>{};
+    // let mouseover_dispath = ()=>{};
+    // let mouseout_dispath = ()=>{};
 
     function xScale(m) {
         if (isLensing) {
@@ -663,7 +663,8 @@ d3.TimeArc = function () {
             .style("fill-opacity", 1)
             .style("fill", function (d, i) {
                 return getColor(d.group, d.max);
-            });
+            }).on('mouseover', mouseovered_Layer)
+            .on("mouseout", mouseouted_Layer);
 
     }
 
@@ -749,10 +750,13 @@ d3.TimeArc = function () {
 
         // var linear = (150+numNode)/200;
         var hhh = Math.min(Math.max(graphicopt.heightG() / numNode,20), 30);
-
-        yScale = d3.scaleLinear()
-            .range([0, hhh * 1.25])
-            .domain([0, termMaxMax2]);
+        if (graphicopt.display&&graphicopt.display.stream&&graphicopt.display.stream.yScale){
+            yScale = graphicopt.display.stream.yScale;
+        }else {
+            yScale = d3.scaleLinear()
+                .range([0, hhh * 1.25])
+                .domain([0, termMaxMax2]);
+        }
         linkScale = d3.scaleLinear()
             .range([0.5, 2])
             .domain([Math.round(valueSlider) - 0.4, Math.max(relationshipMaxMax2, 10)]);
@@ -784,7 +788,7 @@ d3.TimeArc = function () {
             .attr("class", "nodeG")
             .attr("transform", function (d) {
                 return "translate(" + d.x + "," + d.y + ")"
-            })
+            });
         /*
        nodeG.append("circle")
            .attr("class", "node")
@@ -806,7 +810,7 @@ d3.TimeArc = function () {
                 return d.isSearchTerm ? "bold" : "";
             })
             .attr("dy", ".21em")
-            .attr("font-family", "sans-serif")
+            // .attr("font-family", "sans-serif")
             .attr("font-size", function (d) {
                 return d.isSearchTerm ? "12px" : "11px";
             })
@@ -870,7 +874,7 @@ d3.TimeArc = function () {
                     else
                         return 0.01;
                 });
-            mouseoverTerm([d,d3.keys(list).map(l=>{
+            mouseover_dispath([d,d3.keys(list).map(l=>{
                 let cat = termArray3.find(t=>t.term===l).category;
                 return{color:colorCatergory(cat), text:l, group:cat}})]);
             nodeG.style("fill-opacity", function (n) {
@@ -921,7 +925,7 @@ d3.TimeArc = function () {
                 return "translate(" + n.xConnected + "," + n.y + ")"
             })
         }
-        mouseoutTerm(d);
+        mouseout_dispath(d);
     }
 
     function mouseovered_Link(d) {
@@ -944,7 +948,7 @@ d3.TimeArc = function () {
                 .style("stroke-opacity", 1);
             let cat_source = termArray3.find(t=>t.term===d.source.name).category;
             let cat_target = termArray3.find(t=>t.term===d.target.name).category;
-            mouseoverLink([d,[{color:colorCatergory(cat_source), text:d.source.name, group:cat_source},{color:colorCatergory(cat_target), text:d.target.name, group:cat_target}]]);
+            mouseover_dispath([d,[{color:colorCatergory(cat_source), text:d.source.name, group:cat_source},{color:colorCatergory(cat_target), text:d.target.name, group:cat_target}]]);
         }
     }
 
@@ -960,7 +964,38 @@ d3.TimeArc = function () {
                 return "translate(" + n.xConnected + "," + n.y + ")"
             })
         }
-        mouseoutLink(d);
+        mouseout_dispath(d);
+    }
+
+    function mouseovered_Layer(d) {
+        if (force.alpha() == 0) {
+            nodeG.style("fill-opacity", 0.1);
+            nodeG.filter(n=>n.name===d.name).style("fill-opacity", 1);
+            svg.selectAll(".layer")
+                .style("fill-opacity", 0.1)
+                .style("stroke-opacity",0);
+            svg.selectAll(".layer").filter(n=>n.name===d.name)
+                .style("fill-opacity", 1)
+                .style("stroke-opacity", 0.5);
+            svg.selectAll(".linkArc")
+                .style("stroke-opacity", 0.1);
+            d.messagearr = data2.filter(m=>m.__terms__[d.name]);
+            mouseover_dispath([d,[{color:colorCatergory(d.group), text:d.name, group:d.group}]]);
+            // console.log(termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}}))
+            // mouseover_dispath([d,termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}})]);
+        }
+    }
+
+    function mouseouted_Layer(d) {
+        if (force.alpha() == 0) {
+            nodeG.style("fill-opacity", 1);
+            svg.selectAll(".layer")
+                .style("fill-opacity", 1)
+                .style("stroke-opacity", 0.5);
+            svg.selectAll(".linkArc")
+                .style("stroke-opacity", 1);
+        }
+        mouseout_dispath(d);
     }
 
     function searchNode(value) {
@@ -1190,18 +1225,24 @@ d3.TimeArc = function () {
     timeArc.dispatch = function (_) {
         return arguments.length ? (returnEvent = _, timeArc) : returnEvent;
     };
-    timeArc.mouseoverTerm = function (_) {
-        return arguments.length ? (mouseoverTerm = _, timeArc) : mouseoverTerm;
+    timeArc.mouseover = function (_) {
+        return arguments.length ? (mouseover_dispath = _, timeArc) : mouseover_dispath;
     };
-    timeArc.mouseoutTerm = function (_) {
-        return arguments.length ? (mouseoutTerm = _, timeArc) : mouseoutTerm;
+    timeArc.mouseout = function (_) {
+        return arguments.length ? (mouseout_dispath = _, timeArc) : mouseout_dispath;
     };
-    timeArc.mouseoverLink = function (_) {
-        return arguments.length ? (mouseoverLink = _, timeArc) : mouseoverLink;
-    };
-    timeArc.mouseoutLink = function (_) {
-        return arguments.length ? (mouseoutLink = _, timeArc) : mouseoutLink;
-    };
+    // timeArc.mouseoverTerm = function (_) {
+    //     return arguments.length ? (mouseoverTerm = _, timeArc) : mouseoverTerm;
+    // };
+    // timeArc.mouseoutTerm = function (_) {
+    //     return arguments.length ? (mouseoutTerm = _, timeArc) : mouseoutTerm;
+    // };
+    // timeArc.mouseover_dispath = function (_) {
+    //     return arguments.length ? (mouseover_dispath = _, timeArc) : mouseover_dispath;
+    // };
+    // timeArc.mouseout_dispath = function (_) {
+    //     return arguments.length ? (mouseout_dispath = _, timeArc) : mouseout_dispath;
+    // };
     timeArc.catergogryList = function (_) {
         return arguments.length ? (catergogryList = _, timeArc) : catergogryList;
     };
@@ -1248,7 +1289,7 @@ d3.TimeArc = function () {
             .attr("x", xx+10)
             .attr("y", 0)
             .attr("dy", ".21em")
-            .attr("font-family", "sans-serif")
+            // .attr("font-family", "sans-serif")
             .attr("font-size", "11px")
             .style("text-anchor", "left")
             .style("fill",d=>colorCatergory(d.key))
@@ -1301,7 +1342,7 @@ d3.TimeArc = function () {
                     return graphicopt.heightG()-15;
             })
             .attr("dy", ".21em")
-            .attr("font-family", "sans-serif")
+            // .attr("font-family", "sans-serif")
             .attr("font-size", "12px")
             .text(function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
@@ -1437,7 +1478,7 @@ d3.TimeArc = function () {
             .on('click', turnLensing);
         svg.append('text')
             .attr("class", "lensingText")
-            .attr("font-family", "sans-serif")
+            // .attr("font-family", "sans-serif")
             .attr("font-size", "11px")
             .attr("x", buttonLensingWidth/2)
             .attr("y", 181)
@@ -1642,7 +1683,7 @@ d3.TimeArc = function () {
         svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + ySlider + ")")
-            .attr("font-family", "sans-serif")
+            // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
             .call(d3.axisBottom()
                 .scale(xScaleSlider)
@@ -1659,7 +1700,7 @@ d3.TimeArc = function () {
             .attr("x", xSlider)
             .attr("y", ySlider-12)
             .attr("dy", ".21em")
-            .attr("font-family", "sans-serif")
+            // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
             .text("Mentioned together")
             .style("text-anchor","start");
