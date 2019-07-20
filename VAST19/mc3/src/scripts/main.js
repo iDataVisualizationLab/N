@@ -428,7 +428,7 @@ function initTime (max){
     // root.style.setProperty('--steptime',(600/(max-1))+'px')
 }
 function initTimeArc () {
- RadarMapopt.width = width*(9/12);
+ RadarMapopt.width = width;
  RadarMapopt.height = height;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);

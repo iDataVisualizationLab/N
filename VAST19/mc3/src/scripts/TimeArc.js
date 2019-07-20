@@ -137,6 +137,7 @@ d3.TimeArc = function () {
             // overflow: "visible",
 
         });
+        xStep = graphicopt.margin.left;
         maxheight  = graphicopt.heightG();
 //******************* Forced-directed layout
 
