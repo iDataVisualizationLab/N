@@ -56,7 +56,7 @@ let catergogryObject = {
     'event':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('event'),
-        colororder: 3
+        colororder: 4
     },
     'resource':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
@@ -70,7 +70,7 @@ let catergogryObject = {
     'location (in the message)':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('location_in_message'),
-        colororder: 4
+        colororder: 3
     }
     // 'hashtash':{
     //     'extractFunc': _.partial(extractWords,'message',this.keywords),
