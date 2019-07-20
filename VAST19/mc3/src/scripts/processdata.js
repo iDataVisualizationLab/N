@@ -30,7 +30,7 @@ var termsList = {
 
     "food": ["food"],
 
-    "Shelter": ["collapse", "housing", "house","shelter","building","construction"],
+    "shelter": ["collapse", "housing", "house","shelter","building","construction"],
 
     "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter",'aftershock','after shock' ],
 
@@ -45,7 +45,7 @@ var collections = {
     'location_post': ['location_in_message'],
     'location_in_message': ['location_in_message'],
     'event': ['earthquake','grounds','flooding','fire'],
-    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','buildings','food']
+    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food']
 }
 
 let catergogryObject = {
