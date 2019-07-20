@@ -176,7 +176,8 @@ table.dataTable  td{
 
 /*map*/
 #map{
-    width: fit-content;
+    margin-left: unset;
+    /*width: fit-content;*/
     padding: 20px;
     z-index: 2;
     position: absolute;

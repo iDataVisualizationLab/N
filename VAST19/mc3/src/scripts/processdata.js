@@ -63,11 +63,11 @@ let catergogryObject = {
         'keywords': getTermsArrayCollection('resource'),
         colororder: 0
     },
-    'location_post':{
+    'location (of the message)':{
         'extractFunc': _.partial(getObject,'location'),
         colororder: 1
     },
-    'location_in_message':{
+    'location (in the message)':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('location_in_message'),
         colororder: 4
@@ -149,7 +149,7 @@ function markWord (message,keys){
 function generatemark(category,subcategory){
     let str = '<mark class="entity" style="background:'+category.color+';">';
     str += '$&';
-    str += '<span>'+(subcategory?subcategory:category.group)+'</span>';
+    str += '<span>'+(subcategory?subcategory:category.group).split(' ')[0]+'</span>';
     str += '</mark>';
     return str;
 }

@@ -43,8 +43,9 @@
         <!--<div class="brand-logo center input-field col s12 inline" style="font-size: 1.5rem;">-->
             <!--Mini chalenge 2-->
         <!--</div>-->
+        <a href="#" data-target="navigationLinks" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <div class="row s5 left">
-            <ul id="nav-mobile" id="mainTab">
+            <ul class="nav-mobile hide-on-med-and-down" id="mainTab">
                 <li><a class="dropdown-trigger" href="#!" data-target="mc1_button">Mini-Challenge 1<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li ><a class="dropdown-trigger" href="#!" data-target="mc2_button">Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li id="demoTab" ><a  class="active dropdown-trigger" href="#!" data-target="mc3_button" >Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
@@ -56,6 +57,12 @@
         </ul>
     </div>
 </nav>
+<ul class="sidenav" id="navigationLinks">
+    <li><a class="dropdown-trigger" href="#!" data-target="mc1_button">Mini-Challenge 1<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li ><a class="dropdown-trigger" href="#!" data-target="mc2_button">Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li ><a  class="active dropdown-trigger" href="#!" data-target="mc3_button" >Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li ><a  class="dropdown-trigger" href="#!" data-target="gc_button">Grand Challenge<i class="material-icons right">arrow_drop_down</i></a></li>
+</ul>
 <div id="mySidenav" class="sidenavs">
     <div class="row s12 active">
         <!--<ul class="collapsible">-->
@@ -372,8 +379,8 @@
                 </div>
             </div>
         </div>
-        <div id="map" class="col">
-            <svg width="550px" height="450px" class="map_main">
+        <div id="map" class="col s7 m4 l3 xl3">
+            <svg viewBox="0 0 550 450" width="100%" height="100%" class="map_main">
                 <defs>
                     <marker id='head' orient='auto' markerWidth='2' markerHeight='4'
                             refX='0.1' refY='2'>
