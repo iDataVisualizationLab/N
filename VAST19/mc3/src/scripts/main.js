@@ -321,7 +321,7 @@ function init() {
                 },0);
             });
         });
-        return Promise.all(queueProcess).then(spamremove);
+        return Promise.all(queueProcess).then(spamremove).then(data=>data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location_post','user'),function(old,k){return old||d.category[k]})));
     })
         .then ((d)=>{
         dataRaw = d;
@@ -640,9 +640,9 @@ let tempStore ={};
 let colorLegend_array = colorScaleList['Oranges'];
 let colorLegend = d3.scaleLinear().domain([0,1]).interpolate(d3.interpolateHsl).range(colorLegend_array);
 function onmouseoverRadar ([d,list]) {
-    d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list));
+    d.messagearr.forEach(e=>e.htmlMessage = markWord(e.message,list.filter(l=>l!='location_post')));
     d.messagearr.forEach(e=>e.htmlUser = markWord(e.account,list.filter(f=>f.group==='user')));
-    d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list.filter(f=>f.group==='location')));
+    d.messagearr.forEach(e=>e.htmlLocation = markWord(e.location,list.filter(f=>f.group==='location_post')));
     let nestmap = d3.nest().key(e=>e.location).rollup(e=>e.length).entries(d.messagearr).filter(e=>e.key!=="<Location with-held due to contract>");
     d3.selectAll('.geoPath:not(#'+_.unique(d.messagearr.map(e=>removeWhitespace(e.location))).join('):not(#')+')').classed('nothover',true).style('fill',colorLegend(0)).each(d=>d.density = 0);
     const step_val  = Math.max(10,d3.max(nestmap,e=>e.value))/colorLegend_array.length;

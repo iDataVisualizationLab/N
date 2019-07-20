@@ -42,7 +42,8 @@ var termsList = {
 };
 
 var collections = {
-    'location': ['local_area'],
+    'location_post': ['local_area'],
+    'location_in_message': ['local_area'],
     'event': ['earthquake','grounds','flooding','fire'],
     'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','buildings','food']
 }
@@ -51,8 +52,12 @@ let catergogryObject = {
     'user':{
         'extractFunc': _.partial(getObject,'account')
     },
-    'location':{
+    'location_post':{
         'extractFunc': _.partial(getObject,'location')
+    },
+    'location_in_message':{
+        'extractFunc': function(data){return extractWords('message',this.keywords,data)},
+        'keywords': termsList['local_area']
     },
     'event':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
@@ -150,5 +155,11 @@ function spamremove (data){
         let nest_spam = d3.nest().key(d=>d.account).rollup(d=>d.length).entries(dd);
         const spamlist = nest_spam.sort((a,b)=>b.value-a.value).filter(d=>d.value>10);
         resolve(data.filter(d=>!spamlist.find(e=>e.key===d.account)));
+    });
+}
+
+function removeNonecategory (data){
+    return new Promise((resolve, reject) => {
+        resolve( data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location_post','user'),function(old,k){return old||d.category[k]})));
     });
 }
