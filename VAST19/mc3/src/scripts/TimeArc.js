@@ -658,7 +658,7 @@ d3.TimeArc = function () {
             .style("stroke", function (d) {
                 return d.isSearchTerm ? "#000" : "#fff";
             })
-            .style("stroke-width", 1)
+            .style("stroke-width", 0.5)
             .style("stroke-opacity", 0.8)
             .style("fill-opacity", 1)
             .style("fill", function (d, i) {
