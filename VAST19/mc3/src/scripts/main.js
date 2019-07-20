@@ -428,12 +428,12 @@ function initTime (max){
     // root.style.setProperty('--steptime',(600/(max-1))+'px')
 }
 function initTimeArc () {
- RadarMapopt.width = width;
+ RadarMapopt.width = width*(9/12);
  RadarMapopt.height = height;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
- TimeArc.svg(RadarMapopt.svg).mouseoverTerm(onmouseoverRadar).mouseoutTerm(onmouseleaveRadar).catergogryList(catergogryList).init();
+ TimeArc.svg(RadarMapopt.svg).mouseoverTerm(onmouseoverRadar).mouseoutTerm(onmouseleaveRadar).mouseoverLink(onmouseoverRadar).mouseoutLink(onmouseleaveRadar).catergogryList(catergogryList).init();
 
 }
 

@@ -136,7 +136,6 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .range([0, legendconf.width]);
                 maplegend.select('.axis_legend')
                     .call(d3.axisBottom(axisScale)
-                        .ticks(3)
                         .tickSize(-legendconf.height));
             };
             // draw map

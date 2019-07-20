@@ -65,6 +65,7 @@ d3.TimeArc = function () {
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
         totalTimeSteps = timeScaleIndex.ticks(runopt.timeformat).length;
         timeScaleIndex.range([0, totalTimeSteps-1]);
+        XGAP_ = graphicopt.widthG()/(totalTimeSteps-1);
     }
 
     var totalTimeSteps = 12 * (maxYear - minYear);
@@ -97,6 +98,11 @@ d3.TimeArc = function () {
     var lMonth = -lensingMul * 2;
     var coordinate = [0, 0];
     var XGAP_ = 12; // gap between months on xAxis
+
+    let mouseoverTerm = ()=>{};
+    let mouseoutTerm = ()=>{};
+    let mouseoverLink = ()=>{};
+    let mouseoutLink = ()=>{};
 
     function xScale(m) {
         if (isLensing) {
@@ -768,7 +774,8 @@ d3.TimeArc = function () {
             .attr("class", "linkArc")
             .style("stroke-width", function (d) {
                 return d.value;
-            });
+            }).on('mouseover', mouseovered_Link)
+            .on("mouseout", mouseouted_Link);
 
         svg.selectAll(".nodeG").remove();
         nodeG = svg.selectAll(".nodeG")
@@ -805,8 +812,8 @@ d3.TimeArc = function () {
             .text(function (d) {
                 return d.name
             });
-        nodeG.on('mouseover', mouseovered)
-            .on("mouseout", mouseouted);
+        nodeG.on('mouseover', mouseovered_Term)
+            .on("mouseout", mouseouted_Term);
 
         // console.log("gggg**************************"+searchTerm);
         listMonth = [];
@@ -833,7 +840,7 @@ d3.TimeArc = function () {
 
 
 
-    function mouseovered(d) {
+    function mouseovered_Term(d) {
         if (force.alpha() == 0) {
             var list = new Object();
             list[d.name] = new Object();
@@ -901,7 +908,7 @@ d3.TimeArc = function () {
         }
     }
 
-    function mouseouted(d) {
+    function mouseouted_Term(d) {
         if (force.alpha() == 0) {
             nodeG.style("fill-opacity", 1);
             svg.selectAll(".layer")
@@ -916,6 +923,44 @@ d3.TimeArc = function () {
         mouseoutTerm(d);
     }
 
+    function mouseovered_Link(d) {
+        if (force.alpha() == 0) {
+            d.messagearr = d.message;
+            d3.select(this).style("stroke-opacity", 1);
+            svg.selectAll(".linkArc").filter(e=>e!==d)
+                .style("stroke-opacity", 0.01);
+            nodeG.filter(n=>n.name!==d.target.name&&n.name!==d.source.name).style("fill-opacity", 0.1)
+                .style("font-weight", '').transition().duration(500).attr("transform", function (n) {return "translate(" + n.xConnected + "," + n.y + ")"});
+            nodeG.filter(n=>n.name===d.target.name||n.name===d.source.name).style("fill-opacity", 1)
+                .style("font-weight", 'bold')
+                .transition().transition().duration(500).attr("transform", function (n) {
+                    var newX = xStep + xScale(d.__timestep__);
+                    return "translate(" + newX + "," + n.y + ")"});
+            svg.selectAll(".layer").filter(n=>n.name!==d.target.name&&n.name!==d.source.name)
+                .style("fill-opacity", 0.1)
+                .style("stroke-opacity",0);
+            svg.selectAll(".layer").filter(n=>n.name===d.target.name||n.name===d.source.name).style("fill-opacity", 1)
+                .style("stroke-opacity", 1);
+            let cat_source = termArray3.find(t=>t.term===d.source.name).category;
+            let cat_target = termArray3.find(t=>t.term===d.target.name).category;
+            mouseoverLink([d,[{color:colorCatergory(cat_source), text:d.source.name, group:cat_source},{color:colorCatergory(cat_target), text:d.target.name, group:cat_target}]]);
+        }
+    }
+
+    function mouseouted_Link(d) {
+        if (force.alpha() == 0) {
+            nodeG.style("fill-opacity", 1);
+            svg.selectAll(".layer")
+                .style("fill-opacity", 1)
+                .style("stroke-opacity", 0.5);
+            svg.selectAll(".linkArc")
+                .style("stroke-opacity", 1);
+            nodeG.transition().duration(500).attr("transform", function (n) {
+                return "translate(" + n.xConnected + "," + n.y + ")"
+            })
+        }
+        mouseoutLink(d);
+    }
 
     function searchNode(value) {
         searchTerm = value;
@@ -1149,6 +1194,12 @@ d3.TimeArc = function () {
     };
     timeArc.mouseoutTerm = function (_) {
         return arguments.length ? (mouseoutTerm = _, timeArc) : mouseoutTerm;
+    };
+    timeArc.mouseoverLink = function (_) {
+        return arguments.length ? (mouseoverLink = _, timeArc) : mouseoverLink;
+    };
+    timeArc.mouseoutLink = function (_) {
+        return arguments.length ? (mouseoutLink = _, timeArc) : mouseoutLink;
     };
     timeArc.catergogryList = function (_) {
         return arguments.length ? (catergogryList = _, timeArc) : catergogryList;
@@ -1576,10 +1627,10 @@ d3.TimeArc = function () {
     var xSlider = 3;
     var ySlider = 125;
     var valueSlider = 15;
-    var valueMax = 30;
+    var valueMax = 20;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()
-            .domain([1, valueMax])
+            .domain([0, valueMax])
             .range([xSlider, 120]);
 
         brush = d3.brushX(xScaleSlider)
