@@ -40,6 +40,9 @@ function updateTable (data,list){
                 "order": [[0, "asc"]],
           "pageLength": 10,
           "deferRender": true,
+          "createdRow": function ( row, data, index ) {
+              console.log(index)
+          },
           "columnDefs": [
               { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 },
               {"render": function ( data, type, row ) {

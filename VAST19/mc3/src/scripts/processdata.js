@@ -30,7 +30,7 @@ var termsList = {
 
     "food": ["food"],
 
-    "buildings": ["collapse", "housing", "house"],
+    "buildings": ["collapse", "housing", "house","shelter","building","construction"],
 
     "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter",'aftershock','after shock' ],
 
