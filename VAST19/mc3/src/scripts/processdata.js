@@ -55,10 +55,6 @@ let catergogryObject = {
     'location_post':{
         'extractFunc': _.partial(getObject,'location')
     },
-    'location_in_message':{
-        'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
-        'keywords': getTermsArrayCollection('location_in_message')
-    },
     'event':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('event')
@@ -67,6 +63,10 @@ let catergogryObject = {
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('resource')
     },
+    'location_in_message':{
+        'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
+        'keywords': getTermsArrayCollection('location_in_message')
+    }
     // 'hashtash':{
     //     'extractFunc': _.partial(extractWords,'message',this.keywords),
     //     'keywords': ['earthquake','tsunami','flood']
