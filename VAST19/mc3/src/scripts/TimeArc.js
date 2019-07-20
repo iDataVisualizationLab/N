@@ -659,7 +659,7 @@ d3.TimeArc = function () {
                 return d.isSearchTerm ? "#000" : "#fff";
             })
             .style("stroke-width", 1)
-            .style("stroke-opacity", 0.5)
+            .style("stroke-opacity", 0.8)
             .style("fill-opacity", 1)
             .style("fill", function (d, i) {
                 return getColor(d.group, d.max);
