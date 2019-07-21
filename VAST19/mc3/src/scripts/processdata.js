@@ -46,7 +46,7 @@ var collections = {
     'location_post': ['location_in_message'],
     'location_in_message': ['location_in_message'],
     'event': ['earthquake','grounds','flooding','fire'],
-    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food'],
+    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food','water'],
 }
 
 let catergogryObject = {
