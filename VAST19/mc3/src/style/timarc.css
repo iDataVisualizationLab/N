@@ -13,3 +13,6 @@
     width:auto;
     display: unset;
 }
+#lensingbtn:hover {
+    background-color: #fc8;
+}

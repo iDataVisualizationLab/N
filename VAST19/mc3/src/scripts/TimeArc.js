@@ -1466,43 +1466,7 @@ d3.TimeArc = function () {
     var buttonColor = "#ddd";
 
     function drawLensingButton(){
-        svg.append('rect')
-            .attr("class", "lensingRect")
-            .attr("x", 1)
-            .attr("y", 170)
-            .attr("rx", roundConner)
-            .attr("ry", roundConner)
-            .attr("width", buttonLensingWidth)
-            .attr("height", buttonheight)
-            .style("stroke", "#000")
-            .style("stroke-width", 0.1)
-            .style("fill", buttonColor)
-            .on('mouseover', function(d2){
-                svg.selectAll(".lensingRect")
-                    .style("fill", colorHighlight);
-            })
-            .on('mouseout', function(d2){
-                svg.selectAll(".lensingRect")
-                    .style("fill", buttonColor);
-            })
-            .on('click', turnLensing);
-        svg.append('text')
-            .attr("class", "lensingText")
-            // .attr("font-family", "sans-serif")
-            .attr("font-size", "11px")
-            .attr("x", buttonLensingWidth/2)
-            .attr("y", 181)
-            .text("Lensing")
-            .style("text-anchor", "middle")
-            .style("fill", "#000")
-            .on('mouseover', function(d2){
-                svg.selectAll(".lensingRect")
-                    .style("fill", colorHighlight);
-            })
-            .on('mouseout', function(d2){
-                svg.selectAll(".lensingRect")
-                    .style("fill", buttonColor);
-            })
+        d3.select('#lensingbtn')
             .on('click', turnLensing);
     }
     function turnLensing() {
@@ -1676,23 +1640,27 @@ d3.TimeArc = function () {
     var slider;
     var handle;
     var xScaleSlider;
-    var xSlider = 3;
-    var ySlider = 125;
+    var xSlider = 180;
+    var ySlider = 30;
     var valueSlider = 15;
     var valueMax = 20;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()
             .domain([0, valueMax])
-            .range([xSlider, 120]);
+            .range([0, 120]);
 
         brush = d3.brushX(xScaleSlider)
-            .extent([[xSlider,-5],[120, 5]])
+            .extent([[0,-5],[120, 5]])
             .on("brush", brushed)
             .on("end", brushend);
 
-        svg.append("g")
+        const grang = svg.append('g')
+            .attr('class','slider_range')
+            .attr('transform',"translate("+xSlider+"," + ySlider + ")")
+
+        grang.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + ySlider + ")")
+            // .attr("transform", "translate(0," + ySlider + ")")
             // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
             .call(d3.axisBottom()
@@ -1705,26 +1673,26 @@ d3.TimeArc = function () {
             .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "halo");
 
-        svg.append("text")
+        grang.append("text")
             .attr("class", "sliderText")
-            .attr("x", xSlider)
-            .attr("y", ySlider-12)
+            // .attr("x", xSlider)
+            .attr("y", -12)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
             .text("Mentioned together")
             .style("text-anchor","start");
 
-        slider = svg.append("g")
+        slider = grang.append("g")
             .attr("class", "slider")
-            .attr("transform", "translate(0," + ySlider + ")")
+            // .attr("transform", "translate(0," + ySlider + ")")
             .call(brush);
 
         slider.selectAll(".extent,.resize")
             .remove();
 
         slider.select(".background")
-            .attr("y",ySlider-5)
+            .attr("y",-5)
             .attr("height", 10);
 
         handle = slider.selectAll(".handle--custom")

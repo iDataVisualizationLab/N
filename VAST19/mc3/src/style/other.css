@@ -183,7 +183,7 @@ table.dataTable  td{
     position: absolute;
     /*top: 0;*/
     left:0;
-    top:300px;
+    top:200px;
     max-width: 380px;
     /*position: relative;*/
 }
