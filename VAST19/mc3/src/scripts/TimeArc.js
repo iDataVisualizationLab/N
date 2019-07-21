@@ -1196,7 +1196,6 @@ d3.TimeArc = function () {
             }
             if (graphicopt.min_height){
                 graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
-                step = (graphicopt.heightG()-12)/termArray.length;
             }
             console.log(step);
             svg.attr('height',graphicopt.height);
@@ -1680,7 +1679,7 @@ d3.TimeArc = function () {
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
-            .text("Mentioned together")
+            .text(`Mentioned more than ${valueSlider} messages together`)
             .style("text-anchor","start");
 
         slider = grang.append("g")
@@ -1717,6 +1716,7 @@ d3.TimeArc = function () {
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
             handle.attr("cx", xScaleSlider(valueSlider));
+            svg.select('.sliderText').text(`Mentioned more than ${valueSlider} messages together`)
             d3.select(this).call(d3.event.target.move, [0,valueSlider].map(xScaleSlider));
         }
     }

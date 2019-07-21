@@ -19,6 +19,8 @@ var termsList = {
         'Oak Willow',
         'East Parton',
         'West Parton'],
+    'user':[],
+    'hashtag':[],
     'Safe Town': ['Always Safe Power'],
     "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
 
@@ -51,7 +53,7 @@ var collections = {
 
 let catergogryObject = {
     'user':{
-        'extractFunc': _.partial(getObject,'account'),
+        'extractFunc': function(data){return extracSpecial('user','message','@',data,_.partial(getObject,'account')(data))},
         colororder: 2
     },
     'event':{
@@ -63,6 +65,10 @@ let catergogryObject = {
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('resource'),
         colororder: 0
+    },
+    'hashtag':{
+        'extractFunc': function(data){return extracSpecial('hashtag','message','#',data)},
+        colororder: 5
     },
     'location (in the message)':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
@@ -99,10 +105,20 @@ function getObject (key,data) {
 //     const all_matched = _.unique(message.match(reg));
 //     return all_matched;
 // }
-
-function extractWordsCollection (key,terms,data) {
+function extracSpecial (termkey,key,symbol,data,oldcollection) {
     let message = data[key];
-    let collection = {};
+    let collection = oldcollection||{};
+    let terms_coll = message.match(new RegExp(symbol+'\\w*','g'));
+    if (terms_coll) {
+        terms_coll = terms_coll.map(t => t.replace('symbol', ''));
+        terms_coll.forEach(t => collection[t.replace(symbol, '')] = 1);
+        termsList[termkey] = _.union(termsList[termkey], terms_coll);
+    }
+    return collection;
+}
+function extractWordsCollection (key,terms,data,oldcollection) {
+    let message = data[key];
+    let collection = oldcollection||{};
     terms.forEach(t=>{
         t.value.find(
             k => {
@@ -173,6 +189,7 @@ function spamremove (data){
 
 function removeNonecategory (data){
     return new Promise((resolve, reject) => {
-        resolve( data.filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
+        // resolve( data.filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
+        resolve(data);
     });
 }
