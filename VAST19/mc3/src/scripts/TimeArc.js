@@ -513,7 +513,7 @@ d3.TimeArc = function () {
         }
 
     }
-
+    let offsetYStream = 0;
     function computeNodes() {
 
         // check substrings of 100 first terms
@@ -650,7 +650,6 @@ d3.TimeArc = function () {
         }
 
         //   drawStreamTerm(svg, pNodes, 100, 600) ;
-
         svg.selectAll(".layer").remove();
         svg.selectAll(".layer")
             .data(pNodes)
@@ -1201,8 +1200,9 @@ d3.TimeArc = function () {
             svg.attr('height',graphicopt.height);
         }
         //var totalH = termArray.length*step;
+        offsetYStream = step;
         for (var i = 0; i < termArray.length; i++) {
-            nodes[termArray[i].nodeId].y = 12 + i * step;
+            nodes[termArray[i].nodeId].y = offsetYStream+12 + i * step;
         }
         force.alpha(0);
         force.stop();
