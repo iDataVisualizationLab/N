@@ -64,14 +64,14 @@ let catergogryObject = {
         'keywords': getTermsArrayCollection('resource'),
         colororder: 0
     },
-    'location (of the message)':{
-        'extractFunc': _.partial(getObject,'location'),
-        colororder: 1
-    },
     'location (in the message)':{
         'extractFunc': function(data){return extractWordsCollection('message',this.keywords,data)},
         'keywords': getTermsArrayCollection('location_in_message'),
         colororder: 3
+    },
+    'location (of the message)':{
+        'extractFunc': _.partial(getObject,'location'),
+        colororder: 1
     }
     // 'hashtash':{
     //     'extractFunc': _.partial(extractWords,'message',this.keywords),

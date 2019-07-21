@@ -13,6 +13,7 @@ let width = 2000,
         offset: {top: 0},
         width: width,
         height: height,
+        min_height: height,
         scalezoom: 1,
         widthView: function(){return this.width*this.scalezoom},
         heightView: function(){return this.height*this.scalezoom},
@@ -429,7 +430,8 @@ function initTime (max){
 function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
-    RadarMapopt.margin.left = width*3/12;
+ RadarMapopt.margin.left = Math.min(width*3/12,380);
+ RadarMapopt.min_height = RadarMapopt.margin.left+380;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);

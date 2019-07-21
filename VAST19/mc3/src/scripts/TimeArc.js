@@ -12,6 +12,7 @@ d3.TimeArc = function () {
         heightView: function(){return this.height*this.scalezoom},
         widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
         heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
+        min_height: 100,
         dotRadius: 2,
         summary: {size:30}
     };
@@ -1192,6 +1193,10 @@ d3.TimeArc = function () {
                 graphicopt.height = 10 * step + 12 + graphicopt.margin.top + graphicopt.margin.bottom;
                 if  (termArray.length)
                     step = (step*10-12)/termArray.length;
+            }
+            if (graphicopt.min_height){
+                graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
+                step = (graphicopt.heightG()-12)/termArray.length;
             }
             svg.attr('height',graphicopt.height);
         }

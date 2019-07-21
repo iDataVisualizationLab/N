@@ -38,7 +38,7 @@ function updateTable (data,list){
 
       let table_object = $(table.node()).DataTable({
                 "order": [[0, "asc"]],
-          "pageLength": 10,
+          "pageLength": 100,
           "deferRender": true,
           "columnDefs": [
               { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 },
