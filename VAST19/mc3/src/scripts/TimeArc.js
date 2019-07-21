@@ -860,9 +860,9 @@ d3.TimeArc = function () {
                     if (name) {
                         if (!list[name]) {
                             list[name] = new Object();
-                            // list[name].count = 1;
-                            // list[name].year = l.__timestep__;
-                            // list[name].linkcount = l.count;
+                            list[name].count = 1;
+                            list[name].year = l.__timestep__;
+                            list[name].linkcount = l.count;
                             d.messagearr =_.unique(_.flatten([ d.messagearr,l.message]));
                         }
                         else {
@@ -1093,6 +1093,7 @@ d3.TimeArc = function () {
                 for (var i = 0; i < d.monthly.length; i++) {
                     d.monthly[i].yNode = d.y;     // Copy node y coordinate
                 }
+                console.log(d.monthly)
                 return area(d.monthly);
             });
         linkArcs.attr("d", linkArc);
@@ -1377,6 +1378,7 @@ d3.TimeArc = function () {
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul) {
+                        console.log(i);
                         return 1;
                     }
                     else
