@@ -823,7 +823,7 @@ function areaChart(div,data,options){
         opacityArea: 0.35, 	//The opacity of the area of the blob
         dotRadius: 4, 			//The size of the colored circles of each blog
         opacityCircles: 0.1, 	//The opacity of the circles of each blob
-        strokeWidth: 0.1, 		//The width of the stroke around each blob
+        strokeWidth: 1, 		//The width of the stroke around each blob
         roundStrokes: true,	//If true the area and stroke will follow a round path (cardinal-closed)
         isNormalize: true,
         mini:false, //mini mode
