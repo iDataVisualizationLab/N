@@ -162,7 +162,7 @@ function markWord (message,keys){
     keys.forEach(maink=>{
         if (termsList[maink.text])
             termsList[maink.text].forEach(k=>{
-                const reg = new RegExp(' '+k+'|^'+k,'gi');
+                const reg = new RegExp(' '+k+'|^'+k+'|@'+k,'gi');
                 if(reg.test(message))
                     message = message.replace(reg,generatemark(maink,maink.text))
             });

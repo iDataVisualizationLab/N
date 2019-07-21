@@ -1316,7 +1316,7 @@ d3.TimeArc = function () {
     function removeColorLegend() {
         svg.selectAll(".nodeLegend").remove();
     }
-
+    let timeLegend
     function drawTimeLegend() {
         listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
                 return {
@@ -1325,8 +1325,11 @@ d3.TimeArc = function () {
                 }
             }
         );
+        timeLegend = svg.select('timeLegend');
+        if (timeLegend.empty())
+            timeLegend = svg.append('g').attr('class','timeLegend');
 
-        svg.selectAll(".timeLegendLine").data(listX)
+        timeLegend.selectAll(".timeLegendLine").data(listX)
             .enter().append("line")
             .attr("class", "timeLegendLine")
             .style("stroke", "000")
@@ -1337,7 +1340,7 @@ d3.TimeArc = function () {
             .attr("x2", function(d){ return d.x; })
             .attr("y1", function(d){ return 0; })
             .attr("y2", function(d){ return graphicopt.heightG(); });
-        svg.selectAll(".timeLegendText").data(listX)
+        timeLegend.selectAll(".timeLegendText").data(listX)
             .enter().append("text")
             .attr("class", "timeLegendText")
             .style("fill", "#000000")
@@ -1346,9 +1349,9 @@ d3.TimeArc = function () {
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
-                    return graphicopt.heightG()-7;
+                    return 7;
                 else
-                    return graphicopt.heightG()-15;
+                    return 15;
             })
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
@@ -1370,8 +1373,7 @@ d3.TimeArc = function () {
                 }
             }
         );
-
-        svg.selectAll(".timeLegendLine").data(listX).transition().duration(250)
+        timeLegend.selectAll(".timeLegendLine").data(listX).transition().duration(250)
             .style("stroke-dasharray",  function(d,i){
                 if (!isLensing)
                     return "1, 2";
@@ -1391,7 +1393,7 @@ d3.TimeArc = function () {
             })
             .attr("x1", function(d){return d.x; })
             .attr("x2", function(d){ return d.x; });
-        svg.selectAll(".timeLegendText").data(listX).transition().duration(250)
+        timeLegend.selectAll(".timeLegendText").data(listX).transition().duration(250)
             .style("fill-opacity", function(d,i){
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return 1;
@@ -1407,12 +1409,13 @@ d3.TimeArc = function () {
     }
 
     function drawTimeBox(){
-        svg.append("rect")
+
+        timeLegend.append("rect")
             .attr("class", "timeBox")
             .style("fill", "#aaa")
             .style("fill-opacity", 0.2)
             .attr("x", xStep)
-            .attr("y", graphicopt.heightG()-25)
+            // .attr("y", graphicopt.heightG()-25)
             .attr("width", XGAP_* listX.length)
             .attr("height", 16)
             .on("mouseout", function(){
@@ -1435,11 +1438,11 @@ d3.TimeArc = function () {
             if (nodes[i].y>maxY)
                 maxY = nodes[i].y;
         }
-        svg.selectAll(".timeBox").transition().duration(durationTime)
-            .attr("y", maxY+12);
-        svg.selectAll(".timeLegendText").transition().duration(durationTime)
+        // timeLegend.selectAll(".timeBox").transition().duration(durationTime)
+        //     .attr("y", maxY+12);
+        timeLegend.selectAll(".timeLegendText").transition().duration(durationTime)
             .style("fill-opacity", function(d,i){
-                if (i%12==0)
+                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
@@ -1448,12 +1451,12 @@ d3.TimeArc = function () {
                         return 0;
                 }
             })
-            .attr("y", function(d,i) {
-                if (i%12==0)
-                    return maxY+21;
-                else
-                    return maxY+21;
-            })
+            // .attr("y", function(d,i) {
+            //     if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+            //         return maxY+21;
+            //     else
+            //         return maxY+21;
+            // })
             .attr("x", function(d,i){
                 return d.x; });
     }
