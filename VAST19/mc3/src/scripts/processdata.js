@@ -20,7 +20,7 @@ var termsList = {
         'East Parton',
         'West Parton'],
     'Safe Town': ['Always Safe Power'],
-    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
+    "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -46,7 +46,7 @@ var collections = {
     'location_post': ['location_in_message'],
     'location_in_message': ['location_in_message'],
     'event': ['earthquake','grounds','flooding','fire'],
-    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food','water'],
+    'resource': ['sewer','power/energy','roads_and_bridges','medical','shelter','food','water'],
 }
 
 let catergogryObject = {
