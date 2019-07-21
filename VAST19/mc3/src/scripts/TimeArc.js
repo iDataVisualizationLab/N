@@ -740,8 +740,10 @@ d3.TimeArc = function () {
                             l.__timestep__ = m;
                             //l.value = linkScale(relationship[term1+"__"+term2][m]); 
                             links.push(l);
-                            if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2)
+                            if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2) {
                                 relationshipMaxMax2 = relationship[term1 + "__" + term2][m];
+                                console.log(term1 + "__" + term2 +'.....'+m);
+                            }
                         }
                     }
                 }
@@ -757,10 +759,12 @@ d3.TimeArc = function () {
                 .range([0, hhh * 1.25])
                 .domain([0, termMaxMax2]);
         }
+        // linkScale = d3.scaleLinear()
+        //     .range([0.5, 2])
+        //     .domain([Math.round(valueSlider) - 0.4, Math.max(relationshipMaxMax2, 10)]);
         linkScale = d3.scaleLinear()
-            .range([0.5, 2])
-            .domain([Math.round(valueSlider) - 0.4, Math.max(relationshipMaxMax2, 10)]);
-
+            .range([0.1, 1.5])
+            .domain([1,15]);
         links.forEach(function (l) {
             var term1 = nodes[l.source].name;
             var term2 = nodes[l.target].name;
@@ -1464,6 +1468,9 @@ d3.TimeArc = function () {
                 return d.x; });
     }
 
+    function drawStreamLegend () {
+        console.log("drawStreamLegend");
+    }
     var buttonLensingWidth =80;
     var buttonheight =15;
     var roundConner = 4;
@@ -1738,6 +1745,7 @@ d3.TimeArc = function () {
         // console.log("Slider brushed ************** valueSlider="+valueSlider);
         recompute();
     }
+
     //</funcs>
     return timeArc;
 };
