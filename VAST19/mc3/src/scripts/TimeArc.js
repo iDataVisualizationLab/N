@@ -1198,6 +1198,7 @@ d3.TimeArc = function () {
                 graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
                 step = (graphicopt.heightG()-12)/termArray.length;
             }
+            console.log(step);
             svg.attr('height',graphicopt.height);
         }
         //var totalH = termArray.length*step;
