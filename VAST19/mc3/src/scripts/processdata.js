@@ -53,7 +53,7 @@ var collections = {
 
 let catergogryObject = {
     'user':{
-        'extractFunc': function(data){return extracSpecial('user','message','@',data,_.partial(getObject,'account')(data))},
+        'extractFunc': function(data){return extracSpecial('user','message',{s:'@',replace:true},data,_.partial(getObject,'account')(data))},
         colororder: 2
     },
     'event':{
@@ -67,7 +67,7 @@ let catergogryObject = {
         colororder: 0
     },
     'hashtag':{
-        'extractFunc': function(data){return extracSpecial('hashtag','message','#',data)},
+        'extractFunc': function(data){return extracSpecial('hashtag','message',{s:'#',replace:false},data)},
         colororder: 5
     },
     'location (in the message)':{
@@ -105,14 +105,18 @@ function getObject (key,data) {
 //     const all_matched = _.unique(message.match(reg));
 //     return all_matched;
 // }
-function extracSpecial (termkey,key,symbol,data,oldcollection) {
+function extracSpecial (termkey,key,symbolOb,data,oldcollection) {
     let message = data[key];
+    let symbol = symbolOb.s;
     let collection = oldcollection||{};
     let terms_coll = message.match(new RegExp(symbol+'\\w*','g'));
     if (terms_coll) {
-        terms_coll = terms_coll.map(t => t.replace('symbol', ''));
-        terms_coll.forEach(t => collection[t.replace(symbol, '')] = 1);
-        termsList[termkey] = _.union(termsList[termkey], terms_coll);
+        if (symbolOb.replace)
+            terms_coll = terms_coll.map(t => t.replace(symbol, ''));
+        terms_coll.forEach(t =>{
+            if (!termsList[termkey].find(e=>e===t))
+                termsList[termkey].push(t);
+            collection[t] = 1;});
     }
     return collection;
 }
