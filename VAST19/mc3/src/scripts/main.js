@@ -429,6 +429,7 @@ function initTime (max){
 function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
+    RadarMapopt.margin.left = width*3/12;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);

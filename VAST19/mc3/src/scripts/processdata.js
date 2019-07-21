@@ -20,7 +20,7 @@ var termsList = {
         'East Parton',
         'West Parton'],
     'Safe Town': ['Always Safe Power'],
-    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
+    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -29,6 +29,7 @@ var termsList = {
     "medical": ["medical", "red cross", "emergency", "urgent", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
 
     "food": ["food"],
+    "water": ["water","thirst"],
 
     "shelter": ["collapse", "housing", "house","shelter","building","construction"],
 
