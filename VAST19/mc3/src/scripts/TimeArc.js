@@ -1317,7 +1317,7 @@ d3.TimeArc = function () {
     function removeColorLegend() {
         svg.selectAll(".nodeLegend").remove();
     }
-    let timeLegend
+    let timeLegend;
     function drawTimeLegend() {
         listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
                 return {
@@ -1327,12 +1327,14 @@ d3.TimeArc = function () {
             }
         );
         timeLegend = svg.select('timeLegend');
-        if (timeLegend.empty())
-            timeLegend = svg.append('g').attr('class','timeLegend');
+        if (timeLegend.empty()) {
+            timeLegend = svg.append('g').attr('class', 'timeLegend');
+            timeLegend.append('g').attr('class','timebrush');
+        }
 
         timeLegend.selectAll(".timeLegendLine").data(listX)
             .enter().append("line")
-            .attr("class", "timeLegendLine")
+            .attr("class", "timeLegendLine notselectable")
             .style("stroke", "000")
             .style("stroke-dasharray", "1, 2")
             .style("stroke-opacity", 1)
@@ -1343,7 +1345,7 @@ d3.TimeArc = function () {
             .attr("y2", function(d){ return graphicopt.heightG(); });
         timeLegend.selectAll(".timeLegendText").data(listX)
             .enter().append("text")
-            .attr("class", "timeLegendText")
+            .attr("class", "timeLegendText notselectable")
             .style("fill", "#000000")
             .style("text-anchor","start")
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
@@ -1410,11 +1412,11 @@ d3.TimeArc = function () {
     }
 
     function drawTimeBox(){
-
-        timeLegend.append("rect")
+        const timeLegendbox = timeLegend.select('g.timebrush');
+        timeLegendbox.append("rect")
             .attr("class", "timeBox")
-            .style("fill", "#aaa")
-            .style("fill-opacity", 0.2)
+            // .style("fill", "#aaa")
+            // .style("fill-opacity", 0.2)
             .attr("x", xStep)
             // .attr("y", graphicopt.heightG()-25)
             .attr("width", XGAP_* listX.length)

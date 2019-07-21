@@ -16,3 +16,22 @@
 #lensingbtn:hover {
     background-color: #fc8;
 }
+
+.light .tablediv{
+    padding: 10px;
+    background-color: #dddd;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
+.timeBox {
+    fill: #dddd;
+}
+
+.notselectable {
+    pointer-events: none;
+}
+
+.light table.dataTable tbody tr
+{
+    background-color: rgba(255, 255, 255,1);
+}
