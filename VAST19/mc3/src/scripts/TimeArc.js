@@ -193,7 +193,7 @@ d3.TimeArc = function () {
         arr.forEach(function (d) {
             // Process date
             d.date = new Date(d["time"]);
-            var m = Math.floor(timeScaleIndex(runopt.timeformat(d.date)));
+            var m = Math.ceil(timeScaleIndex(runopt.timeformat(d.date)));
             d.__timestep__ = m;
             d.__terms__ = {};
             for (let c in d.category) {
@@ -853,21 +853,25 @@ d3.TimeArc = function () {
             svg.selectAll(".linkArc")
                 .style("stroke-opacity", function (l) {
                     let name;
-                    if ((name=l.target.name,l.source.name == d.name) || (name=l.source.name,l.target.name == d.name)) {
+                    if (l.source.name === d.name)
+                        name=l.target.name;
+                    else if (l.target.name === d.name)
+                        name=l.source.name;
+                    if (name) {
                         if (!list[name]) {
                             list[name] = new Object();
-                            list[name].count = 1;
-                            list[name].year = l.__timestep__;
-                            list[name].linkcount = l.count;
+                            // list[name].count = 1;
+                            // list[name].year = l.__timestep__;
+                            // list[name].linkcount = l.count;
                             d.messagearr =_.unique(_.flatten([ d.messagearr,l.message]));
                         }
                         else {
                             list[name].count++;
-                            if (l.count > list[name].linkcount) {
-                                list[name].linkcount = l.count;
-                                list[name].year = l.__timestep__;
+                            // if (l.count > list[name].count) {
+                            //     list[name].linkcount = l.count;
+                            //     list[name].year = l.__timestep__;
                                 d.messagearr =_.unique(_.flatten( [d.messagearr,l.message]));
-                            }
+                            // }
                         }
                         return 1;
                     }

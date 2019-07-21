@@ -19,7 +19,7 @@ var termsList = {
         'Oak Willow',
         'East Parton',
         'West Parton'],
-
+    'Safe Town': ['Always Safe Power'],
     "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
@@ -45,7 +45,7 @@ var collections = {
     'location_post': ['location_in_message'],
     'location_in_message': ['location_in_message'],
     'event': ['earthquake','grounds','flooding','fire'],
-    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food']
+    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food'],
 }
 
 let catergogryObject = {
@@ -165,6 +165,6 @@ function spamremove (data){
 
 function removeNonecategory (data){
     return new Promise((resolve, reject) => {
-        resolve( data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location_post','user'),function(old,k){return old||d.category[k]})));
+        resolve( data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(old,k){return old||d.category[k]})));
     });
 }

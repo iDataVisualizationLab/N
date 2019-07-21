@@ -320,7 +320,7 @@ function init() {
                 },0);
             });
         });
-        return Promise.all(queueProcess).then(spamremove).then(data=>data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location_post','user'),function(old,k){return old||d.category[k]})));
+        return Promise.all(queueProcess).then(spamremove).then(removeNonecategory);
     })
         .then ((d)=>{
         dataRaw = d;
