@@ -339,110 +339,71 @@
                 </div>
             </div>
         </div>
-        <!--<div id="header2" class="row s12 marginBottom0">-->
-            <!--&lt;!&ndash;<h1>HPCC Explorer</h1>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="col valign-wrapper">&ndash;&gt;-->
-                <!--&lt;!&ndash;<h6 id="currentData"> Unemployment Rate </h6>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="controls">&ndash;&gt;-->
-                <!--&lt;!&ndash;<div id="controlHolder"  class="controlHolder valign-wrapper">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class = "rangecustomOut">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="range-field rangecustom col s12">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<input type="range" id="timespan" min="1" max="80" class = "active"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;&lt;!&ndash;<ul class="range-labels">&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<li class="active selected"><span>Today</span></li>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
 
-                        <!--&lt;!&ndash;&lt;!&ndash;</ul>&ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;&lt;!&ndash;<button onclick="realTimeRequest()" value = false class ="menuBtn record"><i class="fas fa-record pauseicon"></i>Offline</button>&ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;<button onclick="pauseRequest()" value = false class ="waves-effect waves-light btn btn-floating pause"><i class="material-icons">pause</i></button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<button onclick="resetRequest()" class ="waves-effect waves-light btn btn-floating rotatehover  red darken-4 "><i class="material-icons">refresh</i></button>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <div class = 'row' style="margin-bottom: 0;"></div>
+        <div class = 'row'>
+            <div class = 'col s3' style="margin-bottom: 0;">
 
-
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--<div class="controls">-->
-                <!--<div id="controlHolder"  class="controlHolder valign-wrapper">-->
-                    <!--<button onclick="pauseRequest()" value = false class ="waves-effect waves-light btn btn-floating pause"><i class="material-icons">pause</i></button>-->
-                    <!--<button onclick="resetRequest()" class ="waves-effect waves-light btn btn-floating rotatehover  red darken-4 "><i class="material-icons">refresh</i></button>-->
+                <!--<div class = 'row s12'>-->
+                    <!--<label>-->
+                        <!--Number of messages:-->
+                    <!--</label>-->
+                    <!--<p class="range-field">-->
+                        <!--<input type="range" id="test5" min="0" max="100" />-->
+                    <!--</p>-->
                 <!--</div>-->
+                <div class = 'row s12'>
+                    <div id="map" class="col s3">
+                        <svg width = 100 height = 70 style="position: absolute">
+                            <g class="legendGroup"></g>
+                        </svg>
+                        <svg viewBox="0 0 550 450" width="100%" height="100%" class="map_main">
+                            <defs>
+                                <marker id='head' orient='auto' markerWidth='2' markerHeight='4'
+                                        refX='0.1' refY='2'>
+                                    <path d='M0,0 V4 L2,2 Z' fill='black' />
+                                </marker>
+                            </defs>
+                            <!--<div id="mapLegend">-->
+                            <!--</div>-->
 
-            <!--</div>-->
-            <!--<div id="legendHolder"  class="legendHolder">-->
-            <!--</div>-->
-
-            <!--<div style="clear:both;"></div>-->
-        <!--</div>-->
-        <div class="col s9 overflowAuto marginBottom0 offset-s3" style="margin-bottom: 0px;">
-            <div class="col s12 m12" style="padding: 0;">
-                <div class="col s12 m12">
-                    <div class="card-image center-align relative" id="tSNE">
-                        <div class = 'row s12 valign-wrapper' style="margin-bottom: 0;">
+                            <g id="regMap"></g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 overflowAuto marginBottom0" style="margin-bottom: 0px;">
+                <div class="col s12 m12" style="padding: 0;">
+                    <div class="col s12 m12">
+                        <div class="card-image center-align relative" id="tSNE">
+                            <div class = 'row s12 valign-wrapper' style="margin-bottom: 0;">
                                 <div class="input-field col" style="margin: 5px 20px;">
                                     <input type="text"  id="search" class="autocomplete inputHolder" placeholder="Search">
                                 </div>
                                 <button class="col" type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
 
                                 <progress class="col" value="0" max="100" id="progBar">
-                                <span id="downloadProgress">
-                                    <!-- Your fallback goes here -->
-                                </span>
+                                        <span id="downloadProgress">
+                                            <!-- Your fallback goes here -->
+                                        </span>
                                 </progress>
                                 <label id="progUpdate">
                                     <!-- Success Message -->
                                 </label>
-
+                            </div>
+                            <svg id="RadarMapcontent" class="active"></svg>
                         </div>
-                        <svg id="RadarMapcontent" class="active"></svg>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="map" class="col s3 m3 l3 xl3">
-            <svg width = 100 height = 70 style="position: absolute">
-                <g class="legendGroup"></g>
-            </svg>
-            <svg viewBox="0 0 550 450" width="100%" height="100%" class="map_main">
-                <defs>
-                    <marker id='head' orient='auto' markerWidth='2' markerHeight='4'
-                            refX='0.1' refY='2'>
-                        <path d='M0,0 V4 L2,2 Z' fill='black' />
-                    </marker>
-                </defs>
-                <!--<div id="mapLegend">-->
-                <!--</div>-->
-
-                <g id="regMap"></g>
-            </svg>
-        </div>
-        <div class="col s12 overflowAuto marginBottom0 tablediv" >
+        <div class="row s12 overflowAuto marginBottom0 tablediv" >
             <!--<div class="row s12 m12">-->
                <!--<svg id="minichart"></svg>-->
             <!--</div>-->
             <div class="col s12" id = 'messages_table'>
             </div>
         </div>
-
-        <!--<div id="controlPanel" class="card">-->
-            <!--<div id="colorLegend">-->
-
-            <!--</div>-->
-            <!--<div id="selectMobile">-->
-
-                <!--<input type="checkbox" name="mobileSelect" id="allMobile" onclick=selectAllMobile()>Select all mobile sensors-->
-            <!--</div>-->
-            <!--<div id="selectStatic">-->
-                <!--<input type="checkbox" name="staticSelect" id="allStatic" onclick=selectAllStatic()>Select all static sensors-->
-            <!--</div>-->
-            <!--<div id="selectAll">-->
-                <!--<input type="checkbox" name="allSelect" id="allSensor" onclick=selectAll()>Select all sensors-->
-            <!--</div>-->
-            <!--<div >-->
-                <!--<input type="button" id="clearAll" value="Clear chart" onclick="clearAll()"/>-->
-            <!--</div>-->
-
-        <!--</div>-->
 
     </div>
     <!--<div id="tablelist" class= "row mainContain">-->

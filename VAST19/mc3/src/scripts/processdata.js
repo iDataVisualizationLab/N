@@ -19,8 +19,8 @@ var termsList = {
         'Oak Willow',
         'East Parton',
         'West Parton'],
-
-    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste", "water"],
+    'Safe Town': ['Always Safe Power'],
+    "sewer_and_water": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -29,6 +29,7 @@ var termsList = {
     "medical": ["medical", "red cross", "emergency", "urgent", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
 
     "food": ["food"],
+    "water": ["water","thirst"],
 
     "shelter": ["collapse", "housing", "house","shelter","building","construction"],
 
@@ -45,7 +46,7 @@ var collections = {
     'location_post': ['location_in_message'],
     'location_in_message': ['location_in_message'],
     'event': ['earthquake','grounds','flooding','fire'],
-    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food']
+    'resource': ['sewer_and_water','power/energy','roads_and_bridges','medical','shelter','food'],
 }
 
 let catergogryObject = {
@@ -140,9 +141,16 @@ function extractWords (key,terms,data) {
 function markWord (message,keys){
     keys.forEach(maink=>{
         if (termsList[maink.text])
-            termsList[maink.text].forEach(k=>message = message.replace(new RegExp(' '+k+'|^'+k,'gi'),generatemark(maink,maink.text)));
-        else
-            message = message.replace(new RegExp(maink.text,'gi'),generatemark(maink));
+            termsList[maink.text].forEach(k=>{
+                const reg = new RegExp(' '+k+'|^'+k,'gi');
+                if(reg.test(message))
+                    message = message.replace(reg,generatemark(maink,maink.text))
+            });
+        else {
+            const reg = new RegExp(' '+maink.text+'|^'+maink.text,'gi');
+            if(reg.test(message))
+                message = message.replace(reg, generatemark(maink));
+        }
     });
     return message;
 }
@@ -165,6 +173,6 @@ function spamremove (data){
 
 function removeNonecategory (data){
     return new Promise((resolve, reject) => {
-        resolve( data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location_post','user'),function(old,k){return old||d.category[k]})));
+        resolve( data.filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
     });
 }

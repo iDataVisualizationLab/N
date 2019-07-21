@@ -320,7 +320,7 @@ function init() {
                 },0);
             });
         });
-        return Promise.all(queueProcess).then(spamremove).then(data=>data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location_post','user'),function(old,k){return old||d.category[k]})));
+        return Promise.all(queueProcess).then(spamremove).then(removeNonecategory);
     })
         .then ((d)=>{
         dataRaw = d;
@@ -429,6 +429,7 @@ function initTime (max){
 function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
+    RadarMapopt.margin.left = width*3/12;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
