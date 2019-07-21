@@ -140,9 +140,16 @@ function extractWords (key,terms,data) {
 function markWord (message,keys){
     keys.forEach(maink=>{
         if (termsList[maink.text])
-            termsList[maink.text].forEach(k=>message = message.replace(new RegExp(' '+k+'|^'+k,'gi'),generatemark(maink,maink.text)));
-        else
-            message = message.replace(new RegExp(maink.text,'gi'),generatemark(maink));
+            termsList[maink.text].forEach(k=>{
+                const reg = new RegExp(' '+k+'|^'+k,'gi');
+                if(reg.test(message))
+                    message = message.replace(reg,generatemark(maink,maink.text))
+            });
+        else {
+            const reg = new RegExp(' '+maink.text+'|^'+maink.text,'gi');
+            if(reg.test(message))
+                message = message.replace(reg, generatemark(maink));
+        }
     });
     return message;
 }
@@ -165,6 +172,6 @@ function spamremove (data){
 
 function removeNonecategory (data){
     return new Promise((resolve, reject) => {
-        resolve( data.filter(d=>_.reduce(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(old,k){return old||d.category[k]})));
+        resolve( data.filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
     });
 }
