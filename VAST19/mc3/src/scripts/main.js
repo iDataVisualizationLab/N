@@ -431,7 +431,7 @@ function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
  RadarMapopt.margin.left = Math.min(width*3/12,380);
- RadarMapopt.min_height = 200+$('#map')[0].getBoundingClientRect().height;
+ RadarMapopt.min_height = 100+$('#map')[0].getBoundingClientRect().height;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
