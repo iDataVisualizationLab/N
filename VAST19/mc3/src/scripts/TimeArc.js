@@ -1008,6 +1008,7 @@ d3.TimeArc = function () {
         if(searchTerm==='')
             valueSlider = 15;
         slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
+        svg.select('.sliderText').text(`Mentioned more than ${Math.round(valueSlider)} messages together`);
         recompute();
     }
 
@@ -1682,7 +1683,7 @@ d3.TimeArc = function () {
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
-            .text(`Mentioned more than ${valueSlider} messages together`)
+            .text(`Mentioned more than ${Math.round(valueSlider)} messages together`)
             .style("text-anchor","start");
 
         slider = grang.append("g")
@@ -1719,7 +1720,7 @@ d3.TimeArc = function () {
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
             handle.attr("cx", xScaleSlider(valueSlider));
-            svg.select('.sliderText').text(`Mentioned more than ${valueSlider} messages together`)
+            svg.select('.sliderText').text(`Mentioned more than ${Math.round(valueSlider)} messages together`)
             d3.select(this).call(d3.event.target.move, [0,valueSlider].map(xScaleSlider));
         }
     }

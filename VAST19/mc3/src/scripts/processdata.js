@@ -167,7 +167,7 @@ function markWord (message,keys){
                     message = message.replace(reg,generatemark(maink,maink.text))
             });
         else {
-            const reg = new RegExp(' '+maink.text+'|^'+maink.text,'gi');
+            const reg = new RegExp(' '+maink.text+'|^'+maink.text+'|@'+maink.text,'gi');
             if(reg.test(message))
                 message = message.replace(reg, generatemark(maink));
         }

@@ -35,7 +35,6 @@ function updateTable (data,list){
         rows.append('td').attr('class', 'text').style('max-width','200px').html(d => d.location);
         rows.append('td').attr('class', 'text').html(d => d.account);
         rows.append('td').attr('class', 'text').html(d => d.message);
-    console.log(list)
       let table_object = $(table.node()).DataTable({
                 "order": [[0, "asc"]],
           "pageLength": 100,
@@ -47,6 +46,8 @@ function updateTable (data,list){
               {"render": function ( data, type, row ) {
                       return markWord(data,list.filter(f=>f.group==='user'));}, "targets": 2},
               {"render": function ( data, type, row ) {
+                      console.log(data)
+                      console.log(list.filter(l=>l.group!=='location (of the message)'))
                       return markWord(data,list.filter(l=>l.group!=='location (of the message)'));}, "targets": 3}
           ]
             });
