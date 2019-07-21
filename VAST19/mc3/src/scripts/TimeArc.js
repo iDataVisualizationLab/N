@@ -1008,7 +1008,7 @@ d3.TimeArc = function () {
         if(searchTerm==='')
             valueSlider = 15;
         slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
-        svg.select('.sliderText').text(`Mentioned more than ${Math.round(valueSlider)} messages together`);
+        svg.select('.sliderText').html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
         recompute();
     }
 
@@ -1352,9 +1352,9 @@ d3.TimeArc = function () {
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
-                    return 7;
+                    return 9;
                 else
-                    return 15;
+                    return 17;
             })
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
@@ -1420,7 +1420,7 @@ d3.TimeArc = function () {
             .attr("x", xStep)
             // .attr("y", graphicopt.heightG()-25)
             .attr("width", XGAP_* listX.length)
-            .attr("height", 20)
+            .attr("height", 25)
             .on("mouseout", function(){
                 isLensing = false;
                 coordinate = d3.mouse(this);
@@ -1677,16 +1677,24 @@ d3.TimeArc = function () {
             .select(".domain")
             .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "halo");
-
         grang.append("text")
-            .attr("class", "sliderText")
+            .attr("class", "sliderlabel")
             // .attr("x", xSlider)
             .attr("y", -12)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
             .attr("font-size", "10px")
-            .text(`Mentioned more than ${Math.round(valueSlider)} messages together`)
+            .text('Filter links:')
             .style("text-anchor","start");
+        grang.append("text")
+            .attr("class", "sliderText")
+            // .attr("x", xSlider)
+            .attr("y", 24)
+            .attr("dy", ".21em")
+            // .attr("font-family", "sans-serif")
+            .attr("font-size", "10px")
+            .style("text-anchor","start")
+            .html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
 
         slider = grang.append("g")
             .attr("class", "slider")
@@ -1722,7 +1730,7 @@ d3.TimeArc = function () {
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
             handle.attr("cx", xScaleSlider(valueSlider));
-            svg.select('.sliderText').text(`Mentioned more than ${Math.round(valueSlider)} messages together`)
+            svg.select('.sliderText').html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
             d3.select(this).call(d3.event.target.move, [0,valueSlider].map(xScaleSlider));
         }
     }
