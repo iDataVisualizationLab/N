@@ -1015,7 +1015,7 @@ d3.TimeArc = function () {
                 .style("stroke-opacity", 0.5);
             svg.selectAll(".linkArc")
                 .style("stroke-opacity", 0.1);
-            d.messagearr = data2.filter(m=>m.__terms__[d.name]);
+            d.messagearr = data.filter(m=>m.__terms__[d.name]);
             mouseover_dispath([d,[{color:colorCatergory(d.group), text:d.name, group:d.group}]]);
             // console.log(termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}}))
             // mouseover_dispath([d,termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}})]);
@@ -1220,11 +1220,11 @@ d3.TimeArc = function () {
         else {
             var step = Math.min((maxheight - 25) / (numNode + 1), 20);
             if (termArray.length>10)
-                graphicopt.height = termArray.length*step+12 +graphicopt.margin.top+graphicopt.margin.bottom;
+                graphicopt.height = termArray.length*step+20 +graphicopt.margin.top+graphicopt.margin.bottom;
             else {
-                graphicopt.height = 10 * step + 12 + graphicopt.margin.top + graphicopt.margin.bottom;
+                graphicopt.height = 10 * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
                 if  (termArray.length)
-                    step = (step*10-12)/termArray.length;
+                    step = (step*10-20)/termArray.length;
             }
             if (graphicopt.min_height){
                 graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
@@ -1235,7 +1235,7 @@ d3.TimeArc = function () {
         //var totalH = termArray.length*step;
         offsetYStream = step;
         for (var i = 0; i < termArray.length; i++) {
-            nodes[termArray[i].nodeId].y = offsetYStream+12 + i * step;
+            nodes[termArray[i].nodeId].y = offsetYStream+20 + i * step;
         }
         force.alpha(0);
         force.stop();
@@ -1518,9 +1518,10 @@ d3.TimeArc = function () {
             });
 
         let streamlegendg = svg.select('g.streamlegendg');
-        if (streamlegendg.empty())
-            streamlegendg = svg.append('g').attr('class','streamlegendg').attr('transform',`translate(${xoffset},${yoffset})`);
-        streamlegendg.append('text').text('Stream height (by # messages):')
+        if (streamlegendg.empty()) {
+            streamlegendg = svg.append('g').attr('class', 'streamlegendg').attr('transform', `translate(${xoffset},${yoffset})`);
+            streamlegendg.append('text').text('Stream height (by # messages):')
+        }
         let streampath = streamlegendg.select('path.pathlegend');
         if (streampath.empty())
             streampath = streamlegendg.append('path')
@@ -1528,7 +1529,7 @@ d3.TimeArc = function () {
         let subscale = d3.scaleLinear().domain([0,ticknum/2]).range(yScale.domain());
         let streamdata = [{x:0,y:0}];
 
-        d3.range(1,ticknum*4+2).forEach(d=>streamdata.push(d%4===0?{x:d/(ticknum*4),y:subscale(Math.ceil(d/4)),tick:true}:{x:d/(ticknum*4),y:subscale(Math.random()*1.5)}));
+        d3.range(1,ticknum*4+2).forEach(d=>streamdata.push(d%4===0?{x:d/(ticknum*4),y:subscale(Math.ceil(d/4)+1),tick:true}:{x:d/(ticknum*4),y:subscale(Math.random()*1.5)}));
 
         streamdata.push({x:1,y:0});
         streampath.datum(streamdata).attr('d',area_min).style('fill','#ddd');
@@ -1825,6 +1826,7 @@ d3.TimeArc = function () {
         if (!d3.event.sourceEvent) return;
         //console.log("Slider brushed ************** valueSlider="+valueSlider);
         if (d3.event.sourceEvent) { // not a programmatic event
+            if (d3.event.selection===null) return;
             if (xScaleSlider.invert(d3.event.selection[1])===valueSlider && xScaleSlider.invert(d3.event.selection[0])===0) return;
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
