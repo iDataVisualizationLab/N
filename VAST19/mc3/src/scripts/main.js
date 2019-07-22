@@ -691,7 +691,7 @@ function onmouseleaveRadar (d) {
     //     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
     // d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);
-    tool_tip.hide();
+    // tool_tip.hide();
 }
 
 function lineGraph(div,data,options){
