@@ -1312,7 +1312,10 @@ d3.TimeArc = function () {
         // var y3 = 48;
         // var y4 = 62;
         var rr = 6;
-        let yscale = d3.scaleLinear().range([20,37]);
+        let yscale = d3.scaleLinear().range([33,50]);
+        svg.append('text').text('Color legend: ').attrs({
+            y: 20
+        });
         let legendg = svg.selectAll('g.nodeLegend')
             .data(catergogryList)
             .enter()
@@ -1384,7 +1387,7 @@ d3.TimeArc = function () {
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
-                    return 9;
+                    return 12;
                 else
                     return 17;
             })

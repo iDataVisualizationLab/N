@@ -6,7 +6,7 @@
     --fontSmaller: 12px;
 }
 #messages_table table.dataTable td{
-    line-height: 1.1rem;
+    line-height: 1.25rem;
 }
 
 #messages_table label select {
