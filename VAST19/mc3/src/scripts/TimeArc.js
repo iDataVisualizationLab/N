@@ -1312,7 +1312,7 @@ d3.TimeArc = function () {
         // var y3 = 48;
         // var y4 = 62;
         var rr = 6;
-        let yscale = d3.scaleLinear().range([20,34]);
+        let yscale = d3.scaleLinear().range([20,37]);
         let legendg = svg.selectAll('g.nodeLegend')
             .data(catergogryList)
             .enter()
@@ -1508,10 +1508,10 @@ d3.TimeArc = function () {
                 return xScale(d.x);
             })
             .y0(function (d) {
-                return 10 - yScale(d.y);
+                return yStreamoffset - yScale(d.y);
             })
             .y1(function (d) {
-                return 10 + yScale(d.y);
+                return yStreamoffset + yScale(d.y);
             });
 
         let streamlegendg = svg.select('g.streamlegendg');
@@ -1771,7 +1771,7 @@ d3.TimeArc = function () {
         axisl.select(".domain")
             .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "halo");
-        axisl.select('text')
+        axisl.selectAll('.tick text')
             .attr('dy','0.8em');
         grang.append("text")
             .attr("class", "sliderlabel")

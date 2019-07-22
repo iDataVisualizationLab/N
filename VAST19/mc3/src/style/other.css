@@ -179,13 +179,13 @@ table.dataTable  td{
 #map{
     margin-left: unset;
     /*width: fit-content;*/
-    padding: 20px;
+    padding: 10px;
     z-index: 2;
     position: absolute;
     /*top: 0;*/
     left:0;
-    top:200px;
-    max-width: 400px;
+    top:250px;
+    max-width: 420px;
     /*position: relative;*/
 }
 
