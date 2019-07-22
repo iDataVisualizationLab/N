@@ -1,7 +1,10 @@
 /*#messages_table .dataTable th:not(:first-child) {*/
     /*width: unset !important;*/
 /*}*/
-
+:root {
+    --fontBigger: 14px;
+    --fontSmaller: 12px;
+}
 #messages_table table.dataTable td{
     line-height: 1.5rem;
 }
@@ -37,4 +40,19 @@
 }
 text tspan {
     font-weight: 900
+}
+
+.SearchTerm {
+    font-weight: bold;
+    font-size: var(--fontBigger);
+}
+.fontBigger {
+    font-size: var(--fontBigger);
+}
+.tick {
+    font-size: var(--fontSmaller);
+}
+
+.fontSmaller {
+    font-size: var(--fontSmaller);
 }

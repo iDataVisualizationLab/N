@@ -835,19 +835,17 @@ d3.TimeArc = function () {
 
         svg.selectAll(".nodeText").remove();
         nodeG.append("text")
-            .attr("class", ".nodeText")
+            .attr("class", "nodeText")
             .attr("dy", ".35em")
             .style("fill", "#000000")
             .style("text-anchor", "end")
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
-            .style("font-weight", function (d) {
-                return d.isSearchTerm ? "bold" : "";
-            })
+            .classed("SearchTerm", d=> d.isSearchTerm)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            .attr("font-size", function (d) {
-                return d.isSearchTerm ? "12px" : "11px";
-            })
+            // .attr("font-size", function (d) {
+            //     return d.isSearchTerm ? "12px" : "11px";
+            // })
             .text(function (d) {
                 return d.name
             });
@@ -1334,7 +1332,7 @@ d3.TimeArc = function () {
             .attr("y", 0)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            .attr("font-size", "11px")
+            // .attr("font-size", "11px")
             .style("text-anchor", "left")
             .style("fill",d=>colorCatergory(d.key))
             .text(d=>d.key);
@@ -1379,7 +1377,7 @@ d3.TimeArc = function () {
             .attr("y2", function(d){ return graphicopt.heightG(); });
         timeLegend.selectAll(".timeLegendText").data(listX)
             .enter().append("text")
-            .attr("class", "timeLegendText notselectable")
+            .attr("class", "timeLegendText notselectable fontBigger")
             .style("fill", "#000000")
             .style("text-anchor","start")
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
@@ -1392,7 +1390,7 @@ d3.TimeArc = function () {
             })
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            .attr("font-size", "12px")
+            // .attr("font-size", "12px")
             .text(function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return multiFormat(d.year);
@@ -1498,10 +1496,11 @@ d3.TimeArc = function () {
     }
 
     function drawStreamLegend () {
-        let yoffset = ySlider+55;
+        let yoffset = ySlider+60;
+        let yStreamoffset = 20;
         let xoffset = xSlider;
         let ticknum = 3;
-        let xScale = d3.scaleLinear().domain([0,1]).range([0,150]);
+        let xScale = d3.scaleLinear().domain([0,1]).range([0,widthSlider]);
         console.log("drawStreamLegend");
         var area_min = d3.area()
             .curve(d3.curveCardinalOpen)
@@ -1518,7 +1517,7 @@ d3.TimeArc = function () {
         let streamlegendg = svg.select('g.streamlegendg');
         if (streamlegendg.empty())
             streamlegendg = svg.append('g').attr('class','streamlegendg').attr('transform',`translate(${xoffset},${yoffset})`);
-        streamlegendg.append('text').text('Stream height reference:').style('font-size','10px')
+        streamlegendg.append('text').text('Stream height (by # messages):')
         let streampath = streamlegendg.select('path.pathlegend');
         if (streampath.empty())
             streampath = streamlegendg.append('path')
@@ -1539,9 +1538,9 @@ d3.TimeArc = function () {
             "marker-start":"url(#arrowHeadstart)",
             "marker-end":"url(#arrowHeadend)",
             "x1":d=>xScale(d.x),
-            "y1":d=>10 - yScale(d.y)+2,
+            "y1":d=>yStreamoffset - yScale(d.y)+2,
             "x2":d=>xScale(d.x),
-            "y2":d=>10 +yScale(d.y)-2
+            "y2":d=>yStreamoffset +yScale(d.y)-2
         }).styles({
             'stroke-width':1,
             'stroke': '#000'
@@ -1553,10 +1552,10 @@ d3.TimeArc = function () {
             .attrs({
                 "text-anchor":'start',
                 "x":d=>xScale(d.x),
-                "y":d=>10 +yScale(0),
+                "y":d=>yStreamoffset +yScale(0),
                 "dy":'0.25rem',
                 "dx":'2px',
-            }).text(d=>d.y).style('font-size','10px');
+            }).text(d=>d.y);
     }
     var buttonLensingWidth =80;
     var buttonheight =15;
@@ -1740,16 +1739,17 @@ d3.TimeArc = function () {
     var handle;
     var xScaleSlider;
     var xSlider = 180;
+    var widthSlider = 180;
     var ySlider = 30;
     var valueSlider = 10;
     var valueMax = 15;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()
             .domain([0, valueMax])
-            .range([0, 120]);
+            .range([0, widthSlider]);
 
         brush = d3.brushX(xScaleSlider)
-            .extent([[0,-5],[120, 5]])
+            .extent([[0,-5],[widthSlider, 5]])
             .on("brush", brushed)
             .on("end", brushend);
 
@@ -1757,36 +1757,38 @@ d3.TimeArc = function () {
             .attr('class','slider_range')
             .attr('transform',"translate("+xSlider+"," + ySlider + ")")
 
-        grang.append("g")
-            .attr("class", "x axis")
+        const axisl = grang.append("g")
+            .attr("class", "x axis fontSmaller")
             // .attr("transform", "translate(0," + ySlider + ")")
             // .attr("font-family", "sans-serif")
-            .attr("font-size", "10px")
+            // .attr("font-size", "10px")
             .call(d3.axisBottom()
                 .scale(xScaleSlider)
-                .ticks(5)
+                .ticks(4)
                 .tickFormat(function(d) { return d; })
                 .tickSize(0)
-                .tickPadding(5))
-            .select(".domain")
+                .tickPadding(5));
+        axisl.select(".domain")
             .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "halo");
+        axisl.select('text')
+            .attr('dy','0.8em');
         grang.append("text")
             .attr("class", "sliderlabel")
             // .attr("x", xSlider)
-            .attr("y", -12)
+            .attr("y", -14)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            .attr("font-size", "10px")
+            // .attr("font-size", "10px")
             .text('Filter links:')
             .style("text-anchor","start");
         grang.append("text")
-            .attr("class", "sliderText")
+            .attr("class", "sliderText fontSmaller")
             // .attr("x", xSlider)
-            .attr("y", 24)
+            .attr("y", 26)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            .attr("font-size", "10px")
+            // .attr("font-size", "10px")
             .style("text-anchor","start")
             .html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
 
