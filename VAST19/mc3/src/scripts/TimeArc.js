@@ -1498,7 +1498,7 @@ d3.TimeArc = function () {
     }
 
     function drawStreamLegend () {
-        let yoffset = ySlider+60;
+        let yoffset = ySlider+55;
         let xoffset = xSlider;
         let ticknum = 3;
         let xScale = d3.scaleLinear().domain([0,1]).range([0,150]);
@@ -1509,15 +1509,16 @@ d3.TimeArc = function () {
                 return xScale(d.x);
             })
             .y0(function (d) {
-                return 0 - yScale(d.y);
+                return 10 - yScale(d.y);
             })
             .y1(function (d) {
-                return 0 + yScale(d.y);
+                return 10 + yScale(d.y);
             });
 
         let streamlegendg = svg.select('g.streamlegendg');
         if (streamlegendg.empty())
             streamlegendg = svg.append('g').attr('class','streamlegendg').attr('transform',`translate(${xoffset},${yoffset})`);
+        streamlegendg.append('text').text('Stream height reference:').style('font-size','10px')
         let streampath = streamlegendg.select('path.pathlegend');
         if (streampath.empty())
             streampath = streamlegendg.append('path')
@@ -1538,9 +1539,9 @@ d3.TimeArc = function () {
             "marker-start":"url(#arrowHeadstart)",
             "marker-end":"url(#arrowHeadend)",
             "x1":d=>xScale(d.x),
-            "y1":d=>0 - yScale(d.y)+2,
+            "y1":d=>10 - yScale(d.y)+2,
             "x2":d=>xScale(d.x),
-            "y2":d=>0 +yScale(d.y)-2
+            "y2":d=>10 +yScale(d.y)-2
         }).styles({
             'stroke-width':1,
             'stroke': '#000'
@@ -1552,7 +1553,7 @@ d3.TimeArc = function () {
             .attrs({
                 "text-anchor":'start',
                 "x":d=>xScale(d.x),
-                "y":d=>0 +yScale(0),
+                "y":d=>10 +yScale(0),
                 "dy":'0.25rem',
                 "dx":'2px',
             }).text(d=>d.y).style('font-size','10px');
