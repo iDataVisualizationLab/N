@@ -135,7 +135,7 @@ input[type=text].inputHolder:focus,  input[type=search]:focus{
 }
 
 table.dataTable {
-    font-size: 12px;
+    font-size: var(--fontNormal);
 }
 table.dataTable thead {
     background-color: var(--colorMain2_light);
