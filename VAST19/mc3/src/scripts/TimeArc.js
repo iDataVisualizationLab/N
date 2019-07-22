@@ -138,6 +138,34 @@ d3.TimeArc = function () {
             // overflow: "visible",
 
         });
+        let defs = svg.append("defs");
+
+        defs.append("marker")
+            .attrs({
+                "id":"arrowHeadend",
+                "viewBox":"0 -5 10 10",
+                "refX":5,
+                "refY":0,
+                "markerWidth":4,
+                "markerHeight":4,
+                "orient":"auto"
+            })
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("class","arrowHead");
+        defs.append("marker")
+            .attrs({
+                "id":"arrowHeadstart",
+                "viewBox":"0 -5 10 10",
+                "refX":5,
+                "refY":0,
+                "markerWidth":4,
+                "markerHeight":4,
+                "orient":"auto"
+            })
+            .append("path")
+            .attr("d", "M10,-5L0,0L10,5")
+            .attr("class","arrowHead");
         xStep = graphicopt.margin.left;
         maxheight  = graphicopt.heightG();
 //******************* Forced-directed layout
@@ -762,6 +790,8 @@ d3.TimeArc = function () {
         // linkScale = d3.scaleLinear()
         //     .range([0.5, 2])
         //     .domain([Math.round(valueSlider) - 0.4, Math.max(relationshipMaxMax2, 10)]);
+
+        // FIXME : need to turn this into dynamic
         linkScale = d3.scaleLinear()
             .range([0.1, 1.5])
             .domain([1,15]);
@@ -1211,8 +1241,8 @@ d3.TimeArc = function () {
         }
         force.alpha(0);
         force.stop();
-
         updateTransition(1000);
+        drawStreamLegend();
     }
 
     timeArc.searchNode = searchNode;
@@ -1391,7 +1421,6 @@ d3.TimeArc = function () {
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul) {
-                        console.log(i);
                         return 1;
                     }
                     else
@@ -1469,7 +1498,64 @@ d3.TimeArc = function () {
     }
 
     function drawStreamLegend () {
+        let yoffset = ySlider+60;
+        let xoffset = xSlider;
+        let ticknum = 3;
+        let xScale = d3.scaleLinear().domain([0,1]).range([0,150]);
         console.log("drawStreamLegend");
+        var area_min = d3.area()
+            .curve(d3.curveCardinalOpen)
+            .x(function (d,i) {
+                return xScale(d.x);
+            })
+            .y0(function (d) {
+                return 0 - yScale(d.y);
+            })
+            .y1(function (d) {
+                return 0 + yScale(d.y);
+            });
+
+        let streamlegendg = svg.select('g.streamlegendg');
+        if (streamlegendg.empty())
+            streamlegendg = svg.append('g').attr('class','streamlegendg').attr('transform',`translate(${xoffset},${yoffset})`);
+        let streampath = streamlegendg.select('path.pathlegend');
+        if (streampath.empty())
+            streampath = streamlegendg.append('path')
+                .attr('class','pathlegend');
+        let subscale = d3.scaleLinear().domain([0,ticknum/2]).range(yScale.domain());
+        let streamdata = [{x:0,y:0}];
+
+        d3.range(1,ticknum*4+2).forEach(d=>streamdata.push(d%4===0?{x:d/(ticknum*4),y:subscale(Math.ceil(d/4)),tick:true}:{x:d/(ticknum*4),y:subscale(Math.random()*1.5)}));
+
+        streamdata.push({x:1,y:0});
+        streampath.datum(streamdata).attr('d',area_min).style('fill','#ddd');
+
+        let lineold = streamlegendg.selectAll('line.arrow').data(streamdata.filter(d=>d.tick));
+        lineold.exit().remove();
+        lineold.enter().append('line').attr('class','arrow')
+            .merge(lineold)
+            .attrs({
+            "marker-start":"url(#arrowHeadstart)",
+            "marker-end":"url(#arrowHeadend)",
+            "x1":d=>xScale(d.x),
+            "y1":d=>0 - yScale(d.y)+2,
+            "x2":d=>xScale(d.x),
+            "y2":d=>0 +yScale(d.y)-2
+        }).styles({
+            'stroke-width':1,
+            'stroke': '#000'
+        });
+        let textold =streamlegendg.selectAll('text.tick').data(streamdata.filter(d=>d.tick));
+        textold.exit().remove();
+        textold.enter().append('text').attr('class','tick')
+            .merge(textold)
+            .attrs({
+                "text-anchor":'start',
+                "x":d=>xScale(d.x),
+                "y":d=>0 +yScale(0),
+                "dy":'0.25rem',
+                "dx":'2px',
+            }).text(d=>d.y).style('font-size','10px');
     }
     var buttonLensingWidth =80;
     var buttonheight =15;

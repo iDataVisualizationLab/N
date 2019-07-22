@@ -24,7 +24,7 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                yScale: (d)=> d3.scaleLinear().domain([0,30]).range([0,5])(d)
+                yScale: d3.scaleLinear().domain([0,30]).range([0,5])
             }
         },
         top10:{

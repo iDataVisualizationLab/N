@@ -124,7 +124,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         dy: '0.25rem',
                         'text-anchor':"end",
                         'font-size' : '14px'
-                    }).text('#messages: ');
+                    }).text('# messages: ');
                 }
                 let color_gradient = maplegend.select('#legend_map');
                 color_gradient.selectAll("stop")
