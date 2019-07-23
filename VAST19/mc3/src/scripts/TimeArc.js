@@ -1314,7 +1314,8 @@ d3.TimeArc = function () {
         var rr = 6;
         let yscale = d3.scaleLinear().range([33,50]);
         svg.append('text').text('Color legend: ').attrs({
-            y: 20
+            y: 20,
+            'font-weight': 'bold'
         });
         let legendg = svg.selectAll('g.nodeLegend')
             .data(catergogryList)
