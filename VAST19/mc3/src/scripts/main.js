@@ -330,7 +330,7 @@ function init() {
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.date);
             updateProcessBar(0.8);
-        TimeArc.runopt(listopt).data(dataRaw).draw();
+        TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
             updateProcessBar(1);
         d3.select('.cover').classed('hidden',true);
     });

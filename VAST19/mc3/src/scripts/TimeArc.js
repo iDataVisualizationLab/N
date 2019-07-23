@@ -20,7 +20,8 @@ d3.TimeArc = function () {
     let runopt = {
         limitTime:[],
         time: {rate:1,unit:'Hour'},
-        timeformat: d3.timeHour.every(1)
+        timeformat: d3.timeHour.every(1),
+        stickyTerms:[]
     };
     let svg,force;
     let UnitArray = ['Minute','Hour','Day','Month','Year'];
@@ -355,7 +356,7 @@ d3.TimeArc = function () {
             if (!searchTerm || searchTerm == "") {
                 return d;
             }
-            else if (d.__terms__[searchTerm])
+            else if (d.__terms__[searchTerm]||runopt.stickyTerms.find(e=>d.__terms__[e]))
                 return d;
         });
 
@@ -1226,12 +1227,11 @@ d3.TimeArc = function () {
                 if  (termArray.length)
                     step = (step*10-20)/termArray.length;
             }
-            if (graphicopt.min_height){
-                graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
-            }
-            console.log(step);
-            svg.attr('height',graphicopt.height);
         }
+        if (graphicopt.min_height){
+            graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
+        }
+        svg.attr('height',graphicopt.height);
         //var totalH = termArray.length*step;
         offsetYStream = step;
         for (var i = 0; i < termArray.length; i++) {
@@ -1247,6 +1247,11 @@ d3.TimeArc = function () {
 
     timeArc.svg = function (_) {
         return arguments.length ? (svg = _, timeArc) : svg;
+
+    };
+
+    timeArc.stickyTerms = function (_) {
+        return arguments.length ? (runopt.stickyTerms = _, timeArc) : runopt.stickyTerms;
 
     };
     timeArc.data = function (_) {
