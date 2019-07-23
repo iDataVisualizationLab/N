@@ -1038,7 +1038,7 @@ d3.TimeArc = function () {
         searchTerm = value;
         valueSlider = 2;
         if(searchTerm==='')
-            valueSlider = 15;
+            valueSlider = 10;
         slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
         svg.select('.sliderText').html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
         recompute();
