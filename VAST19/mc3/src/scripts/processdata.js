@@ -47,7 +47,7 @@ var termsList = {
 
     "flooding": ["tsunami", "flood"],
 
-    "fire": ["fire", "smoke",'burn']
+    "fire": ["fire", "smoke",'burn','hydrant']
 };
 
 var collections = {
