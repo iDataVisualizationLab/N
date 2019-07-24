@@ -35,7 +35,7 @@ var termsList = {
 
     "medical": ["medical", "red cross", "emergency", "urgent", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
 
-    "food": ["food","hungry"],
+    "food": ["food","hungry",'eat'],
 
     "water": ["water","thirst",'drink'],
 
