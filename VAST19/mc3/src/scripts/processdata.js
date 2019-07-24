@@ -37,7 +37,7 @@ var termsList = {
 
     "food": ["food","hungry",'eat'],
 
-    "water": ["water","thirst",'drink'],
+    "water": ["water","thirst",'drink','dehydrate'],
 
     "shelter": ["collapse","shelter"],
 
