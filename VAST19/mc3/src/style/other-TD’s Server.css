@@ -1,7 +1,6 @@
 :root {
     --sideVal: 50%;
-    --colorMain2_light: #f3f3f3;
-    /*--colorMain2_light: #d8d8d8;*/
+    --colorMain2_light: #d8d8d8;
     --colorMain2: #630016;
 }
 
@@ -135,7 +134,7 @@ input[type=text].inputHolder:focus,  input[type=search]:focus{
 }
 
 table.dataTable {
-    font-size: var(--fontNormal);
+    font-size: 12px;
 }
 table.dataTable thead {
     background-color: var(--colorMain2_light);
@@ -179,14 +178,13 @@ table.dataTable  td{
 #map{
     margin-left: unset;
     /*width: fit-content;*/
-    padding: 10px;
+    padding: 20px;
     z-index: 2;
     position: absolute;
     /*top: 0;*/
     left:0;
-    top:280px;
-    min-width: 450px;
-    max-width: 700px;
+    top:200px;
+    max-width: 380px;
     /*position: relative;*/
 }
 
@@ -276,7 +274,7 @@ table.dataTable  td{
 /*}*/
 
 mark.entity {
-    padding: 2px 5px;
+    padding: 0.2em 0.6em;
     margin: 0 0.25em;
     line-height: 1;
     border-radius: 0.35em;
@@ -306,4 +304,11 @@ mark span {
 
 svg {
     float: left;
+}
+
+.light .tablediv{
+    padding: 10px;
+    background-color: #f5f5f5;
+    margin-bottom: 0px;
+    margin-top: 20px;
 }

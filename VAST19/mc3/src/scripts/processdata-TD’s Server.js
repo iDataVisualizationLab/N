@@ -18,16 +18,11 @@ var termsList = {
         'Southton',
         'Oak Willow',
         'East Parton',
-        'West Parton',
-    'Friday Bridge',
-    'Magritte Bridge',
-    '12th of July Bridge',
-    'Tranky Doo Bridge',
-    'Jade Bridge'],
+        'West Parton'],
     'user':[],
     'hashtag':[],
     'Safe Town': ['Always Safe Power'],
-    "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash"],
+    "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -35,9 +30,8 @@ var termsList = {
 
     "medical": ["medical", "red cross", "emergency", "urgent", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
 
-    "food": ["food","hungry"],
-
-    "water": ["water","thirst",'drink'],
+    "food": ["food"],
+    "water": ["water","thirst"],
 
     "shelter": ["collapse", "housing", "house","shelter","building","construction"],
 
@@ -173,7 +167,7 @@ function markWord (message,keys){
                     message = message.replace(reg,generatemark(maink,maink.text))
             });
         else {
-            const reg = new RegExp(' '+maink.text+'|^'+maink.text+'|@'+maink.text,'gi');
+            const reg = new RegExp(' '+maink.text+'|^'+maink.text,'gi');
             if(reg.test(message))
                 message = message.replace(reg, generatemark(maink));
         }

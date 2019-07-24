@@ -19,7 +19,8 @@
         </div>
 
         <h4><span>Team Members:</span></h4>
-        <span>Ngan Nguyen, iDV Lab, Texas Tech University, </span><span><a href="mailto:huyen.nguyen@ttu.edu">ngan.v.t.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
+        <span>Ngan Vuong, iDV Lab, Texas Tech University, </span><span><a href="mailto:ngan.v.t.nguyen@ttu.edu">ngan.v.t.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
+
         <span>Tommy Dang, iDV Lab, Texas Tech University, </span><span><a href="mailto:tommy.dang@ttu.edu">tommy.dang@ttu.edu</a></span>
 
         <h4>Student Team: <span style="font-weight: normal">YES</span></h4>
@@ -49,20 +50,48 @@
 
         <h4>System Overview</h4>
         <img id="overviewFig" src="images/overview_n.PNG" class="full">
-        <p class="caption"><span>Figure 1. Our visual interface: (top-left) control zone, (top) TimeArc and (bottom) message table </span></p>
-        <div>Control zone includes <ul>
-                <li>Search box: for searching user, location or category </li>
-                <li>Category legend: click on category name to show or hide that category </li>
-                <li>Mentioned together slider: adjust lower limit of links </li>
+        <p class="caption"><span>Figure 1. Our visual interface: (top-left) control panel, (top) main time series view and (bottom) message table </span></p>
+
+        <div> The challenge data is processed directly within the web browser, including removing duplicated/repeated posts, removing spams (sale promotions), extracting keyworks basing on an earthquake taxonomy, and aggregating posts by hour. To determine the problems that are occurring across the St. Himark, we first built the taxonomy for 1) Types of event related to the earthquake and 2) Types of resources that needed for the situation. The taxonomy: 
+1. Event, including:
+1.1. Earthquake: seismic, earthquake, quake, quaking, shake, shaking, wobble, wobbling, quiver, epicenter
+1.2. Grounds (ground damage): mudslide, rupture, landslides, liquefaction
+1.3. Flooding: tsunami, flood
+1.4. Aftershock: aftershock
+1.5. Fire: fire, smoke
+2. Resources, including:
+2.1. Water: sewage, water, discharge, drain, irrigation, sewer, reservoir
+2.2. Energy: blackout, electric, candle, energy, flashlight, fuel, gas, generator, nuclear, power, radiant, radiation, radio rays, valve
+2.3. Medical: ambulance, blood, bruise, dehydrate, emergency, escape, evacuate, evacuating, evacuation, fatal, first aid, fracture, hurt, illness, infection, injure, kill, lump, medic, red cross, rescue, rescuing, respiratory, suffering, swollen, urgent, victim, wound
+2.4. Shelter: shelter, housing, building, collapse, construction, house
+2.5. Transportation: bridge, traffic, congestion, avalanche, highway, lane, logistic, jammed, route, street, transportation
+2.6. Food: food
+
+</div><br>
+
+        <div> Our visualization has 3 main components:<br><br>
+
+            <b>1. Control panel</b> includes 
+            <ul>
+                <li>Search box: To filter the main view by the inputted term </li>
+                <li>Color legend: Such as Green for users, Blue for resourses. Users can click on these names to show/hide that category in the main view</li>
+                <li>Link filter: adjust threshold for link thickness. </li>
+
+                <li>The St. Himark map: To allow users to select regions of interest. </li>
             </ul>
         </div>
 
         <!--<img id="timearc" src="images/f2.png" class="full">-->
         <!--<p class="caption"><span>Figure 2. Examples of TimeArc result relating to earthquake event.</span></p>-->
 
-        <div> TimeArc have 2 main components: the stream graph of terms/topics and the link between 2 topics present the connection. The thicker of link display the stronger connection between them. This connection has been calculate by how coincident 2 world present in the same message. </div>
-        <div> The data using in this application is processed directly on web. The process sequence includes removing duplicated post (such as repeated posts) and spam (sale promotion), extract keyworks basing on category definition and aggregate post content by hour.</div>
+        <div> <b>2. Main view: </b><br> We use the dynamic netwrok visualization, called <a href="https://github.com/CreativeCodingLab/TimeArcs">TimeArc</a>, to visulize the evolution of different topics and the correlations between them. As shown in the main view of Figure 1, TimeArc has 2 main components: the stream graphs of topics depict the popularity of these topics over time and the arcs between topics present the cooccurrences in the text messages from social media posts. The thickness of links indicates how often the 2 topics mentioned together in Y*INT messages. </div><br>
+
+        <div> <b>3. Detail view: </b><br>
+        The detailed Y*INT messages of a partucular events/topics are presented to users in tabular format on demand. This allows users to investigate into the content of the social media posts by selecting a topic or a link in our time series view (TimeArcs).    
+             </div>
+        <hr>
     </div>
+
 </page>
 <page size="A3">
     <div class="pageContent">

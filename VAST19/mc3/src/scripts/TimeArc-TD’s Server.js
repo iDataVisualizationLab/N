@@ -20,8 +20,7 @@ d3.TimeArc = function () {
     let runopt = {
         limitTime:[],
         time: {rate:1,unit:'Hour'},
-        timeformat: d3.timeHour.every(1),
-        stickyTerms:[]
+        timeformat: d3.timeHour.every(1)
     };
     let svg,force;
     let UnitArray = ['Minute','Hour','Day','Month','Year'];
@@ -139,34 +138,6 @@ d3.TimeArc = function () {
             // overflow: "visible",
 
         });
-        let defs = svg.append("defs");
-
-        defs.append("marker")
-            .attrs({
-                "id":"arrowHeadend",
-                "viewBox":"0 -5 10 10",
-                "refX":5,
-                "refY":0,
-                "markerWidth":4,
-                "markerHeight":4,
-                "orient":"auto"
-            })
-            .append("path")
-            .attr("d", "M0,-5L10,0L0,5")
-            .attr("class","arrowHead");
-        defs.append("marker")
-            .attrs({
-                "id":"arrowHeadstart",
-                "viewBox":"0 -5 10 10",
-                "refX":5,
-                "refY":0,
-                "markerWidth":4,
-                "markerHeight":4,
-                "orient":"auto"
-            })
-            .append("path")
-            .attr("d", "M10,-5L0,0L10,5")
-            .attr("class","arrowHead");
         xStep = graphicopt.margin.left;
         maxheight  = graphicopt.heightG();
 //******************* Forced-directed layout
@@ -356,7 +327,7 @@ d3.TimeArc = function () {
             if (!searchTerm || searchTerm == "") {
                 return d;
             }
-            else if (d.__terms__[searchTerm]||runopt.stickyTerms.find(e=>d.__terms__[e]))
+            else if (d.__terms__[searchTerm])
                 return d;
         });
 
@@ -542,7 +513,7 @@ d3.TimeArc = function () {
         }
 
     }
-    let offsetYStream = 0;
+
     function computeNodes() {
 
         // check substrings of 100 first terms
@@ -679,6 +650,7 @@ d3.TimeArc = function () {
         }
 
         //   drawStreamTerm(svg, pNodes, 100, 600) ;
+
         svg.selectAll(".layer").remove();
         svg.selectAll(".layer")
             .data(pNodes)
@@ -769,10 +741,8 @@ d3.TimeArc = function () {
                             l.__timestep__ = m;
                             //l.value = linkScale(relationship[term1+"__"+term2][m]); 
                             links.push(l);
-                            if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2) {
+                            if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2)
                                 relationshipMaxMax2 = relationship[term1 + "__" + term2][m];
-                                console.log(term1 + "__" + term2 +'.....'+m);
-                            }
                         }
                     }
                 }
@@ -788,14 +758,10 @@ d3.TimeArc = function () {
                 .range([0, hhh * 1.25])
                 .domain([0, termMaxMax2]);
         }
-        // linkScale = d3.scaleLinear()
-        //     .range([0.5, 2])
-        //     .domain([Math.round(valueSlider) - 0.4, Math.max(relationshipMaxMax2, 10)]);
-
-        // FIXME : need to turn this into dynamic
         linkScale = d3.scaleLinear()
-            .range([0.1, 1.5])
-            .domain([1,15]);
+            .range([0.5, 2])
+            .domain([Math.round(valueSlider) - 0.4, Math.max(relationshipMaxMax2, 10)]);
+
         links.forEach(function (l) {
             var term1 = nodes[l.source].name;
             var term2 = nodes[l.target].name;
@@ -836,17 +802,19 @@ d3.TimeArc = function () {
 
         svg.selectAll(".nodeText").remove();
         nodeG.append("text")
-            .attr("class", "nodeText")
+            .attr("class", ".nodeText")
             .attr("dy", ".35em")
             .style("fill", "#000000")
             .style("text-anchor", "end")
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
-            .classed("SearchTerm", d=> d.isSearchTerm)
+            .style("font-weight", function (d) {
+                return d.isSearchTerm ? "bold" : "";
+            })
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            // .attr("font-size", function (d) {
-            //     return d.isSearchTerm ? "12px" : "11px";
-            // })
+            .attr("font-size", function (d) {
+                return d.isSearchTerm ? "12px" : "11px";
+            })
             .text(function (d) {
                 return d.name
             });
@@ -1016,7 +984,7 @@ d3.TimeArc = function () {
                 .style("stroke-opacity", 0.5);
             svg.selectAll(".linkArc")
                 .style("stroke-opacity", 0.1);
-            d.messagearr = data.filter(m=>m.__terms__[d.name]);
+            d.messagearr = data2.filter(m=>m.__terms__[d.name]);
             mouseover_dispath([d,[{color:colorCatergory(d.group), text:d.name, group:d.group}]]);
             // console.log(termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}}))
             // mouseover_dispath([d,termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}})]);
@@ -1039,9 +1007,8 @@ d3.TimeArc = function () {
         searchTerm = value;
         valueSlider = 2;
         if(searchTerm==='')
-            valueSlider = 10;
+            valueSlider = 15;
         slider.call(brush.move, [0, valueSlider].map(xScaleSlider));
-        svg.select('.sliderText').html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
         recompute();
     }
 
@@ -1221,37 +1188,32 @@ d3.TimeArc = function () {
         else {
             var step = Math.min((maxheight - 25) / (numNode + 1), 20);
             if (termArray.length>10)
-                graphicopt.height = termArray.length*step+20 +graphicopt.margin.top+graphicopt.margin.bottom;
+                graphicopt.height = termArray.length*step+12 +graphicopt.margin.top+graphicopt.margin.bottom;
             else {
-                graphicopt.height = 10 * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
+                graphicopt.height = 10 * step + 12 + graphicopt.margin.top + graphicopt.margin.bottom;
                 if  (termArray.length)
-                    step = (step*10-20)/termArray.length;
+                    step = (step*10-12)/termArray.length;
             }
+            if (graphicopt.min_height){
+                graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
+            }
+            console.log(step);
+            svg.attr('height',graphicopt.height);
         }
-        if (graphicopt.min_height){
-            graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
-        }
-        svg.attr('height',graphicopt.height);
         //var totalH = termArray.length*step;
-        offsetYStream = step;
         for (var i = 0; i < termArray.length; i++) {
-            nodes[termArray[i].nodeId].y = offsetYStream+20 + i * step;
+            nodes[termArray[i].nodeId].y = 12 + i * step;
         }
         force.alpha(0);
         force.stop();
+
         updateTransition(1000);
-        drawStreamLegend();
     }
 
     timeArc.searchNode = searchNode;
 
     timeArc.svg = function (_) {
         return arguments.length ? (svg = _, timeArc) : svg;
-
-    };
-
-    timeArc.stickyTerms = function (_) {
-        return arguments.length ? (runopt.stickyTerms = _, timeArc) : runopt.stickyTerms;
 
     };
     timeArc.data = function (_) {
@@ -1317,11 +1279,7 @@ d3.TimeArc = function () {
         // var y3 = 48;
         // var y4 = 62;
         var rr = 6;
-        let yscale = d3.scaleLinear().range([33,50]);
-        svg.append('text').text('Color legend: ').attrs({
-            y: 20,
-            'font-weight': 'bold'
-        });
+        let yscale = d3.scaleLinear().range([20,34]);
         let legendg = svg.selectAll('g.nodeLegend')
             .data(catergogryList)
             .enter()
@@ -1341,7 +1299,7 @@ d3.TimeArc = function () {
             .attr("y", 0)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            // .attr("font-size", "11px")
+            .attr("font-size", "11px")
             .style("text-anchor", "left")
             .style("fill",d=>colorCatergory(d.key))
             .text(d=>d.key);
@@ -1358,7 +1316,7 @@ d3.TimeArc = function () {
     function removeColorLegend() {
         svg.selectAll(".nodeLegend").remove();
     }
-    let timeLegend;
+    let timeLegend
     function drawTimeLegend() {
         listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
                 return {
@@ -1368,14 +1326,12 @@ d3.TimeArc = function () {
             }
         );
         timeLegend = svg.select('timeLegend');
-        if (timeLegend.empty()) {
-            timeLegend = svg.append('g').attr('class', 'timeLegend');
-            timeLegend.append('g').attr('class','timebrush');
-        }
+        if (timeLegend.empty())
+            timeLegend = svg.append('g').attr('class','timeLegend');
 
         timeLegend.selectAll(".timeLegendLine").data(listX)
             .enter().append("line")
-            .attr("class", "timeLegendLine notselectable")
+            .attr("class", "timeLegendLine")
             .style("stroke", "000")
             .style("stroke-dasharray", "1, 2")
             .style("stroke-opacity", 1)
@@ -1386,20 +1342,20 @@ d3.TimeArc = function () {
             .attr("y2", function(d){ return graphicopt.heightG(); });
         timeLegend.selectAll(".timeLegendText").data(listX)
             .enter().append("text")
-            .attr("class", "timeLegendText notselectable fontBigger")
+            .attr("class", "timeLegendText")
             .style("fill", "#000000")
             .style("text-anchor","start")
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
-                    return 12;
+                    return 7;
                 else
-                    return 17;
+                    return 15;
             })
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            // .attr("font-size", "12px")
+            .attr("font-size", "12px")
             .text(function(d,i) {
                 if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
                     return multiFormat(d.year);
@@ -1428,6 +1384,7 @@ d3.TimeArc = function () {
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul) {
+                        console.log(i);
                         return 1;
                     }
                     else
@@ -1452,15 +1409,15 @@ d3.TimeArc = function () {
     }
 
     function drawTimeBox(){
-        const timeLegendbox = timeLegend.select('g.timebrush');
-        timeLegendbox.append("rect")
+
+        timeLegend.append("rect")
             .attr("class", "timeBox")
-            // .style("fill", "#aaa")
-            // .style("fill-opacity", 0.2)
+            .style("fill", "#aaa")
+            .style("fill-opacity", 0.2)
             .attr("x", xStep)
             // .attr("y", graphicopt.heightG()-25)
             .attr("width", XGAP_* listX.length)
-            .attr("height", 25)
+            .attr("height", 16)
             .on("mouseout", function(){
                 isLensing = false;
                 coordinate = d3.mouse(this);
@@ -1504,69 +1461,6 @@ d3.TimeArc = function () {
                 return d.x; });
     }
 
-    function drawStreamLegend () {
-        let yoffset = ySlider+60;
-        let yStreamoffset = 20;
-        let xoffset = xSlider;
-        let ticknum = 3;
-        let xScale = d3.scaleLinear().domain([0,1]).range([0,widthSlider]);
-        console.log("drawStreamLegend");
-        var area_min = d3.area()
-            .curve(d3.curveCardinalOpen)
-            .x(function (d,i) {
-                return xScale(d.x);
-            })
-            .y0(function (d) {
-                return yStreamoffset - yScale(d.y);
-            })
-            .y1(function (d) {
-                return yStreamoffset + yScale(d.y);
-            });
-
-        let streamlegendg = svg.select('g.streamlegendg');
-        if (streamlegendg.empty()) {
-            streamlegendg = svg.append('g').attr('class', 'streamlegendg').attr('transform', `translate(${xoffset},${yoffset})`);
-            streamlegendg.append('text').text('Stream height (by # messages):')
-        }
-        let streampath = streamlegendg.select('path.pathlegend');
-        if (streampath.empty())
-            streampath = streamlegendg.append('path')
-                .attr('class','pathlegend');
-        let subscale = d3.scaleLinear().domain([0,ticknum/2]).range(yScale.domain());
-        let streamdata = [{x:0,y:0}];
-
-        d3.range(1,ticknum*4+2).forEach(d=>streamdata.push(d%4===0?{x:d/(ticknum*4),y:subscale(Math.ceil(d/4)+1),tick:true}:{x:d/(ticknum*4),y:subscale(Math.random()*1.5)}));
-
-        streamdata.push({x:1,y:0});
-        streampath.datum(streamdata).attr('d',area_min).style('fill','#ddd');
-
-        let lineold = streamlegendg.selectAll('line.arrow').data(streamdata.filter(d=>d.tick));
-        lineold.exit().remove();
-        lineold.enter().append('line').attr('class','arrow')
-            .merge(lineold)
-            .attrs({
-            "marker-start":"url(#arrowHeadstart)",
-            "marker-end":"url(#arrowHeadend)",
-            "x1":d=>xScale(d.x),
-            "y1":d=>yStreamoffset - yScale(d.y)+2,
-            "x2":d=>xScale(d.x),
-            "y2":d=>yStreamoffset +yScale(d.y)-2
-        }).styles({
-            'stroke-width':1,
-            'stroke': '#000'
-        });
-        let textold =streamlegendg.selectAll('text.tick').data(streamdata.filter(d=>d.tick));
-        textold.exit().remove();
-        textold.enter().append('text').attr('class','tick')
-            .merge(textold)
-            .attrs({
-                "text-anchor":'start',
-                "x":d=>xScale(d.x),
-                "y":d=>yStreamoffset +yScale(0),
-                "dy":'0.25rem',
-                "dx":'2px',
-            }).text(d=>d.y);
-    }
     var buttonLensingWidth =80;
     var buttonheight =15;
     var roundConner = 4;
@@ -1748,18 +1642,17 @@ d3.TimeArc = function () {
     var slider;
     var handle;
     var xScaleSlider;
-    var xSlider = 200;
-    var widthSlider = 180;
+    var xSlider = 180;
     var ySlider = 30;
     var valueSlider = 10;
-    var valueMax = 11;
+    var valueMax = 15;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()
             .domain([0, valueMax])
-            .range([0, widthSlider]);
+            .range([0, 120]);
 
         brush = d3.brushX(xScaleSlider)
-            .extent([[0,-5],[widthSlider, 5]])
+            .extent([[0,-5],[120, 5]])
             .on("brush", brushed)
             .on("end", brushend);
 
@@ -1767,40 +1660,30 @@ d3.TimeArc = function () {
             .attr('class','slider_range')
             .attr('transform',"translate("+xSlider+"," + ySlider + ")")
 
-        const axisl = grang.append("g")
-            .attr("class", "x axis fontSmaller")
+        grang.append("g")
+            .attr("class", "x axis")
             // .attr("transform", "translate(0," + ySlider + ")")
             // .attr("font-family", "sans-serif")
-            // .attr("font-size", "10px")
+            .attr("font-size", "10px")
             .call(d3.axisBottom()
                 .scale(xScaleSlider)
-                .ticks(4)
+                .ticks(5)
                 .tickFormat(function(d) { return d; })
                 .tickSize(0)
-                .tickPadding(5));
-        axisl.select(".domain")
+                .tickPadding(5))
+            .select(".domain")
             .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "halo");
-        axisl.selectAll('.tick text')
-            .attr('dy','0.8em');
+
         grang.append("text")
-            .attr("class", "sliderlabel")
+            .attr("class", "sliderText")
             // .attr("x", xSlider)
-            .attr("y", -14)
+            .attr("y", -12)
             .attr("dy", ".21em")
             // .attr("font-family", "sans-serif")
-            // .attr("font-size", "10px")
-            .text('Filter links:')
+            .attr("font-size", "10px")
+            .text(`Mentioned more than ${valueSlider} messages together`)
             .style("text-anchor","start");
-        grang.append("text")
-            .attr("class", "sliderText fontSmaller")
-            // .attr("x", xSlider)
-            .attr("y", 26)
-            .attr("dy", ".21em")
-            // .attr("font-family", "sans-serif")
-            // .attr("font-size", "10px")
-            .style("text-anchor","start")
-            .html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
 
         slider = grang.append("g")
             .attr("class", "slider")
@@ -1832,12 +1715,11 @@ d3.TimeArc = function () {
         if (!d3.event.sourceEvent) return;
         //console.log("Slider brushed ************** valueSlider="+valueSlider);
         if (d3.event.sourceEvent) { // not a programmatic event
-            if (d3.event.selection===null) return;
             if (xScaleSlider.invert(d3.event.selection[1])===valueSlider && xScaleSlider.invert(d3.event.selection[0])===0) return;
             valueSlider = d3.max(d3.event.selection.map(xScaleSlider.invert));
             valueSlider = Math.min(valueSlider, valueMax);
             handle.attr("cx", xScaleSlider(valueSlider));
-            svg.select('.sliderText').html(`Mentioned ${'\u2265'} <tspan> ${Math.round(valueSlider)} </tspan> messages together`);
+            svg.select('.sliderText').text(`Mentioned more than ${valueSlider} messages together`)
             d3.select(this).call(d3.event.target.move, [0,valueSlider].map(xScaleSlider));
         }
     }
@@ -1845,7 +1727,6 @@ d3.TimeArc = function () {
         // console.log("Slider brushed ************** valueSlider="+valueSlider);
         recompute();
     }
-
     //</funcs>
     return timeArc;
 };

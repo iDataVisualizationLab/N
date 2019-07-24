@@ -9,7 +9,7 @@ let width = 2000,
         // limitYear: [1998,2001],
     },
     RadarMapopt  = {
-        margin: {top: 10, right: 10, bottom: 0, left: 120},
+        margin: {top: 10, right: 50, bottom: 0, left: 120},
         offset: {top: 0},
         width: width,
         height: height,
@@ -24,7 +24,7 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                yScale: d3.scaleLinear().domain([0,30]).range([0,5])
+                yScale: (d)=> d3.scaleLinear().domain([0,30]).range([0,5])(d)
             }
         },
         top10:{
@@ -330,7 +330,7 @@ function init() {
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.date);
             updateProcessBar(0.8);
-        TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
+        TimeArc.runopt(listopt).data(dataRaw).draw();
             updateProcessBar(1);
         d3.select('.cover').classed('hidden',true);
     });
@@ -430,8 +430,8 @@ function initTime (max){
 function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
- RadarMapopt.margin.left = Math.max(width*2/12,400);
- RadarMapopt.min_height = 200+$('#map')[0].getClientRects()[0].height;
+ RadarMapopt.margin.left = Math.min(width*3/12,380);
+ RadarMapopt.min_height = 100+$('#map')[0].getBoundingClientRect().height;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
  TimeArc.graphicopt(RadarMapopt);
@@ -691,7 +691,7 @@ function onmouseleaveRadar (d) {
     //     d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
     // d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',1);
     // d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',10).attr('height',10);
-    // tool_tip.hide();
+    tool_tip.hide();
 }
 
 function lineGraph(div,data,options){
