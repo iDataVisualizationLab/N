@@ -19,7 +19,7 @@
         </div>
 
         <h4><span>Team Members:</span></h4>
-        <span>Ngan Vuong, iDV Lab, Texas Tech University, </span><span><a href="mailto:huyen.nguyen@ttu.edu">ngan.v.t.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
+        <span>Ngan Nguyen, iDV Lab, Texas Tech University, </span><span><a href="mailto:huyen.nguyen@ttu.edu">ngan.v.t.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
         <span>Tommy Dang, iDV Lab, Texas Tech University, </span><span><a href="mailto:tommy.dang@ttu.edu">tommy.dang@ttu.edu</a></span>
 
         <h4>Student Team: <span style="font-weight: normal">YES</span></h4>
@@ -72,20 +72,23 @@
         <img id="earthquake" src="images/earthquaketerms_all.png" class="full">
         <p class="caption"><span>Figure 2. Earthquake event stream and the encoded color on the map by number of message.</span></p>
         <div>The Figure 2 (A) shows earthquake event have 3 pulse (2pm Mon 06, 7am Wed 08, 2pm Thu 09) and the St. Himark map colored by number of post mentioned earthquake or similar terms (seismic, quake, shake, shaking, wobble, quiver, epicenter and aftershock). The Figure 2 (B) The 2nd pulse have strong relation ship with Downtown,
-            West Parton and Palace Hills and the 3rd pulse have more connections than the 2nd, such as Weston, Southton, Cheddarford, Southwest, East Parton and Boardview.
+            West Parton and Palace Hills and the 3rd pulse have more connections than the 2nd, such as Weston, Southton, Cheddarford, Southwest, East Parton and Boardview. In Figure 2 (B), the map show only posts related to the strong connection.
         </div>
         <div> The distribution of resource can be mapping with resource name in this aplication:
             <ul>
                 <li> road crews: roads_and_bridges</li>
-                <li> sewer repair crews: sewer_and_water</li>
+                <li> sewer repair crews: sewer, water</li>
                 <li> power: power/energy</li>
                 <li> rescue teams: medical</li>
             </ul>
-            The "earthquake" term can be the reference for finding need of resource in order to prevent spam and advertisement message
-            (e.g: unuseful message in message table in Figure 1).
         </div>
-        <img id="roads_and_bridgesvsearth" src="images/road_earth.PNG" class="full">
-        <p class="caption"><span>Figure 3. "roads_and_bridges" connect with "earthquake" event.</span></p>
+    </div>
+</page>
+<page size="A3">
+    <div class="pageContent">
+        <h3>+ road crews</h3>
+        <img id="road" src="images/road.png" class="full">
+        <p class="caption"><span>Figure 3. Road and bridge related posts and the story.</span></p>
         <div>
             Road crews need to be assigned during 1 hours after 2nd earthquake pulse and 5 hours after 3rd earthquake pulse.
             The map in Figure 3 shows 3 possible location to send Road crews: Neighbor 11,12 and 16.
@@ -94,37 +97,57 @@
 </page>
 <page size="A3">
     <div class="pageContent">
-        <img id="watervsearth" src="images/water_earth.PNG" class="full">
-        <p class="caption"><span>Figure 4. "sewer_and_water" connect with "earthquake" event.</span></p>
+        <h3>+ sewer repair crews</h3>
+        <img id="sewer" src="images/sewer.png" class="full">
+        <p class="caption"><span>Figure 4. Sewer stream and the connections.</span></p>
         <div>
-            sewer repair crews need to be assigned during 5 hours after 2nd earthquake pulse.
-            The map in Figure 4 shows 3 possible location to send Road crews: Neighbor 4, 17 and 19. However, base on the message content, the Oak Willow had false a report.
+        There is the sight of broken sewer pipe in Downtown just 2 hour after earthquake ( Figiure 4 (B) ). Then, 5 hours after earthquake, the peak of sewer demand is reached because the broken sewer pipe lead to risk of <b>contaminated drinking water</b>.
+            That happen in Old Town, Safe Town, Scenic Vista, Broadview, Chapparal and Easton. In the next 5 hours, the situation became worst and lead to <b>flooding</b> in Old Town. From this point, the sewer crew need to be assign in the area zone around Safe town. Moreover,
+            the sewer problem around 3rd earthquake is not as serious as the 2nd. However, from citizen posts (C), the sewer system is not recover and come to solution using portable restroom for a month.
+
         </div>
-        <img id="powervsroad" src="images/power_road.PNG" class="full">
-        <p class="caption"><span>Figure 5. "power/energy" connect with "roads_and_bridges" event.</span></p>
+
+    </div>
+</page>
+<page size="A3">
+    <div class="pageContent">
+        <h3>+ power</h3>
+        <img id="power" src="images/power.png" class="full">
+        <p class="caption"><span>Figure 5. Sewer stream and the connections.</span></p>
         <div>
-            Different from previous resource, power doesn't have directly connection with earthqurake, but, it have strong link with road and bridge
-            According to Figure 5, 2 main locations have problem with power are: Neighbor 5 and 13. This condition happend 6hours after 2nd earthquake.
+           People concern about Nuclear Plant and the efficiency of it much more time than report for power problem.
+
         </div>
     </div>
 </page>
 <page size="A3">
     <div class="pageContent">
-        <img id="medical_start" src="images/medical_start.PNG" class="full">
-        <img id="medical_high" src="images/medical_high.PNG" class="full">
-        <p class="caption"><span>Figure 6. "medical" connect with "earthquake" at the 2nd pulse (top) and the highest demand location at 1pm Wed 08 (bottom).</span></p>
-        <div>
-            There are 3 main locations: Neighbor 6, 2 and 3 marked on the map need attention about medical.
-        </div>
+        <h3>+ rescue teams</h3>
+        <img id="medical" src="images/medical.png" class="full">
+        <p class="caption"><span>Figure 6. Sewer stream and the connections.</span></p>
     </div>
 </page>
+<page size="A3">
+    <div class="pageContent">
+        <h3>+ Other resources: food and drink</h3>
+        <img id="food" src="images/food.PNG" class="full">
+        <p class="caption"><span>Figure 7. "roads_and_bridges" connect with "earthquake" event.</span></p>
+
+        <img id="water" src="images/water.PNG" class="full">
+        <p class="caption"><span>Figure 8. water resource and events.</span></p>
+        5 hours water warning (boil water to drink), sewer systerm comtaminated
+        10 hours water out and flooding
+        23 hours ready store water and food and water is not a problem from that point.
+    </div>
+</page>
+
 <page size="A3">
     <div class="pageContent">
         <h4>Question</h4>
 
         <div class="question">2- Identify at least 3 times when conditions change in a way that warrants a re-allocation of city resources. What were the conditions before and after the inflection point? What locations were affected? Which resources are involved? Limit your response to 1000 words and 10 images.</div>
         <img id="mapall" src="images/mapall.png" class="full">
-        <p class="caption"><span>Figure 7. The condition change in 3 time range A, B and C.</span></p>
+        <p class="caption"><span>Figure 9. The condition change in 3 time range A, B and C.</span></p>
         <div>At the 1st time point (A), Medical and roads are involved mostly in Downtown. The 2nd wave of demand (B) is after the major earthquake require all resources and the most essential resource is medical in entire city.
         The final wave of demand (C) requires Medical, Power and Sewer from center of the city.</div>
     </div>
