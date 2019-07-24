@@ -49,10 +49,16 @@ div.title{
 div.question {
     font-weight: bold;
 }
-img.full{
-    width:26.5cm;
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     height:auto; /*maintain aspect ratio*/
 }
+img.full{
+    width:90%;
+}
+
 img.idvl{
     position: absolute;
     width: 70px;
