@@ -107,8 +107,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                 if (maplegend.empty()){
                     maplegend = d3.select('.map_main').append('g').attr('class','map_legendg')
                         .attr("transform", `translate(${width-legendconf.width-10},10)`)
-                        .append('svg').attr('class','map_legend').style('overflow','visible')
-                        .style('font-size' , '14px');
+                        .append('svg').attr('class','map_legend').style('overflow','visible');
                     maplegend.append('defs').append('linearGradient').attr("id", "legend_map");
                     maplegend.append('g')
                         .attr('class','axis_gradient_legend')
@@ -122,9 +121,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         x: -10,
                         y: legendconf.height/2,
                         dy: '0.25rem',
-                        'text-anchor':"end",
-                        'font-size' : '14px'
-                    }).text('# messages: ');
+                        'text-anchor':"end"
+                    }).text('Number of messages: ');
                 }
                 let color_gradient = maplegend.select('#legend_map');
                 color_gradient.selectAll("stop")

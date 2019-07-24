@@ -30,8 +30,7 @@ var termsList = {
 
     "medical": ["medical", "red cross", "emergency", "urgent", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
 
-    "food": ["food","hungry"],
-
+    "food": ["food"],
     "water": ["water","thirst"],
 
     "shelter": ["collapse", "housing", "house","shelter","building","construction"],
@@ -168,7 +167,7 @@ function markWord (message,keys){
                     message = message.replace(reg,generatemark(maink,maink.text))
             });
         else {
-            const reg = new RegExp(' '+maink.text+'|^'+maink.text+'|@'+maink.text,'gi');
+            const reg = new RegExp(' '+maink.text+'|^'+maink.text,'gi');
             if(reg.test(message))
                 message = message.replace(reg, generatemark(maink));
         }

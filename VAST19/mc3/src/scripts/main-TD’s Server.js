@@ -9,7 +9,7 @@ let width = 2000,
         // limitYear: [1998,2001],
     },
     RadarMapopt  = {
-        margin: {top: 10, right: 10, bottom: 0, left: 120},
+        margin: {top: 10, right: 50, bottom: 0, left: 120},
         offset: {top: 0},
         width: width,
         height: height,
@@ -24,7 +24,7 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                yScale: d3.scaleLinear().domain([0,30]).range([0,5])
+                yScale: (d)=> d3.scaleLinear().domain([0,30]).range([0,5])(d)
             }
         },
         top10:{
