@@ -56,7 +56,7 @@ img{
     height:auto; /*maintain aspect ratio*/
 }
 img.full{
-    width:90%;
+    width:100%;
 }
 
 img.idvl{
