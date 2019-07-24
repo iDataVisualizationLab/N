@@ -104,13 +104,23 @@
         <hr>
 
         <h4>Questions</h4>
+        <br>
 
         <div class="question">1- Using visual analytics, characterize conditions across the city and recommend how resources should be allocated at 5 hours and 30 hours after the earthquake. Include evidence from the data to support these recommendations. Consider how to allocate resources such as road crews, sewer repair crews, power, and rescue teams. Limit your response to 1000 words and 12 images.</div>
+          <br>
+
         <img id="earthquake" src="images/earthquaketerms_all.png" class="full">
-        <p class="caption"><span>Figure 2. Earthquake event stream and the encoded color on the map by number of message.</span></p>
-        <div>The Figure 2 (A) shows earthquake event have 3 pulse (2pm Mon 06, 7am Wed 08, 2pm Thu 09) and the St. Himark map colored by number of post mentioned earthquake or similar terms (seismic, quake, shake, shaking, wobble, quiver, epicenter and aftershock). The Figure 2 (B) The 2nd pulse have strong relation ship with Downtown,
-            West Parton and Palace Hills and the 3rd pulse have more connections than the 2nd, such as Weston, Southton, Cheddarford, Southwest, East Parton and Boardview. In Figure 2 (B), the map show only posts related to the strong connection.
+        <p class="caption"><span>Figure 2. Our Earthquake visualization: (A)Frequency of earthquake-related terms and (B) Temporal network of earthquake and the associated regions.</span></p>
+
+        <div> Figure 2(A) shows the 3 earthquakes (at 2pm Mon 06, 7am Wed 08, and 2pm Thu 09). In particular, the purple stream depicts the aggregated frequency of earthquake-related terms (listed in the above taxonomy): seismic, quake, shake, shaking, wobble, quiver, epicenter. On the left, St. Himark map is colored by number of earthquake-related posts. <br>
+        As shown in Figure 2(B), the 2nd pulse is strongly connected to Downtown and West Parton while the 3rd pulse have many more connections to Weston, Southton, Cheddarford, Southwest, East Parton and Boardview. In Figure 2(B), the map is color-coded by only posts associated to these connections (arcs).
         </div>
+        
+    </div>
+</page>
+<page size="A3">
+    <div class="pageContent">
+
         <div> The distribution of resource can be mapping with resource name in this aplication:
             <ul>
                 <li> road crews: roads_and_bridges</li>
@@ -119,10 +129,7 @@
                 <li> rescue teams: medical</li>
             </ul>
         </div>
-    </div>
-</page>
-<page size="A3">
-    <div class="pageContent">
+        
         <h3>+ road crews</h3>
         <img id="road" src="images/road.png" class="full">
         <p class="caption"><span>Figure 3. Road and bridge related posts and the story.</span></p>
