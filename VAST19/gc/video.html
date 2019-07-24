@@ -2,56 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> Ngan VAST 2019 MC1</title>
-    <style>
-        @import "styles.css";
-    </style>
+    <title> Ngan VAST 2019 Grand Challenge</title>
+    <link type="text/css" rel="stylesheet" href="src/style/materialize.css"  media="screen,projection"/>
+    <link href="src/style/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="src/style/main.css"/>
+    <link type="text/css" rel="stylesheet" href="src/style/other.css"/>
 </head>
 <body>
-<page size="A3">
-    <div class="pageContent">
-        <img src="images/ttu.jpg" class="ttu">
-        <img src="images/idvl.png" class="idvl">
-        <div class="title">
-            Entry Name:  <span style="font-weight: bold">"TTU-Vuong-MC1"<br>
-            VAST Challenge 2019<br>
-            <span style="text-decoration: underline">Mini-Challenge 1<br><br></span> </span>
-        </div>
-
-        <h4><span>Team Members:</span></h4>
-        <span>Ngan Vuong, iDV Lab, Texas Tech University, </span><span><a href="mailto:huyen.nguyen@ttu.edu">ngan.v.t.nguyen@ttu.edu</a>&nbsp;&nbsp; PRIMARY<br></span>
-        <span>Tommy Dang, iDV Lab, Texas Tech University, </span><span><a href="mailto:tommy.dang@ttu.edu">tommy.dang@ttu.edu</a></span>
-
-        <h4>Student Team: <span style="font-weight: normal">YES</span></h4>
-        <h4>Tools Used:</h4>
-        <span>HTML, CSS, JavaScript<br> D3.js <br> GitHub: </span><span><a
-            href="https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc1">https://github.com/iDataVisualizationLab/N/tree/master/VAST19/mc1</a>>
-            <br> Web demo: </span><span><a
-            href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html</a></span>
-
-        <h4>Approximately how many hours were spent working on this submission in total?</h4>
-        <span>100 hours</span>
-
-        <h4>May we post your submission in the Visual Analytics Benchmark Repository after VAST Challenge 2019 is complete?<span style="font-weight: normal"> YES</span></h4>
-
-        <h4>Video</h4>
-        <span>
-            <a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html">https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html</a>
-        </span>
-        <br><br>
-        <hr>
-        <h4>System Overview</h4>
-        <img id="overviewFig" src="images/f1.png" class="full">
-        <p class="caption"><span>Figure 1. Our visual interface: (left) control panel, (top) Main view, and (bottom) St. Himark map </span></p>
-        <h4>Radar chart design:</h4>    
-        
-
-        <img id="radarChart" src="images/f2.png" class="full">
-        <p class="caption"><span>Figure 2. Examples of Radar design for hourly multivariate summary of 3 regions: Palace Hills, Safe Town, and Southon.</span></p>
-
-        <div> Due to the limited screen display and a large number of data entries, we revise the radar chart to embed the transformed color scale directly into the inside area of the radar. Our customized radar adopts the box plot layout which shows the five-number summary: minimum (inner curve), first quartile, mean (dashed curve), third quartile, and maximum (outer curve). This allows users to quickly spot the multivariate values (<i>shake intensitive</i> and various <i>types of damage</i>) as depicted in Figure 2. In the examples in the report show the hourly summary (from left to right) of various regions (top-down) of St. Himark</div>
-    </div>    
-</page>
-
+<div id="video" class= "container mainContain active video-container">
+    <iframe id="videoIn" src="https://www.youtube.com/embed/NGhllsN-DHI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="height: 80%;"></iframe>
+</div>
 </body>
 </html>

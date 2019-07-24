@@ -135,7 +135,7 @@ input[type=text].inputHolder:focus,  input[type=search]:focus{
 }
 
 table.dataTable {
-    font-size: 12px;
+    font-size: var(--fontNormal);
 }
 table.dataTable thead {
     background-color: var(--colorMain2_light);
@@ -179,13 +179,14 @@ table.dataTable  td{
 #map{
     margin-left: unset;
     /*width: fit-content;*/
-    padding: 20px;
+    padding: 10px;
     z-index: 2;
     position: absolute;
     /*top: 0;*/
     left:0;
-    top:200px;
-    max-width: 400px;
+    top:280px;
+    min-width: 450px;
+    max-width: 700px;
     /*position: relative;*/
 }
 
@@ -275,7 +276,7 @@ table.dataTable  td{
 /*}*/
 
 mark.entity {
-    padding: 0.2em 0.6em;
+    padding: 2px 5px;
     margin: 0 0.25em;
     line-height: 1;
     border-radius: 0.35em;

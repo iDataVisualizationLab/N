@@ -18,11 +18,16 @@ var termsList = {
         'Southton',
         'Oak Willow',
         'East Parton',
-        'West Parton'],
+        'West Parton',
+    'Friday Bridge',
+    'Magritte Bridge',
+    '12th of July Bridge',
+    'Tranky Doo Bridge',
+    'Jade Bridge'],
     'user':[],
     'hashtag':[],
     'Safe Town': ['Always Safe Power'],
-    "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash", "waste"],
+    "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground", "wash"],
 
     "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
 
@@ -32,7 +37,7 @@ var termsList = {
 
     "food": ["food","hungry"],
 
-    "water": ["water","thirst"],
+    "water": ["water","thirst",'drink'],
 
     "shelter": ["collapse", "housing", "house","shelter","building","construction"],
 

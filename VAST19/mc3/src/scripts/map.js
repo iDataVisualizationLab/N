@@ -100,15 +100,15 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             }
             colormap = function(colorScale){
                 let legendconf = {
-                    width: 200,
-                    height:20
+                    width: 150,
+                    height:10
                 };
-                let maplegend = d3.select('.map_main').select('.map_legend');
+                let maplegend = d3.select('#legendColorGroup').attr('width',legendconf.width).style('overflow','visible').select('.map_legend');
                 if (maplegend.empty()){
-                    maplegend = d3.select('.map_main').append('g').attr('class','map_legendg')
-                        .attr("transform", `translate(${width-legendconf.width-10},10)`)
+                    maplegend =d3.select('#legendColorGroup').append('g').attr('class','map_legendg')
+                        .attr("transform", `translate(${0},10)`)
                         .append('svg').attr('class','map_legend').style('overflow','visible')
-                        .style('font-size' , '14px');
+                        // .style('font-size' , '14px');
                     maplegend.append('defs').append('linearGradient').attr("id", "legend_map");
                     maplegend.append('g')
                         .attr('class','axis_gradient_legend')
@@ -123,7 +123,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                         y: legendconf.height/2,
                         dy: '0.25rem',
                         'text-anchor':"end",
-                        'font-size' : '14px'
+                        // 'font-size' : '14px'
                     }).text('# messages: ');
                 }
                 let color_gradient = maplegend.select('#legend_map');
@@ -139,7 +139,9 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                 maplegend.select('.axis_legend')
                     .call(d3.axisBottom(axisScale)
                         .ticks(Math.min(Math.ceil(axisScale.domain()[1]/10),5))
-                        .tickSize(-legendconf.height));
+                        .tickSize(-legendconf.height)
+                        .tickFormat(d3.format(".0s"))
+                    );
             };
             // draw map
             function draw_map(geojson) {
@@ -169,7 +171,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .attr("x", d => geoPath.centroid(d)[0])
                     .attr("y", d => geoPath.centroid(d)[1])
                     .attr("text-anchor", "middle")
-                    .attr("font-size", "8pt");
+                    // .attr("font-size", "8pt");
 
                 // load data for static sensors and plot them on to the map
                 d3.csv("src/data/StaticSensorLocations.csv").then(location => {
@@ -236,7 +238,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                     .enter()
                     .append("text")
                     .text(d=>Object.keys(d))
-                    .attr("font-size",10)
+                    // .attr("font-size",10)
                     .attr("x", 15)
                     .attr("y",(d,i)=>10 + i*15);
 
