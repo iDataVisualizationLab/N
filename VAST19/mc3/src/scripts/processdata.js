@@ -43,7 +43,9 @@ var termsList = {
 
     "shelter": ["collapse","shelter"],
 
-    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter",'aftershock','after shock' ],
+    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter" ],
+    
+    "aftershock": ["aftershock", 'after shock', 'shock'],
 
     "grounds": ["mudslide", "rupture", "landslides", "liquefaction",  "liquifactjheion"],
 
