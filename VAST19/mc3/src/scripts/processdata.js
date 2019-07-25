@@ -34,7 +34,7 @@ var termsList = {
 
     "roads_and_bridges": ["airport", "avenue", "bridge", "bus", "congestion", "drive", "flight", "jam", "logistic", "metro", "mta", "road", "street", "subway", "traffic", "train", "transit", "transportation", "highway", "route", "lane"],
 
-    "medical": ["medical", "red cross", "emergency", "urgent","hurt", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities"],
+    "medical": ["medical", "red cross", "emergency", "urgent","hurt", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities","sick"],
 
     "food": ["food","hungry",'eat'],
 
@@ -188,13 +188,14 @@ function generatemark(category,subcategory){
     str += '</mark>';
     return str;
 }
-
+let spamTopics = ["How You Can Help","powerlines on bus line","removed. ^ag"]
 function spamremove (data){
     return new Promise((resolve, reject) => {
         let dd = data.filter(d=>new RegExp(' sale|^sale | deal |deals|opotuni').test(d.message));
         let nest_spam = d3.nest().key(d=>d.account).rollup(d=>d.length).entries(dd);
         const spamlist = nest_spam.sort((a,b)=>b.value-a.value).filter(d=>d.value>10);
-        resolve(data.filter(d=>!spamlist.find(e=>e.key===d.account)));
+        data = data.filter(d=>!spamlist.find(e=>e.key===d.account));
+        resolve( data.filter(d=>!spamTopics.find(e=>new RegExp(e).test(d.message))));
     });
 }
 
