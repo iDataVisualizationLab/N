@@ -29,7 +29,8 @@ var termsList = {
     'Safe Town': ['Always Safe Power'],
     "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground"],
 
-    "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
+    // "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
+    "power/energy": ["valve", "heat", "gas", "out of power", "power is out", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "fuel", "battery", "radiant"],
 
     "roads_and_bridges": ["airport", "avenue", "bridge", "bus", "congestion", "drive", "flight", "jam", "logistic", "metro", "mta", "road", "street", "subway", "traffic", "train", "transit", "transportation", "highway", "route", "lane"],
 
@@ -47,7 +48,7 @@ var termsList = {
 
     "flooding": ["tsunami", "flood"],
 
-    "fire": ["fire", "smoke",'burn','hydrant']
+    "fire": ["fire((?! station))", "smoke",'burn','hydrant']
 };
 
 var collections = {
