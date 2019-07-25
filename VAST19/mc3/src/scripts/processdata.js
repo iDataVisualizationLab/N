@@ -27,6 +27,7 @@ var termsList = {
     'user':[],
     'hashtag':[],
     'Safe Town': ['Always Safe Power'],
+
     "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground"],
 
     // "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
@@ -38,7 +39,7 @@ var termsList = {
 
     "food": ["food","hungry",'eat'],
 
-    "water": ["water","thirst",'drink','dehydrate'],
+    "water": ["water","thirst",'drink','dehydrate', 'reservoir'],
 
     "shelter": ["collapse","shelter"],
 
