@@ -441,10 +441,7 @@ d3.TimeArc = function () {
                 //   console.log("e.term = "+e.term+" e.max =" +e.max );
             }
 
-            if (!e.max && e.max != 0)
-                console.log("What the e.term = " + e.term + " e.max =" + e.max);
-
-            termArray.push(e);
+           termArray.push(e);
         }
 
         termArray.sort(function (a, b) {
@@ -462,8 +459,8 @@ d3.TimeArc = function () {
         console.log("numberInputTerms=" + numberInputTerms);
 
         // Compute relationship **********************************************************
-        numNode = Math.min(80, termArray.length);
-        numNode2 = Math.min(numNode * 3, termArray.length);
+        numNode = Math.min(100, termArray.length);
+        numNode2 = Math.min(100, termArray.length);
         var selectedTerms = {};
         for (var i = 0; i < numNode2; i++) {
             selectedTerms[termArray[i].term] = termArray[i].max;
