@@ -225,9 +225,12 @@
         <hr>
         <h4>Question</h4>
 
-        <div class="question">4- The data for this challenge can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Describe how you analyzed the data - as a static collection or a stream. How do you think this choice affected your analysis? Limit your response to 200 words and 3 images.</div>
-        <div>The data using in this application is an array of message and have been process directly from web browser. In the real situation with larger dataset, the best solution is using web server which process the data before
-            sending the extract terms to client via web api. Moreover, the accuracy of this method can be improve if using server rather than using client browser. However, whether using server or not, our web application still have ability to
-            analysis static and dynamic data. The process for analysis data is included in the system overview ang can be apply to both statics and stream data.</div>
+        <div class="question">4- The data for this challenge can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Describe how you analyzed the data - as a static collection or a stream. How do you think this choice affected your analysis? Limit your response to 200 words and 3 images.</div> <br>
+        <div>The text data in this visualization is inputted as an array of messages and processed directly within web browser using javascripts and <a href="https://d3js.org/">d3.js</a>. In the real scenarios where the incoming data is large and dynamic, it is better to deploy a web server which performs data pre-processing and then sends the extracted terms/topics to the client (web browsers) via web api. The performance of this method can be improved using server rather than using client browser alone. <br><br>
+
+
+        Whether using server or not, our web application still have ability to analyze both static and dynamic data. As the new streaming data coming, the new chunk of data is accumulated by the hour. An obvious limitation of our technique is that if the emerging topics or connections might not be highlighted until accumulated to a certain threshold, such as the link strength filter which sets the minimum coocurrences of two terms/events.<br><br>
+
+        In this case, the aggregated time interval can be refined to 10 minutes or a minute to capture the hot topics/events and their associations in a timely manner. </div>
     </div>
 </page>
