@@ -675,7 +675,7 @@ d3.circleMap = function () {
         datapoint.exit().remove();
         let datapointN = datapoint
             .enter().append("g")
-            .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id))
+            .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id)+' a'+d.loc)
             .classed('selected',d=>d.loc==='all')
             .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
             .on('mouseover',mouseoverEvent)

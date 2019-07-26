@@ -705,12 +705,12 @@ function onmouseoverRadar (d) {
                 tempStore.loc = d.loc;
                 tempStore.data=data;
                 tempStore.dataShort=tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''));
-                onEnableCar (d.time?tempStore.dataShort:tempStore.data);
+                onEnableCar (d.time?tempStore.dataShort:tempStore.data,d);
                 lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
             });
         }else {
             tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-            onEnableCar(d.time?tempStore.dataShort:tempStore.data);
+            onEnableCar(d.time?tempStore.dataShort:tempStore.data,d.loc);
             lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
         }
     }else {
@@ -729,7 +729,7 @@ function onmouseoverRadar (d) {
     CircleChart('.radarChart_tip',[d],tooltip_cof);
 }
 
-function onEnableCar (darr){
+function onEnableCar (darr,data){
     // d3.select('#map g#regMap').select('.mobileSensor').remove();
     let cm = d3.select('#map g#regMap')
         .selectAll('.mobileSensor')
@@ -740,15 +740,44 @@ function onEnableCar (darr){
         .attr("class", "mobileSensor")
         .attr("fill", 'none')
         .attr("stroke", 'black')
-        .attr("stroke-width", 3)
+        .attr("stroke-width", 1)
         .attr('marker-end','url(#head)')
         .merge(cm)
-        .style('opacity',1)
+        .style('opacity',0.5)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
+    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr);
+    // let cc = d3.select('#map g#regMap')
+    //     .selectAll('.mobileSensorCircle')
+    //     .data(circlearr);
+    // cc.exit().remove();
+    // cc.enter()
+    //     .append("circle")
+    //     .attr("class", "mobileSensorCircle")
+    //     .attr("r", 2)
+    //     .merge(cc)
+    //     .style('opacity',0.5)
+    //     .attrs({'cx':d=> projectionFunc([d.values[0].Long, d.values[0].Lat])[0],
+    //         'cy': d=> projectionFunc([d.values[0].Long, d.values[0].Lat])[1]});
+    const positionarray = circlearr.map(d=>{
+        const dd = d.values[Math.round((d.values.length-1)/2)];
+        return projectionFunc([dd.Long, dd.Lat])
+    });
+    clone_markpath(data,positionarray);
 }
-
+function clone_markpath (data,positionarray){
+    let class_chose = data.time?data.id:('a'+data.loc);
+    let clonesymbol = d3.select('#map g#regMap')
+        .selectAll('.mobileMark')
+        .data(d3.selectAll('.linkLineg.'+class_chose).data());
+    clonesymbol.exit().remove();
+    clonesymbol.enter()
+        .append(d=>d3.select('.linkLineg.'+d.id).node().cloneNode(true))
+        .classed('mobileMark', 'true')
+        .merge(clonesymbol)
+        .attr('transform',(d,i)=>'translate('+(positionarray[i][0]-RadarMapopt.summary.size)+','+(positionarray[i][1]+RadarMapopt.summary.size)+')');
+}
 function animationShift(index,g){
     let instance = d3.active(g)
         .attr("transform", d => {
@@ -760,7 +789,7 @@ function animationShift(index,g){
 }
 
 function onmouseleaveRadar (d) {
-    d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0);
+    d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0.5);
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
