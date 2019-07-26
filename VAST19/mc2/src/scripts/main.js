@@ -737,7 +737,7 @@ function onEnableCar (darr,data){
         .selectAll('.mobileSensor')
         .data([darr]);
     cm.exit().remove();
-    cm.enter()
+    cm = cm.enter()
         .append("path")
         .attr("class", "mobileSensor")
         .attr("id", "mobileSensor")
@@ -751,20 +751,21 @@ function onEnableCar (darr,data){
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
     let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr);
     let cc = d3.select('#map g#regMap text.arrow');
+    const rate = Math.floor(cm.node().getTotalLength() / 200);
     if (cc.empty()) {
-        cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy','4');
+        cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy', '4');
+    }
         cim = cc.selectAll('textPath')
-            .data(d3.range(1,11));
+            .data(d3.range(0,rate).map(d=>(d+1)/rate));
         cim.exit().remove();
         cim.enter()
             .append("textPath")
             .merge(cim)
-            .attr("fill", d=> d===10?'black':'var(--hightlight_Darker)')
+            .attr("fill", d=> d>=1?'black':'var(--hightlight_Darker)')
             .attr("stroke", 'white')
             .attr("stroke-width", 0.05)
             .attrs({'xlink:href':'#mobileSensor',
-                'startOffset': d=> (d*10)+'%'}).text('\u27A4');
-    }
+                'startOffset': d=> (d*100)+'%'}).text('\u27A4');
     const positionarray = circlearr.map(d=>{
         const dd = d.values[Math.round((d.values.length-1)/2)];
         return projectionFunc([dd.Long, dd.Lat])
