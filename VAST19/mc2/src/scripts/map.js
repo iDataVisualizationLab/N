@@ -226,7 +226,8 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
             // .style("stroke", "black")
             //     .style("opacity", 0.5);
 
-            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> (e!==undefined) && (e.regions ===undefined || !e.regions.find(f=>f===d.properties.Nbrhood))).transition(200).style('opacity',0.2);
+            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> (e!==undefined)
+                && (e.regions ===undefined || !e.regions.find(f=>f===d.properties.Nbrhood))).transition(200).style('opacity',0.2);
         }
 
 

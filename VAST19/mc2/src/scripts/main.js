@@ -739,11 +739,11 @@ function onEnableCar (darr,data){
         .append("path")
         .attr("class", "mobileSensor")
         .attr("fill", 'none')
-        .attr("stroke", 'black')
-        .attr("stroke-width", 1)
+        .attr("stroke", '#f0f')
+        .attr("stroke-width", 2)
         .attr('marker-end','url(#head)')
         .merge(cm)
-        .style('opacity',0.5)
+        .style('opacity',0.87)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
@@ -770,11 +770,11 @@ function clone_markpath (data,positionarray){
     let class_chose = data.time?data.id:('a'+data.loc);
     let clonesymbol = d3.select('#map g#regMap')
         .selectAll('.mobileMark')
-        .data(d3.selectAll('.linkLineg.'+class_chose).data());
+        .data(d3.selectAll('.linkLineg.'+class_chose).data(),d=>d);
     clonesymbol.exit().remove();
     clonesymbol.enter()
         .append(d=>d3.select('.linkLineg.'+d.id).node().cloneNode(true))
-        .classed('mobileMark', 'true')
+        .attr('class','mobileMark')
         .merge(clonesymbol)
         .attr('transform',(d,i)=>'translate('+(positionarray[i][0]-RadarMapopt.summary.size/2)+','+(positionarray[i][1]-RadarMapopt.summary.size/2)+')');
 }
