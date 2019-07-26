@@ -748,10 +748,11 @@ function onEnableCar (darr,data){
         .style('opacity',0.75)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
-            .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
+            .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }))
+        .attr('marker-end','url(#head)');
     let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr);
     let cc = d3.select('#map g#regMap text.arrow');
-    const rate = Math.floor(cm.node().getTotalLength() / 200);
+    const rate = Math.ceil(cm.node().getTotalLength() / 200)-1;
     if (cc.empty()) {
         cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy', '4');
     }
@@ -761,7 +762,7 @@ function onEnableCar (darr,data){
         cim.enter()
             .append("textPath")
             .merge(cim)
-            .attr("fill", d=> d>=1?'black':'var(--hightlight_Darker)')
+            .attr("fill", 'var(--hightlight_Darker)')
             .attr("stroke", 'white')
             .attr("stroke-width", 0.05)
             .attrs({'xlink:href':'#mobileSensor',
