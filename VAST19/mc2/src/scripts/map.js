@@ -272,7 +272,7 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
                 .duration(200)
                 .style("opacity", 0);
             d3.selectAll('.geoPath').classed('nothover',false);
-            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> e.regions ===undefined || !e.regions.find(f=>f===d.properties.Nbrhood)).transition(200).style('opacity',1);
+            d3.selectAll(".radarlinkLineg:not(.disable)").filter(e=> (e!==undefined) &&(e.regions ===undefined || !e.regions.find(f=>f===d.properties.Nbrhood))).transition(200).style('opacity',1);
         }
 
         // });

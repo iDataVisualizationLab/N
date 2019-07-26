@@ -2,6 +2,8 @@
     --sideVal: 50%;
     --colorMain2_light: #d8d8d8;
     --colorMain2: #630016;
+    --hightlight: #f0f;
+    --hightlight_Darker: #d603d6;
 }
 
 input[type=text].inputHolder, input[type=search]:not(.browser-default){
@@ -268,3 +270,4 @@ table.dataTable th:not(:first-child) {
     /*margin-left: 50px;*/
     /*margin-top: 10px;*/
 /*}*/
+

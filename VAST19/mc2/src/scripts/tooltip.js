@@ -27,6 +27,7 @@ function tooltipBox (data){
     let id = isNaN(+data.loc)?+data.loc.replace('s',''):+data.loc;
     let headertext = type==="Summary"? type: type+' - ID: '+id;
     d3.select('.tootltip_text').append('h6').text(headertext);
+    if (data.time)
     d3.select('.tootltip_text').append('h6').html('Time: <b>'+d3.timeFormat("%I %p - %a %d")(data.time)+'</b>');
     if (data.data.users)
         d3.select('.tootltip_text').append('h6').text('Users: '+ data.data.users.join(','));
@@ -37,7 +38,6 @@ function tooltipBox (data){
     let mm = [
         {key:'minval',text:'Min'},
         {key:'maxval',text:'Max'},
-        {key:'val',text:'Mean'},
         {key:'q1',text:'Q1'},
         {key:'q3',text:'Q3'},
         {key:'median',text:'Median'},

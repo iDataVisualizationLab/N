@@ -698,10 +698,12 @@ function onmouseoverRadar (d) {
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
+    d3.select('.linkLable_text.a'+d.loc).style('fill','var(--hightlight)');
     tool_tip.show();
     if (!isNaN(+d.loc)){
         if ((tempStore.loc!==d.loc)) {
             readMobileData(d.loc).then(data =>{
+                console.log('here')
                 tempStore.loc = d.loc;
                 tempStore.data=data;
                 tempStore.dataShort=tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''));
@@ -738,28 +740,31 @@ function onEnableCar (darr,data){
     cm.enter()
         .append("path")
         .attr("class", "mobileSensor")
+        .attr("id", "mobileSensor")
         .attr("fill", 'none')
-        .attr("stroke", '#f0f')
+        .attr("stroke", 'var(--hightlight)')
         .attr("stroke-width", 2)
-        .attr('marker-end','url(#head)')
         .merge(cm)
-        .style('opacity',0.87)
+        .style('opacity',0.75)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
     let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr);
-    // let cc = d3.select('#map g#regMap')
-    //     .selectAll('.mobileSensorCircle')
-    //     .data(circlearr);
-    // cc.exit().remove();
-    // cc.enter()
-    //     .append("circle")
-    //     .attr("class", "mobileSensorCircle")
-    //     .attr("r", 2)
-    //     .merge(cc)
-    //     .style('opacity',0.5)
-    //     .attrs({'cx':d=> projectionFunc([d.values[0].Long, d.values[0].Lat])[0],
-    //         'cy': d=> projectionFunc([d.values[0].Long, d.values[0].Lat])[1]});
+    let cc = d3.select('#map g#regMap text.arrow');
+    if (cc.empty()) {
+        cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy','4');
+        cim = cc.selectAll('textPath')
+            .data(d3.range(1,11));
+        cim.exit().remove();
+        cim.enter()
+            .append("textPath")
+            .merge(cim)
+            .attr("fill", d=> d===10?'black':'var(--hightlight_Darker)')
+            .attr("stroke", 'white')
+            .attr("stroke-width", 0.05)
+            .attrs({'xlink:href':'#mobileSensor',
+                'startOffset': d=> (d*10)+'%'}).text('\u27A4');
+    }
     const positionarray = circlearr.map(d=>{
         const dd = d.values[Math.round((d.values.length-1)/2)];
         return projectionFunc([dd.Long, dd.Lat])
@@ -790,6 +795,7 @@ function animationShift(index,g){
 
 function onmouseleaveRadar (d) {
     d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0.5);
+    d3.select('.linkLable_text.a'+d.loc).style('fill','currentcolor');
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);
