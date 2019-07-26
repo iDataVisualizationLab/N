@@ -43,7 +43,7 @@ var termsList = {
 
     "shelter": ["collapse","shelter"],
 
-    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter" ],
+    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter"],
     
     "aftershock": ["aftershock", 'after shock', 'shock'],
 
@@ -57,7 +57,7 @@ var termsList = {
 var collections = {
     'location_post': ['location_in_message'],
     'location_in_message': ['location_in_message'],
-    'event': ['earthquake','grounds','flooding','fire'],
+    'event': ['earthquake','grounds','flooding','fire','aftershock'],
     'resource': ['sewer','power/energy','roads_and_bridges','medical','shelter','food','water'],
 }
 
