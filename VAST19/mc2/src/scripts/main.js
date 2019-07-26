@@ -776,7 +776,7 @@ function clone_markpath (data,positionarray){
         .append(d=>d3.select('.linkLineg.'+d.id).node().cloneNode(true))
         .classed('mobileMark', 'true')
         .merge(clonesymbol)
-        .attr('transform',(d,i)=>'translate('+(positionarray[i][0]-RadarMapopt.summary.size)+','+(positionarray[i][1]+RadarMapopt.summary.size)+')');
+        .attr('transform',(d,i)=>'translate('+(positionarray[i][0]-RadarMapopt.summary.size/2)+','+(positionarray[i][1]+RadarMapopt.summary.size/2)+')');
 }
 function animationShift(index,g){
     let instance = d3.active(g)
