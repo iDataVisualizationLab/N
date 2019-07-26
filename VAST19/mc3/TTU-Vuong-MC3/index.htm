@@ -52,7 +52,7 @@
         <img id="overviewFig" src="images/overview_n.PNG" class="full">
         <p class="caption"><span>Figure 1. Our visual interface: (top-left) control panel, (top) main time series view and (bottom) message table </span></p>
 
-        <div> The challenge data is processed directly within the web browser, including removing duplicated/repeated posts, removing spams (sale promotions), extracting keyworks based on an earthquake taxonomy, and aggregating posts by hour. To determine the problems across the St. Himark, we first built the earthquake taxonomy for related events and resources needed for the situation:<br><br>
+        <div> The challenge data is processed directly within the web browser, including removing duplicated/repeated posts, removing spams (sale promotions), extracting keywords based on an earthquake taxonomy, and aggregating posts by the hour. To determine the problems across the St. Himark, we first built the earthquake taxonomy for related events and resources needed for the situation:<br><br>
         <b>Events:</b>
 
                     <ul>
@@ -88,7 +88,7 @@
             <ul>
                 <li>Search box: To filter the main view by the inputted term </li>
                 <li>Color legend: Such as Green for users, Blue for resourses. Users can click on these names to show/hide that category in the main view</li>
-                <li>Link filter: adjust threshold for link thickness. </li>
+                <li>Link filter: To adjust threshold for link thickness. </li>
 
                 <li>The St. Himark map: To allow users to select regions of interest. </li>
             </ul>
@@ -97,24 +97,24 @@
         <!--<img id="timearc" src="images/f2.png" class="full">-->
         <!--<p class="caption"><span>Figure 2. Examples of TimeArc result relating to earthquake event.</span></p>-->
 
-        <div> <b>2. Main view: </b><br> We use the dynamic netwrok visualization, called <a href="https://github.com/CreativeCodingLab/TimeArcs">TimeArc</a>, to visulize the evolution of different topics and the correlations between them. As shown in the main view of Figure 1, TimeArc has 2 main components: the stream graphs of topics depict the popularity of these topics over time and the arcs between topics present the cooccurrences in the text messages from social media posts. The thickness of links indicates how often the 2 topics mentioned together in Y*INT messages. </div><br>
+        <div> <b>2. Main view: </b><br> We use the dynamic network visualization, called <a href="https://github.com/CreativeCodingLab/TimeArcs">TimeArc</a>, to visualize the evolution of different topics and the correlations between them. As shown in the main view of Figure 1, TimeArc has 2 main components: the stream graphs of topics depict the popularity of these topics over time, and the arcs between topics present the cooccurrences in the text messages from social media posts. The thickness of links indicates how often the two topics mentioned together in Y*INT messages. </div><br>
 
         <div> <b>3. Detail view: </b><br>
-        The detailed Y*INT messages of a partucular events/topics are presented to users in tabular format on demand. This allows users to investigate into the content of the social media posts by selecting a topic or a link in our time series view (TimeArcs).
+        The detailed Y*INT messages of particular events/topics are presented to users in tabular format on demand. This allows users to investigate the content of social media posts by selecting a topic or a link in our time series view (TimeArcs).
              </div>
         <hr>
 
         <h4>Questions</h4>
         <br>
 
-        <div class="question">1- Using visual analytics, characterize conditions across the city and recommend how resources should be allocated at 5 hours and 30 hours after the earthquake. Include evidence from the data to support these recommendations. Consider how to allocate resources such as road crews, sewer repair crews, power, and rescue teams. Limit your response to 1000 words and 12 images.</div>
+        <div class="question">1- Using visual analytics, characterize conditions across the city, and recommend how resources should be allocated at 5 hours and 30 hours after the earthquake. Include evidence from the data to support these recommendations. Consider how to allocate resources such as road crews, sewer repair crews, power, and rescue teams. Limit your response to 1000 words and 12 images.</div>
           <br>
 
         <img id="earthquake" src="images/earthquaketerms_all.png" class="full">
         <p class="caption"><span>Figure 2. Our Earthquake visualization: (A)Frequency of earthquake-related terms and (B) Temporal network of earthquake and the associated regions.</span></p>
 
-        <div> Figure 2(A) shows the 3 earthquakes (at 2pm Mon 06, 7am Wed 08, and 2pm Thu 09). In particular, the purple stream depicts the aggregated frequency of earthquake-related terms (listed in the above taxonomy): seismic, quake, shake, shaking, wobble, quiver, epicenter. On the left, St. Himark map is colored by number of earthquake-related posts. <br>
-        As shown in Figure 2(B), the 2nd pulse is strongly connected to Downtown and West Parton while the 3rd pulse have many more connections to Weston, Southton, Cheddarford, Southwest, East Parton and Boardview. In Figure 2(B), the map is color-coded by only posts associated to these connections (arcs).
+        <div> Figure 2(A) shows the 3 earthquakes (at 2pm Mon 06, 7am Wed 08, and 2pm Thu 09). In particular, the purple stream depicts the aggregated frequency of earthquake-related terms (listed in the above taxonomy): seismic, quake, shake, shaking, wobble, quiver, epicenter. On the left, St. Himark map is colored by the number of earthquake-related posts. <br>
+        As shown in Figure 2(B), the 2nd pulse is strongly connected to Downtown and West Parton while the 3rd pulse has many more connections to Weston, Southton, Cheddarford, Southwest, East Parton, and Boardview. In Figure 2(B), the map is color-coded by only posts associated with these connections (arcs).
         </div>
         
     </div>
@@ -130,9 +130,9 @@
         <p class="caption"><span>Figure 3. Roads and bridges (<font style="color:#48c;">blue</font> stream) and the related posts/stories.</span></p>
         <div>
 
-        We can focus on roads and bridges by input this category into the search box. We inserted the <font style="color:#f0f;">pink</font> annotated text on top of our time series for explanation purpose. As depicted in Figure 3(A), the concerns on roads and bridges are posted as soon as (2nd and 3rd) earthquakes occurs. The posts at 1 hour after the 2nd earthquake are annoucements of roads/bridges closures as shown in Figure 3(b). At 5 hours after the 2nd earthquake, some further annoucements are posted. In particular, Magritte Bridge and Wilson Forest Highway are re-opened at this hour as depicted in Figure 3(c).    
+        We can focus on roads and bridges by input this category into the search box. We inserted the <font style="color:#f0f;">pink</font> annotated text on top of our time series for explanation purpose. As depicted in Figure 3(A), the concerns on roads and bridges are posted as soon as (2nd and 3rd) earthquakes occur. The posts at 1 hour after the 2nd earthquake are announcements of roads/bridges closures, as shown in Figure 3(b). At 5 hours after the 2nd earthquake, some further announcements are posted. In particular, Magritte Bridge and Wilson Forest Highway are re-opened at this hour, as depicted in Figure 3(c).    
         <br> 
-        User <font style="color:#070;">DOT-StHimark</font> is the main organization which is respobsible for annoucing/updating information on roads and bridges in St. Himark. At 4 hours after the 3rd earthquake, Figure 3(d) shows important Y*INT messages regarding the activities (close/open) of Tranky Doo Bridge, Wilson Forest Highway, and 12th July Bridge (connecting outside to Safe town). 
+        User <font style="color:#070;">DOT-StHimark</font> is the main organization which is responsible for announcing/updating information on roads and bridges in St. Himark. At 4 hours after the 3rd earthquake, Figure 3(d) shows important Y*INT messages regarding the activities (close/open) of Tranky Doo Bridge, Wilson Forest Highway, and 12th July Bridge (connecting outside to Safe town). 
 
         </div>
 
@@ -153,11 +153,11 @@
         <p class="caption"><span>Figure 5. Sewer and water concerns in our TimeAcrs visualization and related posts below.</span></p>
         <div>
 
-        We now investigate sewer problems across St. Himark, by filteing only the posts that contain: sewage, discharge, drain, irrigation. We annotate the critical sewer events directly on Figiure 5(A) and list the detail messages in that hour at the bottom. Figiure 5(b) display the dicussions on broken sewer pipe in Old Town and other regions (Safe Town, Scenic Vista, Broadview, Chapparal and Easton) at 5 hours after earthquake as reported by <font style="color:#080;">HealthDept</font>. This leads to contaminated water: we can easily notice a peak on <font style="color:#48c;">water</font> stream at the same time. 
+        We now investigate sewer problems across St. Himark, by filtering only the posts that contain: sewage, discharge, drain, irrigation. We annotate the critical sewer events directly in Figure 5(A) and list the detail messages in that hour at the bottom. Figure 5(b) displays the discussions on broken sewer pipes in Old Town and other regions (Safe Town, Scenic Vista, Broadview, Chapparal and Easton) at 5 hours after the earthquake as reported by <font style="color:#080;">HealthDept</font>. This leads to contaminated water: we can easily notice a peak on <font style="color:#48c;">water</font> stream at the same time. 
         <br><br>
-        At 10 hours after the 2nd earthquake, the sewer problem becomes worst and leads to <b>flooding</b> mainly in Old Town as shown Figiure 5(c). We recommend the sewer crew to be assigned in Safe town and nearby to mitigate earthquake effects. <br><br>
+        At 10 hours after the 2nd earthquake, the sewer problem becomes worst and leads to <b>flooding</b> mainly in Old Town, as shown in Figure 5(c). We recommend the sewer crew to be assigned in Safe town and nearby to mitigate earthquake effects. <br><br>
 
-        At 24 hours after the 2nd earthquake shown Figiure 5(d), the sewer problem has not been fixed. Temporal solution was proposed: drink boiled water and use portable toilet. When the 3rd earthquake hits, the sewer problem is not significant since the sewer system has not been repared (can not be worse) and the city is better prepared for the 3rd hit (volunteers were deployed to provide food, water, and blankets to citizens before the 3rd earthquake).
+        At 24 hours after the 2nd earthquake shown Figure 5(d), the sewer problem has not been fixed. The temporal solution was proposed: drink boiled water and use portable toilets. When the 3rd earthquake hits, the sewer problem is not significant since the sewer system has not been repaired (can not be worse) and the city is better prepared for the 3rd hit (volunteers were deployed to provide food, water, and blankets to citizens before the 3rd earthquake).
         </div>
 
     </div>
@@ -168,10 +168,10 @@
         <img id="medical" src="images/medical.png" class="full">
         <p class="caption"><span>Figure 6. Medical and shelter issues in our TimeAcrs visualization and related posts below.</span></p>
         <div>
-            We filter medical and shelter discussions by using the search box. As depicted in Figure 6(A), the demand for medical is very high immediately after the 2nd Earthquake and during 5 to 15 hours after that. Some medical-related reports are presented in Figure 6(b). In term of location, the rescure teams are needed in the regions near the earthquake center, such as
+            We filter medical and shelter discussions by using the search box. As depicted in Figure 6(A), the demand for medical is very high immediately after the 2nd earthquake and during 5 to 15 hours after that. Some medical-related reports are presented in Figure 6(b). In term of location, the rescue teams are needed in the regions near the earthquake center, such as
             Old Town, Safe town, Scenic Vista, and DownTown. <br><br>
-            Additionally, the medical needs linked to the shelter demand from 6 hours to 15 hours after Earthquake with a slight delay of less than 1 hour. By mousing over a link, Figure 6(c) displays some medical vs. shelter demand at 15 hours after the 2nd earthquake.<br><br>
-        At 24 hours after the 2nd earthquake shown Figiure 6(d), most of discussions are about evacuation as some of the main roads have been re-opened.
+            Additionally, the medical needs linked to the shelter demand from 6 hours to 15 hours after the 2nd earthquake with a slight delay of less than 1 hour. By mousing over a link, Figure 6(c) displays some medical vs. shelter demand at 15 hours after the 2nd earthquake.<br><br>
+        At 24 hours after the 2nd earthquake shown Figure 6(d), most of the discussions are about evacuation as some of the main roads have been re-opened.
         </div>
     </div>
     <hr>
@@ -205,7 +205,7 @@
         <hr>
         <h4>Question</h4>
 
-        <div class="question">3- Take the pulse of the community. How has the earthquake affect life in St. Himark? What is the community experiencing outside the realm of the first two questions? Show decision makers summary information and relevant/characteristic examples. Limit your response to 800 words and 8 images.</div>
+        <div class="question">3- Take the pulse of the community. How has the earthquake affected life in St. Himark? What is the community experiencing outside the realm of the first two questions? Show decision-makers summary information and relevant/characteristic examples. Limit your response to 800 words and 8 images.</div>
         <br>
 
         <div></div>
