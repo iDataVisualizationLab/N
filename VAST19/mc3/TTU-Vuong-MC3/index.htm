@@ -70,25 +70,25 @@
 <page size="A3">
     <div class="pageContent">
         <div>
-           <b>Resourses:</b>
+           <b>Resources:</b>
                 <ul>
                     <li>Food: food, hungry, eat</li>
                     <li>Water: water, drink, thirst, dehydrate, reservoir</li>
                     <li>Sewer: sewage, discharge, drain, irrigation, sewer, reservoir</li>
                     <li>Power/Energy: blackout, electric, candle, energy, flashlight, fuel, gas, generator, nuclear, power, radiant, radiation, radio rays, valve</li>
-                    <li>Medical: ambulance, blood, bruise, emergency, escape, evacuate, fatal, first aid, fracture, hurt, illness, infection, injure, kill, lump, medic, red cross, rescue, respiratory, suffering, swollen, urgent, victim, wound</li>
+                    <li>Medical: ambulance, blood, bruise, emergency, escape, evacuate, fatal, first aid, fracture, hurt, illness, infection, injury, kill, lump, medic, red cross, rescue, respiratory, suffering, swollen, urgent, victim, wound</li>
                     <li>Shelter: shelter, housing, building, collapse, construction, house</li>
                     <li>Roads_and_bridges: bridge, traffic, congestion, avalanche, highway, lane, logistic, jammed, route, street, transportation</li>
                 </ul>
         </div><br>
 
-        <div> Our visualization has 3 main components:<br><br>
+        <div> Our visualization has three main components:<br><br>
 
             <b>1. Control panel</b> includes
             <ul>
                 <li>Search box: To filter the main view by the inputted term </li>
-                <li>Color legend: Such as Green for users, Blue for resourses. Users can click on these names to show/hide that category in the main view</li>
-                <li>Link filter: To adjust threshold for link thickness. </li>
+                <li>Color legend: Such as Green for users, Blue for resources. Users can click on these names to show/hide that category in the main view</li>
+                <li>Link filter: To adjust the threshold for link thickness. </li>
 
                 <li>The St. Himark map: To allow users to select regions of interest. </li>
             </ul>
@@ -111,7 +111,7 @@
           <br>
 
         <img id="earthquake" src="images/earthquaketerms_all.png" class="full">
-        <p class="caption"><span>Figure 2. Our Earthquake visualization: (A)Frequency of earthquake-related terms and (B) Temporal network of earthquake and the associated regions.</span></p>
+        <p class="caption"><span>Figure 2. Our Earthquake visualization: (A)Frequency of earthquake-related terms and (B) Temporal network of the earthquake and the associated regions.</span></p>
 
         <div> Figure 2(A) shows the 3 earthquakes (at 2pm Mon 06, 7am Wed 08, and 2pm Thu 09). In particular, the purple stream depicts the aggregated frequency of earthquake-related terms (listed in the above taxonomy): seismic, quake, shake, shaking, wobble, quiver, epicenter. On the left, St. Himark map is colored by the number of earthquake-related posts. <br>
         As shown in Figure 2(B), the 2nd pulse is strongly connected to Downtown and West Parton while the 3rd pulse has many more connections to Weston, Southton, Cheddarford, Southwest, East Parton, and Boardview. In Figure 2(B), the map is color-coded by only posts associated with these connections (arcs).
@@ -141,7 +141,7 @@
         <img id="power" src="images/power.png" class="full">
         <p class="caption"><span>Figure 4. Power and energy (<font style="color:#48c;">blue</font> stream) and the related posts/locations.</span></p>
         <div>
-        For the entire time span, people constantly concern about Nuclear Plant and its efficiency as shown in the <font style="color:#48c;">blue</font> stream of Figure 4. The need of power significantly increase at 6 hours after 2nd earthquake and keep fluctuating 26 hours after. The possible regions in need of power include Cheddarford, Southwest, Scenic Vista, PalaceHill, and DownTown as shown by to connecting acrs at various hours. The links between Power/energy and roads/bridges are due to the spams detailed in Figure 4(b) as we mouse-over the arcs. 
+        For the entire time span, people constantly concern about Nuclear Plant and its efficiency as shown in the <font style="color:#48c;">blue</font> stream of Figure 4. The need for power significantly increase at 6 hours after 2nd earthquake and keep fluctuating 26 hours after. The possible regions in need of power include Cheddarford, Southwest, Scenic Vista, PalaceHill, and DownTown as shown by connecting arcs at various hours. The links between Power/energy and roads/bridges are due to the spams detailed in Figure 4(b) as we mouse-over the arcs. 
 
         </div>
     </div>
@@ -155,7 +155,7 @@
 
         We now investigate sewer problems across St. Himark, by filtering only the posts that contain: sewage, discharge, drain, irrigation. We annotate the critical sewer events directly in Figure 5(A) and list the detail messages in that hour at the bottom. Figure 5(b) displays the discussions on broken sewer pipes in Old Town and other regions (Safe Town, Scenic Vista, Broadview, Chapparal and Easton) at 5 hours after the earthquake as reported by <font style="color:#080;">HealthDept</font>. This leads to contaminated water: we can easily notice a peak on <font style="color:#48c;">water</font> stream at the same time. 
         <br><br>
-        At 10 hours after the 2nd earthquake, the sewer problem becomes worst and leads to <b>flooding</b> mainly in Old Town, as shown in Figure 5(c). We recommend the sewer crew to be assigned in Safe town and nearby to mitigate earthquake effects. <br><br>
+        At 10 hours after the 2nd earthquake, the sewer problem becomes worst and leads to <b>flooding</b>, mainly in Old Town, as shown in Figure 5(c). We recommend the sewer crew to be assigned in Safe town and nearby to mitigate earthquake effects. <br><br>
 
         At 24 hours after the 2nd earthquake shown Figure 5(d), the sewer problem has not been fixed. The temporal solution was proposed: drink boiled water and use portable toilets. When the 3rd earthquake hits, the sewer problem is not significant since the sewer system has not been repaired (can not be worse) and the city is better prepared for the 3rd hit (volunteers were deployed to provide food, water, and blankets to citizens before the 3rd earthquake).
         </div>
@@ -170,7 +170,7 @@
         <div>
             We filter medical and shelter discussions by using the search box. As depicted in Figure 6(A), the demand for medical is very high immediately after the 2nd earthquake and during 5 to 15 hours after that. Some medical-related reports are presented in Figure 6(b). In term of location, the rescue teams are needed in the regions near the earthquake center, such as
             Old Town, Safe town, Scenic Vista, and DownTown. <br><br>
-            Additionally, the medical needs linked to the shelter demand from 6 hours to 15 hours after the 2nd earthquake with a slight delay of less than 1 hour. By mousing over a link, Figure 6(c) displays some medical vs. shelter demand at 15 hours after the 2nd earthquake.<br><br>
+            Additionally, the medical needs are linked to the shelter demand from 6 hours to 15 hours after the 2nd earthquake with a slight delay of less than 1 hour. By mousing over a link, Figure 6(c) displays some medical vs. shelter demand at 15 hours after the 2nd earthquake.<br><br>
         At 24 hours after the 2nd earthquake shown Figure 6(d), most of the discussions are about evacuation as some of the main roads have been re-opened.
         </div>
     </div>
@@ -190,14 +190,14 @@
 </page>
 <page size="A3">
     <div class="pageContent">
-        <div>Figure 7 illustrates 5 time points that St. Himark conditions have been change, from left to right: (a) 9:00am Wed 08, (b) 1:00pm Web 08, (c) 6:00pm Web 08, (d) 7:00pm Thu 09. The focused resourses are listed top-down. In particular, 
+        <div>Figure 7 illustrates 5 time points that St. Himark conditions have been change, from left to right: (a) 9:00am Wed 08, (b) 1:00pm Web 08, (c) 6:00pm Web 08, (d) 7:00pm Thu 09. The focused resources are listed top-down. In particular, 
 
         <ul>
             <li> At <b>(a)</b>, all routes have been closed as announced by <font style="color:#070;">DOT-StHimark</font> , and no resource is needed at this point except some emergency medical issues. </li>
-            <li>At <b>(b)</b>, the water (the 3rd resource in Figure 7) is contaminated due to broken pipe in Old Town, Safe Town, Scenic Vista, and Downtown. Moreover, the people start to call for help from Scenic Vista. Two routes have been open at this time. After that, the shelter, medical, and power remain high in almost all regions of St. Himark.</li>
+            <li>At <b>(b)</b>, the water (the 3rd resource in Figure 7) is contaminated due to broken pipes in Old Town, Safe Town, Scenic Vista, and Downtown. Moreover, the people start to call for help from Scenic Vista. Two routes have been open at this time. After that, the shelter, medical, and power remain high in almost all regions of St. Himark.</li>
             <li>When flooding happens at <b>(c)</b> (sewer and flooding connection at 10 hours after the 2nd earthquake), the shelter demand reaches the peak. Consequently, the medical demand increases after 2 hours in Palace Hills, Northwest, Downtown, Weston, and Southton. </li>
             <li>Then, all demand (except power) decreases until other bridges are re-opened at <b>(d)</b> to reduce the traffic jam at Magritte Bridge. </li>
-            <li>After <b>(d)</b> (23 hours after the 2nd earthquake, people need food, water (links between food and water); some reports concerning roads and bridges problems in  Oak Willow and medical issues in Northwest, Southwest, Northwest, and Downtown.</li> 
+            <li>After <b>(d)</b> 23 hours after the 2nd earthquake, people need food, water (links between food and water); some reports concerning roads and bridges problems in  Oak Willow and medical issues in Northwest, Southwest, Northwest, and Downtown.</li> 
             <li>Since all route re-open at <b>(e)</b>, no further resources are needed.</li>
         </ul>
 
@@ -210,11 +210,12 @@
 
         <div></div>
         <img id="food" src="images/food.png" class="full">
-        <p class="caption"><span>Figure 8. Demand of food .</span></p>
-        <div>Besides resources in question 2 and 3, citizen also care about food (Figure 8) and water (Figure 9). According to figure 8, food isn't a big issue, yet some place such as Oak Willow the food problem come from traffic delay and the closed route showed in message Figure 8 (b).
-            At 21 hours after 3rd earthquake, the high peak of food is not the demand but the discussion about food Figure 8 (c).</div>
-        <div>Figure 9 shows the water stream and the connection. Due to the problem with sewer, 5 hours after 2nd earthquake, the water need to be boiled in order to drink and citizen very worry about that ( messages in Figure 9 (b) ). In the next 5 hours, the flooding happens. However, after 13 hours, water is not the problem.</div>
-        <div>The fire event is displayed in Figure 10. Overall, a very limit post related to fire and fire department. However, about 5 hours (Figure 10 (c) )to 9hours after 2nd earthquake (Figure 10 (d)),  there are several messages report fire/ smoke/ burning issue in Old Town, Downtown, Scenic Vista, Southwest and Terrapin Springs. Since the power went off and everybody using candles as replace a light resource, a warning about candle and fire has been posted at 17 hours after the 2nd earthquake.</div>
+        <p class="caption"><span>Figure 8. Filtering by the <b>food</b> demand in St. Himark.</span></p>
+       
+        <div>Besides the <b>flood</b> described in Figure 5(c), the St. Himark community experiences other events outside the realm of the earthquakes, including <b>food</b>, <b>water</b>, and <b>fire</b>.<br><br> 
+
+        We filter the visualization (using the search box) by <b>food</b>-related demand: food, hungry, eat. As shown in Figure 8(A), food demand isn't the major concern during the observed period, yet in some places (such as Oak Willow), the food demand is signified around 24 hours after the earthquake by traffic delay and the closed routes as showed in messages Figure 8(b).<br> <br>
+        At 21 hours after the 3rd earthquake, there are more discussions about food, as shown in Figure 8(c).</div>
 
     </div>
 
@@ -222,9 +223,18 @@
 <page size="A3">
     <div class="pageContent">
         <img id="water" src="images/water.PNG" class="full">
-        <p class="caption"><span>Figure 9. water resource and events.</span></p>
+        <p class="caption"><span>Figure 9. Drinking <b>water</b> demand after the earthquake.</span></p>
+
+        <div>Figure 9 shows the water stream and its related topics. Due to the problem with the sewer system at 5 hours after 2nd earthquake, the drinking water needs to be boiled before use and citizens are very worried about that as shown in messages in Figure 9(b).</div> <br>
+
+        
         <img id="fire" src="images/fire.png" class="full">
-        <p class="caption"><span>Figure 10. fire events.</span></p>
+        <p class="caption"><span>Figure 10. <b>Fire</b> concerns in St. Himark.</span></p>
+
+        <div>The fire-related posts are displayed in Figure 10. Overall, a  limited number of posts reporting fires in St. Himark, including announcements from the fire department. <br><br>
+        About 5 hours (Figure 10 (b))to 9 hours after 2nd earthquake (Figure 10(c)),  there are several messages report fire/ smoke/ burning issue in Old Town, Downtown, Scenic Vista, Southwest and Terrapin Springs. <br><br>
+    Since the power went off and everybody using candles to replace a light resource, the risk of fire has been posted at 17 hours after the 2nd earthquake as shown in Figure 10(d).</div>
+
     </div>
 </page>
 <page size="A3">
@@ -232,10 +242,10 @@
         <h4>Question</h4>
 
         <div class="question">4- The data for this challenge can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Describe how you analyzed the data - as a static collection or a stream. How do you think this choice affected your analysis? Limit your response to 200 words and 3 images.</div> <br>
-        <div>The text data in this visualization is inputted as an array of messages and processed directly within web browser using javascripts and <a href="https://d3js.org/">d3.js</a>. In the real scenarios where the incoming data is large and dynamic, it is better to deploy a web server which performs data pre-processing and then sends the extracted terms/topics to the client (web browsers) via web api. The performance of this method can be improved using server rather than using client browser alone. <br><br>
+        <div>The text data in this visualization is inputted as an array of messages and processed directly within a web browser using javascript and <a href="https://d3js.org/">d3.js</a>. In the real scenarios where the incoming data is large and dynamic, it is better to deploy a web server which performs data pre-processing and then sends the extracted terms/topics to the client (web browsers) via web api. The performance of this method can be improved using server rather than using the client browser alone. <br><br>
 
 
-        Whether using server or not, our web application still have ability to analyze both static and dynamic data. As the new streaming data coming, the new chunk of data is accumulated by the hour. An obvious limitation of our technique is that if the emerging topics or connections might not be highlighted until accumulated to a certain threshold, such as the link strength filter which sets the minimum coocurrences of two terms/events.<br><br>
+        Whether using a server or not, our web application still has the ability to analyze both static and dynamic data. As the new streaming data coming, the new chunk of data is accumulated by the hour. An obvious limitation of our technique is that if the emerging topics or connections might not be highlighted until accumulated to a certain threshold, such as the link strength filter which sets the minimum concurrences of two terms/events.<br><br>
 
         In this case, the aggregated time interval can be refined to 10 minutes or a minute to capture the hot topics/events and their associations in a timely manner. </div>
     </div>
