@@ -747,22 +747,24 @@ function onmouseoverRadar (d) {
     }else {
         tempStore.loc = d.loc;
         tempStore.data=datastatic.filter(e=>e['Sensor-id']===d.loc.replace('s',''));
-
+        readPromise.cancel();
         renderPromise.cancel();
-        renderPromise = new Promise(function(resolve, reject, onCancel) {
-            setTimeout(() => {
-                tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-                lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
-                resolve('done');
-            },0);
-        });
+        if (d.loc!=="all") {
+            renderPromise = new Promise(function (resolve, reject, onCancel) {
+                setTimeout(() => {
+                    tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
+                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
+                    resolve('done');
+                }, 0);
+            });
+        }
         d3.select('#map g#regMap')
             .selectAll('.mobileSensor').remove();
         d3.select('#map g#regMap')
             .selectAll('.mobileMark ').remove();
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
     }
-    d3.select('#maptitle').text(isNaN(+d.loc)?(data.loc!=='all'?('Static - '+d.loc.replace('s','')):'All Sensor'):('Mobile - '+d.loc))
+    d3.select('#maptitle').text(isNaN(+d.loc)?(d.loc!=='all'?('Static - '+d.loc.replace('s','')):'All Sensor'):('Mobile - '+d.loc))
     tooltip_cof.schema = serviceFullList;
     tooltip_cof.arrColor = arrColor;
     tooltip_cof.markedLegend = globalScale.domain();
