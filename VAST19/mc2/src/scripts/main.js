@@ -754,7 +754,7 @@ function onEnableCar (darr,data){
     cm = cm.enter()
         .append("path")
         .attr("class", "mobileSensor")
-        .attr("id", "mobileSensor")
+        .attr("id", (d,i)=>i===(newdata.length-1)?"mobileSensor":undefined)
         .attr("fill", 'none')
         .attr("stroke",'var(--hightlight)')
         .attr("stroke-dasharray",(d,i)=> i?4:'none')
@@ -765,9 +765,9 @@ function onEnableCar (darr,data){
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }))
         .attr('marker-end','url(#head)');
-    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[0]);
+    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[darr.length-1]);
     let cc = d3.select('#map g#regMap text.arrow');
-    const rate = Math.ceil(cm.node().getTotalLength() / 200)-1;
+    const rate = Math.ceil(d3.select('#mobileSensor').node().getTotalLength() / 200)-1;
     if (cc.empty()) {
         cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy', '4');
     }
