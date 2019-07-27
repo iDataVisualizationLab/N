@@ -773,7 +773,7 @@ function onEnableCar (darr,data){
         .attr("class", "mobileSensor")
         .attr("id", (d,i)=>i?undefined:"mobileSensor")
         .attr("fill", 'none')
-        .attr("stroke",'var(--hightlight)')
+        .attr("stroke",(d,i)=> i?'black':'var(--hightlight)')
         .attr("stroke-dasharray",(d,i)=> i?'none':4)
         .attr("stroke-width", 2)
         .merge(cm)
