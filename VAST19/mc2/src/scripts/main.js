@@ -710,12 +710,12 @@ function onmouseoverRadar (d) {
                 tempStore.loc = d.loc;
                 tempStore.data=data;
                 tempStore.dataShort=tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''));
-                onEnableCar (d.time?tempStore.dataShort:tempStore.data,d);
+                onEnableCar (d.time?[tempStore.dataShort,tempStore.data]:[tempStore.data],d);
                 lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
             });
         }else {
             tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-            onEnableCar(d.time?tempStore.dataShort:tempStore.data,d.loc);
+            onEnableCar (d.time?[tempStore.dataShort,tempStore.data]:[tempStore.data],d);
             lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
         }
     }else {
@@ -737,23 +737,26 @@ function onmouseoverRadar (d) {
 function onEnableCar (darr,data){
     // d3.select('#map g#regMap').select('.mobileSensor').remove();
     let newdata=[];
-    let oldvalue={};
-    darr.forEach(d=>{
+    darr.forEach(e=>{
+        let newdata_temp=[];
+        let oldvalue={};
+        e.forEach(d=>{
         if(d.Long!==oldvalue.Long||d.Lat!==oldvalue.Lat){
-            newdata.push(d);
+            newdata_temp.push(d);
             oldvalue = d;
-        }
+        }});
+        newdata.push(newdata_temp);
     });
     let cm = d3.select('#map g#regMap')
         .selectAll('.mobileSensor')
-        .data([darr]);
+        .data(newdata);
     cm.exit().remove();
     cm = cm.enter()
         .append("path")
         .attr("class", "mobileSensor")
         .attr("id", "mobileSensor")
         .attr("fill", 'none')
-        .attr("stroke", 'var(--hightlight)')
+        .attr("stroke",(d,i)=> i?'var(--hightlight)':'#dddd')
         .attr("stroke-width", 2)
         .merge(cm)
         .style('opacity',0.75)
@@ -761,7 +764,7 @@ function onEnableCar (darr,data){
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }))
         .attr('marker-end','url(#head)');
-    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr);
+    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[0]);
     let cc = d3.select('#map g#regMap text.arrow');
     const rate = Math.ceil(cm.node().getTotalLength() / 200)-1;
     if (cc.empty()) {
