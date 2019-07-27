@@ -25,10 +25,10 @@ function recover(){
     tool_tip.hide();
     d3.select('#d3-tip-mc1').classed('enablemouse',false);
     CircleMapplot.addMouseEvent();
-    onmouseleaveRadar(d3.select('#d3-tip-mc1').data());
+    onmouseleaveRadar(d3.select('#d3-tip-mc1').datum());
 }
 function tooltipBox (data){
-    d3.select('#d3-tip-mc1').data(data);
+    d3.select('#d3-tip-mc1').datum(data);
     let type = data.loc==='all'?'Summary':(isNaN(+data.loc)?'Static':'Mobile');
     let id = isNaN(+data.loc)?+data.loc.replace('s',''):+data.loc;
     let headertext = type==="Summary"? type: type+' - ID: '+id;
