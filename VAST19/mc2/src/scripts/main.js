@@ -705,6 +705,7 @@ function onclickRadar (d) {
 
 function onmouseoverRadar (d) {
     tool_tip.show();
+    $(d3.select('.preloader-wrapper').node().cloneNode(true)).removeClass('big').appendTo($('.loaderDiv'));
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
@@ -728,6 +729,7 @@ function onmouseoverRadar (d) {
                                 w: 460,
                                 h: 150
                             });
+                            d3.select('.loaderDiv').selectAll('*').remove();
                             resolve('done');
                         },0);
                     });
@@ -740,6 +742,7 @@ function onmouseoverRadar (d) {
                     tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                     onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
                     lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
+                    d3.select('.loaderDiv').selectAll('*').remove();
                     resolve('done');
                 },0);
             });
@@ -754,9 +757,12 @@ function onmouseoverRadar (d) {
                 setTimeout(() => {
                     tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                     lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
+                    d3.select('.loaderDiv').remove();
                     resolve('done');
                 }, 0);
             });
+        }else{
+            d3.select('.loaderDiv').selectAll('*').remove();
         }
         d3.select('#map g#regMap')
             .selectAll('.mobileSensor').remove();
