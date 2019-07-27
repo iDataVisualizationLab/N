@@ -736,6 +736,7 @@ function onmouseoverRadar (d) {
 
 function onEnableCar (darr,data){
     // d3.select('#map g#regMap').select('.mobileSensor').remove();
+    d3.select('#maptitle').text(isNaN(+data.loc)?(data.loc!=='all'?('Static - '+data.loc.replace('s','')):'All Sensor'):('Mobile - '+data.loc))
     let newdata=[];
     darr.forEach(e=>{
         let newdata_temp=[];
