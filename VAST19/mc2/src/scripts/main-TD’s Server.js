@@ -335,10 +335,10 @@ function init() {
         // databyLoc.push({'key':'-1',values:dataSumAll});
         handleDataIcon (summaryBySensor);
 
-        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar).onmouseclick(onclickRadar);
+        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
         handleOutlier (data,currentService);
         // request();
-        // d3.select('.cover').classed('hidden',true);
+        d3.select('.cover').classed('hidden',true);
     });
 }
 
@@ -693,33 +693,24 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
-let readPromise = Promise.resolve();
-function onclickRadar (d) {
-    CircleMapplot.removeMouseEvent();
-}
-
 function onmouseoverRadar (d) {
-    tool_tip.show();
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
-    d3.select('.linkLable_text.a'+d.loc).style('fill','var(--hightlight)');
+    tool_tip.show();
     if (!isNaN(+d.loc)){
         if ((tempStore.loc!==d.loc)) {
-            readPromise.cancel();
-            readPromise = new Promise(function(resolve, reject, onCancel) {resolve(readMobileData(d.loc))});
-            readPromise.then(data =>{
-                console.log('here')
+            readMobileData(d.loc).then(data =>{
                 tempStore.loc = d.loc;
                 tempStore.data=data;
                 tempStore.dataShort=tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''));
-                onEnableCar (d.time?[tempStore.dataShort,tempStore.data]:[tempStore.data],d);
+                onEnableCar (d.time?tempStore.dataShort:tempStore.data,d);
                 lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
             });
         }else {
             tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-            onEnableCar (d.time?[tempStore.dataShort,tempStore.data]:[tempStore.data],d);
+            onEnableCar(d.time?tempStore.dataShort:tempStore.data,d.loc);
             lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
         }
     }else {
@@ -740,56 +731,36 @@ function onmouseoverRadar (d) {
 
 function onEnableCar (darr,data){
     // d3.select('#map g#regMap').select('.mobileSensor').remove();
-    d3.select('#maptitle').text(isNaN(+data.loc)?(data.loc!=='all'?('Static - '+data.loc.replace('s','')):'All Sensor'):('Mobile - '+data.loc))
-    let newdata=[];
-    darr.forEach(e=>{
-        let newdata_temp=[];
-        let oldvalue={};
-        e.forEach(d=>{
-        if(d.Long!==oldvalue.Long||d.Lat!==oldvalue.Lat){
-            newdata_temp.push(d);
-            oldvalue = d;
-        }});
-        newdata.push(newdata_temp);
-    });
     let cm = d3.select('#map g#regMap')
         .selectAll('.mobileSensor')
-        .data(newdata);
+        .data([darr]);
     cm.exit().remove();
-    cm = cm.enter()
+    cm.enter()
         .append("path")
         .attr("class", "mobileSensor")
-        .attr("id", (d,i)=>i===(newdata.length-1)?"mobileSensor":undefined)
         .attr("fill", 'none')
-        .attr("stroke",'var(--hightlight)')
-        .attr("stroke-dasharray",(d,i)=> i?4:'none')
+        .attr("stroke", '#f0f')
         .attr("stroke-width", 2)
+        .attr('marker-end','url(#head)')
         .merge(cm)
-        .style('opacity',0.75)
+        .style('opacity',0.87)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
-            .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }))
-        .attr('marker-end','url(#head)');
-    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[darr.length-1]);
-    let cc = d3.select('#map g#regMap text.arrow');
-    const rate = Math.ceil(d3.select('#mobileSensor').node().getTotalLength() / 200)-1;
-    if (cc.empty()) {
-        cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy', '4');
-    }
-
-    cim = cc.selectAll('textPath')
-        .data(d3.range(0,rate).map(d=>(d+1)/rate));
-    cim.exit().remove();
-    cim.enter()
-        .append("textPath")
-        .merge(cim)
-        .attr("fill", 'var(--hightlight_Darker)')
-        .style("font-size", (d)=>(d*1.5)+'em')
-        .attr("stroke", 'white')
-        .attr("stroke-width", 0.5)
-        .attrs({'xlink:href':'#mobileSensor',
-            'startOffset': d=> (d*100)+'%'}).text('\u27A4');
-    const positionarray = d3.nest().key(d=>formatTime(d.time)).entries(darr[0]).map(d=>{
+            .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }));
+    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr);
+    // let cc = d3.select('#map g#regMap')
+    //     .selectAll('.mobileSensorCircle')
+    //     .data(circlearr);
+    // cc.exit().remove();
+    // cc.enter()
+    //     .append("circle")
+    //     .attr("class", "mobileSensorCircle")
+    //     .attr("r", 2)
+    //     .merge(cc)
+    //     .style('opacity',0.5)
+    //     .attrs({'cx':d=> projectionFunc([d.values[0].Long, d.values[0].Lat])[0],
+    //         'cy': d=> projectionFunc([d.values[0].Long, d.values[0].Lat])[1]});
+    const positionarray = circlearr.map(d=>{
         const dd = d.values[Math.round((d.values.length-1)/2)];
         return projectionFunc([dd.Long, dd.Lat])
     });
@@ -819,7 +790,6 @@ function animationShift(index,g){
 
 function onmouseleaveRadar (d) {
     d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0.5);
-    d3.select('.linkLable_text.a'+d.loc).style('fill','currentcolor');
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',false);

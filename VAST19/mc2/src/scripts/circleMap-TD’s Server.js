@@ -55,7 +55,7 @@ d3.circleMap = function () {
     let group_mode = "outlier";
 
     //event register
-    let mouseoverEvent, mouseleaveEvent, mouseclickEvent;
+    let mouseoverEvent, mouseleaveEvent;
 
     function updateSummary(data){
         // const data_new = dataRaw.Variables.map((s,si)=>{
@@ -566,13 +566,13 @@ d3.circleMap = function () {
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
-            rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+3)]);
+            rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+2)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            let height_needed = (_.unique(arr,d=>d.loc).length+3) * radaropt.h;
+            let height_needed = (_.unique(arr,d=>d.loc).length+2) * radaropt.h;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
-                rowscale.range([0,(graphicopt.customheight-graphicopt.margin.top-graphicopt.margin.bottom)/(_.unique(arr,d=>d.loc).length+3)]);
+                rowscale.range([0,(graphicopt.customheight-graphicopt.margin.top-graphicopt.margin.bottom)/(_.unique(arr,d=>d.loc).length+2)]);
             }
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
@@ -606,10 +606,10 @@ d3.circleMap = function () {
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
-            rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+3)]);
+            rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+2)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            let height_needed = (_.unique(data,d=>d.loc).length+3) * radaropt.h;
+            let height_needed = (_.unique(data,d=>d.loc).length+2) * radaropt.h;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
             }
@@ -648,7 +648,7 @@ d3.circleMap = function () {
             .attr('class','linkLable_textg');
 
         Nlabel.append('text')
-            .attr('class',d=>'linkLable_text a'+d.loc);
+            .attr('class','linkLable_text');
 
         Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
             .attr('x',radaropt.w)
@@ -661,10 +661,10 @@ d3.circleMap = function () {
         Nlabel.append('g')
             .attr('class',d=>'linkLable_radar '+fixstr(d.id));
 
-        Nlabel.merge(lables)
-
-            .select('.linkLable_radar')
+        Nlabel.merge(lables).select('.linkLable_radar')
             .attr('class',d=>'linkLable_radar '+fixstr(d.id))
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
             .each(d=>
             CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 
@@ -677,8 +677,9 @@ d3.circleMap = function () {
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id)+' a'+d.loc)
             .classed('selected',d=>d.loc==='all')
-            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')');
-        radarMap.addMouseEvent();
+            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent);
         let count=0;
         let totalcount = 199;
         let updatecondition = 0.1;
@@ -693,35 +694,22 @@ d3.circleMap = function () {
                         );
                     count++;
                     if (count / totalcount > updatecondition) {
+                        console.log(updatecondition)
                         updateProcessBar(updatecondition);
                         updatecondition += 0.1;
                     }
                     resolve('done');
-                }, 0);
+                }, 1);
             })
         });
         Promise.all(promiseq).then(doneProcessBar);
     }
-    radarMap.removeMouseEvent = ()=>{
-        g.selectAll(".linkLineg,.linkLable_textg")
-            .on('mouseover',null)
-            .on('mouseleave',null)
-            .on('click',null);
-    };
-    radarMap.addMouseEvent = ()=>{
-        g.selectAll(".linkLineg,.linkLable_textg")
-            .on('mouseover',mouseoverEvent)
-            .on('mouseleave',mouseleaveEvent)
-            .on('click',mouseclickEvent);
-    };
     function doneProcessBar(){
         d3.select('#load_data').classed('hidden',true);
-        d3.select('.cover').classed('hidden', true);
     }
     function updateProcessBar(rate){
         d3.select('#load_data').classed('hidden',false);
         d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
-        d3.select('.cover').classed('hidden', false);
     }
     function fixstr(s) {
         return s.replace(/ |-|#/gi,'');
@@ -814,10 +802,6 @@ d3.circleMap = function () {
 
     radarMap.onmouseover = function (_) {
         return arguments.length ? (mouseoverEvent = _, radarMap) : mouseoverEvent;
-    };
-
-    radarMap.onmouseclick = function (_) {
-        return arguments.length ? (mouseclickEvent = _, radarMap) : mouseclickEvent;
     };
 
     radarMap.onmouseleave = function (_) {
