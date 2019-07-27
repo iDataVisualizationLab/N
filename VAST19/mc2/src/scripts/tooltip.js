@@ -14,15 +14,20 @@ function cotenttip (hideLine){
     str += '<div class="tootltip_text"></div>'; // Lingeph holder
     str += '<div class="lineChart_tip"></div>'; // Lingeph holder
     str += '<div class="'+classtype+'"></div>'; // Spider chart holder
-    str += '<button onclick="tool_tip.hide(),CircleMapplot.addMouseEvent()">Close</button>';
+    str += '<button onclick="recover()">Close</button>';
     // str += '<button onclick="saveSVG(this)">Save Image</button>';
     // str += '<button onclick="saveSVG_light(this,\'svg\')" class="modal-trigger" href="#savedialog">Save SVG</button>';
     // str += '<button onclick="saveSVG_light(this,\'png\')" class="modal-trigger" href="#savedialog">Save PNG</button>';
     // str += '<button onclick="saveSVG_light(this,\'jpg\')" class="modal-trigger" href="#savedialog">Save JPG</button>';
     return str;
 }
-
+function recover(){
+    tool_tip.hide();
+    CircleMapplot.addMouseEvent();
+    onmouseleaveRadar(d3.select('#d3-tip-mc1').data());
+}
 function tooltipBox (data){
+    d3.select('#d3-tip-mc1').data(data);
     let type = data.loc==='all'?'Summary':(isNaN(+data.loc)?'Static':'Mobile');
     let id = isNaN(+data.loc)?+data.loc.replace('s',''):+data.loc;
     let headertext = type==="Summary"? type: type+' - ID: '+id;
