@@ -774,7 +774,7 @@ function onEnableCar (darr,data){
     let cc = d3.select('#map g#regMap text.arrow');
     const rate = Math.ceil(d3.select('#mobileSensor').node().getTotalLength() / 200)-1;
     if (cc.empty()) {
-        cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy', '4');
+        cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').style('dominant-baseline', 'central');
     }
 
     cim = cc.selectAll('textPath')
@@ -799,7 +799,7 @@ function clone_markpath (data,positionarray){
     let class_chose = data.time?data.id:('a'+data.loc);
     let clonesymbol = d3.select('#map g#regMap')
         .selectAll('.mobileMark')
-        .data(d3.selectAll('.linkLineg.'+class_chose).data(),d=>d);
+        .data(d3.selectAll('.linkLineg.'+class_chose).data(),d=>d.id);
     clonesymbol.exit().remove();
     clonesymbol.enter()
         .append(d=>d3.select('.linkLineg.'+d.id).node().cloneNode(true))
