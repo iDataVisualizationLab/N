@@ -723,7 +723,7 @@ function onmouseoverRadar (d) {
                             onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
                             lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {
                                 w: 400,
-                                h: 200
+                                h: 150
                             });
                             resolve('done');
                         },0);
@@ -736,7 +736,7 @@ function onmouseoverRadar (d) {
                 setTimeout(() => {
                     tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                     onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
-                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
+                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 150});
                     resolve('done');
                 },0);
             });
