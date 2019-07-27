@@ -566,13 +566,13 @@ d3.circleMap = function () {
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
-            rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+2)]);
+            rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+3)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            let height_needed = (_.unique(arr,d=>d.loc).length+2) * radaropt.h;
+            let height_needed = (_.unique(arr,d=>d.loc).length+3) * radaropt.h;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
-                rowscale.range([0,(graphicopt.customheight-graphicopt.margin.top-graphicopt.margin.bottom)/(_.unique(arr,d=>d.loc).length+2)]);
+                rowscale.range([0,(graphicopt.customheight-graphicopt.margin.top-graphicopt.margin.bottom)/(_.unique(arr,d=>d.loc).length+3)]);
             }
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
@@ -606,10 +606,10 @@ d3.circleMap = function () {
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
-            rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+2)]);
+            rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+3)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            let height_needed = (_.unique(data,d=>d.loc).length+2) * radaropt.h;
+            let height_needed = (_.unique(data,d=>d.loc).length+3) * radaropt.h;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
             }
