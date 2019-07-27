@@ -15,6 +15,56 @@
 </head>
 
 <body class="light">
+<div class="cover">
+    <div class="spinnerC center">
+        <h3>loading...</h3>
+        <div class="progress" id="load_data">
+            <div class="determinate" style="width: 0%"></div>
+            <span class="col s1">load graphic</span>
+        </div>
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
 <ul id="mc1_button" class="dropdown-content">
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/TTU-Vuong-MC1/index.htm" onclick="enableIframe()">Report</a></li>
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html" onclick="enableIframe()">Video</a></li>
@@ -35,9 +85,9 @@
     <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/video.html" onclick="enableIframe()">Video</a></li>
     <li><a href="https://idatavisualizationlab.github.io/N/VAST19/gc/index.html">Demo</a></li>
 </ul>
-<nav >
+<nav>
 
-    <div class="nav-wrapper" id="header">
+    <div class="nav-wrapper" id="header" style="z-index: 20">
 
         <!--<div class="brand-logo center input-field col s12 inline" style="font-size: 1.5rem;">-->
             <!--Mini chalenge 2-->
@@ -270,58 +320,6 @@
     </div>
     <iframe frameborder="0" id="iframeResult" name="iframeResult" class= "row mainContain"></iframe>
     <div id="demo" class= "row mainContain active">
-        <div class="cover">
-            <div class="spinnerC center">
-                <h3>loading...</h3>
-                <div class="preloader-wrapper big active">
-                    <div class="spinner-layer spinner-blue">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div><div class="gap-patch">
-                        <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                    </div>
-
-                    <div class="spinner-layer spinner-red">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div><div class="gap-patch">
-                        <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                    </div>
-
-                    <div class="spinner-layer spinner-yellow">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div><div class="gap-patch">
-                        <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                    </div>
-
-                    <div class="spinner-layer spinner-green">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div><div class="gap-patch">
-                        <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row no_magrin s12 hidden" id="load_data">
-            <div class="progress col s11">
-                <div class="determinate col" style="width: 0%"></div>
-            </div>
-            <span class="col s1">load graphic</span>
-        </div>
         <!--<div id="header2" class="row s12 marginBottom0">-->
             <!--&lt;!&ndash;<h1>HPCC Explorer</h1>&ndash;&gt;-->
             <!--&lt;!&ndash;<div class="col valign-wrapper">&ndash;&gt;-->

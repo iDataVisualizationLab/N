@@ -335,10 +335,10 @@ function init() {
         // databyLoc.push({'key':'-1',values:dataSumAll});
         handleDataIcon (summaryBySensor);
 
-        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar);
+        CircleMapplot.rowMap(locs).timeFormat(formatTime).onmouseover(onmouseoverRadar).onmouseleave(onmouseleaveRadar).onmouseclick(onclickRadar);
         handleOutlier (data,currentService);
         // request();
-        d3.select('.cover').classed('hidden',true);
+        // d3.select('.cover').classed('hidden',true);
     });
 }
 
@@ -694,13 +694,17 @@ function objecttoArrayRadar(o){
 // list html
 let tempStore ={};
 let readPromise = Promise.resolve();
+function onclickRadar (d) {
+    CircleMapplot.removeMouseEvent();
+}
+
 function onmouseoverRadar (d) {
+    tool_tip.show();
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
     if (d.regions&&d.regions.length)
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
     d3.select('.linkLable_text.a'+d.loc).style('fill','var(--hightlight)');
-    tool_tip.show();
     if (!isNaN(+d.loc)){
         if ((tempStore.loc!==d.loc)) {
             readPromise.cancel();
@@ -772,17 +776,19 @@ function onEnableCar (darr,data){
     if (cc.empty()) {
         cc = d3.select('#map g#regMap').append('text').attr('class', 'arrow').attr('dy', '4');
     }
-        cim = cc.selectAll('textPath')
-            .data(d3.range(0,rate).map(d=>(d+1)/rate));
-        cim.exit().remove();
-        cim.enter()
-            .append("textPath")
-            .merge(cim)
-            .attr("fill", 'var(--hightlight_Darker)')
-            .attr("stroke", 'white')
-            .attr("stroke-width", 0.05)
-            .attrs({'xlink:href':'#mobileSensor',
-                'startOffset': d=> (d*100)+'%'}).text('\u27A4');
+
+    cim = cc.selectAll('textPath')
+        .data(d3.range(0,rate).map(d=>(d+1)/rate));
+    cim.exit().remove();
+    cim.enter()
+        .append("textPath")
+        .merge(cim)
+        .attr("fill", 'var(--hightlight_Darker)')
+        .style("font-size", (d)=>(d*1.5)+'em')
+        .attr("stroke", 'white')
+        .attr("stroke-width", 0.5)
+        .attrs({'xlink:href':'#mobileSensor',
+            'startOffset': d=> (d*100)+'%'}).text('\u27A4');
     const positionarray = d3.nest().key(d=>formatTime(d.time)).entries(darr[0]).map(d=>{
         const dd = d.values[Math.round((d.values.length-1)/2)];
         return projectionFunc([dd.Long, dd.Lat])

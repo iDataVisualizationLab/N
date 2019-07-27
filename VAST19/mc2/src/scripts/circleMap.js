@@ -55,7 +55,7 @@ d3.circleMap = function () {
     let group_mode = "outlier";
 
     //event register
-    let mouseoverEvent, mouseleaveEvent;
+    let mouseoverEvent, mouseleaveEvent, mouseclickEvent;
 
     function updateSummary(data){
         // const data_new = dataRaw.Variables.map((s,si)=>{
@@ -661,10 +661,10 @@ d3.circleMap = function () {
         Nlabel.append('g')
             .attr('class',d=>'linkLable_radar '+fixstr(d.id));
 
-        Nlabel.merge(lables).select('.linkLable_radar')
+        Nlabel.merge(lables)
+
+            .select('.linkLable_radar')
             .attr('class',d=>'linkLable_radar '+fixstr(d.id))
-            .on('mouseover',mouseoverEvent)
-            .on('mouseleave',mouseleaveEvent)
             .each(d=>
             CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 
@@ -677,9 +677,8 @@ d3.circleMap = function () {
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id)+' a'+d.loc)
             .classed('selected',d=>d.loc==='all')
-            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
-            .on('mouseover',mouseoverEvent)
-            .on('mouseleave',mouseleaveEvent);
+            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')');
+        radarMap.addMouseEvent();
         let count=0;
         let totalcount = 199;
         let updatecondition = 0.1;
@@ -694,22 +693,35 @@ d3.circleMap = function () {
                         );
                     count++;
                     if (count / totalcount > updatecondition) {
-                        console.log(updatecondition)
                         updateProcessBar(updatecondition);
                         updatecondition += 0.1;
                     }
                     resolve('done');
-                }, 1);
+                }, 0);
             })
         });
         Promise.all(promiseq).then(doneProcessBar);
     }
+    radarMap.removeMouseEvent = ()=>{
+        g.selectAll(".linkLineg,.linkLable_textg")
+            .on('mouseover',null)
+            .on('mouseleave',null)
+            .on('click',null);
+    };
+    radarMap.addMouseEvent = ()=>{
+        g.selectAll(".linkLineg,.linkLable_textg")
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
+            .on('click',mouseclickEvent);
+    };
     function doneProcessBar(){
         d3.select('#load_data').classed('hidden',true);
+        d3.select('.cover').classed('hidden', true);
     }
     function updateProcessBar(rate){
         d3.select('#load_data').classed('hidden',false);
         d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
+        d3.select('.cover').classed('hidden', false);
     }
     function fixstr(s) {
         return s.replace(/ |-|#/gi,'');
@@ -802,6 +814,10 @@ d3.circleMap = function () {
 
     radarMap.onmouseover = function (_) {
         return arguments.length ? (mouseoverEvent = _, radarMap) : mouseoverEvent;
+    };
+
+    radarMap.onmouseclick = function (_) {
+        return arguments.length ? (mouseclickEvent = _, radarMap) : mouseclickEvent;
     };
 
     radarMap.onmouseleave = function (_) {
