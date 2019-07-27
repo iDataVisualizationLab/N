@@ -648,7 +648,7 @@ d3.circleMap = function () {
             .attr('class','linkLable_textg');
 
         Nlabel.append('text')
-            .attr('class',d=>'linkLable_text a'+d.loc);
+            .attr('class','linkLable_text');
 
         Nlabel.merge(lables).select('.linkLable_text').datum(d=>d)
             .attr('x',radaropt.w)
