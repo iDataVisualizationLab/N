@@ -23,6 +23,7 @@ function cotenttip (hideLine){
 }
 function recover(){
     tool_tip.hide();
+    d3.select('#d3-tip-mc1').classed('enablemouse',false);
     CircleMapplot.addMouseEvent();
     onmouseleaveRadar(d3.select('#d3-tip-mc1').data());
 }
