@@ -718,20 +718,27 @@ function onmouseoverRadar (d) {
             }).then(function(){
                 if (!renderPromise.isCancelled()) {
                     renderPromise = new Promise(function(resolve, reject, onCancel) {
-                        tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-                        onEnableCar(d.time ? [tempStore.data,tempStore.dataShort] : [tempStore.data], d);
-                        lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
-                        resolve('done');
+                        setTimeout(() => {
+                            tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
+                            onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
+                            lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {
+                                w: 400,
+                                h: 200
+                            });
+                            resolve('done');
+                        },0);
                     });
                 }
             });
         }else {
             renderPromise.cancel();
             renderPromise = new Promise(function(resolve, reject, onCancel) {
-                tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-                onEnableCar(d.time ? [tempStore.data,tempStore.dataShort] : [tempStore.data], d);
-                lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
-                resolve('done');
+                setTimeout(() => {
+                    tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
+                    onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
+                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
+                    resolve('done');
+                },0);
             });
         }
     }else {
@@ -774,7 +781,7 @@ function onEnableCar (darr,data){
         .attr("id", (d,i)=>i?undefined:"mobileSensor")
         .attr("fill", 'none')
         .attr("stroke",(d,i)=> i?'black':'var(--hightlight)')
-        .attr("stroke-dasharray",(d,i)=> i?'none':4)
+        .attr("stroke-dasharray",(d,i)=> i?'none':'2 4')
         .attr("stroke-width", 2)
         .merge(cm)
         .style('opacity',0.75)
@@ -845,7 +852,7 @@ function lineGraph(div,data,options){
     var opt = {
         w: 300,				//Width of the circle
         h: 100,				//Height of the circle
-        margin: {top: 10, right: 0, bottom: 20, left: 50}, //The margins of the SVG
+        margin: {top: 10, right: 0, bottom: 30, left: 50}, //The margins of the SVG
         levels: 3,				//How many levels or inner circles should there be drawn
         maxValue: 1, 			//What is the value that the biggest circle will represent
         minValue: 0, 			//What is the value that the biggest circle will represent
@@ -908,7 +915,12 @@ function lineGraph(div,data,options){
     // 3. Call the x axis in a group tag
     g.select("g.x.axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+        .call(d3.axisBottom(xScale).ticks(10))
+        .selectAll("text")
+
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start"); // Create an axis component with d3.axisBottom
 
 // 4. Call the y axis in a group tag
     g.select("g.y.axis")
@@ -920,7 +932,6 @@ function lineGraph(div,data,options){
         pathg = g.append('path').attr("class", "line");
     pathg.datum(data) // 10. Binds data to the line
         .attr("d", line)
-        .style('stroke','black')
         .style('stroke-width',1)
         .style('fill','none')
     ; // 11. Calls the line generator
