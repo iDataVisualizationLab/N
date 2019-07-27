@@ -736,6 +736,14 @@ function onmouseoverRadar (d) {
 
 function onEnableCar (darr,data){
     // d3.select('#map g#regMap').select('.mobileSensor').remove();
+    let newdata=[];
+    let oldvalue={};
+    darr.forEach(d=>{
+        if(d.Long!==oldvalue.Long||d.Lat!==oldvalue.Lat){
+            newdata.push(d);
+            oldvalue = d;
+        }
+    });
     let cm = d3.select('#map g#regMap')
         .selectAll('.mobileSensor')
         .data([darr]);
