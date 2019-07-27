@@ -782,7 +782,7 @@ function onEnableCar (darr,data){
             .attr("stroke-width", 0.05)
             .attrs({'xlink:href':'#mobileSensor',
                 'startOffset': d=> (d*100)+'%'}).text('\u27A4');
-    const positionarray = circlearr.map(d=>{
+    const positionarray = d3.nest().key(d=>formatTime(d.time)).entries(darr[0]).map(d=>{
         const dd = d.values[Math.round((d.values.length-1)/2)];
         return projectionFunc([dd.Long, dd.Lat])
     });
