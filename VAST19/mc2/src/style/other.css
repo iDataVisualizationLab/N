@@ -276,7 +276,7 @@ table.dataTable th:not(:first-child) {
 }
 
 .lineChart_tip .dot {
-    opacity: 0.2;
+    opacity: 0.8;
 }
 
 /*.radarChart_tip {*/

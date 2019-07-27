@@ -736,7 +736,7 @@ function onmouseoverRadar (d) {
                 setTimeout(() => {
                     tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                     onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
-                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
+                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 450, h: 150});
                     resolve('done');
                 },0);
             });
@@ -915,12 +915,7 @@ function lineGraph(div,data,options){
     // 3. Call the x axis in a group tag
     g.select("g.x.axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale).ticks(10))
-        .selectAll("text")
-
-        .attr("dy", ".35em")
-        .attr("transform", "rotate(45)")
-        .style("text-anchor", "start"); // Create an axis component with d3.axisBottom
+        .call(d3.axisBottom(xScale).ticks(10));
 
 // 4. Call the y axis in a group tag
     g.select("g.y.axis")
