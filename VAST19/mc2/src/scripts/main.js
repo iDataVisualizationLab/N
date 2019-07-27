@@ -885,11 +885,11 @@ function lineGraph(div,data,options){
         g = svg.append('g').attr('class','tipg').attr('transform','translate('+opt.margin.left+','+opt.margin.top+')');
         // 3. Call the x axis in a group tag
         g.append("g")
-            .attr("class", "x axis").style('font','unset');
+            .attr("class", "x axis").style('font-family','unset');
 
         // 4. Call the y axis in a group tag
         g.append("g")
-            .attr("class", "y axis").style('font','unset');
+            .attr("class", "y axis").style('font-family','unset');
     }else{
         g = svg.select('g.tipg');
     }
