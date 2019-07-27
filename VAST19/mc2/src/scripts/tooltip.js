@@ -16,7 +16,7 @@ function cotenttip (hideLine){
     str += '<div class="'+classtype+'"></div>'; // Spider chart holder
     str += '<div class="lineChart_tip"></div>'; // Lingeph holder
     str += '<button onclick="recover()">Close</button>';
-    str += '<div class="loaderDiv""></div>';
+    str += '<div class="loaderDiv"></div>';
     // str += '<button onclick="saveSVG(this)">Save Image</button>';
     // str += '<button onclick="saveSVG_light(this,\'svg\')" class="modal-trigger" href="#savedialog">Save SVG</button>';
     // str += '<button onclick="saveSVG_light(this,\'png\')" class="modal-trigger" href="#savedialog">Save PNG</button>';

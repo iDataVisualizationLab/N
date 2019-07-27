@@ -729,7 +729,7 @@ function onmouseoverRadar (d) {
                                 w: 460,
                                 h: 150
                             });
-                            d3.select('.loaderDiv').selectAll('*').remove();
+                            d3.select('.loaderDiv').remove();
                             resolve('done');
                         },0);
                     });
@@ -742,7 +742,7 @@ function onmouseoverRadar (d) {
                     tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                     onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
                     lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
-                    d3.select('.loaderDiv').selectAll('*').remove();
+                    d3.select('.loaderDiv').remove();
                     resolve('done');
                 },0);
             });
@@ -762,7 +762,7 @@ function onmouseoverRadar (d) {
                 }, 0);
             });
         }else{
-            d3.select('.loaderDiv').selectAll('*').remove();
+            d3.select('.loaderDiv').remove();
         }
         d3.select('#map g#regMap')
             .selectAll('.mobileSensor').remove();
