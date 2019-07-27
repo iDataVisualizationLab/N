@@ -561,7 +561,8 @@ body.light {
 .d3-tip .tip-divtable {
   margin: 10px;
   position: absolute;
-  bottom: 180px;
+  bottom: 230px;
+  background-color: #efefef;
 }
 .d3-tip table {
   width: unset;
@@ -575,7 +576,7 @@ body.light {
   line-height: 0.5rem;
 }
 .d3-tip table thead td, .d3-tip table thead th, .d3-tip table tr td, .d3-tip table tr th {
-  padding: 0.5rem;
+  padding: 0.25rem;
 }
 .d3-tip table tbody tr td:nth-child(even) {
   text-align: right;
