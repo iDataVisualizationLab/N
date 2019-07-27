@@ -11,6 +11,7 @@ function cotenttip (hideLine){
     str="";
     hideLine = hideLine||false;
     var classtype =  "radarChart_tip";
+    str += '<div class="tootltip_instruction"><span>Click to hold</span></div>'; // instruction holder
     str += '<div class="tootltip_text"></div>'; // text holder
     str += '<div class="'+classtype+'"></div>'; // Spider chart holder
     str += '<div class="lineChart_tip"></div>'; // Lingeph holder
