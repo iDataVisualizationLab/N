@@ -722,7 +722,7 @@ function onmouseoverRadar (d) {
                             tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                             onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
                             lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {
-                                w: 400,
+                                w: 460,
                                 h: 150
                             });
                             resolve('done');
@@ -736,7 +736,7 @@ function onmouseoverRadar (d) {
                 setTimeout(() => {
                     tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
                     onEnableCar(d.time ? [tempStore.data, tempStore.dataShort] : [tempStore.data], d);
-                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 150});
+                    lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
                     resolve('done');
                 },0);
             });
@@ -852,7 +852,7 @@ function lineGraph(div,data,options){
     var opt = {
         w: 300,				//Width of the circle
         h: 100,				//Height of the circle
-        margin: {top: 10, right: 0, bottom: 30, left: 50}, //The margins of the SVG
+        margin: {top: 10, right: 5, bottom: 30, left: 50}, //The margins of the SVG
         levels: 3,				//How many levels or inner circles should there be drawn
         maxValue: 1, 			//What is the value that the biggest circle will represent
         minValue: 0, 			//What is the value that the biggest circle will represent
