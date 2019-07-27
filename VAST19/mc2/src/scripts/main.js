@@ -693,6 +693,7 @@ function objecttoArrayRadar(o){
 }
 // list html
 let tempStore ={};
+let readPromise = Promise.resolve();
 function onmouseoverRadar (d) {
     // console.log('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')')
     if (d.regions&&d.regions.length)
@@ -702,7 +703,9 @@ function onmouseoverRadar (d) {
     tool_tip.show();
     if (!isNaN(+d.loc)){
         if ((tempStore.loc!==d.loc)) {
-            readMobileData(d.loc).then(data =>{
+            readPromise.cancel();
+            readPromise = new Promise(function(resolve, reject, onCancel) {resolve(readMobileData(d.loc))});
+            readPromise.then(data =>{
                 console.log('here')
                 tempStore.loc = d.loc;
                 tempStore.data=data;
