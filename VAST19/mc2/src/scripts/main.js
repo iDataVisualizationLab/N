@@ -694,6 +694,7 @@ function objecttoArrayRadar(o){
 // list html
 let tempStore ={};
 let readPromise = Promise.resolve();
+let renderPromise = Promise.resolve();
 function onclickRadar (d) {
     CircleMapplot.removeMouseEvent();
 }
@@ -710,17 +711,27 @@ function onmouseoverRadar (d) {
             readPromise.cancel();
             readPromise = new Promise(function(resolve, reject, onCancel) {resolve(readMobileData(d.loc))});
             readPromise.then(data =>{
-                console.log('here')
                 tempStore.loc = d.loc;
                 tempStore.data=data;
-                tempStore.dataShort=tempStore.data.filter(e=>(formatTime(e.time)+'')===(formatTime(d.time)+''));
-                onEnableCar (d.time?[tempStore.dataShort,tempStore.data]:[tempStore.data],d);
-                lineGraph('.lineChart_tip',d.time?tempStore.dataShort:tempStore.data,{w:400,h:200});
+                renderPromise.cancel();
+            }).then(function(){
+                if (!renderPromise.isCancelled()) {
+                    renderPromise = new Promise(function(resolve, reject, onCancel) {
+                        tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
+                        onEnableCar(d.time ? [tempStore.dataShort, tempStore.data] : [tempStore.data], d);
+                        lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
+                        resolve('done');
+                    });
+                }
             });
         }else {
-            tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-            onEnableCar (d.time?[tempStore.dataShort,tempStore.data]:[tempStore.data],d);
-            lineGraph('.lineChart_tip', d.time?tempStore.dataShort:tempStore.data, {w: 400, h: 200});
+            renderPromise.cancel();
+            renderPromise = new Promise(function(resolve, reject, onCancel) {
+                tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
+                onEnableCar(d.time ? [tempStore.dataShort, tempStore.data] : [tempStore.data], d);
+                lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
+                resolve('done');
+            });
         }
     }else {
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
