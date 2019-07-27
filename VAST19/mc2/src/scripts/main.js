@@ -697,6 +697,7 @@ let readPromise = Promise.resolve();
 let renderPromise = Promise.resolve();
 function onclickRadar (d) {
     CircleMapplot.removeMouseEvent();
+    d3.select('#d3-tip-mc1').classed('enablemouse',true);
 }
 
 function onmouseoverRadar (d) {
@@ -718,7 +719,7 @@ function onmouseoverRadar (d) {
                 if (!renderPromise.isCancelled()) {
                     renderPromise = new Promise(function(resolve, reject, onCancel) {
                         tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-                        onEnableCar(d.time ? [tempStore.dataShort, tempStore.data] : [tempStore.data], d);
+                        onEnableCar(d.time ? [tempStore.data,tempStore.dataShort] : [tempStore.data], d);
                         lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
                         resolve('done');
                     });
@@ -728,7 +729,7 @@ function onmouseoverRadar (d) {
             renderPromise.cancel();
             renderPromise = new Promise(function(resolve, reject, onCancel) {
                 tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
-                onEnableCar(d.time ? [tempStore.dataShort, tempStore.data] : [tempStore.data], d);
+                onEnableCar(d.time ? [tempStore.data,tempStore.dataShort] : [tempStore.data], d);
                 lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 400, h: 200});
                 resolve('done');
             });
@@ -765,15 +766,15 @@ function onEnableCar (darr,data){
     });
     let cm = d3.select('#map g#regMap')
         .selectAll('.mobileSensor')
-        .data(newdata);
+            .data(newdata);
     cm.exit().remove();
     cm = cm.enter()
         .append("path")
         .attr("class", "mobileSensor")
-        .attr("id", (d,i)=>i===(newdata.length-1)?"mobileSensor":undefined)
+        .attr("id", (d,i)=>i?undefined:"mobileSensor")
         .attr("fill", 'none')
         .attr("stroke",'var(--hightlight)')
-        .attr("stroke-dasharray",(d,i)=> i?4:'none')
+        .attr("stroke-dasharray",(d,i)=> i?'none':4)
         .attr("stroke-width", 2)
         .merge(cm)
         .style('opacity',0.75)
@@ -781,7 +782,7 @@ function onEnableCar (darr,data){
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }))
         .attr('marker-end','url(#head)');
-    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[darr.length-1]);
+    let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[0]);
     let cc = d3.select('#map g#regMap text.arrow');
     const rate = Math.ceil(d3.select('#mobileSensor').node().getTotalLength() / 200)-1;
     if (cc.empty()) {

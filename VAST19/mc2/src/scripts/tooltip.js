@@ -14,7 +14,7 @@ function cotenttip (hideLine){
     str += '<div class="tootltip_text"></div>'; // Lingeph holder
     str += '<div class="lineChart_tip"></div>'; // Lingeph holder
     str += '<div class="'+classtype+'"></div>'; // Spider chart holder
-    str += '<button onclick="tool_tip.hide()">Close</button>';
+    str += '<button onclick="tool_tip.hide(),CircleMapplot.addMouseEvent()">Close</button>';
     // str += '<button onclick="saveSVG(this)">Save Image</button>';
     // str += '<button onclick="saveSVG_light(this,\'svg\')" class="modal-trigger" href="#savedialog">Save SVG</button>';
     // str += '<button onclick="saveSVG_light(this,\'png\')" class="modal-trigger" href="#savedialog">Save PNG</button>';
