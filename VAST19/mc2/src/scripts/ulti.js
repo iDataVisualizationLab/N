@@ -22,6 +22,7 @@ function readDatacsv(choice,type) {
     return d3[type]("src/data/" + choice + "."+type, function (data) {
         data.time = new Date(data.Timestamp);
         delete data.Timestamp;
+        delete data.Units;
         _.without(Object.keys(data),'time',' User-id','User-id','Units','Sensor-id','regions').forEach(k=>data[k] = (data[k]==="")?undefined:(+data[k]));
         return data;
     });

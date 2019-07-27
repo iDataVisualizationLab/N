@@ -286,6 +286,7 @@ function initDemo(){
     init();
 }
 // let ssss;
+let datastatic;
 function init() {
     initRadarMap();
     const choice = d3.select('#datacom').node().value;
@@ -297,9 +298,11 @@ function init() {
         readData(choice,'json'),
         readData(choice+'_static','json'),
         readData(choice+'_sum','json'),
-        readData(choice+'_sum_time','json')
-    ]).then(([d,statics,summaryBySensor,summaryByTime])=>{
+        readData(choice+'_sum_time','json'),
+        readDatacsv('raw/StaticSensorReadings','csv')
+    ]).then(([d,statics,summaryBySensor,summaryByTime,dataS])=>{
         // ssss = statics.slice();
+        datastatic = dataS;
         d.forEach(t=>t.time=new Date(t.time));
         statics.forEach(t=>t.time=new Date(t.time));
         summaryByTime.forEach(t=>t.time=new Date(t.time));
@@ -742,8 +745,24 @@ function onmouseoverRadar (d) {
             });
         }
     }else {
+        tempStore.loc = d.loc;
+        tempStore.data=datastatic.filter(e=>e['Sensor-id']===d.loc.replace('s',''));
+
+        renderPromise.cancel();
+        renderPromise = new Promise(function(resolve, reject, onCancel) {
+            setTimeout(() => {
+                tempStore.dataShort = tempStore.data.filter(e => (formatTime(e.time) + '') === (formatTime(d.time) + ''));
+                lineGraph('.lineChart_tip', d.time ? tempStore.dataShort : tempStore.data, {w: 460, h: 150});
+                resolve('done');
+            },0);
+        });
+        d3.select('#map g#regMap')
+            .selectAll('.mobileSensor').remove();
+        d3.select('#map g#regMap')
+            .selectAll('.mobileMark ').remove();
         d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
     }
+    d3.select('#maptitle').text(isNaN(+d.loc)?(data.loc!=='all'?('Static - '+d.loc.replace('s','')):'All Sensor'):('Mobile - '+d.loc))
     tooltip_cof.schema = serviceFullList;
     tooltip_cof.arrColor = arrColor;
     tooltip_cof.markedLegend = globalScale.domain();
@@ -759,7 +778,6 @@ function onmouseoverRadar (d) {
 
 function onEnableCar (darr,data){
     // d3.select('#map g#regMap').select('.mobileSensor').remove();
-    d3.select('#maptitle').text(isNaN(+data.loc)?(data.loc!=='all'?('Static - '+data.loc.replace('s','')):'All Sensor'):('Mobile - '+data.loc))
     let newdata=[];
     darr.forEach(e=>{
         let newdata_temp=[];
