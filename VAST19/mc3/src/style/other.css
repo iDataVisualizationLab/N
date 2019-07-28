@@ -3,6 +3,8 @@
     --colorMain2_light: #f3f3f3;
     /*--colorMain2_light: #d8d8d8;*/
     --colorMain2: #630016;
+    --annotation-context-color:#9467bd;
+    --annotation-anomaly-color:#9467bd;
 }
 
 input[type=text].inputHolder, input[type=search]:not(.browser-default){
@@ -307,3 +309,5 @@ mark span {
 svg {
     float: left;
 }
+
+

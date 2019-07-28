@@ -2,6 +2,9 @@
     --sideVal: 50%;
     --colorMain2_light: #d8d8d8;
     --colorMain2: #630016;
+    --biggerfont: 21px;
+    --annotation-context-color:#9467bd;
+    --annotation-anomaly-color:#9467bd;
 }
 
 input[type=text].inputHolder, input[type=search]:not(.browser-default){
@@ -296,5 +299,34 @@ mark span {
 
 .annotation .annotation-subject .subject {
     fill: none;
-    stroke-dasharray: 4;
+}
+.biggerFont{
+    font-size: var(--biggerfont);
+}
+.annotation path {
+    stroke: var(--annotation-context-color);
+}
+
+.annotation:not(.above):not(.anomaly) path {
+}
+
+.annotation text {
+    fill: var(--annotation-context-color);
+}
+
+.annotation.above path {
+    stroke: var(--annotation-above-color);
+}
+
+.annotation.above text {
+    fill: var(--annotation-above-color);
+}
+
+.annotation.anomaly path {
+    stroke: var(--annotation-anomaly-color);
+    stroke-width: 2px;
+}
+
+.annotation.anomaly text {
+    fill: var(--annotation-anomaly-color);
 }

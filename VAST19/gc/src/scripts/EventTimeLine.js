@@ -373,9 +373,15 @@ d3.eventTimeLine = function () {
             .attr("transform", "translate(0, 10)")
             .style('font','unset');
 
+        g.append("text").attrs({
+            transform: "rotate(90)",
+            dy:'-0.5em',
+            dx:'10px',
+            'class': 'biggerFont'
+        }).text('Shake Intensity');
         let colorLegend = g.append('g')
             .attr("class", "colorlegend")
-            .attr("transform", "translate(20, 30)");
+            .attr("transform", "translate(60, 30)");
         colorLegend.append('text')
             .attrs({"class": "label",dy:'-0.5em'})
             .text('# reports:');
@@ -727,13 +733,13 @@ d3.eventTimeLine = function () {
                 return rowscale(valueRange[0]);
             }
         });
-        let make_pointer = d3.annotation().editMode(false).notePadding(15)
+        let make_pointer = d3.annotation().editMode(false).notePadding(0)
             .annotations(annotations.filter(d=>d.className==='show-bg')).accessors({
             x: function (d) {
                 return timescale(new Date(d.x1));
             },
             y: function (d) {
-                return rowscale(data.find(e=>(e.time+'')===(formatTime(new Date(d.x1))+'')).maxval);
+                return rowscale(data.find(e=>(e.time+'')===(formatTime(new Date(d.x1))+'')).maxval)-2;
             }
         }).accessorsInverse({
                 x1: d => timescale.invert(d.x),

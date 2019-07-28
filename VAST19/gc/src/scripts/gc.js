@@ -67,9 +67,14 @@ let annotations = [
             wrap: 150, //custom text wrapping
             bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        dy: 80,
-        dx: -60,
-        type:typean,
+        dy: -10,
+        dx: -50,
+        type:d3.annotationCustomType(
+            d3.annotationCalloutElbow,
+            {"className":"custom",
+                "connector":{"type":"elbow","end":"arrow"},
+                "note":{"lineType":"horizontal",
+                    "align":"right"}}),
         data: { x1: 'Wed Apr 08 2020 08:00:00 GMT-0500', x2:'Wed Apr 08 2020 12:00:00 GMT-0500'}
     },{
         className: "show-bg",
