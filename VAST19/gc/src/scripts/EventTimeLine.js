@@ -359,7 +359,7 @@ d3.eventTimeLine = function () {
             .attr("class", "x gAxist grid")
             .attr("transform", "translate(0, 10)")
             .styles({
-                'stroke-width':'1px',
+                'stroke-width':'0.1px',
                 'stroke':'#ababab',
                 'stroke-dasharray': 1
             });
@@ -376,7 +376,7 @@ d3.eventTimeLine = function () {
             .attr("transform", "translate(20, 30)");
         colorLegend.append('text')
             .attrs({"class": "label",dy:'-1em'})
-            .text('Density color legend:');
+            .text('# reports:');
         colorLegend.append('rect')
             .attrs({"class": "colorbox",
                 'width': 150,
@@ -725,9 +725,21 @@ d3.eventTimeLine = function () {
                 return rowscale(valueRange[0]);
             }
         });
+        let make_pointer = d3.annotation().editMode(true).notePadding(15)
+            .annotations(annotations.filter(d=>d.className==='show-bg')).accessors({
+            x: function (d) {
+                return timescale(new Date(d.x1));
+            },
+            y: function (d) {
+                return rowscale(data.find(e=>(e.time+'')===(formatTime(new Date(d.x1))+'')).maxval);
+            }
+        }).accessorsInverse({
+                x1: d => timescale.invert(d.x),
+            });
         g.selectAll('.annotation').remove();
         g.append("g").attr("class", "annotation annotation-label").call(make_elbow_note);
         g.append("g").attr("class", "annotation annotation-gap").call(make_gap);
+        g.append("g").attr("class", "annotation annotation-pointer").call(make_pointer);
         //
     }
     function Updatecolorlegend (){

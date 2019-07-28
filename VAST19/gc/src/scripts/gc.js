@@ -53,58 +53,87 @@ let  TimeLineopt  = {
 let TimeLine  = d3.eventTimeLine();
 
 /* Code below relevant for annotations */
+const typean = d3.annotationCustomType(
+    d3.annotationCallout,
+    {"className":"custom",
+        "connector":{"end":"arrow"},
+        "note":{"lineType":"horizontal",
+            "align":"middle"}});
 let annotations = [
     {
-        className: "gap",
+        className: "show-bg",
         note: {
-            title: "Major Earthquake",
-            lineType: "none",
-            align: "middle",
-            wrap: 150 //custom text wrapping
+            title: "2nd Earthquake",
+            wrap: 150, //custom text wrapping
+            bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        type: d3.annotationCalloutRect,
-        disable: ["connector"], // doesn't draw the connector
+        dy: -100,
+        dx: 50,
+        type:typean,
         data: { x1: 'Wed Apr 08 2020 08:00:00 GMT-0500', x2:'Wed Apr 08 2020 12:00:00 GMT-0500'}
     },{
-        className: "gap",
+        className: "show-bg",
         note: {
             title: "1st Earthquake",
-            lineType: "none",
-            align: "middle",
-            wrap: 150 //custom text wrapping
+            wrap: 150, //custom text wrapping
+            bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        type: d3.annotationCalloutRect,
-        disable: ["connector"], // doesn't draw the connector
+        dy: -100,
+        dx: 50,
+        type:typean,
         data: { x1: 'Wed Apr 06 2020 14:00:00 GMT-0500', x2:'Wed Apr 06 2020 18:00:00 GMT-0500'}
     },{
-        className: "gap",
+        className: "show-bg",
         note: {
-            title: "3rd Earth quake",
-            lineType: "none",
-            align: "middle",
-            wrap: 150 //custom text wrapping
+            title: "3rd Earthquake",
+            wrap: 150, //custom text wrapping
+            bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        type: d3.annotationCalloutRect,
-        disable: ["connector"], // doesn't draw the connector
+        dy: -100,
+        dx: 50,
+        type:typean,
         data: { x1: 'Wed Apr 09 2020 15:00:00 GMT-0500', x2:'Wed Apr 09 2020 23:00:00 GMT-0500'}
     },
-    // {
-    //     note: { label: "Above $100", wrap: 100, },
-    //     className: "above",
-    //     disable: ["connector"],
-    //     subject: {
-    //         x1: x( new Date('10/1/1999')),
-    //         x2: x( new Date('8/1/2000'))
-    //     },
-    //     x: x( new Date('10/1/1999')),
-    //     dx: -30,
-    //     data: { y: 100}
-    // }
-
 ];
+// let annotations = [
+//     {
+//         className: "gap",
+//         note: {
+//             title: "Major Earthquake",
+//             lineType: "none",
+//             align: "middle",
+//             wrap: 150 //custom text wrapping
+//         },
+//         type: d3.annotationCalloutRect,
+//         disable: ["connector"], // doesn't draw the connector
+//         data: { x1: 'Wed Apr 08 2020 08:00:00 GMT-0500', x2:'Wed Apr 08 2020 12:00:00 GMT-0500'}
+//     },{
+//         className: "gap",
+//         note: {
+//             title: "1st Earthquake",
+//             lineType: "none",
+//             align: "middle",
+//             wrap: 150 //custom text wrapping
+//         },
+//         type: d3.annotationCalloutRect,
+//         disable: ["connector"], // doesn't draw the connector
+//         data: { x1: 'Wed Apr 06 2020 14:00:00 GMT-0500', x2:'Wed Apr 06 2020 18:00:00 GMT-0500'}
+//     },{
+//         className: "gap",
+//         note: {
+//             title: "3rd Earth quake",
+//             lineType: "none",
+//             align: "middle",
+//             wrap: 150 //custom text wrapping
+//         },
+//         type: d3.annotationCalloutRect,
+//         disable: ["connector"], // doesn't draw the connector
+//         data: { x1: 'Wed Apr 09 2020 15:00:00 GMT-0500', x2:'Wed Apr 09 2020 23:00:00 GMT-0500'}
+//     },
+// ];
 function initTimeLine () {
     TimeLineopt.width = width;
-    TimeLineopt.height = height;
+    TimeLineopt.height = Math.min(400,height);
     TimeLineopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
     TimeLineopt.svg.call(tool_tip);
     TimeLine.graphicopt(TimeLineopt);
