@@ -606,10 +606,10 @@ d3.circleMap = function () {
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
-            rowscale.range([0,graphicopt.heightG()/(_.unique(data,d=>d.loc).length+3)]);
+            rowscale.range([0,(graphicopt.heightG()-20)/(_.unique(data,d=>d.loc).length+3)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            let height_needed = (_.unique(data,d=>d.loc).length+3) * radaropt.h;
+            let height_needed = (_.unique(data,d=>d.loc).length+3) * radaropt.h+20;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
             }
@@ -668,8 +668,17 @@ d3.circleMap = function () {
             .each(d=>
             CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 
-        Nlabel.merge(lables).attr('transform',d=>'translate('+(-radaropt.w*3)+','+rowscale(rowMap[d.loc])+')');
-
+        Nlabel.merge(lables).attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
+        function offeset(d){
+            switch(typeSensor(d)){
+                case 'static':
+                    return 10;
+                case 'all':
+                    return 20;
+                default:
+                    return 0;
+            }
+        }
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);
         datapoint.exit().remove();
@@ -677,7 +686,7 @@ d3.circleMap = function () {
             .enter().append("g")
             .merge(datapoint).attr("class", d=>"linkLineg "+fixstr(d.id)+' a'+d.loc)
             .classed('selected',d=>d.loc==='all')
-            .attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')');
+            .attr('transform',d=>'translate('+timescale(d.time)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
         radarMap.addMouseEvent();
         let count=0;
         let totalcount = 199;
@@ -701,6 +710,9 @@ d3.circleMap = function () {
             })
         });
         Promise.all(promiseq).then(doneProcessBar);
+    }
+    function typeSensor(d) {
+        return isNaN(+d.loc)?(d.loc!=='all'?('static'):'all'):('mobile');
     }
     radarMap.removeMouseEvent = ()=>{
         g.selectAll(".linkLineg,.linkLable_textg")
