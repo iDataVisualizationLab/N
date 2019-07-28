@@ -728,7 +728,7 @@ d3.eventTimeLine = function () {
         //
     }
     function Updatecolorlegend (){
-        let time_axis = d3.axisBottom().scale( radaropt.densityScale.copy().range([0,150])).tickFormat(d3.format(".0s")));
+        let time_axis = d3.axisBottom().scale( radaropt.densityScale.copy().range([0,150])).tickFormat(d3.format(".0s"));
         let timeAxis = g.select('.colorlegend').select('.axistick').call(time_axis);
     }
     function doneProcessBar(){
