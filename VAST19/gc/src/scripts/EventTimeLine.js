@@ -365,11 +365,13 @@ d3.eventTimeLine = function () {
             });
         g.append("g")
             .attr("class", "x gAxis")
-            .attr("transform", "translate(0, 10)");
+            .attr("transform", "translate(0, 10)")
+            .style('font','unset');
 
         g.append("g")
             .attr("class", "y gAxis")
-            .attr("transform", "translate(0, 10)");
+            .attr("transform", "translate(0, 10)")
+            .style('font','unset');
 
         let colorLegend = g.append('g')
             .attr("class", "colorlegend")

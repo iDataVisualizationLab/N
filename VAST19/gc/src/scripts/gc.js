@@ -89,7 +89,7 @@ let annotations = [
             wrap: 150, //custom text wrapping
             bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        dy: -100,
+        dy: -50,
         dx: 50,
         type:typean,
         data: { x1: 'Wed Apr 09 2020 15:00:00 GMT-0500', x2:'Wed Apr 09 2020 23:00:00 GMT-0500'}
