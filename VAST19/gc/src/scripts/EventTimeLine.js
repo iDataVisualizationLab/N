@@ -377,7 +377,7 @@ d3.eventTimeLine = function () {
             .attr("class", "colorlegend")
             .attr("transform", "translate(20, 30)");
         colorLegend.append('text')
-            .attrs({"class": "label",dy:'-1em'})
+            .attrs({"class": "label",dy:'-0.5em'})
             .text('# reports:');
         colorLegend.append('rect')
             .attrs({"class": "colorbox",
@@ -507,7 +507,7 @@ d3.eventTimeLine = function () {
     function handledata(data){
         let arrN = [];
         data.forEach(e=>arrN.push(e.arr));
-        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN,d=>d.density)).range([0,1]);
+        radaropt.densityScale = d3.scaleSqrt().domain(d3.extent(arrN,d=>d.density)).range([0,1]);
         // let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="all"),e=>e.density)).range(radaropt.densityScale.domain());
         // arrN.filter(e=>e.loc==="all").forEach(e=>{e.density_true = e.density;
         //     e.density = desnsityScale(e.density_true);
@@ -727,7 +727,7 @@ d3.eventTimeLine = function () {
                 return rowscale(valueRange[0]);
             }
         });
-        let make_pointer = d3.annotation().editMode(true).notePadding(15)
+        let make_pointer = d3.annotation().editMode(false).notePadding(15)
             .annotations(annotations.filter(d=>d.className==='show-bg')).accessors({
             x: function (d) {
                 return timescale(new Date(d.x1));
@@ -745,7 +745,8 @@ d3.eventTimeLine = function () {
         //
     }
     function Updatecolorlegend (){
-        let time_axis = d3.axisBottom().scale( d3.scaleLinear().domain(radaropt.densityScale.domain()).range([0,150])) .ticks(5).tickFormat(d3.format(".0s"));
+
+        let time_axis = d3.axisBottom().scale( d3.scaleLinear().domain(radaropt.densityScale.domain()).range([0,150])) .ticks(4).tickFormat(d=>Math.round(d/1000)+'k');
         let timeAxis = g.select('.colorlegend').select('.axistick').call(time_axis);
     }
     function doneProcessBar(){

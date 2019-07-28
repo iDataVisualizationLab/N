@@ -67,8 +67,8 @@ let annotations = [
             wrap: 150, //custom text wrapping
             bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        dy: -100,
-        dx: 50,
+        dy: 80,
+        dx: -60,
         type:typean,
         data: { x1: 'Wed Apr 08 2020 08:00:00 GMT-0500', x2:'Wed Apr 08 2020 12:00:00 GMT-0500'}
     },{
@@ -78,8 +78,7 @@ let annotations = [
             wrap: 150, //custom text wrapping
             bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        dy: -100,
-        dx: 50,
+        dy: -30,
         type:typean,
         data: { x1: 'Wed Apr 06 2020 14:00:00 GMT-0500', x2:'Wed Apr 06 2020 18:00:00 GMT-0500'}
     },{
@@ -89,8 +88,7 @@ let annotations = [
             wrap: 150, //custom text wrapping
             bgPadding: {"top":15,"left":10,"right":10,"bottom":10},
         },
-        dy: -50,
-        dx: 50,
+        dy: -30,
         type:typean,
         data: { x1: 'Wed Apr 09 2020 15:00:00 GMT-0500', x2:'Wed Apr 09 2020 23:00:00 GMT-0500'}
     },
