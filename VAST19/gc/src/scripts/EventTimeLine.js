@@ -502,7 +502,7 @@ d3.eventTimeLine = function () {
     function handledata(data){
         let arrN = [];
         data.forEach(e=>arrN.push(e.arr));
-        radaropt.densityScale = d3.scaleSqrt().domain(d3.extent(arrN,d=>d.density)).range([0,1]);
+        radaropt.densityScale = d3.scaleLinear().domain(d3.extent(arrN,d=>d.density)).range([0,1]);
         // let desnsityScale = d3.scaleLinear().domain(d3.extent(arrN.filter(e=>e.loc==="all"),e=>e.density)).range(radaropt.densityScale.domain());
         // arrN.filter(e=>e.loc==="all").forEach(e=>{e.density_true = e.density;
         //     e.density = desnsityScale(e.density_true);
@@ -728,7 +728,7 @@ d3.eventTimeLine = function () {
         //
     }
     function Updatecolorlegend (){
-        let time_axis = d3.axisBottom().scale( radaropt.densityScale.copy().range([0,150])).tickFormat(d3.format(".0s"));
+        let time_axis = d3.axisBottom().scale( d3.scaleLinear().domain(radaropt.densityScale.domain()).range([0,150])) .ticks(5).tickFormat(d3.format(".0s"));
         let timeAxis = g.select('.colorlegend').select('.axistick').call(time_axis);
     }
     function doneProcessBar(){
