@@ -380,7 +380,9 @@
                     </marker>
                     <marker id="tail" viewBox="0 0 10 10" refX="5" refY="5"
                             markerWidth="8" markerHeight="8">
-                        <circle cx="5" cy="5" r="5" fill='var(--hightlight_Darker)' />
+                        <circle cx="5" cy="5" r="5" fill='var(--hightlight_Darker)'>
+                            <animate xmlns="http://www.w3.org/2000/svg" attributeName="r" values="1;2;4;5" times="0;0.5;1" dur="0.5s" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1" begin="0s" repeatCount="indefinite"/>
+                        </circle>
                     </marker>
                 </defs>
                 <!--<div id="mapLegend">-->
