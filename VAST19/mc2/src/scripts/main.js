@@ -807,14 +807,15 @@ function onEnableCar (darr,data){
         .attr("id", (d,i)=>i?undefined:"mobileSensor")
         .attr("fill", 'none')
         .attr("stroke",(d,i)=> i?'black':'var(--hightlight)')
-        .attr("stroke-dasharray",(d,i)=> (i||newdata.length==1) ?'none':'2 4')
+        // .attr("stroke-dasharray",(d,i)=> (i||newdata.length==1) ?'none':'2 4')
         .attr("stroke-width", 2)
         .merge(cm)
         .style('opacity',0.75)
         .attr('d',d3.line()
             .x(function(d) { return projectionFunc([d.Long, d.Lat])[0]; })
             .y(function(d) { return projectionFunc([d.Long, d.Lat])[1]; }))
-        .attr('marker-end',(d,i)=>i?'url(#head_current)':'url(#head)');
+        .attr('marker-end',(d,i)=>i?'url(#head_current)':'url(#head)')
+        .attr('marker-start',(d,i)=>i?'url(#tail_current)':'url(#tail)');
     let circlearr=d3.nest().key(d=>formatTime(d.time)).entries(darr[0]);
     let cc = d3.select('#map g#regMap text.arrow');
     const rate = Math.ceil(d3.select('#mobileSensor').node().getTotalLength() / 200)-1;

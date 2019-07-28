@@ -366,13 +366,21 @@
         <div id="map" class="col">
             <svg width="550px" height="450px">
                 <defs>
-                    <marker id='head_current' orient='auto' markerWidth='2' markerHeight='4'
+                    <marker id='head_current' orient='auto' markerWidth='4' markerHeight='8'
                             refX='0.1' refY='2'>
                         <path d='M0,0 V4 L2,2 Z' fill='black' />
                     </marker>
-                    <marker id='head' orient='auto' markerWidth='2' markerHeight='4' style="fill: var(--hightlight_Darker);"
-                            refX='0.1' refY='2'>
-                        <path d='M0,0 V4 L2,2 Z' fill='var(--hightlight_Darker)' />
+                    <marker id='head' orient='auto' markerWidth='4' markerHeight='8' style="fill: var(--hightlight_Darker);"
+                            refX='0.1' refY='4'>
+                        <path d='M0,0 V8 L4,4 Z' fill='var(--hightlight_Darker)' />
+                    </marker>
+                    <marker id="tail_current" viewBox="0 0 10 10" refX="5" refY="5"
+                            markerWidth="4" markerHeight="4">
+                        <circle cx="5" cy="5" r="5" fill='black' />
+                    </marker>
+                    <marker id="tail" viewBox="0 0 10 10" refX="5" refY="5"
+                            markerWidth="8" markerHeight="8">
+                        <circle cx="5" cy="5" r="5" fill='var(--hightlight_Darker)' />
                     </marker>
                 </defs>
                 <!--<div id="mapLegend">-->

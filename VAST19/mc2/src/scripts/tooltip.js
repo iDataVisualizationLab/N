@@ -6,7 +6,7 @@ var tool_tip = d3.tip()
     .direction('w')
     .html(function(d1,hideLine) {
         return cotenttip(hideLine); });
-let tooltip_cof = {w:350,h:300,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5};
+let tooltip_cof = {w:350,h:200,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5};
 function cotenttip (hideLine){
     str="";
     hideLine = hideLine||false;
