@@ -265,6 +265,10 @@ d3.eventTimeLine = function () {
                 .attr("id", "rGradient");
             rg2 = rdef.append("radialGradient")
                 .attr("id", "rGradient2");
+            rg2.selectAll('stop')
+                .data(d3.range(0,101)).enter().append('stop')
+                .attr('offset', function(d) { return d + '%'; })
+                .attr('style', function(d) { return 'stop-color:' + 'black' + ';stop-opacity:' + (d/100); });
         }
         else {
             rg = rdef.select('#rGradient');
@@ -300,6 +304,7 @@ d3.eventTimeLine = function () {
     function UpdateGradientDensity() {
         let rdef = svg.select('defs.densitygradient');
         let rg;
+        let rg2;
         if (rdef.empty()){
             rdef = svg.append("defs").attr('class','densitygradient')
             rg = rdef
@@ -307,6 +312,14 @@ d3.eventTimeLine = function () {
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0).attr('y1', 0).attr('y2', 0)
                 .attr("id", "lGradient");
+            rg2 = rdef
+                .append("linearGradient")
+                .attr('x1', 0).attr('y1', 0).attr('y2', 0)
+                .attr("id", "lGradient2");
+            rg2.selectAll('stop')
+                .data(d3.range(0,101)).enter().append('stop')
+                .attr('offset', function(d) { return d + '%'; })
+                .attr('style', function(d) { return 'stop-color:' + 'black' + ';stop-opacity:' + (d/100); });
         }
     }
 
@@ -357,65 +370,19 @@ d3.eventTimeLine = function () {
         g.append("g")
             .attr("class", "y gAxis")
             .attr("transform", "translate(0, 10)");
-        // .attr("clip-path", "url(#clip)");
-        // const rect = g.append('rect').attr("rx", 10)
-        //     .attr("ry", 10)
-        //     .attr("width", graphicopt.widthG()-2)
-        //     .attr("height", graphicopt.heightG())
-        //     .attr("stroke-width", 1)
-        //     .style("box-shadow", "10px 10px 10px #666");
 
-        // panel = d3.select("#subzone").style('top',graphicopt.offset.top+'px');
-        // panel.select(".details").append("span").text('t-SNE cost: ');
-        // panel.select(".details").append("span").attr('class','cost');
-        // panel.select(".details").append("span").text(',     iteration: ');
-        // panel.select(".details").append("span").attr('class','iteration');
-        //
-        // const sizegraph = sizebox - 6;
-        // scaleX_small.range([0,sizegraph]);
-        // scaleY_small.range([sizegraph/4-3,sizegraph*5/4-3]);
-        // graphicopt.top10.width = Math.min(graphicopt.width/4,300);
-        // if (!graphicopt.eventpad)
-        //     graphicopt.eventpad ={};
-        // graphicopt.eventpad.size = graphicopt.eventpad.size || 10;
-        // graphicopt.eventpad.eventpadtotalwidth = graphicopt.top10.width - sizebox;
-        // graphicopt.eventpad.maxstack = Math.floor(graphicopt.eventpad.eventpadtotalwidth /graphicopt.eventpad.size);
-        // tsne.postMessage({action:"maxstack",value:graphicopt.eventpad.maxstack});
-        // tsne.postMessage({action:"group_mode",value:group_mode});
-        // graphicopt.top10.details.clulster.attr.width = graphicopt.eventpad.size;
-        // graphicopt.top10.details.clulster.attr.height = graphicopt.eventpad.size;
-        // panel.select(".top10DIV").style('max-height', Math.min (graphicopt.height-130, sizebox*50.5)+"px");
-        // panel.select(".top10").attrs({width: graphicopt.top10.width,
-        //     height: sizebox*50.5});
-        // g = g.append('g')
-        //     .attr('class','graph')
-        // //.attr('transform',`translate(${graphicopt.widthG()/2},${graphicopt.heightG() /2})`);
-        // function zoomed() {
-        //     ssscale = d3.zoomTransform(this).k;
-        //     tx = d3.zoomTransform(this).x;
-        //     ty = d3.zoomTransform(this).y;
-        //     if (store.Y) updateEmbedding(store.Y,store.cost,store.iteration,true);
-        // }
-        // var zoom = d3.zoom()
-        //     .on("zoom", zoomed);
-        // svg.call(zoom);
-
-        // ssscale= graphicopt.scalezoom;
-        // svg.call(zoom.translateBy, graphicopt.widthG() / 2,graphicopt.heightG() / 2);
-        //
-        // graphicopt.step = function () {
-        //     if (!isBusy && !isStable) {
-        //         isBusy = true;
-        //         tsne.postMessage({action: 'step'});
-        //     }
-        // };
-
-
-        //summary
-        // d3.select('.rightPanel').select('.averageSumPlot')
-        //     .attrs({width:graphicopt.summary.size,
-        //         height:graphicopt.summary.size,
-        //     })
+        let colorLegend = g.append('g')
+            .attr("class", "colorlegend")
+            .attr("transform", "translate(10, 10)");
+        colorLegend.append('rect')
+            .attrs({"class": "colorbox",
+                'width': 150,
+                height: 20,
+                'fill':'url(#lGradient2)',
+            });
+        colorLegend.append('g')
+            .attr("class", "axistick")
+            .attr("transform", "translate(0, 20)");
 
     };
 
@@ -540,6 +507,7 @@ d3.eventTimeLine = function () {
         // arrN.filter(e=>e.loc==="all").forEach(e=>{e.density_true = e.density;
         //     e.density = desnsityScale(e.density_true);
         // });
+        Updatecolorlegend ();
         return arrN;
     }
     function handledataIcon(data){
@@ -657,7 +625,7 @@ d3.eventTimeLine = function () {
             .transition()
             .call(time_axis.tickFormat("").tickSize((svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
         val_axis = val_axis.scale(rowscale);
-        let color = 'steelblue'
+        let color = 'black'
         let yAxis = g.select('.gAxis.y')
             .attr("transform", "translate("+0+", "+0+")")
             .transition()
@@ -670,21 +638,30 @@ d3.eventTimeLine = function () {
             .attr('offset', function(d) { return gradientScale(d.time) + '%'; })
             .attr('style', function(d) { return 'stop-color:' + color + ';stop-opacity:' + radaropt.densityScale(d.density); });
 
-        var generateLine = d3.area().curve(d3.curveMonotoneX).x(function (d) {
+        var generateArea = d3.area().curve(d3.curveMonotoneX).x(function (d) {
             return timescale(d.time);
         }).y1(function (d) {
-            return rowscale(d[keyVal]);
-        }).y0(rowscale(valueRange[0]))
+            return rowscale(d.maxval);
+        }).y0(function (d) {
+            return rowscale(d.minval);
+        })
             .defined(d => d[keyVal]!==undefined && !isNaN(d[keyVal]));
+        var generateLine = d3.line().curve(d3.curveMonotoneX)
+            .x(function (d) {
+                return timescale(d.time);
+            })
+            .y(function (d) {
+                return rowscale(d[keyVal]);
+            }).defined(d => d[keyVal]!==undefined && !isNaN(d[keyVal]));;
 
         let datapoint = g.selectAll(".linkLineg")
             .data([data],d=>d);
         datapoint.exit().remove();
         let datapointN = datapoint
             .enter().append("g")
-            .merge(datapoint).attr("class", d=>"linkLineg all");
-        datapointN.append('path');
-        datapointN.select('path').attr('d',generateLine)
+            .merge(datapoint).attr("class", "linkLineg all");
+        datapointN.append('path').attr('class','areapath');
+        datapointN.select('path.areapath').attr('d',generateArea)
             .on('mouseover',mouseoverEvent)
             .on('mouseleave',mouseleaveEvent)
             .styles({
@@ -693,12 +670,23 @@ d3.eventTimeLine = function () {
                 'stroke-width': '1px',
             })
         ;
+        datapointN.append('path').attr('class','linepath');
+        datapointN.select('path.linepath').attr('d',generateLine)
+            .on('mouseover',mouseoverEvent)
+            .on('mouseleave',mouseleaveEvent)
+            .styles({
+                'fill':'none',
+                'stroke': color,
+                'stroke-width': '1px',
+                'stroke-dasharray': 4,
+            })
+        ;
 
         let make_elbow_note = d3.annotation().annotations(annotations.filter(d=>d.className==='bagde')).type(d3.annotationCalloutElbow).accessors({ x: function x(d) {
                 return timerange(new Date(d.time));
             },
             y: function y(d) {
-                return rowscale(d[keyVal]);
+                return rowscale(d['maxval']);
             }
         }).accessorsInverse({
             time: function date(d) {
@@ -718,7 +706,7 @@ d3.eventTimeLine = function () {
         });
         annotations.filter(d=>d.className==='gap').forEach(d=> {
                 d.subject = {
-                    height: rowscale(d3.max(data.filter(e => e.time >= formatTime(new Date(d.data.x1)) && e.time  <= formatTime(new Date(d.data.x2))), e => e[keyVal])) - rowscale(valueRange[0]),
+                    height: rowscale(d3.max(data.filter(e => e.time >= formatTime(new Date(d.data.x1)) && e.time  <= formatTime(new Date(d.data.x2))), e => e.maxval)) - rowscale(valueRange[0]),
                     width: (-timescale(new Date(d.data.x1)) + timescale(new Date(d.data.x2)))
                 };
                 d.dy = d.subject.height-10;
@@ -738,6 +726,10 @@ d3.eventTimeLine = function () {
         g.append("g").attr("class", "annotation annotation-label").call(make_elbow_note);
         g.append("g").attr("class", "annotation annotation-gap").call(make_gap);
         //
+    }
+    function Updatecolorlegend (){
+        let time_axis = d3.axisBottom().scale( radaropt.densityScale.copy().range([0,150])).tickFormat(d3.format(".0s")));
+        let timeAxis = g.select('.colorlegend').select('.axistick').call(time_axis);
     }
     function doneProcessBar(){
         d3.select('#load_data').classed('hidden',true);

@@ -293,3 +293,8 @@ mark span {
 .nodeLegend.fade {
     opacity: 0.5;
 }
+
+.annotation .annotation-subject .subject {
+    fill: none;
+    stroke-dasharray: 4;
+}

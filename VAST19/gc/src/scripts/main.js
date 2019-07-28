@@ -303,7 +303,7 @@ function init() {
             textdataPromise.then(d=>{
                 dataRaw = d;
                 TimeArc.runopt(listopt).data(dataRaw).draw();
-            })
+            });
         updateProcessBar(1);
 
         // anatation
@@ -317,8 +317,8 @@ function handlemc1 (data){ // nest data
     data.forEach(t=> {
         t.arr = objecttoArrayRadar(t.value||t.values);
         t.arr.time = new Date(t.key);
-        t.arr.density = (t.value||t.values).num;
-        // t.arr.density = (t.value||t.values).data.filter(d=>d['shake_intensity']).length;
+        // t.arr.density = (t.value||t.values).num;
+        t.arr.density = (t.value||t.values).data.filter(d=>d['shake_intensity']).length;
         t.arr.id = fixstr('all_'+(+t.arr.time));
         t.arr.data = (t.value||t.values);
     });
