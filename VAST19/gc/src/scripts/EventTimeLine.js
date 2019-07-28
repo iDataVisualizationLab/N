@@ -373,7 +373,10 @@ d3.eventTimeLine = function () {
 
         let colorLegend = g.append('g')
             .attr("class", "colorlegend")
-            .attr("transform", "translate(10, 10)");
+            .attr("transform", "translate(20, 30)");
+        colorLegend.append('text')
+            .attrs({"class": "label",dy:'-1em'})
+            .text('Density color legend:');
         colorLegend.append('rect')
             .attrs({"class": "colorbox",
                 'width': 150,
