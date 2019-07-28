@@ -9,7 +9,7 @@ let width = 2000,
         // limitYear: [1998,2001],
     },
     RadarMapopt  = {
-        margin: {top: 10, right: 30, bottom: 0, left: 90},
+        margin: {top: 10, right: 20, bottom: 0, left: 90},
         offset: {top: 0},
         width: width,
         height: height,
