@@ -669,6 +669,14 @@ d3.circleMap = function () {
             CircleChart(".linkLable_radar."+fixstr(d.id),[d],radaropt));
 
         Nlabel.merge(lables).attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
+
+        g.append('text').attr('class','linkLable_text aall unselectable') .attr('x',radaropt.w)
+            .style('font-size',"11px")
+            .style('fill',"currentColor")
+            .attr('dy',"1.5em")
+            .attr('text-anchor',"start")
+            .text('All Sensor').attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap['all'])+20)+')');
+
         function offeset(d){
             switch(typeSensor(d)){
                 case 'static':
