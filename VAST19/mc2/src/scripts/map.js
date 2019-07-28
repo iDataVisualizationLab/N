@@ -235,15 +235,15 @@ d3.csv("src/data/allSensorReadings_minMax.csv").then(data=>{
         function click(d) {
 
             // d3.selectAll("#regMap path").classed("selected",false).style("fill","lightgrey");
-            const item = d3.select("#" + removeWhitespace(d.properties.Nbrhood));
-            if (item.classed("selected")) {
-                item.classed("selected", false);
-                d3.selectAll(".linkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', true).classed('selected', false);
-            }else {
-                item.classed("selected", true);
-                d3.selectAll(".linkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', false).classed('selected', true);
-                d3.selectAll(".linkLineg:not(.disable):not(.selected)").filter(e => +e.loc !== d.properties.Id).classed('disable', true);
-            }
+            // const item = d3.select("#" + removeWhitespace(d.properties.Nbrhood));
+            // if (item.classed("selected")) {
+            //     item.classed("selected", false);
+            //     d3.selectAll(".linkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', true).classed('selected', false);
+            // }else {
+            //     item.classed("selected", true);
+            //     d3.selectAll(".linkLineg").filter(e => +e.loc === d.properties.Id).classed('disable', false).classed('selected', true);
+            //     d3.selectAll(".linkLineg:not(.disable):not(.selected)").filter(e => +e.loc !== d.properties.Id).classed('disable', true);
+            // }
             // toggleHeatmap("heatmap" + (index + 1));
             // for (let region of regionNameList) {
             //     let index = regionNameList.indexOf(region);
