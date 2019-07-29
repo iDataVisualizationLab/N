@@ -31,7 +31,7 @@ var termsList = {
     "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground"],
 
     // "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
-    "power/energy": ["valve", "heat", "gas", "out of power", "power is out", "no power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "fuel", "battery", "radiant"],
+    "power/energy": ["valve", "heat", "gas", "out of power", "power is out","power out", "no power","went off", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "fuel", "battery", "radiant"],
 
     "roads_and_bridges": ["airport", "avenue", "bridge", "bus", "congestion", "drive", "flight", "jam", "logistic", "metro", "mta", "road", "street", "subway", "traffic", "train", "transit", "transportation", "highway", "route", "lane"],
 
@@ -204,7 +204,8 @@ function spamremove (data){
 
 function removeNonecategory (data){
     return new Promise((resolve, reject) => {
-        // resolve( data.filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
-        resolve(data);
+        resolve( data.filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
+        // resolve( data.filter(d=>d.location==="Broadview").filter(d=>d3.sum(_.without(Object.keys(catergogryObject),'location (of the message)','user'),function(k){return d.category[k]?1:0})));
+        // resolve(data.filter(d=>d.location==="Old Town"));
     });
 }
