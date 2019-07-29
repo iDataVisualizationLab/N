@@ -557,7 +557,7 @@ d3.circleMap = function () {
     let timeFormat;
     let timerange;
     let sortMode;
-    let spaceSection = 40;
+    let spaceSection = 80;
     function updatePosition() {
         rowscale.range([0,radaropt.h]);
         let time_axis = d3.axisTop();
@@ -615,9 +615,9 @@ d3.circleMap = function () {
                 if (sortMode!=='sensor'&&sortMode!==undefined) {
                     return 0;
                 }
-                return spaceSection;
+                return spaceSection/2;
             case 'all':
-                return spaceSection*2;
+                return spaceSection;
             default:
                 return 0;
         }
