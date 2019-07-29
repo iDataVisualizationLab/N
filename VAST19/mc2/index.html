@@ -152,8 +152,10 @@
                         <div  class="row s12 valign-wrapper no_magrin list">
                             <label for="displaySort" class="col s4"> Sort By: </label>
                             <select id="displaySort" class="col s7" onchange="changeSortMode(this)">
-                                <option value="median" data="json" >Median</option>
                                 <option value="value" data="json" >Mean</option>
+                                <option value="median" data="json" >Median</option>
+                                <option value="q1" data="json" >Q1</option>
+                                <option value="q3" data="json" >Q3</option>
                                 <option value="sensor" data="json" selected="selected" >Sensor type</option>
                             </select>
                         </div>
