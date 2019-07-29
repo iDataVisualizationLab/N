@@ -594,19 +594,26 @@ d3.circleMap = function () {
             .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
         let customRowmap={};
         if (sortMode!=='sensor'&&sortMode!==undefined){
-            const newLists =_.sortBy(_.without(Object.keys(rowMap),'all'),function(loc){arrIcon.find(d=>d.loc===loc)[sortMode]});
-            newLists.forEach((d,i)=>customRowmap[d]=i);
+            const newLists =_.sortBy(_.without(Object.keys(rowMap),'all'),function(loc){return arrIcon.find(d=>d.loc===loc)[sortMode]});
+            console.log(sortMode)
+            console.log(newLists)
+            newLists.forEach((d,i)=>customRowmap[d]=i+1);
+            customRowmap['all'] = rowMap['all'];
+            console.log(customRowmap)
         }else{
             customRowmap = rowMap;
         }
-        g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
-        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
+        g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(customRowmap[d.loc])+offeset(d))+')');
+        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+(rowscale(customRowmap[d.loc])+offeset(d))+')');
 
     }
 
     function offeset(d){
         switch(typeSensor(d)){
             case 'static':
+                if (sortMode!=='sensor'&&sortMode!==undefined) {
+                    return 0;
+                }
                 return 10;
             case 'all':
                 return 20;
