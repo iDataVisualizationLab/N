@@ -319,7 +319,7 @@ d3.eventTimeLine = function () {
             rg2.selectAll('stop')
                 .data(d3.range(0,101)).enter().append('stop')
                 .attr('offset', function(d) { return d + '%'; })
-                .attr('style', function(d) { return 'stop-color:' + 'black' + ';stop-opacity:' + (d/100); });
+                .attr('style', function(d) { return 'stop-color:' + 'black' + ';stop-opacity:' + (Math.sqrt(d/100)); });
         }
     }
 

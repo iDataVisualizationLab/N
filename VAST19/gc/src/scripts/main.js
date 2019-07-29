@@ -617,12 +617,15 @@ function handleOutlier (data){ // nest data
 
 let schema;
 let globalScale = d3.scaleLinear().range([0,1]);
+var keyName = ['shake_intensity']
+// var keyName = ['sewer_and_water']
+// var keyName = ['medical']
 function objecttoArrayRadar(o){
-    return {value: o.val.shake_intensity,
-            minval: o.minval.shake_intensity,
-            maxval: o.maxval.shake_intensity,
-            q1: o.q1.shake_intensity,
-            q3: o.q3.shake_intensity};
+    return {value: o.val[keyName],
+            minval: o.minval[keyName],
+            maxval: o.maxval[keyName],
+            q1: o.q1[keyName],
+            q3: o.q3[keyName]};
 }
 // list html
 let tempStore ={};
