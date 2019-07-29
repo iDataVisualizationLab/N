@@ -533,6 +533,14 @@ function changeStaticsMode(d){
         d3.select('.cover').classed('hidden', true);
     },1);
 }
+
+function changeSortMode(d){
+    d3.select('.cover').classed('hidden', false);
+    setTimeout(()=> {
+        CircleMapplot.sort(d.value);
+        d3.select('.cover').classed('hidden', true);
+    },1);
+}
 function changeMinMax(d){
     d3.select('.cover').classed('hidden', false);
     setTimeout(()=> {

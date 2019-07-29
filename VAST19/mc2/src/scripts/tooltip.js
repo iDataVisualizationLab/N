@@ -3,7 +3,8 @@
 var tool_tip = d3.tip()
     .attr("class", "d3-tip")
     .attr("id", "d3-tip-mc1")
-    .direction('w')
+    .direction('e')
+    .offset([20, 0])
     .html(function(d1,hideLine) {
         return cotenttip(hideLine); });
 let tooltip_cof = {w:350,h:200,schema:serviceFullList,showText:true,levels:6,summary:{mean:true, minmax:true, quantile:true},gradient:true,strokeWidth:0.5};

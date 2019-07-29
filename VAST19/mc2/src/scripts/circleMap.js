@@ -555,24 +555,25 @@ d3.circleMap = function () {
     let timescale = d3.scaleTime().range([0, graphicopt.widthG()]);
     let rowscale = d3.scaleLinear().range([0, radaropt.h]);
     let timeFormat;
+    let timerange;
+    let sortMode;
     function updatePosition() {
-        let timerange = d3.extent(arr,d=>d.time);
+        rowscale.range([0,radaropt.h]);
         let time_axis = d3.axisTop();
         let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
-        rowscale.range([0,radaropt.h]);
         if (graphicopt.fitscreen){
             svg.attrs({
                 width: graphicopt.width,
                 height: graphicopt.height,
             });
             timescale.range([0,graphicopt.widthG()]).domain(timerange);
-            rowscale.range([0,graphicopt.heightG()/(_.unique(arr,d=>d.loc).length+3)]);
+            rowscale.range([0,(graphicopt.heightG()-20)/(_.unique(arr,d=>d.loc).length+3)]);
             time_axis = time_axis.ticks(graphicopt.widthG()/100);
         }else {
-            let height_needed = (_.unique(arr,d=>d.loc).length+3) * radaropt.h;
+            let height_needed = (_.unique(arr,d=>d.loc).length+3) * radaropt.h+20;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
-                rowscale.range([0,(graphicopt.customheight-graphicopt.margin.top-graphicopt.margin.bottom)/(_.unique(arr,d=>d.loc).length+3)]);
+                rowscale.range([0,(height_needed-20)/(_.unique(arr,d=>d.loc).length+3)]);
             }
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
@@ -586,17 +587,35 @@ d3.circleMap = function () {
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
             .call(time_axis);
+
         let timeAxis2 = g.select('.gAxist')
             .attr("transform", "translate("+(radaropt.w/2)+", "+rowscale(1)+")")
             .transition()
             .call(time_axis.tickFormat("").tickSize(-(svg.attr('height')-graphicopt.margin.top-graphicopt.margin.bottom) ).ticks(d3.timeDay.every(1)).tickSizeOuter(0));
-
-        g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+10+','+rowscale(rowMap[d.loc])+')')
-        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+rowscale(rowMap[d.loc])+')')
+        let customRowmap={};
+        if (sortMode!=='sensor'&&sortMode!==undefined){
+            const newLists =_.sortBy(_.without(Object.keys(rowMap),'all'),function(loc){arrIcon.find(d=>d.loc===loc)[sortMode]});
+            newLists.forEach((d,i)=>customRowmap[d]=i);
+        }else{
+            customRowmap = rowMap;
+        }
+        g.selectAll(".linkLable_textg").attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
+        g.selectAll(".linkLineg").attr('transform',d=>'translate('+timescale(d.time)+','+(rowscale(rowMap[d.loc])+offeset(d))+')');
 
     }
+
+    function offeset(d){
+        switch(typeSensor(d)){
+            case 'static':
+                return 10;
+            case 'all':
+                return 20;
+            default:
+                return 0;
+        }
+    }
     function drawEmbedding(data) {
-        let timerange = d3.extent(data,d=>d.time);
+        timerange = d3.extent(data,d=>d.time);
         rowscale.range([0,radaropt.h]);
         let time_axis = d3.axisTop();
         let width_needed = timeFormat.range(timerange[0],timerange[1]).length * radaropt.w;
@@ -612,6 +631,7 @@ d3.circleMap = function () {
             let height_needed = (_.unique(data,d=>d.loc).length+3) * radaropt.h+20;
             if (graphicopt.customheight){
                 height_needed = graphicopt.customheight;
+                rowscale.range([0,(height_needed-20)/(_.unique(data,d=>d.loc).length+3)]);
             }
             svg.attrs({
                 width: width_needed+graphicopt.margin.left+graphicopt.margin.right,
@@ -677,16 +697,6 @@ d3.circleMap = function () {
             .attr('text-anchor',"start")
             .text('All Sensor').attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap['all'])+20)+')');
 
-        function offeset(d){
-            switch(typeSensor(d)){
-                case 'static':
-                    return 10;
-                case 'all':
-                    return 20;
-                default:
-                    return 0;
-            }
-        }
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);
         datapoint.exit().remove();
@@ -809,6 +819,11 @@ d3.circleMap = function () {
     radarMap.scalescreen = function (_) {
         return arguments.length ? (graphicopt.customheight = _,updatePosition(), radarMap) : graphicopt.fitscreen;
     };
+
+    radarMap.sort = function (_) {
+        return arguments.length ? (sortMode = _,updatePosition(), radarMap) : graphicopt.fitscreen;
+    };
+
     radarMap.fitscreen = function (_) {
         return arguments.length ? (graphicopt.fitscreen = _,updatePosition(), radarMap) : graphicopt.fitscreen;
     };

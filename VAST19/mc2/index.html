@@ -150,7 +150,15 @@
                             <!--</p>-->
                         <!--</div>-->
                         <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displaySymbol" class="col s4">Gradient display: </label>
+                            <label for="displaySort" class="col s4"> Sort By: </label>
+                            <select id="displaySort" class="col s7" onchange="changeSortMode(this)">
+                                <option value="median" data="json" >Median</option>
+                                <option value="value" data="json" >Mean</option>
+                                <option value="sensor" data="json" selected="selected" >Sensor type</option>
+                            </select>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Gradient show: </label>
                             <p class="switch col s7" id ="displaySymbol">
 
                                 <label>
@@ -238,7 +246,7 @@
                     <div class="collapsible-header" style="padding-top: 0px;"><span>Radar control</span></div>
                     <div class="collapsible-body">
                         <div  class="row s12 valign-wrapper no_magrin list">
-                            <label for="displayMinMax" class="col s4"> Dataset: </label>
+                            <label for="displayMinMax" class="col s4"> Static Mode: </label>
                             <select id="displayMinMax" class="col s7" onchange="changeStaticsMode(this)">
                                 <!--<option value="EmploymentRate">Unemployment Rate</option>-->
                                 <!--<option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>-->
@@ -370,16 +378,16 @@
                             refX='0.1' refY='2'>
                         <path d='M0,0 V4 L2,2 Z' fill='black' />
                     </marker>
-                    <marker id='head' orient='auto' markerWidth='8' markerHeight='16' style="fill: var(--hightlight_Darker);"
-                            refX='0.1' refY='8'>
-                        <path d='M0,0 V16 L8,8 Z' fill='var(--hightlight_Darker)' stroke="white"/>
+                    <marker id='head' orient='auto' markerWidth='4' markerHeight='8' style="fill: var(--hightlight_Darker);"
+                            refX='0.1' refY='4'>
+                        <path d='M0,0 V8 L4,4 Z' fill='var(--hightlight_Darker)' stroke="white"/>
                     </marker>
                     <marker id="tail_current" viewBox="0 0 10 10" refX="5" refY="5"
                             markerWidth="4" markerHeight="4">
                         <circle cx="5" cy="5" r="5" fill='black' />
                     </marker>
                     <marker id="tail" viewBox="0 0 10 10" refX="5" refY="5"
-                            markerWidth="8" markerHeight="8">
+                            markerWidth="4" markerHeight="4">
                         <circle cx="5" cy="5" r="5" fill='var(--hightlight_Darker)' stroke="white">
                             <animate xmlns="http://www.w3.org/2000/svg" attributeName="r" values="1;2;4;5" times="0;0.5;1" dur="0.5s" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1" begin="0s" repeatCount="indefinite"/>
                         </circle>
