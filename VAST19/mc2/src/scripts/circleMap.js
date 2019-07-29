@@ -557,7 +557,7 @@ d3.circleMap = function () {
     let timeFormat;
     let timerange;
     let sortMode;
-    let spaceSection = 80;
+    let spaceSection = 40;
     function updatePosition() {
         rowscale.range([0,radaropt.h]);
         let time_axis = d3.axisTop();
@@ -703,7 +703,7 @@ d3.circleMap = function () {
             .style('fill',"currentColor")
             .attr('dy',"1.5em")
             .attr('text-anchor',"start")
-            .text('All Sensor').attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap['all'])+20)+')');
+            .text('All Sensor').attr('transform',d=>'translate('+(-radaropt.w*3)+','+(rowscale(rowMap['all'])+spaceSection)+')');
 
         let datapoint = g.selectAll(".linkLineg")
             .data(data,d=>d.key);
