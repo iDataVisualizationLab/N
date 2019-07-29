@@ -196,7 +196,7 @@ table.dataTable th:not(:first-child) {
 .geoPath{
     fill:lightgrey;
 }
-.geoPath.nothover {
+.nothover {
     opacity: 0.2;
 }
 

@@ -719,6 +719,7 @@ function onmouseoverRadar (d) {
         d3.selectAll('.geoPath:not(#'+d.regions.map(e=>removeWhitespace(e)).join('):not(#')+')').classed('nothover',true);
     d3.selectAll(".linkLineg:not(.disable)").filter(e=> (e.loc !==d.loc)&&(formatTime(e.time).toString() !==formatTime(d.time).toString())).style('opacity',0.2);
     d3.select('.linkLable_text.a'+d.loc).style('fill','var(--hightlight)');
+    d3.select('#map').selectAll('image').classed('nothover',true);
     if (!isNaN(+d.loc)){
         if ((tempStore.loc!==d.loc)) {
             readPromise.cancel();
@@ -776,7 +777,7 @@ function onmouseoverRadar (d) {
             .selectAll('.mobileSensor').remove();
         d3.select('#map g#regMap')
             .selectAll('.mobileMark ').remove();
-        d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20);
+        d3.selectAll('.statIcon').filter(e=>e['Sensor-id']===d.loc.replace('s','')).attr('width',20).attr('height',20).classed('nothover',false);
     }
     d3.select('#maptitle').text(isNaN(+d.loc)?(d.loc!=='all'?('Static - '+d.loc.replace('s','')):'All Sensor'):('Mobile - '+d.loc))
     tooltip_cof.schema = serviceFullList;
@@ -872,6 +873,7 @@ function animationShift(index,g){
 }
 
 function onmouseleaveRadar (d) {
+    d3.select('#map').selectAll('image').classed('nothover',false);
     d3.select('#map g#regMap').selectAll('.mobileSensor').style('opacity',0.5);
     d3.select('.linkLable_text.a'+d.loc).style('fill','currentcolor');
     // d3.selectAll('.geoPath:not(#'+removeWhitespace(dataRaw.location[d.loc])+')').classed('nothover',false);
