@@ -286,7 +286,7 @@ let radarController = function () {
                 //Append the labels at each axis
 
                 axis.append("text")
-                    .attr("class", "legend")
+                    .attr("class", "legend noeventpointer")
                     .style("font-size", "12px")
                     .attr("font-family", "sans-serif")
                     .attr("fill", "black")
@@ -333,9 +333,6 @@ let radarController = function () {
                 function onDragAxisDragged (d){
                     // FIXME: rotation not smooth
                     // let dAngle = -(Math.atan2(-d3.event.y,d3.event.x)-Math.PI/2);
-                    let newpos = {x: -(graphicopt.widthG()/2+ graphicopt.margin.left+20) + (d3.event.sourceEvent.screenX ),
-                                    y: -(graphicopt.heightG()/2+ graphicopt.margin.top  +graphicopt.height+20) + (d3.event.sourceEvent.screenY) };
-                    console.log(d3.event)
                     let dAngle = Math.atan2(d3.event.y,d3.event.x)+Math.PI/2;
                     // let dAngle = Math.atan2(d3.event.sourceEvent.y-radius,d3.event.sourceEvent.x-radius);
                     updateAngle(this.parentElement,dAngle);

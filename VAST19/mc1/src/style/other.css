@@ -258,3 +258,7 @@ table.dataTable th:not(:first-child) {
     height: 100%;
     overflow: hidden;
 }
+
+.noeventpointer {
+    pointer-events: none;
+}
