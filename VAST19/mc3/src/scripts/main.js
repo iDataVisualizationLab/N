@@ -324,6 +324,8 @@ function init() {
         return Promise.all(queueProcess).then(spamremove).then(removeNonecategory);
     })
         .then ((d)=>{
+            // const locationfilter= 'Old Town';
+        // dataRaw = d.filter(d=>(d.category['location (of the message)']&&d.category['location (of the message)'][locationfilter])||(d.category['location (in the message)']&&d.category['location (in the message)'][locationfilter]));
         dataRaw = d;
         timestep = 0;
         listopt.limitColums = [0,10];

@@ -305,6 +305,9 @@ function init() {
         datastatic = dataS;
         d.forEach(t=>t.time=new Date(t.time));
         statics.forEach(t=>t.time=new Date(t.time));
+
+        // statics.forEach(sd=>_.without(Object.keys(statics[0]),'Sensor-id','regions','time','num').forEach(k=>sd[k]=sd[k]*10))
+
         summaryByTime.forEach(t=>t.time=new Date(t.time));
         d.sort((a,b)=>a.time-b.time);
         statics.sort((a,b)=>a.time-b.time);
