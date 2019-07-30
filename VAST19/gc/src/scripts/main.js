@@ -264,6 +264,8 @@ function init() {
             formatTime =getformattime (listopt.time.rate,listopt.time.unit);
             listopt.limitTime = d3.extent(mc1,d=>d.time);
             selectedVariable = _.without(d3.keys(mc1[0]),'time','location');
+            if (keylocation!='')
+                mc1 = mc1.filter(d=>d.location===keylocation)
             databyTime = handleDatabyKey(mc1,listopt.limitTime,formatTime,['time'],true);
         // ssss = statics.slice();
         //     var sentiment = new Sentimood();
@@ -318,7 +320,7 @@ function handlemc1 (data){ // nest data
         t.arr = objecttoArrayRadar(t.value||t.values);
         t.arr.time = new Date(t.key);
         // t.arr.density = (t.value||t.values).num;
-        t.arr.density = (t.value||t.values).data.filter(d=>d['shake_intensity']).length;
+        t.arr.density = (t.value||t.values).data.filter(d=>d[keyName]).length;
         t.arr.id = fixstr('all_'+(+t.arr.time));
         t.arr.data = (t.value||t.values);
     });
@@ -619,6 +621,8 @@ let schema;
 let globalScale = d3.scaleLinear().range([0,1]);
 var keyName = ['shake_intensity']
 // var keyName = ['sewer_and_water']
+// var keylocation = 3
+var keylocation = ''
 // var keyName = ['medical']
 function objecttoArrayRadar(o){
     return {value: o.val[keyName],

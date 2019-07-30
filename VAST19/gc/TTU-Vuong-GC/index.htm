@@ -108,6 +108,7 @@
 </page>
 <page size="A3">
     <div class="pageContent">
+        <div>
         The master timeline is shown in figure 1 display all event collected from the multi mini-challenge:
         <br>
         <br>
@@ -125,19 +126,24 @@
         <br>
         The 3rd earthquake happens about 3:00 pm on April 09 and have lower shake intensity than the second once, however, this earthquake get the citizen the most attention. A lot of post describe shaking, quivering, quaking, etc received in this time. Meanwhile, the mobile sensor ID 20 in Scenic Vista start to get 188 CPM value during the next 22 hours.
         After 3rd earthquake 3 hours, an extremely high radian event is occurs in wilson forest high way and cause the block rout in Wilson Forest highway and 12th of July Bridge. The traffic and sewer problem still not over come after April 10.
-
+        <br>
+        <br>
         In figure 2, the damaged report (A) is not precise and usually has high uncertainty when the number of report is low or the shake intensity is not defined. In mini-challenge 2 (B), the static sensor is not synchronize with the mobile sensor and not reliable.
-        The report from Y*nt message (C) has the uncertainty depending to the spam filter and the text analysis technique.
-    </div>
-</page>
-<page size="A3">
-    <div class="pageContent">
+        The report from Y*nt message (C) has the uncertainty depending to the spam filter and the text analysis technique. However, Y*nt message can be a temporal results for mini-challenge 1 during power off time range.
+        </div>
+        <br>
+        <br>
+        <hr>
         <h4>Questions</h4>
 
         <div class="question">2- Identify and explain cases where data from multiple mini-challenges help to resolve uncertainty, and identify cases where data from multiple mini-challenges introduces more uncertainty. Present up to 10 examples. If you find more examples, prioritize those examples that you deem most relevant to emergency response. Limit your response to 1000 words and 12 images.</div>
         <img id="eg1" src="images/mc1-mc3-earthquake.png" class="full">
         <p class="caption"><span>Figure 3. earthquake attention and real damaged report.</span></p>
         <div>The earth quake mentioned in Y*nt application (mini-challenge 3 - Figure 3 (B)) show that the 3rd earthquake get a lot of reports (Figure 3 (C)). However, from the result from Rumble appplication (mini-challenge 1 - Figure 3 (A)) the 3rd earth quake's shake intensity is not highest as the 2nd earthquake. </div>
+    </div>
+</page>
+<page size="A3">
+    <div class="pageContent">
         <img id="eg2" src="images/mc1-mc3-power.png" class="full">
         <p class="caption"><span>Figure 4. Discontinuous report in mini-challenge 1 and the power reports from mini-challenge 3.</span></p>
         <div>In mini-challenge 1 (Figure 4 (A)), there are some range of time don't have any reports. The reason can be didn't have any damaged or the power off ( people can't report the damaged).
@@ -150,9 +156,14 @@
 
         <div class="question">3- Are there instances where a pattern emerges in one set of data before it presents itself in another? Could one data stream be used to predict events in the others? Provide examples you identify. Limit your response to 500 words and 8 images.</div>
         <div>In minichallenge 3, The contaminated water and sewer event can be use to predict the flooding event coming. Medical demand and Shelter demand have similar pattern and shelter demand usually slower the medical event (2) hours</div>
+        <br>
+        <br>
         <h4>Questions</h4>
 
         <div class="question">4- The data for the individual mini-challenges can be analyzed either as a static collection or as a dynamic stream of data, as it would occur in a real emergency. Were you able to bring analysis on multiple data streams together for the grand challenge using the same analytic environment? Describe how having the data together in one environment, or not, affected your analysis of the grand challenge. Limit your response to 500 words and 10 images.</div>
+        <div>All mini-challenge can be use for static or dynamic data. The interface can update the new data point without redraw all content. howver, too many data as min-challenge 2 can cause the lag and delay visualization and it can be over come by using sever instead of client web browser.
+            To handle grand challenge problem fully, we need to embed more analytic technique than current system.
+        </div>
     </div>
 </page>
 
