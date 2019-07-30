@@ -619,8 +619,9 @@ function handleOutlier (data){ // nest data
 
 let schema;
 let globalScale = d3.scaleLinear().range([0,1]);
-var keyName = ['shake_intensity']
-// var keyName = ['sewer_and_water']
+// var keyName = ['shake_intensity']
+// var keyName = ['buildings']
+var keyName = ['medical']
 // var keylocation = 3
 var keylocation = ''
 // var keyName = ['medical']

@@ -310,9 +310,8 @@ let radarController = function () {
                     });
 
                 axis.append("circle")
-                    .attr("cx", 0)
-                    .attr("cy", function (d, i) {
-                        return -rScale( graphicopt.bin||graphicopt.gradient?1:1.05) ;
+                    .attr("transform", function (d, i) {
+                        return 'translate('+0+','+(-rScale( graphicopt.bin||graphicopt.gradient?1:1.05))+')' ;
                     })
                     .attr('r',4)
                     .attr("class", "dragpoint")
@@ -324,7 +323,9 @@ let radarController = function () {
                     .on('mouseleave',function(){
                         d3.select(this).attr('r',4)
                     })
-                    .call(d3.drag().on("start", onDragAxisStarted).on("drag", onDragAxisDragged).on("end", onDragAxisEnded));
+                    .call(d3.drag().container(function () {
+                        return this.parentNode.parentNode;
+                    }).on("start", onDragAxisStarted).on("drag", onDragAxisDragged).on("end", onDragAxisEnded));
                 function onDragAxisStarted (d){
                     d3.select(this).style('fill','black');
                     d3.select(this.parentElement).classed('active',true);
@@ -334,7 +335,8 @@ let radarController = function () {
                     // let dAngle = -(Math.atan2(-d3.event.y,d3.event.x)-Math.PI/2);
                     let newpos = {x: -(graphicopt.widthG()/2+ graphicopt.margin.left+20) + (d3.event.sourceEvent.screenX ),
                                     y: -(graphicopt.heightG()/2+ graphicopt.margin.top  +graphicopt.height+20) + (d3.event.sourceEvent.screenY) };
-                    let dAngle = Math.atan2(-newpos.y,-newpos.x)-Math.PI/2;
+                    console.log(d3.event)
+                    let dAngle = Math.atan2(d3.event.y,d3.event.x)+Math.PI/2;
                     // let dAngle = Math.atan2(d3.event.sourceEvent.y-radius,d3.event.sourceEvent.x-radius);
                     updateAngle(this.parentElement,dAngle);
                     tablediv.selectAll('.angle').filter(e=>e.text===d.data.text).select('input').attr('value',toDegrees(d.angle()).toFixed(0));
@@ -351,7 +353,7 @@ let radarController = function () {
             g.selectAll('.axis').classed('disable',d=>!d.data.enable);
 
             function updateAngle(target,value) {
-                d3.select(target).transition().style('transform',function (d, i) {
+                d3.select(target).style('transform',function (d, i) {
                     d.angle = ()=>{return positiveAngle(value);};
                     return "rotate(" + toDegrees(positiveAngle(value)) + "deg)"});
                 d3.select(target).select('.angleValue').text(function (d) {
