@@ -27,7 +27,8 @@ function tooltipBox (data){
     // headertext+=' - '+ data.time.toUTCString();
     let headerdiv = d3.select('.tootltip_text').append('div').attr('class','header col s12');
     headerdiv.append('h6').attr('class','col').html(headertext);
-    headerdiv.append('h6').attr('class','col').html('Time: <b>'+d3.timeFormat("%I %p - %a %d")(data.time)+'</b>');
+    if (data.time)
+        headerdiv.append('h6').attr('class','col').html('Time: <b>'+d3.timeFormat("%I %p - %a %d")(data.time)+'</b>');
     headerdiv.append('h6').attr('class','col').html('#reports: <b>'+data.data.num+'</b>');
     // let table = d3.select('.tootltip_text').append('div').attr('class','tip-divtable')
     //     .append('table').attr('class','tip-table');
