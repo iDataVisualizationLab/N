@@ -179,7 +179,7 @@ htt=htt.filter(d=>d.length!=0);
 // from:twdb since:2012-01-01 until:2015-01-01
 var username = 'twdb';
 var timestart = '2012-01-01';
-var timeend = '2015-01-01';
+var timeend = '2016-12-31';
 var queryhtml = 'https://twitter.com/search?f=tweets&q=from%3A'+username+'%20since%3A'+timestart+'%20until%3A'+timeend+'&src=typd';
 
 // auto scroll

@@ -121,7 +121,8 @@ $(document).ready(function () {
     spinner.spin(document.body);
     d3.queue()
         // .defer(d3.json,"src/data/twittwaterv2.json")
-        .defer(d3.json,"src/data/collectionwatviz.json")
+        // .defer(d3.json,"src/data/collectionwatviz.json")
+        .defer(d3.json,"src/data/twittwaterv3.json")
         .await(ready);
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
@@ -690,7 +691,7 @@ function ready (error, dataf){
         //         data.push(d);
         // });
     });
-    var limit = ["October 2012","January 2015"];
+    var limit = ["October 2012","December 2016"];
     data.sort((a,b)=> a.time-b.time);
     data  = data.filter(d=> (d.time>=parseTime(limit[0])&&d.time<=parseTime(limit[1])));
     console.log("Num usgs: "+data.filter(d=>d.source =="usgs").length);

@@ -108,90 +108,39 @@ $(document).ready(function(){
     var instance = M.Collapsible.init(elem, {
         accordion: false
     });
-    // $('.tabs').tabs({'onShow':function(){
-    //
-    //         if (this.$activeTabLink.text()==='Mini-Challenge 1') {
-    //             $('#videoIn').each(function(index) {
-    //                 $(this).attr('src', $(this).attr('src'));
-    //                 return false;
-    //             });
-    //             initialize();
-    //         }else{
-    //             try{
-    //                 playchange();
-    //             }catch(e){
-    //
-    //             }
-    //         }
-    // }});
-    // if (d3.select('#demoTab a').classed('active')){
-    //     $('#videoIn').each(function(index) {
-    //         $(this).attr('src', $(this).attr('src'));
-    //         return false;
-    //     });
-    //     initialize();
-    // }
+
     initialize();
-        // $('#zoomInit').on('change', function () {
-        //     runopt.zoom = this.value;
-        //     RadarMapplot.runopt(runopt);
-        // });
-        // $('#zoomInit')[0].value = runopt.zoom;
-    //     $('#detailLevel_Perplexity').on('change', function () {
-    //         TsneConfig.perplexity = this.value;
-    //         RadarMapplot.option(TsneConfig);
-    //         resetRequest();
-    //     });
-    //     // $('#detailLevel_Perplexity')[0].value = TsneConfig.perplexity;
-    //
-    // $('#detailLevel_Epsilon').on('change', function () {
-    //     TsneConfig.epsilon = this.value;
-    //     RadarMapplot.option(TsneConfig);
-    //     resetRequest();
-    // });
-    // $('#detailLevel_Epsilon')[0].value = TsneConfig.epsilon;
 
-        // $('#simDurationUI').on('change', function () {
-        //     simDuration = this.value;
-        //     runopt.simDuration = simDuration;
-        //     RadarMapplot.runopt(runopt);
-        //     interval2.pause(simDuration);
-        //     if (playing)
-        //         interval2.resume(simDuration);
-        // });
-        // $('#simDurationUI')[0].value = simDuration;
-        // fixRangeTime();
+    d3.select('#datacom').on("change", function () {
+        d3.select('.cover').classed('hidden', false);
+        const choice = this.value;
+        const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
+        d3.select('#currentData').text(choicetext);
+        playchange();
+        setTimeout(() => {
+            readConf(choice+"_conf").then((conf)=> readData(choice).then((d) => {
+                d.YearsData.forEach(e => {
+                    if (e.Scagnostics0) delete e.Scagnostics0
+                    for (var key in e) {
+                        e[key] = e[key].map(it => it === "NaN" ? 0 : it);
+                    }
+                });
+                dataRaw = d;
+                d3.select(".currentData")
+                    .text(choicetext);
+                maxtimestep = dataRaw.YearsData.length;
+                console.log(maxtimestep)
+                RadarMapplot.axis(d.Variables);
+                d3.select('.averageSUm').selectAll('*').remove();
+                //remove later
+                var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
+                var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
+                var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
+                listopt.limitColums = [lowlimit,highlimit];
 
-        d3.select('#datacom').on("change", function () {
-            d3.select('.cover').classed('hidden', false);
-            const choice = this.value;
-            const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
-            d3.select('#currentData').text(choicetext);
-            playchange();
-            setTimeout(() => {
-                readConf(choice+"_conf").then((conf)=> readData(choice).then((d) => {
-                    d.YearsData.forEach(e => {
-                        if (e.Scagnostics0) delete e.Scagnostics0
-                        for (var key in e) {
-                            e[key] = e[key].map(it => it === "NaN" ? 0 : it);
-                        }
-                    });
-                    dataRaw = d;
-                    d3.select(".currentData")
-                        .text(choicetext);
-                    maxtimestep = dataRaw.YearsData.length;
-                    console.log(maxtimestep)
-                    RadarMapplot.axis(d.Variables);
-                    d3.select('.averageSUm').selectAll('*').remove();
-                    //remove later
-                    var duration = dataRaw.TimeMatch.filter(d=>(new Date(d)).getFullYear()>(listopt.limitYear[0]-1)&&(new Date(d)).getFullYear()<(listopt.limitYear[1]+1));
-                    var lowlimit = dataRaw.TimeMatch.indexOf(duration.shift());
-                    var highlimit = dataRaw.TimeMatch.indexOf(duration.pop());
-                    listopt.limitColums = [lowlimit,highlimit];
-
-                    handleOutlier (dataRaw,currentService);
-                    resetRequest();
-                    d3.select('.cover').classed('hidden', true);
+                handleOutlier (dataRaw,currentService);
+                resetRequest();
+                d3.select('.cover').classed('hidden', true);
                 }));
             }, 0);
         });
