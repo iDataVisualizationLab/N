@@ -1,0 +1,144 @@
+<!doctype html>
+<!--<html class="no-js" lang="">-->
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--<link rel="manifest" href="site.webmanifest">-->
+  <link rel="apple-touch-icon" href="icon.png">
+
+
+  <!-- Place favicon.ico in the root directory -->
+  <link rel="stylesheet" href="src/style/foundation.min.css">
+  <!--<link rel="stylesheet" href="css/normalize.css">-->
+  <!--<link rel="stylesheet" href="css/main.css">-->
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <!-- Add your site or application content here -->
+  <div id="header"></div>
+  <div class="grid-container">
+    <div class="callout large">
+      <div class="grid-x grid-padding-x align-center">
+        <h1>Welcome to TxRPDB!</h1>
+        <p class="lead">Texas Rigid Pavement Database (TxRPDB) aims to provide a comprehensive enterprise platform for sharing rigid pavement performance data in Texas.
+
+          Currently, TxRPDB provides design, structural and performance data for continuously reinforced concrete pavement (CRCP) and jointed concrete pavement (CPCD) in Texas. Additionally, findings from TxDOT and national research projects and special and experimental sections built over the years by TxDOT can be accessed through TxRPDB.
+
+          TxRPDB is a product of TxDOT Research Project 0-6274: “Project Level Performance Database for Rigid Pavements in Texas – II” and is being developed and managed by Texas Tech Center for Multidisciplinary Research in Transportation (TechMRT), Texas Tech University.</p>
+        <a href="#" class="button large">Learn More</a>
+        <a href="#" class="button large hollow">Learn Less</a>
+      </div>
+    </div>
+    <div class="grid-x grid-padding-x align-center">
+      <div class="cell  medium-6 medium-order-2">
+        <img class="thumbnail" src="https://placehold.it/750x350">
+      </div>
+      <div class="cell  medium-6 medium-order-1">
+        <h2>About Us.</h2>
+        <p>TxRPDB currently comprises of the following types of Rigid Pavement data</p>
+
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="medium-4 cell">
+        <h3>Performance data</h3>
+        <p>Pavement performance data (Average Deflection, Load Transfer Efficiency and Visual
+          Survey) for test sections being monitored under TxDOT Research project 0-6274 in
+          Texas.</p>
+      </div>
+      <div class="medium-4 cell">
+        <h3>General information</h3>
+        <p>General pavement information ( Construction Year, Slab Thickness, Location) and
+          Plan Sets for Continuously Reinforced Pavements and Concrete Pavement Continuous
+          Design in Texas.</p>
+      </div>
+      <div class="medium-4 cell">
+        <h3>Special & Experimental</h3>
+        <p>General pavement information, Plan Sets, research findings and research reports
+          for various Special and Experimental rigid pavement sections such as Bonded Overlay,
+          Unbonded Overlay, Post Tension Concrete Pavement and Whitetopping pavements constructed
+          by TxDOT.</p>
+      </div>
+    </div>
+    <hr>
+    <div class="grid-x grid-y">
+      <ul class="vertical medium-horizontal menu expanded text-center">
+        <li><a href="#"><div class="stat">28</div><span>Websites</span></a></li>
+        <li><a href="#"><div class="stat">43</div><span>Apps</span></a></li>
+        <li><a href="#"><div class="stat">95</div><span>Ads</span></a></li>
+        <li><a href="#"><div class="stat">59</div><span>Cakes</span></a></li>
+        <li><a href="#"><div class="stat">18</div><span>Logos</span></a></li>
+      </ul>
+    </div>
+    <hr>
+    <div class="grid-x grid-y">
+      <h3>Recent update</h3>
+    </div>
+    <div class="grid-x medium-up-3 large-up-4">
+      <div class="cell">
+        <img class="thumbnail" src="https://placehold.it/550x550">
+      </div>
+      <div class="cell">
+        <img class="thumbnail" src="https://placehold.it/550x550">
+      </div>
+      <div class="cell">
+        <img class="thumbnail" src="https://placehold.it/550x550">
+      </div>
+      <div class="cell">
+        <img class="thumbnail" src="https://placehold.it/550x550">
+      </div>
+
+
+    </div>
+    <hr>
+    <div class="row column">
+      <ul class="menu">
+        <li><a href="#">One</a></li>
+        <li><a href="#">Two</a></li>
+        <li><a href="#">Three</a></li>
+        <li><a href="#">Four</a></li>
+      </ul>
+    </div>
+  </div>
+  <script src="src/lib/jquery-3.4.1.min.js"></script>
+  <script src="src/lib/d3.v5.min.js"></script>
+  <script src="src/lib/d3-selection-multi.v1.min.js"></script>
+  <script src="src/lib/simple-statistics.min.js"></script>
+  <script src="src/lib/lodash_fp.min.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>
+
+  <!--theme-->
+  <script src="src/lib/foundation.js"></script>
+  <script>
+      $(document).foundation();
+  </script>
+  <script>
+      $(function(){
+          $('#header').load('headerMenu.html');
+      })
+  </script>
+  <!--end theme-->
+
+  <!--<script type="text/javascript" src="http://appcollab.ads.ttu.edu/TxRPDB/WebResource.axd?d=sAZZ10qqa_dAATC4J8CgTgrJCvpQBHOR-fQ-tXbkAXRv3CEoQ46YI_wDIr9SVv158BMjYMKr0hdG8pGS9DnoyhlXuFGN96rVlyVeqcwy5FVqSMFUrtB76HrrLGk3MRsQ0tcrqSeTADh_kAoR9QW7EYPPtbgdFCfEd25GAAS67zs1&amp;t=634551763729226485"></script>-->
+
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async></script>
+</body>
+
+
+</html>

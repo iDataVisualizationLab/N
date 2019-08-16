@@ -1,0 +1,59 @@
+<!doctype html>
+<!--<html class="no-js" lang="">-->
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="src/style/foundation.min.css">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <!-- Place favicon.ico in the root directory -->
+
+    <!--<link rel="stylesheet" href="css/normalize.css">-->
+    <!--<link rel="stylesheet" href="css/main.css">-->
+
+    <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<div id="header">
+
+</div>
+
+        <div id="map" class="cell" style="min-height: calc(100vh - 56px) ;"></div>
+
+
+<script src="src/lib/jquery-3.4.1.min.js"></script>
+<script src="src/lib/d3.v5.min.js"></script>
+<script src="src/lib/d3-selection-multi.v1.min.js"></script>
+<script src="src/lib/topojson.v2.min.js"></script>
+<script src="src/lib/simple-statistics.min.js"></script>
+<script src="src/lib/lodash_fp.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>
+
+<!--theme-->
+<script src="src/lib/foundation.js"></script>
+<script>
+    $(document).foundation();
+</script>
+<script>
+    $(function(){
+        $('#header').load('headerMenu.html');
+    })
+</script>
+<script src="src/js/plugins.js"></script>
+<script src="src/js/globalvariable.js"></script>
+<script src="src/js/d3googlemap.js"></script>
+<script src="src/js/processdata.js"></script>
+<script src="src/js/map.js"></script>
+<script src="src/js/main.js"></script>
+
+</body>
