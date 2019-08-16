@@ -139,3 +139,6 @@ function dmstoLongLat(string){
     }
 }
 
+function queryData(){
+
+}
