@@ -29,6 +29,7 @@
 </div>
 
         <div id="map" class="cell" style="min-height: calc(100vh - 56px) ;"></div>
+        <div id="overlaymap" style="display: none;"></div>
 
 
 <script src="src/lib/jquery-3.4.1.min.js"></script>
@@ -37,7 +38,8 @@
 <script src="src/lib/topojson.v2.min.js"></script>
 <script src="src/lib/simple-statistics.min.js"></script>
 <script src="src/lib/lodash_fp.min.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>-->
+<script type="text/javascript" src="src/lib/ol.js"></script>
 
 <!--theme-->
 <script src="src/lib/foundation.js"></script>
@@ -51,7 +53,8 @@
 </script>
 <script src="src/js/plugins.js"></script>
 <script src="src/js/globalvariable.js"></script>
-<script src="src/js/d3googlemap.js"></script>
+<script src="src/js/d3openlayer.js"></script>
+<!--<script src="src/js/d3googlemap.js"></script>-->
 <script src="src/js/processdata.js"></script>
 <script src="src/js/map.js"></script>
 <script src="src/js/main.js"></script>

@@ -40,7 +40,7 @@ function plotMaps(dp) {
     gm.dispatch.on("draw", draw);
 
     function draw(event) {
-
+        console.log('draw')
         // plotContours(event);
         // plotWells(event);
     }
@@ -200,6 +200,7 @@ function colorType(type) {
 
 function plotCounties() {
     //Clear the previous county
+    d3.select('#overlaymap').selectAll('.Countieslayer').remove();
     gm.map.data.forEach(function (feature) {
         // If you want, check here for some constraints.
         gm.map.data.remove(feature);
@@ -210,36 +211,66 @@ function plotCounties() {
         };
         // ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
         ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d => dp.allCounties.indexOf(d.properties.NAME.toLowerCase()) >= 0);
-        geoJsonObject = topojson.feature(us, ctPath)
 
+        geoJsonObject = topojson.feature(us, ctPath)
+        let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
+        datam.enter().append('a').attr('class','Countieslayer');
+        gm.map.data.setStyle({
+            'fill-color': [0,0,0,0],
+            'stroke-width': 1,
+            'stroke-color': [1,1,1,1],
+        },true);
         gm.map.data.addGeoJson(geoJsonObject);
 
-        // Set the stroke width, and fill color for each polygon
-        gm.map.data.setStyle({
-            fillOpacity: 0,
-            strokeWeight: 1
-        });
     }
 }
 
+// google
+// function plotRoad() {
+//
+//     if(gm.roadDate===undefined)
+//         gm.roadDate = [];
+//     // Construct the polygon.
+//     gm.roadDate = dp.filter(d=>(d["GPSStart"]!==null)&&(d["GPSEnd"]!==null)).map((d)=>{
+//         var bermudaTriangle = new google.maps.Polygon({
+//             paths: [d["GPSStart"],d["GPSEnd"]],
+//             strokeColor: '#FF0000',
+//             strokeOpacity: 0.8,
+//             strokeWeight: 3,
+//             fillColor: '#FF0000',
+//             fillOpacity: 0.35
+//         });
+//         bermudaTriangle.setMap(gm.map);
+//
+//         // Add a listener for the click event.
+//         bermudaTriangle.addListener('click', ()=>{});
+//         return bermudaTriangle;
+//     })
+// }
+
+// overlayer
 function plotRoad() {
 
-    if(gm.roadDate===undefined)
-        gm.roadDate = [];
+    if(gm.roadData===undefined)
+        gm.roadData = [];
     // Construct the polygon.
-    gm.roadDate = dp.filter(d=>(d["GPSStart"]!==null)&&(d["GPSEnd"]!==null)).map((d)=>{
-        var bermudaTriangle = new google.maps.Polygon({
-            paths: [d["GPSStart"],d["GPSEnd"]],
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 3,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35
-        });
-        bermudaTriangle.setMap(gm.map);
+
+    gm.roadData = dp.filter(d=>(d["GPSStart"]!==null)&&(d["GPSEnd"]!==null)).map((d)=>{
+        var bermudaTriangle = new ol.Feature(
+            new ol.geom.LineString(gm.latlong2ol([d["GPSStart"],d["GPSEnd"]]))
+        //     {
+        //     paths: [d["GPSStart"],d["GPSEnd"]],
+        //     strokeColor: '#FF0000',
+        //     strokeOpacity: 0.8,
+        //     strokeWeight: 3,
+        //     fillColor: '#FF0000',
+        //     fillOpacity: 0.35
+        // }
+        );
+        // bermudaTriangle.setMap(gm.map);
 
         // Add a listener for the click event.
-        bermudaTriangle.addListener('click', ()=>{});
+        // bermudaTriangle.addListener('click', ()=>{});
         return bermudaTriangle;
     })
 }
