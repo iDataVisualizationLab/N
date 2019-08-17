@@ -267,12 +267,19 @@ function plotRoad() {
         //     fillOpacity: 0.35
         // }
         );
-        // bermudaTriangle.setMap(gm.map);
 
         // Add a listener for the click event.
         // bermudaTriangle.addListener('click', ()=>{});
         return bermudaTriangle;
-    })
+    });
+    var vector = new ol.layer.Vector({
+        source: new ol.source.Vector({features:gm.roadData}),
+        style: gm.json2style({
+            'stroke-color': [255, 0, 0,0.8],
+            'stroke-width': 3,
+        })
+    });
+    vector.setMap(gm.map);
 }
 
 function plotContoursFromData(group, grid, colorFunction) {

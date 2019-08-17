@@ -59,11 +59,11 @@ class GoogleMap {
         };
         self.map.data.setStyle = function(newstyle,single){
             if (single){
-                this.styles = json2style(newstyle);
+                this.styles = self.json2style(newstyle);
                 this.styleFunction = this.styles;
             }else{
                 for (let i in newstyle)
-                    this.styles[i] = json2style(newstyle[i]);
+                    this.styles[i] = self.json2style(newstyle[i]);
                 this.styleFunction = function(feature) {
                     return this.styles[feature.getGeometry().getType()];
                 }
@@ -81,25 +81,27 @@ class GoogleMap {
             this.layer.setMap(self.map);
         };
 
-        function json2style(styleObject){
-            let temp_style = {};
-            Object.keys(styleObject).forEach(k=>{
-                const key_arrr=  k.split('-');
-                if (!temp_style[key_arrr[0]])
-                    temp_style[key_arrr[0]] = {};
-                temp_style[key_arrr[0]][key_arrr[1]]=styleObject[k];
 
-            });
-            let temp_op ={};
-            Object.keys(temp_style).forEach(k=>{
-                temp_op[k] = new ol.style[jsUcfirst(k)](temp_style[k]);
-            });
-            return new ol.style.Style(temp_op);
-        }
-        function jsUcfirst(string)
-        {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+
+    }
+    jsUcfirst(string)
+    {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    json2style(styleObject){
+        let temp_style = {};
+        Object.keys(styleObject).forEach(k=>{
+            const key_arrr=  k.split('-');
+            if (!temp_style[key_arrr[0]])
+                temp_style[key_arrr[0]] = {};
+            temp_style[key_arrr[0]][key_arrr[1]]=styleObject[k];
+
+        });
+        let temp_op ={};
+        Object.keys(temp_style).forEach(k=>{
+            temp_op[k] = new ol.style[this.jsUcfirst(k)](temp_style[k]);
+        });
+        return new ol.style.Style(temp_op);
     }
     /**
      * Fit the map with the list of long and lat inform of array of points.
@@ -126,7 +128,7 @@ class GoogleMap {
         this.view.fit(polygon, {constrainResolution: false});
     }
     latlong2ol(arr){
-        return arr.map(d=>ol.proj.transform([parseFloat(d[0]), parseFloat(d[1])], 'EPSG:4326', 'EPSG:3857'))
+        return arr.map(d=>ol.proj.transform([parseFloat(d.lng), parseFloat(d.lat)], 'EPSG:4326', 'EPSG:3857'))
     }
     createMarker() {
         let self = this;
