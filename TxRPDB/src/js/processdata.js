@@ -6,3 +6,7 @@ function dataProcessor(data) {
 function seperateStr(str){
     return str.split(/&|\/| and /).map(d=>d.trim().toLowerCase());
 }
+
+function filterApply(str){
+    return str.split(/&|\/| and /).map(d=>d.trim().toLowerCase());
+}

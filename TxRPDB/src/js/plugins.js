@@ -119,7 +119,7 @@ function dmstoLongLat(string){
         const numstrarr = string.split(/[A-Z]/i)
         temp[COL_LONG] =  convertorGPS(str2num(numstrarr[2]));
         temp[COL_LAT] = convertorGPS(str2num(numstrarr[1]));
-        if (dicarr[0] === "S"||dicarr[1] === "S") {
+        if (dicarr[0] === "S"||dicarr[1] === "s") {
             temp[COL_LAT] = -temp[COL_LAT];
         }
         if (dicarr[1] === "W"||dicarr[1] === "w") {
@@ -136,6 +136,37 @@ function dmstoLongLat(string){
     }
     function convertorGPS([d,min,sec]){
         return d + (min/60) + (sec/3600);
+    }
+}
+
+function LongLattodms(arr){
+    try {
+            let str = '';
+            let tempNum = arr[COL_LAT];
+            if (tempNum < 0) {
+                str += 'S';
+                tempNum = -tempNum;
+            } else
+                str += 'N';
+            str += num2str(tempNum) + ', ';
+            tempNum = arr[COL_LONG];
+            if (tempNum < 0) {
+                str += 'W';
+                tempNum = -tempNum;
+            } else
+                str += 'E';
+            str += num2str(tempNum);
+
+            return str;
+    }catch(e){
+        return arr;
+    }
+    function num2str (num){
+        let d = Math.ceil(num);
+        num = (num-d)*60;
+        let m = Math.ceil(num);
+        let sec = (num-m)*60;
+        return d+'o'+m+"'"+'"';
     }
 }
 

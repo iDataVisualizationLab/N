@@ -7,6 +7,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="src/style/foundation.min.css">
+    <link rel="stylesheet" href="src/style/zmultiselect.css">
+    <link rel="stylesheet" href="src/style/ol.css">
     <!--<link rel="manifest" href="site.webmanifest">-->
     <link rel="apple-touch-icon" href="icon.png">
 
@@ -27,10 +29,54 @@
 <div id="header">
 
 </div>
+<div class="off-canvas position-left" id="filter_manager" data-off-canvas data-transition="overlap">
+    <!-- Your menu or Off-canvas content goes here -->
+</div>
+<div class="off-canvas position-right" id="datatable" data-off-canvas>
+    <!-- Your menu or Off-canvas content goes here -->
+</div>
+<div id="menu">
+    <div id="search_box"></div>
+</div>
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="map" class="cell" style="min-height: calc(100vh - 56px) ;">
+    <div id="info" style="position:absolute;z-index: 10">
+        <select id="info_menu" class="hide">
+            <optgroup label="Foods">
+                <option>Pizza</option>
+                <option data-selected>Spaghetti</option>
+                <option>Mozzarella</option>
+                <option>Eggs</option>
+                <option data-selected>Eggs 2</option>
+                <option>Eggs 3</option>
+            </optgroup>
+            <optgroup label="Drinks">
+                <option>Water</option>
+                <option>Beer</option>
+                <option>Coke</option>
+                <option>Gin</option>
+            </optgroup>
+        </select>
+        <div class="detail_div">
+            <h3 class="section_id"></h3>
+            <table>
+                <tbody>
+                    <!--<tr>-->
+                        <!--<td align="right">-->
+                            <!--CSJ-->
+                        <!--</td>-->
+                        <!--<td style="width: 200px;">-->
+                            <!--<span id="MainContent_lblCCSJValue"></span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
 
-        <div id="map" class="cell" style="min-height: calc(100vh - 56px) ;"></div>
-        <div id="overlaymap" style="display: none;"></div>
-
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="overlaymap" style="display: none;"></div>
+</div>
 
 <script src="src/lib/jquery-3.4.1.min.js"></script>
 <script src="src/lib/d3.v5.min.js"></script>
@@ -46,6 +92,7 @@
 <script>
     $(document).foundation();
 </script>
+<script src="src/lib/zmultiselect.min.js"></script>
 <script>
     $(function(){
         $('#header').load('headerMenu.html');

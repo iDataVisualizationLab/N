@@ -1,3 +1,33 @@
+function maketooltip(info, properties) {
+    if (!properties.NAME) {
+        let variable_display = ["CCSJ", "ConcreteCAT", "ConstYear", "County", "DataType", "Direction", "District", "Drainage", "GPSEnd", "GPSStart", "Highway", "HorizontalAlign", "NoOFLanes", "PavementType", "RefMarker", "ShoulderType", "SlabThickness", "Surfacetexture", "VerticalAlign"]
+        let ta = d3.select(info).selectAll('.detail_div')
+            .data([properties.data]);
+        ta.exit().remove();
+        let n_ta = ta.enter().append('div').attr('class', 'detail_div');
+        n_ta.append('tbody');
+
+        let ta_tr = n_ta.merge(ta).select('tbody').selectAll('tr')
+            .data(d => variable_display.map(e => [
+                {class: 'align-right', val: variablecollection[e].text}, {
+                class: 'align-left',
+                val: variablecollection[e].type==='gps'?LongLattodms(d[variablecollection[e].id]):d[variablecollection[e].id]
+            }]));
+        ta_tr.exit().remove();
+        let ta_tr_n = ta_tr.enter().append('tr');
+
+        let ta_tr_td = ta_tr_n.merge(ta_tr).selectAll('td')
+            .data(d => d);
+        ta_tr_td.exit().remove();
+        let ta_tr_td_n = ta_tr_td.enter().append('td');
+        ta_tr_td_n.append('span');
+        ta_tr_td_n
+            .merge(ta_tr_td)
+            .attr('class', d => d.class)
+            .select('span').text(d => d.val);
+    }
+}
+
 /**
  * To use this please add Google Maps API and D3
  * For instance:
@@ -25,12 +55,19 @@ class GoogleMap {
         self.map = new ol.Map({
             target: theDivId,
             layers: [
-            new ol.layer.Tile({
-                preload: 4,
-                source: new ol.source.OSM()
-            })],
+                new ol.layer.Tile({
+                    preload: 4,
+                    source: new ol.source.OSM()
+                }),
+                // new ol.layer.Tile({
+                //     source: new ol.source.Stamen({
+                //         layer: 'terrain-labels'
+                //     })
+                // })
+            ],
             view: self.view
         });
+        self.map.addControl(new ol.control.ScaleLine({units: 'us'}));
         self.vectorSource = new ol.layer.Vector({});
         // self.draw = new ol.interaction.Draw({
         //     source: self.vectorSource,
@@ -82,6 +119,20 @@ class GoogleMap {
         };
 
 
+        this.map.on('pointermove', showInfo);
+
+        var info = document.getElementById('info');
+        function showInfo(event) {
+            var features = self.map.getFeaturesAtPixel(event.pixel);
+            if (!features) {
+                info.innerText = '';
+                info.classList.add("hide");
+                return;
+            }
+            var properties = features[0].getProperties();
+            maketooltip(info, properties);
+            info.classList.remove("hide");
+        }
 
     }
     jsUcfirst(string)
@@ -125,7 +176,7 @@ class GoogleMap {
             geometry: new ol.geom.Polygon([longLat])
         })
         var polygon = (feature.getGeometry());
-        this.view.fit(polygon, {constrainResolution: false});
+        this.view.fit(polygon);
     }
     latlong2ol(arr){
         return arr.map(d=>ol.proj.transform([parseFloat(d.lng), parseFloat(d.lat)], 'EPSG:4326', 'EPSG:3857'))

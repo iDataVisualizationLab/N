@@ -256,8 +256,10 @@ function plotRoad() {
     // Construct the polygon.
 
     gm.roadData = dp.filter(d=>(d["GPSStart"]!==null)&&(d["GPSEnd"]!==null)).map((d)=>{
-        var bermudaTriangle = new ol.Feature(
-            new ol.geom.LineString(gm.latlong2ol([d["GPSStart"],d["GPSEnd"]]))
+        var bermudaTriangle = new ol.Feature({
+                geometry: new ol.geom.LineString(gm.latlong2ol([d["GPSStart"], d["GPSEnd"]])),
+                data:d
+            }
         //     {
         //     paths: [d["GPSStart"],d["GPSEnd"]],
         //     strokeColor: '#FF0000',
