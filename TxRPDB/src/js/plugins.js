@@ -173,3 +173,58 @@ function LongLattodms(arr){
 function queryData(){
 
 }
+
+function queryfromsource(secid,div) {
+
+    return $.ajax({
+        type: 'GET',
+        url: 'https://cors-anywhere.herokuapp.com/http://appcollab.ads.ttu.edu/TxRPDB/FileDisplay/FilesList.aspx?sectionid='+secid+'&contenttype='+this.id,
+        dataType: 'html',
+        crossDomain: true,
+        success: function (htmldata) {
+            let newcontent = document.createElement('html');
+            newcontent.innerHTML =htmldata;
+            let temp_data;
+            if (newcontent.querySelector('#pnlData').querySelector('table')===null) {
+                temp_data = undefined;
+                div.selectAll('*').remove();
+                div.append('span').text('No files are available to Display.')
+            } else {
+                temp_data = [];
+                newcontent.querySelectorAll("input[name^='imgButtonID-']")
+                    .forEach((d,i)=>temp_data.push({url:eval(d.getAttribute('onclick')),
+                    target: secid+this.id+i}));
+                div.select('span').remove();
+                let dold = div.selectAll('.cell').data(temp_data);
+                dold.exit().remove();
+                dold.enter().append('div').attr('class','cell').append('iframe');
+                div.selectAll('iframe').attr('src',d=>d.url)
+
+            }
+            return temp_data;
+        }
+    })
+}
+
+
+function ViewFileURL(path, filename) {
+    path = path.replace(/!/g, '/');
+    path = path.replace(/ /g, '%20');
+    path = path.replace('~/', '');
+
+    var indexOffileType = path.lastIndexOf(".");
+    var lengthOfFile = path.length;
+    var filetype = path.substring(indexOffileType + 1, lengthOfFile);
+
+    if (filetype == "jpg" || filetype == "JPG" || filetype == "jpeg" || filetype == "JPEG" || filetype == "png" || filetype == "PNG" || filetype == "pdf"  || filetype == "PDF" || filetype == "gif" || filetype == "GIF") {
+        path = "http://www.depts.ttu.edu/techmrtweb/rpdb/" + path;
+    }
+    else {
+        path = "http://docs.google.com/gview?url=http://www.depts.ttu.edu/techmrtweb/rpdb/" + path+"&embedded=true";
+    }
+    return path;
+}
+
+function DownloadURLSet(path) {
+    document.getElementById("hdFieldFilePath").value = path;
+}

@@ -1,0 +1,19 @@
+tbody td, tbody th {
+    line-height: 1rem;
+    padding: .1rem .225rem .225rem;
+}
+#info table {
+    width:400px;
+    margin: 5px;
+}
+#info table tr td:first-child{
+    width:170px;
+}
+#info {
+    background-color: rgba(193, 193, 193, 0.87);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.section_id::before {
+    content: "Section ID: ";
+}

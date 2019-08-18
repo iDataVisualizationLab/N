@@ -4,7 +4,7 @@ let basearr=[],basedata={},dp,
     COL_LONG = 'lng',
     filter={};
 
-let variablecollection ={
+let variable_collection ={
     CCSJ:{
         text: 'CCSJ',
         id: 'CCSJ'
@@ -84,6 +84,65 @@ let variablecollection ={
         id: 'VerticalAlign'
     }
 };
+let project_collection ={
+    CRCP: {
+        text:"CRCP",
+        id:"CRCP",
+        sub: ["Level 1 Sections","General Sections"]
+    },
+    CPCD: {
+        text:"CPCD",
+        id:"CPCD",
+        sub: ["CPCD"]
+    },
+    ExperimentalSections: {
+        text:"Experimental Sections",
+        id:"ExperimentalSections",
+        sub: ["Coarse Aggregate Effects","LTPP Sections","Steel Percentage Effects","Construction Season Effects"]
+    },
+    SpecialSections: {
+        text:"Special Sections",
+        id:"Special Sections",
+        sub: ["Fast Track Pavement","Bonded Overlay","Unbonded Overlay","Whitetopping","Precast Pavement","Cast-in-Place Prestressed","Recycled Concrete Pavement","RCC Pavement"]
+    }
+};
+let project_feature = {
+    "Level 1 Sections": ["Deflections","LTE","Cracks","Pictures"],
+    "all":["Plans","Reports","Pictures"]
+}
+let project_feature_collection = {
+    Deflections:{
+        text: "Deflections",
+        id: "Deflections",
+        show: queryfromsource
+    },
+    LTE:{
+        text: "Load Transfer Efficiency",
+        id: "LTE",
+        show: queryfromsource
+    },
+    Cracks:{
+        text: "Crack Information",
+        id: "Cracks",
+        show: queryfromsource
+    },
+    Pictures:{
+        text: "Pictures",
+        id: "Pictures",
+        show: queryfromsource
+    },
+    Plans:{
+        text: "Plans",
+        id: "Plans",
+        show: queryfromsource
+    },
+    Reports:{
+        text: "Reports",
+        id: "Reports",
+        show: queryfromsource
+    }
+}
+
 // map
 
 let us;

@@ -1,17 +1,19 @@
 function maketooltip(info, properties) {
     if (!properties.NAME) {
-        let variable_display = ["CCSJ", "ConcreteCAT", "ConstYear", "County", "DataType", "Direction", "District", "Drainage", "GPSEnd", "GPSStart", "Highway", "HorizontalAlign", "NoOFLanes", "PavementType", "RefMarker", "ShoulderType", "SlabThickness", "Surfacetexture", "VerticalAlign"]
+        let variable_display = ["CCSJ", "ConcreteCAT", "ConstYear", "County", "Direction", "District", "Drainage", "GPSEnd", "GPSStart", "Highway", "HorizontalAlign", "NoOFLanes", "PavementType", "RefMarker", "ShoulderType", "SlabThickness", "Surfacetexture", "VerticalAlign"]
         let ta = d3.select(info).selectAll('.detail_div')
             .data([properties.data]);
         ta.exit().remove();
         let n_ta = ta.enter().append('div').attr('class', 'detail_div');
-        n_ta.append('tbody');
+        n_ta.append('h5').attr('class','section_id');
+        n_ta.append('table').append('tbody');
+        n_ta.append('div').attr('class','tip_feature');
 
         let ta_tr = n_ta.merge(ta).select('tbody').selectAll('tr')
             .data(d => variable_display.map(e => [
-                {class: 'align-right', val: variablecollection[e].text}, {
+                {class: 'align-right', val: variable_collection[e].text}, {
                 class: 'align-left',
-                val: variablecollection[e].type==='gps'?LongLattodms(d[variablecollection[e].id]):d[variablecollection[e].id]
+                val: variable_collection[e].type==='gps'?ol.coordinate.toStringHDMS([d[variable_collection[e].id][COL_LONG],d[variable_collection[e].id][COL_LAT]]):d[variable_collection[e].id]
             }]));
         ta_tr.exit().remove();
         let ta_tr_n = ta_tr.enter().append('tr');
@@ -25,6 +27,22 @@ function maketooltip(info, properties) {
             .merge(ta_tr_td)
             .attr('class', d => d.class)
             .select('span').text(d => d.val);
+
+        ta = n_ta.merge(ta);
+        ta.select('.section_id').text(d=>d.sectionID);
+        let fdiv = ta.select('.tip_feature').selectAll('.feature_div').data(d=>(project_feature[d.DataType]||project_feature["all"]).map(k=>{return{id:k,val:d.sectionID}}));
+        fdiv.exit().remove();
+        let fdiv_n = fdiv.enter().append('div')
+            .attr('class','tip_feature');
+        fdiv_n.append('h6').attr('class','tip_feature_label');
+        fdiv_n.append('div').attr('class','tip_feature_content grid-x medium-up-3 large-up-4');
+
+        fdiv = fdiv_n.merge(fdiv);
+        fdiv.select('.tip_feature_label').text(d=>project_feature_collection[d.id].text);
+        fdiv.select('.tip_feature_content').each(function(d){project_feature_collection[d.id].show(d.val,d3.select(this))});
+
+
+
     }
 }
 
@@ -77,7 +95,7 @@ class GoogleMap {
         // self.map.addInteraction(self.draw);
 
         self.dispatch = d3.dispatch("draw");
-        self.createMarker();
+
         if(!layerType) layerType = "svg";
         self.layerType = layerType;
         self.map.data=[];
@@ -118,17 +136,24 @@ class GoogleMap {
             this.layer.setMap(self.map);
         };
 
+        self.createMarker();
+        self.map.on('pointermove', showInfo);
 
-        this.map.on('pointermove', showInfo);
-
-        var info = document.getElementById('info');
         function showInfo(event) {
+            var info = self.tooltip.getElement();
             var features = self.map.getFeaturesAtPixel(event.pixel);
+            var coordinate = event.coordinate;
+            // var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
             if (!features) {
                 info.innerText = '';
                 info.classList.add("hide");
                 return;
             }
+            self.tooltip.setPosition(coordinate)
+            // d3.select(info).styles({
+            //     top: coordinate[0]+'px',
+            //     right: coordinate[1]+'px'
+            // });
             var properties = features[0].getProperties();
             maketooltip(info, properties);
             info.classList.remove("hide");
@@ -183,9 +208,11 @@ class GoogleMap {
     }
     createMarker() {
         let self = this;
-        self.overlay = new ol.Overlay({
+        self.tooltip = new ol.Overlay({
+            element: document.getElementById('info'),
             stopEvent: false
         });
+        self.map.addOverlay(self.tooltip);
         //Add the container when the overlay is added to the map
         // self.overlay.onAdd = function () {
         //     this.map.addOverlay()
