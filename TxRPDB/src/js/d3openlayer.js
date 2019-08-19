@@ -2,7 +2,7 @@ function maketooltip(info, properties) {
     if (!properties.NAME) {
         let variable_display = ["CCSJ", "ConcreteCAT", "ConstYear", "County", "Direction", "District", "Drainage", "GPSEnd", "GPSStart", "Highway", "HorizontalAlign", "NoOFLanes", "PavementType", "RefMarker", "ShoulderType", "SlabThickness", "Surfacetexture", "VerticalAlign"]
         let ta = d3.select(info).selectAll('.detail_div')
-            .data([properties.data]);
+            .data([properties.data],d=>d.sectionID);
         ta.exit().remove();
         let n_ta = ta.enter().append('div').attr('class', 'detail_div');
         n_ta.append('h5').attr('class','section_id');
@@ -114,7 +114,18 @@ function openPdfInNewTab(url,
         }});
 }
 function printfile (url){
+    $.ajax({
+        type: 'GET',
+        url: 'https://cors-anywhere.herokuapp.com/'+url,
+        crossDomain: true,
+        success:function(response) {
+            var iframe = document.createElement('iframe');
+            document.body.appendChild(iframe);
+                iframedoc = iframe.contentDocument || iframe.contentWindow.document;
 
+            iframedoc.body.innerHTML = response;
+            iframe.contentWindow.print();
+        }});
 }
 /**
  * To use this please add Google Maps API and D3

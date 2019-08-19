@@ -175,13 +175,13 @@ function queryData(){
 }
 
 function queryfromsource(secid,div) {
-
-    return $.ajax({
+    $.ajax({
         type: 'GET',
         url: 'https://cors-anywhere.herokuapp.com/http://appcollab.ads.ttu.edu/TxRPDB/FileDisplay/FilesList.aspx?sectionid='+secid+'&contenttype='+this.id,
         dataType: 'html',
         crossDomain: true,
         success: function (htmldata) {
+            console.log(div.datum())
             let newcontent = document.createElement('html');
             newcontent.innerHTML =htmldata.replace(/..\/Images/gi,'src/Images');
             let temp_data;
@@ -202,7 +202,7 @@ function queryfromsource(secid,div) {
                     .forEach((d,i)=>temp_data[i].urlDownload = eval(d.getAttribute('onclick')) );
 
                 div.classed('no-background-color',true).select('span').remove();
-                let dold = div.selectAll('div.cell').data(temp_data);
+                let dold = div.selectAll('div.cell').data(temp_data,d=>d);
                 dold.exit().remove();
                 dold.enter().append('div').attr('class','cell').append('iframe').attr('class','cell').attr('frameborder',0);
                 div.selectAll('iframe').attr('src',d=>d.url)
