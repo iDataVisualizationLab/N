@@ -1,6 +1,5 @@
 $(document).ready(function(){
 
-
     init();
 });
 function initmap(){
@@ -8,6 +7,8 @@ function initmap(){
 }
 function init(){
     initmap();
+    d3.select('#projects').selectAll('projects_item').data(Object.keys(project_collection).map(k=>project_collection[k]))
+        .enter().append('a').attr('class','button projects_item').text(d=>d.text);
     readConf("Data_details").then((data)=>{
         basedata = data;
         basearr = d3.values(data) ;

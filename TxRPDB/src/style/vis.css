@@ -1,3 +1,8 @@
+.floating-navigator {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+}
 tbody td, tbody th {
     line-height: 1rem;
     padding: .1rem .225rem .225rem;
