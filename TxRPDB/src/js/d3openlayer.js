@@ -41,9 +41,15 @@ function maketooltip(info, properties) {
         fdiv_n.select('.tip_feature_label').text(d=>project_feature_collection[d.id].text);
         fdiv_n.select('.tip_feature_content').each(function(d){project_feature_collection[d.id].show(d.val,d3.select(this))});
 
-
-
     }
+}
+
+function printDislog(data){
+    d3.select(printModal).select('.printModal_content').selectAll('.printModal_feature_content')
+        .data((project_feature[data.DataType]||project_feature["all"]).map(k=>{return{id:k,val:data.sectionID}}),e=>e.sectionID)
+        .append('div')
+        .attr('class','tip_feature_content grid-x small-up-3medium-up-3 large-up-4')
+        .each(function(d){project_feature_collection[d.id].show(d.val,d3.select(this))});
 }
 
 /**
@@ -158,7 +164,11 @@ class GoogleMap {
                 // });
                 var properties = features[0].getProperties();
 
-                d3.select(info).select('.close_tooltip').on('click',()=>{self.holdTip = false;info.classList.add("hide");});
+                d3.select(info).select('.close_tooltip')
+                    .on('click',()=>{self.holdTip = false;info.classList.add("hide");});
+
+                d3.select(info).select('.print-button')
+                    .on('click',()=>{printDislog(properties.data);$('#printModal').foundation('open');});
                 maketooltip(info, properties);
                 info.classList.remove("hide");
             }

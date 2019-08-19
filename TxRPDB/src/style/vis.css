@@ -39,5 +39,7 @@ iframe.cell {
     padding: 0 5px;
 }
 .print-button {
-   background-color:  #008cff;
+   /*background-color:  #008cff;*/
+   background-color:  black;
+   color:  white;
 }

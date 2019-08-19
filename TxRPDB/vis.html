@@ -47,7 +47,7 @@
             <span data-equalizer-watch>Click to hold</span>
             <button data-equalizer-watch class="close-button close_tooltip" aria-label="Close alert" type="button" data-close><span aria-hidden="true">&times;</span>
             </button>
-            <button data-equalizer-watch class="print-button" type="button" ><span aria-hidden="true">Print<i class="fas fa-print"></i></span>
+            <button data-equalizer-watch class="print-button" type="button" data-open="printModal"><span aria-hidden="true">Print <i class="fas fa-print"></i></span>
             </button>
         </div>
         <select id="info_menu" class="hide">
@@ -69,7 +69,17 @@
 
     </div>
 </div>
-<div id="overlaymap" style="display: none;"></div>
+    <div id="overlaymap" style="display: none;"></div>
+</div>
+<div class="reveal" id="printModal" data-reveal>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3>Chose file to download.</h3>
+    <div class="printModal_content">
+
+    </div>
+    <button type="button">Download All in 1 file</button>
 </div>
 
 <script src="src/lib/jquery-3.4.1.min.js"></script>
