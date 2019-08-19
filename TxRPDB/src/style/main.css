@@ -1,5 +1,6 @@
 :root {
     --primary-color: #092740;
+    --primary-color-back: #092740;
     --secondary-color: rgba(255, 255, 255, 0.79);
     --containBlack: #ffffff;
     --slider: 0;
@@ -9,6 +10,7 @@
 }
 body{
     font: 12px Arial;
+
 }
 
 #header .top-bar, #header .top-bar ul{
@@ -22,3 +24,4 @@ body{
 #header a {
     color: var(--secondary-color)
 }
+

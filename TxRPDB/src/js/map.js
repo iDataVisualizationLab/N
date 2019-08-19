@@ -61,57 +61,6 @@ function plotMaps(dp) {
     dp.filter(d=>d['GPSEnd']).forEach(d=>{arr.push(d["GPSEnd"]);arr.push(d["GPSStart"]);});
     gm.fitBounds(arr, longAccessor, latAccessor);
 
-    function plotWells(event) {
-
-        let layer = event.overlayMouseTarget;
-        wells = wells.sort(wellSortFunctions[wellSortIndex]);
-
-        if (plotWellsOption) {
-            let marker = layer.select("#wellsGroup").selectAll("circle").data(wells);
-
-            let transform = event.transform(longAccessor, latAccessor);
-            //Update existing
-            marker.each(transform);
-            marker.each(updateId);
-
-            marker.exit().remove();
-
-            marker.enter().append("circle")
-                .each(transform)
-                .attr("class", "marker")
-                .attr("id", (d, i) => `wellCircle${d.key}`)
-                .attr("stroke", "black")
-                .attr("fill-opacity", .5)
-                .attr("stroke-width", 0.6)
-                .attr("r", (d, i) => {
-                    if (i <= 19) {
-                        return radiusScale(i);
-                    } else {
-                        return 1.4;
-                    }
-                })
-                .attr("fill", (d, i) => {
-                    if (i <= 19) {
-                        return d3.interpolateReds(colorValueScale(i));
-                    } else {
-                        return "rgba(0,0,0,0.5)";
-                    }
-                })
-                .on("mouseover", d => {
-                    showTip(d, formatData);
-                })
-                .on("mouseout", () => {
-                    hidetip();
-                });
-            //Highlights and
-            let length = wells.length;//select 19 last ones (are the biggest)
-            for (let i = 1; i <= 19; i++) {
-                d3.select(`#wellCircle${length - i}`).attr("fill", d3.interpolateReds(colorValueScale(i))).attr("r", radiusScale(i));
-            }
-        } else {
-            layer.select("#wellsGroup").selectAll("*").remove();
-        }
-    }
 
     function addDivPixelFromLatLng(wells, fromLatLngToDivPixel) {
         //let us get the data of one month
@@ -124,63 +73,6 @@ function plotMaps(dp) {
         return wells;
     }
 
-    function plotContours(event) {
-        positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
-        negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
-
-        let svg = event.overlayLayer;
-        let g = svg.select("#contoursGroup");
-        g.selectAll("*").remove();
-        if (wells.length <= 0) {
-            return;//Don't do any further drawing if wells is empty
-        }
-
-        let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
-        wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
-
-        let recbin = new RecBinner(wells, gridSize[analyzeValueIndex]);
-        let grid = recbin.grid;
-
-
-        g.attr("class", "contour");
-        g.attr("transform", `translate(${grid.x}, ${grid.y})`);
-        let positiveGrid = copy(grid);
-        positiveGrid.forEach(d => {
-            if (d.value < 0 || typeof d.value === "object") {
-                d.value = null;
-            }
-        });
-        let negativeGrid = copy(grid);
-        negativeGrid.forEach(d => {
-            if (d.value >= 0 || typeof d.value === "object") {
-                d.value = null;
-            } else {
-                d.value = -d.value;//Convert to positive.
-            }
-        });
-
-        function copy(o) {
-            var output, v, key;
-            output = Array.isArray(o) ? [] : {};
-            for (key in o) {
-                v = o[key];
-                output[key] = (typeof v === "object") ? copy(v) : v;
-            }
-            return output;
-        }
-
-        plotContoursFromData(g, positiveGrid, colorType("positive"));
-        if (negativeGrid.filter(g => g.value !== null).length > 0) {
-            plotContoursFromData(g, negativeGrid, colorType("negative"));
-        }
-
-        if (plotContoursOption) {
-            g.style("visibility", "visible");
-        } else {
-            g.style("visibility", "hidden");
-        }
-
-    }
 }
 
 function colorType(type) {
