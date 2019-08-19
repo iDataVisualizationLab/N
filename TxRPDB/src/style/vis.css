@@ -4,7 +4,6 @@ tbody td, tbody th {
 }
 #info table {
     width:400px;
-    margin: 5px;
 }
 #info table tr td:first-child{
     width:170px;
@@ -12,8 +11,33 @@ tbody td, tbody th {
 #info {
     background-color: rgba(193, 193, 193, 0.87);
     border-radius: 5px;
+    border-color: #000000;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 0 5px 5px 5px;
 }
 .section_id::before {
     content: "Section ID: ";
+}
+.tip_feature_content {
+    font-size: small;
+    background-color: white;
+    margin: 0;
+}
+.no-background-color {
+    background-color: unset;
+}
+iframe.cell {
+    max-height: 73px;
+}
+
+.close_tooltip {
+    float:right;
+    position: unset;
+}
+#tooltp_header button {
+    float:right;
+    padding: 0 5px;
+}
+.print-button {
+   background-color:  #008cff;
 }

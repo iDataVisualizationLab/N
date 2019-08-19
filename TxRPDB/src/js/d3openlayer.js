@@ -30,16 +30,16 @@ function maketooltip(info, properties) {
 
         ta = n_ta.merge(ta);
         ta.select('.section_id').text(d=>d.sectionID);
-        let fdiv = ta.select('.tip_feature').selectAll('.feature_div').data(d=>(project_feature[d.DataType]||project_feature["all"]).map(k=>{return{id:k,val:d.sectionID}}));
+        let fdiv = ta.select('.tip_feature').selectAll('.feature_div').data(d=>(project_feature[d.DataType]||project_feature["all"]).map(k=>{return{id:k,val:d.sectionID}}),e=>e.sectionID);
         fdiv.exit().remove();
         let fdiv_n = fdiv.enter().append('div')
-            .attr('class','tip_feature');
+            .attr('class','feature_div');
         fdiv_n.append('h6').attr('class','tip_feature_label');
-        fdiv_n.append('div').attr('class','tip_feature_content grid-x medium-up-3 large-up-4');
+        fdiv_n.append('div').attr('class','tip_feature_content grid-x small-up-2 medium-up-3 large-up-3');
 
-        fdiv = fdiv_n.merge(fdiv);
-        fdiv.select('.tip_feature_label').text(d=>project_feature_collection[d.id].text);
-        fdiv.select('.tip_feature_content').each(function(d){project_feature_collection[d.id].show(d.val,d3.select(this))});
+        // fdiv = fdiv_n.merge(fdiv);
+        fdiv_n.select('.tip_feature_label').text(d=>project_feature_collection[d.id].text);
+        fdiv_n.select('.tip_feature_content').each(function(d){project_feature_collection[d.id].show(d.val,d3.select(this))});
 
 
 
@@ -138,25 +138,37 @@ class GoogleMap {
 
         self.createMarker();
         self.map.on('pointermove', showInfo);
+        self.map.on('click', clickmapcheck);
 
         function showInfo(event) {
-            var info = self.tooltip.getElement();
-            var features = self.map.getFeaturesAtPixel(event.pixel);
-            var coordinate = event.coordinate;
-            // var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
-            if (!features) {
-                info.innerText = '';
-                info.classList.add("hide");
-                return;
+            if (!self.holdTip) {
+                var info = self.tooltip.getElement();
+                var features = self.map.getFeaturesAtPixel(event.pixel);
+                var coordinate = event.coordinate;
+                // var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
+                if (!features || features[0].getProperties().NAME) {
+
+                    info.classList.add("hide");
+                    return;
+                }
+                self.tooltip.setPosition(coordinate)
+                // d3.select(info).styles({
+                //     top: coordinate[0]+'px',
+                //     right: coordinate[1]+'px'
+                // });
+                var properties = features[0].getProperties();
+
+                d3.select(info).select('.close_tooltip').on('click',()=>self.holdTip = false);
+                maketooltip(info, properties);
+                info.classList.remove("hide");
             }
-            self.tooltip.setPosition(coordinate)
-            // d3.select(info).styles({
-            //     top: coordinate[0]+'px',
-            //     right: coordinate[1]+'px'
-            // });
-            var properties = features[0].getProperties();
-            maketooltip(info, properties);
-            info.classList.remove("hide");
+        }
+
+        function clickmapcheck() {
+            if(!d3.select(info).classed('hide')) {
+                self.holdTip = true;
+                info.classList.add("hide");
+            }
         }
 
     }
@@ -210,7 +222,6 @@ class GoogleMap {
         let self = this;
         self.tooltip = new ol.Overlay({
             element: document.getElementById('info'),
-            stopEvent: false
         });
         self.map.addOverlay(self.tooltip);
         //Add the container when the overlay is added to the map

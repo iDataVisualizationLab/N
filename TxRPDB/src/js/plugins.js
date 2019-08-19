@@ -188,16 +188,16 @@ function queryfromsource(secid,div) {
             if (newcontent.querySelector('#pnlData').querySelector('table')===null) {
                 temp_data = undefined;
                 div.selectAll('*').remove();
-                div.append('span').text('No files are available to Display.')
+                div.classed('no-background-color',false).append('span').text('No files are available to Display.')
             } else {
                 temp_data = [];
                 newcontent.querySelectorAll("input[name^='imgButtonID-']")
                     .forEach((d,i)=>temp_data.push({url:eval(d.getAttribute('onclick')),
                     target: secid+this.id+i}));
-                div.select('span').remove();
-                let dold = div.selectAll('.cell').data(temp_data);
+                div.classed('no-background-color',true).select('span').remove();
+                let dold = div.selectAll('div.cell').data(temp_data);
                 dold.exit().remove();
-                dold.enter().append('div').attr('class','cell').append('iframe');
+                dold.enter().append('div').attr('class','cell').append('iframe').attr('class','cell').attr('frameborder',0);
                 div.selectAll('iframe').attr('src',d=>d.url)
 
             }
@@ -205,7 +205,45 @@ function queryfromsource(secid,div) {
         }
     })
 }
+function getpdfContent() {
+    $.ajax({
+        type: 'GET',
+        url: 'https://cors-anywhere.herokuapp.com/http://appcollab.ads.ttu.edu/TxRPDB/UploadedSectionData/SurveyData/US281[BCO]/Pictures/US281[BCO]-PICS.pdf',
+        dataType: 'html',
+        crossDomain: true,
+        success: function (htmldata) {
+            var doc = new PDF24Doc({
+                charset : "UTF-8",
+                headline : "This ist the headline",
+                headlineUrl : "http://www.pdf24.org",
+                baseUrl : "http://www.pdf24.org",
+                filename : "test",
+                pageSize : "210x297",
+                emailTo : "stefanz@pdf24.org",
+                emailFrom : "stefanz@pdf24.org",
+                emailSubject: "Here is your created PDF files",
+                emailBody: "The created PDF file is attached to this email. Regards www.pdf24.org!",
+                emailBodyType: "text"
+            });
 
+            /*
+            * Add an element without using PDF24Element
+            */
+            doc.addElement({
+                title : "This is a title",
+                url : "http://www.pdf24.org",
+                author : "Stefan Ziegler",
+                dateTime : "2010-04-15 8:00",
+                body : htmldata
+            });
+
+            /*
+            * Create the PDF file
+            */
+            doc.create();
+        }
+    })
+}
 
 function ViewFileURL(path, filename) {
     path = path.replace(/!/g, '/');

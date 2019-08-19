@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="src/style/foundation.min.css">
     <link rel="stylesheet" href="src/style/zmultiselect.css">
     <link rel="stylesheet" href="src/style/ol.css">
+    <script src="https://kit.fontawesome.com/da99e175b3.js"></script>
     <!--<link rel="manifest" href="site.webmanifest">-->
     <link rel="apple-touch-icon" href="icon.png">
 
     <!-- Place favicon.ico in the root directory -->
 
     <!--<link rel="stylesheet" href="css/normalize.css">-->
+    <link rel="stylesheet" href="src/style/main.css">
     <link rel="stylesheet" href="src/style/vis.css">
 
     <meta name="theme-color" content="#fafafa">
@@ -41,6 +43,12 @@
 <div class="off-canvas-content" data-off-canvas-content>
 <div id="map" class="cell" style="min-height: calc(100vh - 56px) ;">
     <div id="info" style="position:absolute;z-index: 10" class="card">
+        <div id="tooltp_header" data-equalizer>
+            <button data-equalizer-watch class="close-button close_tooltip" aria-label="Close alert" type="button" data-close><span aria-hidden="true">&times;</span>
+            </button>
+            <button data-equalizer-watch class="print-button" type="button" ><span aria-hidden="true">Print<i class="fas fa-print"></i></span>
+            </button>
+        </div>
         <select id="info_menu" class="hide">
             <optgroup label="Foods">
                 <option>Pizza</option>
@@ -57,22 +65,7 @@
                 <option>Gin</option>
             </optgroup>
         </select>
-        <div class="detail_div">
-            <h5 class="section_id"></h5>
-            <table>
-                <tbody>
-                    <!--<tr>-->
-                        <!--<td align="right">-->
-                            <!--CSJ-->
-                        <!--</td>-->
-                        <!--<td style="width: 200px;">-->
-                            <!--<span id="MainContent_lblCCSJValue"></span>-->
-                        <!--</td>-->
-                    <!--</tr>-->
 
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 <div id="overlaymap" style="display: none;"></div>
@@ -84,6 +77,9 @@
 <script src="src/lib/topojson.v2.min.js"></script>
 <script src="src/lib/simple-statistics.min.js"></script>
 <script src="src/lib/lodash_fp.min.js"></script>
+<script type="text/javascript" src="src/lib/jquery.printPage.js"></script>
+<!--<script type="text/javascript" src="http://doc2pdf.pdf24.org/js/api.js"></script>-->
+
 <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>-->
 <script type="text/javascript" src="src/lib/ol.js"></script>
 
