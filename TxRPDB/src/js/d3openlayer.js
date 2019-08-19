@@ -45,13 +45,77 @@ function maketooltip(info, properties) {
 }
 
 function printDislog(data){
-    d3.select(printModal).select('.printModal_content').selectAll('.printModal_feature_content')
-        .data((project_feature[data.DataType]||project_feature["all"]).map(k=>{return{id:k,val:data.sectionID}}),e=>e.sectionID)
-        .append('div')
-        .attr('class','tip_feature_content grid-x small-up-3medium-up-3 large-up-4')
-        .each(function(d){project_feature_collection[d.id].show(d.val,d3.select(this))});
-}
+    let datafromtip = d3.selectAll('.tip_feature_content div.cell').data();
+    let nestlist = d3.nest().key(d=>d.type).entries(datafromtip);
+    let prinflist = d3.select(printModal).select('.printModal_content').selectAll('.print_feature_content')
+        .data(nestlist,d=>''+d.key+d.values.map(e=>e.url).join(','));
 
+    prinflist.exit().remove();
+
+    let prinflist_n =  prinflist.enter().append('div')
+        .attr('class','print_feature_content grid-y');
+
+    prinflist_n.append('h6').attr('class','print_feature_label');
+    prinflist_n.append('ul').attr('class','print_feature_list');
+
+    prinflist =  prinflist.merge(prinflist_n);
+    prinflist.select('.print_feature_label').text(d=>project_feature_collection[d.key].text);
+
+    let item = prinflist.select('.print_feature_list').selectAll('.print_feature_list_item').data(d=>d.values,d=>d.filename);
+    item.exit().remove();
+    let item_n = item.enter().append('li').attr('class','print_feature_list_item grid-x');
+
+    item_n.append('span').attr('class','filename cell medium-8');
+    let menu_list = item_n.append('div').attr('class','print_menu_list cell medium-4 menu align-right   ');
+    menu_list.append('a').attr('class','print_menu_list_download')
+        .attr('target',"_blank")
+        .attr('href',d=>d.urlDownload).attr('download',d=>d.filename).append('i').attr('class','fas fa-download');
+    menu_list.append('button').attr('class','print_menu_list_print').append('i').attr('class','fas fa-print');
+
+    item = item_n.merge(item);
+    item.select('.filename').text(d=>d.filename);
+    item.select('.print_menu_list_download').on('click',d=>
+        downloadfile(d.urlDownload,d.filename));
+    item.select('.print_menu_list_print').on('click',d=>printfile(d.urlDownload));
+}
+function downloadfile(url,filename){
+    if (filename.split('.').pop()==='pdf'){
+        openPdfInNewTab(url,undefined,'Document',filename)
+    }
+}
+function openPdfInNewTab(url,
+                         postData,
+                         description = 'Document',
+                         filename = description + '.pdf') {
+    // if (!window.navigator.msSaveOrOpenBlob) {
+    //     var tabWindow = window.open('', '_blank');
+    //     var a = tabWindow.document.createElement('a');
+    //     a.textContent = 'Loading ' + description + '..';
+    //     tabWindow.document.body.appendChild(a);
+    //     tabWindow.document.body.style.cursor = 'wait';
+    // }
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://cors-anywhere.herokuapp.com/'+url,
+        dataType: 'arraybuffer',
+        crossDomain: true,
+        success:function(response) {
+            var file = new Blob([response], {type: 'application/pdf'});
+
+                window.document.body.style.cursor = 'auto';
+                var url = a.href = window.URL.createObjectURL(file);
+                a.click();
+                a.download = filename;
+
+            setTimeout(function revokeUrl() {
+                window.URL.revokeObjectURL(url);
+            }, 3600000);
+        }});
+}
+function printfile (url){
+
+}
 /**
  * To use this please add Google Maps API and D3
  * For instance:

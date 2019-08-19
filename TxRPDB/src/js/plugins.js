@@ -183,8 +183,9 @@ function queryfromsource(secid,div) {
         crossDomain: true,
         success: function (htmldata) {
             let newcontent = document.createElement('html');
-            newcontent.innerHTML =htmldata;
+            newcontent.innerHTML =htmldata.replace(/..\/Images/gi,'src/Images');
             let temp_data;
+            let maindata = div.datum();
             if (newcontent.querySelector('#pnlData').querySelector('table')===null) {
                 temp_data = undefined;
                 div.selectAll('*').remove();
@@ -192,8 +193,14 @@ function queryfromsource(secid,div) {
             } else {
                 temp_data = [];
                 newcontent.querySelectorAll("input[name^='imgButtonID-']")
-                    .forEach((d,i)=>temp_data.push({url:eval(d.getAttribute('onclick')),
-                    target: secid+this.id+i}));
+                    .forEach((d,i)=>temp_data.push({
+                        url:eval(d.getAttribute('onclick')),
+                        filename:d.getAttribute('onclick').split(',')[0].split("'")[1].split('/').pop(),
+                        type: maindata.id,
+                        target: secid+maindata.id+i}));
+                newcontent.querySelectorAll("input[name^='imgDownloadID-']")
+                    .forEach((d,i)=>temp_data[i].urlDownload = eval(d.getAttribute('onclick')) );
+
                 div.classed('no-background-color',true).select('span').remove();
                 let dold = div.selectAll('div.cell').data(temp_data);
                 dold.exit().remove();
@@ -245,6 +252,18 @@ function getpdfContent() {
     })
 }
 
+function DownloadURLSet(path) {
+    path = path.replace(/!/g, '/');
+    path = path.replace(/ /g, '%20');
+    path = path.replace('~/', '');
+
+    var indexOffileType = path.lastIndexOf(".");
+    var lengthOfFile = path.length;
+    var filetype = path.substring(indexOffileType + 1, lengthOfFile);
+
+    path = "http://www.depts.ttu.edu/techmrtweb/rpdb/" + path;
+    return path;
+}
 function ViewFileURL(path, filename) {
     path = path.replace(/!/g, '/');
     path = path.replace(/ /g, '%20');
@@ -263,6 +282,3 @@ function ViewFileURL(path, filename) {
     return path;
 }
 
-function DownloadURLSet(path) {
-    document.getElementById("hdFieldFilePath").value = path;
-}
