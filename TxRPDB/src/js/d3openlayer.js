@@ -158,7 +158,7 @@ class GoogleMap {
                 // });
                 var properties = features[0].getProperties();
 
-                d3.select(info).select('.close_tooltip').on('click',()=>self.holdTip = false);
+                d3.select(info).select('.close_tooltip').on('click',()=>{self.holdTip = false;info.classList.add("hide");});
                 maketooltip(info, properties);
                 info.classList.remove("hide");
             }
@@ -167,7 +167,6 @@ class GoogleMap {
         function clickmapcheck() {
             if(!d3.select(info).classed('hide')) {
                 self.holdTip = true;
-                info.classList.add("hide");
             }
         }
 
