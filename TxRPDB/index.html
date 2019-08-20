@@ -13,6 +13,7 @@
 
   <!-- Place favicon.ico in the root directory -->
   <link rel="stylesheet" href="src/style/foundation.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css" />
   <link rel="stylesheet" href="src/style/main.css">
   <!--<link rel="stylesheet" href="css/normalize.css">-->
   <!--<link rel="stylesheet" href="css/main.css">-->
@@ -55,38 +56,41 @@
             </li>
             <li class="orbit-slide">
               <figure class="orbit-figure">
-                <img class="orbit-image" src="src/Images/gallary_3.jpg" alt="Space">
+                <img class="orbit-image" src="src/Images/gallary_3.png" alt="Space">
                 <figcaption class="orbit-caption">Lets Rocket!</figcaption>
               </figure>
             </li>
           </ul>
+          <div class="overlayObit">
+            <div class="float-center grid-container">
+              <div class="grid-x grid-padding-x grid-padding-y align-center ">
+                <h1>Welcome to TxRPDB!</h1>
+                <p class="lead">Texas Rigid Pavement Database (TxRPDB) aims to provide a comprehensive enterprise platform for sharing rigid pavement performance data in Texas.
+
+                  Currently, TxRPDB provides design, structural and performance data for continuously reinforced concrete pavement (CRCP) and jointed concrete pavement (CPCD) in Texas. Additionally, findings from TxDOT and national research projects and special and experimental sections built over the years by TxDOT can be accessed through TxRPDB.
+
+                  TxRPDB is a product of TxDOT Research Project 0-6274: “Project Level Performance Database for Rigid Pavements in Texas – II” and is being developed and managed by Texas Tech Center for Multidisciplinary Research in Transportation (TechMRT), Texas Tech University.</p>
+                <a href="#" class="button large">Learn More</a>
+                <a href="#" class="button large hollow">Learn Less</a>
+              </div>
+            </div>
+          </div>
         </div>
         <nav class="orbit-bullets">
           <button class="is-active" data-slide="0"><span class="show-for-sr">First slide details.</span><span class="show-for-sr">Current Slide</span></button>
           <button data-slide="1"><span class="show-for-sr">Second slide details.</span></button>
           <button data-slide="2"><span class="show-for-sr">Third slide details.</span></button>
-          <button data-slide="3"><span class="show-for-sr">Fourth slide details.</span></button>
+
         </nav>
       </div>
   </div>
   <div class="grid-container">
     <!--<div ><img src="http://appcollab.ads.ttu.edu/TxRPDB/Images/header.jpg" style="width:100%;-->
     <!--height:auto;"></div>-->
-    <div class="callout large">
-      <div class="grid-x grid-padding-x align-center">
-        <h1>Welcome to TxRPDB!</h1>
-        <p class="lead">Texas Rigid Pavement Database (TxRPDB) aims to provide a comprehensive enterprise platform for sharing rigid pavement performance data in Texas.
 
-          Currently, TxRPDB provides design, structural and performance data for continuously reinforced concrete pavement (CRCP) and jointed concrete pavement (CPCD) in Texas. Additionally, findings from TxDOT and national research projects and special and experimental sections built over the years by TxDOT can be accessed through TxRPDB.
-
-          TxRPDB is a product of TxDOT Research Project 0-6274: “Project Level Performance Database for Rigid Pavements in Texas – II” and is being developed and managed by Texas Tech Center for Multidisciplinary Research in Transportation (TechMRT), Texas Tech University.</p>
-        <a href="#" class="button large">Learn More</a>
-        <a href="#" class="button large hollow">Learn Less</a>
-      </div>
-    </div>
     <div class="grid-x grid-padding-x align-center">
       <div class="cell  medium-6 medium-order-2">
-        <img class="thumbnail" src="http://appcollab.ads.ttu.edu/TxRPDB/Images/HomePageImage.jpg">
+        <img class="thumbnail" src="src/Images/HomePageImage.jpg">
       </div>
       <div class="cell  medium-6 medium-order-1">
         <h2>About Us.</h2>
@@ -130,7 +134,7 @@
     </div>
     <div class="grid-x medium-up-3 large-up-4">
       <div class="cell">
-        <img class="thumbnail" src="http://appcollab.ads.ttu.edu/TxRPDB/Images/HomePageImageSideImage.jpg">
+        <img class="thumbnail" src="src/Images/HomePageImageSideImage.jpg">
       </div>
       <div class="cell">
         <img class="thumbnail" src="https://placehold.it/550x550">
@@ -181,7 +185,7 @@
   <script src="src/lib/d3-selection-multi.v1.min.js"></script>
   <script src="src/lib/simple-statistics.min.js"></script>
   <script src="src/lib/lodash_fp.min.js"></script>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>
+  <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization"></script>-->
 
   <!--theme-->
   <script src="src/lib/foundation.js"></script>

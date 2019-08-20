@@ -41,3 +41,8 @@ body{
 #header2 {
     background-color: var(--color3);
 }
+.overlayObit {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
