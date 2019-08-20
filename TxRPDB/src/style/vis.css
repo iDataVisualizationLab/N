@@ -20,6 +20,14 @@ tbody td, tbody th {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 0 5px 5px 5px;
 }
+
+.dropdown.menu li:first-child {
+    border-radius: 10px 0 0 10px;
+}
+.dropdown.menu li:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
 .section_id::before {
     content: "Section ID: ";
 }

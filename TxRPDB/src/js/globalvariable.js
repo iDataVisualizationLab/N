@@ -93,7 +93,7 @@ let project_collection ={
     CPCD: {
         text:"CPCD",
         id:"CPCD",
-        sub: ["CPCD"]
+        sub: []
     },
     ExperimentalSections: {
         text:"Experimental Sections",

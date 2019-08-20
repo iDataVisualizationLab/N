@@ -8,7 +8,17 @@ function initmap(){
 function init(){
     initmap();
     d3.select('#projects').selectAll('projects_item').data(Object.keys(project_collection).map(k=>project_collection[k]))
-        .enter().append('a').attr('class','button projects_item').text(d=>d.text);
+        .enter().append('li').attr('class','button projects_item').classed('has-submenu',d=>d.sub.length).each(function(d){
+        const currentel = d3.select(this);
+        currentel.text(d.text);
+            if(d.sub.length) {
+                let ul_item = currentel.append('ul').attr('class','submenu menu vertical').attr('data-submenu','');
+                ul_item.selectAll('li').data(e=>e.sub)
+                    .enter().append('li').text(e=>e);
+            }
+      }
+    );
+    Foundation.reInit($('#projects'));
     readConf("Data_details").then((data)=>{
         basedata = data;
         basearr = d3.values(data) ;

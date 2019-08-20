@@ -1,13 +1,20 @@
 :root {
-    --primary-color: #092740;
-    --primary-color-back: #092740;
-    --secondary-color: rgba(255, 255, 255, 0.79);
+    --primary-color: #002f52;
+    --primary-color-back: rgba(4, 4, 48, 1);
+    --secondary-color: #ffffff;
     --containBlack: #ffffff;
     --slider: 0;
     --sideNavwidth: 400px;
     --colorMain2: #630016;
     --colorMain2_light: #d8d8d8;
+
+    --color1: #002f5;
+    --color2: rgba(92, 181, 244, 1);
+    --color3: #faffff;
+    --color4: #004476;
+    --color5: rgba(4, 4, 48, 1);
 }
+
 body{
     font: 12px Arial;
 
@@ -25,3 +32,12 @@ body{
     color: var(--secondary-color)
 }
 
+.site-link__img {
+    vertical-align: middle;
+    height: auto;
+    max-width: 100%;
+}
+
+#header2 {
+    background-color: var(--color3);
+}
