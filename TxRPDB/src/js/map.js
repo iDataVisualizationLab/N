@@ -105,7 +105,30 @@ function colorType(type) {
 
 function plotCounties() {
     //Clear the previous county
-    d3.select('#overlaymap').selectAll('.Countieslayer').remove();
+    // d3.select('#overlaymap').selectAll('.Countieslayer').remove();
+    gm.map.data.remove();
+    if (plotCountyOption) {
+        let ctPath = {
+            type: "GeometryCollection"
+        };
+        // ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
+        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d => dp.allCounties.indexOf(d.properties.NAME.toLowerCase()) >= 0);
+        if (ctPath.geometries.length) {
+            geoJsonObject = topojson.feature(us, ctPath)
+            let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
+            datam.enter().append('a').attr('class', 'Countieslayer');
+            gm.map.data.setStyle({
+                'fill-color': [0, 0, 0, 0],
+                'stroke-width': 1,
+                'stroke-color': [1, 1, 1, 1],
+            }, true);
+            gm.map.data.addGeoJson(geoJsonObject);
+        }
+    }
+}
+
+function plotDistrict() {
+    //Clear the previous county
     gm.map.data.remove();
     if (plotCountyOption) {
         let ctPath = {
@@ -152,11 +175,12 @@ function plotCounties() {
 
 // overlayer
 function plotRoad() {
-
     if(gm.roadData===undefined)
         gm.roadData = [];
     // Construct the polygon.
-
+    if(gm.roadData.length){
+        gm.map.removeLayer(gm.map.roadLayer);
+    }
     gm.roadData = dp.filter(d=>(d["GPSStart"]!==null)&&(d["GPSEnd"]!==null)).map((d)=>{
         var bermudaTriangle = new ol.Feature({
                 geometry: new ol.geom.LineString(gm.latlong2ol([d["GPSStart"], d["GPSEnd"]])),
@@ -183,7 +207,8 @@ function plotRoad() {
             'stroke-width': 3,
         })
     });
-    vector.setMap(gm.map);
+    gm.map.roadLayer = vector
+    gm.map.addLayer(gm.map.roadLayer);
 }
 
 function plotContoursFromData(group, grid, colorFunction) {

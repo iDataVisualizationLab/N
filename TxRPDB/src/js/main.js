@@ -30,8 +30,7 @@ function init(){
                 updateFilterChip(d3.select('#filterContent'),filters);
                 filterData(filters);
                 Updatemap();
-                plotCounties();
-                plotRoad();
+                redrawMap();
             }
       }
     );
@@ -39,8 +38,7 @@ function init(){
         filters = d3.selectAll('.chip').data();
         filterData(filters);
         Updatemap();
-        plotCounties();
-        plotRoad();
+        redrawMap();
     })
     Foundation.reInit($('#projects'));
     readConf("Data_details").then((data)=>{
@@ -60,11 +58,15 @@ function init(){
         }
     ).then(function() {
         plotMaps(dp);
-        plotCounties();
-        plotRoad();
+        redrawMap();
     });
 }
 
+function redrawMap(){
+    d3.select('#numberSection').text(dp.length);
+    plotCounties();
+    plotRoad();
+}
 function filterData(filters){
     dp = basearr;
     filters.forEach(f=>dp=dp.filter(e=>e[f.type]===f.id))
