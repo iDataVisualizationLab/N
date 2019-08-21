@@ -56,3 +56,34 @@ iframe.cell {
    background-color:  black;
    color:  white;
 }
+.submenu.menu {
+    color: var(--color4)
+}
+
+#filterDiv{
+    top: 100px;
+}
+li.projects_item{
+    margin: 0;
+}
+.chip {
+    display: inline-block;
+    padding: 0 10px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    border: #8a8a8a solid 0.5px;
+}
+.closebtn {
+    padding-left: 15px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #000;
+}

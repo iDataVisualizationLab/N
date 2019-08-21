@@ -182,7 +182,10 @@ class GoogleMap {
         self.map.data=[];
         self.map.data.remove = ()=>{
             this.length = 0;
-            self.map.removeOverlay(self.data.layer);
+            if (self.map.data.layer) {
+                self.map.removeLayer(self.map.data.layer);
+                self.map.data.layer = undefined
+            }
         };
         self.map.data.styles = {
             'Polygon':new ol.style.Style({
@@ -214,7 +217,7 @@ class GoogleMap {
                 style: this.styleFunction
             });
             this.layer = vectorLayer;
-            this.layer.setMap(self.map);
+            self.map.addLayer(this.layer);
         };
 
         self.createMarker();

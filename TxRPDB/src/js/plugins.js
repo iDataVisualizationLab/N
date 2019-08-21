@@ -282,3 +282,18 @@ function ViewFileURL(path, filename) {
     return path;
 }
 
+function updateFilterChip (path,data) {
+    let chipf = path.selectAll('.chip').data(data,d=>d.id);
+    chipf.exit().remove();
+    let chipf_n = chipf.enter().append('div')
+        .attr('class','chip');
+    chipf_n.append("span").attr('class','chiptext').text(d=>d.text)
+    chipf_n    .append('button').attr('class','close-closebtn')
+        .attr('type','button')
+        .attr('aria-label','removeChip').attr('aria-hidden','true').html('&times;').on('click',function(d){
+            d3.select(this.parentNode).remove();
+        path.dispatch('removeFilter',{detail:d});
+    });
+    chipf.select('.chiptext').text(d=>d.text);
+    return chipf;
+}

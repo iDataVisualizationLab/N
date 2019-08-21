@@ -14,10 +14,34 @@ function init(){
             if(d.sub.length) {
                 let ul_item = currentel.append('ul').attr('class','submenu menu vertical').attr('data-submenu','');
                 ul_item.selectAll('li').data(e=>e.sub)
-                    .enter().append('li').text(e=>e);
+                    .enter().append('li').text(e=>e).on('click',e=>addFilter({type:'DataType',text:e,id:e}));
+            }else{
+                currentel.on('click',e=>addFilter({type:'DataType',text:e.text,id:e.id}));
+            }
+
+            function addFilter(d){
+                let sameType = filters.find(e=>e.type===d.type)
+                if (d.type==='DataType'&&sameType) { //avoid multi datatype
+                    sameType.text = d.text;
+                    sameType.id = d.id;
+                }else{
+                    filters.push(d);
+                }
+                updateFilterChip(d3.select('#filterContent'),filters);
+                filterData(filters);
+                Updatemap();
+                plotCounties();
+                plotRoad();
             }
       }
     );
+    d3.select('#filterContent').on('removeFilter',function(d){
+        filters = d3.selectAll('.chip').data();
+        filterData(filters);
+        Updatemap();
+        plotCounties();
+        plotRoad();
+    })
     Foundation.reInit($('#projects'));
     readConf("Data_details").then((data)=>{
         basedata = data;
@@ -39,4 +63,10 @@ function init(){
         plotCounties();
         plotRoad();
     });
+}
+
+function filterData(filters){
+    dp = basearr;
+    filters.forEach(f=>dp=dp.filter(e=>e[f.type]===f.id))
+    dp = new dataProcessor(dp);
 }

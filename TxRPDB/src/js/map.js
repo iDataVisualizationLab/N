@@ -75,6 +75,19 @@ function plotMaps(dp) {
 
 }
 
+function Updatemap(){
+    let longAccessor = (d) => {
+        return d[COL_LONG];
+    }
+    let latAccessor = (d) => {
+        return d[COL_LAT];
+    }
+    let arr =[];
+    dp.filter(d=>d['GPSEnd']).forEach(d=>{arr.push(d["GPSEnd"]);arr.push(d["GPSStart"]);});
+    if(arr.length)
+    gm.fitBounds(arr, longAccessor, latAccessor);
+}
+
 function colorType(type) {
     return function (d) {
         if (analyzeValueIndex === 0) {
@@ -93,27 +106,24 @@ function colorType(type) {
 function plotCounties() {
     //Clear the previous county
     d3.select('#overlaymap').selectAll('.Countieslayer').remove();
-    gm.map.data.forEach(function (feature) {
-        // If you want, check here for some constraints.
-        gm.map.data.remove(feature);
-    });
+    gm.map.data.remove();
     if (plotCountyOption) {
         let ctPath = {
             type: "GeometryCollection"
         };
         // ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
         ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d => dp.allCounties.indexOf(d.properties.NAME.toLowerCase()) >= 0);
-
-        geoJsonObject = topojson.feature(us, ctPath)
-        let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
-        datam.enter().append('a').attr('class','Countieslayer');
-        gm.map.data.setStyle({
-            'fill-color': [0,0,0,0],
-            'stroke-width': 1,
-            'stroke-color': [1,1,1,1],
-        },true);
-        gm.map.data.addGeoJson(geoJsonObject);
-
+        if (ctPath.geometries.length) {
+            geoJsonObject = topojson.feature(us, ctPath)
+            let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
+            datam.enter().append('a').attr('class', 'Countieslayer');
+            gm.map.data.setStyle({
+                'fill-color': [0, 0, 0, 0],
+                'stroke-width': 1,
+                'stroke-color': [1, 1, 1, 1],
+            }, true);
+            gm.map.data.addGeoJson(geoJsonObject);
+        }
     }
 }
 

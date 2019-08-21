@@ -143,6 +143,7 @@ let project_feature_collection = {
     }
 }
 
+let filters =[];
 // map
 
 let us;
