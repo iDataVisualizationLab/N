@@ -5,8 +5,21 @@ $(document).ready(function(){
 function initmap(){
     map_conf.height = map.clientHeight
 }
+function initFilterSetting(){
+    let schema_field = d3.select("#schemaSetting").selectAll('div').data(arr_variable_collection)
+        .enter()
+        .append('div')
+        .attr('class','schema-field');
+    schema_field.append('h5').text(d=>d.text);
+    schema_field.append('div').attr('class','schema-field-chart')
+        .append('svg').each(function(d){
+        d.schemabox = Schemabox().graphicopt(schemaSvg_option).svg(d3.select(this)).init();
+    });
+    schema_field.append('select').attr('class','schema-field-tag');
+}
 function init(){
     initmap();
+    initFilterSetting();
     d3.select('#projects').selectAll('projects_item').data(Object.keys(project_collection).map(k=>project_collection[k]))
         .enter().append('li').attr('class','button projects_item').classed('has-submenu',d=>d.sub.length).each(function(d){
         const currentel = d3.select(this);
@@ -74,4 +87,18 @@ function redrawMap(){
     plotDistrict();
     plotRoad();
     plotGPS();
+    UpdateSchema();
+}
+
+function UpdateSchema(){
+    arr_variable_collection.forEach(v=>{
+        let data =d3.nest().key(d=>d[v.id])
+            .rollup(d=>d.length)
+            .entries(dp);
+        data.range =[0,dp.length];
+        v.schemabox.data(data);
+    });
+}
+function updateFilterschema(){
+
 }

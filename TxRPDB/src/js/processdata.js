@@ -10,6 +10,7 @@ function seperateStr(str){
 
 function filterData(filters){
     dp = basearr;
-    filters.forEach(f=>dp=dp.filter(e=>e[f.type]===f.id))
+    d3.nest().key(d=>d.type).entries(filters)
+        .forEach(ff=>dp=dp.filter(e=>ff.values.find(f=>e[f.type]===f.id)));
     dp = new dataProcessor(dp);
 }

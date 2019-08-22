@@ -44,7 +44,7 @@ let variable_collection ={
     },
     GPSStart:{
         type:'gps',
-        text: 'GPS Start',
+        text: 'GPS (Start)',
         id: 'GPSStart'
     },
     Highway:{
@@ -84,6 +84,8 @@ let variable_collection ={
         id: 'VerticalAlign'
     }
 };
+let arr_variable_collection =[];
+Object.keys(variable_collection).forEach(d=>arr_variable_collection.push(variable_collection[d]));
 let project_collection ={
     CRCP: {
         text:"CRCP",
@@ -157,5 +159,17 @@ let map_conf ={
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
     },
-    plotCountyOption = true
+    plotCountyOption = true;
 // menu
+
+let schemaSvg_option = {
+    margin: {top: 0, right: 10, bottom: 0, left: 10},
+    width: 240,
+    height: 50,
+    scalezoom: 1,
+    widthView: function(){return this.width*this.scalezoom},
+    heightView: function(){return this.height*this.scalezoom},
+    widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
+    heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
+    barcolor: '#000000',
+};
