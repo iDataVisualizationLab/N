@@ -1,5 +1,5 @@
 // data variable
-let basearr=[],basedata={},dp,
+let basearr=[],basedata={},dp,mediaQuery,
     COL_LAT = 'lat',
     COL_LONG = 'lng',
     filter={};
@@ -146,7 +146,7 @@ let project_feature_collection = {
 let filters =[];
 // map
 
-let us;
+let us,us_dis;
 let map_conf ={
     margin: {top: 0, right: 0, bottom: 0, left: 0},
     width: window.innerWidth,

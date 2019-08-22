@@ -53,8 +53,14 @@ function init(){
                 d['County'] = seperateStr(d['County'])
         });
         dp = new dataProcessor(basearr);
+    }).then(function(){
+        return readConf("listMedia").then((data)=>{mediaQuery=data});
     }).then (function(){
-            return readLib("TX-48-texas-counties").then((data)=>us=data,us);
+            return readLib("TxDOT_Districts",'json').then((data)=>
+                us_dis=data,us_dis);
+        }
+    ).then (function(){
+            return readLib("TX-48-texas-counties",'json').then((data)=>us=data,us);
         }
     ).then(function() {
         plotMaps(dp);
@@ -65,10 +71,7 @@ function init(){
 function redrawMap(){
     d3.select('#numberSection').text(dp.length);
     plotCounties();
+    plotDistrict();
     plotRoad();
-}
-function filterData(filters){
-    dp = basearr;
-    filters.forEach(f=>dp=dp.filter(e=>e[f.type]===f.id))
-    dp = new dataProcessor(dp);
+    plotGPS();
 }
