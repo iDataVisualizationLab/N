@@ -24,7 +24,7 @@ let Schemabox = function() {
         y.domain(dataShadow.range);
 
         var xAxis = d3.axisBottom(x).tickSize([]).tickPadding(10);
-        g.select("x axis")
+        g.select(".x.axis")
             .call(xAxis);
 
         let bar_g = g_shadow.selectAll(".barS")

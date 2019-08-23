@@ -41,6 +41,7 @@ function init(){
     })
     Foundation.reInit($('#projects'));
     readConf("Data_details").then((data)=>{
+        reformat(data);
         basedata = data;
         basearr = d3.values(data) ;
         basearr.forEach(d=>{

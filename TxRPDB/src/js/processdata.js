@@ -14,3 +14,13 @@ function filterData(filters){
         .forEach(ff=>dp=dp.filter(e=>ff.values.find(f=>e[f.type]===f.id)));
     dp = new dataProcessor(dp);
 }
+
+function reformat (data){
+    Object.keys(data).forEach(k=>{
+        let d= data[k];
+        if (d['Direction']!==null)
+            d['Direction'] = d['Direction'].split(' ')[0].trim().toUpperCase();
+        if (d['SlabThickness']!==null)
+            d['SlabThickness'] = Math.round(+d['SlabThickness'].split('"')[0].trim())||null;
+    })
+}
