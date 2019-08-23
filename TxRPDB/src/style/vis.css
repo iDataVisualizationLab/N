@@ -119,3 +119,24 @@ li.projects_item{
 .schema-field-label {
     font-weight: bold;
 }
+
+.openbtn {
+    position: fixed;
+    z-index: 99;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    background-color: var(--color4);
+    color: var(--color2);
+    font-size: 14px;
+    top:50%;
+    transition: 1s ease-out;
+    transition-property: all;
+    transition-duration: 1s;
+    transition-timing-function: ease-out;
+    transition-delay: 0s;
+}
+
+.openbtn[aria-expanded=true] {
+    left: 400px
+}
