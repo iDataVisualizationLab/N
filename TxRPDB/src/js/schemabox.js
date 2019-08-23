@@ -75,11 +75,11 @@ let Schemabox = function() {
             .append("g")
             .attr("class", "barOverlay")
             .attr('transform',d=>`translate(${x(d.key)},${0})`)
-            // .on('mouseover',function(){
-            //     d3.select(this).select('.label').classed('hide',false);
-            // }).on('mouseleave',function(){
-            //     d3.select(this).select('.label').classed('hide',true);
-            // })
+            .on('mouseover',function(e){
+                bar_g.selectAll('.bar').filter(d=>d.key===e.key).classed('hide',false);
+            }).on('mouseleave',function(e){
+                bar_g.selectAll('.bar').filter(d=>d.key===e.key).classed('hide',true);
+            })
             .on('click',function(d){
                 const current_state = d3.select(this).classed('selected');
                 d3.select(this).classed('selected',!current_state);
