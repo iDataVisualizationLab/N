@@ -140,3 +140,14 @@ li.projects_item{
 .openbtn[aria-expanded=true] {
     left: 400px
 }
+
+.schema-field-chart svg {
+    overflow: visible;
+}
+
+.barS rect{
+    fill: #8a8a8a;
+}
+.barOverlay rect {
+    fill-opacity: 0;
+}

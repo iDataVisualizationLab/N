@@ -52,6 +52,7 @@ function init(){
                 d['County'] = seperateStr(d['County'])
         });
         dp = new dataProcessor(basearr);
+
     }).then(function(){
         return readConf("listMedia").then((data)=>{mediaQuery=data});
     }).then (function(){
@@ -62,6 +63,19 @@ function init(){
             return readLib("TX-48-texas-counties",'json').then((data)=>us=data,us);
         }
     ).then(function() {
+        let max_d = 0;
+        arr_variable_collection.forEach(v=>{
+            let data =d3.nest().key(d=>d[v.id])
+                .rollup(d=>d.length)
+                .entries(dp.filter(d=>d[v.id]!==null));
+            v.schemabox.dataShadow(data);
+            max_d = Math.max(max_d,d3.max(data,d=>d.value));
+        });
+        arr_variable_collection.forEach(v=> {
+            let data = v.schemabox.dataShadow();
+            data.range=[0, max_d];
+            v.schemabox.dataShadow(data).draw_Shadow();
+        });
         plotMaps(dp);
         redrawMap();
     });
@@ -81,7 +95,7 @@ function UpdateSchema(){
         let data =d3.nest().key(d=>d[v.id])
             .rollup(d=>d.length)
             .entries(dp.filter(d=>d[v.id]!==null));
-        data.range =[0,dp.length];
+        // data.range =[0,dp.length];
         v.schemabox.data(data);
     });
 }

@@ -185,7 +185,7 @@ let map_conf ={
 // menu
 
 let schemaSvg_option = {
-    margin: {top: 0, right: 10, bottom: 20, left: 10},
+    margin: {top: 20, right: 10, bottom: 20, left: 10},
     width: 380,
     height: 100,
     scalezoom: 1,
