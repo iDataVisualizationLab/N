@@ -19,8 +19,8 @@ let Schemabox = function() {
         .range([graphicopt.heightG(), 0]);
     schemabox.draw_Shadow = function(){
         x.domain(dataShadow.map( d => { return d.key; }));
-        // y.domain([0, d3.max(dataset,  d => { return d.value; })]);
-        // y.domain(d3.extent(dataset,d=>d.value));
+        // y.domain([0, d3.max(dataset,  d => { return d.value.len; })]);
+        // y.domain(d3.extent(dataset,d=>d.value.len));
         y.domain(dataShadow.range);
 
         var xAxis = d3.axisBottom(x).tickSize([]).tickPadding(10);
@@ -52,7 +52,7 @@ let Schemabox = function() {
         //     .attr("x", ( d => { return (x.bandwidth() / 2); }));
 
         bar_g = bar_g_n.merge(bar_g)
-            .style("display", d => { return d.value === null ? "none" : null; })
+            .style("display", d => { return d.value.len === null ? "none" : null; })
             .style("fill",  d => {
                 return graphicopt.barcolor;
             })
@@ -60,9 +60,9 @@ let Schemabox = function() {
         bar_g.select('rect')
             .transition()
             .duration(500)
-            .attr("y",  d => { return y(d.value); })
+            .attr("y",  d => { return y(d.value.len); })
             .attr("width", x.bandwidth())
-            .attr("height",  d => { return graphicopt.heightG() - y(d.value); });
+            .attr("height",  d => { return graphicopt.heightG() - y(d.value.len); });
 
 
 
@@ -83,7 +83,7 @@ let Schemabox = function() {
             .on('click',function(d){
                 const current_state = d3.select(this).classed('selected');
                 d3.select(this).classed('selected',!current_state);
-                filterChangeFunc({id:d.key,text:d.key,type:master.id},!current_state);
+                filterChangeFunc({id:d.value.val,text:d.key,type:master.id},!current_state);
             });
         bar_g_n.append("rect").attr("width", x.bandwidth()).attr("height", graphicopt.heightG());
         // bar_g_n.append("text").attr("class", "label hide")
@@ -119,7 +119,7 @@ let Schemabox = function() {
             .attr("x", ( d => { return (x.bandwidth() / 2); }));
 
         bar_g = bar_g_n.merge(bar_g)
-            .style("display", d => { return d.value === null ? "none" : null; })
+            .style("display", d => { return d.value.len === null ? "none" : null; })
             .style("fill",  d => {
                 return graphicopt.barcolor;
             })
@@ -127,15 +127,15 @@ let Schemabox = function() {
         bar_g.select('rect')
             .transition()
             .duration(500)
-            .attr("y",  d => { return y(d.value); })
+            .attr("y",  d => { return y(d.value.len); })
             .attr("width", x.bandwidth())
-            .attr("height",  d => { return graphicopt.heightG() - y(d.value); });
+            .attr("height",  d => { return graphicopt.heightG() - y(d.value.len); });
         bar_g.select('.label')
             .transition()
             .duration(500)
             .attr("x", ( d => { return (x.bandwidth() / 2); }))
-            .attr("y",  d => { return y(d.value) + .1; })
-            .text( d => d.value )
+            .attr("y",  d => { return y(d.value.len) + .1; })
+            .text( d => d.value.len )
             .attr("dy", "-.7em")
         ;
     }

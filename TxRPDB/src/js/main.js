@@ -67,10 +67,10 @@ function init(){
         let max_d = 0;
         arr_variable_collection.forEach(v=>{
             let data =d3.nest().key(d=>d[v.id]).sortKeys((a,b)=>a-b)
-                .rollup(d=>d.length)
+                .rollup(d=>{return {len: d.length,val: d[0][v.id]}})
                 .entries(dp.filter(d=>d[v.id]!==null));
             v.schemabox.dataShadow(data);
-            max_d = Math.max(max_d,d3.max(data,d=>d.value));
+            max_d = Math.max(max_d,d3.max(data,d=>d.value.len));
         });
         arr_variable_collection.forEach(v=> {
             let data = v.schemabox.dataShadow();
@@ -102,7 +102,7 @@ function redrawMap(){
 function UpdateSchema(){
     arr_variable_collection.forEach(v=>{
         let data =d3.nest().key(d=>d[v.id])
-            .rollup(d=>d.length)
+            .rollup(d=>{return {len: d.length,val: d[0][v.id]}})
             .entries(dp.filter(d=>d[v.id]!==null));
         // data.range =[0,dp.length];
         v.schemabox.data(data);
