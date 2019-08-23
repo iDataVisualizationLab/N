@@ -76,10 +76,18 @@ function init(){
             let data = v.schemabox.dataShadow();
             data.range=[0, max_d];
             v.schemabox.dataShadow(data).draw_Shadow();
+
+            selectize_init(d3.selectAll('.schema-field-tag').filter(d=>d.text===v.text),data)
         });
         plotMaps(dp);
         redrawMap();
     });
+}
+
+function selectize_init(selection,data){
+    selection.selectAll('option').data(data)
+        .enter().append('option')
+        .text(d=>d.key);
 }
 
 function redrawMap(){
