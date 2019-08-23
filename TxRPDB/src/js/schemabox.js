@@ -76,9 +76,9 @@ let Schemabox = function() {
             .attr("class", "barOverlay")
             .attr('transform',d=>`translate(${x(d.key)},${0})`)
             .on('mouseover',function(e){
-                bar_g.selectAll('.bar').filter(d=>d.key===e.key).classed('hide',false);
+                maing.selectAll('.label').filter(d=>d.key===e.key).classed('hide',false);
             }).on('mouseleave',function(e){
-                bar_g.selectAll('.bar').filter(d=>d.key===e.key).classed('hide',true);
+                maing.selectAll('.label').filter(d=>d.key===e.key).classed('hide',true);
             })
             .on('click',function(d){
                 const current_state = d3.select(this).classed('selected');
