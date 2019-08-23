@@ -9,7 +9,7 @@ let Schemabox = function() {
             widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
             heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
         },
-        svg,g,
+        svg,g,visibility,filterChangeFunc=function(){},master={},
     data =[];
     let schemabox ={};
 
@@ -29,9 +29,7 @@ let Schemabox = function() {
         // y.domain(d3.extent(dataset,d=>d.value));
         y.domain(dataset.range);
 
-        g.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + graphicopt.heightG() + ")")
+        g.select("x axis")
             .call(xAxis);
 
         let bar_g = g.selectAll(".bar")
@@ -42,9 +40,18 @@ let Schemabox = function() {
         let bar_g_n = bar_g.enter()
             .append("g")
             .attr("class", "bar")
-            .attr('transform',d=>`translate(${x(d.key)},${graphicopt.heightG()})`);
+            .attr('transform',d=>`translate(${x(d.key)},${graphicopt.heightG()})`)
+            .on('mouseover',function(){
+                d3.select(this).select('.label').classed('hide',false);
+            }).on('mouseleave',function(){
+                d3.select(this).select('.label').classed('hide',true);
+            }).on('click',function(d){
+                const current_state = d3.select(this).classed('selected');
+                d3.select(this).classed('selected',!current_state);
+                filterChangeFunc({id:d.key,text:d.key,type:master.id},!current_state);
+            });
         bar_g_n.append("rect").attr("width", x.bandwidth()).attr("height", 0);
-        bar_g_n.append("text").attr("class", "label")
+        bar_g_n.append("text").attr("class", "label hide")
             .style('text-anchor','middle')
             .attr("x", ( d => { return (x.bandwidth() / 2); }));
 
@@ -77,19 +84,23 @@ let Schemabox = function() {
             // overflow: "visible",
 
         });
-        // svg.style('visibility','hidden');
-        svg .attr("width", graphicopt.widthG())
-            .attr("height", graphicopt.heightG());
+        svg.classed('hide',true);
         g = svg.append("g")
             .attr('class','pannel')
             .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
-
+        g.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + graphicopt.heightG() + ")")
         return schemabox;
     };
     schemabox.data = function (_) {
         if (arguments.length){
             data=_;
-            draw(data);
+            if (visibility) {
+                svg.classed('hide',false);
+                draw(data);
+            }else
+                svg.classed('hide',true);
             return schemabox;
         }else
             return data;
@@ -108,8 +119,17 @@ let Schemabox = function() {
         }
 
     };
+    schemabox.filterChangeFunc = function (_) {
+        return arguments.length ? (filterChangeFunc = _, schemabox) : filterChangeFunc;
+    };
     schemabox.svg = function (_) {
         return arguments.length ? (svg = _, schemabox) : svg;
+    };
+    schemabox.master = function (_) {
+        return arguments.length ? (master = _, schemabox) : master;
+    };
+    schemabox.visibility = function (_) {
+        return arguments.length ? (visibility = _, schemabox) : visibility;
     };
     return schemabox;
 }

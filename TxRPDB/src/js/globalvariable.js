@@ -5,83 +5,105 @@ let basearr=[],basedata={},dp,mediaQuery,
     filter={};
 
 let variable_collection ={
-    CCSJ:{
-        text: 'CCSJ',
-        id: 'CCSJ'
-    },
-    ConcreteCAT:{
-        text: 'Concrete CAT',
-        id: 'ConcreteCAT'
-    },
-    ConstYear:{
-        text: 'Construction Year',
-        id: 'ConstYear'
+    District:{
+        text: 'District',
+        id: 'District',
+        statistic: undefined,
     },
     County:{
         text: 'County',
-        id: 'County'
+        id: 'County',
+        statistic: undefined,
     },
     DataType:{
         text: 'Project',
-        id: 'DataType'
+        id: 'DataType',
+        statistic: 'group',
+    },
+    Highway:{
+        text: 'Highway',
+        id: 'Highway',
+        statistic: undefined,
+    },
+    CCSJ:{
+        text: 'CCSJ',
+        id: 'CCSJ',
+        statistic: undefined,
+    },
+    ConcreteCAT:{
+        text: 'Concrete CAT',
+        id: 'ConcreteCAT',
+        statistic: undefined,
+    },
+    ConstYear:{
+        text: 'Construction Year',
+        id: 'ConstYear',
+        statistic: 'date',
     },
     Direction:{
         text: 'Direction',
-        id: 'Direction'
+        id: 'Direction',
+        statistic: 'category',
     },
-    District:{
-        text: 'District',
-        id: 'District'
-    },
+
     Drainage:{
         text: 'Drainage',
-        id: 'Drainage'
-    },
-    GPSEnd:{
-        type:'gps',
-        text: 'GPS (End)',
-        id: 'GPSEnd'
+        id: 'Drainage',
+        statistic: undefined,
     },
     GPSStart:{
         type:'gps',
         text: 'GPS (Start)',
-        id: 'GPSStart'
+        id: 'GPSStart',
+        statistic: undefined,
+        hide: true,
     },
-    Highway:{
-        text: 'Highway',
-        id: 'Highway'
+    GPSEnd:{
+        type:'gps',
+        text: 'GPS (End)',
+        id: 'GPSEnd',
+        statistic: undefined,
+        hide: true,
     },
     HorizontalAlign:{
         text: 'Horizontal Alignment',
-        id: 'HorizontalAlign'
+        id: 'HorizontalAlign',
+        statistic: 'category',
     },
     NoOFLanes:{
         text: 'No. of Lanes (Both Directions)',
-        id: 'NoOFLanes'
+        id: 'NoOFLanes',
+        statistic: 'number',
     },
     PavementType:{
         text: 'Pavement Type',
-        id: 'PavementType'
+        id: 'PavementType',
+        statistic: 'category',
     },
     RefMarker:{
         text: 'Reference Marker',
-        id: 'RefMarker'
+        id: 'RefMarker',
+        statistic: undefined,
     },
     ShoulderType:{
         text: 'Shoulder Type',
-        id: 'ShoulderType'
+        id: 'ShoulderType',
+        statistic: 'category',
     },
     SlabThickness:{
         text: 'Slab Thickness (in.)',
-        id: 'SlabThickness'
+        id: 'SlabThickness',
+        statistic: 'number',
     },
     Surfacetexture:{
         text: 'Surface Texture',
-        id: 'Surfacetexture'
+        id: 'Surfacetexture',
+        statistic: 'category',
     },
     VerticalAlign:{
         text: 'Vertical Alignment',
-        id: 'VerticalAlign'
+        id: 'VerticalAlign',
+        statistic: 'category',
     }
 };
 let arr_variable_collection =[];
@@ -163,9 +185,9 @@ let map_conf ={
 // menu
 
 let schemaSvg_option = {
-    margin: {top: 0, right: 10, bottom: 0, left: 10},
-    width: 240,
-    height: 50,
+    margin: {top: 0, right: 10, bottom: 20, left: 10},
+    width: 380,
+    height: 100,
     scalezoom: 1,
     widthView: function(){return this.width*this.scalezoom},
     heightView: function(){return this.height*this.scalezoom},

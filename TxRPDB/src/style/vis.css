@@ -116,3 +116,6 @@ li.projects_item{
 .selectize-control.loading::before {
     opacity: 0.4;
 }
+.schema-field-label {
+    font-weight: bold;
+}

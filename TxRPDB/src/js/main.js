@@ -10,12 +10,12 @@ function initFilterSetting(){
         .enter()
         .append('div')
         .attr('class','schema-field');
-    schema_field.append('h5').text(d=>d.text);
+    schema_field.append('span').attr('class','schema-field-label').text(d=>d.text);
+    schema_field.append('select').attr('class','schema-field-tag');
     schema_field.append('div').attr('class','schema-field-chart')
         .append('svg').each(function(d){
-        d.schemabox = Schemabox().graphicopt(schemaSvg_option).svg(d3.select(this)).init();
+        d.schemabox = Schemabox().graphicopt(schemaSvg_option).svg(d3.select(this)).init().visibility(d.statistic).filterChangeFunc(filterTrigger).master(d);
     });
-    schema_field.append('select').attr('class','schema-field-tag');
 }
 function init(){
     initmap();
@@ -27,31 +27,16 @@ function init(){
             if(d.sub.length) {
                 let ul_item = currentel.append('ul').attr('class','submenu menu vertical').attr('data-submenu','');
                 ul_item.selectAll('li').data(e=>e.sub)
-                    .enter().append('li').text(e=>e).on('click',e=>addFilter({type:'DataType',text:e,id:e}));
+                    .enter().append('li').text(e=>e).on('click',e=>addFilter({type:'DataType',text:e,id:e},true));
             }else{
-                currentel.on('click',e=>addFilter({type:'DataType',text:e.text,id:e.id}));
+                currentel.on('click',e=>addFilter({type:'DataType',text:e.text,id:e.id},true));
             }
 
-            function addFilter(d){
-                let sameType = filters.find(e=>e.type===d.type)
-                if (d.type==='DataType'&&sameType) { //avoid multi datatype
-                    sameType.text = d.text;
-                    sameType.id = d.id;
-                }else{
-                    filters.push(d);
-                }
-                updateFilterChip(d3.select('#filterContent'),filters);
-                filterData(filters);
-                Updatemap();
-                redrawMap();
-            }
+
       }
     );
     d3.select('#filterContent').on('removeFilter',function(d){
-        filters = d3.selectAll('.chip').data();
-        filterData(filters);
-        Updatemap();
-        redrawMap();
+        removeFilter(d);
     })
     Foundation.reInit($('#projects'));
     readConf("Data_details").then((data)=>{
@@ -94,10 +79,33 @@ function UpdateSchema(){
     arr_variable_collection.forEach(v=>{
         let data =d3.nest().key(d=>d[v.id])
             .rollup(d=>d.length)
-            .entries(dp);
+            .entries(dp.filter(d=>d[v.id]!==null));
         data.range =[0,dp.length];
         v.schemabox.data(data);
     });
+}
+function addFilter(d,collapseMode){
+    if(collapseMode){
+        _.remove(filters, e=>e.type===d.type);
+    }
+    filters.push(d);
+    updateFilterChip(d3.select('#filterContent'),filters);
+    filterData(filters);
+    Updatemap();
+    redrawMap();
+}
+function removeFilter(d){
+    _.remove(filters, e=>e.id===d.id);
+    updateFilterChip(d3.select('#filterContent'),filters);
+    filterData(filters);
+    Updatemap();
+    redrawMap();
+}
+function filterTrigger (ob,state) {
+    if(state)
+        addFilter(ob);
+    else
+        removeFilter(ob);
 }
 function updateFilterschema(){
 
