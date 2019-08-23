@@ -107,7 +107,7 @@ let variable_collection ={
     }
 };
 let arr_variable_collection =[];
-Object.keys(variable_collection).forEach(d=>arr_variable_collection.push(variable_collection[d]));
+Object.keys(variable_collection).forEach(d=>{if (!variable_collection[d].hide) arr_variable_collection.push(variable_collection[d])});
 let project_collection ={
     CRCP: {
         text:"CRCP",
