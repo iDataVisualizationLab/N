@@ -66,7 +66,7 @@ function init(){
     ).then(function() {
         let max_d = 0;
         arr_variable_collection.forEach(v=>{
-            let data =d3.nest().key(d=>d[v.id])
+            let data =d3.nest().key(d=>d[v.id]).sortKeys((a,b)=>a-b)
                 .rollup(d=>d.length)
                 .entries(dp.filter(d=>d[v.id]!==null));
             v.schemabox.dataShadow(data);
