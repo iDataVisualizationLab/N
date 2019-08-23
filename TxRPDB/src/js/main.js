@@ -36,7 +36,8 @@ function init(){
       }
     );
     d3.select('#filterContent').on('removeFilter',function(d){
-        removeFilter(d);
+        console.log(d3.event.detail)
+        removeFilter(d3.event.detail);
     })
     Foundation.reInit($('#projects'));
     readConf("Data_details").then((data)=>{
