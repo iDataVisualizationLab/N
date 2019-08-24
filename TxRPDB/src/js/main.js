@@ -11,7 +11,7 @@ function initFilterSetting(){
         .append('div')
         .attr('class','schema-field');
     schema_field.append('span').attr('class','schema-field-label').text(d=>d.text);
-    schema_field.append('select').attr('class','schema-field-tag');
+    schema_field.append('select').attr('class','schema-field-tag').attr('multiple','').attr('placeholder',d=>`Choose ${d.text} ....`);
     schema_field.append('div').attr('class','schema-field-chart')
         .append('svg').each(function(d){
         d.schemabox = Schemabox().graphicopt(schemaSvg_option).svg(d3.select(this)).init().visibility(d.statistic).filterChangeFunc(filterTrigger).master(d);
@@ -77,7 +77,7 @@ function init(){
             data.range=[0, max_d];
             v.schemabox.dataShadow(data).draw_Shadow();
 
-            selectize_init(d3.selectAll('.schema-field-tag').filter(d=>d.text===v.text),data)
+            selectize_init(d3.selectAll('.schema-field').filter(d=>d.text===v.text).select('.schema-field-tag'),data)
         });
         plotMaps(dp);
         redrawMap();
@@ -88,6 +88,8 @@ function selectize_init(selection,data){
     selection.selectAll('option').data(data)
         .enter().append('option')
         .text(d=>d.key);
+    $(selection.node()).selectize({    plugins: ['remove_button']
+    })
 }
 
 function redrawMap(){
