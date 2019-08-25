@@ -44,6 +44,7 @@ let variable_collection ={
         text: 'Direction',
         id: 'Direction',
         statistic: 'category',
+        hide: true,
     },
 
     Drainage:{
@@ -186,7 +187,7 @@ let map_conf ={
 
 let schemaSvg_option = {
     margin: {top: 20, right: 10, bottom: 20, left: 10},
-    width: 380,
+    width: 370,
     height: 100,
     scalezoom: 1,
     widthView: function(){return this.width*this.scalezoom},

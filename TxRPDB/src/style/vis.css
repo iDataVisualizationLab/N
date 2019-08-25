@@ -97,13 +97,49 @@ li.projects_item{
     box-shadow: none !important;
     -webkit-user-select: auto !important;
 }
+.selectize-dropdown-content {
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.selectize-dropdown {
+    position: absolute;
+    z-index: 10;
+    margin: -1px 0 0 0;
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-top: 0 none;
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.selectize-dropdown [data-selectable], .selectize-dropdown .optgroup-header {
+    padding: 5px 8px;
+}
+.selectize-dropdown [data-selectable] {
+    overflow: hidden;
+    cursor: pointer;
+}
 input:focus, textarea:focus {
     outline: none;
 }
+#filter_manager {
+    padding: 10px;
+}
+
 .selectize-input.items {
     border: 1px solid #d0d0d0;
     padding: 5px;
+    border-radius: 5px;
     background-color: white;
+}
+.selectize-input.items.dropdown-active{
+    background-color: #d3eaf9;
 }
 .closebtn {
     padding-left: 15px;
