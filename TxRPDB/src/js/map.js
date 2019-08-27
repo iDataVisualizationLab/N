@@ -102,11 +102,42 @@ function colorType(type) {
         }
     }
 }
+function plotGPS() {
+    gm.map.pin.remove();
 
+    let ct = dp.filter(d=>(d["GPSStart"]!==null)||(d["GPSEnd"]!==null)).map((d)=>{
+        var bermudaTriangle = d["GPSStart"]||d["GPSEnd"];
+        var newf = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([bermudaTriangle[COL_LONG],bermudaTriangle[COL_LAT]])),
+            data:d
+        });
+        newf .setStyle(new ol.style.Style({
+            image: new ol.style.Icon(/** @type {module:ol/style/Icon~Options} */ ({
+                color: '#a8250c',
+                crossOrigin: 'anonymous',
+                src: 'src/Images/pin.png',
+                anchor: [0.5, 1],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'fraction',
+                scale: 0.5
+            }))
+        }));
+
+        return newf;
+    });
+    var vectorSource = new ol.source.Vector({
+        features: ct
+    });
+    gm.map.pin.layer = new ol.layer.Vector({
+        source: vectorSource
+    });
+
+    gm.map.pin.addtomap();
+}
 function plotCounties() {
     //Clear the previous county
     // d3.select('#overlaymap').selectAll('.Countieslayer').remove();
-    gm.map.data.remove();
+    gm.map.county.remove();
     if (plotCountyOption) {
         let ctPath = {
             type: "GeometryCollection"
@@ -117,37 +148,40 @@ function plotCounties() {
             geoJsonObject = topojson.feature(us, ctPath)
             let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
             datam.enter().append('a').attr('class', 'Countieslayer');
-            gm.map.data.setStyle({
-                'fill-color': [0, 0, 0, 0],
+            gm.map.county.setStyle({
+                'fill-color': [1, 1, 1, 0.1],
                 'stroke-width': 1,
                 'stroke-color': [1, 1, 1, 1],
             }, true);
-            gm.map.data.addGeoJson(geoJsonObject);
+            gm.map.county.addGeoJson(geoJsonObject);
         }
     }
 }
 
 function plotDistrict() {
     //Clear the previous county
-    gm.map.data.remove();
-    if (plotCountyOption) {
-        let ctPath = {
-            type: "GeometryCollection"
-        };
-        // ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
-        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d => dp.allCounties.indexOf(d.properties.NAME.toLowerCase()) >= 0);
-        if (ctPath.geometries.length) {
-            geoJsonObject = topojson.feature(us, ctPath)
-            let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
-            datam.enter().append('a').attr('class', 'Countieslayer');
-            gm.map.data.setStyle({
-                'fill-color': [0, 0, 0, 0],
-                'stroke-width': 1,
-                'stroke-color': [1, 1, 1, 1],
-            }, true);
-            gm.map.data.addGeoJson(geoJsonObject);
+    gm.map.district.remove();
+
+        if (plotCountyOption) {
+            let ctPath = {
+                type: "FeatureCollection"
+            };
+            // ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
+            ctPath.features = us_dis.features.filter(d => dp.allDistrics.find(e=>e.toLowerCase() ===d.properties.DIST_NM.toLowerCase()));
+            if (ctPath.features.length) {
+                // geoJsonObject = topojson.feature(us, ctPath)
+                // let datam = d3.select('#overlaymap').selectAll('.Countieslayer').data(geoJsonObject);
+                // datam.enter().append('a').attr('class', 'Countieslayer');
+                gm.map.district.setStyle({
+                    'fill-color': [1, 1, 1, 0.05],
+                    'stroke-width': 1,
+                    'stroke-color': [1, 1, 1, 1],
+                    'stroke-lineDash': [4,4],
+                }, true);
+                gm.map.district.addGeoJson(ctPath);
+            }
         }
-    }
+
 }
 
 // google
@@ -211,62 +245,8 @@ function plotRoad() {
     gm.map.addLayer(gm.map.roadLayer);
 }
 
-function plotContoursFromData(group, grid, colorFunction) {
-    let gridData = grid.map(g => g.value);
-    let thresholds = processThresholds(d3.extent(gridData));
-    let g = group.append("g");
-    let contourData = d3.contours().smooth(true)
-        .size(grid.size)
-        .thresholds(thresholds)
-        (gridData);
-    // const interpolate = d3.line()
-    //     .x(d => d[0] )
-    //     .y(d => d[1] )
-    //     .curve(d3.curveCardinalClosed);
-    // const smoothPath = (pstr) => {
-    //     var polygons = pstr.split("ZM");
-    //     let result = "";
-    //     polygons.forEach(plg =>{
-    //         let sp = plg.replace(/M/, "").replace(/Z/, "").split("L").map(d=>d.split(","));
-    //         result = result + interpolate(sp) + "Z";
-    //     });
-    //     return result;
-    // }
-    let path = d3.geoPath().projection(scale(grid.scale, grid.scale));
-    g.selectAll("path")
-        .data(contourData)
-        .enter().append("path")
-        .attr("d", d => {
-            return path(d);
-        })
-        .attr("fill", colorFunction)
-        .attr("stroke", "#000")
-        .attr("stroke-width", contourStrokeWidth)
-        .attr("class", "marker")
-        .attr("opacity", contourOpacity)
-        .attr("stroke-linejoin", "round");
-
-    function scale(scaleX, scaleY) {
-        return d3.geoTransform({
-            point: function (x, y) {
-                this.stream.point(x * scaleX, y * scaleY);
-            }
-        });
-    }
-}
 
 
-function processThresholds(range) {
-    let min0 = range[0];//added some value
-    let max0 = range[1];
-    let step0 = (max0 - min0) / numberOfThresholds[analyzeValueIndex];
-    let thresholds0 = [];
-    for (let i = 0; i < numberOfThresholds[analyzeValueIndex]; i++) {
-        thresholds0.push(i * step0);//Push it up from zero or above (to avoid zero threshold which is for null value (otherwise null values will be zero and will cover the data)
-    }
-    thresholds0[0] = thresholds0[0] + 10e-10;
-    return thresholds0;
-}
 
 function processThresholds1(range) {
     let min0 = range[0];//added some value

@@ -6,7 +6,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="src/style/foundation.min.css">
+    <link rel="stylesheet" href="src/style/foundation.css">
     <link rel="stylesheet" href="src/style/zmultiselect.css">
     <link rel="stylesheet" href="src/style/ol.css">
     <script src="https://kit.fontawesome.com/da99e175b3.js"></script>
@@ -37,10 +37,17 @@
 
     </div>
 </div>
-
+<button class="openbtn btn-floating btn waves-effect waves-light shadow " type="button" id="sideNavbtn" style="" data-open="offCanvasTop" data-toggle="filter_manager">
+    <!-- Screen readers will see "close" -->
+    <span class="show-for-sr">Close</span>
+    <!-- Visual users will see the X, but not the "Close" text -->
+    <span aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+</button>
 <div class="top-bar floating-navigator" style="background-color: unset">
-    <div class="float-center floating-navigator-content">
-        <ul class="dropdown menu" data-dropdown-menu id="projects" style="background-color: unset">
+    <div class="float-center floating-navigator-content menu horizontal">
+        <!--<button class="menu-icon menu cell" type="button" data-open="offCanvasTop" data-toggle="filter_manager"></button>-->
+
+        <ul class="dropdown menu cell" data-dropdown-menu id="projects" style="background-color: unset">
         </ul>
     </div>
     <div id="dataInfo" class="grid-x align-center-middle">
@@ -55,16 +62,24 @@
     <!--</div>-->
 
 <!--</div>-->
-<div class="off-canvas position-left" id="filter_manager" data-off-canvas data-transition="overlap">
-    <!-- Your menu or Off-canvas content goes here -->
-</div>
+
 <div class="off-canvas position-right" id="datatable" data-off-canvas>
     <!-- Your menu or Off-canvas content goes here -->
 </div>
 <div id="menu">
     <div id="search_box"></div>
 </div>
-<div class="off-canvas-content" data-off-canvas-content>
+<div class="off-canvas-wrapper">
+    <div class="off-canvas-absolute position-left" id="filter_manager" data-off-canvas data-transition="overlap">
+        <div class="grid-y grid-padding-y expanded" id="schemaSetting">
+            <!--<div class="schema-field">-->
+                <!--<div class="schema-field-chart"></div>-->
+                <!--<select class="schema-field-tag" placeholder="Pick a state..."></select>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="off-canvas-content" data-off-canvas-content>
+
 <div id="map" class="cell" style="min-height: calc(100vh - 56px) ;">
     <div id="info" style="position:absolute;z-index: 10" class="card">
         <div id="tooltp_header" data-equalizer>
@@ -95,6 +110,7 @@
 </div>
     <div id="overlaymap" style="display: none;"></div>
 </div>
+</div>
 <div class="reveal small" id="printModal" data-reveal>
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
@@ -107,6 +123,8 @@
 </div>
 
 <script src="src/lib/jquery-3.4.1.min.js"></script>
+<script src="src/lib/selectize.js"></script>
+
 <script src="src/lib/d3.v5.min.js"></script>
 <script src="src/lib/d3-selection-multi.v1.min.js"></script>
 <script src="src/lib/topojson.v2.min.js"></script>
@@ -129,6 +147,7 @@
         $('#header').load('headerMenu.html');
     })
 </script>
+<script src="src/js/schemabox.js"></script>
 <script src="src/js/plugins.js"></script>
 <script src="src/js/globalvariable.js"></script>
 <script src="src/js/d3openlayer.js"></script>

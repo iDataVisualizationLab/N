@@ -106,8 +106,8 @@ function readConf(choice) {
     });
 }
 
-function readLib(choice) {
-    return d3.json("src/lib/" + choice + ".json", function (data) {
+function readLib(choice,type) {
+    return d3.json("src/lib/" + choice + "."+type, function (data) {
         return data;
     });
 }
@@ -174,43 +174,70 @@ function queryData(){
 
 }
 
+// function queryfromsource(secid,div) {
+//     $.ajax({
+//         type: 'GET',
+//         url: 'https://cors-anywhere.herokuapp.com/http://appcollab.ads.ttu.edu/TxRPDB/FileDisplay/FilesList.aspx?sectionid='+secid+'&contenttype='+this.id,
+//         dataType: 'html',
+//         // crossDomain: true,
+//         success: function (htmldata) {
+//             console.log(div.datum())
+//             let newcontent = document.createElement('html');
+//             newcontent.innerHTML =htmldata.replace(/..\/Images/gi,'src/Images');
+//             let temp_data;
+//             let maindata = div.datum();
+//             if (newcontent.querySelector('#pnlData').querySelector('table')===null) {
+//                 temp_data = undefined;
+//                 div.selectAll('*').remove();
+//                 div.classed('no-background-color',false).append('span').text('No files are available to Display.')
+//             } else {
+//                 temp_data = [];
+//                 newcontent.querySelectorAll("input[name^='imgButtonID-']")
+//                     .forEach((d,i)=>temp_data.push({
+//                         url:eval(d.getAttribute('onclick')),
+//                         filename:d.getAttribute('onclick').split(',')[0].split("'")[1].split('/').pop(),
+//                         type: maindata.id,
+//                         target: secid+maindata.id+i}));
+//                 newcontent.querySelectorAll("input[name^='imgDownloadID-']")
+//                     .forEach((d,i)=>temp_data[i].urlDownload = eval(d.getAttribute('onclick')) );
+//
+//                 div.classed('no-background-color',true).select('span').remove();
+//                 let dold = div.selectAll('div.cell').data(temp_data,d=>d);
+//                 dold.exit().remove();
+//                 dold.enter().append('div').attr('class','cell').append('iframe').attr('class','cell').attr('frameborder',0);
+//                 div.selectAll('iframe').attr('src',d=>d.url)
+//
+//             }
+//             return temp_data;
+//         }
+//     })
+// }
+function queryMedia(secid,conttype){
+
+}
 function queryfromsource(secid,div) {
-    $.ajax({
-        type: 'GET',
-        url: 'https://cors-anywhere.herokuapp.com/http://appcollab.ads.ttu.edu/TxRPDB/FileDisplay/FilesList.aspx?sectionid='+secid+'&contenttype='+this.id,
-        dataType: 'html',
-        crossDomain: true,
-        success: function (htmldata) {
-            console.log(div.datum())
-            let newcontent = document.createElement('html');
-            newcontent.innerHTML =htmldata.replace(/..\/Images/gi,'src/Images');
-            let temp_data;
-            let maindata = div.datum();
-            if (newcontent.querySelector('#pnlData').querySelector('table')===null) {
-                temp_data = undefined;
-                div.selectAll('*').remove();
-                div.classed('no-background-color',false).append('span').text('No files are available to Display.')
-            } else {
-                temp_data = [];
-                newcontent.querySelectorAll("input[name^='imgButtonID-']")
-                    .forEach((d,i)=>temp_data.push({
-                        url:eval(d.getAttribute('onclick')),
-                        filename:d.getAttribute('onclick').split(',')[0].split("'")[1].split('/').pop(),
-                        type: maindata.id,
-                        target: secid+maindata.id+i}));
-                newcontent.querySelectorAll("input[name^='imgDownloadID-']")
-                    .forEach((d,i)=>temp_data[i].urlDownload = eval(d.getAttribute('onclick')) );
-
-                div.classed('no-background-color',true).select('span').remove();
-                let dold = div.selectAll('div.cell').data(temp_data,d=>d);
-                dold.exit().remove();
-                dold.enter().append('div').attr('class','cell').append('iframe').attr('class','cell').attr('frameborder',0);
-                div.selectAll('iframe').attr('src',d=>d.url)
-
-            }
-            return temp_data;
-        }
-    })
+    let temp_data;
+    let maindata = div.datum();
+    if (!mediaQuery[secid] || !mediaQuery[secid][this.id]) {
+        temp_data = undefined;
+        div.selectAll('*').remove();
+        div.classed('no-background-color',false).append('span').text('No files are available to Display.')
+    }else{
+        temp_data = mediaQuery[secid][this.id].map((d,i)=>{
+            return{ url: ViewFileURL('src/data/SurveyData/'+secid+'/'+this.id+'/'+d),
+                filename: d,
+                type: maindata.id,
+                target: secid+maindata.id+i,
+                urlDownload: DownloadURLSet('src/data/SurveyData/'+secid+'/'+this.id+'/'+d),
+            };
+        })
+        div.classed('no-background-color',true).select('span').remove();
+        let dold = div.selectAll('div.cell').data(temp_data,d=>d);
+        dold.exit().remove();
+        dold.enter().append('div').attr('class','cell').append('iframe').attr('class','cell').attr('frameborder',0);
+        div.selectAll('iframe').attr('src',d=>d.url)
+    }
+    return temp_data;
 }
 function getpdfContent() {
     $.ajax({
@@ -251,7 +278,6 @@ function getpdfContent() {
         }
     })
 }
-
 function DownloadURLSet(path) {
     path = path.replace(/!/g, '/');
     path = path.replace(/ /g, '%20');
@@ -261,10 +287,10 @@ function DownloadURLSet(path) {
     var lengthOfFile = path.length;
     var filetype = path.substring(indexOffileType + 1, lengthOfFile);
 
-    path = "http://www.depts.ttu.edu/techmrtweb/rpdb/" + path;
+    path = "https://idatavisualizationlab.github.io/N/TxRPDB/" + path;
     return path;
 }
-function ViewFileURL(path, filename) {
+function ViewFileURL(path) {
     path = path.replace(/!/g, '/');
     path = path.replace(/ /g, '%20');
     path = path.replace('~/', '');
@@ -274,13 +300,42 @@ function ViewFileURL(path, filename) {
     var filetype = path.substring(indexOffileType + 1, lengthOfFile);
 
     if (filetype == "jpg" || filetype == "JPG" || filetype == "jpeg" || filetype == "JPEG" || filetype == "png" || filetype == "PNG" || filetype == "pdf"  || filetype == "PDF" || filetype == "gif" || filetype == "GIF") {
-        path = "http://www.depts.ttu.edu/techmrtweb/rpdb/" + path;
+        path = "https://idatavisualizationlab.github.io/N/TxRPDB/" + path;
     }
     else {
-        path = "http://docs.google.com/gview?url=http://www.depts.ttu.edu/techmrtweb/rpdb/" + path+"&embedded=true";
+        path = "http://docs.google.com/gview?url=https://idatavisualizationlab.github.io/N/TxRPDB/" + path+"&embedded=true";
     }
     return path;
 }
+// function DownloadURLSet(path) {
+//     path = path.replace(/!/g, '/');
+//     path = path.replace(/ /g, '%20');
+//     path = path.replace('~/', '');
+//
+//     var indexOffileType = path.lastIndexOf(".");
+//     var lengthOfFile = path.length;
+//     var filetype = path.substring(indexOffileType + 1, lengthOfFile);
+//
+//     path = "http://www.depts.ttu.edu/techmrtweb/rpdb/" + path;
+//     return path;
+// }
+// function ViewFileURL(path, filename) {
+//     path = path.replace(/!/g, '/');
+//     path = path.replace(/ /g, '%20');
+//     path = path.replace('~/', '');
+//
+//     var indexOffileType = path.lastIndexOf(".");
+//     var lengthOfFile = path.length;
+//     var filetype = path.substring(indexOffileType + 1, lengthOfFile);
+//
+//     if (filetype == "jpg" || filetype == "JPG" || filetype == "jpeg" || filetype == "JPEG" || filetype == "png" || filetype == "PNG" || filetype == "pdf"  || filetype == "PDF" || filetype == "gif" || filetype == "GIF") {
+//         path = "http://www.depts.ttu.edu/techmrtweb/rpdb/" + path;
+//     }
+//     else {
+//         path = "http://docs.google.com/gview?url=http://www.depts.ttu.edu/techmrtweb/rpdb/" + path+"&embedded=true";
+//     }
+//     return path;
+// }
 
 function updateFilterChip (path,data) {
     let chipf = path.selectAll('.chip').data(data,d=>d.id);
@@ -297,3 +352,4 @@ function updateFilterChip (path,data) {
     chipf.select('.chiptext').text(d=>d.text);
     return chipf;
 }
+

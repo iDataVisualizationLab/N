@@ -1,89 +1,114 @@
 // data variable
-let basearr=[],basedata={},dp,
+let basearr=[],basedata={},dp,mediaQuery,
     COL_LAT = 'lat',
     COL_LONG = 'lng',
     filter={};
 
 let variable_collection ={
-    CCSJ:{
-        text: 'CCSJ',
-        id: 'CCSJ'
-    },
-    ConcreteCAT:{
-        text: 'Concrete CAT',
-        id: 'ConcreteCAT'
-    },
-    ConstYear:{
-        text: 'Construction Year',
-        id: 'ConstYear'
+    District:{
+        text: 'District',
+        id: 'District',
+        statistic: undefined,
     },
     County:{
         text: 'County',
-        id: 'County'
+        id: 'County',
+        statistic: undefined,
     },
     DataType:{
         text: 'Project',
-        id: 'DataType'
+        id: 'DataType',
+        statistic: 'group',
+    },
+    Highway:{
+        text: 'Highway',
+        id: 'Highway',
+        statistic: undefined,
+    },
+    CCSJ:{
+        text: 'CCSJ',
+        id: 'CCSJ',
+        statistic: undefined,
+    },
+    ConcreteCAT:{
+        text: 'Concrete CAT',
+        id: 'ConcreteCAT',
+        statistic: undefined,
+    },
+    ConstYear:{
+        text: 'Construction Year',
+        id: 'ConstYear',
+        statistic: 'date',
     },
     Direction:{
         text: 'Direction',
-        id: 'Direction'
+        id: 'Direction',
+        statistic: 'category',
+        hide: true,
     },
-    District:{
-        text: 'District',
-        id: 'District'
-    },
+
     Drainage:{
         text: 'Drainage',
-        id: 'Drainage'
+        id: 'Drainage',
+        statistic: undefined,
+    },
+    GPSStart:{
+        type:'gps',
+        text: 'GPS (Start)',
+        id: 'GPSStart',
+        statistic: undefined,
+        hide: true,
     },
     GPSEnd:{
         type:'gps',
         text: 'GPS (End)',
-        id: 'GPSEnd'
-    },
-    GPSStart:{
-        type:'gps',
-        text: 'GPS Start',
-        id: 'GPSStart'
-    },
-    Highway:{
-        text: 'Highway',
-        id: 'Highway'
+        id: 'GPSEnd',
+        statistic: undefined,
+        hide: true,
     },
     HorizontalAlign:{
         text: 'Horizontal Alignment',
-        id: 'HorizontalAlign'
+        id: 'HorizontalAlign',
+        statistic: 'category',
     },
     NoOFLanes:{
         text: 'No. of Lanes (Both Directions)',
-        id: 'NoOFLanes'
+        id: 'NoOFLanes',
+        statistic: 'number',
     },
     PavementType:{
         text: 'Pavement Type',
-        id: 'PavementType'
+        id: 'PavementType',
+        statistic: 'category',
     },
     RefMarker:{
         text: 'Reference Marker',
-        id: 'RefMarker'
+        id: 'RefMarker',
+        statistic: undefined,
     },
     ShoulderType:{
         text: 'Shoulder Type',
-        id: 'ShoulderType'
+        id: 'ShoulderType',
+        statistic: 'category',
     },
     SlabThickness:{
         text: 'Slab Thickness (in.)',
-        id: 'SlabThickness'
+        id: 'SlabThickness',
+        statistic: 'number',
     },
     Surfacetexture:{
         text: 'Surface Texture',
-        id: 'Surfacetexture'
+        id: 'Surfacetexture',
+        statistic: 'category',
     },
     VerticalAlign:{
         text: 'Vertical Alignment',
-        id: 'VerticalAlign'
+        id: 'VerticalAlign',
+        statistic: 'category',
     }
 };
+let arr_variable_collection =[];
+Object.keys(variable_collection).forEach(d=>{if (!variable_collection[d].hide) arr_variable_collection.push(variable_collection[d])});
 let project_collection ={
     CRCP: {
         text:"CRCP",
@@ -146,7 +171,7 @@ let project_feature_collection = {
 let filters =[];
 // map
 
-let us;
+let us,us_dis;
 let map_conf ={
     margin: {top: 0, right: 0, bottom: 0, left: 0},
     width: window.innerWidth,
@@ -157,5 +182,17 @@ let map_conf ={
     widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
     heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
     },
-    plotCountyOption = true
+    plotCountyOption = true;
 // menu
+
+let schemaSvg_option = {
+    margin: {top: 20, right: 10, bottom: 20, left: 10},
+    width: 370,
+    height: 100,
+    scalezoom: 1,
+    widthView: function(){return this.width*this.scalezoom},
+    heightView: function(){return this.height*this.scalezoom},
+    widthG: function(){return this.widthView()-this.margin.left-this.margin.right},
+    heightG: function(){return this.heightView()-this.margin.top-this.margin.bottom},
+    barcolor: '#000000',
+};

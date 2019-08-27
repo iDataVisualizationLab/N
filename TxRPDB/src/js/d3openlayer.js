@@ -1,5 +1,5 @@
 function maketooltip(info, properties) {
-    if (!properties.NAME) {
+    if (properties.data&&properties.data.sectionID) {
         let variable_display = ["CCSJ", "ConcreteCAT", "ConstYear", "County", "Direction", "District", "Drainage", "GPSEnd", "GPSStart", "Highway", "HorizontalAlign", "NoOFLanes", "PavementType", "RefMarker", "ShoulderType", "SlabThickness", "Surfacetexture", "VerticalAlign"]
         let ta = d3.select(info).selectAll('.detail_div')
             .data([properties.data],d=>d.sectionID);
@@ -13,7 +13,7 @@ function maketooltip(info, properties) {
             .data(d => variable_display.map(e => [
                 {class: 'align-right', val: variable_collection[e].text}, {
                 class: 'align-left',
-                val: variable_collection[e].type==='gps'?ol.coordinate.toStringHDMS([d[variable_collection[e].id][COL_LONG],d[variable_collection[e].id][COL_LAT]]):d[variable_collection[e].id]
+                val: (variable_collection[e].type==='gps' && d[variable_collection[e].id]!==null)?ol.coordinate.toStringHDMS([d[variable_collection[e].id][COL_LONG],d[variable_collection[e].id][COL_LAT]]):d[variable_collection[e].id]
             }]));
         ta_tr.exit().remove();
         let ta_tr_n = ta_tr.enter().append('tr');
@@ -179,49 +179,11 @@ class GoogleMap {
 
         if(!layerType) layerType = "svg";
         self.layerType = layerType;
-        self.map.data=[];
-        self.map.data.remove = ()=>{
-            this.length = 0;
-            if (self.map.data.layer) {
-                self.map.removeLayer(self.map.data.layer);
-                self.map.data.layer = undefined
-            }
-        };
-        self.map.data.styles = {
-            'Polygon':new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'black',
-                    width: 1
-                })})};
-        self.map.data.styleFunction = function(feature) {
-            return this.styles[feature.getGeometry().getType()];
-        };
-        self.map.data.setStyle = function(newstyle,single){
-            if (single){
-                this.styles = self.json2style(newstyle);
-                this.styleFunction = this.styles;
-            }else{
-                for (let i in newstyle)
-                    this.styles[i] = self.json2style(newstyle[i]);
-                this.styleFunction = function(feature) {
-                    return this.styles[feature.getGeometry().getType()];
-                }
-            }
-        }
-        self.map.data.addGeoJson = function (geoJsonObject){
-            var vectorSource = new ol.source.Vector({
-                features: new ol.format.GeoJSON().readFeatures(geoJsonObject,{featureProjection: 'EPSG:3857'})
-            });
-            let  vectorLayer = new ol.layer.Vector({
-                source: vectorSource,
-                style: this.styleFunction
-            });
-            this.layer = vectorLayer;
-            self.map.addLayer(this.layer);
-        };
+
 
         self.createMarker();
         self.map.on('pointermove', showInfo);
+        self.map.on('singleclick', showInfo);
         self.map.on('click', clickmapcheck);
 
         function showInfo(event) {
@@ -230,7 +192,7 @@ class GoogleMap {
                 var features = self.map.getFeaturesAtPixel(event.pixel);
                 var coordinate = event.coordinate;
                 // var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
-                if (!features || features[0].getProperties().NAME) {
+                if (!features || !features[0].getProperties().data) {
 
                     info.classList.add("hide");
                     return;
@@ -258,6 +220,52 @@ class GoogleMap {
             }
         }
 
+    }
+    makelayermanage(name){
+        let self = this;
+        self.map[name]=[];
+        self.map[name].remove = ()=>{
+            this.length = 0;
+            if (self.map[name].layer) {
+                self.map.removeLayer(self.map[name].layer);
+                self.map[name].layer = undefined
+            }
+        };
+        self.map[name].styles = {
+            'Polygon':new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'black',
+                    width: 1
+                })})};
+        self.map[name].styleFunction = function(feature) {
+            return this.styles[feature.getGeometry().getType()];
+        };
+        self.map[name].setStyle = function(newstyle,single){
+            if (single){
+                this.styles = self.json2style(newstyle);
+                this.styleFunction = this.styles;
+            }else{
+                for (let i in newstyle)
+                    this.styles[i] = self.json2style(newstyle[i]);
+                this.styleFunction = function(feature) {
+                    return this.styles[feature.getGeometry().getType()];
+                }
+            }
+        }
+        self.map[name].addGeoJson = function (geoJsonObject){
+            var vectorSource = new ol.source.Vector({
+                features: new ol.format.GeoJSON().readFeatures(geoJsonObject,{featureProjection: 'EPSG:3857'})
+            });
+            let  vectorLayer = new ol.layer.Vector({
+                source: vectorSource,
+                style: this.styleFunction
+            });
+            this.layer = vectorLayer;
+            self.map.addLayer(this.layer);
+        };
+        self.map[name].addtomap = function (){
+            self.map.addLayer(this.layer);
+        };
     }
     jsUcfirst(string)
     {
@@ -311,6 +319,10 @@ class GoogleMap {
             element: document.getElementById('info'),
         });
         self.map.addOverlay(self.tooltip);
+
+        self.makelayermanage('county');
+        self.makelayermanage('district');
+        self.makelayermanage('pin');
         //Add the container when the overlay is added to the map
         // self.overlay.onAdd = function () {
         //     this.map.addOverlay()
