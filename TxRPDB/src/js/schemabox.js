@@ -163,6 +163,7 @@ let Schemabox = function() {
             .attr("class", "overlay");
         return schemabox;
     };
+
     schemabox.data = function (_) {
         if (arguments.length){
             data=_;
