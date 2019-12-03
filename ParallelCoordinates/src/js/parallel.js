@@ -94,19 +94,19 @@ function init() {
 // Foreground canvas for primary view
     foreground = document.getElementById('foreground').getContext('2d');
     foreground.globalCompositeOperation = "destination-over";
-    foreground.strokeStyle = "rgba(0,100,160,0.1)";
-    foreground.lineWidth = 0.8;
+    foreground.strokeStyle =  "rgba(70,130,180,1)";
+    foreground.lineWidth = 2;
     foreground.fillText("Loading...",w/2,h/2);
 
 // Highlight canvas for temporary interactions
     highlighted = document.getElementById('highlight').getContext('2d');
     highlighted.strokeStyle = "rgba(0,100,160,1)";
-    highlighted.lineWidth = 2;
+    highlighted.lineWidth = 3;
 
 // Background canvas
     background = document.getElementById('background').getContext('2d');
-    background.strokeStyle = "rgba(0,100,160,0.1)";
-    background.lineWidth = 1.7;
+    background.strokeStyle = "rgba(70,130,180,1)";
+    background.lineWidth = 2;
 
     svgLengend = d3.select('#colorContinuos').append('div').append('svg')
         .attr("class", "legendView")
@@ -129,7 +129,8 @@ function init() {
         data = object2DataPrallel_new(ob);
         var ordinari =  _.without(d3.keys(data[0]),'name','id','group','rack');
         // order = [1, 2, 22, 21, 16, 0, 12, 20, 23, 11, 31, 18, 15, 14, 27, 32, 26, 13, 19, 6, 24, 7, 17, 9, 30, 29, 25, 28, 10, 8, 4, 3, 5];
-        order = ordinari.map((d,i)=>i);
+        // order = ordinari.map((d,i)=>i);
+        order = [1,2,0,4,3,5];
         dimensions = order.map(d=>ordinari[d]);
         // Extract the list of numerical dimensions and create a scale for each.
         xscale.domain(dimensions.filter(function (k) {
@@ -138,9 +139,7 @@ function init() {
                     return d[k];
                 }))
                 .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3.scaleLinear()
-                .domain(d3.extent(data, function (d) {
-                    return +d[k];
-                }))
+                .domain([0,1])
                 .range([h, 0]))));
         }));
 
@@ -156,7 +155,7 @@ function init() {
                 .on("start", function (d) {
                     dragging[d] = this.__origin__ = xscale(d);
                     this.__dragged__ = false;
-                    d3.select("#foreground").style("opacity", "0.35");
+                    d3.select("#foreground").style("opacity", "1");
                 })
                 .on("drag", function (d) {
                     dragging[d] = Math.min(w, Math.max(0, this.__origin__ += d3.event.dx));
@@ -400,6 +399,7 @@ function selection_stats(opacity, n, total) {
 
 // Highlight single polyline
 function highlight(d) {
+    console.log(d)
     d3.select("#foreground").style("opacity", "1");
     d3.select("#legend").selectAll(".row").style("opacity", function(p) { return (d.group == p) ? null : "0.7" });
     path(d, highlighted, colorCanvas(selectedService==null?d.group:d[selectedService],1));
@@ -544,6 +544,7 @@ function position(d) {
     var v = dragging[d];
     return v == null ? xscale(d) : v;
 }
+var selected;
 
 // Handles a brush event, toggling the display of foreground lines.
 // TODO refactor
@@ -597,7 +598,7 @@ function brush() {
         });
 
     // Get lines within extents
-    var selected = [];
+    selected = [];
     data
         .filter(function(d) {
             return !_.contains(excluded_groups, d.group);
@@ -821,12 +822,12 @@ function resetSize() {
         .select("g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
     // Foreground canvas for primary view
-    foreground.lineWidth = 0.8;
+    foreground.lineWidth = 1.5;
 // Highlight canvas for temporary interactions
-    highlighted.lineWidth = 2;
+    highlighted.lineWidth = 3;
 
 // Background canvas
-    background.lineWidth = 1.7;
+    background.lineWidth = 2;
 
     xscale = d3.scalePoint().range([0, w]).padding(0.3).domain(dimensions);
     dimensions.forEach(function (d) {

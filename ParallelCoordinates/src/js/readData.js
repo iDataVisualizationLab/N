@@ -222,7 +222,7 @@ function colorbyCategory(data,key) {
     var listKey = _(data).unique(key).map(d=>d[key]);
     var listcolor= listKey.map(colorscale);
     // isolate
-    listcolor= listKey.map((d)=>d==='Wyoming'?'red':'steelBlue')
+    listcolor= listKey.map((d)=>((d==='Virgin Islands')||(d==='Puerto Rico'))?'red':'steelBlue')
     //----
     colors.domain(listKey).range(listcolor);
     color = colors;
