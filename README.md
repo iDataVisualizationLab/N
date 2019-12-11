@@ -4,7 +4,7 @@ https://idatavisualizationlab.github.io/N/
 
 https://idatavisualizationlab.github.io/N/wordStream
 
-HAMViz: https://idatavisualizationlab.github.io/N/HMAviz/index.html
+HAMViz with Reinforment: https://idatavisualizationlab.github.io/N/HMAViz_RL/index.html
 
 Ant-SNE: https://idatavisualizationlab.github.io/N/Ant-SNE/index.html
 
