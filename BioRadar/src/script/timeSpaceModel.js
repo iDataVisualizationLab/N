@@ -1144,6 +1144,7 @@ d3.TimeSpace = function () {
     //     },1000/60);
     // }
     function render (islast){
+        let p = points.geometry.attributes.position.array;
         if(solution) {
             createRadar = _.partialRight(createRadar_func,'timeSpace radar', graphicopt.radaropt, colorscale);
             solution.forEach(function (d, i) {
@@ -1152,7 +1153,6 @@ d3.TimeSpace = function () {
                 target.__metrics.position = d;
                 let pointIndex = mapIndex.indexOf(i);
                 if (pointIndex!==undefined){
-                    let p = points.geometry.attributes.position.array;
                     p[pointIndex*3+0] = xscale(d[0]);
                     p[pointIndex*3+1] = yscale(d[1]);
 
@@ -1178,6 +1178,8 @@ d3.TimeSpace = function () {
 
             });
             if (islast){
+                let rangeDis=[+Infinity,0];
+                let customz = d3.scaleLinear().range(scaleNormalTimestep.range());
                 for (let name in path){
                     let temp;
                     path[name].forEach((p,i)=>{
@@ -1189,12 +1191,36 @@ d3.TimeSpace = function () {
                             path[name].distance += distance(path[name][i-1].value,p.value)
                         }
                     });
-                    if (graphicopt.opt.dim===2.5)
+                    if (graphicopt.opt.dim===2.5) {
                         path[name].distance /= (_.last(path[name]).__timestep);
-                    else
+                        if (path[name].distance<rangeDis[0])
+                            rangeDis[0] = path[name].distance;
+                        if (path[name].distance>rangeDis[1])
+                            rangeDis[1] = path[name].distance;
+
+                    }else
                         path[name].distance /= path[name].length;
                 }
                 handleTopSort($('#modelSortBy').val());
+                customz.domain(rangeDis);
+                // adjust z base on distance
+                if (graphicopt.opt.dim===2.5) {
+                    solution.forEach(function (d, i) {
+                        const target = datain[i];
+                        if (target.__timestep) {
+                            const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
+                            // updateStraightLine(target, posPath, d);
+                            d = d.slice();
+                            d[2] = customz(path[target.name].distance);
+                            let pointIndex = mapIndex.indexOf(i);
+                            if (pointIndex!==undefined) {
+                                p[pointIndex * 3 + 2] = d[2];
+                            }
+                            d[2] =xscale.invert(d[2]);
+                            updateLine(target, posPath, d, center[target.cluster]);
+                        }
+                    });
+                }
             }
             points.geometry.attributes.position.needsUpdate = true;
             points.geometry.boundingBox = null;
@@ -1384,7 +1410,7 @@ d3.TimeSpace = function () {
             lines[target.name].geometry.setFromPoints(points);
         }
     }
-    function updateStraightLine(target, posPath, d) {
+    function updateStraightLine(target, posPath, d, customZ) {
         lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
         // lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), d[2] || 0);
         if (posPath)
