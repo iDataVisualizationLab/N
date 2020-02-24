@@ -1,0 +1,11 @@
+body g{
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+}
+path.line, .sticks line{
+  stroke-width: 2;
+}
+.grid .tick line {
+  stroke: #999999;
+  stroke-width: 0.05px;
+}

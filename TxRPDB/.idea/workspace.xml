@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5e7e41eb-d024-4d17-904a-f23f1a3516f9" name="Default Changelist" comment="" />
+    <list default="true" id="5e7e41eb-d024-4d17-904a-f23f1a3516f9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ant-SNE/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ant-SNE/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/Texas_US_House_Districts.kml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/d3openlayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/d3openlayer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/globalvariable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/globalvariable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/plugins.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/plugins.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/processdata.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/processdata.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VAST19/mc1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VAST19/mc1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VAST19/mc2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VAST19/mc2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VAST19/mc3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VAST19/mc3/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -15,100 +29,53 @@
     <session id="-450808863">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.0" value="2" />
+          <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="1" />
-          <entry key="HTML" value="7" />
-          <entry key="JSON" value="6" />
-          <entry key="JavaScript" value="28" />
+          <entry key="CSS" value="14" />
+          <entry key="HTML" value="15" />
+          <entry key="HTTP Request" value="1" />
+          <entry key="JSON" value="12" />
+          <entry key="JavaScript" value="68" />
+          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="SCSS" value="7" />
+          <entry key="SourceMap" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="491" />
-          <entry key="JavaScript" value="2945" />
+          <entry key="CSS" value="1274" />
+          <entry key="HTML" value="2049" />
+          <entry key="JSON" value="1" />
+          <entry key="JavaScript" value="14698" />
+          <entry key="PLAIN_TEXT" value="87" />
+          <entry key="SCSS" value="32" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="28" column="19" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="19" />
+            <state relative-caret-position="1173">
+              <caret line="69" column="23" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+        <entry file="file://$PROJECT_DIR$/src/js/schemabox.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="133" column="36" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/d3.v5.min.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="67312" selection-start-line="1" selection-start-column="67312" selection-end-line="1" selection-end-column="67312" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/js/map.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="229" column="75" selection-start-line="229" selection-start-column="75" selection-end-line="229" selection-end-column="75" />
-              <folding>
-                <element signature="n#!!block;n#addDivPixelFromLatLng#0;n#!!block;n#plotMaps#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/js/processdata.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/texascountyids.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="102" column="16" lean-forward="true" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/js/d3googlemap.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/js/plugins.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="129" column="40" lean-forward="true" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
+            <state relative-caret-position="247">
+              <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -116,8 +83,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/js/globalvariable.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="12" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="12" />
+            <state relative-caret-position="3213">
+              <caret line="189" column="14" selection-start-line="189" selection-start-column="14" selection-end-line="189" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/plugins.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5848">
+              <caret line="344" column="67" lean-forward="true" selection-start-line="344" selection-start-column="67" selection-end-line="344" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -125,11 +101,56 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vis.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="42" column="45" lean-forward="true" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
+            <state relative-caret-position="1972">
+              <caret line="125" column="44" lean-forward="true" selection-start-line="125" selection-start-column="44" selection-end-line="125" selection-end-column="44" />
               <folding>
-                <element signature="n#style#0;n#div#1;n#body#0;n#!!top" expanded="true" />
+                <element signature="n#div#6;n#body#0;n#!!top" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/d3openlayer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="55" lean-forward="true" selection-start-line="23" selection-start-column="55" selection-end-line="23" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/style/vis.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2380">
+              <caret line="140" column="38" selection-start-line="140" selection-start-column="38" selection-end-line="140" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/headerMenu.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/style/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/map.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3145">
+              <caret line="185" lean-forward="true" selection-start-line="185" selection-end-line="185" />
             </state>
           </provider>
         </entry>
@@ -141,46 +162,51 @@
       <list>
         <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTTP Request" />
+        <option value="Python Script" />
         <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pl</find>
-      <find>regis</find>
-      <find>.load</find>
-      <find>our age</find>
-      <find>style</find>
-      <find>row</find>
-      <find>plot</find>
-      <find>plotmap</find>
-      <find>mapWidth</find>
-      <find>mapHeight</find>
-      <find>draw</find>
-      <find>plotContours</find>
-      <find>overlay</find>
-      <find>dispa</find>
-      <find>margin</find>
-      <find>fit</find>
-      <find>plotCounties</find>
-      <find>hardin</find>
-      <find>tolow</find>
-      <find>dp.filter</find>
-      <find>plotco</find>
-      <find>new google.maps.Polyline</find>
-      <find>google.maps.Polyline</find>
-      <find>coun</find>
-      <find>gm</find>
-      <find>long</find>
-      <find>plotroa</find>
-      <find>topojson</find>
-      <find>welcome</find>
-      <find>zoom</find>
+      <find>basearr</find>
+      <find>datash</find>
+      <find>shadow</find>
+      <find>arr_variable_collection</find>
+      <find>print</find>
+      <find>value</find>
+      <find>d.value</find>
+      <find>filterChangeFunc</find>
+      <find>d3.nest</find>
+      <find>.value</find>
+      <find>click</find>
+      <find>y.do</find>
+      <find>range</find>
+      <find>selec</find>
+      <find>chip</find>
+      <find>schema-field-tag</find>
+      <find>filter</find>
+      <find>sha</find>
+      <find>back</find>
+      <find>filter_manager</find>
+      <find>variable_collection</find>
+      <find>-tag</find>
+      <find>white</find>
+      <find>focu</find>
+      <find>fixed</find>
+      <find>floating</find>
+      <find>input</find>
+      <find>up</find>
+      <find>pin</find>
+      <find>barOverlay</find>
     </findStrings>
     <replaceStrings>
       <replace>map_conf.widthG()</replace>
       <replace>map_conf.heightG()</replace>
+      <replace>[name]</replace>
+      <replace>self</replace>
+      <replace>.value.len</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -194,23 +220,39 @@
         <option value="$PROJECT_DIR$/src/lib/d3.v5.min.js" />
         <option value="$PROJECT_DIR$/src/lib/d3-selection-multi.v1.min.js" />
         <option value="$PROJECT_DIR$/src/lib/simple-statistics.min.js" />
-        <option value="$PROJECT_DIR$/src/lib/lodash_fp.min.js" />
         <option value="$PROJECT_DIR$/src/js/connecttoWesite.js" />
         <option value="$PROJECT_DIR$/src/index.html" />
         <option value="$PROJECT_DIR$/requirescriptbatch.html" />
         <option value="$PROJECT_DIR$/src/lib/foundation.js" />
         <option value="$PROJECT_DIR$/src/style/foundation.min.css" />
-        <option value="$PROJECT_DIR$/headerMenu.html" />
         <option value="$PROJECT_DIR$/src/data/Data_details.json" />
-        <option value="$PROJECT_DIR$/src/js/processdata.js" />
         <option value="$PROJECT_DIR$/src/lib/topojson.v2.min.js" />
-        <option value="$PROJECT_DIR$/vis.html" />
         <option value="$PROJECT_DIR$/src/js/d3googlemap.js" />
-        <option value="$PROJECT_DIR$/src/js/globalvariable.js" />
-        <option value="$PROJECT_DIR$/src/js/map.js" />
-        <option value="$PROJECT_DIR$/src/js/main.js" />
-        <option value="$PROJECT_DIR$/src/js/plugins.js" />
+        <option value="$PROJECT_DIR$/src/lib/jquery.printPage.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/src/lib/TxDOT_Districts.geojson" />
+        <option value="$PROJECT_DIR$/src/lib/TxDOT_Districts.json" />
+        <option value="$PROJECT_DIR$/src/js/map.js" />
+        <option value="$PROJECT_DIR$/src/php/list.http" />
+        <option value="$PROJECT_DIR$/src/php/mediaList.php" />
+        <option value="$PROJECT_DIR$/src/php/queryfile.py" />
+        <option value="$PROJECT_DIR$/src/js/d3openlayer.js" />
+        <option value="$PROJECT_DIR$/src/js/plugins.js" />
+        <option value="$PROJECT_DIR$/src/lib/selectize.js" />
+        <option value="$PROJECT_DIR$/src/scss/settings/_settings.scss" />
+        <option value="$PROJECT_DIR$/src/scss/_global.scss" />
+        <option value="$PROJECT_DIR$/src/scss/foundation.scss" />
+        <option value="$PROJECT_DIR$/src/assets/foundation.scss" />
+        <option value="$PROJECT_DIR$/src/scss/components/_off-canvas.scss" />
+        <option value="$PROJECT_DIR$/src/lib/lodash_fp.min.js" />
+        <option value="$PROJECT_DIR$/src/style/main.css" />
+        <option value="$PROJECT_DIR$/headerMenu.html" />
+        <option value="$PROJECT_DIR$/src/js/processdata.js" />
+        <option value="$PROJECT_DIR$/src/js/main.js" />
+        <option value="$PROJECT_DIR$/src/js/globalvariable.js" />
+        <option value="$PROJECT_DIR$/src/style/vis.css" />
+        <option value="$PROJECT_DIR$/vis.html" />
+        <option value="$PROJECT_DIR$/src/js/schemabox.js" />
       </list>
     </option>
   </component>
@@ -226,11 +268,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="431" />
-    <option name="y" value="30" />
-    <option name="width" value="1685" />
-    <option name="height" value="1146" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-2568" />
+    <option name="y" value="-8" />
+    <option name="width" value="2576" />
+    <option name="height" value="1416" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -238,6 +280,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -254,12 +297,6 @@
               <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
               <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -268,11 +305,50 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="BsMultiSelect.js" type="620a8d5e:NestingTreeNode" />
+            </path>
+            <path>
+              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+              <item name="grid" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+              <item name="settings" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="style" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TxRPDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TxRPDB" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="style" type="462c0819:PsiDirectoryNode" />
+              <item name="foundation.css" type="620a8d5e:NestingTreeNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -280,7 +356,7 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://E:/nvtng/Projects/GitHub/N/TxRPDB/src/js/main.js" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../AgasedViz.github.io" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -288,14 +364,18 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\style" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\lib" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\data" />
       <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\js" />
-      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\lib" />
-      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\data\batch" />
       <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\lib" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\data" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\style" />
+      <recent name="E:\nvtng\Projects\GitHub\N\TxRPDB\src\js" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -310,12 +390,38 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JavaScript Debug.vis.html">
     <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/TxRPDB/index.html">
       <method v="2" />
     </configuration>
+    <configuration name="vis.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/TxRPDB/vis.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="queryfile" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Python34\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/php" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="TxRPDB" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/php/queryfile.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.index.html" />
+      <item itemvalue="JavaScript Debug.vis.html" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.vis.html" />
         <item itemvalue="JavaScript Debug.index.html" />
       </list>
     </recent_temporary>
@@ -331,34 +437,41 @@
       <option name="presentableId" value="Default" />
       <updated>1565800519350</updated>
       <workItem from="1565800520515" duration="54552000" />
+      <workItem from="1565979537669" duration="131147000" />
+      <workItem from="1566486498480" duration="52503000" />
+      <workItem from="1567891219793" duration="2553000" />
+      <workItem from="1567899934210" duration="676000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54552000" />
+    <option name="totallyTimeSpent" value="241431000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="431" y="30" width="1685" height="1146" extended-state="0" />
+    <frame x="-2568" y="-8" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24984616" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1899841" />
+      <window_info id="Structure" order="1" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35538006" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32923368" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39168277" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="JSON Viewer" weight="0.32984614" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32978722" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Data View" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="JSON Viewer" order="5" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,35 +485,48 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/map.js</url>
-          <line>60</line>
-          <properties />
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/js/main.js</url>
-          <line>21</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/js/main.js</url>
-          <line>26</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/js/map.js</url>
-          <line>229</line>
-          <properties />
+          <line>192</line>
           <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/plugins.js</url>
+          <line>143</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/d3openlayer.js</url>
+          <line>49</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/plugins.js</url>
+          <line>225</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/main.js</url>
+          <line>131</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/main.js</url>
+          <line>113</line>
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/processdata.js</url>
+          <line>12</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/main.js</url>
+          <line>8</line>
+          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/data/batch/serviceTxDOT (1).json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/getData.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
@@ -422,45 +548,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/lodash_fp.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="562">
-          <caret line="159" selection-start-line="159" selection-end-line="159" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/connecttoWesite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="156" selection-start-line="156" selection-end-line="156" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirescriptbatch.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/foundation.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="42" lean-forward="true" selection-start-line="1" selection-start-column="42" selection-end-line="1" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/style/foundation.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="46" lean-forward="true" selection-start-line="1" selection-start-column="46" selection-end-line="1" selection-end-column="46" />
-          <folding>
-            <element signature="e#7953#8167#2" expanded="true" />
-            <element signature="e#8639#8978#2" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -471,47 +562,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/headerMenu.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/jquery-3.4.1.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="87883" selection-end-line="1" selection-end-column="88059" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/TX-48-texas-counties.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/Data_details.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret column="424" selection-start-column="424" selection-end-column="426" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="https://maps.googleapis.com/maps-api-v3/api/js/37/10a/map.js">
-      <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/d3.v5.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="67312" selection-start-line="1" selection-start-column="67312" selection-end-line="1" selection-end-column="67312" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lib/texascountyids.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="102" column="16" lean-forward="true" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -522,65 +576,281 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vis.html">
+    <entry file="file://$PROJECT_DIR$/src/lib/texascountyids.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="42" column="45" lean-forward="true" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
+        <state relative-caret-position="243">
+          <caret line="102" column="16" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/TX-48-texas-counties.geojson">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="204">
+          <caret line="3" column="1497" selection-start-line="3" selection-start-column="1497" selection-end-line="3" selection-end-column="1497" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/ol.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="6" column="57391" selection-start-line="6" selection-start-column="57388" selection-end-line="6" selection-end-column="57391" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/jquery-3.4.1.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="23266" selection-start-line="1" selection-start-column="23266" selection-end-line="1" selection-end-column="23266" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/zmultiselect.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="65" selection-start-line="7" selection-start-column="65" selection-end-line="7" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/zmultiselect.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirescriptbatch.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/connecttoWesite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1428">
+          <caret line="84" column="74" lean-forward="true" selection-start-line="84" selection-start-column="74" selection-end-line="84" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/build/pdf.js" />
+    <entry file="file://$PROJECT_DIR$/src/lib/jquery.printPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2023">
+          <caret line="129" column="13" selection-start-line="129" selection-start-column="13" selection-end-line="129" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/Texas_US_House_Districts.geojson" />
+    <entry file="file://$PROJECT_DIR$/src/lib/TxDOT_Districts.geojson" />
+    <entry file="file://$PROJECT_DIR$/src/lib/TX-48-texas-counties.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="68" lean-forward="true" selection-start-column="68" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/TxDOT_Districts.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6965466" selection-start-column="6965466" selection-end-column="6965466" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/php/queryfile.py" />
+    <entry file="file://$PROJECT_DIR$/src/php/mediaList.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/queryfile.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="112" column="12" lean-forward="true" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/selectize.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="3890" column="4" selection-start-line="3890" selection-start-column="4" selection-end-line="3890" selection-end-column="4" />
           <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#!!top" expanded="true" />
+            <element signature="e#41#49#1" expanded="true" />
+            <element signature="e#88#95#1" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/BsMultiSelect.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14875">
+          <caret line="879" column="41" selection-start-line="879" selection-start-column="28" selection-end-line="879" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/d3googlemap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
+        <state relative-caret-position="408">
+          <caret line="30" column="5" selection-start-line="17" selection-start-column="4" selection-end-line="30" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/globalvariable.js">
+    <entry file="file://$PROJECT_DIR$/src/style/foundation.min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="12" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="12" />
+        <state relative-caret-position="175">
+          <caret column="98648" selection-start-column="98642" selection-end-column="98648" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/_vendor/sassy-lists/stylesheets/helpers/_true.scss">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/_global.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="132" selection-start-line="132" selection-end-line="132" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/foundation.css.map">
+      <provider editor-type-id="sourcemapFileViewerProvider" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/foundation.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/grid/_row.scss">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/foundation.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/settings/_settings.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="498" column="2" lean-forward="true" selection-start-line="498" selection-start-column="2" selection-end-line="498" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/components/_off-canvas.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/foundation.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="5477" column="32" selection-start-line="5477" selection-start-column="32" selection-end-line="5477" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/lodash_fp.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="136" column="207" selection-start-line="136" selection-start-column="207" selection-end-line="136" selection-end-column="207" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lib/d3.v5.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="1" column="10830" selection-start-line="1" selection-start-column="10830" selection-end-line="1" selection-end-column="10830" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/processdata.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="229" column="75" selection-start-line="229" selection-start-column="75" selection-end-line="229" selection-end-column="75" />
-          <folding>
-            <element signature="n#!!block;n#addDivPixelFromLatLng#0;n#!!block;n#plotMaps#0" />
-          </folding>
+        <state relative-caret-position="204">
+          <caret line="12" column="45" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="19" selection-start-line="28" selection-start-column="19" selection-end-line="28" selection-end-column="19" />
+        <state relative-caret-position="1173">
+          <caret line="69" column="23" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/globalvariable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3213">
+          <caret line="189" column="14" selection-start-line="189" selection-start-column="14" selection-end-line="189" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/plugins.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="129" column="40" lean-forward="true" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
+        <state relative-caret-position="5848">
+          <caret line="344" column="67" lean-forward="true" selection-start-line="344" selection-start-column="67" selection-end-line="344" selection-end-column="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/vis.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="133" column="36" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
+        <state relative-caret-position="1972">
+          <caret line="125" column="44" lean-forward="true" selection-start-line="125" selection-start-column="44" selection-end-line="125" selection-end-column="44" />
+          <folding>
+            <element signature="n#div#6;n#body#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/d3openlayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="55" lean-forward="true" selection-start-line="23" selection-start-column="55" selection-end-line="23" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/vis.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2380">
+          <caret line="140" column="38" selection-start-line="140" selection-start-column="38" selection-end-line="140" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/headerMenu.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3145">
+          <caret line="185" lean-forward="true" selection-start-line="185" selection-end-line="185" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/schemabox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
         </state>
       </provider>
     </entry>

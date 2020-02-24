@@ -1,0 +1,188 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body>
+
+
+  <script>
+    let data =[{
+      yaxis: {text:"Correct(d')",range:[0,4]},
+      val:[
+        {
+          key:'Gesture',val:[
+            {
+              key:'Pre',
+              val:1.5,
+              SD : 0.58
+            },
+            {
+              key:'Immediate',
+              val:2.27,
+              SD : 0.62
+            },
+            {
+              key:'Delayed',
+              val:2.42,
+              SD : 0.62
+            }
+          ]
+        },
+        {
+          key:'No gesture',val:[
+            {
+              key:'Pre',
+              val:1.8,
+              SD : 0.58
+            },
+            {
+              key:'Immediate',
+              val:2.51,
+              SD : 0.69
+            },
+            {
+              key:'Delayed',
+              val:2.9,
+              SD : 0.63
+            }
+          ]
+        }
+      ]},
+    {
+      yaxis: {text:'Learner/avatar ratio',range:[0.5,1]},
+      val:[
+        {
+          key:'Gesture',val:[
+            {
+              key:'Pre',
+              val:0.742,
+              SD : 0.08
+            },
+            {
+              key:'Immediate',
+              val:0.832,
+              SD : 0.06
+            },
+            {
+              key:'Delayed',
+              val:0.855,
+              SD : 0.08
+            }
+          ]
+        },
+        {
+          key:'No gesture',val:[
+            {
+              key:'Pre',
+              val:0.765,
+              SD : 0.07
+            },
+            {
+              key:'Immediate',
+              val:0.853,
+              SD : 0.07
+            },
+            {
+              key:'Delayed',
+              val:0.893,
+              SD : 0.08
+            }
+          ]
+        }
+      ]
+    }
+    ];
+    let width = 200;
+    let height = 200;
+    let margin = {top:10,left:30,right:10,bottom:30};
+
+    let treatment = d3.scaleOrdinal(d3.schemeCategory10);
+
+    let gs = d3.select('body').selectAll('svg').data(data)
+      .enter()
+      .append('svg')
+      .style('margin','20px')
+      .attr('width',width+margin.left+margin.right)
+      .attr('height',height+margin.top+margin.bottom)
+      .append('g')
+      .attr('transform',`translate(${margin.left},${margin.top+height})`);
+
+    let xscale = d3.scalePoint().range([0,width]).domain(data[0].val[0].val.map(d=>d.key)).padding(0.2);
+    let yscales = [];
+    let lineChart = [];
+    let sw = 5;
+    gs.each(function(d,i){
+      yscales[i] = d3.scaleLinear().range([0,-height]).domain(d.yaxis.range);
+      d3.select(this).append("g")
+        .call(d3.axisLeft(yscales[i]).ticks(5));
+
+      // grid
+      let grid = d3.select(this).append("g")
+        .attr('class','grid')
+        .call(d3.axisLeft(yscales[i]).ticks(5).tickSize(-width)
+          .tickFormat(""));
+      grid.style('stroke-dasharray',[3,2])
+      ;
+
+    d3.select(this).append("g")
+    .call(d3.axisBottom(xscale));
+
+      lineChart[i] = d3.line()
+        .x(function(d) {
+          return xscale(d.key); })
+        .y(function(d) {
+          return yscales[i](d.val); });
+
+
+
+      d3.select(this).selectAll('path.line').data(d=>d.val).enter().append('path')
+        .attr('class','line')
+        .attr("transform", (d,i)=>`translate(${3*i},0)`)
+        .attr('d',(d)=>lineChart[i](d.val))
+        .style('stroke',d=>treatment(d.key))
+        .style('fill','none')
+      ;
+      let delta = yscales[i](d.yaxis.range[0])- yscales[i](0);
+      let sticks = d3.select(this).selectAll('g.stick').data(d=>d.val).enter().append('g')
+        .attr('class','stick')
+        .attr("transform", (d,j)=>`translate(${3*j},0)`)
+        .style('stroke',d=>treatment(d.key))
+        .style('fill','none')
+        .selectAll('g.sticks').data(d=>d.val).enter().append('g').attr('class','sticks')
+        .attr("transform", d=>`translate(${xscale(d.key)},${yscales[i](d.val)})`);
+      sticks.append('line').attr('y1',d=>
+        (yscales[i](d.SD/2)+delta)).attr('y2',d=>yscales[i](-d.SD/2)+delta);
+      sticks.append('line').attr('y1',d=>
+        (yscales[i](d.SD/2)+delta))
+        .attr('y2',d=>
+          (yscales[i](d.SD/2)+delta))
+        .attr('x1',d=>-sw)
+        .attr('x2',d=>sw)
+      sticks.append('line').attr('y1',d=>yscales[i](-d.SD/2)+delta)
+        .attr('y2',d=>yscales[i](-d.SD/2)+delta)
+        .attr('x1',d=>-sw)
+        .attr('x2',d=>sw);
+
+
+    });
+
+  </script>
+</body>
+
+</html>
