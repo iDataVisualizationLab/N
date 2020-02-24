@@ -408,7 +408,7 @@ function main() {
         control_jobdisplay.node().options.selectedIndex = 2;
         control_jobdisplay.attr('disabled', '').dispatch('change');
 
-    request();
+    // request();
 }
 var currentlastIndex;
 var speedup= 0;
@@ -1053,6 +1053,8 @@ function readFilecsv(file) {
                             handle_dataRaw();
                             if (!init)
                                 resetRequest();
+                            else
+                                main();
                             preloader(false)
                         }else {
                             updateClusterControlUI()
@@ -1064,6 +1066,8 @@ function readFilecsv(file) {
                                 handle_dataRaw();
                                 if (!init)
                                     resetRequest();
+                                else
+                                    main();
                                 preloader(false);
                             });
                         }

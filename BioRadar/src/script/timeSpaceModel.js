@@ -448,7 +448,7 @@ d3.TimeSpace = function () {
 
         loader.load( 'src/fonts/optimer_regular.typeface.json', function ( font ) {
 
-            var textGeo = new THREE.TextGeometry( 'Time', {
+            var textGeo = new THREE.TextGeometry( 'Distance', {
                 font: font,
                 size: 30,
                 height: 1,

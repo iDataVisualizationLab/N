@@ -6,7 +6,7 @@
 
 <head>
 
-    <title>TimeRadar</title>
+    <title>BioRadar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/6ed220eb7a.js" crossorigin="anonymous"></script>
     <script src="src/lib/jquery-3.3.1.js"></script>
@@ -73,7 +73,7 @@
             <li class="col">
                 <ul class="tabs">
                     <li class="tab"><a href="#video">Video</a></li>
-                    <li class="tab"><a class="active" href="#demo">TimeRadar</a></li>
+                    <li class="tab"><a class="active" href="#demo">BioRadar</a></li>
                 </ul>
             </li>
             <li class="nav__menu">Other Links
@@ -200,26 +200,26 @@
                     <div  class="row s12 valign-wrapper">
                         <label for="compDisplay_control" class="col s4"> Visualizing</label>
                         <select id="compDisplay_control" class="col s7">
-                            <optgroup label="Snapshot">
-                                <option value="pie">Individual Pie chart</option>
-                                <option value="radar" >Individual Radar chart </option>
-                                <option value="radar_cluster" selected="selected">Major group</option>
-                            </optgroup>
-                            <optgroup label="Timeline">
-                                <option value="timeline"  value2 = "single">Timeline - Individual host</option>
-                                <option value="timeline" value2 = "groupWithJob">Timeline - Group by similarity wrt jobs</option>
-                                <option value="timeline" value2 = "group">Timeline - Group by similarity</option>
-                            </optgroup>
-                            <optgroup label="Bundle">
-                                <option value="bundle" value2 = "single">Bundle - Individual host</option>
-                                <option value="bundle" value2 = "groupWithJob">Bundle - Group by similarity wrt jobs</option>
-                                <option value="bundle" value2 = "group">Bundle - Group by similarity</option>
-                            </optgroup>
-                            <optgroup label="reduceDim">
+                            <!--<optgroup label="Snapshot">-->
+                                <!--<option value="pie">Individual Pie chart</option>-->
+                                <!--<option value="radar" >Individual Radar chart </option>-->
+                                <!--<option value="radar_cluster" selected="selected">Major group</option>-->
+                            <!--</optgroup>-->
+                            <!--<optgroup label="Timeline">-->
+                                <!--<option value="timeline"  value2 = "single">Timeline - Individual host</option>-->
+                                <!--<option value="timeline" value2 = "groupWithJob">Timeline - Group by similarity wrt jobs</option>-->
+                                <!--<option value="timeline" value2 = "group">Timeline - Group by similarity</option>-->
+                            <!--</optgroup>-->
+                            <!--<optgroup label="Bundle">-->
+                                <!--<option value="bundle" value2 = "single">Bundle - Individual host</option>-->
+                                <!--<option value="bundle" value2 = "groupWithJob">Bundle - Group by similarity wrt jobs</option>-->
+                                <!--<option value="bundle" value2 = "group">Bundle - Group by similarity</option>-->
+                            <!--</optgroup>-->
+                            <!--<optgroup label="reduceDim">-->
                                 <option value="reduceDim" value2 = "tsne">t-SNE</option>
                                 <option value="reduceDim" value2 = "pca">PCA</option>
                                 <option value="reduceDim" value2 = "umap">UMAP</option>
-                            </optgroup>
+                            <!--</optgroup>-->
                         </select>
                         <div class="col s1">
                             <button class="information waves-effect waves-light" data-image="hostpresent.gif" data-title="Grouping options are recommended for a large number of hosts.">?</button>
