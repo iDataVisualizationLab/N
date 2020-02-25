@@ -1,5 +1,5 @@
 window =self;
-importScripts("../../lib/d3.v4.js","../setting_theme.js","../../lib/lodash.min.js","../setting.js","../../lib/kmean.js","../../lib/binnerN.min.js","../../lib/simple-statistics.min.js");
+importScripts("../../lib/d3.v4.js","../setting_theme.js","../../lib/lodash.min.js","../setting.js","../../lib/kmean.js","../../lib/binnerN.min.js","../../lib/scagnosticsnd.min.js","../../lib/simple-statistics.min.js");
 
 addEventListener('message',function ({data}) {
     let binopt = data.binopt, sampleS = data.sampleS, hosts = data.hosts;
@@ -32,6 +32,53 @@ addEventListener('message',function ({data}) {
         }
         dataSpider3 = arr;
         dataCalculate = arr;
+
+        // TESTING ZONE
+        console.log('calculate outliers');
+        let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
+        let scagOptions ={
+            isNormalized: true,
+            startBinGridSize: estimateSize,
+            minBins: 20,
+            maxBins: 100,
+            outlyingCoefficient: 1.5,
+            incrementA:2,
+            incrementB:0,
+            decrementA:0.3,
+            decrementB:0,
+        };
+        // scag = scagnosticsnd(handledata(index), scagOptions);
+        let outlyingPoints = [];
+        // remove outlying
+        let scag = scagnosticsnd(dataSpider3.map((d, i) => {
+            var dd = d.map(k => k.value);
+            dd.data = {name: d.name, id: d.id, indexSamp: d.indexSamp};
+            return dd;
+        }), scagOptions);
+        console.log('Outlying detect: bin=' + scag.bins.length);
+        console.log(scag.outlyingPoints.map(d => d.data));
+        dataSpider3 = dataSpider3.filter(d => {
+            let temp2 = scag.outlyingPoints.filter(e => e.data === d.name);
+            let temp = JSON.parse(JSON.stringify(d));
+            if (temp2.length) {
+                let tempscaleval = [temp2[0]];
+                tempscaleval.val = temp2[0];
+                temp.indexSamp = d.indexSamp;
+                temp.name = d.name;
+                temp.bin = {
+                    val: [d.map(k => k.value)],
+                    name: [temp2[0].data],
+                    scaledval: tempscaleval,
+                    distancefunc: (e) => 0,
+                    distance: 0
+                };
+                temp.type = "outlying";
+                outlyingPoints.push(temp);
+                return 0;
+            }
+            return 1;
+        });
+
         if (binopt.clusterMethod === 'leaderbin') {
             let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
             console.log('estimateSize: ' + estimateSize);
@@ -119,6 +166,7 @@ addEventListener('message',function ({data}) {
                 temp.bin.val = d.slice();
             return temp;
         });
+        outlyingPoints.forEach(o => dataSpider3.push(o));
         cluster = dataSpider3.map((d, i) => {
             let temp = {labels: i};
             d.forEach((s, i) => temp[serviceFullList[i].text] = serviceFullList[i].scale(s.value));

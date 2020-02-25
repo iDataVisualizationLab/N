@@ -45,7 +45,7 @@ d3.TimeSpace = function () {
             isSelectionMode: false,
             isCurve: false,
             component:{
-                dot:{size:5,opacity:0.2},
+                dot:{size:5,opacity:0.9},
                 link:{size:0.8,opacity:0.1},
             },
             serviceIndex: 0,
@@ -158,7 +158,12 @@ d3.TimeSpace = function () {
         }
         controlPanelGeneral.linkConnect.callback();
     }
+    function resetFilter(){
+        d3.select('#modelFilterBy').node().options.selectedIndex = 0;
+        d3.select('#modelFilterBy').dispatch('change');
+    }
     function start(skipRecalculate) {
+        resetFilter();
         interuptAnimation();
         axesHelper.toggleDimension(graphicopt.opt.dim);
         gridHelper.parent.visible = (graphicopt.opt.dim==2.5);
@@ -211,6 +216,7 @@ d3.TimeSpace = function () {
         modelWorker.addEventListener('message', ({data}) => {
             switch (data.action) {
                 case "render":
+                    mouseoverTrigger = false;
                     if(firstReturn) {
                         preloader(false, undefined, undefined, '#modelLoading');
                         firstReturn = false;
@@ -311,7 +317,13 @@ d3.TimeSpace = function () {
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         // disable the tabIndex to avoid jump element
         d3.select(renderer.domElement).attr('tabindex',null);
-        // controls.addEventListener("change", () => renderer.render(scene, camera));
+        let mouseoverTrigger_time;
+        controls.addEventListener("change", () => {
+            mouseoverTrigger=false;
+            if (mouseoverTrigger_time)
+                clearTimeout(mouseoverTrigger_time);
+            mouseoverTrigger_time= setTimeout(function(){mouseoverTrigger=true},500)
+        });
         setUpZoom();
         stop = false;
 
@@ -331,7 +343,7 @@ d3.TimeSpace = function () {
         handle_selection_switch(graphicopt.isSelectionMode);
 
         d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
-
+        d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
         drawSummaryRadar([],handle_data_summary([]),'#ffffff');
         start();
         needRecalculate = false;
@@ -351,6 +363,22 @@ d3.TimeSpace = function () {
             linesGroup = curveLinesGroup;
             updateLine = updateCurveLine;
             visiableLine(graphicopt.linkConnect);
+        }
+    }
+    function handleFilter(key){
+        switch (key) {
+            case 'groups':
+                hightlightGroupNode(d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster));
+                break;
+            case "wt":
+                hightlightGroupNode(['a'],0);
+                break;
+            case "stop1":
+                hightlightGroupNode(['a'],1);
+                break;
+            default:
+                hightlightGroupNode([]);
+                break;
         }
     }
     function handleTopSort(mode){
@@ -470,7 +498,7 @@ d3.TimeSpace = function () {
         return arrowGroup;
     }
     let radarChartclusteropt = {
-        margin: {top: 0, right: 0, bottom: 0, left: 0},
+        margin: {top: 50, right: 0, bottom: 50, left: 0},
         w: 200,
         h: 200,
         radiuschange: false,
@@ -497,7 +525,7 @@ d3.TimeSpace = function () {
                 return {axis: s.text, value: 0, minval: 0, maxval: 0}
         });
     }
-
+    let freezemouseoverTrigger = false;
     function hightlightNode(intersects) { // INTERSECTED
         var geometry = points.geometry;
         var attributes = geometry.attributes;
@@ -511,8 +539,9 @@ d3.TimeSpace = function () {
                 datain.forEach((d, i) => {
                     if (d.name === target.name) {
                         INTERSECTED.push(i);
-                        attributes.alpha.array[i] = 1;
+                        attributes.alpha.array[i] = graphicopt.component.dot.opacity;
                         lines[d.name].visible = true;
+                        lines[d.name].material.opacity = 1;
                     } else {
                         attributes.alpha.array[i] = 0.1;
                         lines[d.name].visible = false;
@@ -527,7 +556,20 @@ d3.TimeSpace = function () {
                 attributes.alpha.needsUpdate = true;
                 // add box helper
                 scene.remove(scene.getObjectByName('boxhelper'));
-                var box = new THREE.BoxHelper(lines[target.name], 0xdddddd);
+                // var box = new THREE.BoxHelper(lines[target.name], 0x000000);
+                var box3 = new THREE.Box3().setFromObject(lines[target.name]);
+                var boxSize = box3.getSize();
+                var boxPos = box3.getCenter();
+                var geometry = new THREE.BoxGeometry(boxSize.x,boxSize.y,boxSize.z);
+                var material = new THREE.MeshBasicMaterial( {color: 0xdddddd,side: THREE.BackSide} );
+                var spotLight = new THREE.PointLight( 0x00000000 );
+                spotLight.position.set(boxPos.x,boxPos.y,boxPos.z);
+                spotLight.castShadow = true;
+                // var spotLightHelper = new THREE.SpotLightHelper( spotLight );
+                var box = new THREE.Mesh( geometry, material );
+                box.position.set(boxPos.x,boxPos.y,boxPos.z);
+                box.add(spotLight);
+                // box.add( spotLightHelper );
                 box.name = "boxhelper";
                 scene.add(box);
 
@@ -540,16 +582,57 @@ d3.TimeSpace = function () {
             ishighlightUpdate = false;
             tooltip_lib.hide(); // hide tooltip
             datain.forEach((d, i) => {
-                attributes.alpha.array[i] = 1;
+                attributes.alpha.array[i] = graphicopt.component.dot.opacity;
                 lines[d.name].visible = true;
+                lines[d.name].material.opacity = graphicopt.component.link.opacity;
             });
-            INTERSECTED.forEach((d, i) => {
-                attributes.size.array[d] = graphicopt.component.dot.size;
-            });
+            // INTERSECTED.forEach((d, i) => {
+            //     attributes.size.array[d] = graphicopt.component.dot.size;
+            // });
             attributes.size.needsUpdate = true;
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
-            scene.remove(scene.getObjectByName('boxhelper'));
+            removeBoxHelper();
+        }
+    }
+
+    function hightlightGroupNode(intersects,timestep) { // INTERSECTED
+
+        let ishighLink = timestep===undefined;
+        freezemouseoverTrigger = true;
+        console.log(intersects)
+        var geometry = points.geometry;
+        var attributes = geometry.attributes;
+        if (intersects.length > 0) {
+            INTERSECTED = [];
+            datain.forEach((d, i) => {
+                if (intersects.indexOf(d.name) !==-1 || (timestep!==undefined && timestep===d.__timestep)){
+                    INTERSECTED.push(i);
+                    attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                    lines[d.name].visible = ishighLink;
+                    lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                } else {
+                    attributes.alpha.array[i] = 0;
+                    lines[d.name].visible = false;
+                }
+            });
+
+            attributes.alpha.needsUpdate = true;
+
+            removeBoxHelper();
+        } else if (INTERSECTED.length || ishighlightUpdate) {
+            freezemouseoverTrigger = false;
+            ishighlightUpdate = false;
+            tooltip_lib.hide(); // hide tooltip
+            datain.forEach((d, i) => {
+                attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                lines[d.name].visible = true;
+                lines[d.name].material.opacity = graphicopt.component.link.opacity;
+            });
+
+            attributes.alpha.needsUpdate = true;
+            INTERSECTED = [];
+            removeBoxHelper();
         }
     }
 
@@ -559,13 +642,13 @@ d3.TimeSpace = function () {
         if (!stop) {
             // visiableLine(graphicopt.linkConnect);
             //update raycaster with mouse movement
-            raycaster.setFromCamera(mouse, camera);
             try {
                 if (axesTime.visible) {
                     axesTime.getObjectByName("TimeText").lookAt(camera.position);
                 }
             }catch(e){}
-            if (mouseoverTrigger) { // not have filter
+            if (mouseoverTrigger&&!freezemouseoverTrigger) { // not have filter
+                raycaster.setFromCamera(mouse, camera);
                 if (!filter.length) {
                     var intersects = overwrite||raycaster.intersectObject(points);
                     //count and look after all objects in the diamonds group
@@ -624,7 +707,14 @@ d3.TimeSpace = function () {
 
         }
     }
-
+    function removeBoxHelper(){
+        const object = scene.getObjectByName( 'boxhelper');
+        if(object) {
+            object.geometry.dispose();
+            object.material.dispose();
+            scene.remove(object);
+        }
+    }
     function drawSummaryRadar(dataArr,dataRadar,newClustercolor){
         let barH = graphicopt.radarTableopt.h/2;
         radarChartclusteropt.schema = graphicopt.radaropt.schema;
@@ -1307,65 +1397,7 @@ d3.TimeSpace = function () {
         lineObj.frustumCulled = false;
         return lineObj;
     }
-    // function createCurveLine(path,curves){
-    //     //QuadraticBezierCurve3
-    //     let lineObj = new THREE.Object3D();
-    //     for (let i=0;i <path.length-1;i++){
-    //         // let color = new THREE.Color(d3.color(colorarr[path[i].cluster].value)+'');
-    //         // var material = new THREE.LineBasicMaterial( { color : color.getHex(),transparent: true, opacity: 0.5} );
-    //
-    //         var material = new THREE.LineBasicMaterial( {
-    //             color: 0xffffff,
-    //             vertexColors: THREE.VertexColors,
-    //             transparent: true,
-    //             opacity: 0.5} );
-    //         var curve = new THREE.CubicBezierCurve_w3(
-    //             new THREE.Vector3( 0, 0, 0 ),
-    //             new THREE.Vector3( 0, 0, 0 ),
-    //             new THREE.Vector3( 0, 0, 0 ),
-    //             new THREE.Vector3( 0, 0, 0 )
-    //         );
-    //         curves.push(curve);
-    //         var points = curve.getPoints( graphicopt.curveSegment );
-    //         var geometry = new THREE.BufferGeometry().setFromPoints( points );
-    //         // add gradient effect
-    //         colorLineScale.range([colorarr[path[i].cluster].value,colorarr[path[i+1].cluster].value]);
-    //         var colors = new Float32Array( (graphicopt.curveSegment+1) * 3 );
-    //         for (let i=0;i<=graphicopt.curveSegment;i++){
-    //             let currentColor = d3.color(colorLineScale(i));
-    //             colors[i*3] = currentColor.r/255;
-    //             colors[i*3+1] = currentColor.g/255;
-    //             colors[i*3+2] = currentColor.b/255;
-    //         }
-    //         geometry.setAttribute('color', new THREE.BufferAttribute(colors,3));
-    //         var curveObject = new THREE.Line( geometry, material );
-    //         curveObject.frustumCulled = false;
-    //         lineObj.add(curveObject);
-    //     }
-    //     return lineObj;
-    // }
-    // function updateCurveLine(target, posPath, d, center) {
-    //     if (curves[target.name].length) {
-    //         if (posPath < curves[target.name].length) {
-    //             var curve = curves[target.name][posPath];
-    //             curve.v0 = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
-    //             curve.v1 = new THREE.Vector3(xscale(center[0]), yscale(center[1]), xscale(center[2]) || 0);
-    //             var points = curve.getPoints(graphicopt.curveSegment);
-    //             lines[target.name].children[posPath].geometry.setFromPoints(points);
-    //             lines[target.name].children[posPath].geometry.verticesNeedUpdate = true;
-    //             lines[target.name].children[posPath].geometry.computeBoundingSphere();
-    //         }
-    //         if (posPath) {
-    //             var curve = curves[target.name][posPath - 1];
-    //             curve.v2 = new THREE.Vector3(xscale(center[0]), yscale(center[1]), xscale(center[2]) || 0);
-    //             curve.v3 = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
-    //             var points = curve.getPoints(graphicopt.curveSegment);
-    //             lines[target.name].children[posPath - 1].geometry.setFromPoints(points);
-    //             lines[target.name].children[posPath - 1].geometry.verticesNeedUpdate = true;
-    //             lines[target.name].children[posPath-1].geometry.computeBoundingSphere();
-    //         }
-    //     }
-    // }
+
     function createCurveLine(path,curves,key){
         //QuadraticBezierCurve3
         let lineObj = new THREE.Object3D();
@@ -1487,7 +1519,8 @@ d3.TimeSpace = function () {
         $('#modelSelectionInformation .tabs').tabs({
             onShow: function(){
                 graphicopt.isSelectionMode = this.index===1;
-                handle_selection_switch(graphicopt.isSelectionMode)}
+                handle_selection_switch(graphicopt.isSelectionMode);
+            }
         });
         d3.select('#modelWorkerInformation table').selectAll('*').remove();
         table_info = d3.select('#modelWorkerInformation table')

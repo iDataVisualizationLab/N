@@ -1,7 +1,7 @@
-importScripts("src/lib/d3.v4.js");
+importScripts("../../lib/d3.v4.js");
 importScripts("../tsne.js");
 // importScripts("src/lib/PCA.js");
-importScripts("src/lib/underscore-min.js");
+importScripts("../../lib/underscore-min.js");
 importScripts("https://unpkg.com/simple-statistics@2.2.0/dist/simple-statistics.min.js");
 // importScripts("src/lib/jLouvain.js");
 // importScripts("src/lib/scagnosticsnd.min.js");

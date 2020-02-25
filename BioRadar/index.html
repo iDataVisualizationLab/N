@@ -706,6 +706,7 @@
                                 <li class="tab col s3"><a class="active" href="#modelSetting">Setting</a></li>
                                 <li class="tab col s3"><a href="#modelSelectionTool">Selection</a></li>
                                 <li class="tab col s3"><a href="#modelRanking">Ranking</a></li>
+                                <li class="tab col s3"><a href="#modelFilter">Filter</a></li>
                             </ul>
                             <div id="modelSetting" class="tabHolder">
                                 <table>
@@ -750,6 +751,18 @@
 
                                     </tbody>
                                 </table>
+                                </div>
+                            </div>
+                            <div id="modelFilter" class="tabHolder">
+
+                                <div  class="row valign-wrapper">
+                                    <label for="modelFilterBy" class="col s4">Filter by: </label>
+                                    <select id="modelFilterBy" class="col s7 inline">
+                                        <option value="all" selected>All</option>
+                                        <option value="wt">White type</option>
+                                        <option value="stop1">STOP1</option>
+                                        <option value="groups">Switch major groups</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
