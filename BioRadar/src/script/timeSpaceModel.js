@@ -368,7 +368,9 @@ d3.TimeSpace = function () {
     function handleFilter(key){
         switch (key) {
             case 'groups':
-                hightlightGroupNode(d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster));
+                const lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
+                hightlightGroupNode(lists);
+                d3.select("span#filterList").text(lists.join(' ,'));
                 break;
             case "wt":
                 hightlightGroupNode(['a'],0);
@@ -600,7 +602,6 @@ d3.TimeSpace = function () {
 
         let ishighLink = timestep===undefined;
         freezemouseoverTrigger = true;
-        console.log(intersects)
         var geometry = points.geometry;
         var attributes = geometry.attributes;
         if (intersects.length > 0) {
@@ -633,6 +634,7 @@ d3.TimeSpace = function () {
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
             removeBoxHelper();
+            d3.select("span#filterList").text('');
         }
     }
 

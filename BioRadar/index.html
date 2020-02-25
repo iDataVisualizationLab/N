@@ -689,7 +689,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overlaySide horizontal">
+                    <div class="overlaySide horizontal hide">
                         <a class="openbtn btn-floating btn waves-effect waves-light pulse" data-target=".sideHnavs" data-source="#Maincontent" data-class="sidehIn" data-link="#hNavbtn" id="hNavbtn" onclick="openNav(this)">
                             <i class="material-icons">keyboard_arrow_down</i></a>
                     </div>
@@ -764,6 +764,11 @@
                                         <option value="groups">Switch major groups</option>
                                     </select>
                                 </div>
+                                <div  class="row">
+                                    <span id ="filterList">
+
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -782,7 +787,7 @@
         <svg style="position: absolute;z-index: 99; top:0;left:0;pointer-events: none">
             <circle id="tipfollowscursorDiv" cx="0" cy="0"></circle>
         </svg>
-        <div  id="timelineTool" style="position: absolute;right:0px;top:50px;padding:10px;">
+        <div  id="timelineTool" class="hide" style="position: absolute;right:0px;top:50px;padding:10px;">
             <div  style="position: relative">
                 <div>
                     <a class="toolTip btn" tooltip-pos="left" data-title="Zoom in" id="zoomIn">
