@@ -97,6 +97,8 @@ var hostResults = {};
 var links =[];
 var node,link;
 
+
+
 // log variable
 var timelog=[];
 
@@ -112,7 +114,7 @@ var opts = {
     className: 'spinner', // The CSS class to assign to the spinner
 };
 var target = document.getElementById('loadingSpinner');
-var spinner;
+var spinner = new Spinner(opts).spin(target);
 // END: loader spinner settings ****************************
 
 var simulation, link, node;
@@ -400,7 +402,13 @@ var gaphost = 7;
 
 function main() {
 
+<<<<<<< HEAD
+    //inithostResults ();
+
+    jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
+=======
     // jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
+>>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
     // disabled graph option
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
@@ -1019,9 +1027,35 @@ function readFilecsv(file) {
     exit_warp();
     preloader(true);
     setTimeout(() => {
+        var t1 = +new Date();
         d3.csv(file, function (error, data) {
+            var t2 = +new Date();   
+            console.log("t1:"+t1);
+            console.log("t2:"+t2);
+            console.log("Read file:"+((t2-t1)/(1000)));
+        
             if (error) {
             } else {
+<<<<<<< HEAD
+                db = "csv";
+                newdatatoFormat(data);
+                //inithostResults();
+                formatService(true);
+                processResult = processResult_csv;
+
+                // addDatasetsOptions()
+                MetricController.axisSchema(serviceFullList, true).update();
+                updateDatainformation(sampleS['timespan']);
+                sampleJobdata = [{
+                    jobID: "1",
+                    name: "1",
+                    nodes: hosts.map(h=>h.name),
+                    startTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                    submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                    user: "dummyJob"
+                }];
+
+=======
 
                 db = "csv";
                 newdatatoFormat(data);
@@ -1042,6 +1076,7 @@ function readFilecsv(file) {
                     user: "dummyJob"
                 }];
 
+>>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
                 d3.select(".currentDate")
                     .text("" + (sampleS['timespan'][0]).toDateString());
                 loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
@@ -1050,7 +1085,11 @@ function readFilecsv(file) {
                         if (!init)
                             resetRequest();
                         else
+<<<<<<< HEAD
+                            main();
+=======
                             setTimeout(main,0);
+>>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
                         preloader(false)
                     }else {
                         updateClusterControlUI()
@@ -1063,6 +1102,15 @@ function readFilecsv(file) {
                             if (!init)
                                 resetRequest();
                             else
+<<<<<<< HEAD
+                                main();
+                            preloader(false);
+                        });
+                    }
+
+                })
+                
+=======
                                 setTimeout(main,0);
                             preloader(false);
                         });
@@ -1070,6 +1118,7 @@ function readFilecsv(file) {
 
                 })
 
+>>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
             }
         })
     }, 0);
@@ -1708,14 +1757,16 @@ $( document ).ready(function() {
     //         break;
     // }
 
-    spinner = new Spinner(opts).spin(target);
-
-    setTimeout(() => {
+     
         //load data
         // readFilecsv('data/processed_gene_data_normalized.csv')
         // loadPresetCluster(choice,(status)=>loadclusterInfo= status);
+        var t1 = +new Date();
             readFilecsv('data/processed_gene_data_normalized_category.csv');
-
+        var t2 = +new Date();   
+        console.log("t1:"+t1);
+        console.log("t2:"+t2);
+        console.log("different (m):"+(t2-t1)/(1000));
 
 
         // d3.json(srcpath+'data/hotslist_Quanah.json',function(error,data){
@@ -1805,9 +1856,8 @@ $( document ).ready(function() {
             main();
             d3.select(".cover").select('h5').text('loading data...');
             addDatasetsOptions(); // Add these dataset to the select dropdown, at the end of this files
-            preloader(false)
         }
-    },0);
+  
     // Spinner Stop ********************************************************************
 
     // // Turtorial
