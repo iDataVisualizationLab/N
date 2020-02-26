@@ -245,7 +245,6 @@ d3.TimeSpace = function () {
     }
 
     master.init = function(arr,clusterin) {
-        isBusy = true;
 
         // prepare data
         needRecalculate = true;
