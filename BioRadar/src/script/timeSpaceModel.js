@@ -44,6 +44,7 @@ d3.TimeSpace = function () {
             linkConnect: 'straight',
             isSelectionMode: false,
             isCurve: false,
+            filter:{ distance:0.5},
             component:{
                 dot:{size:5,opacity:0.9},
                 link:{size:0.8,opacity:0.1},
@@ -344,6 +345,16 @@ d3.TimeSpace = function () {
 
         d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
         d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
+        d3.select("span#filterList+.copybtn").on('click',()=>{
+            var copyText = document.getElementById("filterList");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+            M.toast({html: 'Copied to clipboard'})
+        });
         drawSummaryRadar([],handle_data_summary([]),'#ffffff');
         start();
         needRecalculate = false;
@@ -370,13 +381,17 @@ d3.TimeSpace = function () {
             case 'groups':
                 const lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
                 hightlightGroupNode(lists);
-                d3.select("span#filterList").text(lists.join(' ,'));
                 break;
             case "wt":
-                hightlightGroupNode(['a'],0);
+                hightlightGroupNode([],0);
                 break;
             case "stop1":
-                hightlightGroupNode(['a'],1);
+                hightlightGroupNode([],1);
+                break;
+            case "distance":
+                console.log(graphicopt.filter.distance);
+                d3.keys(path).filter(d=>distancerange(path[d][0].distance)>=graphicopt.filter.distance)
+                hightlightGroupNode(d3.keys(path).filter(d=>distancerange(path[d][0].distance)>=graphicopt.filter.distance));
                 break;
             default:
                 hightlightGroupNode([]);
@@ -564,14 +579,9 @@ d3.TimeSpace = function () {
                 var boxPos = box3.getCenter();
                 var geometry = new THREE.BoxGeometry(boxSize.x,boxSize.y,boxSize.z);
                 var material = new THREE.MeshBasicMaterial( {color: 0xdddddd,side: THREE.BackSide} );
-                var spotLight = new THREE.PointLight( 0x00000000 );
-                spotLight.position.set(boxPos.x,boxPos.y,boxPos.z);
-                spotLight.castShadow = true;
-                // var spotLightHelper = new THREE.SpotLightHelper( spotLight );
+
                 var box = new THREE.Mesh( geometry, material );
                 box.position.set(boxPos.x,boxPos.y,boxPos.z);
-                box.add(spotLight);
-                // box.add( spotLightHelper );
                 box.name = "boxhelper";
                 scene.add(box);
 
@@ -599,12 +609,18 @@ d3.TimeSpace = function () {
     }
 
     function hightlightGroupNode(intersects,timestep) { // INTERSECTED
-
+        if (intersects.length){
+            d3.select("span#filterList").text(intersects.join(', '));
+            d3.select("span#filterList+.copybtn").classed('hide',false);
+        }else{
+            d3.select("span#filterList").text('');
+            d3.select("span#filterList+.copybtn").classed('hide',true);
+        }
         let ishighLink = timestep===undefined;
         freezemouseoverTrigger = true;
         var geometry = points.geometry;
         var attributes = geometry.attributes;
-        if (intersects.length > 0) {
+        if (intersects.length > 0 || !ishighLink) {
             INTERSECTED = [];
             datain.forEach((d, i) => {
                 if (intersects.indexOf(d.name) !==-1 || (timestep!==undefined && timestep===d.__timestep)){
@@ -634,7 +650,6 @@ d3.TimeSpace = function () {
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
             removeBoxHelper();
-            d3.select("span#filterList").text('');
         }
     }
 
@@ -1235,6 +1250,7 @@ d3.TimeSpace = function () {
     //         count++;
     //     },1000/60);
     // }
+    let distancerange = d3.scaleLinear();
     function render (islast){
         let p = points.geometry.attributes.position.array;
         if(solution) {
@@ -1294,6 +1310,7 @@ d3.TimeSpace = function () {
                         path[name].distance /= path[name].length;
                 }
                 handleTopSort($('#modelSortBy').val());
+                distancerange.domain(rangeDis);
                 customz.domain(rangeDis);
                 // adjust z base on distance
                 if (graphicopt.opt.dim===2.5) {
@@ -1529,7 +1546,7 @@ d3.TimeSpace = function () {
             .html(` <colgroup>
        <col span="1" style="width: 40%;">
        <col span="1" style="width: 60%;">
-    </colgroup>`)
+    </colgroup>`);
             // .styles({'width':tableWidth+'px'});
         let tableData = [
             [
@@ -1626,6 +1643,24 @@ d3.TimeSpace = function () {
                     }
                 }
             });
+
+
+        let div = d3.select('#modelDistanceFilter').node();
+        if (!div.noUiSlider) {
+            noUiSlider.create(div, {
+                start: 0.5,
+                connect: 'upper',
+                orientation: 'horizontal', // 'horizontal' or 'vertical'
+                range: {
+                    'min': 0,
+                    'max': 1,
+                },
+            });
+            div.noUiSlider.on("change", function () { // control panel update method
+                graphicopt.filter.distance = +this.get();
+                d3.select('#modelFilterBy').dispatch("change");
+            });
+        }
     };
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);

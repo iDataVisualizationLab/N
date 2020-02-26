@@ -400,9 +400,7 @@ var gaphost = 7;
 
 function main() {
 
-    inithostResults ();
-
-    jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
+    // jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
     // disabled graph option
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
@@ -1024,56 +1022,54 @@ function readFilecsv(file) {
         d3.csv(file, function (error, data) {
             if (error) {
             } else {
-                loadata1(data);
 
-                function loadata1(data) {
-                    db = "csv";
-                    newdatatoFormat(data);
+                db = "csv";
+                newdatatoFormat(data);
 
-                    inithostResults();
-                    formatService(true);
-                    processResult = processResult_csv;
+                inithostResults();
+                formatService(true);
+                processResult = processResult_csv;
 
-                    // addDatasetsOptions()
-                    MetricController.axisSchema(serviceFullList, true).update();
-                    updateDatainformation(sampleS['timespan']);
-                    sampleJobdata = [{
-                        jobID: "1",
-                        name: "1",
-                        nodes: hosts.map(h=>h.name),
-                        startTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                        submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                        user: "dummyJob"
-                    }];
+                // addDatasetsOptions()
+                MetricController.axisSchema(serviceFullList, true).update();
+                updateDatainformation(sampleS['timespan']);
+                sampleJobdata = [{
+                    jobID: "1",
+                    name: "1",
+                    nodes: hosts.map(h=>h.name),
+                    startTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                    submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                    user: "dummyJob"
+                }];
 
-                    d3.select(".currentDate")
-                        .text("" + (sampleS['timespan'][0]).toDateString());
-                    loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
-                        if(loadclusterInfo){
+                d3.select(".currentDate")
+                    .text("" + (sampleS['timespan'][0]).toDateString());
+                loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
+                    if(loadclusterInfo){
+                        handle_dataRaw();
+                        if (!init)
+                            resetRequest();
+                        else
+                            setTimeout(main,0);
+                        preloader(false)
+                    }else {
+                        updateClusterControlUI()
+                        recalculateCluster({
+                            clusterMethod: 'leaderbin',
+                            normMethod: 'l2',
+                            bin: {startBinGridSize: 4, range: [3, 20]}
+                        }, function () {
                             handle_dataRaw();
                             if (!init)
                                 resetRequest();
                             else
-                                main();
-                            preloader(false)
-                        }else {
-                            updateClusterControlUI()
-                            recalculateCluster({
-                                clusterMethod: 'leaderbin',
-                                normMethod: 'l2',
-                                bin: {startBinGridSize: 4, range: [3, 20]}
-                            }, function () {
-                                handle_dataRaw();
-                                if (!init)
-                                    resetRequest();
-                                else
-                                    main();
-                                preloader(false);
-                            });
-                        }
+                                setTimeout(main,0);
+                            preloader(false);
+                        });
+                    }
 
-                    })
-                }
+                })
+
             }
         })
     }, 0);
