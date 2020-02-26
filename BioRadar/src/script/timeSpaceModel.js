@@ -199,7 +199,7 @@ d3.TimeSpace = function () {
         reduceRenderWeight();
         mouseoverTrigger = false;
         terminateWorker();
-        preloader(true,1,'Init data...','#modelLoading');
+        preloader(true,10,'Transfer data to projection function','#modelLoading');
         let firstReturn = true;
         modelWorker = new Worker(self.workerPath);
         workerList[0] = modelWorker;
@@ -245,6 +245,9 @@ d3.TimeSpace = function () {
     }
 
     master.init = function(arr,clusterin) {
+        isBusy = true;
+
+        // prepare data
         needRecalculate = true;
         reset = true;
         mouseoverTrigger = false;
@@ -273,93 +276,89 @@ d3.TimeSpace = function () {
         createRadar = _.partialRight(createRadar_func,'timeSpace radar',graphicopt.radaropt,colorscale);
         createRadarTable = _.partialRight(createRadar_func,'timeSpace radar',graphicopt.radarTableopt,colorscale);
 
-        far = graphicopt.width/2 /Math.tan(fov/180*Math.PI/2)*10;
-        camera = new THREE.PerspectiveCamera(fov, graphicopt.width/graphicopt.height, near, far + 1);
-        // far = graphicopt.width/2*10;
-        // camera = new THREE.OrthographicCamera(graphicopt.width / - 2, graphicopt.width / 2, graphicopt.height / 2, graphicopt.height / - 2, near, far + 1);
-        scene = new THREE.Scene();
-        axesHelper = createAxes( graphicopt.widthG()/4 );
-        axesTime = createTimeaxis();
-        scene.background = new THREE.Color(0xffffff);
-        scatterPlot = new THREE.Object3D();
-        scatterPlot.add( axesHelper );
-        scatterPlot.rotation.y = 0;
-        points = createpoints(scatterPlot);
-        straightLinesGroup = new THREE.Object3D();
-        curveLinesGroup = new THREE.Object3D();
-        scatterPlot.add( straightLinesGroup );
-        scatterPlot.add( curveLinesGroup );
-        straightLines = createLines(straightLinesGroup);
-        curveLines = createCurveLines(curveLinesGroup);
-        lines = straightLines;
-        linesGroup = straightLinesGroup;
-        toggleLine();
-        gridHelper = new THREE.GridHelper( graphicopt.heightG(), 10 );
-        gridHelper.position.z = scaleNormalTimestep.range()[0];
-        gridHelper.rotation.x = -Math.PI / 2;
-        scene.add( new THREE.Object3D().add(gridHelper ));
-        scene.add(scatterPlot);
 
-        // Add canvas
-        renderer = new THREE.WebGLRenderer({canvas: document.getElementById("modelWorkerScreen")});
-        renderer.setSize(graphicopt.width, graphicopt.height);
-        renderer.render(scene, camera);
-        // zoom set up
-        view = d3.select(renderer.domElement);
-        axesHelper.toggleDimension(graphicopt.opt.dim);
-        // zoom = d3.zoom()
-        //     .scaleExtent([getScaleFromZ(far), getScaleFromZ(10)])
-        //     .on('zoom', () =>  {
-        //         let d3_transform = d3.event.transform;
-        //         zoomHandler(d3_transform);
-        //     });
-        raycaster = new THREE.Raycaster();
-        raycaster.params.Points.threshold = graphicopt.component.dot.size;
-        mouse = new THREE.Vector2();
+        // prepare screen
+        setTimeout(function(){
+            far = graphicopt.width/2 /Math.tan(fov/180*Math.PI/2)*10;
+            camera = new THREE.PerspectiveCamera(fov, graphicopt.width/graphicopt.height, near, far + 1);
+            // far = graphicopt.width/2*10;
+            // camera = new THREE.OrthographicCamera(graphicopt.width / - 2, graphicopt.width / 2, graphicopt.height / 2, graphicopt.height / - 2, near, far + 1);
+            scene = new THREE.Scene();
+            axesHelper = createAxes( graphicopt.widthG()/4 );
+            axesTime = createTimeaxis();
+            scene.background = new THREE.Color(0xffffff);
+            scatterPlot = new THREE.Object3D();
+            scatterPlot.add( axesHelper );
+            scatterPlot.rotation.y = 0;
+            points = createpoints(scatterPlot);
+            straightLinesGroup = new THREE.Object3D();
+            curveLinesGroup = new THREE.Object3D();
+            scatterPlot.add( straightLinesGroup );
+            scatterPlot.add( curveLinesGroup );
+            straightLines = createLines(straightLinesGroup);
+            curveLines = createCurveLines(curveLinesGroup);
+            lines = straightLines;
+            linesGroup = straightLinesGroup;
+            toggleLine();
+            gridHelper = new THREE.GridHelper( graphicopt.heightG(), 10 );
+            gridHelper.position.z = scaleNormalTimestep.range()[0];
+            gridHelper.rotation.x = -Math.PI / 2;
+            scene.add( new THREE.Object3D().add(gridHelper ));
+            scene.add(scatterPlot);
 
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        // disable the tabIndex to avoid jump element
-        d3.select(renderer.domElement).attr('tabindex',null);
-        let mouseoverTrigger_time;
-        controls.addEventListener("change", () => {
-            mouseoverTrigger=false;
-            if (mouseoverTrigger_time)
-                clearTimeout(mouseoverTrigger_time);
-            mouseoverTrigger_time= setTimeout(function(){mouseoverTrigger=true},500)
-        });
-        setUpZoom();
-        stop = false;
+            // Add canvas
+            renderer = new THREE.WebGLRenderer({canvas: document.getElementById("modelWorkerScreen")});
+            renderer.setSize(graphicopt.width, graphicopt.height);
+            renderer.render(scene, camera);
+            // zoom set up
+            view = d3.select(renderer.domElement);
+            axesHelper.toggleDimension(graphicopt.opt.dim);
+            // zoom = d3.zoom()
+            //     .scaleExtent([getScaleFromZ(far), getScaleFromZ(10)])
+            //     .on('zoom', () =>  {
+            //         let d3_transform = d3.event.transform;
+            //         zoomHandler(d3_transform);
+            //     });
+            raycaster = new THREE.Raycaster();
+            raycaster.params.Points.threshold = graphicopt.component.dot.size;
+            mouse = new THREE.Vector2();
 
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            // disable the tabIndex to avoid jump element
+            d3.select(renderer.domElement).attr('tabindex',null);
+            let mouseoverTrigger_time;
+            controls.addEventListener("change", () => {
+                mouseoverTrigger=false;
+                if (mouseoverTrigger_time)
+                    clearTimeout(mouseoverTrigger_time);
+                mouseoverTrigger_time= setTimeout(function(){mouseoverTrigger=true},500)
+            });
+            setUpZoom();
+            stop = false;
 
-        animate();
-        // background_canvas = document.getElementById("modelWorkerScreen");
-        // background_canvas.width  = graphicopt.width;
-        // background_canvas.height = graphicopt.height;
-        // background_ctx = background_canvas.getContext('2d');
-        // front_canvas = document.getElementById("modelWorkerScreen_fornt");
-        // front_canvas.width  =  graphicopt.width;
-        // front_canvas.height = graphicopt.height;
-        // front_ctx = front_canvas.getContext('2d');
-        svg = d3.select('#modelWorkerScreen_svg').attrs({width: graphicopt.width,height:graphicopt.height});
+            setTimeout(animate)
+            svg = d3.select('#modelWorkerScreen_svg').attrs({width: graphicopt.width,height:graphicopt.height});
 
-        d3.select('#modelWorkerInformation+.title').text(self.name);
-        handle_selection_switch(graphicopt.isSelectionMode);
+            d3.select('#modelWorkerInformation+.title').text(self.name);
+            handle_selection_switch(graphicopt.isSelectionMode);
 
-        d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
-        d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
-        d3.select("span#filterList+.copybtn").on('click',()=>{
-            var copyText = document.getElementById("filterList");
-            var textArea = document.createElement("textarea");
-            textArea.value = copyText.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("Copy");
-            textArea.remove();
-            M.toast({html: 'Copied to clipboard'})
-        });
+            d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
+            d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
+            d3.select("span#filterList+.copybtn").on('click',()=>{
+                var copyText = document.getElementById("filterList");
+                var textArea = document.createElement("textarea");
+                textArea.value = copyText.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+                M.toast({html: 'Copied to clipboard'})
+            });
+
         drawSummaryRadar([],handle_data_summary([]),'#ffffff');
         start();
         needRecalculate = false;
+        },0);
         return master;
     };
     function toggleLine(){
@@ -1803,6 +1802,7 @@ d3.umapTimeSpace  = _.bind(d3.TimeSpace,
 let windowsSize = 1;
 // let timeWeight = 0;
 function handle_data_model(tsnedata,isKeepUndefined) {
+    preloader(true,1,'preprocess data','#modelLoading');
     windowsSize = windowsSize||1;
     // get windown surrounding
     let windowSurrounding =  (windowsSize - 1)/2;
@@ -1883,17 +1883,19 @@ function handle_data_model(tsnedata,isKeepUndefined) {
 }
 
 function handle_data_umap(tsnedata) {
-    const dataIn = handle_data_model(tsnedata,true);
-    // if (!umapopt.opt)
+
+        const dataIn = handle_data_model(tsnedata,true);
+        // if (!umapopt.opt)
         umapopt.opt = {
             // nEpochs: 20, // The number of epochs to optimize embeddings via SGD (computed automatically = default)
             // nNeighbors:  Math.round(dataIn.length/cluster_info.length/5)+2, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
-            nNeighbors:  10, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
+            nNeighbors:  5, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
             // nNeighbors: 15, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
             dim: 2, // The number of components (dimensions) to project the data to (2 = default)
             minDist: 1, // The effective minimum distance between embedded points, used with spread to control the clumped/dispersed nature of the embedding (0.1 = default)
         };
-    umapTS.graphicopt(umapopt).color(colorCluster).init(dataIn, cluster_info);
+        umapTS.graphicopt(umapopt).color(colorCluster).init(dataIn, cluster_info);
+
 }
 function handle_data_tsne(tsnedata) {
     const dataIn = handle_data_model(tsnedata);

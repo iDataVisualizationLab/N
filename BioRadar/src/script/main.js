@@ -51,6 +51,10 @@ var svg = d3.select(".mainsvg"),
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
+d3.select('#modelWorkerScreen').attrs({
+    width: width,
+    height: height,
+})
 jobMap_opt.width = width;
 jobMap_opt.height = height;
 
@@ -1020,66 +1024,58 @@ let loadclusterInfo = false;
 function readFilecsv(file) {
     exit_warp();
     preloader(true);
-    setTimeout(() => {
-        var t1 = +new Date();
-        d3.csv(file, function (error, data) {
-            var t2 = +new Date();   
-            console.log("t1:"+t1);
-            console.log("t2:"+t2);
-            console.log("Read file:"+((t2-t1)/(1000)));
-        
-            if (error) {
-            } else {
-                db = "csv";
-                newdatatoFormat(data);
+    d3.csv(file, function (error, data) {
+        if (error) {
+        } else {
+            db = "csv";
+            newdatatoFormat(data);
 
-                inithostResults();
-                formatService(true);
-                processResult = processResult_csv;
+            inithostResults();
+            formatService(true);
+            processResult = processResult_csv;
 
-                // addDatasetsOptions()
-                MetricController.axisSchema(serviceFullList, true).update();
-                updateDatainformation(sampleS['timespan']);
-                sampleJobdata = [{
-                    jobID: "1",
-                    name: "1",
-                    nodes: hosts.map(h=>h.name),
-                    startTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                    submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                    user: "dummyJob"
-                }];
+            // addDatasetsOptions()
+            MetricController.axisSchema(serviceFullList, true).update();
+            updateDatainformation(sampleS['timespan']);
+            sampleJobdata = [{
+                jobID: "1",
+                name: "1",
+                nodes: hosts.map(h=>h.name),
+                startTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                user: "dummyJob"
+            }];
 
-                d3.select(".currentDate")
-                    .text("" + (sampleS['timespan'][0]).toDateString());
-                loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
-                    if(loadclusterInfo){
+            d3.select(".currentDate")
+                .text("" + (sampleS['timespan'][0]).toDateString());
+            loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
+                if(loadclusterInfo){
+                    handle_dataRaw();
+                    if (!init)
+                        resetRequest();
+                    else
+                        setTimeout(main,0);
+                    preloader(false)
+                }else {
+                    updateClusterControlUI()
+                    recalculateCluster({
+                        clusterMethod: 'leaderbin',
+                        normMethod: 'l2',
+                        bin: {startBinGridSize: 4, range: [3, 20]}
+                    }, function () {
                         handle_dataRaw();
                         if (!init)
                             resetRequest();
                         else
                             setTimeout(main,0);
-                        preloader(false)
-                    }else {
-                        updateClusterControlUI()
-                        recalculateCluster({
-                            clusterMethod: 'leaderbin',
-                            normMethod: 'l2',
-                            bin: {startBinGridSize: 4, range: [3, 20]}
-                        }, function () {
-                            handle_dataRaw();
-                            if (!init)
-                                resetRequest();
-                            else
-                                setTimeout(main,0);
-                            preloader(false);
-                        });
-                    }
+                        preloader(false);
+                    });
+                }
 
-                })
-                
-            }
-        })
-    }, 0);
+            })
+
+        }
+    })
 }
 // action when exit
 function exit_warp () {
@@ -1412,76 +1408,16 @@ $( document ).ready(function() {
     });
     d3.select('#compDisplay_control').on("change", function () {
         var sect = document.getElementById("compDisplay_control");
-        if(sect.options[sect.selectedIndex].value!=='reduceDim') {
-            vizMode = false;
-            onchangeVizType();
-            d3.select('#modelWorkerContent').classed('hide',true);
-            d3.select('.mainsvg').classed('hide',false);
-            jobMap.show();
-            d3.select("#jobControl").attr('disabled',null).selectAll('input').attr('disabled',null);
-            let oldChoice = jobMap_runopt.compute.type;
-            let isSwitchtimeline = false;
-            jobMap_runopt.compute.type = sect.options[sect.selectedIndex].value;
-            jobMap_runopt.mouse.lensing = false;
-            $('#lensing_control').prop('checked', false);
-            document.getElementById("colorConnection_control").removeAttribute('disabled')
-            if (jobMap_runopt.compute.type === 'timeline' || jobMap_runopt.compute.type === 'bundle') {
-                if(oldChoice!=="tsne"&&oldChoice!=="timeline"&&oldChoice!=="bundle"){
-                    $('input[value="showmetric"]')[0].checked = true;
-                    d3.select('#mouseAction').dispatch('change');
-                }
-                document.getElementById("colorConnection_control").checked = false;
-                d3.select('input[value="lensing"]').attr('disabled', null);
-                d3.select('input[value="showseries"]').attr('disabled', null);
-                d3.select('input[value="showmetric"]').attr('disabled', null);
-                jobMap_runopt.compute.bundle = jobMap_runopt.compute.type === 'bundle';
-                jobMap_runopt.compute.type = 'timeline'
-                jobMap_runopt.compute.clusterNode = false;
-                jobMap_runopt.compute.clusterJobID = true;
-                jobMap_runopt.graphic.colorBy = 'group';
-                jobMap_runopt.timelineGroupMode = sect.options[sect.selectedIndex].getAttribute('value2')
-                d3.selectAll('.timelineTool').attr('disabled', null);
-                d3.select('#jobIDCluster_control').attr('checked', '');
-            } else {
-                d3.selectAll('.timelineTool').attr('disabled', 'disabled');
-                d3.select('input[value="lensing"]').attr('disabled', "disabled");
-                d3.select('input[value="showseries"]').attr('disabled', "disabled");
-                d3.select('input[value="showmetric"]').attr('disabled', "disabled");
-                const currentMouse = jobMap.runopt().mouse;
-                if (!(currentMouse.disable || currentMouse.auto)) {
-                    $('input[value="auto"]')[0].checked = true;
-                    d3.select('#mouseAction').dispatch('change');
-                }
 
-                if (jobMap_runopt.compute.type === 'pie') {
-                    jobMap_runopt.compute.clusterNode = false;
-                    document.getElementById("colorConnection_control").checked = true;
-                    jobMap_runopt.graphic.colorBy = 'user';
-                    document.getElementById("colorConnection_control").setAttribute('disabled', 'disabled')
-                } else if (jobMap_runopt.compute.type === 'radar') {
-                    jobMap_runopt.compute.clusterNode = false;
-                    document.getElementById("colorConnection_control").removeAttribute('disabled')
-                } else if (jobMap_runopt.compute.type === 'radar_cluster') {
-                    jobMap_runopt.compute.type = 'radar';
-                    jobMap_runopt.compute.clusterNode = true;
-                } else {
-                    document.getElementById("colorConnection_control").removeAttribute('disabled')
-                }
+        vizMode = sect.options[sect.selectedIndex].getAttribute('value2');
+        d3.select('#modelWorkerContent').classed('hide',false);
+        d3.select('.mainsvg').classed('hide',true);
+        d3.select("#jobControl").attr('disabled','disabled').selectAll('input').attr('disabled','disabled');
+        d3.select(suddenGroup_control.parentNode.parentNode).attr('disabled',null);
+        d3.select(suddenGroup_control).attr('disabled',null);
+        onchangeVizType();
+        onchangeVizdata();
 
-                $('#jobOverlay').prop('checked', false);
-                d3.select('#jobOverlay').dispatch("change");
-            }
-            jobMap.runopt(jobMap_runopt).data(undefined, undefined).draw();
-        }else{
-            vizMode = sect.options[sect.selectedIndex].getAttribute('value2');
-            d3.select('#modelWorkerContent').classed('hide',false);
-            d3.select('.mainsvg').classed('hide',true);
-            d3.select("#jobControl").attr('disabled','disabled').selectAll('input').attr('disabled','disabled');
-            d3.select(suddenGroup_control.parentNode.parentNode).attr('disabled',null);
-            d3.select(suddenGroup_control).attr('disabled',null);
-            onchangeVizType();
-            onchangeVizdata();
-        }
     });
     d3.select('#jobIDCluster_control').on("change", function () {
         jobMap_runopt.compute.clusterJobID = $(this).prop('checked');
@@ -1702,142 +1638,16 @@ $( document ).ready(function() {
     $('#highrange').val(group_opt.bin.range[1]||11);
     $('#knum').val(group_opt.bin.k||5);
     $('#kiteration').val(group_opt.bin.iterations||50);
-    // switch (group_opt.clusterMethod){
-    //     case 'leaderbin':
-    //         $('#startBinGridSize').val(group_opt.bin.startBinGridSize);
-    //         $('#lowrange').val(group_opt.bin.range[0]);
-    //         $('#highrange').val(group_opt.bin.range[1]);
-    //         break;
-    //     case 'kmean':
-    //     default:
-    //         $('#knum').val(group_opt.bin.k);
-    //         $('#kinteration').val(group_opt.bin.iterations);
-    //         break;
-    // }
 
-     
-        //load data
-        // readFilecsv('data/processed_gene_data_normalized.csv')
-        // loadPresetCluster(choice,(status)=>loadclusterInfo= status);
-        var t1 = +new Date();
-            readFilecsv('data/processed_gene_data_normalized_category.csv');
-        var t2 = +new Date();   
-        console.log("t1:"+t1);
-        console.log("t2:"+t2);
-        console.log("different (m):"+(t2-t1)/(1000));
-
-
-        // d3.json(srcpath+'data/hotslist_Quanah.json',function(error,data){
-        //     if(error) {
-        //     }else{
-        //         hostList = data;
-        //         inithostResults();
-        //         jobMap.hosts(hosts)
-        //         // graphicControl.charType =  d3.select('#chartType_control').node().value;
-        //         // graphicControl.sumType =  d3.select('#summaryType_control').node().value;
-        //         let choiceinit = d3.select('#datacom').node().value;
-        //         if (choiceinit !== "nagios" && choiceinit !== "influxdb") {
-        //             // d3.select(".currentDate")
-        //             //     .text("" + d3.timeParse("%d %b %Y")(d3.select('#datacom').node().selectedOptions[0].text).toDateString());
-        //             if (choiceinit.includes('influxdb')) {
-        //                 // processResult = processResult_influxdb;
-        //                 db = "influxdb";
-        //                 realTimesetting(false, "influxdb", true);
-        //             } else {
-        //                 db = "nagios";
-        //                 // processResult = processResult_old;
-        //                 realTimesetting(false, undefined, true);
-        //             }
-        //             let choice = d3.select('#datacom').node().value;
-        //             dataInformation.filename = choice+".json";
-        //             d3.json(srcpath+"data/" + choice + ".json", function (error, data) {
-        //                 if (error) {
-        //                     M.toast({html: 'Local data does not exist, try to query from the internet!'});
-        //                     d3.json("https://media.githubusercontent.com/media/iDataVisualizationLab/HPCC/master/HiperView/data/" + choiceinit + ".json", function (error, data) {
-        //                         if (error) throw error;
-        //                         d3.select(".currentDate")
-        //                             .text("" + d3.timeParse("%d %b %Y")(d3.select('#datacom').select('[selected="selected"]').text()).toDateString());
-        //                         loadata(data)
-        //                     });
-        //                     return;
-        //                 }
-        //                 d3.select(".currentDate")
-        //                     .text("" + (new Date(data['timespan'][0]).toDateString()));
-        //                 d3.json (srcpath+"data/" + choice + "_job_compact.json", function (error, job) {
-        //                     if (error){
-        //                         loadata(data,undefined);
-        //                         return;
-        //                     }
-        //                     loadata(data,job);
-        //                     return;
-        //                 });
-        //             });
-        //         }else{ // realtime
-        //             d3.select(".currentDate")
-        //                 .text("" + (new Date()).toDateString());
-        //             realTimesetting(true,choiceinit, true);
-        //             db = choiceinit;
-        //             requestService = eval('requestService'+choiceinit);
-        //             processResult = eval('processResult_'+choiceinit);
-        //             loadata([])
-        //         }
-        //     }
-        // });
-        formatService(true);
-        MetricController.graphicopt({width:365,height:365})
-            .div(d3.select('#RadarController'))
-            .tablediv(d3.select('#RadarController_Table'))
-            .axisSchema(serviceFullList)
-            .onChangeValue(onSchemaUpdate)
-            .onChangeFilterFunc(onfilterdata)
-            .onChangeMinMaxFunc(onChangeMinMaxFunc)
-            .init();
-        function loadata(data,job){
-            d3.select(".cover").select('h5').text('drawLegend...');
-            drawLegend(initialService, arrThresholds, arrColor, dif);
-            data['timespan'] = data.timespan.map(d=>new Date(d3.timeFormat('%a %b %d %X CDT %Y')(new Date(d.replace('Z','')))));
-            sampleS = data;
-            updateDatainformation(data['timespan']);
-            // if(job)
-            //     hosts.forEach(h=>sampleS[h.name].arrJob_scheduling = job[h.name]);
-            sampleJobdata = job || [{
-                jobID: "1",
-                name: "1",
-                nodes: hosts.map(h=>h.name),
-                startTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                user: "dummyJob"
-            }];
-            if(cluster_info){
-                handle_dataRaw();
-            }
-            main();
-            d3.select(".cover").select('h5').text('loading data...');
-            addDatasetsOptions(); // Add these dataset to the select dropdown, at the end of this files
-        }
-  
-    // Spinner Stop ********************************************************************
-
-    // // Turtorial
-    // //initialize instance
-    // var enjoyhint_instance = new EnjoyHint({});
-    //
-    // //simple config.
-    // //Only one step - highlighting(with description) "New" button
-    // //hide EnjoyHint after a click on the button.
-    //     var enjoyhint_script_steps = [
-    //         {
-    //             'click .openbtn' : 'Click the ">" button to open control panel'
-    //         },{
-    //             'change #compDisplay_control' : 'Change the visualization type via this selection'
-    //         }
-    //     ];
-    //
-    // //set script config
-    //     enjoyhint_instance.set(enjoyhint_script_steps);
-    //
-    // //run Enjoyhint script
-    // enjoyhint_instance.run();
+    readFilecsv('data/processed_gene_data_normalized_category.csv');
+    MetricController.graphicopt({width:365,height:365})
+        .div(d3.select('#RadarController'))
+        .tablediv(d3.select('#RadarController_Table'))
+        .axisSchema(serviceFullList)
+        .onChangeValue(onSchemaUpdate)
+        .onChangeFilterFunc(onfilterdata)
+        .onChangeMinMaxFunc(onChangeMinMaxFunc)
+        .init();
 });
 function loadPresetCluster(name,calback) {
     return d3.csv(srcpath + `data/cluster_${name}.csv`, function (cluster) {

@@ -23,6 +23,7 @@ addEventListener('message',function ({data}){
             umap.setSupervisedProjection(labels);
             console.log('---init data UMAP-----')
             let nEpochs = umap.initializeFit(dataIn);
+            console.log('---initializeFit-----',performance.now()-totalTime_marker);
             nEpochs = Math.min(nEpochs,1000)
             for (let i = 0; i < nEpochs; i++) {
             // for (let i = 0; i < (data.opt.nEpochs|| nEpochs); i++) {
