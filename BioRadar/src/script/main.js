@@ -410,7 +410,7 @@ function main() {
     // disabled graph option
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
-        control_jobdisplay.attr('disabled', '').dispatch('change');
+        control_jobdisplay.dispatch('change');
 
     // request();
 }
