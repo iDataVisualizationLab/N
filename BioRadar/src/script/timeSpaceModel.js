@@ -391,8 +391,7 @@ d3.TimeSpace = function () {
                 break;
             case "distance":
                 d3.select('#distanceFilterHolder').classed('hide',false);
-                d3.keys(path).filter(d=>distancerange(path[d][0].distance)>=graphicopt.filter.distance)
-                hightlightGroupNode(d3.keys(path).filter(d=>distancerange(path[d][0].distance)>=graphicopt.filter.distance));
+                hightlightGroupNode(d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance));
                 break;
             default:
                 hightlightGroupNode([]);
