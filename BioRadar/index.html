@@ -759,15 +759,25 @@
                                     <label for="modelFilterBy" class="col s4">Filter by: </label>
                                     <select id="modelFilterBy" class="col s7 inline">
                                         <option value="all" selected>All</option>
-                                        <option value="wt">White type</option>
-                                        <option value="stop1">STOP1</option>
-                                        <option value="groups">Switch major groups</option>
+                                        <optgroup label="Category">
+                                            <option value="wt">White type</option>
+                                            <option value="stop1">STOP1</option>
+                                        </optgroup>
+                                        <optgroup label="Connection">
+                                            <option value="groups">Changing major groups</option>
+                                            <option value="groups">Distance</option>
+                                        </optgroup>
                                     </select>
                                 </div>
-                                <div  class="row">
+                                <div  class="row valign-wrapper">
+                                    <label for="modelFilterBy" class="col s4">Distance Filter: </label>
+                                    <div id="modelDistanceFilter" class="col s7"></div>
+                                </div>
+                                <div  class="row" style="max-height: 200px;overflow-y: auto;">
                                     <span id ="filterList">
 
                                     </span>
+                                    <button class="copybtn btn hide" style="margin: 10px;position: absolute;right: 0;bottom: 0;">Copy</button>
                                 </div>
                             </div>
                         </div>
