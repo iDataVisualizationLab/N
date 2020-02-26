@@ -222,13 +222,15 @@ d3.TimeSpace = function () {
                         preloader(false, undefined, undefined, '#modelLoading');
                         firstReturn = false;
                     }
-                    isBusy = true;
-                    xscale.domain(data.xscale.domain);
-                    yscale.domain(data.yscale.domain);
-                    solution = data.sol;
-                    updateTableOutput(data.value);
-                    render();
-                    isBusy = false;
+                    if (!isBusy) {
+                        isBusy = true;
+                        xscale.domain(data.xscale.domain);
+                        yscale.domain(data.yscale.domain);
+                        solution = data.sol;
+                        updateTableOutput(data.value);
+                        render();
+                        isBusy = false;
+                    }
                     break;
                 case "stable":
                     modelWorker.terminate();
@@ -377,6 +379,7 @@ d3.TimeSpace = function () {
         }
     }
     function handleFilter(key){
+        d3.select('#distanceFilterHolder').classed('hide',true);
         switch (key) {
             case 'groups':
                 const lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
@@ -389,7 +392,7 @@ d3.TimeSpace = function () {
                 hightlightGroupNode([],1);
                 break;
             case "distance":
-                console.log(graphicopt.filter.distance);
+                d3.select('#distanceFilterHolder').classed('hide',false);
                 d3.keys(path).filter(d=>distancerange(path[d][0].distance)>=graphicopt.filter.distance)
                 hightlightGroupNode(d3.keys(path).filter(d=>distancerange(path[d][0].distance)>=graphicopt.filter.distance));
                 break;
