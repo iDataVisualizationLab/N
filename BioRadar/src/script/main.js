@@ -401,14 +401,8 @@ function setColorsAndThresholds(s) {
 var gaphost = 7;
 
 function main() {
-
-<<<<<<< HEAD
     //inithostResults ();
-
-    jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
-=======
     // jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
->>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
     // disabled graph option
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
@@ -1036,27 +1030,6 @@ function readFilecsv(file) {
         
             if (error) {
             } else {
-<<<<<<< HEAD
-                db = "csv";
-                newdatatoFormat(data);
-                //inithostResults();
-                formatService(true);
-                processResult = processResult_csv;
-
-                // addDatasetsOptions()
-                MetricController.axisSchema(serviceFullList, true).update();
-                updateDatainformation(sampleS['timespan']);
-                sampleJobdata = [{
-                    jobID: "1",
-                    name: "1",
-                    nodes: hosts.map(h=>h.name),
-                    startTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                    submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
-                    user: "dummyJob"
-                }];
-
-=======
-
                 db = "csv";
                 newdatatoFormat(data);
 
@@ -1076,7 +1049,6 @@ function readFilecsv(file) {
                     user: "dummyJob"
                 }];
 
->>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
                 d3.select(".currentDate")
                     .text("" + (sampleS['timespan'][0]).toDateString());
                 loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
@@ -1085,11 +1057,7 @@ function readFilecsv(file) {
                         if (!init)
                             resetRequest();
                         else
-<<<<<<< HEAD
-                            main();
-=======
                             setTimeout(main,0);
->>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
                         preloader(false)
                     }else {
                         updateClusterControlUI()
@@ -1102,23 +1070,13 @@ function readFilecsv(file) {
                             if (!init)
                                 resetRequest();
                             else
-<<<<<<< HEAD
-                                main();
-                            preloader(false);
-                        });
-                    }
-
-                })
-                
-=======
                                 setTimeout(main,0);
                             preloader(false);
                         });
                     }
 
                 })
-
->>>>>>> f506402c721bbd458deb17d94a0f5b792e8b4535
+                
             }
         })
     }, 0);
