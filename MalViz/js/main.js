@@ -677,13 +677,14 @@ function applicationManager(globalData) {
                 .attr("text-anchor", "start");
 
             // Ngan 2/29
-            var svgnetAll = d3.select('#networkAll').append('svg')
-                .attr("class", "outline")
-                .attr("height", 300)
-                .attr("width", width1 - 35)
-                .attr("id", "svgnetAll");
+            var svgnetAll = d3.select('#networkAll').select('#svgnetAll');
+            if (svgnetAll.empty())
+                d3.select('#networkAll').append('svg')
+                .attr("height", 500)
+                .attr("width", 500)
+                // .attr("width", width1 - 35 - 60)
+                .attr("id", "svgnetAll").style('margin','30px').style('overflow','visible');
 
-            var xNetScale = d3.scaleLinear().range(0,svgnetAll.node().getBoundingClientRect().width);
 // MOUSEMOVE =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
             var t = 50;
             timeBox.append("rect")
@@ -1764,7 +1765,7 @@ function applicationManager(globalData) {
                     links[keyName].push({
                         source: keyName,
                         target: target,
-                        value: nodeObj[target]
+                        value: nodeObj[target],
                     });
                 })
             });
@@ -1821,14 +1822,17 @@ function applicationManager(globalData) {
 
             var radiusScaling = d3.scaleSqrt()
                 .domain([dr, 1200])
-                .range([dr, 50]);
+                // .range([dr, 50]);
+                .range([dr, 10]);
 
             function radiusScale(x) {
-                return Math.min(radiusScaling(x), 60)
+                // return Math.min(radiusScaling(x), 60)
+                return Math.min(radiusScaling(x), 20)
             }
 
             function strokeScale(x) {
-                return Math.min(strokeScaling(x), 20)
+                // return Math.min(strokeScaling(x), 20)
+                return Math.min(strokeScaling(x), 15)
             }
 
 
@@ -1971,7 +1975,7 @@ function applicationManager(globalData) {
 
                     numLinks = net.links.filter(d => !d.img).length;
 
-                    height = scaleHeight(numLinks);
+                    // height = scaleHeight(numLinks);
                     hPosition = height / 2;
 
                     if (!initfirst) {
@@ -2014,6 +2018,7 @@ function applicationManager(globalData) {
                             .strength(function (l) {
                                 let n1 = l.source, n2 = l.target;
                                 let defaultValue = 0.9, procValue = 0.4;
+                                // let defaultValue = 0.5, procValue = 0.2;
                                 // distance between processes are loose
                                 if (l.self) {
                                     return 1;
@@ -2028,7 +2033,6 @@ function applicationManager(globalData) {
                             })
                         )
                         .force("center", d3.forceCenter(wPosition, hPosition))
-
                         .force("charge", d3.forceManyBody()
                             .strength(d => d.dummy ? -30 : -100)
                         )
@@ -2098,6 +2102,8 @@ function applicationManager(globalData) {
                         .attr("y1", initY)
                         .attr("x2", initX)
                         .attr("y2", initY)
+                        .style("stroke",d=>d.target.nodes[0].type==="exe"?"steelblue":'black')
+                        .style("stroke-opacity",d=>d.target.nodes[0].type==="exe"?1:0.2)
                         .style("stroke-width", function (d) {
                             return d.img ? 0 : strokeScale(d.size);
                         });
@@ -2146,7 +2152,7 @@ function applicationManager(globalData) {
                         })
                         .attr("r", function (d) {
                             // bare nodes dont have size
-                            return d.size ? radiusScale(d.size + dr) : radiusScale(1 + dr);
+                            return d.size ? d.nodes[0].type=="exe"?10:(radiusScale(d.size + dr)) : radiusScale(1 + dr);
                         })
                         .attr("fill", function (d) {
                             return d.size ? getColor(d.nodes[0].type) : getColor(d.type);
@@ -2178,7 +2184,6 @@ function applicationManager(globalData) {
                             }
                         })
                         .on("mouseover", function (d) {
-                            console.log(d);
                             if (d.id) {
                                 div5.transition()
                                     .style("opacity", 1);
