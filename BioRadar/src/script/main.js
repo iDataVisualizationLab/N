@@ -2046,7 +2046,7 @@ function recomendName (clusterarr){
 }
 
 function recomendColor (clusterarr) {
-    let colorCa = colorScaleList['customschemeCategory'].slice();
+    let colorCa = d3.schemeCategory10;//colorScaleList['customschemeCategory'].slice();
     if (clusterarr.length>10 && clusterarr.length<21)
         colorCa = d3.schemeCategory20;
     else if (clusterarr.length>20)

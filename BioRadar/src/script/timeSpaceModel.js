@@ -44,6 +44,7 @@ d3.TimeSpace = function () {
             linkConnect: 'straight',
             isSelectionMode: false,
             isCurve: false,
+            separate:0.5,
             filter:{ distance:0.5},
             component:{
                 dot:{size:5,opacity:0.9},
@@ -263,7 +264,7 @@ d3.TimeSpace = function () {
             target.__metrics.position = [0,0,0];
             if (!path[target.name])
                 path[target.name] = [];
-            path[target.name].push({name: target.name,index:i,__timestep: target.__timestep, timestep: target.timestep, value: [0,0,0], cluster: target.cluster});
+            path[target.name].push({name: target.name,index:i,__timestep: target.__timestep, timestep: target.timestep, value: [0,0,0], cluster: target.cluster,index:i});
         });
         // console.log(datain.filter(d=>d[0]===-1))
         xscale.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
@@ -343,16 +344,16 @@ d3.TimeSpace = function () {
 
             d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
             d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
-            d3.select("span#filterList+.copybtn").on('click',()=>{
-                var copyText = document.getElementById("filterList");
-                var textArea = document.createElement("textarea");
-                textArea.value = copyText.textContent;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("Copy");
-                textArea.remove();
-                M.toast({html: 'Copied to clipboard'})
-            });
+            // d3.select("span#filterList+.copybtn").on('click',()=>{
+            //     var copyText = document.getElementById("filterList");
+            //     var textArea = document.createElement("textarea");
+            //     textArea.value = copyText.textContent;
+            //     document.body.appendChild(textArea);
+            //     textArea.select();
+            //     document.execCommand("Copy");
+            //     textArea.remove();
+            //     M.toast({html: 'Copied to clipboard'})
+            // });
 
         drawSummaryRadar([],handle_data_summary([]),'#ffffff');
         start();
@@ -379,9 +380,21 @@ d3.TimeSpace = function () {
     function handleFilter(key){
         d3.select('#distanceFilterHolder').classed('hide',true);
         switch (key) {
+            // case 'groups':
+            //     const lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
+            //     hightlightGroupNode(lists);
+            //     break;
             case 'groups':
-                const lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
-                hightlightGroupNode(lists);
+                var lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
+                var nest = d3.nest().key(d=>''+path[d][0].cluster+'_'+path[d][1].cluster).rollup(d=>{
+                    let max = d3.max(d,p=>path[p].distance);
+                    return d.find(p=>path[p].distance===max);
+                }).entries(lists);
+                nest.sort((a,b)=>-path[a.value].distance+path[b.value].distance);
+                console.log(nest)
+
+                // hightlightGroupNode(nest.slice(0,10).map(d=>d.value),undefined,0.2,0.9);
+                hightlightGroupNode(nest.slice(0,10).map(d=>d.value),undefined,0.2,0.9);
                 break;
             case "wt":
                 hightlightGroupNode([],0);
@@ -608,13 +621,18 @@ d3.TimeSpace = function () {
         }
     }
 
-    function hightlightGroupNode(intersects,timestep) { // INTERSECTED
+    function hightlightGroupNode(intersects,timestep,customopacityNode,customopacityLink) { // INTERSECTED
         if (intersects.length){
-            d3.select("span#filterList").text(intersects.join(', '));
-            d3.select("span#filterList+.copybtn").classed('hide',false);
+            let badge=d3.select("#filterList").selectAll('span.filtered').data(intersects);
+            badge.exit().remove();
+            badge.enter().append('span').attrs({
+                class: 'filtered'
+            }).merge(badge).text(d=>d).on('mouseover',function(d){hightlightNode([path[d][0]])});
+
+            // d3.select("span#filterList+.copybtn").classed('hide',false);
         }else{
-            d3.select("span#filterList").text('');
-            d3.select("span#filterList+.copybtn").classed('hide',true);
+            d3.select("#filterList").selectAll('*').remove();
+            // d3.select("span#filterList+.copybtn").classed('hide',true);
         }
         let ishighLink = timestep===undefined;
         freezemouseoverTrigger = true;
@@ -627,9 +645,9 @@ d3.TimeSpace = function () {
                     INTERSECTED.push(i);
                     attributes.alpha.array[i] = graphicopt.component.dot.opacity;
                     lines[d.name].visible = ishighLink;
-                    lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                    lines[d.name].material.opacity = customopacityLink||graphicopt.component.link.opacity;
                 } else {
-                    attributes.alpha.array[i] = 0;
+                    attributes.alpha.array[i] = customopacityNode||0;
                     lines[d.name].visible = false;
                 }
             });
@@ -664,8 +682,14 @@ d3.TimeSpace = function () {
                     axesTime.getObjectByName("TimeText").lookAt(camera.position);
                 }
             }catch(e){}
+            raycaster.setFromCamera(mouse, camera);
+            // try {
+            //     console.log(datain[raycaster.intersectObject(points)[0].index])
+            // }catch (e) {
+            //
+            // }
             if (mouseoverTrigger&&!freezemouseoverTrigger) { // not have filter
-                raycaster.setFromCamera(mouse, camera);
+            // if (mouseoverTrigger) { // not have filter
                 if (!filter.length) {
                     var intersects = overwrite||raycaster.intersectObject(points);
                     //count and look after all objects in the diamonds group
@@ -1261,7 +1285,7 @@ d3.TimeSpace = function () {
                 target.__metrics.position = d;
                 let pointIndex = mapIndex.indexOf(i);
                 if (pointIndex!==undefined){
-                    p[pointIndex*3+0] = xscale(d[0]);
+                    p[pointIndex*3+0] = xscale(d[0])+(graphicopt.separate*target.__timestep*graphicopt.widthG());
                     p[pointIndex*3+1] = yscale(d[1]);
 
                     // 3rd dimension as time step
@@ -1462,10 +1486,10 @@ d3.TimeSpace = function () {
         }
     }
     function updateStraightLine(target, posPath, d, customZ) {
-        lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
+        lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0])+(graphicopt.separate*target.__timestep*graphicopt.widthG()), yscale(d[1]), xscale(d[2]) || 0);
         // lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), d[2] || 0);
         if (posPath)
-            lines[target.name].geometry.vertices[posPath * 2 - 1] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
+            lines[target.name].geometry.vertices[posPath * 2 - 1] = new THREE.Vector3(xscale(d[0])+(graphicopt.separate*target.__timestep*graphicopt.widthG()), yscale(d[1]), xscale(d[2]) || 0);
             // lines[target.name].geometry.vertices[posPath * 2 - 1] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), d[2] || 0);
         lines[target.name].geometry.verticesNeedUpdate = true;
         lines[target.name].geometry.computeBoundingBox();
