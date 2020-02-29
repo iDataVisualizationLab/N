@@ -1683,8 +1683,14 @@ function applicationManager(globalData) {
         },
 
         drawnetAll: function (position) {
-
-            d3.select(position).selectAll("*").remove();
+            let svg = d3.select(position).select('svg');
+            svg.selectAll("*").remove();
+            svg.append("rect")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr("stroke", "grey")
+                .attr("fill", "white")
+            ;
             // FORCE-DIRECTED GRAPH ==========================================
 
             var list = globalgroupbyprocessname.map(d => d.key.toLowerCase());
@@ -1697,7 +1703,7 @@ function applicationManager(globalData) {
             var nodeObjTotal = {};
 
             // var idGenerator = new Int8Array(list.length);
-            globalgroupby0processname.forEach((process, i) => {
+            globalgroupbyprocessname.forEach((process, i) => {
                 var keyName = process.key.toLowerCase();
                 nodeObjTotal[keyName] = {};
                 var nodeObj = nodeObjTotal[keyName];    // use object to hcek multiple occurences, then to compute links
@@ -1816,10 +1822,9 @@ function applicationManager(globalData) {
                 return Math.min(strokeScaling(x), 20)
             }
 
-            d3.select("#ranked").selectAll("*").remove();
 
             // LOOP
-            sortedList.forEach((item, index) => {
+            [sortedList[0]].forEach((item, index) => {
                 nodes[item] = [];
                 var height = scaleHeight(links[item].length);
                 var wPosition = sideWidth / 2;
@@ -1880,30 +1885,30 @@ function applicationManager(globalData) {
                 var curve = d3.line()
                     .curve(d3.curveBasis);
 
-                let svg = d3.select("#ranked")
-                    .append("svg")
-                    .attr("id", "svg" + item.replace(/[.]/g, ""))
-                    .attr("width", "100%")
-                    .attr("height", height);
-
-                svg.append("rect")
-                    .attr("width", "100%")
-                    .attr("height", "100%")
-                    .attr("stroke", "grey")
-                    .attr("fill", "white")
-                ;
-
-                svg.append("text")
-                    .text((index + 1) + ". " + item)
-                    .attr("x", 15)
-                    .attr("y", 23)
-                    .style("font-weight", "bold")
-                    .append("tspan")
-                    .attr("dy", 25)
-                    .attr("x", index > 8 ? 35 : 30)
-                    .style("font-size", "14px")
-                    .text("Self-call(s): " + orderedArray.find(d => d.key === item).selfCalls.length)
-                    .style("font-weight", "normal");
+                // let svg = d3.select("#ranked")
+                //     .append("svg")
+                //     .attr("id", "svg" + item.replace(/[.]/g, ""))
+                //     .attr("width", "100%")
+                //     .attr("height", height);
+                //
+                // svg.append("rect")
+                //     .attr("width", "100%")
+                //     .attr("height", "100%")
+                //     .attr("stroke", "grey")
+                //     .attr("fill", "white")
+                // ;
+                //
+                // svg.append("text")
+                //     .text((index + 1) + ". " + item)
+                //     .attr("x", 15)
+                //     .attr("y", 23)
+                //     .style("font-weight", "bold")
+                //     .append("tspan")
+                //     .attr("dy", 25)
+                //     .attr("x", index > 8 ? 35 : 30)
+                //     .style("font-size", "14px")
+                //     .text("Self-call(s): " + orderedArray.find(d => d.key === item).selfCalls.length)
+                //     .style("font-weight", "normal");
 
                 // connect link to node
                 extra[item] = [];
