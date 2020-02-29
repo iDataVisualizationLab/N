@@ -1,0 +1,166 @@
+Name
+CancelRemoveDevice
+CancelStopDevice
+CloseFile
+CreateFile
+CreateFileMapping
+CreateMailSlot
+CreatePipe
+Debug Output Profiling
+DeviceChange
+DeviceIoControl
+DeviceUsageNotification
+Eject
+FileSystemControl
+FilterResourceRequirements
+FlushBuffersFile
+InternalDeviceIoControl
+Load Image
+LockFile
+NotifyChangeDirectory
+Power
+Process Create
+Process Exit
+Process Profiling
+Process Start
+Process Statistics
+QueryAllInformationFile
+QueryAttributeCacheInformation
+QueryAttributeInformationVolume
+QueryAttributeTag
+QueryAttributeTagFile
+QueryBasicInformationFile
+QueryBusInformation
+QueryCapabilities
+QueryCompressionInformationFile
+QueryControlInformationVolume
+QueryDesiredStorageClassInformation
+QueryDeviceInformationVolume
+QueryDeviceRelations
+QueryDeviceText
+QueryDirectory
+QueryEAFile
+QueryEaInformationFile
+QueryEndOfFile
+QueryFileInternalInformationFile
+QueryFileQuota
+QueryFullSizeInformationVolume
+QueryHardLinkFullIdInformation
+QueryId
+QueryIdBothDirectory
+QueryIdExtdBothDirectoryInformation
+QueryldExtdDirectoryInformation
+QueryIdGlobalTxDirectoryInformation
+QueryIdInformation
+QueryInformationVolume
+QueryInterface
+QueryIoPriorityHint
+QueryIsRemoteDeviceInformation
+QueryLabelInformationVolume
+QueryLegacyBusInformation
+QueryLinkInformationBypassAccessCheck
+QueryLinks
+QueryMemoryPartitionInformation
+QueryMoveClusterInformationFile
+QueryNameInformationFile
+QueryNetworkOpenInformationFile
+QueryNetworkPhysicalNameInformationFile
+QueryNormalizedNameInformationFile
+QueryNumaNodeInformation
+QueryObjectIdInformationVolume
+QueryOpen
+QueryPnpDeviceState
+QueryPositionInformationFile
+QueryRemoteProtocolInformation
+QueryRemoveDevice
+QueryRenameInformationBypassAccessCheck
+QueryResourceRequirements
+QueryResources
+QuerySecurityFile
+QueryShortNameInformationFile
+QuerySizeInformationVolume
+QueryStandardInformationFile
+QueryStandardLinkInformation
+QueryStatInformation
+QueryStopDevice
+QueryStreamInformationFile
+QueryValidDataLength
+QueryVolumeNameInformation
+ReadConfig
+ReadFile
+RegCloseKey
+RegCreateKey
+RegDeleteKey
+RegDeleteValue
+RegEnumKey
+RegEnumValue
+RegFlushKey
+RegLoadKey
+RegOpenKey
+RegQueryKey
+RegQueryKeySecurity
+RegQueryMultipleValueKey
+RegQueryValue
+RegRenameKey
+RegSetInfoKey
+RegSetKeySecurity
+RegSetValue
+RegUnloadKey
+RemoveDevice
+SetAllocationInformationFile
+SetBasicInformationFile
+SetDispositionInformationEx
+SetDispositionInformationFile
+SetEAFile
+SetEndOfFileInformationFile
+SetFileQuota
+SetFileStreamInformation
+SetLinkInformationFile
+SetLock
+SetPipeInformation
+SetPositionInformationFile
+SetRenameInformationEx
+SetRenameInformationExBypassAccessCheck
+SetRenameInformationFile
+SetReplaceCompletionInformation
+SetSecurityFile
+SetShortNameInformation
+SetValidDataLengthInformationFile
+SetVolumeInformation
+Shutdown
+StartDevice
+StopDevice
+SurpriseRemoval
+System Statistics
+SystemControl
+TCP Accept
+TCP Connect
+TCP Disconnect
+TCP Other
+TCP Receive
+TCP Reconnect
+TCP Retransmit
+TCP Send
+TCP TCPCopy
+TCP Unknown
+Thread Create
+Thread Exit
+Thread Profile
+Thread Profiling
+UDP Accept
+UDP Connect
+UDP Disconnect
+UDP Other
+UDP Receive
+UDP Reconnect
+UDP Retransmit
+UDP Send
+UDP TCPCopy
+UDP Unknown
+UnlockFileAll
+UnlockFileByKey
+UnlockFileSingle
+VolumeDismount
+VolumeMount
+WriteConfig
+WriteFile

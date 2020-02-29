@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../lib/d3.v4.min.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    a = "Vung-HackTool-EmailCrack-Win10.CSV"
+    d3.json(a.substring(0, a.length - 4) + ".json", function (error, data) {
+        if (error) throw error;
+        else {
+            console.log(data);
+        }
+    })
+</script>
+</html>

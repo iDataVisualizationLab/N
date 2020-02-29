@@ -1,0 +1,301 @@
+.content {
+    width: 230px;
+    height: 180px;
+    overflow: auto;
+    background: #FFFFFF;
+    border: 1px solid #9a9a9a;
+    padding: 10px;
+}
+.contentDemo {
+    width: 230px;
+    height: 180px;
+    overflow: auto;
+    background: #FFFFFF;
+}
+.header {
+    padding: 12px;
+    border: 2px groove #dadada;
+    background-color: #fff;
+    margin: 10px 0 15px 0;
+    border-style: groove;
+    /*box-shadow: 8px 8px 18px #cccccc;*/
+}
+.title {
+    padding-left: 8px;
+    font-weight: bold;
+    font-size: 23px;
+}
+.selection {
+    float: right;
+}
+legend {
+    font-weight: bold;
+    padding: 5px;
+    border-style: initial;
+    border-right: 2px groove #d6d6d6;
+    border-top: 2px groove #D6D6D6;
+    border-bottom: 2px groove #D6D6D6;
+    border-left: 5px groove #919191;
+    background-color: #ffffff;
+}
+body {
+    background-color: #dfdfdf;
+}
+#heatmap{
+    transition: 0.5s;
+}
+fieldset {
+    border: 2px groove #D6D6D6;
+    margin: 10px;
+    background-color: #ffffff;
+    box-shadow: 8px 8px 18px #cccccc;
+    /*border-style: solid;*/
+}
+.normV {
+    visibility: visible;
+}
+.normH {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+.hidden {
+    visibility: hidden;
+}
+
+.ticks {
+    font: 10px sans-serif;
+}
+.op0{
+    stroke-width: 0px;
+}
+.op1 {
+    stroke-width: 1px;
+    stroke-opacity: 1;
+    stroke: #292929;
+    stroke-alignment: inner;
+}
+.op2{
+    stroke-width: 1px;
+    stroke-opacity: 1;
+    stroke-dasharray: 3;
+    stroke: #292929;
+    stroke-alignment: inner;
+}
+.track,
+.track-inset,
+.track-overlay {
+    stroke-linecap: round;
+}
+
+.track {
+    stroke: #bbb;
+    stroke-opacity: 0.3;
+    stroke-width: 5px;
+}
+
+.track-inset {
+    stroke: #888;
+    stroke-width: 8px;
+}
+
+.track-overlay {
+    pointer-events: stroke;
+    stroke-width: 50px;
+    stroke: transparent;
+    cursor: crosshair;
+}
+
+.handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: 0.5;
+    stroke-width: 1.25px;
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 99;
+    text-align: center;
+}
+
+#loading-image {
+    position: absolute;
+    top: 100px;
+    left: 240px;
+    z-index: 100;
+}
+
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+}
+
+.background {
+    fill: #eee;
+}
+
+text.active {
+    fill: red;
+}
+
+line {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+.cell {
+    stroke-width: 0px;
+}
+
+.dllline {
+    stroke: #000;
+}
+
+rect {
+    z-index: 1;
+    border: 0px;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: #bbb;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+* {
+    word-wrap: break-word;
+}
+
+div.tooltip2 {
+    border-radius: 10px;
+    border: 2px solid #666666;
+    position: absolute;
+    text-align: center;
+    width: 300px;
+    height: auto;
+    font: 13px sans-serif;
+    pointer-events: none;
+}
+
+div.tooltip3 {
+    padding: 6px;
+    border-radius: 10px;
+    position: absolute;
+    text-align: left;
+    width: auto;
+    height: auto;
+    font: 13px sans-serif;
+    pointer-events: none;
+    display:inline-block
+}
+.tooltip3 .bold {
+    font-weight: bold;
+}
+/*.tooltip2 span {*/
+/*padding-top:7px;*/
+/*padding-bottom: 8px;*/
+/*font-size: 15px;*/
+/*display:block;*/
+/*opacity: 1;*/
+/*background-color: #f7f7f7;*/
+/*border-radius: 10px;*/
+/*}*/
+
+.tooltip2 table {
+    border-radius: 10px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tooltip2 td {
+    border-collapse: collapse;
+    text-align: left;
+    padding: 8px;
+}
+
+.tooltip2 tr:nth-child(odd) {
+    border-collapse: collapse;
+    background-color: #f6f6f6;
+
+}
+
+.tooltip2 tr:nth-child(even) {
+    border-collapse: collapse;
+    background-color: #e1e1e1;
+}
+
+.tooltip2 .bold {
+    font-weight: bold;
+}
+
+.tooltip2:hover table {
+    visibility: visible;
+}
+
+.cell-hover {
+    color: red;
+    fill: red;
+}
+
+text.text-highlight {
+    fill: red;
+    font-weight: bold;
+}
+
+text.rowLabel {
+    font-size: 12px;
+}
+
+text.colLabel {
+    font-size: 12px;
+}
+
+text.active {
+    opacity: 1;
+}
+
+select.malware {
+    margin: 0;
+    width: 200px;
+    height: 200px;
+}
+
+select.selectmalware {
+    width: 300px;
+}
+
+option.malicious {
+    color: red;
+    font-weight: bold;
+}
+
+option.undetected {
+    color: gray;
+}
+
+option.suspicious {
+    color: yellow;
+}

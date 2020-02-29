@@ -1,0 +1,753 @@
+.content {
+
+    height: 180px;
+    overflow: auto;
+    background: #FFFFFF;
+    border: 1px solid #9a9a9a;
+    padding: 10px;
+
+}
+.contentDemo {
+    padding-right: 0px;
+    height: 170px;
+    overflow: auto;
+    background: #FFFFFF;
+
+}
+.contentRef {
+    padding-right: 0px;
+    height: 148px;
+    overflow: auto;
+    background: #FFFFFF;
+
+}
+.contentSelf {
+    padding-right: 0px;
+    height: 250px;
+    overflow: auto;
+    background: #FFFFFF;
+    overflow-x: auto;
+}
+.contentSelf2 {
+    padding-right: 0px;
+    height: 150px;
+    overflow: auto;
+    background: #FFFFFF;
+    overflow-x: auto;
+}
+.contentRanked {
+    padding-right: 0px;
+    height: 1200px;
+    overflow: auto;
+    background: #595959;
+}
+
+.header {
+    padding: 12px;
+    border: 2px groove #dadada;
+    background-color: #fff;
+    margin: 10px 0 15px 0;
+    border-style: groove;
+    /*box-shadow: 8px 8px 18px #cccccc;*/
+}
+.title {
+    padding-left: 8px;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+a.info-btn {
+    color: #fff; !important;
+    background-color: #17a2b8; !important;
+    border-color: #17a2b8 !important;
+    text-decoration: none;
+}
+.gen-btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.selection {
+    float: right;
+}
+legend {
+    font-weight: bold;
+    padding: 5px;
+    border-style: initial;
+    border-right: 2px groove #d6d6d6;
+    border-top: 2px groove #D6D6D6;
+    border-bottom: 2px groove #D6D6D6;
+    border-left: 5px groove #919191;
+    background-color: #ffffff;
+}
+body {
+    background-color: #dfdfdf;
+}
+/*#heatmap{*/
+    /*transition: 0.5s;*/
+/*}*/
+fieldset {
+    border: 2px groove #D6D6D6;
+    margin: 10px;
+    background-color: #ffffff;
+    box-shadow: 8px 8px 18px #cccccc;
+    /*border-style: solid;*/
+}
+.normV {
+    visibility: visible;
+}
+.normH {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+.hidden {
+    visibility: hidden;
+}
+
+.ticks {
+    font: 10px sans-serif;
+}
+.op0{
+    stroke-width: 0px;
+}
+.op1 {
+    stroke-width: 1px;
+    stroke-opacity: 1;
+    stroke: #292929;
+    stroke-alignment: inner;
+}
+.op2{
+    stroke-width: 1px;
+    stroke-opacity: 1;
+    stroke-dasharray: 3;
+    stroke: #292929;
+    stroke-alignment: inner;
+}
+.greyFill {
+    fill: #9a9a9a;
+    opacity: 0.2;
+}
+.track,
+.track-inset,
+.track-overlay {
+    stroke-linecap: round;
+}
+
+.track {
+    stroke: #bbb;
+    stroke-opacity: 0.3;
+    stroke-width: 5px;
+}
+
+.track-inset {
+    stroke: #888;
+    stroke-width: 8px;
+}
+
+.track-overlay {
+    pointer-events: stroke;
+    stroke-width: 50px;
+    stroke: transparent;
+    cursor: crosshair;
+}
+
+.handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: 0.5;
+    stroke-width: 1.25px;
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 99;
+    text-align: center;
+}
+
+#loading-image {
+    position: absolute;
+    top: 100px;
+    left: 240px;
+    z-index: 100;
+}
+
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+}
+
+.background {
+    fill: #eee;
+}
+
+text.active {
+    fill: red;
+}
+
+line {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+.link {
+    stroke: #656565;
+    stroke-opacity: .6;
+}
+.cell {
+    stroke-width: 0px;
+}
+
+.dllline {
+    stroke: #000;
+}
+
+rect {
+    z-index: 1;
+    border: 0px;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: #bbb;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+* {
+    word-wrap: break-word;
+}
+
+div.tooltip2 {
+    border-radius: 10px;
+    border: 2px solid #666666;
+    position: absolute;
+    text-align: center;
+    width: 300px;
+    height: auto;
+    font: 13px sans-serif;
+    pointer-events: none;
+}
+
+div.tooltip3 {
+    padding: 6px;
+    border-radius: 10px;
+    position: absolute;
+    text-align: left;
+    width: auto;
+    height: auto;
+    font: 13px sans-serif;
+    pointer-events: none;
+    display:inline-block
+}
+.tooltip3 .bold {
+    font-weight: bold;
+}
+div.tooltip5 {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: #e7e7e7;
+    border: 1px;
+    border-color: black;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 100;
+}
+/*.tooltip2 span {*/
+/*padding-top:7px;*/
+/*padding-bottom: 8px;*/
+/*font-size: 15px;*/
+/*display:block;*/
+/*opacity: 1;*/
+/*background-color: #f7f7f7;*/
+/*border-radius: 10px;*/
+/*}*/
+
+.tooltip2 table {
+    border-radius: 10px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tooltip2 td {
+    border-collapse: collapse;
+    text-align: left;
+    padding: 8px;
+}
+
+.tooltip2 tr:nth-child(odd) {
+    border-collapse: collapse;
+    background-color: #f6f6f6;
+
+}
+
+.tooltip2 tr:nth-child(even) {
+    border-collapse: collapse;
+    background-color: #e1e1e1;
+}
+
+.tooltip2 .bold {
+    font-weight: bold;
+}
+
+.tooltip2:hover table {
+    visibility: visible;
+}
+
+.cell-hover {
+    color: red;
+    fill: red;
+}
+
+text.text-highlight {
+    fill: red;
+    font-weight: bold;
+}
+
+text.rowLabel {
+    font-size: 12px;
+}
+
+text.colLabel {
+    font-size: 12px;
+}
+
+text.active {
+    opacity: 1;
+}
+
+select.malware {
+    margin: 0;
+    width: 200px;
+    height: 200px;
+}
+
+select.selectmalware {
+    width: 300px;
+}
+
+option.malicious {
+    color: red;
+    font-weight: bold;
+}
+
+option.undetected {
+    color: gray;
+}
+
+option.suspicious {
+    color: yellow;
+}
+
+.textClick{
+    width: 65px;
+    height: 28px;
+    fill: #e2e2e2;
+    cursor: pointer;
+    rx: 5px;
+    ry: 5px;
+    transition: 0.3s;
+}
+.textClick:hover {
+    fill: beige;
+}
+.selected {
+    fill: beige;
+}
+.unselectable {
+    -webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    -o-user-select:none;
+    user-select:none;
+}
+#magContainer {
+    transition: 0.2s;
+}
+.textClickV1{
+    background: #e2e2e2;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    padding: 4px 6px;
+    top: 10px;
+}
+.textClickV1:hover {
+    background: beige;
+}
+
+
+.linkText:hover{
+    cursor: pointer;
+}
+.rectMenu {
+    fill: #f5f5f5;
+    stroke: #a8a8a8;
+    width: 150px;
+    height: 20px;
+    rx: 5;
+    ry: 5
+}
+.rectMenuCustom {
+    fill: #f5f5f5;
+    stroke: #8d8d8d;
+    height: 30px;
+    rx: 5;
+    ry: 5
+}
+.newWindow {
+    background:           url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==)
+    no-repeat center;
+    width: 1em;
+    height: 1em;
+}
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+.option {
+    text-align: center !important;
+    height: 100px;
+    padding: 20px 5px 20px 5px !important;
+}
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+
+.main-padding{
+    padding:0px 8px
+}
+
+circle.node {
+    /*fill: lightsteelblue;*/
+    stroke: #010101;
+    stroke-width: 1px;
+}
+circle.leaf {
+    stroke: #fff;
+    stroke-width: 1px;
+}
+circle.main{
+    stroke: #010101;
+    stroke-width: 2px;
+}
+path.hull {
+    fill: lightsteelblue;
+    fill-opacity: 0.3;
+}
+line.link {
+    stroke: #333;
+    stroke-opacity: 0.5;
+    pointer-events: none;
+}
+
+.overlaySide {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 150px;
+    left: -20px;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 0;
+    width: 50px;
+    height: 100%;
+
+}
+.overlaySide:hover .openbtn {
+    left: 30px
+}
+.overlaySide .openbtn {
+    position: absolute;
+    top: 30%;
+    left: -30px;
+    /*transition: 0.1s;*/
+    cursor:pointer;
+    /*background: white;*/
+    text-shadow: 0 0 5px #cdcdcd;
+
+}
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 10; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #585858; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /*transition: 0.5s; !* 0.5 second transition effect to slide in the sidenav *!*/
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.01s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    padding: 0 20px;
+    float: right;
+    font-size: 40px;
+}
+
+.sidenav a:focus {
+    color: #000;
+    font-weight: bold;
+}
+
+.sidenav .focus{
+    color: #000;
+    font-weight: bold;
+}
+/* Style the tab */
+.tab {
+    float: top;
+    overflow: hidden;
+    background-color: #000000;
+    z-index: 3;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    margin-top: 10px;
+    border-radius: 15px 15px 0 0;
+    color: white;
+    background-color: #000000;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #838383;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #585858;
+}
+
+/* Style the tab content */
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+    border-top: none;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+.btn-floating {
+    display: inline-block;
+    color: #010101;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    background-color: #ffffff;
+    border-radius: 50%;
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.chevron {
+    margin-top: -4px;
+    font-size: 50px;
+}
+.pulse {
+    overflow: visible;
+    position: relative
+}
+
+.pulse::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #03b095;
+    border-radius: inherit;
+    -webkit-transition: opacity .3s, -webkit-transform .3s;
+    transition: opacity .3s, -webkit-transform .3s;
+    transition: opacity .3s, transform .3s;
+    transition: opacity .3s, transform .3s, -webkit-transform .3s;
+    -webkit-animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    z-index: -1
+}
+
+@-webkit-keyframes pulse-animation {
+    0% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5)
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5)
+    }
+}
+
+@keyframes pulse-animation {
+    0% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale(2);
+        transform: scale(2)
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(2.5);
+        transform: scale(2.5)
+    }
+}
+.buttonBox{
+    border: #010101 1px;;
+    display:inline-block;/* padding:8px 16px; */
+    vertical-align:middle;
+    overflow:hidden;
+    text-decoration:none;
+    color:inherit;
+    background-color:inherit;
+    text-align:center;
+    cursor:pointer;
+    white-space:nowrap;}
+
+.buttonBox:hover{
+    color:#000!important;
+    background-color: #ffffff !important;
+    border: #010101 3px;
+}
+#firstDomain{
+    float: left; padding-left: 12px
+}
+#downArrow{
+    margin-top: 5px;
+    display: none;
+    float: right;
+}
+.domainBox {
+    float: right;
+    width: auto;
+    border: 1px solid grey;
+}
+.domainList {
+    border-right: 1px solid grey;
+    border-left: 1px solid grey;
+    border-bottom: 1px solid grey;
+    min-width: auto;
+    right: 16px;
+    height: 200px;
+    overflow: auto;
+    visibility: hidden;
+}
+
+#titleDomain{
+    width: 200px;
+    padding-left: 10px;
+}
+
+.operationTable{
+    table-layout:fixed;
+    width: 100%;
+}
+
+/* Layout */
+.divParent {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}

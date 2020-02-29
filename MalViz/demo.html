@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<title>Malware Visualization</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--<script src="lib/d3.v5.min.js"></script>-->
+<script src="lib/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="styles/main.css">
+<!--<link rel="stylesheet" href="styles/v3sidebar.css">-->
+<style>
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Raleway", sans-serif
+    }
+</style>
+<body class="w3-light-grey">
+
+<!-- Overlay effect when opening sidebar on small screens -->
+
+<div id="mySidenavRank" class="sidenav">
+    <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'rankTab')" id="defaultOpen">Processes Ranked</button>
+        <button class="tablinks" onclick="openCity(event, 'libTab')" id="libTabName">Libraries Called</button>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    </div>
+
+    <div id="rankTab" class="tabcontent">
+        <div class="w3-container" style="padding-right: 0; padding-left: 0">
+            <div id="ranked" class="contentRanked">
+            </div>
+        </div>
+    </div>
+
+    <div id="libTab" class="tabcontent">
+        <div class="w3-container w3-padding-large w3-white">
+            <h4 id="library"><b>Libraries Called</b></h4>
+
+            <table width="100%" border="0px">
+                <tbody>
+                <tr>
+                    <td width="100%">
+                        <div>
+                            <p>
+                                <label for="amount">Number of libraries called:</label>
+                                <input type="text" id="amount" readonly
+                                       style="border:0; color:#f6931f; font-weight:bold;">
+                            </p>
+                            <div id="slider"
+                                 style="width: 400px; background: linear-gradient(to right, #ffffff 0%, #000000 100%);">
+                                <div id="custom-handle" class="ui-slider-handle" style="z-index: auto"></div>
+                            </div>
+                            <span>
+                            <p>Order: <select id="order">
+                                <option value="similarity">By Similarity</option>
+                                <option value="name">By Name</option>
+                                <option value="frequency">By Frequency</option>
+                                <option value="linkDiff">By Different libraries called</option>
+                            </select>
+                            </p>
+                        </span>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="matrix2D"></div>
+
+            <div class="tooltip" style="opacity: 0;" id="ttMatrix"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:0px" id="mainContent">
+    <div class="overlaySide">
+        <a class="openbtn btn-floating btn" id="sideNavbtn" onclick="openNav()">
+            <i class='fa fa-chevron-circle-right chevron'></i>
+        </a>
+    </div>
+    <!-- Header -->
+    <header id="portfolio">
+        <div class="w3-container">
+            <h1><b>Malware Visualization Network Analysis Demo</b>
+                <a href="index.html"><button type="button" class="btn btn-secondary">Back to Main</button></a>
+</h1>
+            <div class="w3-section w3-padding-8">
+                <label for="selectmalware">Select dataset: </label>
+                <select id="selectmalware" class="selectmalware">
+                    <option>--Select dataset--</option>
+
+                    <option value="9BackdoorTrojanGeneric.CSV">9BackdoorTrojanGeneric</option>
+                    <option value="10BackdoorRemcos.CSV">BackdoorRemcos</option>
+<!--                    <option value="11BackdoorBladabindi.CSV">BackdoorBladabindi</option>-->
+<!--                    <option value="12BackdoorRemcos.CSV">BackdoorRemcos</option>-->
+<!--                    <option value="13BackdoorAndrom.CSV">BackdoorAndrom</option>-->
+<!--                    <option value="14BackdoorSymmiGeneric.CSV">BackdoorSymmiGeneric</option>-->
+<!--                    <option value="15BackdoorTrojanGeneric.CSV">BackdoorTrojanGeneric</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_1.CSV">Moi-Win7-RemoteAccess_1</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_2.CSV">Moi-Win7-RemoteAccess_2 &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_3.CSV">Moi-Win7-RemoteAccess_3 ~ 70s</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_4.CSV">Moi-Win7-RemoteAccess_4 ~ 70s - 44s</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_5.CSV">Moi-Win7-RemoteAccess_5</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_6.CSV">Moi-Win7-RemoteAccess_6</option>-->
+<!--                    <option value="Moi-Win7-RemoteAccess_7.CSV">Moi-Win7-RemoteAccess_7</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_1.CSV">Moi-XP-RemoteAccess_1</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_2.CSV">Moi-XP-RemoteAccess_2</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_3.CSV">Moi-XP-RemoteAccess_3</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_4.CSV">Moi-XP-RemoteAccess_4</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_5.CSV">Moi-XP-RemoteAccess_5</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_6.CSV">Moi-XP-RemoteAccess_6</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_7_exec.CSV">Moi-XP-RemoteAccess_7_exec</option>-->
+<!--                    <option value="Moi-XP-RemoteAccess_7_install.CSV">Moi-XP-RemoteAccess_7_install</option>-->
+                    <option value="faran-7-vs-backdoor-9.CSV">faran-7-vs-backdoor-9</option>
+<!--                    <option value="faran-7-vs-backdoor-10.CSV">faran-7-vs-backdoor-10</option>-->
+<!--                    <option value="faran-7-vs-backdoor-11.CSV">faran-7-vs-backdoor-11</option>-->
+<!--                    <option value="faran-7-vs-backdoor-12.CSV">faran-7-vs-backdoor-12</option>-->
+<!--                    <option value="faran-7-vs-backdoor-13.CSV">faran-7-vs-backdoor-13</option>-->
+                    <option value="faran-7-vs-backdoor-14.CSV">faran-7-vs-backdoor-14</option>
+<!--                    <option value="faran-7-vs-backdoor-15.CSV">faran-7-vs-backdoor-15</option>-->
+<!--                    <option value="Faran-win7-vs-7fa0ef3f22045c45c80885865d0d0942.CSV">-->
+<!--                        Faran-win7-vs-7fa0ef3f22045c45c80885865d0d0942 &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Faran-win7-vs-13ef35e912a54739a27015eecc3fbbaeaf2ba2b7a2a49bfd11e26e099a330926.CSV">-->
+<!--                        Faran-win7-vs-13ef35e912a54739a27015eecc3fbbae &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-Win7-Bladabindi.CSV">Vung-Win7-Bladabindi &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="Vung-Win7-Cryptowall.CSV">Vung-Win7-Cryptowall</option>-->
+<!--                    <option value="Vung-Win7-Locky.Gen.CSV">Vung-Win7-Locky.Gen</option>-->
+<!--                    <option value="Vung-Win7-Multinjector.CSV">Vung-Win7-Multinjector</option>-->
+                    <option value="Vung-Win7-Teerac.B.CSV">Vung-Win7-Teerac.B &nbsp;&nbsp;✔</option>
+<!--                    <option value="VungPham-Behavior-Bladabindi.gen-XP.CSV">VungPham-Behavior-Bladabindi.gen-XP&nbsp;&nbsp;✔</option>-->
+<!--                    <option value="VungPham-Behavior-MultiInjector-XP.CSV">VungPham-Behavior-MultiInjector-XP &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="VungPham-Behavior-Vawtrak.A-XP.CSV">VungPham-Behavior-Vawtrak.A-XP &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="VungPham-Behavior-Winwebsec.I.CSV">VungPham-Behavior-Winwebsec.I &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-Behavior-XP-Payment copy.CSV">Vung-Behavior-XP-Payment copy &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-Behavior-XP-RemR.CSV">Vung-Behavior-XP-RemR &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="Vung-Behavior-XP-Scan copy (alloyanycut).CSV">-->
+<!--                        Vung-Behavior-XP-Scan-copy-(alloyanycut) &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Faran-Trojan-Backdoor.win32.BlueIce.CSV">Faran-Trojan-Backdoor.win32.BlueIce&nbsp;&nbsp;✔</i></option>-->
+<!--                    <option value="Faran-Trojan-Backdoor.Win32.CyberSpy.13.b.CSV">-->
+<!--                        Faran-Trojan-Backdoor.Win32.CyberSpy.13.b &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Faran-Trojan-Backdoor.win32.Death.25.i.CSV">Faran-Trojan-Backdoor.win32.Death.25.i-->
+<!--                        &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Faran-Trojan-Backdoor.win32.executor.a.CSV">Faran-Trojan-Backdoor.win32.executor.a-->
+<!--                        &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Faran-win7-Trojan-Backdoor.Win32.Alicia.o.CSV">-->
+<!--                        Faran-win7-Trojan-Backdoor.Win32.Alicia.o &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Faran-win7-Trojan-Backdoor.win32.Executor.a.CSV">-->
+<!--                        Faran-win7-Trojan-Backdoor.win32.Executor.a &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+                    <option value="Huyen-Ransomware-WannaPeace.csv">Huyen-Ransomware-WannaPeace &nbsp;&nbsp;✔</option>
+<!--                    <option value="Huyen-Trojan-Infostealer.Dexter.csv">Huyen-Trojan-Infostealer.Dexter &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-Email-Flooder-Absolut-XP.CSV">Vung-Email-Flooder-Absolut-XP &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-Email-Flooder-Achis-Win10.CSV">Vung-Email-Flooder-Achis-Win10 &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-Email-Flooder-Achis-XP.CSV">Vung-Email-Flooder-Achis-XP &nbsp;&nbsp;✔</option>-->
+                    <option value="Vung-Email-Flooder-Archis-Win7.CSV">Vung-Email-Flooder-Archis-Win7 &nbsp;&nbsp;✔
+                    </option>
+<!--                    <option value="Vung-HackTool-BackSteal-Win10.CSV">Vung-HackTool-BackSteal-Win10 &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+<!--                    <option value="Vung-HackTool-EmailCrack1-Win10.CSV">Vung-HackTool-EmailCrack1-Win10 &nbsp;&nbsp;✔-->
+<!--                    </option>-->
+                    <option value="Vung-HackTool-EmailCrack-Win10.CSV">Vung-HackTool-EmailCrack-Win10 &nbsp;&nbsp;✔
+                    </option>
+<!--                    <option value="Vung-HackTool-EmailCrack-XP.CSV">Vung-HackTool-EmailCrack-XP &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="Vung-HackTool-Stealm1-Win10.CSV">Vung-HackTool-Stealm1-Win10 &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="Vung-HackTool-Stealm-Win10.CSV">Vung-HackTool-Stealm-Win10 &nbsp;&nbsp;✔</option>-->
+<!--                    <option value="Cerber-win7.CSV">Cerber &nbsp;&nbsp;✔</option>-->
+
+                </select>
+
+                or a local file:
+                <input type="file" id="input" onchange="handleFiles">
+                <div id="domainBox"
+                     class="w3-bar w3-white domainBox">
+                    <a class="w3-bar-item" style="width: 0px; padding: 0"></a>
+                    <div class="w3-dropdown-hover" style="text-align: left;">
+                        <button class="buttonBox">
+                            <table>
+                                <tr>
+                                    <td id="titleDomain">Connecting Domains:</td>
+                                    <td style="width: 150px" id="firstCell">
+                                        <i id="downArrow" class='fa fa-angle-down'></i>
+                                    </td>
+                                </tr>
+                            </table>
+                        </button>
+                        <div id="domainList"
+                             class="w3-dropdown-content w3-bar-block domainList">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- First Photo Grid-->
+
+    <div class="w3-row-padding" style="background-color:#cecece; margin-bottom: 20px">
+        <h4 class="w3-container"><b>Processes</b></h4>
+        <div class="w3-threequarter w3-container w3-margin-bottom" style="width:100%">
+            <div class="w3-container w3-white pb-2" id="heatmap" style="overflow-x: auto">
+
+            </div>
+            <span id="operation"></span>
+        </div>
+
+        <div class="w3-threequarter w3-container w3-margin-bottom" style="width:20%">
+            <h4 class="w3-container"><b>Operated objects</b></h4>
+        </div>
+
+        <div class="w3-quarter w3-container w3-margin-bottom" style="width:80%">
+            <h4 class="w3-container"><b>Operations</b></h4>
+        </div>
+
+        <!-- content -->
+        <!--        <div class="w3-row">-->
+        <div class="w3-half w3-container" style="width:20%">
+            <div class="w3-row">
+                <div class="w3-container w3-white pt-3">
+                    <p><b>Underlay Stream</b>
+                        <input type="checkbox" id="streamCheck"
+                        >
+                    </p>
+                    <p><b>Reference Types</b></p>
+                    <div class="w3-container w3-white" style="padding-right: 0">
+                        <div id="legend"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w3-half w3-container divParent" style="width:80%; padding-bottom: 20px">
+            <div class="w3-threequarter w3-container w3-white pt-3" style="width:80%">
+                <p><b>Operations Overview</b>
+                    <span style="float: right">
+                            <input type="checkbox" id="opSelection"
+                                   onclick="selectAll()" checked> Select All
+                        </span>
+                </p>
+                <div id="stats" style="overflow-x: auto"></div>
+            </div>
+            <div class="w3-quarter w3-container w3-white pt-3" style="width:20%">
+                <p><input type="checkbox" id="commonSelection" onclick="selectCommon()"> Commonly encountered
+                </p>
+                <div id="commonOp"></div>
+            </div>
+        </div>
+        <!--        </div>-->
+    </div>
+
+    <div class="w3-quarter w3-container w3-margin-bottom" style="width:80%">
+        <h4 class="w3-container"><b>Summary</b></h4>
+
+    </div>
+
+    <!-- content -->
+    <div class="w3-row">
+        <div class="w3-half w3-container" style="width:100%">
+            <div class="w3-row">
+                <div class="w3-container w3-white pt-4">
+
+                    <div class="w3-container w3-white pr-0 pl-0">
+                        <div id="apiTableHolder"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div id="loading">
+    <img id="loading-image" height="200" width="200" src="images/squareloader2.gif" alt="Loading..."/>
+</div>
+<script src="js/ultility.js"></script>
+<script src="js/variables.js"></script>
+<script src="js/main.js"></script>
+<script src="js/getLibData.js"></script>
+<script src="js/api.js"></script>
+<script>
+    document.getElementById("mySidenavRank").style.height = $(window).height();
+    var rankEvent, libEvent;
+    var sideWidth = 600;
+
+    discovery("#sideNavbtn");
+
+    function discovery(d) {
+        d3.select(d).style('left', '20px')
+            .classed("pulse", true)
+            // .transition().delay(7000).duration(1000)
+            // .style('left', null)
+            .on('end', function () {
+                d3.select(d).classed("pulse", true);
+            });
+    }
+
+    function openNav() {
+        if (!rankEvent) {
+            rankEvent = 1;
+        }
+
+        document.getElementById("mySidenavRank").style.width = sideWidth + "px";
+        document.getElementById("mainContent").style.marginLeft = sideWidth + "px";
+        d3.select("#rankBtn").classed("w3-black", true);
+    }
+
+    function closeNav() {
+        // d3.select("mySidenavRank").classed("raise", false);
+        document.getElementById("mySidenavRank").style.width = "0";
+        document.getElementById("mainContent").style.marginLeft = "0";
+        d3.select("#rankBtn").classed("w3-black", false);
+    }
+
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+
+    let divOperation = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    let div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    let div2 = d3.select("body").append("div")
+        .attr("class", "tooltip2")
+        .style("opacity", 0);
+
+    let div3 = d3.select("body").append("div")
+        .attr("class", "tooltip3")
+        .style("opacity", 0);
+
+    let div4 = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    let div5 = d3.select("body").append("div")
+        .attr("class", "tooltip5")
+        .style("opacity", 0);
+
+    // load domain file
+
+    // load available file
+    $('select#selectmalware').on('change', function (e) {
+        let optionSelected = $("option:selected", this);
+        let valueSelected = this.value;
+        let loading = d3.select('body').append('div').attr('id', 'loading');
+        loading.append('img')
+            .attr('id', 'loading-image')
+            .attr('src', 'images/squareloader2.gif')
+            .attr("height", "200")
+            .attr("height", "200");
+        init(valueSelected);
+    });
+
+    // load local file
+    const inputElement = document.getElementById("input");
+    inputElement.addEventListener("change", handleFiles, false);
+
+    function handleFiles() {
+        const fileList = this.files; /* now you can work with the file list */
+        var file = fileList[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            let loading = d3.select('body').append('div').attr('id', 'loading');
+            loading.append('img')
+                .attr('id', 'loading-image')
+                .attr('src', 'images/squareloader2.gif')
+                .attr("height", "200")
+                .attr("height", "200");
+            // The file's text will be printed here
+            lensingStatus = false;
+            streamEvent = false;
+            rankEvent = 0;
+            libEvent = 0;
+            closeNav();
+            document.getElementById("streamCheck").checked = false;
+            let data = d3.csvParse(e.target.result).map(d => {
+                return {
+                    Timestamp: d['Time of Day'],
+                    PID: d['PID'],
+                    Process_Name: d['Process Name'],
+                    Operation: d["Operation"],
+                    Path: d["Path"],
+                    Detail: d["Detail"]
+                }
+            });
+
+            d3.queue()
+                .defer(d3.csv, "data/domain.csv")
+                .await(function (error, domain) {
+                    loadData(error, data, domain)
+                });
+        };
+        reader.readAsText(file);
+    }
+
+    const availableVirus = ["WannaPeace", "Teerac", "Cerber", "HackTool-EmailCrack-Win10", "10BackdoorRemcos",
+        "faran-7-vs-backdoor-9", "faran-7-vs-backdoor-14", "Vung-Email-Flooder-Archis-Win7"]
+
+    let init = function (filePath) {
+        lensingStatus = false;
+        streamEvent = false;
+        rankEvent = 0;
+        libEvent = 0;
+        closeNav();
+        console.log(filePath)
+
+        if (availableVirus.find(d => filePath.indexOf(d) >= 0)) {
+            d3.queue()
+                .defer(d3.csv, "data/" + filePath, function (d) {
+                    return {
+                        Timestamp: d['Time of Day'],
+                        PID: d['PID'],
+                        Process_Name: d['Process Name'],
+                        Operation: d["Operation"],
+                        Path: d["Path"],
+                        Detail: d["Detail"]
+                    }
+                })
+                .defer(d3.json, "sample/" + filePath.substring(0, filePath.length - 4))
+                .defer(d3.csv, "data/domain.csv")
+                .await(loadData);
+
+        } else {
+            d3.queue()
+                .defer(d3.csv, "data/" + filePath, function (d) {
+                    return {
+                        Timestamp: d['Time of Day'],
+                        PID: d['PID'],
+                        Process_Name: d['Process Name'],
+                        Operation: d["Operation"],
+                        Path: d["Path"],
+                        Detail: d["Detail"]
+                    }
+                })
+                .await(loadData);
+
+            d3.select("#apiTableHolder").selectAll("*").remove();
+            document.getElementById("apiTableHolder").innerHTML = "No network data."
+        }
+
+    };
+
+    let loadData =
+        function (error, original_data, domainInfo, domain) {
+            if (error) {
+                console.error(error);
+            } else {
+                document.getElementById("commonSelection").checked = false;
+                document.getElementById("opSelection").checked = true;
+                document.getElementById("streamCheck").checked = false;
+
+                domainResult = [];
+                let [data, domainData] = ProcessDataV2(original_data, domainInfo, domain);
+                let SiteManager = applicationManager(data); //Initialize application
+                SiteManager.drawStats('#stats'); //Draw statistic map
+                SiteManager.malist("#commonOp");
+                SiteManager.drawMain('#heatmap');//Draw mainMap
+                SiteManager.connectedDomain();
+                loadDataAPI(domainData, data.filter(d => d.Process === "Network"));
+                // for running --------------------
+                d3.select("#sideNavbtn")
+                    .on("click", () => {
+                        if (rankEvent == 1) {
+                            SiteManager.highlight('#ranked'); // hightlight
+                            rankEvent = 2;
+                        }
+                    });
+
+                // for testing --------------------
+                // openNav();
+                // SiteManager.highlight('#ranked');
+                // --------------------------------
+
+                d3.select("#libTabName")
+                    .on("click", () => {
+                        if (!libEvent) {
+                            libEvent = 1;
+                            console.log("first lib");
+                            var lib = libManager(data);
+                            let maxcalls = lib.getCallRange().maxcall;
+
+                            $("#btnName").click(function () {
+                                    lib.sort2DMatrix('similarity')
+                                }
+                            );
+                            $("#btnNum").click(function () {
+                                    lib.sort2DMatrix('numlinks')
+                                }
+                            );
+                            $("#btnCount").click(function () {
+                                    lib.sort2DMatrix('numcount')
+                                }
+                            );
+
+                            $(function () {
+                                let handle = $("#custom-handle");
+                                $("#slider").slider({
+                                    min: 0,
+                                    value: 3,
+                                    max: maxcalls,
+                                    create: function () {
+                                        handle.text($(this).slider("value"));
+                                    },
+                                    slide: function (event, ui) {
+                                        $("#amount").val("Min: " + ui.value + " - Max: " + maxcalls);
+                                        handle.text(ui.value);
+                                        lib.updateRangeFilter(ui.value, maxcalls)
+                                    }
+                                });
+                                $("#amount").val("Min: " + 3 + " - Max: " + maxcalls);
+                            });
+                            lib.updateRangeFilter(3, maxcalls);
+                            isready = true;
+                        }
+                    });
+            }
+        }
+    init("Vung-Email-Flooder-Archis-Win7.CSV");
+
+    var list = {
+        "CloseFile": {"operation": "FileSystem", "index": 0},
+        "CreateFile": {"operation": "FileSystem", "index": 1},
+        "CreateFileMapping": {"operation": "FileSystem", "index": 2},
+        "DeviceIoControl": {"operation": "FileSystem", "index": 3},
+        "FileSystemControl": {"operation": "FileSystem", "index": 4},
+        "FlushBuffersFile": {"operation": "FileSystem", "index": 5},
+        "LockFile": {"operation": "FileSystem", "index": 6},
+        "NotifyChangeDirectory": {"operation": "FileSystem", "index": 7},
+        "QueryAllInformationFile": {"operation": "FileSystem", "index": 8},
+        "QueryAttributeInformationVolume": {"operation": "FileSystem", "index": 9},
+        "QueryAttributeTagFile": {"operation": "FileSystem", "index": 10},
+        "QueryBasicInformationFile": {"operation": "FileSystem", "index": 11},
+        "QueryDeviceRelations": {"operation": "FileSystem", "index": 12},
+        "QueryDirectory": {"operation": "FileSystem", "index": 13},
+        "QueryEAFile": {"operation": "FileSystem", "index": 14},
+        "QueryEaInformationFile": {"operation": "FileSystem", "index": 15},
+        "QueryFileInternalInformationFile": {"operation": "FileSystem", "index": 16},
+        "QueryFullSizeInformationVolume": {"operation": "FileSystem", "index": 17},
+        "QueryInformationVolume": {"operation": "FileSystem", "index": 18},
+        "QueryNameInformationFile": {"operation": "FileSystem", "index": 19},
+        "QueryNetworkOpenInformationFile": {"operation": "FileSystem", "index": 20},
+        "QueryNormalizedNameInformationFile": {"operation": "FileSystem", "index": 21},
+        "QueryObjectIdInformationVolume": {"operation": "FileSystem", "index": 22},
+        "QueryOpen": {"operation": "FileSystem", "index": 23},
+        "QueryPositionInformationFile": {"operation": "FileSystem", "index": 24},
+        "QueryRemoteProtocolInformation": {"operation": "FileSystem", "index": 25},
+        "QuerySecurityFile": {"operation": "FileSystem", "index": 26},
+        "QuerySizeInformationVolume": {"operation": "FileSystem", "index": 27},
+        "QueryStandardInformationFile": {"operation": "FileSystem", "index": 28},
+        "QueryStreamInformationFile": {"operation": "FileSystem", "index": 29},
+        "ReadFile": {"operation": "FileSystem", "index": 30},
+        "SetAllocationInformationFile": {"operation": "FileSystem", "index": 31},
+        "SetBasicInformationFile": {"operation": "FileSystem", "index": 32},
+        "SetDispositionInformationFile": {"operation": "FileSystem", "index": 33},
+        "SetEndOfFileInformationFile": {"operation": "FileSystem", "index": 34},
+        "SetPositionInformationFile": {"operation": "FileSystem", "index": 35},
+        "SetRenameInformationFile": {"operation": "FileSystem", "index": 36},
+        "SetSecurityFile": {"operation": "FileSystem", "index": 37},
+        "UnlockFileSingle": {"operation": "FileSystem", "index": 38},
+        "WriteFile": {"operation": "FileSystem", "index": 39},
+        "InternalDeviceIoControl": {"operation": "FileSystem", "index": 40},
+        "System Statistics": {"operation": "FileSystem", "index": 41},
+        "SystemControl": {"operation": "FileSystem", "index": 42},
+        "Load Image": {"operation": "ProcessThread", "index": 0},
+        "Process Create": {"operation": "ProcessThread", "index": 1},
+        "Process Exit": {"operation": "ProcessThread", "index": 2},
+        "Process Start": {"operation": "ProcessThread", "index": 3},
+        "Thread Create": {"operation": "ProcessThread", "index": 4},
+        "Thread Exit": {"operation": "ProcessThread", "index": 5},
+        "RegCloseKey": {"operation": "Registry", "index": 0},
+        "RegCreateKey": {"operation": "Registry", "index": 1},
+        "RegDeleteKey": {"operation": "Registry", "index": 2},
+        "RegDeleteValue": {"operation": "Registry", "index": 3},
+        "RegEnumKey": {"operation": "Registry", "index": 4},
+        "RegEnumValue": {"operation": "Registry", "index": 5},
+        "RegFlushKey": {"operation": "Registry", "index": 6},
+        "RegLoadKey": {"operation": "Registry", "index": 7},
+        "RegOpenKey": {"operation": "Registry", "index": 8},
+        "RegQueryKey": {"operation": "Registry", "index": 9},
+        "RegQueryKeySecurity": {"operation": "Registry", "index": 10},
+        "RegQueryMultipleValueKey": {"operation": "Registry", "index": 11},
+        "RegQueryValue": {"operation": "Registry", "index": 12},
+        "RegSetInfoKey": {"operation": "Registry", "index": 13},
+        "RegSetKeySecurity": {"operation": "Registry", "index": 14},
+        "RegSetValue": {"operation": "Registry", "index": 15},
+        "TCP Accept": {"operation": "Network", "index": 0},
+        "TCP Connect": {"operation": "Network", "index": 1},
+        "TCP Disconnect": {"operation": "Network", "index": 2},
+        "TCP Receive": {"operation": "Network", "index": 3},
+        "TCP Reconnect": {"operation": "Network", "index": 4},
+        "TCP Retransmit": {"operation": "Network", "index": 5},
+        "TCP Send": {"operation": "Network", "index": 6},
+        "TCP TCPCopy": {"operation": "Network", "index": 7},
+        "UDP Receive": {"operation": "Network", "index": 8},
+        "UDP Accept": {"operation": "Network", "index": 9},
+        "UDP Connect": {"operation": "Network", "index": 10},
+        "UDP Send": {"operation": "Network", "index": 11},
+        "Process Profiling": {"operation": "Profiling", "index": 0},
+        "Others": {"operation": "Others", "index": 0}
+    };
+    var colorScaleOrange = d3.scaleSequential(d3["interpolateYlOrBr"])// File: 0-38
+        .domain([70, -30]);
+
+    var colorScaleGreen = d3.scaleSequential(d3["interpolateGreens"]) // Registry: 0-14
+        .domain([20, -3]);
+
+    var colorScaleBlue = d3.scaleSequential(d3["interpolateBlues"])  // Process: 0-5
+        .domain([8, -2]);
+
+    var colorScaleRed = d3.scaleSequential(d3["interpolateReds"]) // Network: 0-9
+        .domain([15, -5]);
+
+    function getOperationType(operation) {
+        if (!list[operation]) {
+            return "Others"
+        } else return list[operation]["operation"]
+            ;
+    }
+
+    var sub = d3.keys(list);
+
+    function colorPicker(operation) {
+        if (list[operation]) {
+            switch (list[operation]["operation"]) {
+                case "FileSystem":
+                    return colorScaleOrange(list[operation]["index"]);
+                case "Registry":
+                    return colorScaleGreen(list[operation]["index"]);
+                case "Network":
+                    return colorScaleRed(list[operation]["index"]);
+                case "ProcessThread":
+                    return colorScaleBlue(list[operation]["index"]);
+                case "Profiling":
+                    return "#6854b1";
+                default:
+                    return "#5d5d5d"
+            }
+        } else return "#5d5d5d"
+    }
+
+</script>
+</body>
+</html>
