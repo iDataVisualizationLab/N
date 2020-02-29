@@ -1683,7 +1683,7 @@ function applicationManager(globalData) {
         },
 
         drawnetAll: function (position) {
-            let svg = d3.select(position).select('svg');
+            let svg = d3.select(position);
             svg.selectAll("*").remove();
             svg.append("rect")
                 .attr("width", "100%")
@@ -1691,6 +1691,8 @@ function applicationManager(globalData) {
                 .attr("stroke", "grey")
                 .attr("fill", "white")
             ;
+            let width = +svg.attr('width');
+            let height =+svg.attr('height');
             // FORCE-DIRECTED GRAPH ==========================================
 
             var list = globalgroupbyprocessname.map(d => d.key.toLowerCase());
@@ -1796,7 +1798,14 @@ function applicationManager(globalData) {
                 }
             });
 
-
+            // Ngan 2/29 - find unq links
+            let links_flatten = _.flatten(d3.values(links));
+            let links_all_ob ={};
+            links_flatten.forEach(l=>{
+                links_all_ob[l.source+"_"+l.target] = l;
+            });
+            let links_all = d3.values(links_all_ob);
+            // let links_all = links_flatten;
             // DONE computing nodes and links
             // sort processes based on number of links
             var dr = 4,      // default point radius
@@ -1826,13 +1835,13 @@ function applicationManager(globalData) {
             // LOOP
             [sortedList[0]].forEach((item, index) => {
                 nodes[item] = [];
-                var height = scaleHeight(links[item].length);
-                var wPosition = sideWidth / 2;
+                // var height = scaleHeight(links[item].length);
+                var wPosition = width / 2;
                 var hPosition = height / 2;
                 var groupName = {};
 
                 // define group | main exe dont group
-                var grouped = nodesb4group[item].groupBy(['type', 'connect']);
+                var grouped = _.uniqBy(_.flatten(d3.values(nodesb4group)),'id').groupBy(['type', 'connect']);
                 grouped.forEach((g, i) => {
                     groupName[i + 1] = 0;
                     g.values.forEach(d => {
@@ -1864,7 +1873,8 @@ function applicationManager(globalData) {
                         for (let j = i + 1; j < len;
                              j += Math.min(scaleLimit(len), Math.round(len / 3))) {
                             let node2 = g.values[j];
-                            links[item].push({
+                            // links[item].push({
+                            links_all.push({
                                 source: node1.id,
                                 target: node2.id,
                                 value: 1,
@@ -1885,34 +1895,9 @@ function applicationManager(globalData) {
                 var curve = d3.line()
                     .curve(d3.curveBasis);
 
-                // let svg = d3.select("#ranked")
-                //     .append("svg")
-                //     .attr("id", "svg" + item.replace(/[.]/g, ""))
-                //     .attr("width", "100%")
-                //     .attr("height", height);
-                //
-                // svg.append("rect")
-                //     .attr("width", "100%")
-                //     .attr("height", "100%")
-                //     .attr("stroke", "grey")
-                //     .attr("fill", "white")
-                // ;
-                //
-                // svg.append("text")
-                //     .text((index + 1) + ". " + item)
-                //     .attr("x", 15)
-                //     .attr("y", 23)
-                //     .style("font-weight", "bold")
-                //     .append("tspan")
-                //     .attr("dy", 25)
-                //     .attr("x", index > 8 ? 35 : 30)
-                //     .style("font-size", "14px")
-                //     .text("Self-call(s): " + orderedArray.find(d => d.key === item).selfCalls.length)
-                //     .style("font-weight", "normal");
-
                 // connect link to node
                 extra[item] = [];
-                links[item].forEach(link => {
+                links_all.forEach(link => {
                     var s = link.source = nodes[item].find(d => d.id === link.source),
                         t = link.target = nodes[item].find(d => d.id === link.target);
                     if (t.id === s.id) {
@@ -1930,7 +1915,7 @@ function applicationManager(globalData) {
 
                         nodes[item].push(i, j);
 
-                        links[item].push({source: s, target: i, self: 1, value: 1},
+                        links_all.push({source: s, target: i, self: 1, value: 1},
                             {source: i, target: j, self: 2, value: 1},
                             {source: j, target: t, self: 1, value: 1});
 
@@ -1945,7 +1930,7 @@ function applicationManager(globalData) {
                 });
 
                 data.nodes = nodes[item];
-                data.links = links[item];
+                data.links = links_all;
                 data.extra = extra[item];
 
                 let numLinks;
@@ -2278,6 +2263,17 @@ function applicationManager(globalData) {
 
                     // Tick function
                     function ticked() {
+
+                        node
+                            .attr("cx", function (d) {
+                                d.x = Math.max(Math.min(d.x,width),0);
+                                return d.x;
+                            })
+                            .attr("cy", function (d) {
+                                d.y = Math.max(Math.min(d.y,height),0);
+                                return d.y;
+                            });
+
                         if (!hull.empty()) {
                             hull.data(convexHulls(net.nodes, getGroup, off))
                                 .attr("opacity", 1)
@@ -2297,13 +2293,6 @@ function applicationManager(globalData) {
                                 return d.target.y;
                             });
 
-                        node
-                            .attr("cx", function (d) {
-                                return d.x;
-                            })
-                            .attr("cy", function (d) {
-                                return d.y;
-                            });
 
                         path.attr("d", d => {
                             return lineGenerator([
