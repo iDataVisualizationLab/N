@@ -260,6 +260,10 @@
                         <input type="checkbox" id="streamCheck"
                         >
                     </p>
+                    <p><b>Underlay process</b>
+                        <input type="checkbox" id="processCheck"
+                        >
+                    </p>
                     <p><b>Reference Types</b></p>
                     <div class="w3-container w3-white" style="padding-right: 0">
                         <div id="legend"></div>
@@ -408,6 +412,7 @@
             libEvent = 0;
             closeNav();
             document.getElementById("streamCheck").checked = false;
+            document.getElementById("processCheck").checked = false;
             let data = d3.csvParse(e.target.result).map(d => {
                 return {
                     Timestamp: d['Time of Day'],
@@ -479,6 +484,7 @@
                 document.getElementById("commonSelection").checked = false;
                 document.getElementById("opSelection").checked = true;
                 document.getElementById("streamCheck").checked = false;
+                document.getElementById("processCheck").checked = false;
 
                 domainResult = [];
                 let [data, domainData] = ProcessDataV2(original_data, domainInfo, domain);
@@ -551,6 +557,7 @@
 
     // init("faran-7-vs-backdoor-9.CSV");
     init("Vung-Email-Flooder-Archis-Win7.CSV");
+    // init("Cerber-win7.CSV");
 
     var list = {
         "CloseFile": {"operation": "FileSystem", "index": 0},
@@ -671,6 +678,11 @@
                     return "#5d5d5d"
             }
         } else return "#5d5d5d"
+    }
+    function isProcessThread(operation) {
+        if (list[operation]) {
+            return list[operation]["operation"]==="ProcessThread";
+        } else return false;
     }
 
 </script>

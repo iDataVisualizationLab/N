@@ -152,7 +152,7 @@ function UpdateProcessNameWithChild(processLst, links) {
         proc.childs = [];
         proc.childInfo = {};
         links.forEach(function (link) {
-            if ((proc.key === link.Process_Name) && (link.Process === "ProcessThread")) {    // if key = parent
+            if (proc.key === link.Process_Name&&list[link.Operation]&&list[link.Operation].operation==="ProcessThread"){// && (link.Process === "ProcessThread")) {    // if key = parent
                 let index = getProcessNameIndex(processLst, link.targetProcessName);
                 // index = stt child in processLst
                 if (index != parentIndex) {

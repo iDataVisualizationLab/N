@@ -29,6 +29,7 @@ var xScale, yScale;
 var streamHeightScale;
 var area;
 var streamEvent = false;
+var processEvent = false;
 const categories = ["Registry", "Network", "File", "exe", "dll"];
 const stackColor = ["#247b2b", "#a84553", "#c37e37", "#396bab", "#7e7e7e"];
 const scaleHeight = d3.scaleThreshold()

@@ -710,6 +710,13 @@ function applicationManager(globalData) {
                         // .transition().duration(t)
                             .attr("x", d => (StepScale(d.Step, true)) * rect_width + margin_left);
 
+                        // Ngan 2 29
+                        svg_process.selectAll("line.timeline")
+                        // .transition().duration(t)
+                            .attr('x1', row=>
+                                (StepScale(row.stepRange[0],true) * rect_width + margin_left + 10))
+                            .attr('x2', row=>(((StepScale(row.stepRange[1],true)) * rect_width + margin_left) + 10));
+
                         timeBox.selectAll("text")
                         // .transition().duration(t)
                             .attr("x", (d, i) => {
@@ -942,14 +949,21 @@ function applicationManager(globalData) {
 
 
             }
+            function processToggle() {
+                processEvent  = !processEvent;
+                d3.selectAll("#processes rect")
+                    .attr("display", processEvent?null:"none");
+            }
             d3.select("#streamCheck").on("click", streamToggle);
+            d3.select("#processCheck").on("click", processToggle);
 
             group_by_process_name.forEach(function (row, index) {
                 var group = svg_process.append('g')
                     .attr("transform", "translate(0," + index * group_rect_height + ")");
 
                 // Ngan 2/29
-                group.append('line').attr('stroke', 'black').attr('stroke-width', 1)
+                group.append('line').attr('class','timeline').attr('stroke', 'black').attr('stroke-width', 1)
+                    .datum(row)
                     .attr('x1', (StepScale(row.stepRange[0]) * rect_width + margin_left + 10))
                     .attr('y1', rect_height / 2)
                     .attr('x2', (((StepScale(row.stepRange[1])) * rect_width + margin_left) + 10))
@@ -989,15 +1003,20 @@ function applicationManager(globalData) {
                     .attr('y', group_rect_height / 2)
                     .attr('text-anchor', 'start')
                     .classed("linkText", true)
-                    .on("mouseover", () => {
+                    .on("mouseover", (d) => {
+                        // Ngan 2/29
+                        d3.selectAll('.node').filter(d=>d.nodes[0].id===row.key).style('stroke','red').style('stroke-width',4);
+                        group.select('line').style('stroke', 'red').style('stroke-opacity', 1);
                         d3.select(d3.event.target)
                             .classed("op1", true)
                     })
                     .on("mouseout", () => {
                         d3.select(d3.event.target)
                             .classed("op1", false);
+                        group.select('line').style('stroke', null).style('stroke-opacity', null);
+                        d3.selectAll('.node').filter(d=>d.nodes[0].id===row.key).style('stroke',null).style('stroke-width',null);
                     })
-                    .on("click", function () {
+                    .on("click", function (d) {
 
                         d3.selectAll(".arc")
                             .classed("hidden", !arcActive)
@@ -1012,7 +1031,7 @@ function applicationManager(globalData) {
                         arcActive = !arcActive;
                     });
 
-                //================== rectDraw for process here =================
+                //================== rectDraw for process here ================= rect
                 // var rect = group.selectAll('rect')
                 //     .data(row.values
                 //         // .filter(d => d["Process"] !== "Profiling")
@@ -1161,9 +1180,9 @@ function applicationManager(globalData) {
                     });
 
                 // Ngan 2/29
-                // svg_process.selectAll("rect")
-                // // .transition().duration(200)
-                //     .attr("x", d => (StepScale(d.Step)) * rect_width + margin_left);
+                svg_process.selectAll("rect")
+                // .transition().duration(200)
+                    .attr("x", d => (StepScale(d.Step)) * rect_width + margin_left);
 
                 timeBox.selectAll("text")
                 // .transition().duration(200)
@@ -1242,86 +1261,96 @@ function applicationManager(globalData) {
 
                         // arcDraw
                         var signedOrienation = getProcessNameIndex(updated_data, childProcess.key) - pIndex;
+                        let tempob={};
                         parentProcess.childInfo[childProcess.key].forEach((child, i) => {
-                            svg_process
-                                .append('path').attr("class", () => {
-                                return 'arc'
-                                    + ' a' + parentProcess.key.split(".").join("") + "_a" + childProcess.key.split(".").join("")
-                                    + ' path_' + pIndex + "_" + cIndex + "_" + i
-                                    + " o" + child.event.replace(" ", "");
-                            })
-                                .attr("id", 'path_' + pIndex + "_" + cIndex + "_" + i)
-                                .attr('d', d3.arc()
-                                    .innerRadius(Math.abs(signedOrienation) * group_rect_height / 2 - 1)
-                                    .outerRadius(Math.abs(signedOrienation) * group_rect_height / 2)
-                                    .startAngle(signedOrienation > 0 ? -Math.PI : Math.PI / 90) //converting from degs to radians
-                                    .endAngle(signedOrienation > 0 ? Math.PI / 90 : -Math.PI))
-                                .attr('fill', colorPicker(child.event))
-                                .attr('source', pIndex)
-                                .attr('target', getProcessNameIndex(updated_data, childProcess.key))
-                                .attr('transform', function () {
-
-                                    var posX = (StepScale(child.step)) * rect_width + margin_left;
-                                    var posY = (getProcessNameIndex(updated_data, childProcess.key) + pIndex) * group_rect_height / 2 + group_rect_height / 2;
-
-                                    return 'translate(' + posX + ',' + posY + ')';
+                            if (!tempob[Math.round(child.step/1000)]) {
+                                svg_process
+                                    .append('path').attr("class", () => {
+                                    return 'arc'
+                                        + ' a' + parentProcess.key.split(".").join("") + "_a" + childProcess.key.split(".").join("")
+                                        + ' path_' + pIndex + "_" + cIndex + "_" + i
+                                        + " o" + child.event.replace(" ", "");
                                 })
-                                .attr("marker-end", "url(#arrow_" + pIndex + "_" + cIndex + "_" + i + ")")
-                                // .style("display", "none")
-                                .on("mouseover", function () {
-                                    if (arcSelect) {
-                                    }
-                                    else {
-                                        d3.selectAll(".arc")
-                                            .classed("visible", false)
-                                            .classed("hidden", true);
+                                    .attr("id", 'path_' + pIndex + "_" + cIndex + "_" + i)
+                                    .attr('d', d3.arc()
+                                        .innerRadius(Math.abs(signedOrienation) * group_rect_height / 2 - 1)
+                                        .outerRadius(Math.abs(signedOrienation) * group_rect_height / 2)
+                                        .startAngle(signedOrienation > 0 ? -Math.PI : Math.PI / 90) //converting from degs to radians
+                                        .endAngle(signedOrienation > 0 ? Math.PI / 90 : -Math.PI))
+                                    .attr('fill', colorPicker(child.event))
+                                    .attr('source', pIndex)
+                                    .attr('target', getProcessNameIndex(updated_data, childProcess.key))
+                                    .attr('transform', function () {
 
-                                        d3.select('.path_' + pIndex + "_" + cIndex + "_" + i)
-                                            .classed("visible", true)
-                                            .classed("hidden", false);
-                                    }
+                                        var posX = (StepScale(child.step)) * rect_width + margin_left;
+                                        var posY = (getProcessNameIndex(updated_data, childProcess.key) + pIndex) * group_rect_height / 2 + group_rect_height / 2;
 
-                                    div3.transition()
-                                    // .duration(200)
-                                        .style("opacity", 1);
+                                        return 'translate(' + posX + ',' + posY + ')';
+                                    })
+                                    .attr("marker-end", "url(#arrow_" + pIndex + "_" + cIndex + "_" + i + ")")
+                                    // .style("display", "none")
+                                    .on("mouseover", function () {
+                                        if (arcSelect) {
+                                        }
+                                        else {
+                                            d3.selectAll(".arc")
+                                                .classed("visible", false)
+                                                .classed("hidden", true);
 
-                                    div3.html('Source: ' +
-                                        '<text class = "bold">' + parentProcess.key + "</text>" +
-                                        "<br/> Operation: " +
-                                        '<text class = "bold">' + child.event + "</text>" +
-                                        "<br/> Target: " + '' +
-                                        '<text class = "bold">' + childProcess.key + "</text>"
-                                    )
-                                        .style("left", (d3.event.pageX) + 20 + "px")
-                                        .style("top", (d3.event.pageY - 30) + "px")
-                                        .style("pointer-events", "none")
-                                        .style("background-color", () => {
-                                                // return colorPicker(child.event).replace("(", "a(").replace(")", ", 0.8)");
-                                                return "#dddddd"
-                                            }
+                                            d3.select('.path_' + pIndex + "_" + cIndex + "_" + i)
+                                                .classed("visible", true)
+                                                .classed("hidden", false);
+                                        }
+
+                                        div3.transition()
+                                        // .duration(200)
+                                            .style("opacity", 1);
+
+                                        div3.html('Source: ' +
+                                            '<text class = "bold">' + parentProcess.key + "</text>" +
+                                            "<br/> Operation: " +
+                                            '<text class = "bold">' + child.event + "</text>" +
+                                            "<br/> Target: " + '' +
+                                            '<text class = "bold">' + childProcess.key + "</text>"
                                         )
-                                })
-                                .on("mouseout", function () {
-                                    if (arcSelect) {
-                                        d3.selectAll(".arc.visible")
-                                            .classed("visible", true)
-                                            .classed("hidden", false);
-                                    }
-                                    else {
-                                        d3.selectAll(".arc")
-                                            .classed("visible", true)
-                                            .classed("hidden", false);
-                                    }
+                                            .style("left", (d3.event.pageX) + 20 + "px")
+                                            .style("top", (d3.event.pageY - 30) + "px")
+                                            .style("pointer-events", "none")
+                                            .style("background-color", () => {
+                                                    // return colorPicker(child.event).replace("(", "a(").replace(")", ", 0.8)");
+                                                    return "#dddddd"
+                                                }
+                                            )
+                                    })
+                                    .on("mouseout", function () {
+                                        if (arcSelect) {
+                                            d3.selectAll(".arc.visible")
+                                                .classed("visible", true)
+                                                .classed("hidden", false);
+                                        }
+                                        else {
+                                            d3.selectAll(".arc")
+                                                .classed("visible", true)
+                                                .classed("hidden", false);
+                                        }
 
-                                    div3.style("opacity", 0);
-                                })
+                                        div3.style("opacity", 0);
+                                    })
+                                tempob[Math.round(child.step/1000)]=1;
+                            }else{
+                                tempob[Math.round(child.step/1000)]++;
+                            }
 
                         })
 
                     })
                 }
                 if (parentProcess.selfCalls.length > 0) {
-                    parentProcess.selfCalls.forEach((self, i) => {
+                    parentProcess.selfCalls.forEach((d,i)=>d.index =i)
+                    let temp_nest = d3.nest().key(d=>Math.round(d.step/1000)).entries(parentProcess.selfCalls);
+                    temp_nest.forEach((selfnest) => {
+                        let i = selfnest.values[0].index;
+                        let self = selfnest.values[0];
                         svg_process
                             .append("svg:defs")
                             .selectAll(".arrow")
@@ -1336,7 +1365,8 @@ function applicationManager(globalData) {
                             .attr("refY", 6)
                             .attr("markerWidth", 8)
                             .attr("markerHeight", 8)
-                            .style("fill", d => colorPicker(d.event))
+                            .style("fill", d =>
+                                colorPicker(d.event))
                             .attr("orient", -150)
                             .append('path')
                             .attr('d', 'M0,0 L8,0 L4,8 z');
@@ -1689,7 +1719,6 @@ function applicationManager(globalData) {
             svg.append("rect")
                 .attr("width", "100%")
                 .attr("height", "100%")
-                .attr("stroke", "grey")
                 .attr("fill", "white")
             ;
             let width = +svg.attr('width');
@@ -1720,19 +1749,19 @@ function applicationManager(globalData) {
                     //add node
                     if (ref.Path.length > 0) {   // exist path
                         if (ref.Process === "Registry") {   // registry -------------
-                            computeNodes(nodeObj, nodesb4group[keyName], "Registry", ref.Path, i, len);
+                            computeNodesv2(nodeObj, nodesb4group[keyName], "Registry", ref.Path, i, len,ref.Operation);
                         }
                         else if (ref.Process === "Network") {
-                            computeNodes(nodeObj, nodesb4group[keyName], "Network", ref.Path, i, len);
+                            computeNodesv2(nodeObj, nodesb4group[keyName], "Network", ref.Path, i, len,ref.Operation);
                         }
                         else if (ref.Path.toLowerCase().endsWith(".dll")) {
-                            computeNodes(nodeObj, nodesb4group[keyName], "dll", ref.Path, i, len);
+                            computeNodesv2(nodeObj, nodesb4group[keyName], "dll", ref.Path, i, len,ref.Operation);
                         }
                         else if (ref.Path.toLowerCase().endsWith(".exe")) {
                             let linkExe = ref.Path.split(/\\/);
                             let exeName = linkExe[linkExe.length - 1];
 
-                            computeNodes(nodeObj, nodesb4group[keyName], "exe", exeName, i, len);
+                            computeNodesv2(nodeObj, nodesb4group[keyName], "exe", exeName, i, len,ref.Operation);
 
                             list.forEach(d => {
                                 if ((d.toLowerCase() !== keyName) &&  // second != primary
@@ -1744,7 +1773,7 @@ function applicationManager(globalData) {
                             })
                         }
                         else {
-                            computeNodes(nodeObj, nodesb4group[keyName], "File", ref.Path, i, len);
+                            computeNodesv2(nodeObj, nodesb4group[keyName], "File", ref.Path, i, len,ref.Operation);
                         }
                     }
                 });
@@ -1765,7 +1794,8 @@ function applicationManager(globalData) {
                     links[keyName].push({
                         source: keyName,
                         target: target,
-                        value: nodeObj[target],
+                        value: nodeObj[target].value,
+                        event: nodeObj[target].event
                     });
                 })
             });
@@ -1791,7 +1821,8 @@ function applicationManager(globalData) {
                                 links[host].push({
                                     source: guest,
                                     target: refer,
-                                    value: links[guest].find(d => d.target === refer).value
+                                    value: links[guest].find(d => d.target === refer).value,
+                                    event:links[guest].find(d => d.target === refer).event,
                                 })
                             }
                         })
@@ -2102,8 +2133,12 @@ function applicationManager(globalData) {
                         .attr("y1", initY)
                         .attr("x2", initX)
                         .attr("y2", initY)
-                        .style("stroke",d=>d.target.nodes[0].type==="exe"?"steelblue":'black')
+                        .style("stroke",d=>{return (isProcessThread(d.event)||(d.target.nodes[0].type==="exe"&&d.source.nodes[0].type==="exe"))?'rgb(24, 100, 170)':null})
+                            // colorPicker(d.event)
+
+                            // d.target.nodes[0].type==="exe"?"steelblue":'black')
                         .style("stroke-opacity",d=>d.target.nodes[0].type==="exe"?1:0.2)
+                        // .style("stroke-opacity",d=>d.target.nodes[0].type==="exe"?1:0.2)
                         .style("stroke-width", function (d) {
                             return d.img ? 0 : strokeScale(d.size);
                         });
@@ -2152,7 +2187,7 @@ function applicationManager(globalData) {
                         })
                         .attr("r", function (d) {
                             // bare nodes dont have size
-                            return d.size ? d.nodes[0].type=="exe"?10:(radiusScale(d.size + dr)) : radiusScale(1 + dr);
+                            return d.size ? d.nodes[0].type=="exe"?7:(radiusScale(d.size + dr)) : radiusScale(1 + dr);
                         })
                         .attr("fill", function (d) {
                             return d.size ? getColor(d.nodes[0].type) : getColor(d.type);
@@ -3129,6 +3164,27 @@ function selectCommon() {
     }
 }
 
+// Ngan 2 29
+function computeNodesv2(nodeObj, miniNode, type, rawPath, pos, len, event) {
+    let path = rawPath.toLowerCase();
+    let connectArray = new Array(len + 1).join("0");
+    if (!nodeObj[path]) {
+        // if havent existed
+        nodeObj[path] = {event:event, value:1};
+        miniNode.push({
+            id: path,
+            type: type,
+            connect: connectArray.slice(0, pos) + "1" + connectArray.slice(pos + 1)
+        });
+
+    } else {
+        nodeObj[path].value += 1;
+        if (nodeObj[path].event!=="" && nodeObj[path].event!==event){
+            nodeObj[path].event = '';
+        }
+    }
+}
+
 function computeNodes(nodeObj, miniNode, type, rawPath, pos, len) {
     let path = rawPath.toLowerCase();
     let connectArray = new Array(len + 1).join("0");
@@ -3320,7 +3376,7 @@ function network(data, prev, getGroup, expand) {
         u = expand[u] ? nodeMap[e.source.id] : nodeMap[u];
         v = expand[v] ? nodeMap[e.target.id] : nodeMap[v];
         var index = (u < v ? u + "|" + v : v + "|" + u),
-            l = linkMap[index] || (linkMap[index] = {source: u, target: v, size: 0});
+            l = linkMap[index] || (linkMap[index] = {source: u, target: v, event:e.event,size: 0});
 
         if ((e.img) || (e.self)) {
             l.img = true;

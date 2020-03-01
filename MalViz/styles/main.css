@@ -466,7 +466,8 @@ option.suspicious {
 
 circle.node {
     /*fill: lightsteelblue;*/
-    stroke: #010101;
+    /*stroke: #010101;*/
+    stroke: #ffffff;
     stroke-width: 1px;
 }
 circle.leaf {
