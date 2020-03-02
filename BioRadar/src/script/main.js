@@ -1053,6 +1053,7 @@ function readFilecsv(file) {
             // debug
                 loadclusterInfo = false;
                 if(loadclusterInfo){
+                    updateClusterControlUI(cluster_info.length)
                     handle_dataRaw();
                     if (!init)
                         resetRequest();
@@ -1060,12 +1061,12 @@ function readFilecsv(file) {
                         setTimeout(main,0);
                     preloader(false)
                 }else {
-                    updateClusterControlUI()
                     recalculateCluster({
                         clusterMethod: 'leaderbin',
                         normMethod: 'l2',
                         bin: {startBinGridSize: 4, range: [3, 20]}
                     }, function () {
+                        updateClusterControlUI(cluster_info.length)
                         handle_dataRaw();
                         if (!init)
                             resetRequest();
