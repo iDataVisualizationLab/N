@@ -1831,7 +1831,7 @@ function handle_data_model(tsnedata,isKeepUndefined) {
             currentData.cluster = axis_arr[i].cluster;
             if (currentData.cluster <0) // outliers
                 return;
-            currentData.name = axis_arr[i].name.split('|')[0];
+            currentData.name = axis_arr[i].name.split('__')[0];
             // currentData.name = axis_arr[i].name;
             currentData.__timestep = axis_arr[i].timestep;
             let index = currentData.cluster;
