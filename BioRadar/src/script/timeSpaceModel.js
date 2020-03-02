@@ -133,12 +133,15 @@ d3.TimeSpace = function () {
             reset= false;
             freezemouseoverTrigger =  true;
             d3.select('#modelWorkerScreen').call(drag());
+            if (selection_radardata)
+                renderRadarSummary(selection_radardata.dataRadar,selection_radardata.color,selection_radardata.boxplot)
             // d3.select('#modelSelectionInformation').classed('hide',false);
             // selection tool
         }else{
             if(lassoTool)
                 lassoTool.reset();
             freezemouseoverTrigger = false;
+            renderRadarSummary([]);
             d3.select('#modelWorkerScreen').on('mousedown.drag', null);
             d3.select('#modelWorkerScreen')
                 .on('mouseover',()=>{mouseoverTrigger = true})
@@ -603,14 +606,14 @@ d3.TimeSpace = function () {
                 lines[d.name].visible = true;
                 lines[d.name].material.opacity = graphicopt.component.link.opacity;
             });
-            // INTERSECTED.forEach((d, i) => {
-            //     attributes.size.array[d] = graphicopt.component.dot.size;
-            // });
-            renderRadarSummary([])
             attributes.size.needsUpdate = true;
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
             removeBoxHelper();
+            if (graphicopt.isSelectionMode&&selection_radardata)
+                renderRadarSummary(selection_radardata.dataRadar,selection_radardata.color,selection_radardata.boxplot)
+            else
+                renderRadarSummary([]);
         }
     }
 
@@ -658,7 +661,7 @@ d3.TimeSpace = function () {
             removeBoxHelper();
         }
     }
-
+    let selection_radardata = undefined;
     let animationduration = 120;
     let animationtimer = undefined;
     function animate() {
@@ -741,7 +744,7 @@ d3.TimeSpace = function () {
         let barH = graphicopt.radarTableopt.h/2;
         radarChartclusteropt.schema = graphicopt.radaropt.schema;
         d3.select('.radarTimeSpace .selectionNum').text(dataArr.length);
-        renderRadarSummary(dataRadar,newClustercolor);
+        renderRadarSummary(dataRadar,newClustercolor,true,true);
         // draw table
         let positionscale = d3.scaleLinear().domain([0,1]).range([0,Math.max(graphicopt.radarTableopt.h,40)]);
         let selectedNest = d3.nest().key(d=>d.cluster).rollup(d=>d.length).object(dataArr);
@@ -775,7 +778,7 @@ d3.TimeSpace = function () {
         let btg = holder_action.selectAll('div.btn_group_holder').data(selectedCluster);
         // btg.exit().remove();
         let btg_new = btg.enter().append('div').attr('class', 'btn_group_holder valign-wrapper').style('height',(d,i)=>`${positionscale(1)}px`)
-        .append('div').attr('class', 'btn_group valign-wrapper');
+            .append('div').attr('class', 'btn_group valign-wrapper');
         btg_new.append('i').attr('class','btn_item material-icons currentValue').html('check_box_outline_blank');
         btg_new.append('i').attr('class','btn_item material-icons selected hide').attr('title','action').html('check_box_outline_blank').attr('value','no-action').on('click',actionBtn);
         btg_new.append('i').attr('class','btn_item material-icons ').html('merge_type').attr('title','merge').attr('value','merge').on('click',actionBtn);
@@ -799,7 +802,7 @@ d3.TimeSpace = function () {
                 let dataCollection = selectedCluster.map(d=>d);
                 dataCollection.push(newCluster);
                 dataCollection.action = selectedCluster.action;
-                renderRadarSummary(dataRadar, newClustercolor);
+                renderRadarSummary(dataRadar, newClustercolor,true,true);
                 drawComparisonCharts(dataCollection,true);
                 dialogModel();
             });
@@ -810,7 +813,7 @@ d3.TimeSpace = function () {
                 // set action data
                 selectedCluster.action = {};
                 // render radar
-                renderRadarSummary(dataRadar, newClustercolor);
+                renderRadarSummary(dataRadar, newClustercolor,true,true);
                 // adjust other selection data
                 const allGroup = holder_action.selectAll('div.btn_group_holder');
                 allGroup.select('.btn_item[value="delete"]').classed('hide',true);
@@ -885,7 +888,7 @@ d3.TimeSpace = function () {
                         d.maxval = Math.max(d.maxval,target[i].maxval);
                     });
 
-                    renderRadarSummary(newdataRadar,colorscale(target.name));
+                    renderRadarSummary(newdataRadar,colorscale(target.name),true,true);
                     // adjust other selection data
                     let otherItem = holder_action.selectAll('div.btn_group_holder').filter(d=>d.index!==index);
                     otherItem.filter(d=>d.selected !== d.total)
@@ -910,7 +913,7 @@ d3.TimeSpace = function () {
                             // set action data
                             selectedCluster.action = {};
                             // render radar
-                            renderRadarSummary(dataRadar, newClustercolor);
+                            renderRadarSummary(dataRadar, newClustercolor,true,true);
                             // adjust other selection data
                             const allGroup = holder_action.selectAll('div.btn_group_holder');
                             allGroup.select('.btn_item[value="delete"]').classed('hide',true);
@@ -988,8 +991,8 @@ d3.TimeSpace = function () {
             rateText.select('.totalNum').text(d => isReview?((d.index=== selectedCluster.action.root)? rootTotal: (d.total - d.selected)):('/' + d.total));
         }
     }
-    function renderRadarSummary(dataRadar,color,boxplot) {
-        d3.select('.radarTimeSpace').classed('hide',!dataRadar.length)
+    function renderRadarSummary(dataRadar,color,boxplot,isselectionMode) {
+        d3.select(".radarTimeSpace").classed('hide',!dataRadar.length);
         if (dataRadar.length) {
             radarChartclusteropt.color = function () {
                 return color
@@ -1000,6 +1003,8 @@ d3.TimeSpace = function () {
             currentChart.selectAll('.axisLabel').remove();
             currentChart.select('.axisWrapper .gridCircle').classed('hide', true);
         }
+        if (isselectionMode)
+            selection_radardata = {dataRadar,color,boxplot};
     }
     function drawEmbedding(data,colorfill) {
         let newdata =handledata(data);
