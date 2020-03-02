@@ -1823,7 +1823,7 @@ let radarChartclusteropt  = {
     ringStroke_width: 0.15,
     ringColor:'black',
     fillin:0.5,
-    boxplot:true,
+    boxplot:false,
     animationDuration:1000,
     events:{
         axis: {
