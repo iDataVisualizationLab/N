@@ -519,9 +519,9 @@ d3.TimeSpace = function () {
         return arrowGroup;
     }
     let radarChartclusteropt = {
-        margin: {top: 50, right: 0, bottom: 50, left: 0},
-        w: 200,
-        h: 200,
+        margin: {top: 10, right: 0, bottom: 10, left: 0},
+        w: 300,
+        h: 300,
         radiuschange: false,
         levels:6,
         dotRadius:2,
@@ -533,6 +533,7 @@ d3.TimeSpace = function () {
         ringStroke_width: 0.15,
         ringColor:'black',
         fillin:0.5,
+        labelFactor:0.9,
         boxplot:true,
         animationDuration:100,
         showText: true};
