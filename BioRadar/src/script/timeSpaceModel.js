@@ -339,7 +339,7 @@ d3.TimeSpace = function () {
             setUpZoom();
             stop = false;
 
-            setTimeout(animate)
+            animate()
             svg = d3.select('#modelWorkerScreen_svg').attrs({width: graphicopt.width,height:graphicopt.height});
 
             d3.select('#modelWorkerInformation+.title').text(self.name);
@@ -605,6 +605,7 @@ d3.TimeSpace = function () {
             // INTERSECTED.forEach((d, i) => {
             //     attributes.size.array[d] = graphicopt.component.dot.size;
             // });
+            renderRadarSummary([])
             attributes.size.needsUpdate = true;
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
