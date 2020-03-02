@@ -1128,6 +1128,13 @@ function handle_dataRaw() {
             let axis_arr = _.flatten(serviceLists.map(a => d3.range(0, a.sub.length).map(vi => (v = sampleS[h.name][serviceListattr[a.id]][i][vi], d3.scaleLinear().domain(a.sub[0].range)(v === null ? (nullkey = true, undefined) : v) || 0))));
             axis_arr.name = h.name;
             axis_arr.timestep = i;
+            if (cluster_info.outlyingPoints[h.name+'_'+i]){
+                axis_arr.cluster = -1; //outlying
+                axis_arr.category = h.category;
+                // timeline precalculate
+                tsnedata[h.name].push(axis_arr);
+                return -1;
+            }
             // reduce time step
 
             let index = 0;

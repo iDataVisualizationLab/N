@@ -17,7 +17,6 @@ addEventListener('message',function ({data}) {
     let bin;
     var arr = [];
     dataSpider3 = [];
-    dataCalculate = [];
     let cluster;
     if (!customCluster) {
         for (var i = 0; i < sampleS.timespan.length; i++) {
@@ -31,7 +30,6 @@ addEventListener('message',function ({data}) {
             }
         }
         dataSpider3 = arr;
-        dataCalculate = arr;
 
         // TESTING ZONE
         console.log('calculate outliers');
@@ -48,32 +46,30 @@ addEventListener('message',function ({data}) {
             decrementB:0,
         };
         // scag = scagnosticsnd(handledata(index), scagOptions);
-        let outlyingPoints = [];
+        let outlyingPoints = {};
         // remove outlying
         let scag = scagnosticsnd(dataSpider3.map((d, i) => {
             var dd = d.map(k => k.value);
             dd.data = {name: d.name, id: d.id, indexSamp: d.indexSamp};
             return dd;
         }), scagOptions);
+
         console.log('Outlying detect: bin=' + scag.bins.length);
         console.log(scag.outlyingPoints.map(d => d.data));
         dataSpider3 = dataSpider3.filter(d => {
-            let temp2 = scag.outlyingPoints.filter(e => e.data === d.name);
-            let temp = JSON.parse(JSON.stringify(d));
+            let temp2 = scag.outlyingPoints.filter(e => e.data.id === d.id && e.data.indexSamp === d.indexSamp );
             if (temp2.length) {
-                let tempscaleval = [temp2[0]];
-                tempscaleval.val = temp2[0];
-                temp.indexSamp = d.indexSamp;
-                temp.name = d.name;
-                temp.bin = {
-                    val: [d.map(k => k.value)],
-                    name: [temp2[0].data],
-                    scaledval: tempscaleval,
-                    distancefunc: (e) => 0,
-                    distance: 0
-                };
-                temp.type = "outlying";
-                outlyingPoints.push(temp);
+                let temp = {labels: d.name+'_'+d.indexSamp};
+                d.forEach((s, i) => temp[serviceFullList[i].text] = serviceFullList[i].scale(s.value));
+                temp.radius = 0;
+                temp.mse = 0;
+                temp.index = -1;
+                temp.__metrics = d.slice();
+                temp.__metrics.normalize = temp.__metrics.map((e, i) => e.value);
+                temp.arr = [];
+                temp.total = 1;
+                temp.outlier = {name: d.name, id: d.id, indexSamp: d.indexSamp};
+                outlyingPoints[temp.labels] = temp;
                 return 0;
             }
             return 1;
@@ -166,7 +162,6 @@ addEventListener('message',function ({data}) {
                 temp.bin.val = d.slice();
             return temp;
         });
-        outlyingPoints.forEach(o => dataSpider3.push(o));
         cluster = dataSpider3.map((d, i) => {
             let temp = {labels: i};
             d.forEach((s, i) => temp[serviceFullList[i].text] = serviceFullList[i].scale(s.value));
@@ -180,6 +175,8 @@ addEventListener('message',function ({data}) {
             temp.total = d.bin.id.length;
             return temp;
         });
+
+        cluster.outlyingPoints = outlyingPoints
     }else{
         customCluster.forEach(d=>d.arr = []);
         // re-assign cluster
@@ -255,9 +252,9 @@ addEventListener('message',function ({data}) {
     //     csv_header.push('radius');
 
 
-    hosts.forEach(h => sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
-        return cluster.findIndex(c => c.arr[i] ? c.arr[i].find(e => e === h.name) : undefined);
-    }));
+    // hosts.forEach(h => sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
+    //     return cluster.findIndex(c => c.arr[i] ? c.arr[i].find(e => e === h.name) : undefined);
+    // }));
 
     // cluster.forEach(c => c.arr = c.arr.slice(0, currentindex))
 

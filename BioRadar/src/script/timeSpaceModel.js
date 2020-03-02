@@ -1829,6 +1829,8 @@ function handle_data_model(tsnedata,isKeepUndefined) {
         sampleS.timespan.forEach((t, i) => {
             let currentData = axis_arr[i].slice();
             currentData.cluster = axis_arr[i].cluster;
+            if (currentData.cluster == -1)
+                return;
             currentData.name = axis_arr[i].name.split('|')[0];
             // currentData.name = axis_arr[i].name;
             currentData.__timestep = axis_arr[i].timestep;
