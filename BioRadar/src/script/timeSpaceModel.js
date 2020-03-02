@@ -131,18 +131,22 @@ d3.TimeSpace = function () {
             if (reset)
                 lassoTool = new THREE.LassoTool( camera, points, graphicopt ,svg);
             reset= false;
+            freezemouseoverTrigger =  true;
             d3.select('#modelWorkerScreen').call(drag());
             // d3.select('#modelSelectionInformation').classed('hide',false);
             // selection tool
         }else{
             if(lassoTool)
                 lassoTool.reset();
+            freezemouseoverTrigger = false;
             d3.select('#modelWorkerScreen').on('mousedown.drag', null);
-            d3.select('#modelWorkerScreen').on('mousemove', function(){
+            d3.select('#modelWorkerScreen')
+                .on('mouseover',()=>{mouseoverTrigger = true})
+                .on('mousemove', function(){
                 let coordinator = d3.mouse(this);
                 mouse.x = (coordinator[0]/graphicopt.width)*2- 1;
                 mouse.y = -(coordinator[1]/graphicopt.height)*2+ 1;
-            });
+            }).on('mouseleave',()=>{mouseoverTrigger = false});
             // d3.select('#modelSelectionInformation').classed('hide',true);
             // d3.select('#modelWorkerScreen').on('touchstart.drag', null);
         }
@@ -217,7 +221,7 @@ d3.TimeSpace = function () {
         modelWorker.addEventListener('message', ({data}) => {
             switch (data.action) {
                 case "render":
-                    mouseoverTrigger = false;
+                    freezemouseoverTrigger = true;
                     if(firstReturn) {
                         preloader(false, undefined, undefined, '#modelLoading');
                         firstReturn = false;
@@ -234,7 +238,7 @@ d3.TimeSpace = function () {
                     break;
                 case "stable":
                     modelWorker.terminate();
-                    mouseoverTrigger = true;
+                    freezemouseoverTrigger = false;
                     render(true);
                     reduceRenderWeight(true);
                     break;
@@ -327,10 +331,10 @@ d3.TimeSpace = function () {
             d3.select(renderer.domElement).attr('tabindex',null);
             let mouseoverTrigger_time;
             controls.addEventListener("change", () => {
-                mouseoverTrigger=false;
+                freezemouseoverTrigger=true;
                 if (mouseoverTrigger_time)
                     clearTimeout(mouseoverTrigger_time);
-                mouseoverTrigger_time= setTimeout(function(){mouseoverTrigger=true},500)
+                mouseoverTrigger_time= setTimeout(function(){freezemouseoverTrigger=false},10)
             });
             setUpZoom();
             stop = false;
@@ -354,7 +358,7 @@ d3.TimeSpace = function () {
                 M.toast({html: 'Copied to clipboard'})
             });
 
-        drawSummaryRadar([],handle_data_summary([]),'#ffffff');
+        drawSummaryRadar([],[],'#ffffff');
         start();
         needRecalculate = false;
         },0);
@@ -575,8 +579,8 @@ d3.TimeSpace = function () {
                 scene.remove(scene.getObjectByName('boxhelper'));
                 // var box = new THREE.BoxHelper(lines[target.name], 0x000000);
                 var box3 = new THREE.Box3().setFromObject(lines[target.name]);
-                var boxSize = box3.getSize();
-                var boxPos = box3.getCenter();
+                var boxSize = box3.getSize(new THREE.Vector3());
+                var boxPos = box3.getCenter(new THREE.Vector3());
                 var geometry = new THREE.BoxGeometry(boxSize.x,boxSize.y,boxSize.z);
                 var material = new THREE.MeshBasicMaterial( {color: 0xdddddd,side: THREE.BackSide} );
 
@@ -713,7 +717,7 @@ d3.TimeSpace = function () {
                     drawSummaryRadar(allSelected_Data,handle_data_summary(allSelected_Data),newClustercolor);
                 }catch(e){
                     // draw summary radar chart
-                    drawSummaryRadar([],handle_data_summary([]),newClustercolor);
+                    drawSummaryRadar([],[],newClustercolor);
                 }
                 lassoTool.needRender = false;
             }
@@ -983,7 +987,7 @@ d3.TimeSpace = function () {
         }
     }
     function renderRadarSummary(dataRadar,color,boxplot) {
-        d3.select('.radarTimeSpace').classed('hide',!!dataRadar.length)
+        d3.select('.radarTimeSpace').classed('hide',!dataRadar.length)
         if (dataRadar.length) {
             radarChartclusteropt.color = function () {
                 return color
