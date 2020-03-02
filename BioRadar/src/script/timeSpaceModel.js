@@ -116,7 +116,7 @@ d3.TimeSpace = function () {
 
         function dragended(d) {
             mouseoverTrigger = true;
-            showMetricsArr_plotly(allSelected_Data)
+            // showMetricsArr_plotly(allSelected_Data)
             lassoTool.end();
         }
 
@@ -983,12 +983,17 @@ d3.TimeSpace = function () {
         }
     }
     function renderRadarSummary(dataRadar,color,boxplot) {
-        radarChartclusteropt.color = function(){return color};
-        radarChartclusteropt.boxplot = boxplot!==undefined?boxplot:true;
+        d3.select('.radarTimeSpace').classed('hide',!!dataRadar.length)
+        if (dataRadar.length) {
+            radarChartclusteropt.color = function () {
+                return color
+            };
+            radarChartclusteropt.boxplot = boxplot !== undefined ? boxplot : true;
 
-        let currentChart = RadarChart(".radarTimeSpace", [dataRadar], radarChartclusteropt, "");
-        currentChart.selectAll('.axisLabel').remove();
-        currentChart.select('.axisWrapper .gridCircle').classed('hide', true);
+            let currentChart = RadarChart(".radarTimeSpace", [dataRadar], radarChartclusteropt, "");
+            currentChart.selectAll('.axisLabel').remove();
+            currentChart.select('.axisWrapper .gridCircle').classed('hide', true);
+        }
     }
     function drawEmbedding(data,colorfill) {
         let newdata =handledata(data);
