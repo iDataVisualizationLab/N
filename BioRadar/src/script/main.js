@@ -1064,7 +1064,7 @@ function readFilecsv(file) {
                     recalculateCluster({
                         clusterMethod: 'leaderbin',
                         normMethod: 'l2',
-                        bin: {startBinGridSize: 4, range: [3, 20]}
+                        bin: {startBinGridSize: 2, range: [8, 9]}
                     }, function () {
                         updateClusterControlUI(cluster_info.length)
                         handle_dataRaw();
