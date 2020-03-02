@@ -14,6 +14,7 @@ function serviceLists2serviceFullList (serviceLists){
     serviceLists.forEach(s=>s.sub.forEach(sub=>{
         sub.idroot = s.id;
         sub.enable = s.enable&&(sub.enable===undefined?true:sub.enable);
+        // sub.scale = d3.scaleLinear().range(sub.range);
         temp.push(sub);}));
     return temp;
 }

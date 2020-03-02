@@ -2,7 +2,7 @@ window =self;
 importScripts("../../lib/d3.v4.js","../setting_theme.js","../../lib/lodash.min.js","../setting.js","../../lib/kmean.js","../../lib/binnerN.min.js","../../lib/scagnosticsnd.min.js","../../lib/simple-statistics.min.js");
 
 addEventListener('message',function ({data}) {
-    let binopt = data.binopt, sampleS = data.sampleS, hosts = data.hosts;
+    let binopt = data.binopt, sampleS = data.sampleS, hosts = data.hosts, timeMax = data.timeMax;
     serviceFullList = data.serviceFullList;
     serviceLists = data.serviceLists;
     serviceList_selected = data.serviceList_selected;
@@ -23,65 +23,20 @@ addEventListener('message',function ({data}) {
             action: 'returnData',
             result: {message: `Normalize data`, process: 10}
         });
-        for (var i = 0; i < sampleS.timespan.length; i++) {
+        for (var i = 0; i < timeMax; i++) {
             for (var h = 0; h < hosts.length; h++) {
                 var name = hosts[h].name;
-                arrServices = getDataByName_withLabel(sampleS, name, i, i, 0);
+                arrServices = sampleS[name][i];
                 arrServices.name = name;
                 arrServices.indexSamp = i;
                 arrServices.id = h;
-                arr.push(arrServices);
+                dataSpider3.push(arrServices);
             }
         }
-        dataSpider3 = arr;
 
-        postMessage({
-            action: 'returnData',
-            result: {message: `Outliers detection`, process: 30}
-        })
-        // TESTING ZONE
-        console.log('calculate outliers');
-        let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
-        let scagOptions ={
-            isNormalized: true,
-            startBinGridSize: estimateSize,
-            minBins: 20,
-            maxBins: 100,
-            outlyingCoefficient: 1.5,
-            incrementA:2,
-            incrementB:0,
-            decrementA:0.3,
-            decrementB:0,
-        };
-        // scag = scagnosticsnd(handledata(index), scagOptions);
-        let outlyingPoints = {};
         // remove outlying
-        let scag = scagnosticsnd(dataSpider3.map((d, i) => {
-            var dd = d.map(k => k.value);
-            dd.data = {name: d.name, id: d.id, indexSamp: d.indexSamp};
-            return dd;
-        }), scagOptions);
-
-        console.log('Outlying detect: bin=' + scag.bins.length);
-        console.log(scag.outlyingPoints.map(d => d.data));
-        dataSpider3 = dataSpider3.filter(d => {
-            let temp2 = scag.outlyingPoints.filter(e => e.data.id === d.id && e.data.indexSamp === d.indexSamp );
-            if (temp2.length) {
-                let temp = {labels: d.name+'_'+d.indexSamp};
-                d.forEach((s, i) => temp[serviceFullList[i].text] = serviceFullList[i].scale(s.value));
-                temp.radius = 0;
-                temp.mse = 0;
-                temp.index = -1;
-                temp.__metrics = d.slice();
-                temp.__metrics.normalize = temp.__metrics.map((e, i) => e.value);
-                temp.arr = [];
-                temp.total = 1;
-                temp.outlier = {name: d.name, id: d.id, indexSamp: d.indexSamp};
-                outlyingPoints[temp.labels] = temp;
-                return 0;
-            }
-            return 1;
-        });
+        dataSpider3 = dataSpider3.filter(d => !d.outlier);
+        console.log(dataSpider3.length)
         postMessage({
             action: 'returnData',
             result: {message: `Binning process`, process: 40}
@@ -113,7 +68,7 @@ addEventListener('message',function ({data}) {
         });
         // bin.data([]).minNumOfBins(8).maxNumOfBins(11);
         bin.data(dataSpider3.map((d, i) => {
-            var dd = d.map(k => k.value);
+            var dd = d.slice();
             dd.data = {name: d.name, id: d.id, indexSamp: d.indexSamp};
             return dd;
         }))
@@ -124,7 +79,7 @@ addEventListener('message',function ({data}) {
             result: {message: `# iterations: ${bin.loopcount}`, process: 99}
         });
 
-        var keys = dataSpider3[0].map(d => d.axis);
+        var keys = serviceFullList.map(d=>d.text);
         dataSpider3.length = 0;
         console.log("numBins: " + bin.bins.length);
 
@@ -182,18 +137,17 @@ addEventListener('message',function ({data}) {
             temp.__metrics = d.slice();
             temp.__metrics.normalize = temp.__metrics.map((e, i) => e.value);
             const temp_arr = _.groupBy(d.bin.nameob, e => e.timestep);
-            temp.arr = d3.range(0, sampleS.timespan.length).map(e => temp_arr[e] ? temp_arr[e].map(f => f.name) : undefined);
+            temp.arr = d3.range(0, timeMax).map(e => temp_arr[e] ? temp_arr[e].map(f => f.name) : undefined);
             temp.total = d.bin.id.length;
             return temp;
         });
 
-        cluster.outlyingPoints = outlyingPoints
     }else{
         customCluster.forEach(d=>d.arr = []);
         // re-assign cluster
         cluster = customCluster;
         let temp_collection = d3.range(0,cluster.length).map(()=>[]);
-        for (var i = 0; i < sampleS.timespan.length; i++) {
+        for (var i = 0; i < timeMax; i++) {
             for (var h = 0; h < hosts.length; h++) {
                 var name = hosts[h].name;
                 arrServices = getDataByName(sampleS, name, i, i, 0,0);

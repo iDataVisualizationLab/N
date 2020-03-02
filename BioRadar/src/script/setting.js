@@ -1,4 +1,7 @@
 var application_name ='Joblist';
+
+var sampleS,outlyingList;
+
 var jobList=[];
 var cluster_info,clusterDescription,clusterGroup={};
 var hostList;
@@ -13,6 +16,7 @@ var serviceFullList = serviceLists2serviceFullList(serviceLists);
 var serviceFullList_Fullrange = serviceLists2serviceFullList(serviceLists);
 
 srcpath = '';
+
 
 const IDkey = 'atID';
 const SUBJECTS = ['wt','stop1'];
@@ -138,22 +142,35 @@ function newdatatoFormat (data){
     });
     serviceList_selected = serviceList.map((d,i)=>{return{text:d,index:i}});
     serviceFullList = serviceLists2serviceFullList(serviceLists);
-
+    scaleService = serviceFullList.map(d=>d3.scaleLinear().domain(d.range));
     sampleS = {};
+    tsnedata = {};
     sampleS['timespan'] = [new Date()];
 
     data.forEach(d=>{
         variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))// format number
         const name = d[IDkey];
+        const fixname = name.replace('|','__');
+        const category = name.split('|')[1]==='wt'?0:1;
         hosts.push({
-            name: d[IDkey],
-            category:name.split('|')[1]==='wt'?0:1,
+            name: fixname,
+            category:category,
             index : hosts.length,
         });
         serviceListattr.forEach((attr,i) => {
-            if (sampleS[name]===undefined)
-                sampleS[name] = {};
-            sampleS[name][attr]=[[d[variables[i]]]];
+            if (sampleS[fixname]===undefined) {
+                sampleS[fixname] = {};
+                tsnedata[fixname] = [[]];
+                tsnedata[fixname][0].name = fixname;
+                tsnedata[fixname][0].timestep =0;
+                tsnedata[fixname][0].category =category;
+            }
+            const value = d[variables[i]];
+            sampleS[fixname][attr]=[[value]];
+            tsnedata[fixname][0].push(value===null?0:scaleService[i](value)||0);
         });
     }); // format number
+
+    // find outliers
+    outlyingList = outlier();
 }

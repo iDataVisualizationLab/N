@@ -411,7 +411,7 @@ function main() {
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
         control_jobdisplay.dispatch('change');
-
+    init = false;
     // request();
 }
 var currentlastIndex;
@@ -1117,22 +1117,13 @@ function formatService(init){
         serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
 }
 function handle_dataRaw() {
-
     cluster_info.forEach(d => (d.arr = [],d.total=0, d.__metrics.forEach(e => (e.minval = undefined, e.maxval = undefined))));
     let clusterNullIndex =cluster_info.findIndex(c=>d3.sum(c.__metrics.normalize)===0);
-    tsnedata = {};
     hosts.forEach(h => {
-        tsnedata[h.name] = [];
         sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
             let nullkey = false;
-            let axis_arr = _.flatten(serviceLists.map(a => d3.range(0, a.sub.length).map(vi => (v = sampleS[h.name][serviceListattr[a.id]][i][vi], d3.scaleLinear().domain(a.sub[0].range)(v === null ? (nullkey = true, undefined) : v) || 0))));
-            axis_arr.name = h.name;
-            axis_arr.timestep = i;
-            if (cluster_info.outlyingPoints[h.name+'_'+i]){
-                axis_arr.cluster = -1; //outlying
-                axis_arr.category = h.category;
-                // timeline precalculate
-                tsnedata[h.name].push(axis_arr);
+            let axis_arr = tsnedata[h.name][i];
+            if (outlyingList[h.name+'_'+i]){
                 return -1;
             }
             // reduce time step
@@ -1155,11 +1146,8 @@ function handle_dataRaw() {
                 if (m.maxval === undefined || m.maxval < axis_arr[i])
                     m.maxval = axis_arr[i];
             });
-            axis_arr.cluster = index;
-            axis_arr.category = h.category;
-            // timeline precalculate
-            tsnedata[h.name].push(axis_arr);
-
+            tsnedata[h.name][i].cluster = index;
+            tsnedata[h.name][i].category = h.category;
             return index;
             // return cluster_info.findIndex(c=>distance(c.__metrics.normalize,axis_arr)<=c.radius);
         })
@@ -1188,48 +1176,7 @@ function requestRedraw() {
 
 function onchangeCluster() {
     cluster_info.forEach(d => (d.total=0,d.__metrics.forEach(e => (e.minval = undefined, e.maxval = undefined))));
-    let clusterNullIndex =cluster_info.findIndex(c=>d3.sum(c.__metrics.normalize)===0);
-    tsnedata = {};
-    hosts.forEach(h => {
-        tsnedata[h.name] = [];
-        sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
-            let nullkey = false;
-            let axis_arr = _.flatten(serviceLists.map(a => d3.range(0, a.sub.length).map(vi => (v = sampleS[h.name][serviceListattr[a.id]][i][vi], d3.scaleLinear().domain(a.sub[0].range)(v === null ? (nullkey = true, undefined) : v) || 0))));
-            axis_arr.name = h.name;
-            axis_arr.category = h.category;
-            axis_arr.timestep = i;
-            // reduce time step
-
-            let index = 0;
-            let minval = Infinity;
-            cluster_info.forEach((c, i) => {
-                const val = distance(c.__metrics.normalize, axis_arr);
-                if (minval > val) {
-                    if(i!==clusterNullIndex || (i===clusterNullIndex&&calculateMSE_numarray(c.__metrics.normalize, axis_arr)===0)) {
-                        index = i;
-                        minval = val;
-                    }
-                }
-            });
-            cluster_info[index].total = 1 + cluster_info[index].total || 0;
-            cluster_info[index].__metrics.forEach((m, i) => {
-                if (m.minval === undefined || m.minval > axis_arr[i])
-                    m.minval = axis_arr[i];
-                if (m.maxval === undefined || m.maxval < axis_arr[i])
-                    m.maxval = axis_arr[i];
-            });
-            axis_arr.cluster = index;
-
-            // timeline precalculate
-            tsnedata[h.name].push(axis_arr);
-
-            return index;
-            // return cluster_info.findIndex(c=>distance(c.__metrics.normalize,axis_arr)<=c.radius);
-        })
-    });
-    cluster_info.forEach(c => c.mse = ss.sum(c.__metrics.map(e => (e.maxval - e.minval) * (e.maxval - e.minval))));
-    cluster_map(cluster_info);
-    handle_clusterinfo();
+    handle_dataRaw();
 
     //tsne
     requestRedraw();
@@ -1400,9 +1347,9 @@ $( document ).ready(function() {
         TSneplot.runopt(TsnePlotopt.runopt);
     });
     d3.select('#clusterMethod').on('change',function(){
-        Radarplot_opt.clusterMethod = this.value;
-        Radarplot.binopt(Radarplot_opt);
-        updateSummaryChartAll();
+        // Radarplot_opt.clusterMethod = this.value;
+        // Radarplot.binopt(Radarplot_opt);
+        // updateSummaryChartAll();
         d3.selectAll('.clusterProfile').classed('hide',true);
         d3.select(`#${this.value}profile`).classed('hide',false);
     });
@@ -1839,8 +1786,8 @@ let radarChartclusteropt  = {
             mouseover: function(){
                 try {
                     const d = d3.select(d3.event.detail || this).datum();
-                    d3.selectAll('#clusterDisplay .axis' + d.idroot + '_' + d.id).classed('highlight', true);
-                    d3.selectAll('#clusterDisplay .axisText').remove();
+                    d3.selectAll('.clusterDisplay .axis' + d.idroot + '_' + d.id).classed('highlight', true);
+                    d3.selectAll('.clusterDisplay .axisText').remove();
                     if (d3.select(this.parentNode).select('.axisText').empty())
                         d3.select(this.parentNode).append('text').attr('class','axisText').attr('transform','rotate(-90) translate(5,-5)');
                     d3.select(this.parentNode).select('.axisText').text(d.text);
@@ -1849,8 +1796,8 @@ let radarChartclusteropt  = {
             },
             mouseleave: function(){
                 const d = d3.select(d3.event.detail||this).datum();
-                d3.selectAll('#clusterDisplay .axis'+d.idroot+'_'+d.id).classed('highlight',false);
-                d3.selectAll('#clusterDisplay .axisText').remove();
+                d3.selectAll('.clusterDisplay .axis'+d.idroot+'_'+d.id).classed('highlight',false);
+                d3.selectAll('.clusterDisplay .axisText').remove();
             },
         },
     },
@@ -1936,6 +1883,76 @@ function cluster_map (dataRaw) {
         d3.selectAll('.radarCluster').select('input.clusterlabel').attr('value',d=>d[0].text).each(function(d){$(this).val(d[0].text)});
         d3.selectAll('.radarCluster').select('span.clusternum').text(d=>(d[0].total||0).toLocaleString());
         d3.selectAll('.radarCluster').select('span.clusterMSE').classed('hide',!radarChartclusteropt.boxplot).text(d=>d3.format(".2")(d[0].mse||0));
+
+    }, 0);
+    outlier_map(outlyingList)
+}
+function outlier_map (dataRaw) {
+    let data = d3.values(dataRaw).map((c,i)=>{
+        let temp = c.__metrics.slice();
+        temp.name = c.labels;
+        temp.text = c.text;
+        temp.total = c.total;
+        temp.mse = c.mse;
+        let temp_b = [temp];
+        temp_b.id = c.labels;
+        temp_b.order = i;
+        return temp_b;
+    });
+    //--end
+    let dir = d3.select('#outlierDisplay');
+    setTimeout(()=>{
+        let r_old = dir.selectAll('.radarCluster').data(data,d=>d.id).order();
+        r_old.exit().remove();
+        let r_new = r_old.enter().append('div').attr('class','radarCluster')
+            // .on('mouseover',function(d){
+            //     if (!jobMap.runopt().mouse.disable) {
+            //         mainviz.highlight(d.id);
+            //     }
+            //     d3.select(this).classed('focus',true);
+            // }).on('mouseleave',function(d){
+            //     if (!jobMap.runopt().mouse.disable) {
+            //         mainviz.unhighlight(d.id);
+            //     }
+            //     d3.select(this).classed('focus',false);
+            // })
+            .append('div')
+            .attr('class','label')
+            .styles({'position':'absolute',
+                'color':'black',
+                'width': radarChartclusteropt.w+'px',
+                height: '1rem',
+                padding: '10px'
+                // overflow: 'hidden',
+            });
+        // r_new.append('span').attr('class','clusterlabel truncate center-align col s12');
+        // r_new.append('i').attr('class','editbtn material-icons tiny col s1').style('cursor', 'Pointer').text('edit').on('click',function(){
+        //     let active = d3.select(this).classed('clicked');
+        //     active = !active;
+        //     d3.select(this).classed('clicked',active)
+        //     const parent = d3.select(this.parentNode);
+        //     parent.select('span.clusterlabel').classed('hide',active);
+        //     parent.select('input.clusterlabel').classed('hide',!active);
+        // });
+        r_new.append('span').attrs({'class':'outlierLabel truncate left-align col s11','type':'text'});
+        // r_new.append('input').attrs({'class':'clusterlabel browser-default hide truncate center-align col s11','type':'text'}).on('change',function(d){
+        //     clusterDescription[d.id].text = $(this).val();
+        //     d3.select(this).classed('hide',true);
+        //     const parent = d3.select(this.parentNode);
+        //     parent.select('.editbtn').classed('clicked',false);
+        //     parent.select('span.clusterlabel').text(clusterDescription[d.id].text).classed('hide',false);
+        //     updateclusterDescription(d.id,clusterDescription[d.id].text);
+        // });
+        dir.selectAll('.radarCluster')
+            .attr('class',(d,i)=>
+                'flex_col valign-wrapper radarCluster radarh'+d.id)
+            .each(function(d,i){
+                radarChartclusteropt.color = function(){return 'black'};
+                RadarChart(".radarh"+d.id, d, radarChartclusteropt,"").select('.axisWrapper .gridCircle').classed('hide',true);
+            });
+        d3.selectAll('.radarCluster').select('span.outlierLabel').text(d=>
+            d.id);
+
     }, 0);
 }
 function updateclusterDescription (name,text){
@@ -1977,7 +1994,9 @@ function recalculateCluster (option,calback,customCluster) {
     clustercalWorker = new Worker ('src/script/worker/clustercal.js');
     clustercalWorker.postMessage({
         binopt:group_opt,
-        sampleS:sampleS,
+        // tsnedata:tsnedata,
+        sampleS:tsnedata,
+        timeMax:sampleS.timespan.length,
         hosts:hosts,
         serviceFullList: serviceFullList,
         serviceLists:serviceLists,
@@ -2006,9 +2025,10 @@ function recalculateCluster (option,calback,customCluster) {
             }
             recomendColor (cluster_info);
             if (!calback) {
-                cluster_map(cluster_info);
-                jobMap.clusterData(cluster_info).colorCluster(colorCluster).data(undefined,undefined,undefined,true).draw().drawComp();
                 handle_clusterinfo();
+                cluster_map(cluster_info);
+                handle_dataRaw();
+                requestRedraw();
             }
             preloader(false, undefined, undefined, '#clusterLoading');
             clustercalWorker.terminate();
