@@ -114,6 +114,7 @@ function systemFormat() {
 }
 
 function newdatatoFormat (data){
+    preloader(true, 0, 'reading file...');
     serviceList = [];
     serviceLists = [];
     serviceListattr = [];
@@ -172,5 +173,6 @@ function newdatatoFormat (data){
     }); // format number
 
     // find outliers
+    preloader(true, 0, 'Detect outliers...');
     outlyingList = outlier();
 }

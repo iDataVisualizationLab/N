@@ -1047,7 +1047,9 @@ function readFilecsv(file) {
             }];
 
             d3.select(".currentDate")
-                .text("" + (sampleS['timespan'][0]).toDateString());
+                // .text("" + (sampleS['timespan'][0]).toDateString());
+                .text(dataInformation.filename);
+            preloader(true, 0, 'Calculate clusters...');
             loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
 
             // debug
@@ -1597,8 +1599,8 @@ $( document ).ready(function() {
     $('#knum').val(group_opt.bin.k||5);
     $('#kiteration').val(group_opt.bin.iterations||50);
 
-    // readFilecsv('data/transcriptome_averaged.csv');
-    readFilecsv('data/transcriptome_averaged_test.csv');
+    readFilecsv('data/transcriptome_averaged.csv');
+    // readFilecsv('data/transcriptome_averaged_test.csv');
     MetricController.graphicopt({width:365,height:365})
         .div(d3.select('#RadarController'))
         .tablediv(d3.select('#RadarController_Table'))
