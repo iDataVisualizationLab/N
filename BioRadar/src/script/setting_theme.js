@@ -571,44 +571,7 @@ function predict (arr,ser, notUsepastValue,undefinedValue){
 }
 
 function inithostResults (worker) {
-
-    hosts = [];
-    const hostdata = hostList.data.hostlist;
-    hostResults ={};
-    for (var att in hostdata) {
-        var h = {};
-        h.name = att;
-        h.hpcc_rack = hostdata[att].rack?hostdata[att].rack:(+att.split("-")[1]);
-        h.hpcc_node = hostdata[att].node?hostdata[att].node:+att.split("-")[2].split(".")[0];
-        h.category = hostdata[att].category;
-        h.index = hosts.length;
-
-        // to contain the historical query results
-        if (!worker) {
-            hostResults[h.name] = {};
-            hostResults[h.name].index = h.index;
-            hostResults[h.name].arr = [];
-            serviceListattr.forEach(d => hostResults[att][d] = []);
-        }
-        hosts.push(h);
-    }
-    hostResults.timespan =[]
-    hosts.sort((a, b) => {
-
-        var rackx = a.hpcc_rack;
-        var racky = b.hpcc_rack;
-        var x = a.hpcc_node;
-        var y = b.hpcc_node;
-        if (rackx !== racky) {
-            return rackx - racky;
-        } else {
-            if (x % 2 - y % 2) {
-                return y % 2 - x % 2
-            } else {
-                return x - y
-            }
-        }
-    });
+    hostResults = sampleS;
 }
 
 // Delete unnecessary files

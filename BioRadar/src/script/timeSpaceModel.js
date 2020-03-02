@@ -718,10 +718,9 @@ d3.TimeSpace = function () {
                 lassoTool.needRender = false;
             }
             // visiableLine(graphicopt.linkConnect);
-            requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
-
+            requestAnimationFrame(animate);
         }
     }
     function removeBoxHelper(){

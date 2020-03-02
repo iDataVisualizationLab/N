@@ -20,7 +20,7 @@ addEventListener('message',function ({data}){
             count = 0;
             data.opt.nComponents = data.opt.dim;
             let t0 = performance.now();
-            d3.json(`../../../data/processed_gene_data_normalized_category_umap_${data.opt.nNeighbors}_${data.opt.nComponents}_${data.opt.minDist}.json`,function(error,data){
+            d3.json(`../../../data/processed_gene_data_normalized_category_umap_${data.opt.nNeighbors}_${data.opt.nComponents}_${data.opt.minDist}.json`,function(error,projection){
                 if (error){
                     const umap = new UMAP(data.opt);
                     umap.setSupervisedProjection(labels);
@@ -40,7 +40,7 @@ addEventListener('message',function ({data}){
                     postMessage({action:'stable', status:"done"});
                 }else{
                     timeCalculation = performance.now()-t0;
-                    render(data);
+                    render(projection);
                     postMessage({action:'stable', status:"done"});
                 }
             })

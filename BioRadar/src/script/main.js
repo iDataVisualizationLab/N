@@ -1049,6 +1049,9 @@ function readFilecsv(file) {
             d3.select(".currentDate")
                 .text("" + (sampleS['timespan'][0]).toDateString());
             loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
+
+            // debug
+                loadclusterInfo = false;
                 if(loadclusterInfo){
                     handle_dataRaw();
                     if (!init)
@@ -1639,7 +1642,7 @@ $( document ).ready(function() {
     $('#knum').val(group_opt.bin.k||5);
     $('#kiteration').val(group_opt.bin.iterations||50);
 
-    readFilecsv('data/processed_gene_data_normalized_category.csv');
+    readFilecsv('data/transcriptome_averaged.csv');
     MetricController.graphicopt({width:365,height:365})
         .div(d3.select('#RadarController'))
         .tablediv(d3.select('#RadarController_Table'))

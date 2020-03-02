@@ -14,6 +14,8 @@ var serviceFullList_Fullrange = serviceLists2serviceFullList(serviceLists);
 
 srcpath = '';
 
+const IDkey = 'atID';
+const SUBJECTS = ['wt','stop1'];
 
 let jobMap_opt = {
     margin:{top:90,bottom:20,left:20,right:20},
@@ -105,4 +107,53 @@ function systemFormat() {
         arrPower_usage:{key: "Power_consumption", val: ["arrPower_usage"]}};
     thresholds = [[3,98], [0,99], [1050,17850],[0,200] ];
     serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
+}
+
+function newdatatoFormat (data){
+    serviceList = [];
+    serviceLists = [];
+    serviceListattr = [];
+    serviceAttr={};
+    hosts =[];
+
+    const variables = _.without(Object.keys(data[0]),'atID');
+    // TODO remove this function
+    serviceQuery["csv"]= serviceQuery["csv"]||{};
+    variables.forEach((k,i)=>{
+        serviceQuery["csv"][k]={};
+        serviceQuery["csv"][k][k]={
+            type : 'number',
+            format : () =>k,
+            numberOfEntries: 1};
+        serviceAttr[k] = {
+            key: k,
+            val:[k]
+        };
+        serviceList.push(k);
+        serviceListattr.push(k);
+
+        const temp = {"text":k,"id":i,"enable":true,"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(variables.length),"range":[0,1]}]};
+        thresholds.push([0,1]);
+        serviceLists.push(temp);
+    });
+    serviceList_selected = serviceList.map((d,i)=>{return{text:d,index:i}});
+    serviceFullList = serviceLists2serviceFullList(serviceLists);
+
+    sampleS = {};
+    sampleS['timespan'] = [new Date()];
+
+    data.forEach(d=>{
+        variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))// format number
+        const name = d[IDkey];
+        hosts.push({
+            name: d[IDkey],
+            category:name.split('|')[1]==='wt'?0:1,
+            index : hosts.length,
+        });
+        serviceListattr.forEach((attr,i) => {
+            if (sampleS[name]===undefined)
+                sampleS[name] = {};
+            sampleS[name][attr]=[[d[variables[i]]]];
+        });
+    }); // format number
 }
