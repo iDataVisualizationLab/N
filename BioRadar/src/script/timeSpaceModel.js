@@ -387,7 +387,7 @@ d3.TimeSpace = function () {
         d3.select('#distanceFilterHolder').classed('hide',true);
         switch (key) {
             case 'groups':
-                const lists = d3.keys(path).filter(d=>path[d][0].cluster!==path[d][1].cluster);
+                const lists = d3.keys(path).filter(d=>(path[d][0]||{cluster:undefined}).cluster!==(path[d][1]||{cluster:undefined}).cluster);
                 hightlightGroupNode(lists);
                 break;
             case "wt":
@@ -1316,13 +1316,13 @@ d3.TimeSpace = function () {
                     });
                     if (graphicopt.opt.dim===2.5) {
                         path[name].distance /= (_.last(path[name]).__timestep);
-                        if (path[name].distance<rangeDis[0])
-                            rangeDis[0] = path[name].distance;
-                        if (path[name].distance>rangeDis[1])
-                            rangeDis[1] = path[name].distance;
 
                     }else
                         path[name].distance /= path[name].length;
+                    if (path[name].distance<rangeDis[0])
+                        rangeDis[0] = path[name].distance;
+                    if (path[name].distance>rangeDis[1])
+                        rangeDis[1] = path[name].distance;
                 }
                 handleTopSort($('#modelSortBy').val());
                 distancerange.domain(rangeDis);

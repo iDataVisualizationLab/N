@@ -19,6 +19,10 @@ addEventListener('message',function ({data}) {
     dataSpider3 = [];
     let cluster;
     if (!customCluster) {
+        postMessage({
+            action: 'returnData',
+            result: {message: `Normalize data`, process: 10}
+        });
         for (var i = 0; i < sampleS.timespan.length; i++) {
             for (var h = 0; h < hosts.length; h++) {
                 var name = hosts[h].name;
@@ -31,6 +35,10 @@ addEventListener('message',function ({data}) {
         }
         dataSpider3 = arr;
 
+        postMessage({
+            action: 'returnData',
+            result: {message: `Outliers detection`, process: 30}
+        })
         // TESTING ZONE
         console.log('calculate outliers');
         let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
@@ -74,7 +82,10 @@ addEventListener('message',function ({data}) {
             }
             return 1;
         });
-
+        postMessage({
+            action: 'returnData',
+            result: {message: `Binning process`, process: 40}
+        })
         if (binopt.clusterMethod === 'leaderbin') {
             let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
             console.log('estimateSize: ' + estimateSize);
@@ -97,7 +108,7 @@ addEventListener('message',function ({data}) {
             w = w / 2;
             postMessage({
                 action: 'returnData',
-                result: {iteration: iteration, process: process}
+                result: {message: `# iterations: ${bin.loopcount}`, process: process}
             })
         });
         // bin.data([]).minNumOfBins(8).maxNumOfBins(11);
@@ -110,7 +121,7 @@ addEventListener('message',function ({data}) {
 
         postMessage({
             action: 'returnData',
-            result: {iteration: bin.loopcount, process: 99}
+            result: {message: `# iterations: ${bin.loopcount}`, process: 99}
         });
 
         var keys = dataSpider3[0].map(d => d.axis);
