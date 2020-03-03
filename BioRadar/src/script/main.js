@@ -750,36 +750,36 @@ function initTime() {
 
 
 function resetRequest(){
-    tool_tip.hide();
-    firstTime = true;
-    hostResults = {};
-    cluster_info.forEach(c=>c.arr.length=0)
-    expectedLength = 0;
-    formatRealtime = getformattime(+timestep_query.split(/[a-z]/)[0],timeshortconvert(timestep_query.match(/[a-z]/)[0]));
-    var count =0;
-    for (var att in hostList.data.hostlist) {
-        // to contain the historical query results
-        hostResults[att] = {};
-        hostResults[att].index = count;
-        hostResults[att].arr = [];
-        serviceListattr.forEach(d=>hostResults[att][d]=[]);
-        count++;
-    }
-    svg.selectAll(".compute").remove();
-    svg.selectAll(".h").remove();
-    svg.selectAll(".graphsum").remove();
-    svg.selectAll(".connectTimeline").style("stroke-opacity", 1);
-    Radarplot.init().clustercallback(d=>TSneplot.clusterBin(d));
-    jobMap.hosts(hosts).remove(true);
-    let control_jobdisplay = d3.select('#compDisplay_control');
-    control_jobdisplay.node().options.selectedIndex = 2;
-    control_jobdisplay.attr('disabled', '').dispatch('change');
-    TSneplot.reset(true);
-
-    timelog = [];
-    jobList = undefined;
-    // updateTimeText();
-    request();
+    // tool_tip.hide();
+    // firstTime = true;
+    // hostResults = {};
+    // cluster_info.forEach(c=>c.arr.length=0)
+    // expectedLength = 0;
+    // formatRealtime = getformattime(+timestep_query.split(/[a-z]/)[0],timeshortconvert(timestep_query.match(/[a-z]/)[0]));
+    // var count =0;
+    // for (var att in hostList.data.hostlist) {
+    //     // to contain the historical query results
+    //     hostResults[att] = {};
+    //     hostResults[att].index = count;
+    //     hostResults[att].arr = [];
+    //     serviceListattr.forEach(d=>hostResults[att][d]=[]);
+    //     count++;
+    // }
+    // svg.selectAll(".compute").remove();
+    // svg.selectAll(".h").remove();
+    // svg.selectAll(".graphsum").remove();
+    // svg.selectAll(".connectTimeline").style("stroke-opacity", 1);
+    // Radarplot.init().clustercallback(d=>TSneplot.clusterBin(d));
+    // jobMap.hosts(hosts).remove(true);
+    // let control_jobdisplay = d3.select('#compDisplay_control');
+    // control_jobdisplay.node().options.selectedIndex = 2;
+    // control_jobdisplay.attr('disabled', '').dispatch('change');
+    // TSneplot.reset(true);
+    //
+    // timelog = [];
+    // jobList = undefined;
+    // // updateTimeText();
+    // request();
 }
 
 function loadNewData(d,init) {
@@ -1880,31 +1880,24 @@ function cluster_map (dataRaw) {
                 radarChartclusteropt.color = function(){return colorCluster(d.id)};
                 RadarChart(".radarh"+d.id, d, radarChartclusteropt,"").select('.axisWrapper .gridCircle').classed('hide',true);
             });
-        d3.selectAll('.radarCluster').classed('first',(d,i)=>!i);
-        d3.selectAll('.radarCluster').select('span.clusterlabel').attr('data-order',d=>d.order+1).text(d=>d[0].text);
-        d3.selectAll('.radarCluster').select('input.clusterlabel').attr('value',d=>d[0].text).each(function(d){$(this).val(d[0].text)});
-        d3.selectAll('.radarCluster').select('span.clusternum').text(d=>(d[0].total||0).toLocaleString());
-        d3.selectAll('.radarCluster').select('span.clusterMSE').classed('hide',!radarChartclusteropt.boxplot).text(d=>d3.format(".2")(d[0].mse||0));
+        dir.selectAll('.radarCluster').classed('first',(d,i)=>!i);
+        dir.selectAll('.radarCluster').select('span.clusterlabel').attr('data-order',d=>d.order+1).text(d=>d[0].text);
+        dir.selectAll('.radarCluster').select('input.clusterlabel').attr('value',d=>d[0].text).each(function(d){$(this).val(d[0].text)});
+        dir.selectAll('.radarCluster').select('span.clusternum').text(d=>(d[0].total||0).toLocaleString());
+        dir.selectAll('.radarCluster').select('span.clusterMSE').classed('hide',!radarChartclusteropt.boxplot).text(d=>d3.format(".2")(d[0].mse||0));
 
     }, 0);
     outlier_map(outlyingList)
 }
-function outlier_map (dataRaw) {
-    let data = d3.values(dataRaw).map((c,i)=>{
-        let temp = c.__metrics.slice();
-        temp.name = c.labels;
-        temp.text = c.text;
-        temp.total = c.total;
-        temp.mse = c.mse;
-        let temp_b = [temp];
-        temp_b.id = c.labels;
-        temp_b.order = i;
-        return temp_b;
-    });
+function outlier_map (data) {
     //--end
+    let outlyingopt = _.cloneDeep(radarChartclusteropt);
+    outlyingopt.fillin = 0;
+    outlyingopt.boxplot = false;
+    outlyingopt.schema = serviceFullList;
     let dir = d3.select('#outlierDisplay');
     setTimeout(()=>{
-        let r_old = dir.selectAll('.radarCluster').data(data,d=>d.id).order();
+        let r_old = dir.selectAll('.radarCluster').data(data,d=>d.labels);
         r_old.exit().remove();
         let r_new = r_old.enter().append('div').attr('class','radarCluster')
             // .on('mouseover',function(d){
@@ -1937,6 +1930,7 @@ function outlier_map (dataRaw) {
         //     parent.select('input.clusterlabel').classed('hide',!active);
         // });
         r_new.append('span').attrs({'class':'outlierLabel truncate left-align col s11','type':'text'});
+        r_new.append('span').attr('class','clusternum center-align col s12');
         // r_new.append('input').attrs({'class':'clusterlabel browser-default hide truncate center-align col s11','type':'text'}).on('change',function(d){
         //     clusterDescription[d.id].text = $(this).val();
         //     d3.select(this).classed('hide',true);
@@ -1947,13 +1941,13 @@ function outlier_map (dataRaw) {
         // });
         dir.selectAll('.radarCluster')
             .attr('class',(d,i)=>
-                'flex_col valign-wrapper radarCluster radarh'+d.id)
+                'flex_col valign-wrapper radarCluster radarhoutlying'+(-d.labels))
             .each(function(d,i){
-                radarChartclusteropt.color = function(){return 'black'};
-                RadarChart(".radarh"+d.id, d, radarChartclusteropt,"").select('.axisWrapper .gridCircle').classed('hide',true);
+                outlyingopt.color = function(){return 'black'};
+                RadarChart(".radarhoutlying"+(-d.labels), d.arr, outlyingopt,"").select('.axisWrapper .gridCircle').classed('hide',true);
             });
-        d3.selectAll('.radarCluster').select('span.outlierLabel').text(d=>
-            d.id);
+        dir.selectAll('.radarCluster').select('span.clusternum').text(d=>(d.arr.length).toLocaleString());
+        dir.selectAll('.radarCluster').select('span.outlierLabel').text(d=>`Outlying group ${-d.labels}`);
 
     }, 0);
 }

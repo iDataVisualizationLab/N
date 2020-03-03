@@ -1,4 +1,5 @@
 function outlier(){
+    console.time('outline:');
     let dataSpider3 = [];
     scaleService = serviceFullList.map(d=>d3.scaleLinear().domain(d.range));
     for (var i = 0; i < sampleS.timespan.length; i++) {
@@ -18,35 +19,46 @@ function outlier(){
         outlyingCoefficient: 1.5,
         incrementA:2,
         incrementB:0,
-        decrementA:0.3,
+        decrementA:1 / dataSpider3[0].length,
         decrementB:0,
     };
     // scag = scagnosticsnd(handledata(index), scagOptions);
-    let outlyingPoints = {};
+    let outlyingBins = [];
+    outlyingBins.pointObject = {};
     // remove outlying
     let scag = scagnosticsnd(dataSpider3.map((d, i) => {
         var dd = d.slice();
-        dd.data = {name: d.name, nameid: d.nameid, timestep: d.timestep};
+        dd.data = d;
         return dd;
     }), scagOptions);
-
+    console.timeEnd('outline:');
     console.log('Outlying detect: bin=' + scag.bins.length);
-    console.log(scag.outlyingPoints.map(d => d.data));
+    console.log(scag.outlyingBins);
+
     dataSpider3.forEach(d => {
-        let temp2 = scag.outlyingPoints.filter(e => e.data.nameid === d.nameid && e.data.timestep === d.timestep );
-        if (temp2.length) {
-            let temp = {labels: d.name+'_'+d.timestep};
-            d.forEach((s, i) => temp[serviceFullList[i].text] = scaleService[i](s));
-            temp.index = -1;
-            temp.__metrics = serviceFullList.map((s,si)=>({axis:s.text, value: d[si]}));
-            temp.__metrics.normalize = d.slice();
-            outlyingPoints[temp.labels] = temp;
-            d.outlier = temp.index;
-            d.cluster = -1;
-        }else{
-            d.outlier = 0;
-            delete d.cluster
-        }
+        delete d.outlier;
+        delete d.cluster;});
+
+    scag.outlyingBins.map((ob,i)=>{
+        let arr = ob.map(o=>{
+            let d = o.data;
+            d.outlier = 1;
+            d.cluster = -i-1;
+            let temp = serviceFullList.map((s,si)=>({axis:s.text, value: d[si]}));
+            temp.name = d.name+'_'+d.timestep;
+            temp.timestep = d.timestep;
+            temp.cluster =  -i-1;
+            outlyingBins.pointObject[temp.labels] = temp;
+            return outlyingBins.pointObject[temp.labels];
+        });
+        let temp = {labels: -i-1};
+        ob.site.forEach((s, i) => temp[serviceFullList[i].text] = scaleService[i](s));
+        temp.index = -i-1;
+        temp.__metrics = serviceFullList.map((s,si)=>({axis:s.text, value: ob.site[si]}));
+        temp.__metrics.normalize = ob.site.slice();
+        temp.arr = arr;
+        outlyingBins.push(temp);
     });
-    return outlyingPoints;
+
+    return outlyingBins;
 }
