@@ -1,6 +1,7 @@
 var application_name ='Joblist';
 
-var sampleS,outlyingList;
+var sampleS,outlyingList = [];
+outlyingList.pointObject = {};
 
 var jobList=[];
 var cluster_info,clusterDescription,clusterGroup={};
@@ -174,5 +175,5 @@ function newdatatoFormat (data){
 
     // find outliers
     preloader(true, 0, 'Detect outliers...');
-    outlyingList = outlier();
+    // outlyingList = outlier();
 }

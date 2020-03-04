@@ -26,11 +26,13 @@ addEventListener('message',function ({data}) {
         for (var i = 0; i < timeMax; i++) {
             for (var h = 0; h < hosts.length; h++) {
                 var name = hosts[h].name;
-                arrServices = sampleS[name][i];
-                arrServices.name = name;
-                arrServices.indexSamp = i;
-                arrServices.id = h;
-                dataSpider3.push(arrServices);
+                if (sampleS[name]) {
+                    arrServices = sampleS[name][i];
+                    arrServices.name = name;
+                    arrServices.indexSamp = i;
+                    arrServices.id = h;
+                    dataSpider3.push(arrServices);
+                }
             }
         }
 

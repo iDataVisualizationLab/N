@@ -1125,8 +1125,9 @@ function handle_dataRaw() {
         sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
             let nullkey = false;
             let axis_arr = tsnedata[h.name][i];
-            if (outlyingList[h.name+'_'+i]){
-                return -1;
+            let outlierinstance = outlyingList.pointObject[h.name+'_'+i];
+            if (outlierinstance){
+                return outlierinstance.cluster;
             }
             // reduce time step
 
@@ -1991,7 +1992,7 @@ function recalculateCluster (option,calback,customCluster) {
     clustercalWorker.postMessage({
         binopt:group_opt,
         // tsnedata:tsnedata,
-        sampleS:tsnedata,
+        sampleS:_.pickBy(tsnedata,d=>d[0].category===0),
         timeMax:sampleS.timespan.length,
         hosts:hosts,
         serviceFullList: serviceFullList,

@@ -10,7 +10,8 @@ function outlier(){
             dataSpider3.push(arrServices);
         }
     }
-    let estimateSize = Math.max(2, Math.pow(8, 1 / dataSpider3[0].length));
+    let estimateSize = Math.max(1, Math.pow(500, 1 / dataSpider3[0].length));
+    console.log('estimateSize:',estimateSize);
     let scagOptions ={
         isNormalized: true,
         startBinGridSize: estimateSize,
@@ -19,7 +20,7 @@ function outlier(){
         outlyingCoefficient: 1.5,
         incrementA:2,
         incrementB:0,
-        decrementA:1 / dataSpider3[0].length,
+        decrementA:1 / 3,
         decrementB:0,
     };
     // scag = scagnosticsnd(handledata(index), scagOptions);
@@ -32,8 +33,8 @@ function outlier(){
         return dd;
     }), scagOptions);
     console.timeEnd('outline:');
-    console.log('Outlying detect: bin=' + scag.bins.length);
-    console.log(scag.outlyingBins);
+    console.log('Total bin=' + scag.bins.length);
+    console.log('Outlying bin=' +scag.outlyingBins.length);
 
     dataSpider3.forEach(d => {
         delete d.outlier;
@@ -48,8 +49,8 @@ function outlier(){
             temp.name = d.name+'_'+d.timestep;
             temp.timestep = d.timestep;
             temp.cluster =  -i-1;
-            outlyingBins.pointObject[temp.labels] = temp;
-            return outlyingBins.pointObject[temp.labels];
+            outlyingBins.pointObject[temp.name] = temp;
+            return outlyingBins.pointObject[temp.name];
         });
         let temp = {labels: -i-1};
         ob.site.forEach((s, i) => temp[serviceFullList[i].text] = scaleService[i](s));
