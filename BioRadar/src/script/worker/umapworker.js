@@ -48,8 +48,7 @@ addEventListener('message',function ({data}){
                     render(umap.getEmbedding(),true);
                 }else{
                     timeCalculation = performance.now()-t0;
-                    render(projection);
-                    postMessage({action:'stable', status:"done"});
+                    render(projection,true);
                 }
             });
 

@@ -223,7 +223,7 @@ d3.TimeSpace = function () {
         opt.dim = Math.floor(opt.dim);
         // end - adjust dimension
         modelWorker.postMessage({action: "initDataRaw",opt:opt, value: datain,labels: datain.map(d=>d.cluster), clusterarr: cluster.map(d=>d.__metrics.normalize)});
-        // let labelsInput = [];
+        // let labelsInput = [];initDataRawinitDataRaw
         // datain.forEach(d=>{if(d.timestep===0) labelsInput.push(d.cluster)});
         // modelWorker.postMessage({action: "initPartofData",opt:opt, value: datain,labels: labelsInput, clusterarr: cluster.map(d=>d.__metrics.normalize)});
         modelWorker.addEventListener('message', ({data}) => {
