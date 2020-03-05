@@ -1050,10 +1050,10 @@ function readFilecsv(file) {
                 // .text("" + (sampleS['timespan'][0]).toDateString());
                 .text(dataInformation.filename);
             preloader(true, 0, 'Calculate clusters...');
-            loadPresetCluster('cluster',(status)=>{loadclusterInfo= status;
+            loadPresetCluster('cluster_6conditions',(status)=>{loadclusterInfo= status;
 
-            // debug
-                loadclusterInfo = false;
+            // // debug
+            //     loadclusterInfo = false;
                 if(loadclusterInfo){
                     updateClusterControlUI(cluster_info.length)
                     handle_dataRaw();
