@@ -76,7 +76,7 @@ d3.TimeSpace = function () {
         isBusy = false,
         stop = false;
     let modelWorker,plotlyWorker,workerList=[],colorscale,reset;
-    let master={},solution,datain=[],filter=[],table_info,path,cluster=[],scaleTime;
+    let master={},solution,datain=[],filterbyClustername=[],visibledata=[],table_info,path,cluster=[],scaleTime;
     let xscale=d3.scaleLinear(),yscale=d3.scaleLinear(), scaleNormalTimestep=d3.scaleLinear();
     // grahic
     let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,controls,raycaster,INTERSECTED =[] ,mouse ,
@@ -695,17 +695,17 @@ d3.TimeSpace = function () {
                     }
                 } catch (e) {
                 }
-                if (mouseoverTrigger && !freezemouseoverTrigger) { // not have filter
+                if (mouseoverTrigger && !freezemouseoverTrigger) { // not have filterbyClustername
                     raycaster.setFromCamera(mouse, camera);
-                    if (!filter.length) {
+                    if (!filterbyClustername.length) {
                         var intersects = overwrite || raycaster.intersectObject(points);
                         //count and look after all objects in the diamonds group
-                        hightlightNode(intersects);
+                       hightlightNode(intersects);
                     } else { // mouse over group
                         var geometry = points.geometry;
                         var attributes = geometry.attributes;
                         datain.forEach((d, i) => {
-                            if (filter.indexOf(d.clusterName) !== -1) {
+                            if (filterbyClustername.indexOf(d.clusterName) !== -1) {
                                 attributes.alpha.array[i] = 1;
                                 // lines[d.name].visible = true;
                             } else {
@@ -1566,15 +1566,15 @@ d3.TimeSpace = function () {
 
     master.highlight = function(name){
         if (!freezemouseoverTrigger) {
-            filter.push(name);
-            filter = _.uniq(filter);
+            filterbyClustername.push(name);
+            filterbyClustername = _.uniq(filterbyClustername);
             isneedrender = true;
             mouseoverTrigger = true;
         }
     };
     let ishighlightUpdate;
     master.unhighlight = function() {
-        filter = [];
+        filterbyClustername = [];
         ishighlightUpdate = true;
         isneedrender = true;
         // d3.select(background_canvas).style('opacity',1);
