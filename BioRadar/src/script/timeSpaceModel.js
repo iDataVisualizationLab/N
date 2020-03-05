@@ -1321,7 +1321,7 @@ d3.TimeSpace = function () {
                 const posPath = path[target.name].findIndex(e=>e.timestep===target.timestep);
                 path[target.name][posPath].value = d;
                 // updateStraightLine(target, posPath, d);
-                updateLine(target, posPath, d, center[target.cluster]);
+                updateLine(target, posPath, d, path[target.name].map(p=>center[datain[p.index].cluster]));
 
             });
             if (islast){
@@ -1457,32 +1457,31 @@ d3.TimeSpace = function () {
     }
 
     function createCurveLine(path,curves,key){
-        //QuadraticBezierCurve3
+            //QuadraticBezierCurve3
         let lineObj = new THREE.Object3D();
-        if (path.length>1) {
+        if (path.length > 1) {
             var material = new THREE.LineBasicMaterial({
                 color: 0xffffff,
                 vertexColors: THREE.VertexColors,
                 transparent: true,
                 opacity: 0.2
             });
-            var curve = new THREE.CatmullRomCurve3(path.map(p => new THREE.Vector3(0, 0, 0)),false,'catmullrom',0.1);
+            var curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(0, 0, 0),new THREE.Vector3(0, 0, 0),new THREE.Vector3(0, 0, 0));
             curves[key] = curve;
-            let curveSegment = _.last(path).__timestep*3+2;
-            var points = curve.getPoints(curveSegment-1);
+            let curveSegment = graphicopt.curveSegment;
+            var points = curve.getPoints(curveSegment);
             var geometry = new THREE.BufferGeometry().setFromPoints(points);
-            // add gradient effect
-            var colors = new Float32Array(curveSegment * 3);
+            // <editor-fold desc="add gradient effect">
+            var colors = new Float32Array((curveSegment+1) * 3);
             let currentstep = 0;
-            for (let i = 0; i < curveSegment; i++) {
-                if (path[currentstep*3+1] && path[currentstep*3+1].__timestep===i) {
-                    currentstep = currentstep+1;
-                }
-                let color = d3.color(colorarr[path[currentstep].cluster].value);
+            var colorInterpoalte = d3.interpolate(colorarr[path[0].cluster].value,colorarr[path[1].cluster].value);
+            for (let i = 0; i < curveSegment+1; i++) {
+                let color = d3.color(colorInterpoalte(i/curveSegment));
                 colors[i * 3] = color.r / 255;
                 colors[i * 3 + 1] = color.g / 255;
                 colors[i * 3 + 2] = color.b / 255;
             }
+            // </editor-fold>
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
             var curveObject = new THREE.Line(geometry, material);
             // console.log(curveSegment,path,curveObject)
@@ -1491,15 +1490,23 @@ d3.TimeSpace = function () {
         }
         return lineObj;
     }
-    function updateCurveLine(target, d, center) {
+    function updateCurveLine(target, posPath, d, center) {
         if (curves[target.name]!==undefined) {
-            var curve = new THREE.CatmullRomCurve3( path[target.name].map(p=> new THREE.Vector3(xscale(p.value[0]), yscale(p.value[1]), xscale(p.value[2]) || 0)),false,'catmullrom');
+            // var curve = new THREE.CatmullRomCurve3( path[target.name].map(p=> new THREE.Vector3(xscale(p.value[0]), yscale(p.value[1]), xscale(p.value[2]) || 0)),false,'catmullrom');
+            const v0 = position2Vector(path[target.name][0].value);
+            const v1 = position2Vector(center[0].map((d,i)=>d===undefined?undefined:d3.mean(d,center[1][i])));
+            const v2 = position2Vector(path[target.name][1].value);
+            var curve = new THREE.QuadraticBezierCurve3(v0,v1,v2);
             curve.tension =0.05;
             curves[target.name] = curve;
-            var points = curve.getPoints(_.last(path[target.name]).__timestep*3+1);
+            var points = curve.getPoints( graphicopt.curveSegment);
             lines[target.name].geometry.setFromPoints(points);
         }
+        function position2Vector(p){
+            return new THREE.Vector3(xscale(p[0]), yscale(p[1]), xscale(p[2]) || 0);
+        }
     }
+
     function updateStraightLine(target, posPath, d, customZ) {
         lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
         // lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), d[2] || 0);
@@ -1558,10 +1565,11 @@ d3.TimeSpace = function () {
 
 
     master.highlight = function(name){
-        if (mouseoverTrigger) {
+        if (!freezemouseoverTrigger) {
             filter.push(name);
             filter = _.uniq(filter);
             isneedrender = true;
+            mouseoverTrigger = true;
         }
     };
     let ishighlightUpdate;
