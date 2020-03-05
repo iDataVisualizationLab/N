@@ -5,8 +5,8 @@ let height = 500;
 // UMAP opt
 let umap_opt = {
 }
-
 init();
+d3.select('#message').text('load raw data');
 d3.text("./data/transcriptome.csv").then(function(text) {
     const data = text.split('\n').map(t=>t.split(',').map(d=>+d));
 
@@ -14,13 +14,14 @@ d3.text("./data/transcriptome.csv").then(function(text) {
     const data_train = data.slice(0,data.length/2);
     const data_test = data.slice(data.length/2,data.length);
 
-
+    d3.select('#message').text('load color data');
     d3.text("./data/transcriptome_color.txt").then(function(colortext) {
         const color = colortext.split('\n');
         // divide data color
         const color_train = color.slice(0,color.length/2);
         const color_test = color.slice(color.length/2,color.length);
 
+        d3.select('#message').text('Calculalte UMAP');
 
         // UMAP calculation
         const umap = new UMAP(umap_opt);
@@ -35,6 +36,9 @@ d3.text("./data/transcriptome.csv").then(function(text) {
         // draw test data
         var context_test = test_data_canvas.getContext('2d');
         draw(transformed,color_test,context_test);
+
+        d3.select('#progress').classed('hide',true);
+
     })
 });
 function init(){

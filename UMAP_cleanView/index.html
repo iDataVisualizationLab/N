@@ -10,7 +10,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
-
+<div id="progress">
+    <span id="message" style="display: inline-block"></span>
+    <div class="progress">
+        <div class="indeterminate"></div>
+    </div>
+</div>
 <canvas id ="train_data_canvas"></canvas>
 <canvas id ="test_data_canvas"></canvas>
 <script src="https://d3js.org/d3.v5.min.js"></script>
