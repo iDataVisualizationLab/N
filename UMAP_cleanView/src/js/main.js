@@ -3,8 +3,7 @@ let width = 500;
 let height = 500;
 
 // UMAP opt
-let umap_opt = {
-}
+
 init();
 d3.select('#message').text('load raw data');
 d3.text("./data/transcriptome.csv").then(function(text) {
@@ -24,7 +23,7 @@ d3.text("./data/transcriptome.csv").then(function(text) {
         d3.select('#message').text('Calculalte UMAP');
 
         // UMAP calculation
-        const umap = new UMAP(umap_opt);
+        const umap = new UMAP();
         const embedding = umap.fit(data_train);
 
         // draw train data
