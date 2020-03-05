@@ -4,7 +4,7 @@ https://idatavisualizationlab.github.io/N/
 
 BioRadar: https://idatavisualizationlab.github.io/N/BioRadar/index.html
 
-UMAPjs: https://idatavisualizationlab.github.io/N/UMAP_cleanView/index.html
+UMAP_cleanView: https://idatavisualizationlab.github.io/N/UMAP_cleanView/index.html
 
 https://idatavisualizationlab.github.io/N/wordStream
 
