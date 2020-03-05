@@ -4,7 +4,6 @@ let height = 500;
 
 // UMAP opt
 let umap_opt = {
-    nNeighbors
 }
 
 init();
