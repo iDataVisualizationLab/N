@@ -22,21 +22,24 @@ d3.text("./data/transcriptome.csv").then(function(text) {
         const color_test = color.slice(color.length/2,color.length);
 
         d3.select('#message').text('Calculalte UMAP');
-
+        let train_time = performance.now();
         // UMAP calculation
         const umap = new UMAP(umap_opt);
         const embedding = umap.fit(data_train);
-
+        train_time = performance.now()-train_time;
         // draw train data
         var context_train = train_data_canvas.getContext('2d');
         draw(embedding,color_train,context_train);
 
         // transformed
+        let test_time = performance.now();
         const transformed = umap.transform(data_test);
+        test_time = performance.now()-test_time;
         // draw test data
         var context_test = test_data_canvas.getContext('2d');
         draw(transformed,color_test,context_test);
 
+        d3.select('#message').text(`training time: ${train_time} ---- testing time: ${test_time}`);
         d3.select('#progress').classed('hide',true);
 
     })
