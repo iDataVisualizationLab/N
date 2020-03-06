@@ -769,18 +769,19 @@
                                         </optgroup>
                                         <optgroup label="Connection">
                                             <option value="groups">Changing clusters</option>
-                                            <option value="distance">Distance</option>
+                                            <option value="umapDistance">UMAP Distance</option>
+                                            <option value="euclideanDistance">Euclidean Distance</option>
                                         </optgroup>
                                     </select>
                                 </div>
                                 <div class="row valign-wrapper hide" id="distanceFilterHolder">
                                     <label for="modelFilterBy" class="col s4">Distance Filter: </label>
-                                    <div id="modelDistanceFilter" class="col s7"></div>
+                                    <div id="modelDistanceFilter" class="col s7 no-padding"></div>
                                 </div>
                                 <div  class="row" style="max-height: 200px;overflow-y: auto;">
-                                    <span id ="filterList">
+                                    <p id ="filterList">
 
-                                    </span>
+                                    </p>
                                     <button class="copybtn btn hide" style="margin: 10px;position: absolute;right: 0;bottom: 0;">Copy</button>
                                 </div>
                             </div>

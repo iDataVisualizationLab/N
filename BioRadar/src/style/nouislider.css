@@ -303,14 +303,14 @@
 
 .noUi-horizontal .noUi-handle,
 .noUi-vertical .noUi-handle {
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     box-shadow: none;
     background-color: #8a001a;
     border: none;
     left: -5px;
-    top: -6px;
+    top: -4px;
     transition: width .2s cubic-bezier(0.215, 0.610, 0.355, 1.000),
     height .2s cubic-bezier(0.215, 0.610, 0.355, 1.000),
     left .2s cubic-bezier(0.215, 0.610, 0.355, 1.000),
@@ -332,15 +332,15 @@
 
 .noUi-target.noUi-horizontal .noUi-tooltip {
     position: absolute;
-    height: 30px;
-    width: 30px;
-    top: -7.5px;
-    left: -7.5px;
+    height: 28px;
+    width: 28px;
+    top: -9px;
+    left: -9px;
     background-color: #8a001a;
     border-radius: 50%;
     transition: border-radius .25s cubic-bezier(0.215, 0.610, 0.355, 1.000),
     transform .25s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    transform: scale(.5);
+    transform: scale(.25);
     transform-origin:50% 50%;
 }
 .noUi-target.noUi-horizontal .noUi-active .noUi-tooltip {

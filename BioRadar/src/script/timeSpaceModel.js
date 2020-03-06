@@ -312,11 +312,27 @@ d3.TimeSpace = function () {
         handle_data(datain);
         updateTableInput();
         path = {};
+
+        // make path object and compute euclideandistance
+        let euclideandistance_range = [+Infinity,0];
         datain.forEach(function (target, i) {
             target.__metrics.position = [0,0,0];
-            if (!path[target.name])
+            if (!path[target.name]) {
                 path[target.name] = [];
-            path[target.name].push({name: target.name,index:i,__timestep: target.__timestep, timestep: target.timestep, value: [0,0,0], cluster: target.cluster});
+                path[target.name].euclideandistance = 0;
+            }else{
+                path[target.name].euclideandistance += distance(datain[_.last(path[target.name]).index],target);
+                euclideandistance_range[0] = Math.min(euclideandistance_range[0], path[target.name].euclideandistance);
+                euclideandistance_range[1] = Math.max(euclideandistance_range[1], path[target.name].euclideandistance);
+            }
+            path[target.name].push({
+                name: target.name,
+                index:i,
+                __timestep: target.__timestep,
+                timestep: target.timestep,
+                value: [0,0,0],
+                cluster: target.cluster
+            });
         });
         // console.log(datain.filter(d=>d[0]===-1))
         xscale.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
@@ -399,7 +415,7 @@ d3.TimeSpace = function () {
 
             d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
             d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
-            d3.select("span#filterList+.copybtn").on('click',()=>{
+            d3.select("p#filterList+.copybtn").on('click',()=>{
                 var copyText = document.getElementById("filterList");
                 var textArea = document.createElement("textarea");
                 textArea.value = copyText.textContent;
@@ -446,9 +462,13 @@ d3.TimeSpace = function () {
             case "stop1":
                 hightlightGroupNode([],1);
                 break;
-            case "distance":
+            case "umapDistance":
                 d3.select('#distanceFilterHolder').classed('hide',false);
                 hightlightGroupNode(d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance));
+                break;
+            case "euclideanDistance":
+                d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
+                hightlightGroupNode(d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance));
                 break;
             default:
                 hightlightGroupNode([]);
@@ -670,11 +690,11 @@ d3.TimeSpace = function () {
 
     function hightlightGroupNode(intersects,timestep) { // INTERSECTED
         if (intersects.length){
-            d3.select("span#filterList").text(intersects.join(', '));
-            d3.select("span#filterList+.copybtn").classed('hide',false);
+            d3.select("p#filterList").text(intersects.join(', '));
+            d3.select("p#filterList+.copybtn").classed('hide',false);
         }else{
-            d3.select("span#filterList").text('');
-            d3.select("span#filterList+.copybtn").classed('hide',true);
+            d3.select("p#filterList").text('');
+            d3.select("p#filterList+.copybtn").classed('hide',true);
         }
         let ishighLink = timestep===undefined;
         freezemouseoverTrigger = true;
@@ -1323,6 +1343,7 @@ d3.TimeSpace = function () {
     //     },1000/60);
     // }
     let distancerange = d3.scaleLinear();
+    let euclideandistancerange = d3.scaleLinear();
     function render (islast){
         let p = points.geometry.attributes.position.array;
         if(solution) {
