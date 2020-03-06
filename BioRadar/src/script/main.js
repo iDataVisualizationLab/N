@@ -411,7 +411,9 @@ function main() {
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
         control_jobdisplay.dispatch('change');
+    // MetricController.data(data.result.arr).drawSummary(data.result.hindex);
     init = false;
+    firstTime = false;
     // request();
 }
 var currentlastIndex;

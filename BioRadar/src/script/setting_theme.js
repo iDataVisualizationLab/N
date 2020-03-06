@@ -740,3 +740,48 @@ function current_userData () {
 function fixstr(s) {
     return s.replace(/ |#/gi,'');
 }
+
+function getsummaryservice(data){
+    let dataf = _.reduce(_.chunk(_.unzip(data),serviceList_selected.length),function(memo, num){ return memo.map((d,i)=>{d.push(num[i]); return _.flatten(d); })});
+    let ob = {};
+    dataf.forEach((d,i)=>{
+        d=d.filter(e=>e!==undefined).sort((a,b)=>a-b);
+        let r;
+        if (d.length){
+            var x = d3.scaleLinear()
+                .domain(d3.extent(d));
+            var histogram = d3.histogram()
+                .domain(x.domain())
+                .thresholds(x.ticks(histodram.resolution))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+                .value(d => d);
+            let hisdata = histogram(d);
+
+            let sumstat = hisdata.map((d,i)=>[d.x0+(d.x1-d.x0)/2,(d||[]).length]);
+            r = {
+                axis: serviceList_selected[i].text,
+                q1: ss.quantileSorted(d,0.25) ,
+                q3: ss.quantileSorted(d,0.75),
+                median: ss.medianSorted(d) ,
+                // outlier: ,
+                arr: sumstat};
+            if (d.length>4)
+            {
+                const iqr = r.q3-r.q1;
+                r.outlier = _.unique(d.filter(e=>e>(r.q3+outlierMultiply*iqr)||e<(r.q1-outlierMultiply*iqr)));
+            }else{
+                r.outlier =  _.unique(d);
+            }
+        }else{
+            r = {
+                axis: serviceList_selected[i].text,
+                q1: undefined ,
+                q3: undefined,
+                median: undefined ,
+                outlier: [],
+                arr: []};
+        }
+        ob[r.axis] = r;
+
+    });
+    return ob;
+}
