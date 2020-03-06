@@ -1033,6 +1033,7 @@ function onSaveClusterInfo() {
         csv_header.push(d.text + '_min');
         csv_header.push(d.text + '_max');
     });
+    // csv_header.push('radius');
     csv_header.push('mse');
 
     dataout = [];
@@ -1048,6 +1049,7 @@ function onSaveClusterInfo() {
         });
         // if (binopt.clusterMethod ==='leaderbin')
         //     temp.push(d.bin.distance);
+        // temp.push(d.radius);
         temp.push(d.mse);
         dataout.push(temp);
     });

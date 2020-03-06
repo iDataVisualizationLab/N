@@ -40,7 +40,7 @@ d3.TimeSpace = function () {
                 showText:false,
                 margin: {top: 0, right: 0, bottom: 0, left: 0},
             },
-            curveSegment: 20,
+            curveSegment: 10,
             linkConnect: 'straight',
             isSelectionMode: false,
             isCurve: false,
@@ -76,7 +76,7 @@ d3.TimeSpace = function () {
         isBusy = false,
         stop = false;
     let modelWorker,plotlyWorker,workerList=[],colorscale,reset;
-    let master={},solution,datain=[],filterbyClustername=[],visibledata=[],table_info,path,cluster=[],scaleTime;
+    let master={},solution,datain=[],filterbyClustername=[],visibledata=undefined,table_info,path,cluster=[],scaleTime;
     let xscale=d3.scaleLinear(),yscale=d3.scaleLinear(), scaleNormalTimestep=d3.scaleLinear();
     // grahic
     let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,controls,raycaster,INTERSECTED =[] ,mouse ,
@@ -151,7 +151,8 @@ d3.TimeSpace = function () {
                 mouse.x = (coordinator[0]/graphicopt.width)*2- 1;
                 mouse.y = -(coordinator[1]/graphicopt.height)*2+ 1;
                     isneedrender = true;
-            }).on('mouseleave',()=>{mouseoverTrigger = false});
+            }).on('mouseleave',()=>{mouseoverTrigger = false})
+                .on('click');
             // d3.select('#modelSelectionInformation').classed('hide',true);
             // d3.select('#modelWorkerScreen').on('touchstart.drag', null);
         }
@@ -210,64 +211,94 @@ d3.TimeSpace = function () {
         terminateWorker();
         preloader(true,10,'Transfer data to projection function','#modelLoading');
         let firstReturn = true;
-        modelWorker = new Worker(self.workerPath);
-        workerList[0] = modelWorker;
-        // modelWorker.postMessage({action:"initcanvas", canvas: offscreen, canvasopt: {width: graphicopt.widthG(), height: graphicopt.heightG()}}, [offscreen]);
-        modelWorker.postMessage({action: "initcanvas", canvasopt: {width: graphicopt.widthG(), height: graphicopt.heightG()}});
-        console.log(`----inint ${self.workerPath} with: `, graphicopt.opt)
 
-
-        // modelWorker.postMessage({action: "colorscale", value: colorarr});
-        // adjust dimension -------------
         let opt = JSON.parse(JSON.stringify(graphicopt.opt)); // clone option
         opt.dim = Math.floor(opt.dim);
-        // end - adjust dimension
-        modelWorker.postMessage({action: "initDataRaw",opt:opt, value: datain,labels: datain.map(d=>d.cluster), clusterarr: cluster.map(d=>d.__metrics.normalize)});
-        // let labelsInput = [];initDataRawinitDataRaw
-        // datain.forEach(d=>{if(d.timestep===0) labelsInput.push(d.cluster)});
-        // modelWorker.postMessage({action: "initPartofData",opt:opt, value: datain,labels: labelsInput, clusterarr: cluster.map(d=>d.__metrics.normalize)});
-        modelWorker.addEventListener('message', ({data}) => {
-            switch (data.action) {
-                case "render":
-                    freezemouseoverTrigger = true;
-                    if(firstReturn) {
-                        preloader(false, undefined, undefined, '#modelLoading');
-                        firstReturn = false;
+
+        loadProjection(opt,function (data){
+            if (!data) {
+                modelWorker = new Worker(self.workerPath);
+                workerList[0] = modelWorker;
+                // modelWorker.postMessage({action:"initcanvas", canvas: offscreen, canvasopt: {width: graphicopt.widthG(), height: graphicopt.heightG()}}, [offscreen]);
+                modelWorker.postMessage({
+                    action: "initcanvas",
+                    canvasopt: {width: graphicopt.widthG(), height: graphicopt.heightG()}
+                });
+                console.log(`----inint ${self.workerPath} with: `, graphicopt.opt)
+
+
+                // modelWorker.postMessage({action: "colorscale", value: colorarr});
+                // adjust dimension -------------
+
+                // end - adjust dimension
+                modelWorker.postMessage({
+                    action: "initDataRaw",
+                    opt: opt,
+                    value: datain,
+                    labels: datain.map(d => d.cluster),
+                    clusterarr: cluster.map(d => d.__metrics.normalize)
+                });
+                // let labelsInput = [];initDataRawinitDataRaw
+                // datain.forEach(d=>{if(d.timestep===0) labelsInput.push(d.cluster)});
+                // modelWorker.postMessage({action: "initPartofData",opt:opt, value: datain,labels: labelsInput, clusterarr: cluster.map(d=>d.__metrics.normalize)});
+                modelWorker.addEventListener('message', ({data}) => {
+                    switch (data.action) {
+                        case "render":
+                            freezemouseoverTrigger = true;
+                            if (firstReturn) {
+                                preloader(false, undefined, undefined, '#modelLoading');
+                                firstReturn = false;
+                            }
+                            if (!isBusy) {
+                                isBusy = true;
+                                xscale.domain(data.xscale.domain);
+                                yscale.domain(data.yscale.domain);
+                                solution = data.sol;
+                                updateTableOutput(data.value);
+                                render();
+                                isBusy = false;
+                            }
+                            break;
+                        case "stable":
+                            if (firstReturn) {
+                                preloader(false, undefined, undefined, '#modelLoading');
+                                firstReturn = false;
+                                if (data.value) {
+                                    xscale.domain(data.xscale.domain);
+                                    yscale.domain(data.yscale.domain);
+                                    updateTableOutput(data.value);
+                                }
+                            }
+                            modelWorker.terminate();
+                            freezemouseoverTrigger = false;
+                            solution = data.sol || solution;
+                            render(true);
+                            reduceRenderWeight(true);
+                            break;
+                        default:
+                            break;
                     }
-                    if (!isBusy) {
-                        isBusy = true;
+                })
+            }else{
+                if (firstReturn) {
+                    preloader(false, undefined, undefined, '#modelLoading');
+                    firstReturn = false;
+                    if (data.value) {
                         xscale.domain(data.xscale.domain);
                         yscale.domain(data.yscale.domain);
-                        solution = data.sol;
                         updateTableOutput(data.value);
-                        render();
-                        isBusy = false;
                     }
-                    break;
-                case "stable":
-                    if(firstReturn) {
-                        preloader(false, undefined, undefined, '#modelLoading');
-                        firstReturn = false;
-                        if (data.value) {
-                            xscale.domain(data.xscale.domain);
-                            yscale.domain(data.yscale.domain);
-                            updateTableOutput(data.value);
-                        }
-                    }
-                    modelWorker.terminate();
-                    freezemouseoverTrigger = false;
-                    solution = data.sol||solution;
-                    render(true);
-                    reduceRenderWeight(true);
-                    break;
-                default:
-                    break;
+                }
+                freezemouseoverTrigger = false;
+                solution = data.sol || solution;
+                render(true);
+                reduceRenderWeight(true);
             }
         })
     }
 
     master.init = function(arr,clusterin) {
-
+        preloader(true,1,'Prepare rendering ...','#modelLoading');
         // prepare data
         needRecalculate = true;
         reset = true;
@@ -317,7 +348,9 @@ d3.TimeSpace = function () {
             curveLinesGroup = new THREE.Object3D();
             scatterPlot.add( straightLinesGroup );
             scatterPlot.add( curveLinesGroup );
+            preloader(true,1,'Straight link create ...','#modelLoading');
             straightLines = createLines(straightLinesGroup);
+            preloader(true,1,'Curve link create ...','#modelLoading');
             curveLines = createCurveLines(curveLinesGroup);
             lines = straightLines;
             linesGroup = straightLinesGroup;
@@ -698,7 +731,7 @@ d3.TimeSpace = function () {
                 if (mouseoverTrigger && !freezemouseoverTrigger) { // not have filterbyClustername
                     raycaster.setFromCamera(mouse, camera);
                     if (!filterbyClustername.length) {
-                        var intersects = overwrite || raycaster.intersectObject(points);
+                        var intersects = overwrite || raycaster.intersectObject(visibledata||points);
                         //count and look after all objects in the diamonds group
                        hightlightNode(intersects);
                     } else { // mouse over group
@@ -1736,7 +1769,36 @@ d3.TimeSpace = function () {
 
     }
 
-
+    function loadProjection(opt,calback){
+        let totalTime_marker = performance.now();
+        d3.json(`data/processed_gene_data_normalized_category_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`,function(error,sol){
+            if (!error) {
+                let xrange = d3.extent(sol, d => d[0]);
+                let yrange = d3.extent(sol, d => d[1]);
+                let xscale = d3.scaleLinear().range([0, graphicopt.widthG()]);
+                let yscale = d3.scaleLinear().range([0, graphicopt.heightG()]);
+                const ratio = graphicopt.heightG() / graphicopt.widthG();
+                if ((yrange[1] - yrange[0]) / (xrange[1] - xrange[0]) > graphicopt.heightG() / graphicopt.widthG()) {
+                    yscale.domain(yrange);
+                    let delta = ((yrange[1] - yrange[0]) / ratio - (xrange[1] - xrange[0])) / 2;
+                    xscale.domain([xrange[0] - delta, xrange[1] + delta])
+                } else {
+                    xscale.domain(xrange);
+                    let delta = ((xrange[1] - xrange[0]) * ratio - (yrange[1] - yrange[0])) / 2;
+                    yscale.domain([yrange[0] - delta, yrange[1] + delta])
+                }
+                calback({
+                    action: 'stable',
+                    value: {iteration: 1, time: 0, totalTime: performance.now() - totalTime_marker},
+                    xscale: {domain: xscale.domain()},
+                    yscale: {domain: yscale.domain()},
+                    sol: sol
+                })
+            }else
+                calback();
+        })
+        // solution = sol;
+    }
 
     master.runopt = function (_) {
         //Put all of the options into a variable called runopt
@@ -1936,6 +1998,7 @@ function handle_data_umap(tsnedata) {
         const dataIn = handle_data_model(tsnedata,true);
         // if (!umapopt.opt)
         umapopt.opt = {
+            projectionName:'umap',
             // nEpochs: 20, // The number of epochs to optimize embeddings via SGD (computed automatically = default)
             // nNeighbors:  Math.round(dataIn.length/cluster_info.length/5)+2, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
             nNeighbors:  10, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
@@ -1950,6 +2013,7 @@ function handle_data_tsne(tsnedata) {
     const dataIn = handle_data_model(tsnedata);
     // if (!TsneTSopt.opt)
         TsneTSopt.opt = {
+            projectionName:'tsne',
             epsilon: 20, // epsilon is learning rate (10 = default)
             // perplexity: Math.round(dataIn.length / cluster_info.length), // roughly how many neighbors each point influences (30 = default)
             perplexity: 20, // roughly how many neighbors each point influences (30 = default)
@@ -1961,6 +2025,7 @@ function handle_data_pca(tsnedata) {
     const dataIn = handle_data_model(tsnedata);
     // if (!PCAopt.opt)
         PCAopt.opt = {
+            projectionName:'pca',
             dim: 2, // dimensionality of the embedding (2 = default)
         };
     pcaTS.graphicopt(PCAopt).color(colorCluster).init(dataIn, cluster_info);

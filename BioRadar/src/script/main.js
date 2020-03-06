@@ -1992,7 +1992,7 @@ function recalculateCluster (option,calback,customCluster) {
     clustercalWorker.postMessage({
         binopt:group_opt,
         // tsnedata:tsnedata,
-        sampleS:_.pickBy(tsnedata,d=>d[0].category===0),
+        sampleS:tsnedata,
         timeMax:sampleS.timespan.length,
         hosts:hosts,
         serviceFullList: serviceFullList,
