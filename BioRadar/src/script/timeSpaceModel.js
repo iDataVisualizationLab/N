@@ -1771,7 +1771,7 @@ d3.TimeSpace = function () {
 
     function loadProjection(opt,calback){
         let totalTime_marker = performance.now();
-        d3.json(`data/processed_gene_data_normalized_category_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`,function(error,sol){
+        d3.json(`data/processed_gene_data_normalized_category_${datain.length}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`,function(error,sol){
             if (!error) {
                 let xrange = d3.extent(sol, d => d[0]);
                 let yrange = d3.extent(sol, d => d[1]);
