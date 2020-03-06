@@ -750,36 +750,7 @@ function initTime() {
 
 
 function resetRequest(){
-    // tool_tip.hide();
-    // firstTime = true;
-    // hostResults = {};
-    // cluster_info.forEach(c=>c.arr.length=0)
-    // expectedLength = 0;
-    // formatRealtime = getformattime(+timestep_query.split(/[a-z]/)[0],timeshortconvert(timestep_query.match(/[a-z]/)[0]));
-    // var count =0;
-    // for (var att in hostList.data.hostlist) {
-    //     // to contain the historical query results
-    //     hostResults[att] = {};
-    //     hostResults[att].index = count;
-    //     hostResults[att].arr = [];
-    //     serviceListattr.forEach(d=>hostResults[att][d]=[]);
-    //     count++;
-    // }
-    // svg.selectAll(".compute").remove();
-    // svg.selectAll(".h").remove();
-    // svg.selectAll(".graphsum").remove();
-    // svg.selectAll(".connectTimeline").style("stroke-opacity", 1);
-    // Radarplot.init().clustercallback(d=>TSneplot.clusterBin(d));
-    // jobMap.hosts(hosts).remove(true);
-    // let control_jobdisplay = d3.select('#compDisplay_control');
-    // control_jobdisplay.node().options.selectedIndex = 2;
-    // control_jobdisplay.attr('disabled', '').dispatch('change');
-    // TSneplot.reset(true);
-    //
-    // timelog = [];
-    // jobList = undefined;
-    // // updateTimeText();
-    // request();
+
 }
 
 function loadNewData(d,init) {
@@ -1021,6 +992,23 @@ function updateSummaryChartAll() {
     }
 }
 let loadclusterInfo = false;
+
+function onCalculateClusterAction() {
+    recalculateCluster({
+        clusterMethod: 'leaderbin',
+        normMethod: 'l2',
+        bin: {startBinGridSize: 2, range: [8, 9]}
+    }, function () {
+        updateClusterControlUI(cluster_info.length);
+        handle_dataRaw();
+        if (!init)
+            requestRedraw();
+        else
+            setTimeout(main, 0);
+        preloader(false);
+    });
+}
+
 function readFilecsv(file) {
     exit_warp();
     preloader(true);
@@ -1063,19 +1051,7 @@ function readFilecsv(file) {
                         setTimeout(main,0);
                     preloader(false)
                 }else {
-                    recalculateCluster({
-                        clusterMethod: 'leaderbin',
-                        normMethod: 'l2',
-                        bin: {startBinGridSize: 2, range: [8, 9]}
-                    }, function () {
-                        updateClusterControlUI(cluster_info.length)
-                        handle_dataRaw();
-                        if (!init)
-                            resetRequest();
-                        else
-                            setTimeout(main,0);
-                        preloader(false);
-                    });
+                    onCalculateClusterAction();
                 }
 
             })
@@ -1180,8 +1156,6 @@ function requestRedraw() {
 function onchangeCluster() {
     cluster_info.forEach(d => (d.total=0,d.__metrics.forEach(e => (e.minval = undefined, e.maxval = undefined))));
     handle_dataRaw();
-
-    //tsne
     requestRedraw();
 }
 let handle_data_TimeSpace;
@@ -1600,6 +1574,16 @@ $( document ).ready(function() {
     $('#knum').val(group_opt.bin.k||5);
     $('#kiteration').val(group_opt.bin.iterations||50);
 
+    // outlier detection
+    d3.select('#outlierDection').on('change',function(){
+        if ($(this).prop('checked')){
+            outlyingList = outlier();
+            onCalculateClusterAction();
+        }else{
+            clusterGroup={};
+            onCalculateClusterAction();
+        }
+    });
     readFilecsv('data/transcriptome_averaged.csv');
     // readFilecsv('data/transcriptome_averaged_test.csv');
     MetricController.graphicopt({width:365,height:365})
