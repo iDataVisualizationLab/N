@@ -1024,8 +1024,11 @@ function readFilecsv(file) {
             formatService(true);
             processResult = processResult_csv;
 
-            // addDatasetsOptions()
+            // draw Metric summary on left panel
             MetricController.axisSchema(serviceFullList, true).update();
+            MetricController.datasummary(getsummaryservice());
+            MetricController.data(getsummaryRadar()).drawSummary(hosts.length);
+
             updateDatainformation(sampleS['timespan']);
             sampleJobdata = [{
                 jobID: "1",
