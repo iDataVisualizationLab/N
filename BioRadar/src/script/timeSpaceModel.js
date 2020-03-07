@@ -307,11 +307,8 @@ d3.TimeSpace = function () {
     master.init = function(arr,clusterin) {
         preloader(true,1,'Prepare rendering ...','#modelLoading');
 
-        try{
-            makeDataTableFiltered()
-        }catch(e){
-            dataTableFiltered = $('#filterTable').DataTable();
-        }
+        makeDataTableFiltered()
+
         // prepare data
         needRecalculate = true;
         reset = true;
@@ -1369,33 +1366,38 @@ d3.TimeSpace = function () {
     // make data table display raw data
     let dataTableFiltered
     function makeDataTableFiltered () {
-        const columns = [{title:'atID'}];
-        graphicopt.radaropt.schema.forEach(d=>{
-            columns.push({title:'wt'+d.text,render:renderData})
-        });
-        graphicopt.radaropt.schema.forEach(d=>{
-            columns.push({title:'stop1'+d.text,render:renderData})
-        });
-        dataTableFiltered = $('#filterTable').DataTable({
-            data: [],
-            "pageLength": 50,
-            columns: columns,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'copyHtml5',
-                    exportOptions: { orthogonal: 'export' }
-                },
-                {
-                    extend: 'excelHtml5',
-                    exportOptions: { orthogonal: 'export' }
-                },
-                {
-                    extend: 'pdfHtml5',
-                    exportOptions: { orthogonal: 'export' }
-                }
-            ]
-        });
+        if (!$('#filterTable').dataTable.isDataTable()) {
+            const columns = [{title: 'atID'}];
+            graphicopt.radaropt.schema.forEach(d => {
+                columns.push({title: 'wt' + d.text, render: renderData})
+            });
+            graphicopt.radaropt.schema.forEach(d => {
+                columns.push({title: 'stop1' + d.text, render: renderData})
+            });
+            d3.select('#filterTable')
+            dataTableFiltered = $('#filterTable').DataTable({
+                data: [],
+                "pageLength": 50,
+                columns: columns,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        exportOptions: {orthogonal: 'export'}
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {orthogonal: 'export'}
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: {orthogonal: 'export'}
+                    }
+                ]
+            });
+        }else{
+            dataTableFiltered = $('#filterTable').DataTable();
+        }
         function renderData(data, type, row) {
                 return type === 'export' ?
                     data :
