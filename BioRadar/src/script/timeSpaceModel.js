@@ -78,7 +78,7 @@ d3.TimeSpace = function () {
         isBusy = false,
         stop = false;
     let modelWorker,plotlyWorker,workerList=[],colorscale,reset;
-    let master={},solution,datain=[],filterbyClustername=[],visibledata=undefined,table_info,path,cluster=[],scaleTime;
+    let master={},solution,datain=[],filterbyClustername=[],visibledata,table_info,path,cluster=[],scaleTime;
     let xscale=d3.scaleLinear(),yscale=d3.scaleLinear(), scaleNormalTimestep=d3.scaleLinear();
     // grahic
     let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,controls,raycaster,INTERSECTED =[] ,mouse ,
@@ -476,26 +476,26 @@ d3.TimeSpace = function () {
         switch (key) {
             case 'groups':
                 const lists = d3.keys(path).filter(d=>(path[d][0]||{cluster:undefined}).cluster!==(path[d][1]||{cluster:undefined}).cluster);
-                hightlightGroupNode(lists);
+                highlightGroupNode(lists);
                 break;
             case "wt":
-                hightlightGroupNode([],0);
+                highlightGroupNode([],0);
                 break;
             case "stop1":
-                hightlightGroupNode([],1);
+                highlightGroupNode([],1);
                 break;
             case "umapDistance":
                 d3.select('#distanceFilterHolder').classed('hide',false);
                 let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
-                hightlightGroupNode(filteredumap);
+                highlightGroupNode(filteredumap);
                 break;
             case "euclideanDistance":
                 d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
                 let filteredeuclidean =d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance);
-                hightlightGroupNode(filteredeuclidean);
+                highlightGroupNode(filteredeuclidean);
                 break;
             default:
-                hightlightGroupNode([]);
+                highlightGroupNode([]);
                 break;
         }
     }
@@ -537,7 +537,7 @@ d3.TimeSpace = function () {
 
         let all = d3.select('#modelRank').selectAll('tr.rankItem')
             .style('order',d=>d.order)
-            .on('mouseover',d=>(overwrite=path[d.key],hightlightNode(path[d.key])))
+            .on('mouseover',d=>(overwrite=path[d.key],highlightNode(path[d.key])))
             .on('mouseout',d=>(overwrite=undefined));
         all.select('.rank').style('font-size',d=>d.order>2?'unset':`${1.5-d.order*0.2}rem`).html((d,i)=>`${d.order+1}<sup>${ordinal_suffix_of(d.order+1,true)}</sup>`)
         all.select('.name').text(d=>d.key)
@@ -645,12 +645,16 @@ d3.TimeSpace = function () {
         });
     }
     let freezemouseoverTrigger = false;
-    function hightlightNode(intersects) { // INTERSECTED
+    function highlightNode(intersects) { // INTERSECTED
         var geometry = points.geometry;
         var attributes = geometry.attributes;
-        if (intersects.length > 0) {
-            if (INTERSECTED.indexOf(intersects[0].index) === -1) {
-                let target = datain[intersects[0].index];
+        var targetfilter;
+        if (intersects.length > 0 && (!visibledata||visibledata&&(targetfilter=intersects.find(d=>visibledata.indexOf(d.index)!==-1)))) {
+            let targetIndex = intersects[0].index;
+            if (visibledata)
+                targetIndex = targetfilter.index;
+            if (INTERSECTED.indexOf(targetIndex) === -1) {
+                let target = datain[targetIndex];
                 // INTERSECTED.forEach((d, i) => {
                 //     attributes.size.array[d] = graphicopt.component.dot.size;
                 // });
@@ -703,13 +707,31 @@ d3.TimeSpace = function () {
         } else if (INTERSECTED.length || ishighlightUpdate) {
             ishighlightUpdate = false;
             tooltip_lib.hide(); // hide tooltip
-            datain.forEach((d, i) => {
-                attributes.alpha.array[i] = graphicopt.component.dot.opacity;
-                attributes.size.array[i] = graphicopt.component.dot.size;
-                lines[d.name].visible = true;
-                lines[d.name].material.opacity = graphicopt.component.link.opacity;
-                lines[d.name].material.linewidth  = graphicopt.component.link.size;
-            });
+
+            if (visibledata){
+                datain.forEach((d, i) => {
+                    if (visibledata.indexOf(i) !==-1 || (filterGroupsetting.timestep!==undefined && filterGroupsetting.timestep===d.__timestep)){
+                        INTERSECTED.push(i);
+                        attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                        lines[d.name].visible = filterGroupsetting.timestep===undefined;
+                        lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                        lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
+                    } else {
+                        attributes.alpha.array[i] = 0;
+                        lines[d.name].visible = false;
+                        lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                        lines[d.name].material.linewidth  = graphicopt.component.link.size;
+                    }
+                });
+            }else
+                datain.forEach((d, i) => {
+                    attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                    attributes.size.array[i] = graphicopt.component.dot.size;
+                    lines[d.name].visible = true;
+                    lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                    lines[d.name].material.linewidth  = graphicopt.component.link.size;
+                });
+
             attributes.size.needsUpdate = true;
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
@@ -721,8 +743,8 @@ d3.TimeSpace = function () {
         }
         isneedrender = true;
     }
-
-    function hightlightGroupNode(intersects,timestep) { // INTERSECTED
+    let filterGroupsetting={timestep:undefined};
+    function highlightGroupNode(intersects,timestep) { // INTERSECTED
         if (intersects.length){
             if (intersects.length<1000) {
                 d3.select("#filterTable_wrapper").classed('hide',false);
@@ -740,19 +762,20 @@ d3.TimeSpace = function () {
             d3.select("p#filterList").classed('hide',true);
             // d3.select("p#filterList+.copybtn").classed('hide',true);
         }
-        let ishighLink = timestep===undefined;
-        freezemouseoverTrigger = true;
+        filterGroupsetting.timestep = timestep;
         var geometry = points.geometry;
         var attributes = geometry.attributes;
-        if (intersects.length > 0 || !ishighLink) {
+        if (intersects.length > 0 || !(timestep===undefined)) {
             INTERSECTED = [];
+            visibledata = [];
             datain.forEach((d, i) => {
                 if (intersects.indexOf(d.name) !==-1 || (timestep!==undefined && timestep===d.__timestep)){
                     INTERSECTED.push(i);
                     attributes.alpha.array[i] = graphicopt.component.dot.opacity;
-                    lines[d.name].visible = ishighLink;
+                    lines[d.name].visible = timestep===undefined;
                     lines[d.name].material.opacity = graphicopt.component.link.opacity;
                     lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
+                    visibledata.push(i);
                 } else {
                     attributes.alpha.array[i] = 0;
                     lines[d.name].visible = false;
@@ -764,8 +787,8 @@ d3.TimeSpace = function () {
             attributes.alpha.needsUpdate = true;
 
             removeBoxHelper();
-        } else if (INTERSECTED.length || ishighlightUpdate) {
-            freezemouseoverTrigger = false;
+        } else if (visibledata.length || ishighlightUpdate) {
+            visibledata = undefined;
             ishighlightUpdate = false;
             tooltip_lib.hide(); // hide tooltip
             datain.forEach((d, i) => {
@@ -799,9 +822,9 @@ d3.TimeSpace = function () {
                 if (mouseoverTrigger && !freezemouseoverTrigger) { // not have filterbyClustername
                     raycaster.setFromCamera(mouse, camera);
                     if (!filterbyClustername.length) {
-                        var intersects = overwrite || raycaster.intersectObject(visibledata||points);
+                        var intersects = overwrite || raycaster.intersectObject(points);
                         //count and look after all objects in the diamonds group
-                       hightlightNode(intersects);
+                       highlightNode(intersects);
                     } else { // mouse over group
                         var geometry = points.geometry;
                         var attributes = geometry.attributes;
