@@ -699,7 +699,7 @@ input.clusterlabel:hover, input.clusterlabel:focus{
     padding-right: 5px;
 }
 #filterTable td{
-    text-align: right;
+    text-align: left;
 }
 #filterTable td>first{
     text-align: left;
