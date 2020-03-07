@@ -667,12 +667,21 @@ d3.TimeSpace = function () {
                         lines[d.name].visible = true;
                         lines[d.name].material.opacity = 1;
                         lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
-                    } else {
-                        attributes.alpha.array[i] = 0.1;
-                        attributes.size.array[i] = graphicopt.component.dot.size;
-                        lines[d.name].visible = false;
-                        lines[d.name].material.opacity = graphicopt.component.link.opacity;
-                        lines[d.name].material.linewidth  = graphicopt.component.link.size;
+                    } else{
+                        if(!visibledata || (visibledata&&visibledata.indexOf(i) !== -1)) {
+
+                                attributes.alpha.array[i] = 0.1;
+                                attributes.size.array[i] = graphicopt.component.dot.size;
+                                lines[d.name].visible = false;
+                                lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                                lines[d.name].material.linewidth = graphicopt.component.link.size;
+
+                        }else{
+                            attributes.alpha.array[i] = 0;
+                            lines[d.name].visible = false;
+                            lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                            lines[d.name].material.linewidth  = graphicopt.component.link.size;
+                        }
                     }
                 });
 
