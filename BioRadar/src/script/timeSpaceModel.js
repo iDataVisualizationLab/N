@@ -722,6 +722,7 @@ d3.TimeSpace = function () {
                     if (visibledata.indexOf(i) !==-1 || (filterGroupsetting.timestep!==undefined && filterGroupsetting.timestep===d.__timestep)){
                         INTERSECTED.push(i);
                         attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                        attributes.size.array[i] = graphicopt.component.dot.size;
                         lines[d.name].visible = filterGroupsetting.timestep===undefined;
                         lines[d.name].material.opacity = graphicopt.component.link.opacity;
                         lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
