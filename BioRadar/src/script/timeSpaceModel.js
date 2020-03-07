@@ -1379,11 +1379,15 @@ d3.TimeSpace = function () {
             //         .enter().append('th').attr('class',(d,i)=>i?'rotate':'')
             //         .html(d=>`<div><span>${d.title}</span></div>`)
             // }
+            let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
+                .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
+            let textcolor = heatmaponTable.copy();
+            textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff'])
             dataTableFiltered = $('#filterTable').DataTable({
                 data: [],
                 "pageLength": 50,
                 columns: columns,
-                "dom": '<"top"f<"clear">>rt<"bottom"ip<"clear">B>',
+                "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
                 buttons: [
                     {
                         extend: 'copyHtml5',
@@ -1397,8 +1401,18 @@ d3.TimeSpace = function () {
                         extend: 'pdfHtml5',
                         exportOptions: {orthogonal: 'export'}
                     }
-                ]
+                ],
+                rowCallback: function(row, data, index){
+                    data.forEach((d,i)=>{
+                        if(i){ // not column of name
+                            $(row).find(`td:eq(${i})`)
+                                .css('background-color', heatmaponTable(d))
+                                .css('color', textcolor(d));
+                        }
+                    })
+                }
             });
+            $.fn.DataTable.ext.pager.numbers_length = 4;
         }else{
             dataTableFiltered = $('#filterTable').DataTable();
         }

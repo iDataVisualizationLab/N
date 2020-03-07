@@ -704,6 +704,18 @@ input.clusterlabel:hover, input.clusterlabel:focus{
 #filterTable td>first{
     text-align: left;
 }
+#modelFilter .dataTables_filter{
+    float: none;
+    text-align: unset;
+    width: 70%;
+}
+#modelFilter .dataTables_filter input {
+    height: 1.1rem;
+}
+.dt-buttons{
+    display: flex;
+    width: 100%;
+}
 th.rotate {
     /* Something you can count on */
     height: 140px;

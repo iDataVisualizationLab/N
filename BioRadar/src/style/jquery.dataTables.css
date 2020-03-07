@@ -327,7 +327,8 @@ table.dataTable, table.dataTable th, table.dataTable td {
     text-decoration: none !important;
     cursor: pointer;
     *cursor: hand;
-    color: #ffffff61 !important;
+    color: #b1b1b1 !important;
+    /*color: #ffffff61 !important;*/
     border: 1px solid transparent;
     border-radius: 2px
 }
