@@ -56,7 +56,16 @@ d3.TimeSpace = function () {
             linkConnect: {text: "Link type", type: "selection", variable: 'linkConnect',labels:['--none--','Straight','Curve'],values:[false,'straight','curve'],
                 width: '100px',
                 callback:()=>{visiableLine(graphicopt.linkConnect); graphicopt.isCurve = graphicopt.linkConnect==='curve';toggleLine();render(!isBusy);isneedrender = true;}},
-            dim: {text: "Dim", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{obitTrigger=true;start(!needRecalculate || graphicopt.opt.dim===2.5);}},
+            linkOpacity:{text:"Link opacity", range:[0.1,1],id:'Link_opacity', type:"slider", variableRoot: graphicopt.component.link,variable: 'opacity',width:'100px',step:0.1,
+                callback:onlinkopacity},
+            dim: {text: "Dim", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{
+                    preloader(true,10,'Change dimension projection...','#modelLoading');
+                    obitTrigger=true;
+                    setTimeout(()=>{
+                        start(!needRecalculate || graphicopt.opt.dim===2.5);
+                        preloader(false,undefined,undefined,'#modelLoading');
+                    })
+            }},
             // windowsSize: {
             //     text: "Windows size",
             //     range: [1, 21],
@@ -66,6 +75,7 @@ d3.TimeSpace = function () {
             // },
         },
         formatTable = {
+            'opacity':function(d){return d},
             'time': function(d){return millisecondsToStr(d)},
             'totalTime': function(d){return millisecondsToStr(d)},
             'iteration': function(d){return d},
@@ -797,7 +807,7 @@ d3.TimeSpace = function () {
             attributes.alpha.needsUpdate = true;
 
             removeBoxHelper();
-        } else if (visibledata.length || ishighlightUpdate) {
+        } else if (visibledata && visibledata.length || ishighlightUpdate) {
             visibledata = undefined;
             ishighlightUpdate = false;
             tooltip_lib.hide(); // hide tooltip
@@ -1424,7 +1434,7 @@ d3.TimeSpace = function () {
             let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
                 .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
             let textcolor = heatmaponTable.copy();
-            textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff'])
+            textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff'])
             dataTableFiltered = $('#filterTable').DataTable({
                 data: [],
                 "pageLength": 50,
@@ -1730,6 +1740,17 @@ d3.TimeSpace = function () {
         lines[target.name].geometry.computeBoundingBox();
     }
 
+    function onlinkopacity(){
+        setTimeout(()=>{
+            Object.keys(lines).forEach(lk=>{
+                if (lines[lk].visible && lines[lk].material.opacity){
+                    lines[lk].material.opacity = graphicopt.component.link.opacity;
+                }
+            })
+            isneedrender = true;
+        });
+    }
+
     function createLines(g){
         colorLineScale.domain([0,1]);
         let lines = {};
@@ -1766,6 +1787,7 @@ d3.TimeSpace = function () {
 
     function visiableLine(isvisiable){
         linesGroup.visible = isvisiable;
+        d3.select('#Link_opacity').classed('hide',!isvisiable);
     }
     function drawline(ctx,path,cluster) {
         positionLink_canvas(path,new THREE.ShapePath());
@@ -1826,7 +1848,7 @@ d3.TimeSpace = function () {
             tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable})
         });
         d3.values(controlPanelGeneral).forEach(d=>{
-            tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable})
+            tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable,variableRoot: d.variableRoot,id:d.id})
         });
         tableData[2] = _.concat(tableData[2],self.outputSelection);
         let tbodys = table_info.selectAll('tbody').data(tableData);
@@ -1834,7 +1856,8 @@ d3.TimeSpace = function () {
             .enter().append('tbody')
             .selectAll('tr').data(d=>d)
             .enter().append('tr')
-            .selectAll('td').data(d=>d.type==="title"?[d]:[{text:d.label},d.type?{content:d.content,variable:d.variable}:{text:d.content,variable:d.variable}])
+            .attr('id',d=>d.id?d.id:null)
+            .selectAll('td').data(d=>d.type==="title"?[d]:[{text:d.label},d.type?{content:d.content,variable:d.variable,variableRoor: d.variableRoot}:{text:d.content,variable:d.variable}])
             .enter().append('td')
             .attr('colspan',d=>d.type?"2":null)
             .style('text-align',(d,i)=>d.type==="title"?"center":(i?"right":"left"))
@@ -1847,7 +1870,7 @@ d3.TimeSpace = function () {
                     if (d.content.type==="slider"){
                         let div = d3.select(this).style('width',d.content.width).append('div').attr('class','valign-wrapper');
                         noUiSlider.create(div.node(), {
-                            start: (graphicopt.opt[d.content.variable])|| d.content.range[0],
+                            start: (graphicopt.opt[d.content.variable]|| (d.content.variableRoot?d.content.variableRoot[d.content.variable]:undefined))|| d.content.range[0],
                             connect: 'lower',
                             tooltips: {to: function(value){return formatvalue(value)}, from:function(value){return +value.split('1e')[1];}},
                             step: d.content.step||1,
@@ -1858,7 +1881,10 @@ d3.TimeSpace = function () {
                             },
                         });
                         div.node().noUiSlider.on("change", function () { // control panel update method
-                            graphicopt.opt[d.content.variable] = + this.get();
+                            if (!d.content.variableRoot) {
+                                graphicopt.opt[d.content.variable] = +this.get();
+                            }else
+                                d.content.variableRoot[d.content.variable] = +this.get();
                             if (d.content.callback)
                                 d.content.callback();
                             else
