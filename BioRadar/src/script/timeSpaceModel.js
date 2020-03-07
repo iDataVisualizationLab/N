@@ -1418,8 +1418,7 @@ d3.TimeSpace = function () {
         }
         function renderData(data, type, row) {
                 return type === 'export' ?
-                    data :
-                    d3.format('.2f')(data);
+                    data : data%1==0?data:d3.format('.2f')(data);
         }
     }
 
