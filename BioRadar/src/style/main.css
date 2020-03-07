@@ -690,10 +690,20 @@ input.clusterlabel:hover, input.clusterlabel:focus{
     background-color: #fff3f3;
 }
 
-#filterTable thead th{
-    padding:0;
+#filterTable thead th, #filterTable td{
+    padding: 2px;
+    white-space: nowrap;
 }
-
+#filterTable thead th {
+    padding: 2px;
+    padding-right: 5px;
+}
+#filterTable td{
+    text-align: right;
+}
+#filterTable td>first{
+    text-align: left;
+}
 th.rotate {
     /* Something you can count on */
     height: 140px;

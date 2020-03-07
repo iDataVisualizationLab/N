@@ -1374,7 +1374,11 @@ d3.TimeSpace = function () {
             graphicopt.radaropt.schema.forEach(d => {
                 columns.push({title: 'stop1' + d.text, render: renderData})
             });
-            d3.select('#filterTable')
+            // if (d3.select('#filterTable').select('thead').empty()){
+            //     d3.select('#filterTable').append('thead').selectAll('th').data(columns)
+            //         .enter().append('th').attr('class',(d,i)=>i?'rotate':'')
+            //         .html(d=>`<div><span>${d.title}</span></div>`)
+            // }
             dataTableFiltered = $('#filterTable').DataTable({
                 data: [],
                 "pageLength": 50,
