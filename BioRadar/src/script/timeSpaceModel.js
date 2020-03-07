@@ -47,7 +47,7 @@ d3.TimeSpace = function () {
             filter:{ distance:0.5},
             component:{
                 dot:{size:5,opacity:0.9},
-                link:{size:0.8,opacity:0.1},
+                link:{size:1,opacity:0.2, highlight:{opacity:3}},
             },
             serviceIndex: 0,
         },
@@ -659,31 +659,39 @@ d3.TimeSpace = function () {
                     if (d.name === target.name) {
                         INTERSECTED.push(i);
                         attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                        attributes.size.array[i] = graphicopt.component.dot.size*2;
                         lines[d.name].visible = true;
                         lines[d.name].material.opacity = 1;
+                        lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
                     } else {
                         attributes.alpha.array[i] = 0.1;
+                        attributes.size.array[i] = graphicopt.component.dot.size;
                         lines[d.name].visible = false;
+                        lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                        lines[d.name].material.linewidth  = graphicopt.component.link.size;
                     }
                 });
-                // let rScale = d3.scaleLinear().range([graphicopt.component.dot.size, graphicopt.component.dot.size * 2])
-                //     .domain([INTERSECTED.length, 0]);
-                // INTERSECTED.forEach((d, i) => {
-                //     attributes.size.array[d] = rScale(i);
-                // });
-                // attributes.size.needsUpdate = true;
+
+                attributes.size.needsUpdate = true;
                 attributes.alpha.needsUpdate = true;
                 // add box helper
                 scene.remove(scene.getObjectByName('boxhelper'));
-                // var box = new THREE.BoxHelper(lines[target.name], 0x000000);
-                var box3 = new THREE.Box3().setFromObject(lines[target.name]);
-                var boxSize = box3.getSize(new THREE.Vector3());
-                var boxPos = box3.getCenter(new THREE.Vector3());
-                var geometry = new THREE.BoxGeometry(boxSize.x,boxSize.y,boxSize.z);
-                var material = new THREE.MeshBasicMaterial( {color: 0xdddddd,side: THREE.BackSide} );
-
-                var box = new THREE.Mesh( geometry, material );
-                box.position.set(boxPos.x,boxPos.y,boxPos.z);
+                var box = new THREE.BoxHelper(lines[target.name], 0x000000);
+                // var box3 = new THREE.Box3().setFromObject(lines[target.name]);
+                // var boxSize = box3.getSize(new THREE.Vector3());
+                // var boxPos = box3.getCenter(new THREE.Vector3());
+                // var geometry = new THREE.BoxGeometry(boxSize.x,boxSize.y,boxSize.z);
+                // var material = new THREE.MeshBasicMaterial( {color: 0xdddddd,side: THREE.BackSide} );
+                //
+                // var box = new THREE.Mesh( geometry, material );
+                // box.position.set(boxPos.x,boxPos.y,boxPos.z);
+                box.material = new THREE.LineDashedMaterial( {
+                    color: 0xdddddd,
+                    linewidth: 0.1,
+                    scale: 1,
+                    dashSize: 3,
+                    gapSize: 1,
+                } );
                 box.name = "boxhelper";
                 scene.add(box);
 
@@ -697,8 +705,10 @@ d3.TimeSpace = function () {
             tooltip_lib.hide(); // hide tooltip
             datain.forEach((d, i) => {
                 attributes.alpha.array[i] = graphicopt.component.dot.opacity;
+                attributes.size.array[i] = graphicopt.component.dot.size;
                 lines[d.name].visible = true;
                 lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                lines[d.name].material.linewidth  = graphicopt.component.link.size;
             });
             attributes.size.needsUpdate = true;
             attributes.alpha.needsUpdate = true;
@@ -742,9 +752,12 @@ d3.TimeSpace = function () {
                     attributes.alpha.array[i] = graphicopt.component.dot.opacity;
                     lines[d.name].visible = ishighLink;
                     lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                    lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
                 } else {
                     attributes.alpha.array[i] = 0;
                     lines[d.name].visible = false;
+                    lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                    lines[d.name].material.linewidth  = graphicopt.component.link.size;
                 }
             });
 
@@ -759,6 +772,7 @@ d3.TimeSpace = function () {
                 attributes.alpha.array[i] = graphicopt.component.dot.opacity;
                 lines[d.name].visible = true;
                 lines[d.name].material.opacity = graphicopt.component.link.opacity;
+                lines[d.name].material.linewidth  = graphicopt.component.link.size;
             });
 
             attributes.alpha.needsUpdate = true;
@@ -1454,7 +1468,7 @@ d3.TimeSpace = function () {
     function render (islast){
         if (isneedCompute) {
             let p = points.geometry.attributes.position.array;
-            if (solution) {
+            if (solution&&solution.length) {
                 createRadar = _.partialRight(createRadar_func, 'timeSpace radar', graphicopt.radaropt, colorscale);
                 solution.forEach(function (d, i) {
                     // mapIndex.forEach(function (i) {
@@ -1477,16 +1491,16 @@ d3.TimeSpace = function () {
                         }
                     }
                 });
-                let center = d3.nest().key(d => d.cluster).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
-                solution.forEach(function (d, i) {
-                    const target = datain[i];
-                    const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
-                    path[target.name][posPath].value = d;
-                    // updateStraightLine(target, posPath, d);
-                    updateLine(target, posPath, d, path[target.name].map(p => center[datain[p.index].cluster]));
-
-                });
                 if (islast) {
+                    let center = d3.nest().key(d => d.cluster).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
+                    solution.forEach(function (d, i) {
+                        const target = datain[i];
+                        const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
+                        path[target.name][posPath].value = d;
+                        // updateStraightLine(target, posPath, d);
+                        updateLine(target, posPath, d, path[target.name].map(p => center[datain[p.index].cluster]));
+
+                    });
                     let rangeDis = [+Infinity, 0];
                     let customz = d3.scaleLinear().range(scaleNormalTimestep.range());
                     for (let name in path) {
@@ -1610,7 +1624,8 @@ d3.TimeSpace = function () {
 
 
         var material = new THREE.LineBasicMaterial( {
-            opacity:0.2,
+            opacity:graphicopt.component.link.opacity,
+            linewidth:graphicopt.component.link.size,
             color: 0xffffff,
             vertexColors: THREE.VertexColors,
             transparent: true
@@ -1625,10 +1640,11 @@ d3.TimeSpace = function () {
         let lineObj = new THREE.Object3D();
         if (path.length > 1) {
             var material = new THREE.LineBasicMaterial({
+                opacity:graphicopt.component.link.opacity,
+                linewidth:graphicopt.component.link.size,
                 color: 0xffffff,
                 vertexColors: THREE.VertexColors,
                 transparent: true,
-                opacity: 0.2
             });
             var curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(0, 0, 0),new THREE.Vector3(0, 0, 0),new THREE.Vector3(0, 0, 0));
             curves[key] = curve;
@@ -1658,7 +1674,7 @@ d3.TimeSpace = function () {
         if (curves[target.name]!==undefined) {
             // var curve = new THREE.CatmullRomCurve3( path[target.name].map(p=> new THREE.Vector3(xscale(p.value[0]), yscale(p.value[1]), xscale(p.value[2]) || 0)),false,'catmullrom');
             const v0 = position2Vector(path[target.name][0].value);
-            const v1 = position2Vector(center[0].map((d,i)=>d===undefined?undefined:d3.mean(d,center[1][i])));
+            const v1 = position2Vector(center[0].map((d,i)=>d===undefined?undefined:d3.mean([d,center[1][i]])));
             const v2 = position2Vector(path[target.name][1].value);
             var curve = new THREE.QuadraticBezierCurve3(v0,v1,v2);
             curve.tension =0.05;
