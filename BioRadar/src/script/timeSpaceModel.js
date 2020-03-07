@@ -55,7 +55,7 @@ d3.TimeSpace = function () {
             // linkConnect: {text: "Link type", type: "selection", variable: 'linkConnect',labels:['--none--','Straight'],values:[false,'straight'],
             linkConnect: {text: "Link type", type: "selection", variable: 'linkConnect',labels:['--none--','Straight','Curve'],values:[false,'straight','curve'],
                 width: '100px',
-                callback:()=>{visiableLine(graphicopt.linkConnect); graphicopt.isCurve = graphicopt.linkConnect==='curve';toggleLine();render(!isBusy);}},
+                callback:()=>{visiableLine(graphicopt.linkConnect); graphicopt.isCurve = graphicopt.linkConnect==='curve';toggleLine();render(!isBusy);isneedrender = true;}},
             dim: {text: "Dim", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{obitTrigger=true;start(!needRecalculate || graphicopt.opt.dim===2.5);}},
             windowsSize: {
                 text: "Windows size",
@@ -72,6 +72,8 @@ d3.TimeSpace = function () {
             'stopCondition': function(d) {return '1e'+Math.round(d)}
         },tableWidth = 200
         ,
+        renderQueue_link={line:false,curve:false},
+        isneedCompute=true,
         runopt = {},
         isBusy = false,
         stop = false;
@@ -174,6 +176,8 @@ d3.TimeSpace = function () {
         d3.select('#modelFilterBy').dispatch('change');
     }
     function start(skipRecalculate) {
+        isneedCompute = true;
+        renderQueue_link={line:false,curve:false}
         resetFilter();
         interuptAnimation();
         axesHelper.toggleDimension(graphicopt.opt.dim);
@@ -255,6 +259,7 @@ d3.TimeSpace = function () {
                                 yscale.domain(data.yscale.domain);
                                 solution = data.sol;
                                 updateTableOutput(data.value);
+                                isneedCompute = true;
                                 render();
                                 isBusy = false;
                             }
@@ -272,6 +277,7 @@ d3.TimeSpace = function () {
                             modelWorker.terminate();
                             freezemouseoverTrigger = false;
                             solution = data.sol || solution;
+                            isneedCompute = true;
                             render(true);
                             reduceRenderWeight(true);
                             break;
@@ -291,6 +297,7 @@ d3.TimeSpace = function () {
                 }
                 freezemouseoverTrigger = false;
                 solution = data.sol || solution;
+                isneedCompute = true;
                 render(true);
                 reduceRenderWeight(true);
             }
@@ -299,6 +306,12 @@ d3.TimeSpace = function () {
 
     master.init = function(arr,clusterin) {
         preloader(true,1,'Prepare rendering ...','#modelLoading');
+
+        try{
+            makeDataTableFiltered()
+        }catch(e){
+            dataTableFiltered = $('#filterTable').DataTable();
+        }
         // prepare data
         needRecalculate = true;
         reset = true;
@@ -415,16 +428,16 @@ d3.TimeSpace = function () {
 
             d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
             d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
-            d3.select("p#filterList+.copybtn").on('click',()=>{
-                var copyText = document.getElementById("filterList");
-                var textArea = document.createElement("textarea");
-                textArea.value = copyText.textContent;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("Copy");
-                textArea.remove();
-                M.toast({html: 'Copied to clipboard'})
-            });
+            // d3.select("p#filterList+.copybtn").on('click',()=>{
+            //     var copyText = document.getElementById("filterList");
+            //     var textArea = document.createElement("textarea");
+            //     textArea.value = copyText.textContent;
+            //     document.body.appendChild(textArea);
+            //     textArea.select();
+            //     document.execCommand("Copy");
+            //     textArea.remove();
+            //     M.toast({html: 'Copied to clipboard'})
+            // });
 
         drawSummaryRadar([],[],'#ffffff');
         start();
@@ -437,16 +450,28 @@ d3.TimeSpace = function () {
         if (!graphicopt.isCurve)
         {
             visiableLine(false);
+            datain.forEach((d, i) => {
+                straightLines[d.name].visible = curveLines[d.name].visible;
+                straightLines[d.name].material.opacity = curveLines[d.name].material.opacity;
+            });
             lines = straightLines;
             linesGroup = straightLinesGroup;
             updateLine = updateStraightLine;
             visiableLine(graphicopt.linkConnect);
+            isneedCompute = (!renderQueue_link.line);
+            renderQueue_link.line = true;
         }else{
             visiableLine(false);
+            datain.forEach((d, i) => {
+                curveLines[d.name].visible = straightLines[d.name].visible;
+                curveLines[d.name].material.opacity = straightLines[d.name].material.opacity;
+            });
             lines = curveLines;
             linesGroup = curveLinesGroup;
             updateLine = updateCurveLine;
             visiableLine(graphicopt.linkConnect);
+            isneedCompute = (!renderQueue_link.curve);
+            renderQueue_link.curve = true;
         }
     }
     function handleFilter(key){
@@ -464,11 +489,13 @@ d3.TimeSpace = function () {
                 break;
             case "umapDistance":
                 d3.select('#distanceFilterHolder').classed('hide',false);
-                hightlightGroupNode(d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance));
+                let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
+                hightlightGroupNode(filteredumap);
                 break;
             case "euclideanDistance":
                 d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
-                hightlightGroupNode(d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance));
+                let filteredeuclidean =d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance);
+                hightlightGroupNode(filteredeuclidean);
                 break;
             default:
                 hightlightGroupNode([]);
@@ -690,11 +717,21 @@ d3.TimeSpace = function () {
 
     function hightlightGroupNode(intersects,timestep) { // INTERSECTED
         if (intersects.length){
-            d3.select("p#filterList").text(intersects.join(', '));
-            d3.select("p#filterList+.copybtn").classed('hide',false);
+            if (intersects.length<1000) {
+                d3.select("#filterTable_wrapper").classed('hide',false);
+                updateDataTableFiltered(intersects);
+                d3.select("p#filterList").classed('hide',true);
+            }else {
+                d3.select("#filterTable_wrapper").classed('hide',true);
+                d3.select("p#filterList").classed('hide',false);
+                d3.select("p#filterList").text(intersects.join(', '));
+                // d3.select("p#filterList+.copybtn").classed('hide', false);
+            }
         }else{
+            d3.select("#filterTable_wrapper").classed('hide',true);
             d3.select("p#filterList").text('');
-            d3.select("p#filterList+.copybtn").classed('hide',true);
+            d3.select("p#filterList").classed('hide',true);
+            // d3.select("p#filterList+.copybtn").classed('hide',true);
         }
         let ishighLink = timestep===undefined;
         freezemouseoverTrigger = true;
@@ -1328,6 +1365,53 @@ d3.TimeSpace = function () {
         g.add(p);
         return p;
     }
+
+    // make data table display raw data
+    let dataTableFiltered
+    function makeDataTableFiltered () {
+        const columns = [{title:'atID'}];
+        graphicopt.radaropt.schema.forEach(d=>{
+            columns.push({title:'wt'+d.text,render:renderData})
+        });
+        graphicopt.radaropt.schema.forEach(d=>{
+            columns.push({title:'stop1'+d.text,render:renderData})
+        });
+        dataTableFiltered = $('#filterTable').DataTable({
+            data: [],
+            "pageLength": 50,
+            columns: columns,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: { orthogonal: 'export' }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: { orthogonal: 'export' }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: { orthogonal: 'export' }
+                }
+            ]
+        });
+        function renderData(data, type, row) {
+                return type === 'export' ?
+                    data :
+                    d3.format('.2f')(data);
+        }
+    }
+
+    function updateDataTableFiltered(newDataName){
+        let newDataArray = newDataName.map(n=>{
+            return _.flatten([n,tsnedata[n+'__wt'][0],tsnedata[n+'__stop1'][0]]);
+        });
+        dataTableFiltered.clear();
+        dataTableFiltered.rows.add(newDataArray);
+        dataTableFiltered.draw();
+    }
+
     let mapIndex =[];
 
     // function transition(){
@@ -1345,93 +1429,96 @@ d3.TimeSpace = function () {
     let distancerange = d3.scaleLinear();
     let euclideandistancerange = d3.scaleLinear();
     function render (islast){
-        let p = points.geometry.attributes.position.array;
-        if(solution) {
-            createRadar = _.partialRight(createRadar_func,'timeSpace radar', graphicopt.radaropt, colorscale);
-            solution.forEach(function (d, i) {
-            // mapIndex.forEach(function (i) {
-                const target = datain[i];
-                target.__metrics.position = d;
-                let pointIndex = mapIndex.indexOf(i);
-                if (pointIndex!==undefined){
-                    p[pointIndex*3+0] = xscale(d[0]);
-                    p[pointIndex*3+1] = yscale(d[1]);
+        if (isneedCompute) {
+            let p = points.geometry.attributes.position.array;
+            if (solution) {
+                createRadar = _.partialRight(createRadar_func, 'timeSpace radar', graphicopt.radaropt, colorscale);
+                solution.forEach(function (d, i) {
+                    // mapIndex.forEach(function (i) {
+                    const target = datain[i];
+                    target.__metrics.position = d;
+                    let pointIndex = mapIndex.indexOf(i);
+                    if (pointIndex !== undefined) {
+                        p[pointIndex * 3 + 0] = xscale(d[0]);
+                        p[pointIndex * 3 + 1] = yscale(d[1]);
 
-                    // 3rd dimension as time step
-                    // p[pointIndex*3+2] = xscale(d[2])||0;
-                    if(graphicopt.opt.dim>2) {
-                        p[pointIndex * 3 + 2] = scaleNormalTimestep(target.__timestep);
-                        d[2] = xscale.invert(p[pointIndex * 3 + 2]);
-                    }else {
-                        p[pointIndex * 3 + 2] = 0;
-                        if (solution[i].length>2)
-                            solution[i] = solution[i].slice(0,2);
+                        // 3rd dimension as time step
+                        // p[pointIndex*3+2] = xscale(d[2])||0;
+                        if (graphicopt.opt.dim > 2) {
+                            p[pointIndex * 3 + 2] = scaleNormalTimestep(target.__timestep);
+                            d[2] = xscale.invert(p[pointIndex * 3 + 2]);
+                        } else {
+                            p[pointIndex * 3 + 2] = 0;
+                            if (solution[i].length > 2)
+                                solution[i] = solution[i].slice(0, 2);
+                        }
+                    }
+                });
+                let center = d3.nest().key(d => d.cluster).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
+                solution.forEach(function (d, i) {
+                    const target = datain[i];
+                    const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
+                    path[target.name][posPath].value = d;
+                    // updateStraightLine(target, posPath, d);
+                    updateLine(target, posPath, d, path[target.name].map(p => center[datain[p.index].cluster]));
+
+                });
+                if (islast) {
+                    let rangeDis = [+Infinity, 0];
+                    let customz = d3.scaleLinear().range(scaleNormalTimestep.range());
+                    for (let name in path) {
+                        let temp;
+                        path[name].forEach((p, i) => {
+                            if (!i) {
+                                path[name].distance = 0;
+                                temp = p.value;
+                                return;
+                            } else {
+                                path[name].distance += distance(path[name][i - 1].value, p.value)
+                            }
+                        });
+                        if (graphicopt.opt.dim === 2.5) {
+                            path[name].distance /= (_.last(path[name]).__timestep);
+
+                        } else
+                            path[name].distance /= path[name].length;
+                        if (path[name].distance < rangeDis[0])
+                            rangeDis[0] = path[name].distance;
+                        if (path[name].distance > rangeDis[1])
+                            rangeDis[1] = path[name].distance;
+                    }
+                    handleTopSort($('#modelSortBy').val());
+                    distancerange.domain(rangeDis);
+                    customz.domain(rangeDis);
+                    // adjust z base on distance
+                    if (graphicopt.opt.dim === 2.5) {
+                        solution.forEach(function (d, i) {
+                            const target = datain[i];
+                            if (target.__timestep) {
+                                const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
+                                // updateStraightLine(target, posPath, d);
+                                d = d.slice();
+                                d[2] = customz(path[target.name].distance);
+                                let pointIndex = mapIndex.indexOf(i);
+                                if (pointIndex !== undefined) {
+                                    p[pointIndex * 3 + 2] = d[2];
+                                }
+                                d[2] = xscale.invert(d[2]);
+                                updateLine(target, posPath, d, path[target.name].map(p => center[datain[p.index].cluster]));
+                            }
+                        });
                     }
                 }
-            });
-            let center = d3.nest().key(d=>d.cluster).rollup(d=>[d3.mean(d.map(e=>e.__metrics.position[0])),d3.mean(d.map(e=>e.__metrics.position[1])),d3.mean(d.map(e=>e.__metrics.position[2]))]).object(datain);
-            solution.forEach(function (d, i) {
-                const target = datain[i];
-                const posPath = path[target.name].findIndex(e=>e.timestep===target.timestep);
-                path[target.name][posPath].value = d;
-                // updateStraightLine(target, posPath, d);
-                updateLine(target, posPath, d, path[target.name].map(p=>center[datain[p.index].cluster]));
+                points.geometry.attributes.position.needsUpdate = true;
+                points.geometry.boundingBox = null;
+                points.geometry.computeBoundingSphere();
+                isneedrender = true;
 
-            });
-            if (islast){
-                let rangeDis=[+Infinity,0];
-                let customz = d3.scaleLinear().range(scaleNormalTimestep.range());
-                for (let name in path){
-                    let temp;
-                    path[name].forEach((p,i)=>{
-                        if (!i){
-                            path[name].distance = 0;
-                            temp = p.value;
-                            return;
-                        }else{
-                            path[name].distance += distance(path[name][i-1].value,p.value)
-                        }
-                    });
-                    if (graphicopt.opt.dim===2.5) {
-                        path[name].distance /= (_.last(path[name]).__timestep);
-
-                    }else
-                        path[name].distance /= path[name].length;
-                    if (path[name].distance<rangeDis[0])
-                        rangeDis[0] = path[name].distance;
-                    if (path[name].distance>rangeDis[1])
-                        rangeDis[1] = path[name].distance;
-                }
-                handleTopSort($('#modelSortBy').val());
-                distancerange.domain(rangeDis);
-                customz.domain(rangeDis);
-                // adjust z base on distance
-                if (graphicopt.opt.dim===2.5) {
-                    solution.forEach(function (d, i) {
-                        const target = datain[i];
-                        if (target.__timestep) {
-                            const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
-                            // updateStraightLine(target, posPath, d);
-                            d = d.slice();
-                            d[2] = customz(path[target.name].distance);
-                            let pointIndex = mapIndex.indexOf(i);
-                            if (pointIndex!==undefined) {
-                                p[pointIndex * 3 + 2] = d[2];
-                            }
-                            d[2] =xscale.invert(d[2]);
-                            updateLine(target, posPath, d, center[target.cluster]);
-                        }
-                    });
-                }
+                // if (isradar && datain.length < 5000) {
+                //     renderSvgRadar();
+                // }
             }
-            points.geometry.attributes.position.needsUpdate = true;
-            points.geometry.boundingBox = null;
-            points.geometry.computeBoundingSphere();
-            isneedrender = true;
-
-            // if (isradar && datain.length < 5000) {
-            //     renderSvgRadar();
-            // }
+            isneedCompute = false;
         }
     }
 

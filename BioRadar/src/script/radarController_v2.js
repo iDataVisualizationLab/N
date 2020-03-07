@@ -359,7 +359,7 @@ let radarController = function () {
                         displaytick = [0,sg.datum().data.range[1]];
                 }
                 violiin_chart.graphicopt({customrange:customrange});//fix range from 0
-                return violiin_chart.data([ sg.datum().summary]).setTicksDisplay(displaytick).draw(selection)})})
+                return violiin_chart.rangeY([0,d3.max(sg.datum().summary.arr,e=>e[1])]).data([ sg.datum().summary]).setTicksDisplay(displaytick).draw(selection)})})
 
     }
     function updateSummaryData (dSum){

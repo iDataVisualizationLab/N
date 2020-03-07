@@ -689,3 +689,7 @@ input.clusterlabel:hover, input.clusterlabel:focus{
     color: #8a001a;
     background-color: #fff3f3;
 }
+
+#filterTable thead th{
+    padding:0;
+}
