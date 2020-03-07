@@ -1224,7 +1224,7 @@ function calculateServiceRange() {
 
 $( document ).ready(function() {
     console.log('ready');
-
+    $( "#modelWorkerInformation" ).resizable({ handles: 'w' });
     // set tooltip
     let tipopt= {position: {
             x: 'right',
