@@ -57,13 +57,13 @@ d3.TimeSpace = function () {
                 width: '100px',
                 callback:()=>{visiableLine(graphicopt.linkConnect); graphicopt.isCurve = graphicopt.linkConnect==='curve';toggleLine();render(!isBusy);isneedrender = true;}},
             dim: {text: "Dim", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{obitTrigger=true;start(!needRecalculate || graphicopt.opt.dim===2.5);}},
-            windowsSize: {
-                text: "Windows size",
-                range: [1, 21],
-                type: "slider",
-                variable: 'windowsSize',
-                width: '100px',callback:()=>{master.stop(); windowsSize = graphicopt.opt.windowsSize; handle_data_TimeSpace(tsnedata);}
-            },
+            // windowsSize: {
+            //     text: "Windows size",
+            //     range: [1, 21],
+            //     type: "slider",
+            //     variable: 'windowsSize',
+            //     width: '100px',callback:()=>{master.stop(); windowsSize = graphicopt.opt.windowsSize; handle_data_TimeSpace(tsnedata);}
+            // },
         },
         formatTable = {
             'time': function(d){return millisecondsToStr(d)},
@@ -1383,7 +1383,7 @@ d3.TimeSpace = function () {
                 data: [],
                 "pageLength": 50,
                 columns: columns,
-                dom: 'Bfrtip',
+                "dom": '<"top"f<"clear">>rt<"bottom"ip<"clear">B>',
                 buttons: [
                     {
                         extend: 'copyHtml5',
