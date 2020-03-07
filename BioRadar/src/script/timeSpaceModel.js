@@ -1374,11 +1374,6 @@ d3.TimeSpace = function () {
             graphicopt.radaropt.schema.forEach(d => {
                 columns.push({title: 'stop1' + d.text, render: renderData})
             });
-            // if (d3.select('#filterTable').select('thead').empty()){
-            //     d3.select('#filterTable').append('thead').selectAll('th').data(columns)
-            //         .enter().append('th').attr('class',(d,i)=>i?'rotate':'')
-            //         .html(d=>`<div><span>${d.title}</span></div>`)
-            // }
             let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
                 .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
             let textcolor = heatmaponTable.copy();
@@ -1386,6 +1381,8 @@ d3.TimeSpace = function () {
             dataTableFiltered = $('#filterTable').DataTable({
                 data: [],
                 "pageLength": 50,
+                // scrollY:        '50vh',
+                // scrollCollapse: true,
                 columns: columns,
                 "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
                 buttons: [
@@ -1417,8 +1414,15 @@ d3.TimeSpace = function () {
             dataTableFiltered = $('#filterTable').DataTable();
         }
         function renderData(data, type, row) {
-                return type === 'export' ?
-                    data : data%1==0?data:d3.format('.2f')(data);
+            if (type === 'display') {
+                if (data%1==0)
+                    return `${data}<span style="opacity: 0">.00</span>`
+                return d3.format('.2f')(data);
+            }
+            else if(type === 'export'){
+                return data;
+            }
+            return data%1==0?data:d3.format('.2f')(data);
         }
     }
 
