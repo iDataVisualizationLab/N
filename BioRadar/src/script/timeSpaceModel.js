@@ -357,8 +357,9 @@ d3.TimeSpace = function () {
                 cluster: target.cluster
             });
         });
+        euclideandistancerange.domain(euclideandistance_range);
         euclideandistanceHis = getHistdata(Object.keys(path).map(kp=>path[kp].euclideandistance));
-        drawHis('#modelDistanceFilter_euclidean_svg',euclideandistanceHis)
+        drawHis('#modelDistanceFilter_euclidean_svg',euclideandistanceHis,'euclideandistance')
         // console.log(datain.filter(d=>d[0]===-1))
         xscale.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
         yscale.range([-graphicopt.heightG()/2,graphicopt.heightG()/2]);
@@ -502,7 +503,6 @@ d3.TimeSpace = function () {
             case "umapDistance":
                 d3.selectAll('.modelDistanceFilter_svg').classed('hide',true);
                 d3.select('#modelDistanceFilter_projection_svg').classed('hide',false);
-                d3.select('#distanceFilterHolder').classed('hide',false);
                 let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
                 d3.select('#distanceFilterHolder').select('span.num').text(filteredumap.length);
                 highlightGroupNode(filteredumap);
@@ -520,7 +520,8 @@ d3.TimeSpace = function () {
                 break;
         }
     }
-    function drawHis(div,data){
+    function drawHis(div,data,key){
+        let keyGenes = "AT1G34370";
         let height = 10;
         let width = 20;
         let svg = d3.select(div);
@@ -534,14 +535,32 @@ d3.TimeSpace = function () {
             .range([ height, 2 ]);
 
         let his = svg.select('path.his');
-        if (his.empty())
-            his = svg.append('path').attr('class','his');
+        let marker = svg.select('line.marker');
+        if (his.empty()) {
+            his = svg.append('path').attr('class', 'his');
+            marker = svg.append('line')
+                .attr('class','marker')
+                .attrs({
+                    x2: 0,
+                    x1: 0,
+                    y2: y.range()[0],
+                    y1: y.range()[1],
+                }).style('stroke-dasharray',2)
+                .style('vector-effect','non-scaling-stroke')
+                .style('stroke','black');
+            ;
+        }
         his
             .datum(data.arr).attr('d',d3.area()
             .x(function(d) { return x(d[0]) })
             .y0(y(0))
             .y1(function(d) { return y(d[1]) })
-        ).style('fill','#dddddd')
+        ).style('fill','#dddddd');
+        marker.datum(path[keyGenes][key])
+            .attrs(d=>({
+                x2: x(d),
+                x1: x(d)
+            }))
     }
     function handleTopSort(mode){
         let top =[];
@@ -802,7 +821,9 @@ d3.TimeSpace = function () {
         if (intersects.length){
             if (intersects.length<1000) {
                 d3.select("#filterTable_wrapper").classed('hide',false);
-                updateDataTableFiltered(intersects);
+                try {
+                    updateDataTableFiltered(intersects);
+                }catch(e){}
                 d3.select("p#filterList").classed('hide',true);
             }else {
                 d3.select("#filterTable_wrapper").classed('hide',true);
@@ -1502,6 +1523,9 @@ d3.TimeSpace = function () {
                 }
             });
             $.fn.DataTable.ext.pager.numbers_length = 4;
+
+            $('#search').on('input', searchHandler); // register for oninput
+            $('#search').on('propertychange', searchHandler); // for IE8
         }else{
             dataTableFiltered = $('#filterTable').DataTable();
         }
@@ -1517,7 +1541,18 @@ d3.TimeSpace = function () {
             return data%1==0?data:d3.format('.2f')(data);
         }
     }
-
+    function searchHandler (e){
+        if (e.target.value!=="") {
+            let results = datain.filter(h=>h.name.includes(e.target.value)).map(h=>({index:path[h.name][0].index}));
+            console.log(results)
+            if(results.length<1000)
+                highlightNode([results[0]]);
+            else
+                highlightNode([])
+        }else{
+            highlightNode([]);
+        }
+    }
     function updateDataTableFiltered(newDataName){
         let newDataArray = newDataName.map(n=>{
             return _.flatten([n,tsnedata[n+'__wt'][0],tsnedata[n+'__stop1'][0]]);
@@ -1605,7 +1640,7 @@ d3.TimeSpace = function () {
                         distance_data.push(path[name].distance)
                     }
                     umapdistanceHis = getHistdata(distance_data,'umap',1000);
-                    drawHis('#modelDistanceFilter_projection_svg',umapdistanceHis)
+                    drawHis('#modelDistanceFilter_projection_svg',umapdistanceHis,'distance')
                     handleTopSort($('#modelSortBy').val());
                     distancerange.domain(rangeDis);
                     customz.domain(rangeDis);
