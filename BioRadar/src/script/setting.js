@@ -183,7 +183,7 @@ let histodram = {
     outlierMultiply: 3
 };
 
-function getHistdata(d, name) {
+function getHistdata(d, name, marker) {
     d = d.filter(e => e !== undefined).sort((a, b) => a - b);
     let r;
     if (d.length) {
@@ -209,6 +209,9 @@ function getHistdata(d, name) {
             const lowLimit = r.q3 + histodram.outlierMultiply * iqr;
             const upLimit = r.q1 - histodram.outlierMultiply * iqr;
             r.outlier = _.uniq(d.filter(e => e > lowLimit || e < upLimit));
+            if (marker&&d.length>marker){
+                
+            }
         } else {
             r.outlier = _.uniq(d);
         }
