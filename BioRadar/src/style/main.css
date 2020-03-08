@@ -738,3 +738,10 @@ th.rotate > div > span {
 #modelSetting tbody > tr:first-child{
     background-color: #eaeaea;
 }
+
+#modelDistanceFilter_holder svg{
+    overflow: visible;
+}
+#modelDistanceFilter_holder .noUi-target{
+    margin-top: -3px;
+}

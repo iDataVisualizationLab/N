@@ -58,7 +58,7 @@ d3.TimeSpace = function () {
                 callback:()=>{visiableLine(graphicopt.linkConnect); graphicopt.isCurve = graphicopt.linkConnect==='curve';toggleLine();render(!isBusy);isneedrender = true;}},
             linkOpacity:{text:"Link opacity", range:[0.1,1],id:'Link_opacity', type:"slider", variableRoot: graphicopt.component.link,variable: 'opacity',width:'100px',step:0.1,
                 callback:onlinkopacity},
-            dim: {text: "Dim", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{
+            dim: {text: "Dimension", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{
                     preloader(true,10,'Change dimension projection...','#modelLoading');
                     obitTrigger=true;
                     setTimeout(()=>{
@@ -529,7 +529,7 @@ d3.TimeSpace = function () {
         // Add Y axis
         var y = d3.scaleSqrt()
             .domain([0, d3.max(data.arr, function(d) { return d[1]; })])
-            .range([ height, 0 ]);
+            .range([ height, 2 ]);
 
         let his = svg.select('path.his');
         if (his.empty())
