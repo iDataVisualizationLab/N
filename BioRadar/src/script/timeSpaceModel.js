@@ -527,7 +527,7 @@ d3.TimeSpace = function () {
             .range([ 0, width ]);
 
         // Add Y axis
-        var y = d3.scaleLinear()
+        var y = d3.scaleSqrt()
             .domain([0, d3.max(data.arr, function(d) { return d[1]; })])
             .range([ height, 0 ]);
 
