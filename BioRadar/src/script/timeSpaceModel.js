@@ -75,7 +75,7 @@ d3.TimeSpace = function () {
             // },
         },
         formatTable = {
-            'opacity':function(d){return d},
+            'opacity':function(d){return d3.format('.1f')(d)},
             'time': function(d){return millisecondsToStr(d)},
             'totalTime': function(d){return millisecondsToStr(d)},
             'iteration': function(d){return d},
@@ -314,6 +314,9 @@ d3.TimeSpace = function () {
         })
     }
 
+    let euclideandistanceHis=[];
+    let umapdistanceHis=[];
+
     master.init = function(arr,clusterin) {
         preloader(true,1,'Prepare rendering ...','#modelLoading');
 
@@ -354,6 +357,8 @@ d3.TimeSpace = function () {
                 cluster: target.cluster
             });
         });
+        euclideandistanceHis = getHistdata(Object.keys(path).map(kp=>path[kp].euclideandistance));
+        drawHis('#modelDistanceFilter_euclidean_svg',euclideandistanceHis)
         // console.log(datain.filter(d=>d[0]===-1))
         xscale.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
         yscale.range([-graphicopt.heightG()/2,graphicopt.heightG()/2]);
@@ -495,11 +500,15 @@ d3.TimeSpace = function () {
                 highlightGroupNode([],1);
                 break;
             case "umapDistance":
+                d3.select('.modelDistanceFilter_svg').classed('hide',true);
+                d3.select('#modelDistanceFilter_projection_svg').classed('hide',false);
                 d3.select('#distanceFilterHolder').classed('hide',false);
                 let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
                 highlightGroupNode(filteredumap);
                 break;
             case "euclideanDistance":
+                d3.select('.modelDistanceFilter_svg').classed('hide',true);
+                d3.select('#modelDistanceFilter_euclidean_svg').classed('hide',false);
                 d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
                 let filteredeuclidean =d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance);
                 highlightGroupNode(filteredeuclidean);
@@ -508,6 +517,29 @@ d3.TimeSpace = function () {
                 highlightGroupNode([]);
                 break;
         }
+    }
+    function drawHis(div,data){
+        let height = 10;
+        let width = 20;
+        let svg = d3.select(div);
+        var x = d3.scaleLinear()
+            .domain(d3.extent(data.arr, function(d) { return d[0]; }))
+            .range([ 0, width ]);
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([0, d3.max(data.arr, function(d) { return d[1]; })])
+            .range([ height, 0 ]);
+
+        let his = svg.select('path.his');
+        if (his.empty())
+            his = svg.append('path').attr('class','his');
+        his
+            .datum(data.arr).attr('d',d3.area()
+            .x(function(d) { return x(d[0]) })
+            .y0(y(0))
+            .y1(function(d) { return y(d[1]) })
+        )
     }
     function handleTopSort(mode){
         let top =[];
@@ -1546,6 +1578,7 @@ d3.TimeSpace = function () {
                     });
                     let rangeDis = [+Infinity, 0];
                     let customz = d3.scaleLinear().range(scaleNormalTimestep.range());
+                    let distance_data=[];
                     for (let name in path) {
                         let temp;
                         path[name].forEach((p, i) => {
@@ -1566,7 +1599,10 @@ d3.TimeSpace = function () {
                             rangeDis[0] = path[name].distance;
                         if (path[name].distance > rangeDis[1])
                             rangeDis[1] = path[name].distance;
+                        distance_data.push(path[name].distance)
                     }
+                    umapdistanceHis = getHistdata(distance_data);
+                    drawHis('#modelDistanceFilter_projection_svg',umapdistanceHis)
                     handleTopSort($('#modelSortBy').val());
                     distancerange.domain(rangeDis);
                     customz.domain(rangeDis);
@@ -1827,10 +1863,7 @@ d3.TimeSpace = function () {
         });
         d3.select('#modelWorkerInformation table').selectAll('*').remove();
         table_info = d3.select('#modelWorkerInformation table')
-            .html(` <colgroup>
-       <col span="1" style="width: 40%;">
-       <col span="1" style="width: 60%;">
-    </colgroup>`);
+            .html(` <colgroup><col span="1" style="width: 40%;"><col span="1" style="width: 60%;"></colgroup>`);
             // .styles({'width':tableWidth+'px'});
         let tableData = [
             [
