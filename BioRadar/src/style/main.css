@@ -753,6 +753,10 @@ th.rotate > div > span {
     transform: translate(-50%,-100%);
     text-align: center;
 }
+.noUi-handle.noUi-active span.num{
+    display: none;
+}
+
 .noUi-handle span.num::after{
     content: ' genes';
 }
