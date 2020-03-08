@@ -1473,8 +1473,8 @@ d3.TimeSpace = function () {
             dataTableFiltered = $('#filterTable').DataTable({
                 data: [],
                 "pageLength": 50,
-                // scrollY:        '50vh',
-                // scrollCollapse: true,
+                scrollY:        '50vh',
+                scrollCollapse: true,
                 columns: columns,
                 "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
                 buttons: [
