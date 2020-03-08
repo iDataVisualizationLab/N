@@ -1464,7 +1464,7 @@ d3.TimeSpace = function () {
                 columns.push({title: 'wt' + d.text, render: renderData})
             });
             graphicopt.radaropt.schema.forEach(d => {
-                columns.push({title: 'stop1' + d.text, render: renderData})
+                columns.push({title: 's1' + d.text, render: renderData})
             });
             let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
                 .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
@@ -1857,6 +1857,7 @@ d3.TimeSpace = function () {
     let self = this;
     let needRecalculate=true;
     master.generateTable = function(){
+        $( "#modelWorkerInformation" ).draggable({ containment: "parent", scroll: false });
         needRecalculate = true
         $('#modelSelectionInformation .tabs').tabs({
             onShow: function(){
