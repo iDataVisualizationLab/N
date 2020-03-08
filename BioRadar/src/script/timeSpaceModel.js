@@ -500,14 +500,14 @@ d3.TimeSpace = function () {
                 highlightGroupNode([],1);
                 break;
             case "umapDistance":
-                d3.select('.modelDistanceFilter_svg').classed('hide',true);
+                d3.selectAll('.modelDistanceFilter_svg').classed('hide',true);
                 d3.select('#modelDistanceFilter_projection_svg').classed('hide',false);
                 d3.select('#distanceFilterHolder').classed('hide',false);
                 let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
                 highlightGroupNode(filteredumap);
                 break;
             case "euclideanDistance":
-                d3.select('.modelDistanceFilter_svg').classed('hide',true);
+                d3.selectAll('.modelDistanceFilter_svg').classed('hide',true);
                 d3.select('#modelDistanceFilter_euclidean_svg').classed('hide',false);
                 d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
                 let filteredeuclidean =d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance);
@@ -539,7 +539,7 @@ d3.TimeSpace = function () {
             .x(function(d) { return x(d[0]) })
             .y0(y(0))
             .y1(function(d) { return y(d[1]) })
-        )
+        ).style('fill','#dddddd')
     }
     function handleTopSort(mode){
         let top =[];

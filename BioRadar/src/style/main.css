@@ -278,7 +278,7 @@ span.thumb {
     stroke: #777777;
 }
 .d3-tip,#modelSelectionInformation {
-    background-color: #dddddd;
+    background-color: #cccccc;
     padding: 5px;
     max-height: 80%;
     overflow: hidden;

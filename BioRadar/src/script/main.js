@@ -1590,8 +1590,8 @@ $( document ).ready(function() {
         }
     });
     // init read file
-    // readFilecsv('data/transcriptome_averaged.csv');
-    readFilecsv('data/transcriptome_averaged_test.csv');
+    readFilecsv('data/transcriptome_averaged.csv');
+    // readFilecsv('data/transcriptome_averaged_test.csv');
     MetricController.graphicopt({width:365,height:365})
         .div(d3.select('#RadarController'))
         .tablediv(d3.select('#RadarController_Table'))
