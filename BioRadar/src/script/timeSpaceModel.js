@@ -504,6 +504,7 @@ d3.TimeSpace = function () {
                 d3.select('#modelDistanceFilter_projection_svg').classed('hide',false);
                 d3.select('#distanceFilterHolder').classed('hide',false);
                 let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
+                d3.select('#distanceFilterHolder').select('span.num').text(filteredumap.length);
                 highlightGroupNode(filteredumap);
                 break;
             case "euclideanDistance":
@@ -511,6 +512,7 @@ d3.TimeSpace = function () {
                 d3.select('#modelDistanceFilter_euclidean_svg').classed('hide',false);
                 d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
                 let filteredeuclidean =d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance);
+                d3.select('#distanceFilterHolder').select('span.num').text(filteredeuclidean.length);
                 highlightGroupNode(filteredeuclidean);
                 break;
             default:
@@ -1602,7 +1604,7 @@ d3.TimeSpace = function () {
                             rangeDis[1] = path[name].distance;
                         distance_data.push(path[name].distance)
                     }
-                    umapdistanceHis = getHistdata(distance_data);
+                    umapdistanceHis = getHistdata(distance_data,'umap',1000);
                     drawHis('#modelDistanceFilter_projection_svg',umapdistanceHis)
                     handleTopSort($('#modelSortBy').val());
                     distancerange.domain(rangeDis);
@@ -1982,6 +1984,7 @@ d3.TimeSpace = function () {
                 graphicopt.filter.distance = +this.get();
                 d3.select('#modelFilterBy').dispatch("change");
             });
+            d3.select(div).select('.noUi-handle').append('span').attr('class','num');
         }
     };
     function updateTableInput(){

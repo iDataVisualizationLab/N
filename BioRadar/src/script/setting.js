@@ -210,7 +210,10 @@ function getHistdata(d, name, marker) {
             const upLimit = r.q1 - histodram.outlierMultiply * iqr;
             r.outlier = _.uniq(d.filter(e => e > lowLimit || e < upLimit));
             if (marker&&d.length>marker){
-                
+                let sum = d.length;
+                let markerIndex = sumstat.findIndex(d=>(sum-=d[1],sum)<marker);
+                if (markerIndex!==-1)
+                    r.marker = markerIndex;
             }
         } else {
             r.outlier = _.uniq(d);

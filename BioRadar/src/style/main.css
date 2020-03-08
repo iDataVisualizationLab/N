@@ -745,3 +745,14 @@ th.rotate > div > span {
 #modelDistanceFilter_holder .noUi-target{
     margin-top: -3px;
 }
+
+.noUi-handle span.num {
+    position: absolute;
+    top:0;
+    left: 0;
+    transform: translate(-50%,-100%);
+    text-align: center;
+}
+.noUi-handle span.num::after{
+    content: ' genes';
+}
