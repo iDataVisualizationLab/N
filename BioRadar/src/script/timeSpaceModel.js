@@ -1193,6 +1193,7 @@ d3.TimeSpace = function () {
     }
     function renderRadarSummary(dataRadar,color,boxplot,isselectionMode) {
         d3.select(".radarTimeSpace").classed('hide',!dataRadar.length);
+        d3.select("#modelSelectionTool .emptyScreen").classed('hide',dataRadar.length);
         if (dataRadar.length) {
             radarChartclusteropt.color = function () {
                 return color
