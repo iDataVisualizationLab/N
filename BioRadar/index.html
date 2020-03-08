@@ -103,11 +103,12 @@
     <table>
         <tbody>
         <tr><td>Filename:</td><td class="filename"></td></tr>
-        <tr><td>Time range:</td><td class="timerange"></td></tr>
-        <tr><td>Time interval:</td><td class="interval"></td></tr>
-        <tr><td>Total time step:</td><td class="totalstep"></td></tr>
-        <tr><td>#Hosts:</td><td class="hostsnum"></td></tr>
-        <tr><td>#Data points:</td><td class="datanum"></td></tr>
+        <!--<tr><td>Time range:</td><td class="timerange"></td></tr>-->
+        <!--<tr><td>Time interval:</td><td class="interval"></td></tr>-->
+        <!--<tr><td>Total time step:</td><td class="totalstep"></td></tr>-->
+        <!--<tr><td>#Hosts:</td><td class="hostsnum"></td></tr>-->
+        <tr><td>#Conditions:</td><td class="metric"></td></tr>
+        <tr><td>#Genes:</td><td class="datanum"></td></tr>
         </tbody>
     </table>
 </div>
@@ -139,20 +140,20 @@
                     <i class="material-icons expand">chevron_right</i>
                 </div>
                 <div class="collapsible-body">
-                    <div  class="row valign-wrapper hide">
+                    <div  class="row valign-wrapper">
                         <label for="datacom" class="col s4"> Dataset</label>
                         <select id="datacom" class="col s7">
-                            <option value="serviceWed26Sep_removedmetric" data-date="26 Apr 2019">HPC data - 26 Sep 2018</option>
-                            <option value="influxdbThus21Mar_1400_1630"  data-date="21 Mar 2019">HPC data - 21 Mar 2019 (Chill water)</option>
-                            <option value="influxdbSun23June2019" data-date="23 Jun 2019">HPC data - 23 Jun 2019 (overheat compute-6-2)</option>
-                            <option value="influxdbSat27Apr_removemetric" data-date="26 Apr 2019">HPC data - 26 Apr 2019 (with job data)</option>
-                            <option value="influxdb20Apr_withoutJobLoad"  data-date="20 Apr 2019">HPC data - 20 Apr 2019 (with job data)</option>
-                            <option value="influxdb20Sep_2019_withoutJobLoad"  data-date="20 Sep 2019">HPC data - 20 Sep 2019 (with job data)</option>
-                            <option value="influxdb16Feb_2020_withoutJobLoad" data-date="16 Feb 2020">HPC data - 16 Feb 2020 (with job data)</option>
-                            <option value="influxdb17Feb_2020_withoutJobLoad" selected data-date="17 Feb 2020">HPC data - 17 Feb 2020 (with job data)</option>
-                            <option value="csvEmployment"  data-date="1 Jan 1999">US employment data - people</option>
-                            <option value="csvEmploymentRate"  data-date="1 Jan 1999">US employment rate data - percentage</option>
-                            <option value="csvEmploymentNetchange_drop"  data-date="1 Jan 1999">US employment rate data - %nets change</option>
+                            <option value="transcriptome_averaged">transcriptome all genes</option>
+                            <!--<option value="influxdbThus21Mar_1400_1630"  data-date="21 Mar 2019">HPC data - 21 Mar 2019 (Chill water)</option>-->
+                            <!--<option value="influxdbSun23June2019" data-date="23 Jun 2019">HPC data - 23 Jun 2019 (overheat compute-6-2)</option>-->
+                            <!--<option value="influxdbSat27Apr_removemetric" data-date="26 Apr 2019">HPC data - 26 Apr 2019 (with job data)</option>-->
+                            <!--<option value="influxdb20Apr_withoutJobLoad"  data-date="20 Apr 2019">HPC data - 20 Apr 2019 (with job data)</option>-->
+                            <!--<option value="influxdb20Sep_2019_withoutJobLoad"  data-date="20 Sep 2019">HPC data - 20 Sep 2019 (with job data)</option>-->
+                            <!--<option value="influxdb16Feb_2020_withoutJobLoad" data-date="16 Feb 2020">HPC data - 16 Feb 2020 (with job data)</option>-->
+                            <!--<option value="influxdb17Feb_2020_withoutJobLoad" selected data-date="17 Feb 2020">HPC data - 17 Feb 2020 (with job data)</option>-->
+                            <!--<option value="csvEmployment"  data-date="1 Jan 1999">US employment data - people</option>-->
+                            <!--<option value="csvEmploymentRate"  data-date="1 Jan 1999">US employment rate data - percentage</option>-->
+                            <!--<option value="csvEmploymentNetchange_drop"  data-date="1 Jan 1999">US employment rate data - %nets change</option>-->
                             <!--<option value="csvMiniChallenge2"  data-date="1 Jan 1999">VAST 2019 mini challenge 2 data</option>-->
                             <!--<option value="influxdbWed24Apr_removemetric" selected data-date="24 Apr 2019">24 Apr 2019 (Job list)</option>-->
                             <!--<option value="Mean_df" multifile="false">Clusters example (mean only)</option>-->
@@ -224,7 +225,7 @@
                             <!--</optgroup>-->
                         </select>
                         <div class="col s1">
-                            <button class="information waves-effect waves-light" data-image="hostpresent.gif" data-title="Grouping options are recommended for a large number of hosts.">?</button>
+                            <!--<button class="information waves-effect waves-light" data-image="hostpresent.gif" data-title="Grouping options are recommended for a large number of hosts.">?</button>-->
                         </div>
                     </div>
 
@@ -433,7 +434,7 @@
                 </div>
             </li>
             <li class="active">
-                <div class="collapsible-header"><i class="material-icons">group_work</i> <span> Major host groups </span><span class="col right-align valign-wrapper subText" style="font-size: 12px;">(by the 9 metrics)</span><i class="material-icons expand">chevron_right</i></div>
+                <div class="collapsible-header"><i class="material-icons">group_work</i> <span> Clusters </span><span class="col right-align valign-wrapper subText" style="font-size: 12px;">(by the 6 conditions)</span><i class="material-icons expand">chevron_right</i></div>
                 <div class="collapsible-body">
                     <div style="position: relative;">
                         <div id="clusterLoading" class="loading hidden">

@@ -346,7 +346,7 @@ let tooltip_lib = Tooltip_lib().primarysvg(svg).graphicopt(tooltip_opt).init();
 let tooltip_layout = tooltip_lib.layout();
 var MetricController = radarController();
 let isbusy = false, imageRequest = false, isanimation=false;
-let dataInformation={filename:'',timerange:[],interval:'',totalstep:0,hostsnum:0,datanum:0};
+let dataInformation={filename:'',metric:0,datanum:0};
 
 let tsneTS = d3.tsneTimeSpace();
 let pcaTS = d3.pcaTimeSpace();
@@ -1011,10 +1011,16 @@ function onCalculateClusterAction() {
     });
 }
 
-function readFilecsv(file) {
+function readFilecsv(filename) {
+    dataInformation.filename = filename+'.csv';
+    let filePath = `data/${filename}.csv`;
     exit_warp();
     preloader(true);
-    d3.csv(file, function (error, data) {
+    d3.csv(filePath).on("progress", function(evt) {
+        dataInformation.size = evt.total;
+        preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
+        // console.log("Amount loaded: " + Math.round(evt.loaded/evt.total*100)+'%')
+    }).get(function (error, data) {
         if (error) {
         } else {
             db = "csv";
@@ -1590,7 +1596,7 @@ $( document ).ready(function() {
         }
     });
     // init read file
-    readFilecsv('data/transcriptome_averaged.csv');
+    readFilecsv(d3.select('#datacom').node().value);
     // readFilecsv('data/transcriptome_averaged_test.csv');
     MetricController.graphicopt({width:365,height:365})
         .div(d3.select('#RadarController'))
