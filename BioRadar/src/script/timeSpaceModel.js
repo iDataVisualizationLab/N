@@ -129,6 +129,7 @@ d3.TimeSpace = function () {
 
         function dragended(d) {
             mouseoverTrigger = true;
+            freezemouseoverTrigger = false;
             // showMetricsArr_plotly(allSelected_Data)
             lassoTool.end();
         }
@@ -774,7 +775,7 @@ d3.TimeSpace = function () {
                 // showMetrics(target.name);
                 d3.select('.radarTimeSpace .selectionNum').text(target.name+"|"+(target.timestep?'stop1':'wt'))
                 // showMetrics_plotly(target.name+"|"+(target.timestep?'stop1':'wt'));
-                renderRadarSummary(target.__metrics,colorarr[target.cluster].value,false)
+                renderRadarSummary(path[target.name].map(d=>datain[d.index].__metrics),colorarr[target.cluster].value,false)
             }
         } else if (INTERSECTED.length || ishighlightUpdate) {
             ishighlightUpdate = false;
@@ -1222,8 +1223,12 @@ d3.TimeSpace = function () {
                 return color
             };
             radarChartclusteropt.boxplot = boxplot !== undefined ? boxplot : true;
-
-            let currentChart = RadarChart(".radarTimeSpace", [dataRadar], radarChartclusteropt, "");
+            let currentChart;
+            if (boxplot) {
+                currentChart = RadarChart(".radarTimeSpace", [dataRadar], radarChartclusteropt, "");
+            }else{
+                currentChart = RadarChartCompare(".radarTimeSpace", dataRadar, radarChartclusteropt, "");
+            }
             currentChart.selectAll('.axisLabel').remove();
             currentChart.select('.axisWrapper .gridCircle').classed('hide', true);
         }

@@ -18,11 +18,11 @@
     <session id="367669999">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="12" />
-          <entry key="project.open.time.0" value="2" />
+          <entry key="project.closed" value="13" />
+          <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.1" value="8" />
           <entry key="project.open.time.2" value="2" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.opened" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -114,7 +114,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ant-SNE/src/scripts/tsnePlot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
+            <state relative-caret-position="5032">
               <caret line="296" column="36" selection-start-line="296" selection-start-column="36" selection-end-line="296" selection-end-column="36" />
             </state>
           </provider>
@@ -127,9 +127,7 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/styles.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-178" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -191,6 +189,507 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/ClusteringExploration/node_modules" />
+    <handled-path value="$PROJECT_DIR$/bioVR/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/@types/estree/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/@types/node/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/alpha-complex/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/alpha-shape/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/arr-diff/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/arr-flatten/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/array-unique/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/balanced-match/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/bit-twiddle/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/boundary-cells/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/brace-expansion/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/braces/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/builtin-modules/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/cell-orientation/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/circumcenter/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/circumradius/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/compare-cell/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/compare-oriented-cell/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/concat-map/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/d3-delaunay/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/d3-polygon/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/deep-equal/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/define-properties/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/defined/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/delaunator/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/delaunay-triangulate/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/dup/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/es-abstract/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/es-to-primitive/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/estree-walker/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/expand-brackets/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/expand-range/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/extglob/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/filename-regex/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/fill-range/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/for-each/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/for-in/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/for-own/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/fs.realpath/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/function-bind/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/glob-base/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/glob-parent/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/glob/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/has-symbols/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/has/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/incremental-convex-hull/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/inflight/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/inherits/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-buffer/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-callable/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-date-object/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-dotfile/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-equal-shallow/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-extendable/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-extglob/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-module/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-posix-bracket/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-primitive/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-regex/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/is-symbol/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/isobject/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/lodash/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/magic-string/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/math-random/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/micromatch/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/minimatch/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/minimist/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/normalize-path/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/object-inspect/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/object-keys/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/object.omit/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/once/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/parse-glob/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/path-is-absolute/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/path-parse/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/preserve/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/randomatic/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/randomatic/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/randomatic/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/reduce-simplicial-complex/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/regex-cache/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/remove-trailing-separator/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/repeat-element/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/repeat-string/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/test/module_dir/zmodules/bbb/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/test/resolver/baz/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/test/resolver/browser_field/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/test/resolver/dot_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/test/resolver/dot_slash_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resolve/test/resolver/incorrect_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/resumer/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-compress/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-determinant/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-linear-solve/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-orientation/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-scale/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-subtract/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/robust-sum/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/rollup-plugin-commonjs/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/rollup-plugin-node-resolve/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/rollup-pluginutils/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/rollup/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/simple-statistics/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/simplicial-complex-boundary/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/simplicial-complex/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/string.prototype.trim/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/path-parse/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/module_dir/zmodules/bbb/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/baz/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/browser_field/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/dot_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/dot_slash_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/incorrect_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/invalid_main/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/multirepo/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/multirepo/packages/package-a/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/node_modules/resolve/test/resolver/multirepo/packages/package-b/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/tape/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/through/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/two-product/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/two-sum/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/underscore/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/union-find/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/uniq/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/vlq/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/node_modules/wrappy/package.json" />
+      <path value="$PROJECT_DIR$/ClusteringExploration/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/@babel/code-frame/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/@babel/highlight/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/@types/estree/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/@types/node/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/@types/resolve/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/@zeit/schemas/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/accepts/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/acorn/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ajv/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ansi-align/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ansi-regex/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ansi-styles/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/arch/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/arg/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/balanced-match/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/boxen/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/brace-expansion/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/buffer-from/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/builtin-modules/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/bytes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/camelcase/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/cli-boxes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/clipboardy/node_modules/cross-spawn/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/clipboardy/node_modules/execa/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/clipboardy/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/color-convert/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/color-name/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/commander/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/compressible/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/compression/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/concat-map/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/content-disposition/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/cross-spawn/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/_lib/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_days/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_hours/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_iso_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_milliseconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_minutes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_months/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_quarters/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_seconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_weeks/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/add_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/are_ranges_overlapping/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/closest_index_to/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/closest_to/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/compare_asc/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/compare_desc/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_days/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_iso_weeks/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_iso_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_months/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_quarters/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_weeks/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_calendar_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_days/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_hours/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_iso_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_milliseconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_minutes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_months/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_quarters/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_seconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_weeks/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/difference_in_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/distance_in_words/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/distance_in_words_strict/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/distance_in_words_to_now/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/each_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_hour/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_minute/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_second/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_today/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_tomorrow/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/end_of_yesterday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/format/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_date/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_day_of_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_days_in_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_days_in_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_hours/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_iso_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_iso_weeks_in_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_milliseconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_minutes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_overlapping_days_in_ranges/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_seconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_time/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/get_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_after/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_before/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_date/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_equal/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_first_day_of_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_friday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_future/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_last_day_of_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_leap_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_monday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_past/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_hour/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_minute/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_second/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_same_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_saturday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_sunday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_hour/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_minute/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_second/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_this_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_thursday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_today/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_tomorrow/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_tuesday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_valid/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_wednesday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_weekend/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_within_range/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/is_yesterday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/last_day_of_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/last_day_of_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/last_day_of_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/last_day_of_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/last_day_of_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/last_day_of_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/_lib/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/ar/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/be/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/bg/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/ca/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/cs/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/da/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/de/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/el/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/en/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/eo/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/es/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/fi/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/fil/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/fr/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/hr/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/hu/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/id/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/is/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/it/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/ja/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/ko/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/mk/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/nb/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/nl/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/pl/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/pt/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/ro/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/ru/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/sk/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/sl/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/sr/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/sv/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/th/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/tr/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/zh_cn/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/locale/zh_tw/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/max/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/min/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/parse/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_date/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_day_of_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_hours/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_iso_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_milliseconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_minutes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_seconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/set_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_day/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_hour/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_iso_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_iso_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_minute/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_month/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_quarter/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_second/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_today/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_tomorrow/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_week/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_year/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/start_of_yesterday/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_days/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_hours/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_iso_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_milliseconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_minutes/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_months/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_quarters/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_seconds/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_weeks/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/date-fns/sub_years/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/debug/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/deep-extend/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/define-properties/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/error-ex/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/es-abstract/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/es-to-primitive/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/escape-string-regexp/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/estree-walker/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/esutils/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/execa/node_modules/cross-spawn/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/execa/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/fast-deep-equal/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/fast-json-stable-stringify/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/fast-url-parser/node_modules/punycode/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/fast-url-parser/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/function-bind/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/get-stream/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/graceful-fs/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/has-flag/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/has-symbols/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/has/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/hosted-git-info/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ini/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-arrayish/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-callable/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-date-object/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-fullwidth-code-point/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-module/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-reference/node_modules/@types/estree/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-reference/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-regex/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-stream/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/is-symbol/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/isexe/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/jest-worker/node_modules/supports-color/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/jest-worker/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/js-tokens/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/json-parse-better-errors/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/json-schema-traverse/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/load-json-file/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/lru-cache/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/magic-string/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/memorystream/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/merge-stream/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/mime-db/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/mime-types/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/minimatch/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/minimist/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ms/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/negotiator/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/ngl/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/nice-try/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/normalize-package-data/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/npm-run-all/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/npm-run-path/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/object-inspect/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/object-keys/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/object.assign/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/on-headers/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/p-finally/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/parse-json/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/path-is-inside/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/path-key/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/path-parse/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/path-to-regexp/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/path-type/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/pidtree/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/pify/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/pseudomap/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/punycode/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/range-parser/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/rc/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/read-pkg/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/registry-auth-token/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/registry-url/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/module_dir/zmodules/bbb/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/baz/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/browser_field/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/dot_main/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/dot_slash_main/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/incorrect_main/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/invalid_main/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/multirepo/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/multirepo/packages/package-a/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/multirepo/packages/package-b/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/nested_symlinks/mylib/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/resolve/test/resolver/symlinked/package/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/rollup-plugin-commonjs/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/rollup-plugin-node-resolve/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/rollup-plugin-terser/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/rollup-pluginutils/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/rollup/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/safe-buffer/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/semver/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/serialize-javascript/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/serve-handler/node_modules/mime-db/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/serve-handler/node_modules/mime-types/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/serve-handler/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/serve/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/serve/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/shebang-command/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/shebang-regex/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/shell-quote/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/signal-exit/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/source-map-support/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/source-map/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/sourcemap-codec/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/spdx-correct/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/spdx-exceptions/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/spdx-expression-parse/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/spdx-license-ids/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/string-width/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/string.prototype.padend/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/string.prototype.trimleft/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/string.prototype.trimright/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/strip-ansi/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/strip-bom/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/strip-eof/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/strip-json-comments/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/supports-color/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/term-size/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/terser/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/update-check/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/uri-js/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/validate-npm-package-license/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/vary/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/which/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/widest-line/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/node_modules/yallist/package.json" />
+      <path value="$PROJECT_DIR$/bioVR/package.json" />
+      <path value="$PROJECT_DIR$/untitled/package.json" />
+    </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="692" />
@@ -316,6 +815,9 @@
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
       <method v="2" />
     </configuration>
+    <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
+      <method v="2" />
+    </configuration>
     <configuration name="main.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/examples">
       <method v="2" />
     </configuration>
@@ -356,6 +858,7 @@
       <workItem from="1562338811972" duration="1016000" />
       <workItem from="1562357260503" duration="39000" />
       <workItem from="1563013776701" duration="1238000" />
+      <workItem from="1583361515463" duration="10000" />
     </task>
     <task id="LOCAL-00003" summary="updateUI">
       <created>1563117491587</created>
@@ -375,13 +878,12 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24774000" />
+    <option name="totallyTimeSpent" value="24784000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="692" y="116" width="1400" height="856" extended-state="0" />
-    <editor active="true" />
+    <frame x="692" y="116" width="1400" height="1039" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30298507" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3074627" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -394,7 +896,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4981871" weight="0.328877" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003626" side_tool="true" visible="true" weight="0.28074867" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003626" side_tool="true" visible="true" weight="0.2803532" />
       <window_info anchor="bottom" id="GraphQL" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -404,6 +906,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="updateUI" />
@@ -538,15 +1043,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Ant-SNE/src/scripts/tsnePlot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
+        <state relative-caret-position="5032">
           <caret line="296" column="36" selection-start-line="296" selection-start-column="36" selection-end-line="296" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-178" />
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/index.htm">
       <provider selected="true" editor-type-id="text-editor" />
