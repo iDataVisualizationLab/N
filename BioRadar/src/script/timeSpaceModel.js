@@ -504,6 +504,7 @@ d3.TimeSpace = function () {
             case "umapDistance":
                 d3.selectAll('.modelDistanceFilter_svg').classed('hide',true);
                 d3.select('#modelDistanceFilter_projection_svg').classed('hide',false);
+                d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
                 let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
                 d3.select('#distanceFilterHolder').select('span.num').text(filteredumap.length);
                 highlightGroupNode(filteredumap);
@@ -1499,8 +1500,8 @@ d3.TimeSpace = function () {
             dataTableFiltered = $('#filterTable').DataTable({
                 data: [],
                 "pageLength": 50,
-                scrollY:        '50vh',
-                scrollCollapse: true,
+                // scrollY:        '50vh',
+                // scrollCollapse: true,
                 columns: columns,
                 "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
                 buttons: [
