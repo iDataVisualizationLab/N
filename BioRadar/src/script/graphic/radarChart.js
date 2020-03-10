@@ -347,15 +347,24 @@ function RadarChart(id, data, options, name) {
     }
     //The radial line function
     let radarLine, radialAreaGenerator, radialAreaQuantile,keyLine='value';
-        radarLine  = d3.radialLine()
+        radarLine  = d3.radialArea()
         // .interpolate("linear-closed")
             .curve(d3.curveCatmullRom.alpha(this.smooth))
-            .radius(function (d) {
-                return rScale(d[keyLine] === undefined ? d : d[keyLine]);
-            })
             .angle(function (d, i) {
                 return getAngle(d, i);
+            })
+            .innerRadius(function (d, i) {
+                return rScale(0.5);
+            })
+            .outerRadius(function (d, i) {
+                return rScale(d[keyLine] === undefined ? d : d[keyLine]);
             });
+            // .radius(function (d) {
+            //     return rScale(d[keyLine] === undefined ? d : d[keyLine]);
+            // })
+            // .angle(function (d, i) {
+            //     return getAngle(d, i);
+            // });
 
         radialAreaGenerator = d3.radialArea()
             .angle(function (d, i) {

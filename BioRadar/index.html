@@ -143,7 +143,9 @@
                     <div  class="row valign-wrapper">
                         <label for="datacom" class="col s4"> Dataset</label>
                         <select id="datacom" class="col s7">
-                            <option value="transcriptome_averaged">transcriptome all genes</option>
+                            <option value="transcriptome_averaged" selected>transcriptome all genes</option>
+                            <!--<option value="transcriptome_averaged_subtractbyhp6_abs">transcriptome all genes base on hp6 (abs)</option>-->
+                            <option value="transcriptome_averaged_subtractbyhp6">transcriptome all genes base on hp6</option>
                             <!--<option value="influxdbThus21Mar_1400_1630"  data-date="21 Mar 2019">HPC data - 21 Mar 2019 (Chill water)</option>-->
                             <!--<option value="influxdbSun23June2019" data-date="23 Jun 2019">HPC data - 23 Jun 2019 (overheat compute-6-2)</option>-->
                             <!--<option value="influxdbSat27Apr_removemetric" data-date="26 Apr 2019">HPC data - 26 Apr 2019 (with job data)</option>-->
@@ -539,11 +541,11 @@
                                 <!--&lt;!&ndash;<i class="fas fa-upload pauseicon" ></i> Load</button>&ndash;&gt;-->
                             <!--&lt;!&ndash;<input id="description_input_file" class="none" type="file" style="display: none;"/>&ndash;&gt;-->
                         <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--<div class="row s12">-->
-                            <!--<label class="col s4">Group information:</label>-->
-                            <!--<button type="submit" class ="menuBtn modal-trigger btn-small" href="#savedialog_clusterInfo">-->
-                                <!--<i class="fas fa-download pauseicon" ></i> Save</button>-->
-                        <!--</div>-->
+                        <div class="row s12">
+                            <label class="col s4">Group information:</label>
+                            <button type="submit" class ="menuBtn modal-trigger btn-small" href="#savedialog_clusterInfo">
+                                <i class="fas fa-download pauseicon" ></i> Save</button>
+                        </div>
 
                     </div>
                 </div>
@@ -709,7 +711,7 @@
                     <svg id="modelWorkerScreen_svg" style="position:absolute;top:0;left:0; pointer-events: none"></svg>
                     <div id="modelWorkerInformation" style="position:absolute;top:0px;right:0; width: 350px; z-index: 10; ">
                         <div id="modelSelectionInformation">
-                            <div class="row empty search-wrapper focused no_magrin hide">
+                            <div class="row empty search-wrapper focused no_magrin ">
                                 <input type="text" id="search" class="search col s8" placeholder="Search host e.g AT1G34370">
                                 <i class="material-icons col s1" style="margin: auto;">search</i>
                             </div>

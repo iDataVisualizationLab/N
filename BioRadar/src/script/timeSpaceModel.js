@@ -163,6 +163,7 @@ d3.TimeSpace = function () {
                 let coordinator = d3.mouse(this);
                 mouse.x = (coordinator[0]/graphicopt.width)*2- 1;
                 mouse.y = -(coordinator[1]/graphicopt.height)*2+ 1;
+                    mouseoverTrigger = true;
                     isneedrender = true;
             }).on('mouseleave',()=>{mouseoverTrigger = false})
                 .on('click');
@@ -1485,56 +1486,67 @@ d3.TimeSpace = function () {
     // make data table display raw data
     let dataTableFiltered
     function makeDataTableFiltered () {
-        if (!$('#filterTable').dataTable.isDataTable()) {
-            const columns = [{title: 'atID'}];
-            graphicopt.radaropt.schema.forEach(d => {
-                columns.push({title: 'wt' + d.text, render: renderData})
-            });
-            graphicopt.radaropt.schema.forEach(d => {
-                columns.push({title: 's1' + d.text, render: renderData})
-            });
-            let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
-                .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
-            let textcolor = heatmaponTable.copy();
-            textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff'])
-            dataTableFiltered = $('#filterTable').DataTable({
-                data: [],
-                "pageLength": 50,
-                // scrollY:        '50vh',
-                // scrollCollapse: true,
-                columns: columns,
-                "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
-                buttons: [
-                    {
-                        extend: 'copyHtml5',
-                        exportOptions: {orthogonal: 'export'}
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        exportOptions: {orthogonal: 'export'}
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {orthogonal: 'export'}
-                    }
-                ],
-                rowCallback: function(row, data, index){
-                    data.forEach((d,i)=>{
-                        if(i){ // not column of name
-                            $(row).find(`td:eq(${i})`)
-                                .css('background-color', heatmaponTable(d))
-                                .css('color', textcolor(d));
-                        }
-                    })
+        if ($.fn.DataTable.isDataTable('#filterTable')) {
+            $('#filterTable').DataTable().destroy();
+            d3.select('#filterTable').selectAll('*').remove();
+        }
+
+        const columns = [{title: 'atID'}];
+        graphicopt.radaropt.schema.forEach(d => {
+            columns.push({title: 'wt' + d.text, render: renderData})
+        });
+        graphicopt.radaropt.schema.forEach(d => {
+            columns.push({title: 's1' + d.text, render: renderData})
+        });
+        let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
+            .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
+        let textcolor = heatmaponTable.copy();
+        textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff'])
+        dataTableFiltered = $('#filterTable').DataTable({
+            data: [],
+            "pageLength": 50,
+            // scrollY:        '50vh',
+            // scrollCollapse: true,
+            columns: columns,
+            "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {orthogonal: 'export'}
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {orthogonal: 'export'}
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {orthogonal: 'export'}
                 }
+            ],
+            rowCallback: function(row, data, index){
+                data.forEach((d,i)=>{
+                    if(i){ // not column of name
+                        $(row).find(`td:eq(${i})`)
+                            .css('background-color', heatmaponTable(Math.abs(d)))
+                            .css('color', textcolor(Math.abs(d)));
+                    }
+                })
+            }
             });
             $.fn.DataTable.ext.pager.numbers_length = 4;
 
+        $('#filterTable tbody').on('mouseover', 'tr', function () {
+            var tr = $(this).closest('tr');
+            var row = dataTableFiltered.row( tr );
+            highlightNode([{index:path[ row.data()[0]][0].index}]);
+        })
+        $('#filterTable tbody').on('mouseleave', function () {
+            highlightNode([]);
+        })
+
             $('#search').on('input', searchHandler); // register for oninput
             $('#search').on('propertychange', searchHandler); // for IE8
-        }else{
-            dataTableFiltered = $('#filterTable').DataTable();
-        }
+
         function renderData(data, type, row) {
             if (type === 'display') {
                 if (data%1==0)
@@ -1561,7 +1573,7 @@ d3.TimeSpace = function () {
     }
     function updateDataTableFiltered(newDataName){
         let newDataArray = newDataName.map(n=>{
-            return _.flatten([n,tsnedata[n+'__wt'][0],tsnedata[n+'__stop1'][0]]);
+            return _.flatten([n,graphicopt.radaropt.schema.map(s=>sampleS[n+'__wt'][s.text][0][0]),graphicopt.radaropt.schema.map(s=>sampleS[n+'__stop1'][s.text][0][0])]);
         });
         dataTableFiltered.clear();
         dataTableFiltered.rows.add(newDataArray);
@@ -2056,7 +2068,7 @@ d3.TimeSpace = function () {
 
     function loadProjection(opt,calback){
         let totalTime_marker = performance.now();
-        d3.json(`data/processed_gene_data_normalized_category_${datain.length}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`,function(error,sol){
+        d3.json(`data/${dataInformation.filename.replace('.csv','')}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`,function(error,sol){
             if (!error) {
                 let xrange = d3.extent(sol, d => d[0]);
                 let yrange = d3.extent(sol, d => d[1]);
