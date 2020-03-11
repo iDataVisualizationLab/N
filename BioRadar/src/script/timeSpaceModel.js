@@ -518,6 +518,15 @@ d3.TimeSpace = function () {
                 d3.select('#distanceFilterHolder').select('span.num').text(filteredeuclidean.length);
                 highlightGroupNode(filteredeuclidean);
                 break;
+            case "stop1_target":
+                highlightGroupNode(globalFilter['STOP1 follower']);
+                break;
+            case "TF_DE":
+                highlightGroupNode(globalFilter['TF_DE']);
+                break;
+            case "TF_EXP":
+                highlightGroupNode(globalFilter['TF_EXP']);
+                break;
             default:
                 highlightGroupNode([]);
                 break;

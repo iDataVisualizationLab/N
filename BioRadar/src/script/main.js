@@ -1,6 +1,6 @@
 /* MIT License
  *
- * Copyright (c) 2019 Tommy Dang, Ngan V.T. Nguyen
+ * Copyright (c) 2020 Tommy Dang, Ngan V.T. Nguyen
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -405,9 +405,7 @@ function setColorsAndThresholds(s) {
 var gaphost = 7;
 
 function main() {
-    //inithostResults ();
-    // jobMap.hosts(hosts).color(colorTemperature).schema(serviceFullList);
-    // disabled graph option
+
     let control_jobdisplay = d3.select('#compDisplay_control');
         control_jobdisplay.node().options.selectedIndex = 2;
         control_jobdisplay.dispatch('change');
@@ -418,306 +416,14 @@ function main() {
 }
 var currentlastIndex;
 var speedup= 0;
-function drawsummarypoint(harr){
-    var arr = [];
-    var xx;
-    lastIndex = currentlastIndex;
-    query_time = hostResults['timespan'][currentlastIndex];
-    //xx = xTimeSummaryScale(query_time);
-    //updateTimeText();
 
-    switch (graphicControl.sumType) {
-        case "Boxplot":
-            break;
-        case "Scatterplot":
-            break;
-        case "Radar":
-            for (var i in harr) {
-                var h  = harr[i];
-                var name = hosts[h].name;
-                arrServices = getDataByName_withLabel(hostResults, name, lastIndex, lastIndex,0.5);
-                arrServices.name = name;
-                arr.push(arrServices);
-            }
-            Radarplot.data(arr).drawpoint(lastIndex);
-            // Radar Time
-            //drawRadarsum(svg, arr, lastIndex, xx-radarsize);
-            break;
-        case "RadarSummary":
-            getData(name,lastIndex)
-            // Radarplot.data(arr).drawSummarypoint(lastIndex);
-            break;
-        default:
-            jobMap.getharr(harr);
-            for (var i in harr) {
-                var h  = harr[i];
-                var name = hosts[h].name;
-                arrServices = getDataByName_withLabel(hostResults, name, lastIndex, lastIndex,0.5);
-                arrServices.name = name;
-                arrServices.time = hostResults.timespan[lastIndex];
-                arr.push(arrServices);
-            }
-            jobMap.dataComp_points(arr);
-            var h = harr[harr.length-1];
-            var name = hosts[h].name;
-            break;
-    }
 
-    getData(name,lastIndex)
-}
-function shiftTimeText(){
-    if (timelog.length > maxstack-1){ timelog.shift();
-        svg.selectAll(".boxTime").filter((d,i)=>i).transition().duration(500)
-            .attr("x", (d,i)=>xTimeSummaryScale(i)+ width/maxstack/2);
-        svg.select(".boxTime").transition().duration(500)
-            .attr("x", xTimeSummaryScale(0)+ width/maxstack/2)
-            .transition().remove();
-    }
-}
-function updatetimeline(index) {
-    if (recordonly) {
-        const timearr= d3.scaleTime().domain(timerange.map(d => new Date(d))).ticks(formatRealtime);
-        if(!hostResults['timespan'])
-            hostResults['timespan'] = [];
-        hostResults['timespan'] = d3.merge([hostResults['timespan'],timearr.map(d=>new Date(d))]);
-        expectedLength += timearr.length;
-    }
-    else {
-        if(!hostResults['timespan'])
-            hostResults['timespan']=[];
-        if (isRealtime)
-            hostResults['timespan'].push(new Date());
-        else
-            hostResults['timespan']=sampleS['timespan'].slice(0,index+1)
-        expectedLength++;
-    }
-}
-
-function request(){
-    init=false;
-    bin.data([]);
-    var count = 0;
-    var countbuffer = 0;
-    var iteration = 0;
-    var haveMiddle = false;
-    currentMiliseconds = new Date();  // For simulation
-    query_time=currentMiliseconds;
-    lastIndex = 0;
-    currentlastIndex = 0;
-    var countarr = [];
-    var requeststatus =true;
-    var countrecord = 0;
-    var missingtimetex = false;
-
-    jobMap.maxTimestep(isRealtime? undefined: sampleS.timespan.length);
-    isanimation = false
-    updatetimeline(0);
-    timerequest();
-    interval2 = new IntervalTimer(timerequest , simDuration);
-    function timerequest() {
-        var midlehandle = function (ri){
-            let returniteration = ri[0];
-            let returnCount = ri[1];
-            countarr.push(returnCount);
-            count += 1;
-        };
-        var midlehandle_full = function (ri){
-            countarr = d3.range(0,hosts.length);
-            count = hosts.length;
-        };
-        var drawprocess = function ()  {
-            if (islastimestep(lastIndex+1)) {
-                isanimation = true;
-                getData(_.last(hosts).name,lastIndex,true,true);
-                d3.select('#compDisplay_control').attr('disabled',null);
-            }
-            if (graphicControl.mode===layout.HORIZONTAL)
-                drawsummarypoint(countarr);
-            countarr.length = 0;
-            // fullset draw
-            if (count > (hosts.length-1)) {// Draw the summary Box plot ***********************************************************
-
-                // getJoblist(lastIndex,true);
-
-                // Draw date
-                d3.select(".currentDate")
-                    .text("" + currentMiliseconds.toDateString());
-
-                // cal to plot
-                bin.data([]);
-                currentlastIndex = iteration+iterationstep-1;
-                // drawsummary();
-                jobMap.setharr([]);
-                lastIndex = currentlastIndex+1;
-
-                count = 0;
-                countbuffer = 0;
-                requeststatus = true;
-                haveMiddle = false;
-                iteration += iterationstep;
-                updatetimeline(iteration);
-            }
-            currentlastIndex = iteration;
-            // stop condition
-            if (islastimestep(lastIndex)) {
-                jobMap.draw().drawComp();
-                console.log("done");
-                preloader(false);
-                interval2.stop();
-            }
-
-        };
-        if (requeststatus) {
-            try {
-                var oldrack = hosts[countbuffer].hpcc_rack;
-                if (isRealtime) {
-                    step(iteration, countbuffer).then((ri) => {
-                        midlehandle(ri);
-                        if (!recordonly)
-                            drawprocess();
-                        else {
-                            countrecord = countrecord + 1;
-                            if (countbuffer >= (hosts.length)) {
-                                console.log("done");
-                                interval2.stop();
-                            }
-                        }
-                    });
-                    countbuffer++;
-                }
-                else {
-                    do {
-                        let ri = step_full(iteration);
-                        midlehandle_full(ri);
-                        if(countbuffer===0) {
-                            getJoblist();
-                            // document.getElementById("compDisplay_control").selectedIndex = 4;
-                            // d3.select('#compDisplay_control').dispatch("change");
-                            jobMap.data(jobList,hostResults.timespan[lastIndex],lastIndex);
-                            // if(isanimation)
-                                jobMap.draw(true);
-                        }
-                        countbuffer+=hosts.length;
-                    } while ((countbuffer < hosts.length) && (speedup === 2 || (hosts[countbuffer].hpcc_rack === oldrack)) && speedup);
-                    speedup = 0;
-                    drawprocess();
-                }
-            }catch(e){
-
-            }
-            if (countbuffer>= (hosts.length))
-                requeststatus = false; //stop request
-
-        }
-    }
-    var count3=0;
-}
 
 function scaleThreshold(i){
     return i<maxstack?i:(maxstack-2);
 }
 
 
-
-function decimalColorToHTMLcolor(number) {
-    //converts to a integer
-    var intnumber = number - 0;
-
-    // isolate the colors - really not necessary
-    var red, green, blue;
-
-    // needed since toString does not zero fill on left
-    var template = "#000000";
-
-    // in the MS Windows world RGB colors
-    // are 0xBBGGRR because of the way Intel chips store bytes
-    red = (intnumber&0x0000ff) << 16;
-    green = intnumber&0x00ff00;
-    blue = (intnumber&0xff0000) >>> 16;
-
-    // mask out each color and reverse the order
-    intnumber = red|green|blue;
-
-    // toString converts a number to a hexstring
-    var HTMLcolor = intnumber.toString(16);
-
-    //template adds # for standard HTML #RRGGBB
-    HTMLcolor = template.substring(0,7 - HTMLcolor.length) + HTMLcolor;
-
-    return HTMLcolor;
-}
-
-// function simulateResults2(hostname,iter, s){
-//     var newService;
-//     let serviceIndex =  serviceList.findIndex(d=>d===s);
-//     newService = (sampleS[hostname][serviceListattr[serviceIndex]]||[])[iter];
-//     if (serviceIndex === 4) {
-//         if (sampleS[hostname]["arrPower_usage"]=== undefined && db!=="influxdb"&& db!=="csv") {
-//             var simisval = handlemissingdata(hostname,iter);
-//             sampleS[hostname]["arrPower_usage"] = [simisval];
-//         }else if (sampleS[hostname]["arrPower_usage"]!== undefined) {
-//             if (sampleS[hostname]["arrPower_usage"][iter] === undefined && db !== "influxdb" && db !== "csv") {
-//                 var simisval = handlemissingdata(hostname, iter);
-//                 sampleS[hostname]["arrPower_usage"][iter] = simisval;
-//             }
-//             newService = sampleS[hostname]["arrPower_usage"][iter];
-//         }
-//     }
-//     if (newService === undefined){
-//         newService ={};
-//         newService.result = {};
-//         newService.result.query_time = query_time;
-//         newService.data = {};
-//         newService.data.service={};
-//         newService.data.service.host_name = hostname;
-//         newService.data.service.plugin_output = undefined;
-//     }else {
-//         if (db === "influxdb")
-//             try {
-//                 newService.result.query_time = d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(newService.result.query_time).getTime();
-//             }catch(e){
-//
-//             }
-//     }
-//     return newService;
-// }
-function simulateResults2(hostname,iter, s){
-    var newService;
-    let serviceIndex =  serviceList.findIndex(d=>d===s);
-    newService = (sampleS[hostname][serviceListattr[serviceIndex]]||[])[iter];
-    if (serviceList[serviceIndex] === 'Job_scheduling') {
-        // if (sampleS[hostname]["arrPower_usage"]=== undefined && db!=="influxdb"&& db!=="csv") {
-        //     var simisval = handlemissingdata(hostname,iter);
-        //     sampleS[hostname]["arrPower_usage"] = [simisval];
-        //     newService = simisval;
-        // }else if (sampleS[hostname]["arrPower_usage"]!== undefined) {
-        //     if (sampleS[hostname]["arrPower_usage"][iter] === undefined && db !== "influxdb" && db !== "csv") {
-        //         var simisval = handlemissingdata(hostname, iter);
-        //         sampleS[hostname]["arrPower_usage"][iter] = simisval;
-        //     }
-        //     newService = sampleS[hostname]["arrPower_usage"][iter];
-        // }
-        if (sampleJobdata.length)
-            return sampleJobdata.filter(s=>s.nodes.find(e=>e===hostname)&&new Date(s.startTime)<sampleS.timespan[iter]&&(s.endTime?new Date(s.endTime)>sampleS.timespan[iter]:true))
-    }
-    if (newService===undefined)
-        newService = [undefined];
-    else
-        newService = newService.map(d=>d===null?undefined:d);
-    return newService;
-}
-
-function handlemissingdata(hostname,iter){
-    // var simisval = jQuery.extend(true, {}, sampleS[hostname]["arrTemperature"][iter]);
-    var simisval = sampleS[hostname]["arrTemperature"][iter];
-    var simval = simisval.slice(0);
-    simval = (simval[0]+simval[1]+20);
-    if (simval!==undefinedValue && !isNaN(simval) )
-        simisval= [Math.floor(simval)];
-    else
-        simisval= [];
-    return simisval;
-}
 function gaussianRand() {
     var rand = 0;
     for (var i = 0; i < 6; i += 1) {
@@ -752,121 +458,15 @@ function initTime() {
 
 
 function resetRequest(){
-
+    console.log('reload');
+    requestRedraw();
 }
 
-function loadNewData(d,init) {
-    //alert(this.options[this.selectedIndex].text + " this.selectedIndex="+this.selectedIndex);
-    //svg.selectAll("*").remove();
-    selectedService = d;
-    const trig = d3.select("#datasetsSelectTrigger");
-    trig.select('img').attr('src',"images/"+selectedService+".png");
-    trig.select('span').text(selectedService);
-    setColorsAndThresholds(selectedService);
-    drawLegend(selectedService,arrThresholds, arrColor,dif);
-    if (!init)
-        resetRequest();
-    tool_tip.hide();
-}
 
-// speed up process
-function fastForwardRequest() {
-    speedup = 1;
-}
-function extremefastForwardRequest() {
 
-    speedup = 2;
-}
-
-function requestServicenagios(count,serin) {
-    return new Promise(function(resolve, reject) {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(e) {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    var result = processResult(JSON.parse(this.responseText),serviceList[serin]);
-                    var name = result.data.service.host_name;
-                    hostResults[name][serviceListattr[serin]].push(result);
-                    if (selectedService === serviceList[serin]) {
-                        hostResults[name].arr = hostResults[name][serviceListattr[serin]];
-                        plotResult(result);
-                    }
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.status);
-                }
-            }
-        };
-        xhr.ontimeout = function () {
-            reject('timeout');
-        };
-        // xhr.open('get', "http://10.10.1.4/nagios/cgi-bin/statusjson.cgi?query=service&hostname=" + hosts[count].name + "&servicedescription=check+"+serviceQuery[db][serin], true);
-        xhr.open('get', "http://10.10.1.4/nagios/cgi-bin/statusjson.cgi?query=service&hostname=" + hosts[count].name + "&servicedescription="+serviceQuery[db][serviceList[serin]].query, true);
-        xhr.send();
-    })
-}
-function ip2hostname (address) {
-    const strArr = address.split(".");
-    return "compute-"+ strArr[2] + "-" + strArr[3];
-}
 let expectedLength = 0;
-function requestServiceinfluxdb(count,serin) {
-    return new Promise(function(resolve, reject) {
-        const xhr = new XMLHttpRequest();
-        const ip = "10.101."+ hosts[count].hpcc_rack +"." + hosts[count].hpcc_node;
-        var name = hosts[count].name;
-        const returnLength = expectedLength - hostResults[name][serviceListattr[serin]].length;
-        xhr.onreadystatechange = function(e) {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    const responseJSON = JSON.parse(this.responseText);
-                    let index = 0;
-                    if (!recordonly){
-                        var result = processResult(responseJSON,name,undefined,serviceList[serin]);
-                        hostResults[name][serviceListattr[serin]].push(result);
-                    }else {
-                        if (responseJSON.results[0].series) {
-                            // responseJSON.results[0].series[0].values = _(responseJSON.results[0].series[0].values).uniq(d=>d[0]);
-                            // const returnLength = responseJSON.results[0].series[0].values.length;
-                            for (let i = 0; i < returnLength; i++)
-                                hostResults[name][serviceListattr[serin]].push(processResult(responseJSON, name, i,serviceList[serin]));
-                        }else
-                            for (let i = 0; i < returnLength; i++)
-                                hostResults[name][serviceListattr[serin]].push(processResult(undefined, name,undefined,serviceList[serin]));
-                    }
-                    if (selectedService === serviceList[serin]) {
-                        hostResults[name].arr = hostResults[name][serviceListattr[serin]];
-                        if (!recordonly)
-                            plotResult(result,hosts[count].name);
-                    }
-                    resolve(xhr.response);
-                } else {
-                    for (let i = 0; i < returnLength; i++){
-                        var result = processResult(undefined,name,undefined,serviceList[serin]);
-                        hostResults[name][serviceListattr[serin]].push(result);
-                    }
-                    reject(xhr.status);
-                }
-            }
-        };
-        xhr.ontimeout = function () {
-            for (let i = 0; i < returnLength; i++){
-                var result = processResult(undefined,name,undefined,serviceList[serin]);
-                hostResults[name][serviceListattr[serin]].push(result);
-            }
-            reject('timeout');
-        };
-        let query;
-        if (recordonly)
-            query = getstringQuery_influx(ip,serin,timerange,timestep_query);
-        else
-            query = getstringQuery_influx(ip,serin);
-        console.log(query);
-        xhr.open('get', "http://10.10.1.4:8086/query?db=hpcc_monitoring_db&q=" + query, true);
-        xhr.send();
-    })
-}
-let requestService = eval('requestService'+db);
+
+
 // let timerange = ["2019-03-21T14:00:00Z","2019-03-21T17:30:00Z"]; // event 21 march 2019
 let timerange = ["2019-04-26T00:00:00Z","2019-04-27T00:00:00Z"];
 let timestep_query = "5m";
@@ -879,85 +479,9 @@ function timeshortconvert(us){
     }
 }
 
-function requestRT(iteration,count) {
-    var promises;
-    promises = serviceList.map(function (d, i) {
-        return requestService(count, i);
-    });
-    // new data metrix
-    // promises.push(requestService(count, i));
-    return Promise.all(promises).then(() => {
-        return [iteration, count];
-    });
-}
+
 var recordonly = false;
-function step (iteration, count){
-    if (isRealtime){
-        return requestRT(iteration,count);
-    }
-    else{
-        // var result = simulateResults(hosts[count].name);
-        var tmp = iteration;
-        for (i = 0; i < iterationstep; i++) {
-            // Process the result
-            var name = hosts[count].name;
-            if(hostResults[name].arr.length<(iteration+1)) {
-                var result = simulateResults2(hosts[count].name, iteration, selectedService);
-                hostResults[name].arr.push(result);
-                // console.log(hosts[count].name+" "+hostResults[name]);
-                serviceList_selected.forEach((s) => {
-                    var result = simulateResults2(hosts[count].name, iteration, serviceLists[s.index].text);
-                    hostResults[name][serviceListattr[s.index]].push(result);
-                });
-                hostResults[name].arrcluster.push(sampleS[name].arrcluster[iteration]);
-            }
-            plotResult(undefined, name,iteration);
-            iteration++;
-        }
-        iteration = tmp;
-        return [iteration, count];
-    }
-    //return [iteration, count];
-}
-function step_full (iteration){
-    for (var count =0;count<hosts.length;count++) {
-        if (isRealtime) {
-            return requestRT(iteration, count);
-        }
-        else {
-            // var result = simulateResults(hosts[count].name);
-            var tmp = iteration;
-            for (i = 0; i < iterationstep; i++) {
-                var result = simulateResults2(hosts[count].name, iteration, selectedService);
-                // Process the result
-                var name = hosts[count].name;
-                if(hostResults[name].arr.length<(iteration+1)) {
-                    hostResults[name].arr.push(result);
-                    // console.log(hosts[count].name+" "+hostResults[name]);
-                    serviceList_selected.forEach((s) => {
-                        var result = simulateResults2(hosts[count].name, iteration, serviceLists[s.index].text);
-                        hostResults[name][serviceListattr[s.index]].push(result);
-                    });
-                    if (cluster_info) {
-                        var cluster = getClusterName(hosts[count].name, iteration);
-                        if (cluster !== undefined&& cluster !== -1) {
-                            if (!cluster_info[cluster].arr[iteration])
-                                cluster_info[cluster].arr[iteration] = [];
-                            cluster_info[cluster].arr[iteration].push(name);
-                        }
-                    }
-                }
-                // plotResult(result, name, iteration);
-                iteration++;
-            }
-            iteration = tmp;
-        }
-    }
-    initTime();
-    // plotResult(undefined, hosts[hosts.length-1].name, iteration);
-    return [iteration];
-    //return [iteration, count];
-}
+
 
 d3.select("html").on("keydown", function() {
     switch(d3.event.keyCode){
@@ -965,34 +489,13 @@ d3.select("html").on("keydown", function() {
             tool_tip.hide();
             break;
         case 13:
-            pauseRequest();
+            // pauseRequest();
             break;
     }
 
 });
 
-// pause when not use , prevent frozen hiperView
 
-function updateSummaryChartAll() {
-    switch (graphicControl.sumType) {
-        case "Scatterplot":
-            d3.select("#scatterzone").style("visibility", "visible");
-            svg.selectAll(".graphsum").remove();
-            for (var i = currentlastIndex > (maxstack - 2) ? (currentlastIndex - maxstack + 2) : 0; i < (currentlastIndex + 1); i++) {
-                drawsummary(i);
-            }
-            break;
-        case "Boxplot":
-        case "Radar":
-        case "RadarSummary":
-            svg.selectAll(".graphsum").remove();
-            d3.select("#scatterzone").style("visibility", "hidden");
-            for (var i = currentlastIndex > (maxstack - 2) ? (currentlastIndex - maxstack + 2) : 0; i < (currentlastIndex + 1); i++) {
-                drawsummary(i);
-            }
-            break;
-    }
-}
 let loadclusterInfo = false;
 
 function onCalculateClusterAction() {
@@ -1350,7 +853,7 @@ $( document ).ready(function() {
         graphicControl.sumType = sect.options[sect.selectedIndex].value;
         svg.select(".graphsum").remove();
         pannelselection(false);
-        updateSummaryChartAll();
+        // updateSummaryChartAll();
     });
     d3.select('#compDisplay_control').on("change", function () {
         var sect = document.getElementById("compDisplay_control");
@@ -1462,8 +965,6 @@ $( document ).ready(function() {
             onCalculateClusterAction();
         }
     });
-    // init read file
-    readFilecsv(d3.select('#datacom').node().value);
     // readFilecsv('data/transcriptome_averaged_test.csv');
     MetricController.graphicopt({width:365,height:365})
         .div(d3.select('#RadarController'))
@@ -1473,7 +974,19 @@ $( document ).ready(function() {
         .onChangeFilterFunc(onfilterdata)
         .onChangeMinMaxFunc(onChangeMinMaxFunc)
         .init();
+    initApp()
 });
+
+let globalFilter ={};
+function initApp(){
+    // load filter file
+    preloader(true,undefined,'Read filter file...');
+    d3.json('data/STOP1_targets.json',function(d){
+        globalFilter = d;
+        // init read file
+        readFilecsv(d3.select('#datacom').node().value);
+    });
+}
 function loadPresetCluster(name,calback) {
     return d3.csv(srcpath + `data/cluster_${name}.csv`, function (cluster) {
         if (cluster==null) {
@@ -1532,14 +1045,11 @@ function onSchemaUpdate(schema){
     });
     radarChartOptions.schema = serviceFullList;
     if (cluster_info){
-        jobMap.schema(serviceFullList);
         radarChartclusteropt.schema = serviceFullList;}
     if (!firstTime) {
-        updateSummaryChartAll();
         MetricController.drawSummary();
         if (cluster_info) {
             cluster_map(cluster_info);
-            jobMap.draw();
         }
     }
     // // }
@@ -2006,10 +1516,7 @@ function similarityCal(data){
         simMatrix.push(temp_arr)
     }
     mapIndex.sort((a,b)=> simMatrix[a].total-simMatrix[b].total);
-    // let undefinedposition = data.findIndex(d=>d[0].text.match(': undefined'))
-    // mapIndex.sort((a,b)=>
-    //     b===undefinedposition?1:(a===undefinedposition?-1:0)
-    // )
+
     let current_index = mapIndex.pop();
     let orderIndex = [simMatrix[current_index].index];
 
@@ -2035,20 +1542,4 @@ function similarityCal(data){
     function similarity (a,b){
         return Math.sqrt(d3.sum(a,(d,i)=>(d.value-b[i].value)*(d.value-b[i].value)));
     }
-}
-
-// test zone
-function onMergeSuperGroup() {
-    clusterGroup = {9:0,2:0,5:0,8:0};
-    // testing ----------
-    hosts.forEach(h => {
-        tsnedata[h.name].forEach(d=>{
-            if (clusterGroup[d.cluster]!==undefined)
-                d.cluster = clusterGroup[d.cluster];
-        })
-    })
-}
-function onVisibleGroup(groupName,ishide){
-    cluster_info.find(d=>d.name==groupName).hide = ishide;
-    requestRedraw();
 }
