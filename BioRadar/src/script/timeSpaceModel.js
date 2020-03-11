@@ -789,6 +789,8 @@ d3.TimeSpace = function () {
             tooltip_lib.hide(); // hide tooltip
             linesGroup.visible = !!graphicopt.linkConnect;
             if (visibledata){
+                if (visibledata.length<graphicopt.tableLimit)
+                    linesGroup.visible = true;
                 datain.forEach((d, i) => {
                     if (visibledata.indexOf(i) !==-1 || (filterGroupsetting.timestep!==undefined && filterGroupsetting.timestep===d.__timestep)){
                         INTERSECTED.push(i);
