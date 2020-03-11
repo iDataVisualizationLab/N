@@ -50,6 +50,7 @@ d3.TimeSpace = function () {
                 link:{size:1,opacity:0.2, highlight:{opacity:3}},
             },
             serviceIndex: 0,
+            tableLimit: 1500
         },
         controlPanelGeneral = {
             // linkConnect: {text: "Link type", type: "selection", variable: 'linkConnect',labels:['--none--','Straight'],values:[false,'straight'],
@@ -518,22 +519,16 @@ d3.TimeSpace = function () {
                 d3.select('#distanceFilterHolder').select('span.num').text(filteredeuclidean.length);
                 highlightGroupNode(filteredeuclidean);
                 break;
-            case "stop1_target":
-                highlightGroupNode(globalFilter['STOP1 follower']);
-                break;
-            case "TF_DE":
-                highlightGroupNode(globalFilter['TF_DE']);
-                break;
-            case "TF_EXP":
-                highlightGroupNode(globalFilter['TF_EXP']);
-                break;
             default:
-                highlightGroupNode([]);
+                if (globalFilter[key])
+                    highlightGroupNode(_.flatten([globalFilter[key],keyGenes]));
+                else
+                    highlightGroupNode([]);
                 break;
         }
     }
+    let keyGenes = "AT1G34370";
     function drawHis(div,data,key){
-        let keyGenes = "AT1G34370";
         let height = 10;
         let width = 20;
         let svg = d3.select(div);
@@ -725,6 +720,7 @@ d3.TimeSpace = function () {
         var attributes = geometry.attributes;
         var targetfilter;
         if (intersects.length > 0 && (!visibledata||visibledata&&(targetfilter=intersects.find(d=>visibledata.indexOf(d.index)!==-1)))) {
+            linesGroup.visible = true;
             let targetIndex = intersects[0].index;
             if (visibledata)
                 targetIndex = targetfilter.index;
@@ -791,7 +787,7 @@ d3.TimeSpace = function () {
         } else if (INTERSECTED.length || ishighlightUpdate) {
             ishighlightUpdate = false;
             tooltip_lib.hide(); // hide tooltip
-
+            linesGroup.visible = !!graphicopt.linkConnect;
             if (visibledata){
                 datain.forEach((d, i) => {
                     if (visibledata.indexOf(i) !==-1 || (filterGroupsetting.timestep!==undefined && filterGroupsetting.timestep===d.__timestep)){
@@ -831,13 +827,15 @@ d3.TimeSpace = function () {
     let filterGroupsetting={timestep:undefined};
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
         if (intersects.length){
-            if (intersects.length<1000) {
+            if (intersects.length<graphicopt.tableLimit) {
+                linesGroup.visible = true;
                 d3.select("#filterTable_wrapper").classed('hide',false);
                 try {
                     updateDataTableFiltered(intersects);
                 }catch(e){}
                 d3.select("p#filterList").classed('hide',true);
             }else {
+                linesGroup.visible = !!graphicopt.linkConnect;
                 d3.select("#filterTable_wrapper").classed('hide',true);
                 d3.select("p#filterList").classed('hide',false);
                 d3.select("p#filterList").text(intersects.join(', '));
@@ -877,6 +875,7 @@ d3.TimeSpace = function () {
         } else if (visibledata && visibledata.length || ishighlightUpdate) {
             visibledata = undefined;
             ishighlightUpdate = false;
+            linesGroup.visible = !!graphicopt.linkConnect;
             tooltip_lib.hide(); // hide tooltip
             datain.forEach((d, i) => {
                 attributes.alpha.array[i] = graphicopt.component.dot.opacity;
@@ -1572,7 +1571,7 @@ d3.TimeSpace = function () {
         if (e.target.value!=="") {
             let results = datain.filter(h=>h.name.includes(e.target.value)).map(h=>({index:path[h.name][0].index}));
             console.log(results)
-            if(results.length<1000)
+            if(results.length<graphicopt.tableLimit)
                 highlightNode([results[0]]);
             else
                 highlightNode([])
