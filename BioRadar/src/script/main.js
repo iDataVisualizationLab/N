@@ -520,8 +520,13 @@ function readFilecsv(filename) {
     exit_warp();
     preloader(true);
     d3.csv(filePath).on("progress", function(evt) {
-        dataInformation.size = evt.total;
-        preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
+        if (evt.total) {
+            preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
+            dataInformation.size = evt.total;
+        }else{
+            preloader(true, 0, "File loaded: " +bytesToString(evt.loaded));
+            dataInformation.size = evt.loaded;
+        }
         // console.log("Amount loaded: " + Math.round(evt.loaded/evt.total*100)+'%')
     }).get(function (error, data) {
         if (error) {
