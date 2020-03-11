@@ -50,7 +50,8 @@ d3.TimeSpace = function () {
                 link:{size:1,opacity:0.2, highlight:{opacity:3}},
             },
             serviceIndex: 0,
-            tableLimit: 1500
+            tableLimit: 1500,
+            iscompareMode: false
         },
         controlPanelGeneral = {
             // linkConnect: {text: "Link type", type: "selection", variable: 'linkConnect',labels:['--none--','Straight'],values:[false,'straight'],
@@ -730,6 +731,8 @@ d3.TimeSpace = function () {
                 //     attributes.size.array[d] = graphicopt.component.dot.size;
                 // });
                 INTERSECTED = [];
+                // let radarData =[];
+                // let posArr =[];
                 datain.forEach((d, i) => {
                     if (d.name === target.name) {
                         INTERSECTED.push(i);
@@ -738,6 +741,8 @@ d3.TimeSpace = function () {
                         lines[d.name].visible = true;
                         lines[d.name].material.opacity = 1;
                         lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
+                        // radarData.push(d);
+                        // posArr.push(getpos(attributes.position.array[i*3],attributes.position.array[i*3+1],attributes.position.array[i*3+2]));
                     } else{
                         if(!visibledata || (visibledata&&visibledata.indexOf(i) !== -1)) {
 
@@ -746,7 +751,6 @@ d3.TimeSpace = function () {
                                 lines[d.name].visible = false;
                                 lines[d.name].material.opacity = graphicopt.component.link.opacity;
                                 lines[d.name].material.linewidth = graphicopt.component.link.size;
-
                         }else{
                             attributes.alpha.array[i] = 0;
                             lines[d.name].visible = false;
@@ -755,6 +759,7 @@ d3.TimeSpace = function () {
                         }
                     }
                 });
+                // drawRadar(radarData,posArr);
 
                 attributes.size.needsUpdate = true;
                 attributes.alpha.needsUpdate = true;
@@ -788,6 +793,7 @@ d3.TimeSpace = function () {
             ishighlightUpdate = false;
             tooltip_lib.hide(); // hide tooltip
             linesGroup.visible = !!graphicopt.linkConnect;
+            // d3.select('#modelWorkerScreen_svg').selectAll().remove();
             if (visibledata){
                 if (visibledata.length<graphicopt.tableLimit*2)
                     linesGroup.visible = true;
@@ -825,6 +831,28 @@ d3.TimeSpace = function () {
                 renderRadarSummary([]);
         }
         isneedrender = true;
+    }
+    function drawRadar(data,pos){
+        let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
+            .data(data.map(d=>d.__metrics));
+        old.exit().remove();
+        old.enter().append('g').attr('class','timeSpaceR');
+        d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
+            .attr('transform',(d,i)=>`translate(${pos[i].x+graphicopt.radarTableopt.w},${pos[i].y+graphicopt.radarTableopt.h / 2})`)
+            .each(function(d){
+                createRadar(d3.select(this).select('.radar'), d3.select(this), d, {colorfill: true});
+            })
+    }
+    function getpos(x,y,z){
+        var width = graphicopt.widthG(), height = graphicopt.heightG();
+        var widthHalf = width / 2, heightHalf = height / 2;
+        camera.updateMatrixWorld();
+        var vector = new THREE.Vector3(x,y,z);
+        vector.project(camera);
+
+        vector.x = ( vector.x * widthHalf ) + widthHalf;
+        vector.y = - ( vector.y * heightHalf ) + heightHalf;
+        return vector;
     }
     let filterGroupsetting={timestep:undefined};
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
@@ -1228,7 +1256,7 @@ d3.TimeSpace = function () {
         }
     }
     function renderRadarSummary(dataRadar,color,boxplot,isselectionMode) {
-        d3.select(".radarTimeSpace").classed('hide',!dataRadar.length);
+        const holder = d3.select(".radarTimeSpace").classed('hide',!dataRadar.length);
         d3.select("#modelSelectionTool .emptyScreen").classed('hide',dataRadar.length);
         if (dataRadar.length) {
             radarChartclusteropt.color = function () {
@@ -1237,9 +1265,23 @@ d3.TimeSpace = function () {
             radarChartclusteropt.boxplot = boxplot !== undefined ? boxplot : true;
             let currentChart;
             if (boxplot) {
+                holder.select('.singleRadar').classed('hide',true);
                 currentChart = RadarChart(".radarTimeSpace", [dataRadar], radarChartclusteropt, "");
             }else{
-                currentChart = RadarChartCompare(".radarTimeSpace", dataRadar, radarChartclusteropt, "");
+                holder.select('.singleRadar').classed('hide',false);
+                if (graphicopt.iscompareMode)
+                    currentChart = RadarChartCompare(".radarTimeSpace", dataRadar, radarChartclusteropt, "");
+                else {
+                    let cloneOpt = _.cloneDeep(radarChartclusteropt)
+                    cloneOpt.fillin = false;
+                    cloneOpt.strokeWidth = function(d,i){
+                        return d.index?2:4;
+                    };
+                    cloneOpt.color = function(i,d){
+                        return colorscale(d.name);
+                    };
+                    currentChart = RadarChart(".radarTimeSpace", dataRadar, cloneOpt, "");
+                }
             }
             currentChart.selectAll('.axisLabel').remove();
             currentChart.select('.axisWrapper .gridCircle').classed('hide', true);
@@ -2050,9 +2092,14 @@ d3.TimeSpace = function () {
             });
             d3.select(div).select('.noUi-handle').append('span').attr('class','num');
         }
+        d3.select('#modelCompareMode').on('change',function(){
+            graphicopt.iscompareMode=d3.select(this).property('checked')
+
+        });
     };
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
+        d3.select('#modelCompareMode').property('checked',graphicopt.iscompareMode)
         try {
             d3.values(self.controlPanel).forEach((d)=>{
                 if (graphicopt.opt[d.variable]) {

@@ -118,7 +118,7 @@ function RadarChart(id, data, options, name) {
     let  radius = Math.min(cfg.w / 2, cfg.h / 2);    //Radius of the outermost circle
     Format = d3.format('');               //Percentage formatting
 
-    data = data.map(ditem=>{
+    data = data.map((ditem,i)=>{
         if (ditem.bin)
             ditem.bin.val = ditem.bin.val.map(v=>v.filter((d,i)=>allAxis.find(e=>e.text===ditem[i].axis)));
 
@@ -126,6 +126,7 @@ function RadarChart(id, data, options, name) {
         let temp = _.sortBy(ditem_filtered,d=>allAxis.find(e=>e.text===d.axis).angle);
         temp.type = ditem.type;
         temp.name = ditem.name;
+        temp.index = i;
         temp.bin = ditem.bin; return temp;});
     //Scale for the radius
     rScale = d3.scaleLinear()
@@ -346,7 +347,16 @@ function RadarChart(id, data, options, name) {
         return allAxis.findIndex(e=>e.text===v.axis);
     }
     //The radial line function
-    let radarLine, radialAreaGenerator, radialAreaQuantile,keyLine='value';
+    let radarLine,radarLine_withoutArea, radialAreaGenerator, radialAreaQuantile,keyLine='value';
+    radarLine_withoutArea  = d3.radialLine()
+        // .interpolate("linear-closed")
+        .curve(d3.curveCatmullRom.alpha(this.smooth))
+        .radius(function (d) {
+            return rScale(d[keyLine] === undefined ? d : d[keyLine]);
+        })
+        .angle(function (d, i) {
+            return getAngle(d, i);
+        });
         radarLine  = d3.radialArea()
         // .interpolate("linear-closed")
             .curve(d3.curveCatmullRom.alpha(this.smooth))
@@ -388,6 +398,7 @@ function RadarChart(id, data, options, name) {
                 return rScale(d.q3);
             });
         if(cfg.roundStrokes) {
+            radarLine_withoutArea.curve(d3.curveCardinalClosed.tension(this.smooth));
             radarLine.curve(d3.curveCardinalClosed.tension(this.smooth));
             radialAreaGenerator.curve(d3.curveCardinalClosed.tension(this.smooth));
             radialAreaQuantile.curve(d3.curveCardinalClosed.tension(this.smooth));
@@ -412,13 +423,13 @@ function RadarChart(id, data, options, name) {
 
 
     function drawOutlying(paths){
-        return paths.attr("d", d => radarLine(d)).transition().duration(cfg.animationDuration)
+        return paths.attr("d", d => radarLine_withoutArea(d)).transition().duration(cfg.animationDuration)
             .style("stroke", (d, i) => 'black')
             .style("stroke-width", () => cfg.strokeWidth + "px")
             .style("stroke-opacity", undefined)
             //.style("fill-opacity", d => 1)
             .style("fill", 'none')
-            .attr("d", d =>radarLine(d));
+            .attr("d", d =>radarLine_withoutArea(d));
     }
 
     //update the outlines
@@ -454,7 +465,7 @@ function RadarChart(id, data, options, name) {
     }else if (cfg.gradient && cfg.mini){
         function drawMeanLine(paths){
             return paths
-                .attr("d", d =>radarLine(d))
+                .attr("d", d =>radarLine_withoutArea(d))
                 .styles({"fill":'none',
                     'stroke':'black'});
         }
@@ -495,7 +506,7 @@ function RadarChart(id, data, options, name) {
     }else if (cfg.gradient){
         function drawMeanLine(paths){
             return paths
-                .attr("d", d =>radarLine(d))
+                .attr("d", d =>radarLine_withoutArea(d))
                 .styles({"fill":'none',
                     'stroke':'black',
                     'stroke-width':0.5,
@@ -549,7 +560,7 @@ function RadarChart(id, data, options, name) {
         let quantile_exist = data[0][0].q1!==undefined;
         function drawMeanLine(paths){
             return paths
-                .attr("d", d =>radarLine(d))
+                .attr("d", d =>radarLine_withoutArea(d))
                 .styles({"fill":'none',
                     'stroke':'black',
                     'stroke-width':0.5,
@@ -600,19 +611,22 @@ function RadarChart(id, data, options, name) {
             blobWrapper.append("path").classed('radarQuantile',true).style("fill", "none").call(drawQuantileArea);
     }
     else {
+        const isMulti = data.length>1;
+        if (!_.isFunction(cfg.strokeWidth))
+            cfg.strokeWidth = ()=>cfg.strokeWidth;
         g.selectAll(".radarWrapper").selectAll('.radarLine').remove();
         g.selectAll(".radarWrapper").selectAll('.radarQuantile').remove();
-        blobWrapperpath.transition().duration(cfg.animationDuration).attr("d", d => radarLine(d))
+        blobWrapperpath.transition().duration(cfg.animationDuration).attr("d", d => (isMulti?radarLine_withoutArea:radarLine)(d))
             .style("fill-opacity", (d,i)=>cfg.fillin?cfg.fillin:null)
             .style("fill", (d,i)=>cfg.fillin?cfg.color(i,d):"none")
-            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .style("stroke-width", (d) => cfg.strokeWidth(d) + "px")
             .style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
             .style("stroke", (d, i) => cfg.color(i,d));
         //Create the outlines
         blobWrapper.append("path")
             .attr("class", "radarStroke")
-            .attr("d", d => radarLine(d))
-            .style("stroke-width", () => cfg.strokeWidth + "px")
+            .attr("d", d => (isMulti?radarLine_withoutArea:radarLine)(d))
+            .style("stroke-width", (d) => cfg.strokeWidth(d) + "px")
             .style("stroke-opacity", d => cfg.bin ? densityscale(d.bin.val.length) : 0.5)
             .style("stroke", (d, i) => cfg.color(i,d))
             .style("fill-opacity", (d,i)=>cfg.fillin?cfg.fillin:null)
