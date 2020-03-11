@@ -422,15 +422,23 @@ function RadarChartCompare(id, data, options, name) {
     //update the outlines
     // blobWrapperg.select('.radarLine').transition().duration(cfg.animationDuration).call(drawMeanLine);
     // if(quantile_exist) {
-        blobWrapperg.select('.radarLine').transition().duration(cfg.animationDuration).call(drawDecreaseArea);
-        blobWrapperg.select('.radarStroke').transition().duration(cfg.animationDuration).call(drawIncreaseArea);
+    blobWrapperg.select('.radarLine').transition().duration(cfg.animationDuration).call(drawDecreaseArea);
+    blobWrapperg.select('.radarStroke').transition().duration(cfg.animationDuration).call(drawIncreaseArea);
         // blobWrapperpath.style("fill", "none").transition().duration(cfg.animationDuration).call(drawMinMaxArea);
-        blobWrapper.append("path")
+    if(blobWrapperg.select('.radarLine').empty())
+        blobWrapperg.append("path")
             .attr("class", "radarLine")
             .call(drawDecreaseArea);
-        blobWrapper.append("path")
+    if(blobWrapperg.select('.radarLine').empty())
+        blobWrapperg.append("path")
             .attr("class", "radarStroke")
             .call(drawIncreaseArea);
+    blobWrapper.append("path")
+        .attr("class", "radarLine")
+        .call(drawDecreaseArea);
+    blobWrapper.append("path")
+        .attr("class", "radarStroke")
+        .call(drawIncreaseArea);
     // }else{
     //     blobWrapperpath
     //         .style("fill", (d,i)=>cfg.fillin?cfg.color(i,d):"none")
