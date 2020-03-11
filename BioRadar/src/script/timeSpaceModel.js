@@ -1450,7 +1450,7 @@ d3.TimeSpace = function () {
             pos[i*3+1]= 0;
             pos[i*3+2]= 0;
             // let color = new THREE.Color(d3.color(colorarr[target.cluster].value)+'');
-            let color = d3.color(colorarr[target.cluster].value);
+            let color = d3.color(target.name ===keyGenes?'black': colorarr[target.cluster].value);
             colors[i*3+0]= color.r/255;
             colors[i*3+1]= color.g/255;
             colors[i*3+2]= color.b/255;
