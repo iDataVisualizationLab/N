@@ -104,7 +104,7 @@ d3.TimeSpace = function () {
     let createRadar,createRadarTable;
     //----------------------drag-----------------------
     let allSelected_Data;
-    var lassoTool,mouseoverTrigger = true;
+    var lassoTool,mouseoverTrigger = true,iscameraMove = false;
     let drag = ()=>{
         function dragstarted(d) {
             isneedrender = true;
@@ -431,6 +431,7 @@ d3.TimeSpace = function () {
             controls.addEventListener("change", () => {
                 isneedrender = true;
                 freezemouseoverTrigger=true;
+                iscameraMove = true;
                 if (mouseoverTrigger_time)
                     clearTimeout(mouseoverTrigger_time);
                 mouseoverTrigger_time= setTimeout(function(){freezemouseoverTrigger=false;},10)
@@ -1035,13 +1036,14 @@ d3.TimeSpace = function () {
                 // visiableLine(graphicopt.linkConnect);
                 controls.update();
                 renderer.render(scene, camera);
-                if(svgData) {
+                if(svgData&&iscameraMove) {
                     var geometry = points.geometry;
                     var attributes = geometry.attributes;
                     svgData.pos = svgData.pos.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
                     drawRadar(svgData);
                 }
             }
+            iscameraMove = false;
             isneedrender = false;
             requestAnimationFrame(animate);
         }
