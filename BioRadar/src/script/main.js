@@ -1162,7 +1162,7 @@ let radarChartclusteropt  = {
     isNormalize:true,
     showHelperPoint: false,
     roundStrokes: true,
-    ringStroke_width: 0.15,
+    ringStroke_width: function(d){return d3.scaleLinear().range(serviceFullList[0].range)(d)===0?0.5:0.15},
     ringColor:'black',
     fillin:0.5,
     boxplot:false,

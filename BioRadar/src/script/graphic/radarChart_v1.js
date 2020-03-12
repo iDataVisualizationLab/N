@@ -56,7 +56,10 @@ function RadarChart(id, data, options, name) {
             }
         }//for i
     }//if
-
+    if (!_.isFunction(cfg.strokeWidth))
+        cfg.strokeWidth = ()=>cfg.strokeWidth;
+    if (!_.isFunction(cfg.ringStroke_width))
+        cfg.ringStroke_width = ()=>cfg.ringStroke_width;
     var maxValue,minValue,range,arrThresholds,colorTemperature,opaTemperature,allAxis,rScale,scaleMarkedLegend;
     range = thresholds[0];
     // NEW SETTING
@@ -271,7 +274,10 @@ function RadarChart(id, data, options, name) {
                 }
                 return cfg.ringColor;
             })
-            .style("stroke-width", cfg.ringStroke_width===undefined?0.3:cfg.ringStroke_width)
+            .style("stroke-width",d=>{
+                var v = (maxValue - minValue) * d / cfg.levels + minValue;
+                return cfg.ringStroke_width(v)===undefined?0.3:cfg.ringStroke_width(v)
+            })
             .style("stroke-opacity", 1)
             .style("fill-opacity", cfg.opacityCircles)
             .style("filter", "url(#glow)")
