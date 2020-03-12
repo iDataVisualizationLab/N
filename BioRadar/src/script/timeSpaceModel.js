@@ -218,7 +218,7 @@ d3.TimeSpace = function () {
             obitTrigger = false;
         }
 
-        svg.selectAll('*').remove();
+        svg.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
         if(skipRecalculate) {
             render(true);
             reduceRenderWeight(true);
@@ -833,16 +833,34 @@ d3.TimeSpace = function () {
         isneedrender = true;
     }
     function drawRadar({data,pos}){
-        let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
-            .data(data.map(d=>d.__metrics));
+        let dataRadar = [];
+        let links = {};
+        data.forEach((d,i)=>{
+            dataRadar.push(d.__metrics);
+            if(!links[d.name])
+                links[d.name]=[]
+            links[d.name].push(pos[i]);
+        });
+        let old = d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
+            .data(dataRadar);
         old.exit().remove();
         old.enter().append('g').attr('class','timeSpaceR');
-        d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
+        d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
             // .attr('transform',(d,i)=>`translate(${pos[i].x+graphicopt.radarTableopt.w},${pos[i].y+graphicopt.radarTableopt.h / 2})`)
             .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
             .each(function(d){
                 createRadar(d3.select(this).select('.radar'), d3.select(this), d, {colorfill: true});
-            })
+            });
+
+        let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
+            .data(_.values(links));
+        old_link.exit().remove();
+        old_link.enter().append('line').attr('class','link');
+        d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
+            .attrs(d=>({
+                x1:d[0].x,x2:d[1].x,y1:d[0].y,y2:d[1].y,
+                'marker-end':"url(#arrow)"
+            }))
     }
     // function drawsvg(data,pos){
     //     let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
@@ -942,7 +960,7 @@ d3.TimeSpace = function () {
             removeBoxHelper();
 
             svgData=undefined;
-            d3.select('#modelWorkerScreen_svg').selectAll().remove();
+            d3.select('#modelWorkerScreen_svg_g').selectAll().remove();
         }
         isneedrender = true;
     }

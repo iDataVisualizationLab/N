@@ -710,7 +710,16 @@
                     </div>
                     <canvas id="modelWorkerScreen" width="100%" height="100vh"></canvas>
                     <!--<canvas id="modelWorkerScreen_fornt" style="position:absolute;top:0;left:0"></canvas>-->
-                    <svg id="modelWorkerScreen_svg" style="position:absolute;top:0;left:0; pointer-events: none"></svg>
+                    <svg id="modelWorkerScreen_svg" style="position:absolute;top:0;left:0; pointer-events: none">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="18" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" style="fill:#000000" />
+                            </marker>
+                        </defs>
+                        <g id="modelWorkerScreen_svg_g">
+
+                        </g>
+                    </svg>
                     <div id="modelWorkerInformation" style="position:absolute;top:0px;right:0; width: 350px; z-index: 10; ">
                         <div id="modelSelectionInformation">
                             <div class="row empty search-wrapper focused no_magrin ">
