@@ -138,15 +138,15 @@ function newdatatoFormat (data){
         serviceList.push(k);
         serviceListattr.push(k);
 
-        // range = d3.extent(data,d=>d[k]);
-        // if (range[1]<=1)
-        //     range[1] = 1;
-        // if (range[0]>=0)
-        //     range[0] = 0;
-        // else if (range[0]>=-1)
-        //     range[0] = -1;
+        range = d3.extent(data,d=>d[k]);
+        if (range[1]<=1)
+            range[1] = 1;
+        if (range[0]>=0)
+            range[0] = 0;
+        else if (range[0]>=-1)
+            range[0] = -1;
 
-        const temp = {"text":k,"id":i,"enable":true,"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(variables.length),"range":[-1,1]}]};
+        const temp = {"text":k,"id":i,"enable":true,"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(variables.length),"range":range}]};
         thresholds.push([0,1]);
         serviceLists.push(temp);
     });

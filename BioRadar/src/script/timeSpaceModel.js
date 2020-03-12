@@ -1,6 +1,6 @@
 d3.TimeSpace = function () {
     let graphicopt = {
-            margin: {top: 40, right: 40, bottom: 40, left: 40},
+            margin: {top: 0, right: 0, bottom: 0, left: 0},
             width: 1500,
             height: 1000,
             scalezoom: 1,
@@ -832,18 +832,31 @@ d3.TimeSpace = function () {
         }
         isneedrender = true;
     }
-    function drawRadar(data,pos){
+    function drawRadar({data,pos}){
         let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
             .data(data.map(d=>d.__metrics));
         old.exit().remove();
         old.enter().append('g').attr('class','timeSpaceR');
         d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
-            .attr('transform',(d,i)=>`translate(${pos[i].x+graphicopt.radarTableopt.w},${pos[i].y+graphicopt.radarTableopt.h / 2})`)
+            // .attr('transform',(d,i)=>`translate(${pos[i].x+graphicopt.radarTableopt.w},${pos[i].y+graphicopt.radarTableopt.h / 2})`)
+            .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
             .each(function(d){
                 createRadar(d3.select(this).select('.radar'), d3.select(this), d, {colorfill: true});
             })
     }
-    function getpos(x,y,z){
+    // function drawsvg(data,pos){
+    //     let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
+    //         .data(data.map(d=>d.__metrics));
+    //     old.exit().remove();
+    //     old.enter().append('g').attr('class','timeSpaceR');
+    //     d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
+    //         .attr('transform',(d,i)=>`translate(${pos[i].x+graphicopt.radarTableopt.w},${pos[i].y+graphicopt.radarTableopt.h / 2})`)
+    //         .each(function(d){
+    //             createRadar(d3.select(this).select('.radar'), d3.select(this), d, {colorfill: true});
+    //         })
+    // }
+    let svgData;
+    function getpos(x,y,z,index){
         var width = graphicopt.widthG(), height = graphicopt.heightG();
         var widthHalf = width / 2, heightHalf = height / 2;
         camera.updateMatrixWorld();
@@ -852,6 +865,7 @@ d3.TimeSpace = function () {
 
         vector.x = ( vector.x * widthHalf ) + widthHalf;
         vector.y = - ( vector.y * heightHalf ) + heightHalf;
+        vector.index = index;
         return vector;
     }
     let filterGroupsetting={timestep:undefined};
@@ -881,6 +895,8 @@ d3.TimeSpace = function () {
         var geometry = points.geometry;
         var attributes = geometry.attributes;
         if (intersects.length > 0 || !(timestep===undefined)) {
+            let radarData =[];
+            let posArr =[];
             INTERSECTED = [];
             visibledata = [];
             datain.forEach((d, i) => {
@@ -891,6 +907,8 @@ d3.TimeSpace = function () {
                     lines[d.name].material.opacity = graphicopt.component.link.opacity;
                     lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
                     visibledata.push(i);
+                    radarData.push(d);
+                    posArr.push(getpos(attributes.position.array[i*3],attributes.position.array[i*3+1],attributes.position.array[i*3+2],i));
                 } else {
                     attributes.alpha.array[i] = 0;
                     lines[d.name].visible = false;
@@ -902,6 +920,11 @@ d3.TimeSpace = function () {
             attributes.alpha.needsUpdate = true;
 
             removeBoxHelper();
+
+            if(linesGroup.visible){
+                svgData = {data:radarData,pos:posArr};
+                drawRadar(svgData);
+            }
         } else if (visibledata && visibledata.length || ishighlightUpdate) {
             visibledata = undefined;
             ishighlightUpdate = false;
@@ -917,6 +940,9 @@ d3.TimeSpace = function () {
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
             removeBoxHelper();
+
+            svgData=undefined;
+            d3.select('#modelWorkerScreen_svg').selectAll().remove();
         }
         isneedrender = true;
     }
@@ -991,6 +1017,12 @@ d3.TimeSpace = function () {
                 // visiableLine(graphicopt.linkConnect);
                 controls.update();
                 renderer.render(scene, camera);
+                if(svgData) {
+                    var geometry = points.geometry;
+                    var attributes = geometry.attributes;
+                    svgData.pos = svgData.pos.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
+                    drawRadar(svgData);
+                }
             }
             isneedrender = false;
             requestAnimationFrame(animate);
