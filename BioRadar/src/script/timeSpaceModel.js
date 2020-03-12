@@ -321,6 +321,24 @@ d3.TimeSpace = function () {
     let euclideandistanceHis=[];
     let umapdistanceHis=[];
 
+    function makeArrowMarker() {
+        let arrow = svg.select('defs').selectAll('marker.arrow').data(cluster_info);
+        arrow.exit().remove();
+        arrow.enter().append('marker').attrs({
+            class:'arrow',
+            markerWidth: "10",
+            markerHeight: "10",
+            refX: "18",
+            refY: "3",
+            orient: "auto",
+            markerUnits: "strokeWidth"
+        }).append('path').attr('d', "M0,0 L0,6 L9,3 z");
+        svg.select('defs').selectAll('marker.arrow')
+            .attr('id', d => "arrow" + d.name)
+            .select('path')
+            .style('fill', d => colorCluster(d.name));
+    }
+
     master.init = function(arr,clusterin) {
         preloader(true,1,'Prepare rendering ...','#modelLoading');
 
@@ -440,6 +458,7 @@ d3.TimeSpace = function () {
             stop = false;
 
             svg = d3.select('#modelWorkerScreen_svg').attrs({width: graphicopt.width,height:graphicopt.height});
+            makeArrowMarker();
 
             d3.select('#modelWorkerInformation+.title').text(self.name);
             handle_selection_switch(graphicopt.isSelectionMode);
@@ -839,7 +858,8 @@ d3.TimeSpace = function () {
         data.forEach((d,i)=>{
             dataRadar.push(d.__metrics);
             if(!links[d.name])
-                links[d.name]=[]
+                links[d.name]=[];
+            pos[i].cluster = d.clusterName;
             links[d.name].push(pos[i]);
         });
         let old = d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
@@ -860,7 +880,7 @@ d3.TimeSpace = function () {
         d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
             .attrs(d=>({
                 x1:d[0].x,x2:d[1].x,y1:d[0].y,y2:d[1].y,
-                'marker-end':"url(#arrow)"
+                'marker-end':d=>`url(#arrow${d[1].cluster})`
             }))
     }
     // function drawsvg(data,pos){
