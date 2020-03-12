@@ -424,14 +424,15 @@ function network(){
         links:[],
         nodes:_.keys(dataNest).map(d=>({id:d,group:1}))
     }
-
+    let unqiueG = d3.nest().key(d=>d.value.join('')).entries(unqiueG);
     for (let i= 0; i< data.nodes.length;i++){
         for (let j= i+1; j< data.nodes.length;j++) {
-            let dis = distance(dataNest[data.nodes[i].id],dataNest[data.nodes[j].id])<2;
+            let dis = distance(dataNest[data.nodes[i].id],dataNest[data.nodes[j].id]);
             if(dis<2){
                 data.links.push({source: data.nodes[i].id, target: data.nodes[j].id, value: 1/dis})
             }
         }
+        console.log(i);
     }
     console.log(JSON.stringify(data));
     const links = data.links.map(d => Object.create(d));
