@@ -93,7 +93,7 @@ d3.TimeSpace = function () {
     let master={},solution,datain=[],filterbyClustername=[],visibledata,table_info,path,cluster=[],scaleTime;
     let xscale=d3.scaleLinear(),yscale=d3.scaleLinear(), scaleNormalTimestep=d3.scaleLinear();
     // grahic
-    let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,controls,raycaster,INTERSECTED =[] ,mouse ,
+    let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,clusterAnnotation,controls,raycaster,INTERSECTED =[] ,mouse ,
         points,lines,linesGroup,curveLines,curveLinesGroup,straightLines,straightLinesGroup,curves,updateLine,
         scatterPlot,colorarr,renderer,view,zoom,background_canvas,background_ctx,front_canvas,front_ctx,svg;
     let fov = 100,
@@ -419,6 +419,8 @@ d3.TimeSpace = function () {
             lines = straightLines;
             linesGroup = straightLinesGroup;
             toggleLine();
+
+            clusterAnnotation = clustername();
             gridHelper = new THREE.GridHelper( graphicopt.heightG(), 10 );
             gridHelper.position.z = scaleNormalTimestep.range()[0];
             gridHelper.rotation.x = -Math.PI / 2;
@@ -705,6 +707,32 @@ d3.TimeSpace = function () {
         scene.add( arrowGroup );
         arrowGroup.visible = false;
         return arrowGroup;
+    }
+    function clustername(){
+        var loader = new THREE.FontLoader();
+        var clusterG = {};
+        loader.load( 'src/fonts/optimer_regular.typeface.json', function ( font ) {
+            cluster_info.forEach((d,i)=>{
+                var textGeo = new THREE.TextGeometry( clusterDescription[d.name].text, {
+                    font: font,
+                    size: 20,
+                    height: 1,
+                    curveSegments: 12,
+                    bevelEnabled: false
+                } );
+                textGeo.computeBoundingBox();
+                textGeo.computeVertexNormals();
+                textGeo = new THREE.BufferGeometry().fromGeometry( textGeo );
+                let textMesh1 = new THREE.Mesh( textGeo, new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } ) );
+                textMesh1.name = d.name;
+                textMesh1.rotation.x = 0;
+                textMesh1.rotation.y = 0;
+                textMesh1.lookAt( camera.position );
+                scene.add(textMesh1)
+                clusterG[d.name] = textMesh1;
+            })
+        } );
+        return clusterG;
     }
     let radarChartclusteropt = {
         margin: {top: 10, right: 0, bottom: 10, left: 0},
@@ -1747,13 +1775,19 @@ d3.TimeSpace = function () {
                     }
                 });
                 if (islast) {
-                    let center = d3.nest().key(d => d.cluster).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
+                    let center = d3.nest().key(d => d.clusterName).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
+                    for (let c in clusterAnnotation){
+                        let newpos = position2Vector(center[c]);
+                        clusterAnnotation[c].position.x = newpos.x;
+                        clusterAnnotation[c].position.y = newpos.y;
+                        clusterAnnotation[c].position.z = newpos.z;
+                    }
                     solution.forEach(function (d, i) {
                         const target = datain[i];
                         const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
                         path[target.name][posPath].value = d;
                         // updateStraightLine(target, posPath, d);
-                        updateLine(target, posPath, d, path[target.name].map(p => center[datain[p.index].cluster]));
+                        updateLine(target, posPath, d, path[target.name].map(p => center[datain[p.index].clusterName]));
 
                     });
                     let rangeDis = [+Infinity, 0];
@@ -1941,11 +1975,10 @@ d3.TimeSpace = function () {
             var points = curve.getPoints( graphicopt.curveSegment);
             lines[target.name].geometry.setFromPoints(points);
         }
-        function position2Vector(p){
-            return new THREE.Vector3(xscale(p[0]), yscale(p[1]), xscale(p[2]) || 0);
-        }
     }
-
+    function position2Vector(p){
+        return new THREE.Vector3(xscale(p[0]), yscale(p[1]), xscale(p[2]) || 0);
+    }
     function updateStraightLine(target, posPath, d, customZ) {
         lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), xscale(d[2]) || 0);
         // lines[target.name].geometry.vertices[posPath * 2] = new THREE.Vector3(xscale(d[0]), yscale(d[1]), d[2] || 0);
