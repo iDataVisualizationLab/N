@@ -145,7 +145,7 @@ d3.TimeSpace = function () {
         controls.enabled = !trigger;
         if (trigger){
             if (reset)
-                lassoTool = new THREE.LassoTool( camera, points, graphicopt ,svg);
+                lassoTool = new THREE.LassoTool( camera, points, graphicopt ,svg.select('#modelWorkerScreen_lassotool'));
             reset= false;
             freezemouseoverTrigger =  true;
             d3.select('#modelWorkerScreen').call(drag());
