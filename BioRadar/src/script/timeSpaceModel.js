@@ -2407,7 +2407,7 @@ function handle_data_umap(tsnedata) {
             projectionName:'umap',
             // nEpochs: 20, // The number of epochs to optimize embeddings via SGD (computed automatically = default)
             // nNeighbors:  Math.round(dataIn.length/cluster_info.length/5)+2, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
-            nNeighbors:  10, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
+            nNeighbors:  50, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
             // nNeighbors: 15, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
             dim: 2, // The number of components (dimensions) to project the data to (2 = default)
             minDist: 1, // The effective minimum distance between embedded points, used with spread to control the clumped/dispersed nature of the embedding (0.1 = default)
