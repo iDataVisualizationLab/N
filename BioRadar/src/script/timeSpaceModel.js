@@ -491,7 +491,8 @@ d3.TimeSpace = function () {
             visiableLine(false);
             datain.forEach((d, i) => {
                 straightLines[d.name].visible = curveLines[d.name].visible;
-                straightLines[d.name].material.opacity = curveLines[d.name].material.opacity;
+                if (curveLines[d.name].material)
+                    straightLines[d.name].material.opacity = curveLines[d.name].material.opacity;
             });
             lines = straightLines;
             linesGroup = straightLinesGroup;
@@ -503,7 +504,8 @@ d3.TimeSpace = function () {
             visiableLine(false);
             datain.forEach((d, i) => {
                 curveLines[d.name].visible = straightLines[d.name].visible;
-                curveLines[d.name].material.opacity = straightLines[d.name].material.opacity;
+                if (straightLines[d.name].material)
+                    curveLines[d.name].material.opacity = straightLines[d.name].material.opacity;
             });
             lines = curveLines;
             linesGroup = curveLinesGroup;
@@ -1699,9 +1701,14 @@ d3.TimeSpace = function () {
             highlightNode([]);
         })
 
-            $('#search').on('input', searchHandler); // register for oninput
-            $('#search').on('propertychange', searchHandler); // for IE8
+        $('#search').on('input', searchHandler); // register for oninput
+        $('#search').on('propertychange', searchHandler); // for IE8
 
+        // d3.select('#modelSampling').on('mouseover',()=>{
+        //     let data = _.sampleSize(datain, 500);
+        //     console.log(data)
+        //     // drawRadar({data: data,pos:})
+        // });
         function renderData(data, type, row) {
             if (type === 'display') {
                 if (data%1==0)
