@@ -99,6 +99,8 @@ d3.TimeSpace = function () {
     let fov = 100,
     near = 0.1,
     far = 7000;
+    //----------------------force----------------------
+    let forceColider;
     //----------------------color----------------------
     let colorLineScale = d3.scaleLinear().interpolate(d3.interpolateCubehelix);
     let createRadar,createRadarTable;
@@ -392,7 +394,16 @@ d3.TimeSpace = function () {
         createRadar = _.partialRight(createRadar_func,'timeSpace radar',graphicopt.radaropt,colorscale);
         createRadarTable = _.partialRight(createRadar_func,'timeSpace radar',graphicopt.radarTableopt,colorscale);
 
-
+        // prepare force
+        forceColider = d3.forceSimulation()
+            .alphaDecay(0.005)
+            .alpha(0.1)
+            .force('collide', d3.forceCollide().radius(graphicopt.radarTableopt.w/2).iterations(10))
+            .on('tick', function () {
+                if (isdrawradar&&svgData){
+                    drawRadar(svgData)
+                }
+            }).stop();
         // prepare screen
         setTimeout(function(){
             isneedrender = false;
@@ -882,7 +893,7 @@ d3.TimeSpace = function () {
         }
         isneedrender = true;
     }
-    function drawRadar({data,pos}){
+    function drawRadar({data,pos,posStatic}){
         let dataRadar = [];
         let links = {};
         data.forEach((d,i)=>{
@@ -904,7 +915,7 @@ d3.TimeSpace = function () {
             });
 
         let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
-            .data(_.values(links));
+            .data(_.values(links).filter(d=>d.length===2));
         old_link.exit().remove();
         old_link.enter().append('line').attr('class','link');
         d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
@@ -912,6 +923,16 @@ d3.TimeSpace = function () {
                 x1:d[0].x,x2:d[1].x,y1:d[0].y,y2:d[1].y,
                 'marker-end':d=>`url(#arrow${d[1].cluster})`
             }))
+    }
+    function updateforce(data){
+        forceColider.force('tsne', function (alpha) {
+            data.pos.forEach((d, i) => {
+                d.fx =  null;
+                d.fy =  null;
+                d.x += alpha * (data.posStatic[i].x - d.x);
+                d.y += alpha * (data.posStatic[i].y - d.y);
+            });
+        }).alphaTarget(0.1);
     }
     // function drawsvg(data,pos){
     //     let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
@@ -994,8 +1015,10 @@ d3.TimeSpace = function () {
             removeBoxHelper();
 
             if(isdrawradar){
-                svgData = {data:radarData,pos:posArr};
-                drawRadar(svgData);
+                svgData = {data:radarData,posStatic:posArr,pos:_.cloneDeep(posArr)};
+                forceColider.nodes(svgData.pos).restart();
+                updateforce(svgData);
+                // drawRadar(svgData);
             }
         } else if (visibledata && visibledata.length || ishighlightUpdate) {
             visibledata = undefined;
@@ -1092,13 +1115,17 @@ d3.TimeSpace = function () {
                 if(isdrawradar&&svgData&&iscameraMove) {
                     var geometry = points.geometry;
                     var attributes = geometry.attributes;
-                    svgData.pos = svgData.pos.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
-                    drawRadar(svgData);
+                    svgData.posStatic = svgData.posStatic.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
+                    updateforce(svgData);
+                    // drawRadar(svgData);
                 }
             }
             iscameraMove = false;
             isneedrender = false;
             requestAnimationFrame(animate);
+        }else{
+            if (forceColider)
+                forceColider.stop();
         }
     }
     function removeBoxHelper(){
