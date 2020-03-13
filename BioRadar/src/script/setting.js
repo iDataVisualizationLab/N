@@ -164,6 +164,7 @@ function newdatatoFormat (data){
         const category = name.split('|')[1]==='wt'?0:1;
         hosts.push({
             name: fixname,
+            genese: fixname.split('__')[0],
             category:category,
             index : hosts.length,
         });
@@ -180,7 +181,9 @@ function newdatatoFormat (data){
             tsnedata[fixname][0].push(value===null?0:scaleService[i](value)||0);
         });
     }); // format number
-
+    if (keyLeader&&globalFilter[keyLeader]){
+        hosts.sort((a,b)=>-globalFilter[keyLeader].indexOf(a.genese)+globalFilter[keyLeader].indexOf(b.genese))
+    }
     // find outliers
     preloader(true, 0, 'Detect outliers...');
     // outlyingList = outlier();

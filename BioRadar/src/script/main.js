@@ -630,6 +630,8 @@ function handle_dataRaw() {
             let minval = Infinity;
             cluster_info.forEach((c, i) => {
                 const val = distance(c.__metrics.normalize, axis_arr);
+                if(val===0)
+                    c.leadername = h.name;
                 if (minval > val) {
                     if(i!==clusterNullIndex || (i===clusterNullIndex&&calculateMSE_numarray(c.__metrics.normalize, axis_arr)===0)) {
                         index = i;
@@ -984,6 +986,7 @@ $( document ).ready(function() {
 });
 
 let globalFilter ={};
+let keyLeader //= "TF_DE";
 function initApp(){
     // load filter file
     preloader(true,undefined,'Read filter file...');

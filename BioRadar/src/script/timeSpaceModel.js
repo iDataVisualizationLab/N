@@ -936,9 +936,12 @@ d3.TimeSpace = function () {
         return vector;
     }
     let filterGroupsetting={timestep:undefined};
+    let isdrawradar = false;
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
+        isdrawradar = false;
         if (intersects.length){
             if (intersects.length<graphicopt.tableLimit) {
+                isdrawradar = true;
                 linesGroup.visible = true;
                 d3.select("#filterTable_wrapper").classed('hide',false);
                 try {
@@ -988,7 +991,7 @@ d3.TimeSpace = function () {
 
             removeBoxHelper();
 
-            if(linesGroup.visible){
+            if(isdrawradar){
                 svgData = {data:radarData,pos:posArr};
                 drawRadar(svgData);
             }
@@ -1009,7 +1012,7 @@ d3.TimeSpace = function () {
             removeBoxHelper();
 
             svgData=undefined;
-            d3.select('#modelWorkerScreen_svg_g').selectAll().remove();
+            d3.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
         }
         isneedrender = true;
     }
@@ -1084,7 +1087,7 @@ d3.TimeSpace = function () {
                 // visiableLine(graphicopt.linkConnect);
                 controls.update();
                 renderer.render(scene, camera);
-                if(svgData&&iscameraMove) {
+                if(isdrawradar&&svgData&&iscameraMove) {
                     var geometry = points.geometry;
                     var attributes = geometry.attributes;
                     svgData.pos = svgData.pos.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
