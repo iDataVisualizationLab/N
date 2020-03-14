@@ -944,14 +944,14 @@ d3.TimeSpace = function () {
         forceColider.force('tsne', function (alpha) {
             if (alpha<0.07||count>100) {
                 forceColider.alphaMin(alpha);
-                if (d3.select('#radarCollider').attr('value')===2) {
+                if (d3.select('#radarCollider').attr('value')==='2') {
                     svgData.pos.forEach((d, i) => {
                         // d.fx =  null;
                         // d.fy =  null;
                         // d.x +=  alpha * (svgData.posStatic[i].x - d.x);
                         // d.y +=  alpha * (svgData.posStatic[i].y - d.y);
-                        const row = Math.round(d.y / (4 / Math.sqrt(3)));
-                        d.y = row * (4 / Math.sqrt(3));
+                        const row = Math.round(d.y / (Math.sqrt(3)*3/4*radarSize));
+                        d.y = row * (Math.sqrt(3)*3/4*radarSize);
                         const col = Math.round(d.x / radarSize / 2);
                         d.x = (col - row % 2 / 2) * 2 * radarSize;
                     });
