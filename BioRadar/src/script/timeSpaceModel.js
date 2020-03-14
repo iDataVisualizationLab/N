@@ -95,12 +95,12 @@ d3.TimeSpace = function () {
     // grahic
     let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,clusterAnnotation,controls,raycaster,INTERSECTED =[] ,mouse ,
         points,lines,linesGroup,curveLines,curveLinesGroup,straightLines,straightLinesGroup,curves,updateLine,
-        scatterPlot,colorarr,renderer,view,zoom,background_canvas,background_ctx,front_canvas,front_ctx,svg;
+        scatterPlot,colorarr,renderer,view,zoom,background_canvas,background_ctx,front_canvas,front_ctx,svg,clusterMarker;
     let fov = 100,
     near = 0.1,
     far = 7000;
     //----------------------force----------------------
-    let forceColider;
+    let forceColider,animateTrigger=false;
     //----------------------color----------------------
     let colorLineScale = d3.scaleLinear().interpolate(d3.interpolateCubehelix);
     let createRadar,createRadarTable;
@@ -180,8 +180,10 @@ d3.TimeSpace = function () {
     let linkConnect_old;
     function reduceRenderWeight(isResume){
         if (isResume){
+            svg.select('#modelClusterLabel').classed('hide',false);
             graphicopt.linkConnect = linkConnect_old;
         }else{
+            svg.select('#modelClusterLabel').classed('hide',true);
             linkConnect_old = graphicopt.linkConnect;
             graphicopt.linkConnect = false;
         }
@@ -355,7 +357,7 @@ d3.TimeSpace = function () {
         datain.sort((a,b)=>a.timestep-b.timestep);
         mapIndex = [];
         datain.forEach((d,i)=>d.show?mapIndex.push(i):undefined);
-        handle_cluster (clusterin, datain)
+        handle_cluster (clusterin, datain);
         handle_data(datain);
         updateTableInput();
         path = {};
@@ -364,6 +366,8 @@ d3.TimeSpace = function () {
         let euclideandistance_range = [+Infinity,0];
         datain.forEach(function (target, i) {
             target.__metrics.position = [0,0,0];
+            if ((target.name+'__'+(target.timestep?'stop1':'wt'))===cluster[target.cluster].leadername)
+                cluster[target.cluster].__metrics.indexLeader = i;
             if (!path[target.name]) {
                 path[target.name] = [];
                 path[target.name].euclideandistance = 0;
@@ -398,10 +402,12 @@ d3.TimeSpace = function () {
         forceColider = d3.forceSimulation()
             .alphaDecay(0.005)
             .alpha(0.1)
+            .force('charge', d3.forceManyBody())
             .force('collide', d3.forceCollide().radius(graphicopt.radarTableopt.w/2).iterations(10))
             .on('tick', function () {
-                if (isdrawradar&&svgData){
-                    drawRadar(svgData)
+                if (isdrawradar&&svgData&&animateTrigger){
+                    animateTrigger=false;
+                    drawRadar(svgData);
                 }
             }).stop();
         // prepare screen
@@ -431,7 +437,7 @@ d3.TimeSpace = function () {
             linesGroup = straightLinesGroup;
             toggleLine();
 
-            clusterAnnotation = clustername();
+            // clusterAnnotation = clustername();
             gridHelper = new THREE.GridHelper( graphicopt.heightG(), 10 );
             gridHelper.position.z = scaleNormalTimestep.range()[0];
             gridHelper.rotation.x = -Math.PI / 2;
@@ -471,6 +477,7 @@ d3.TimeSpace = function () {
             stop = false;
 
             svg = d3.select('#modelWorkerScreen_svg').attrs({width: graphicopt.width,height:graphicopt.height});
+            clusterMarker = createClusterLabel();
             makeArrowMarker();
 
             d3.select('#modelWorkerInformation+.title').text(self.name);
@@ -653,8 +660,9 @@ d3.TimeSpace = function () {
 
     function handle_cluster(clusterin,data){
         cluster = clusterin;
+        cluster.forEach(d=>d.__metrics.projection = {x:0,y:0});
         let nesradar = d3.nest().key(d=>d.cluster).rollup(d=>d.length).entries(data);
-            nesradar.forEach(d=>cluster[d.key].total_radar = d.value);
+            nesradar.forEach(d=> {cluster[d.key].total_radar = d.value});
     }
     // Three.js render loop
     function createAxes(length){
@@ -904,14 +912,12 @@ d3.TimeSpace = function () {
             links[d.name].push(pos[i]);
         });
         let old = d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
-            .data(dataRadar);
+            .data(dataRadar,d=>d.name_or+'_'+d.timestep).attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`);
         old.exit().remove();
-        old.enter().append('g').attr('class','timeSpaceR');
-        d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
-            // .attr('transform',(d,i)=>`translate(${pos[i].x+graphicopt.radarTableopt.w},${pos[i].y+graphicopt.radarTableopt.h / 2})`)
+        old.enter().append('g').attr('class','timeSpaceR')
             .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
             .each(function(d){
-                createRadar(d3.select(this).select('.radar'), d3.select(this), d, {colorfill: true});
+                createRadar(d3.select(this).select('.radar'), d3.select(this), d, {size:radarSize*2,colorfill: true});
             });
 
         let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
@@ -925,12 +931,17 @@ d3.TimeSpace = function () {
             }))
     }
     function updateforce(data){
-        forceColider.force('tsne', function (alpha) {
+        forceColider.force('tsne', function (alpha,e,f,g,h) {
+            console.log(e,f,g,h)
             data.pos.forEach((d, i) => {
                 d.fx =  null;
                 d.fy =  null;
-                d.x += alpha * (data.posStatic[i].x - d.x);
-                d.y += alpha * (data.posStatic[i].y - d.y);
+                d.x +=  alpha * (data.posStatic[i].x - d.x);
+                d.y +=  alpha * (data.posStatic[i].y - d.y);
+                // const row =  Math.round(d.y/(4/Math.sqrt(3)));
+                // d.y =row * (4/Math.sqrt(3));
+                // const col = Math.round(d.x / radarSize/2);
+                // d.x = (col - row%2/2)*2*radarSize;
             });
         }).alphaTarget(0.1);
     }
@@ -960,6 +971,7 @@ d3.TimeSpace = function () {
     }
     let filterGroupsetting={timestep:undefined};
     let isdrawradar = false;
+    let radarSize;
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
         isdrawradar = false;
         if (intersects.length){
@@ -1016,6 +1028,9 @@ d3.TimeSpace = function () {
 
             if(isdrawradar){
                 svgData = {data:radarData,posStatic:posArr,pos:_.cloneDeep(posArr)};
+                radarSize = Math.min(graphicopt.radaropt.w/2,Math.sqrt(graphicopt.widthG()*graphicopt.heightG()/Math.PI/radarData.length)*0.75);
+                forceColider.force('collide').radius(radarSize).iterations(10);
+                forceColider.force('charge').distanceMin(radarSize*2);
                 forceColider.nodes(svgData.pos).restart();
                 updateforce(svgData);
                 // drawRadar(svgData);
@@ -1047,6 +1062,7 @@ d3.TimeSpace = function () {
     let isneedrender = false;
     function animate() {
         if (!stop) {
+            animateTrigger=true;
             if (isneedrender) {
                 // visiableLine(graphicopt.linkConnect);
                 //update raycaster with mouse movement
@@ -1112,6 +1128,12 @@ d3.TimeSpace = function () {
                 // visiableLine(graphicopt.linkConnect);
                 controls.update();
                 renderer.render(scene, camera);
+                if (solution&&solution.length)
+                    cluster.forEach(c=>{
+                        const pos = position2Vector( datain[c.__metrics.indexLeader].__metrics.position);
+                        c.__metrics.projection = getpos(pos.x,pos.y,pos.z);
+                    });
+                updatelabelCluster();
                 if(isdrawradar&&svgData&&iscameraMove) {
                     var geometry = points.geometry;
                     var attributes = geometry.attributes;
@@ -1785,6 +1807,19 @@ d3.TimeSpace = function () {
     // }
     let distancerange = d3.scaleLinear();
     let euclideandistancerange = d3.scaleLinear();
+    function createClusterLabel() {
+        svg.select('#modelClusterLabel').selectAll('g.cluster').remove();
+        const marker =  svg.select('#modelClusterLabel').selectAll('g.cluster').data(cluster)
+            .enter().append('g').attr('class', 'cluster');
+        const symbolGenerator = d3.symbol().type(d3.symbolCross).size(100);
+        marker.append('text').text(d=>d.text);
+        marker.append('path').attr('d',symbolGenerator()).styles({'fill':'black','opacity':0.5});
+        return marker;
+    }
+    function updatelabelCluster() {
+        clusterMarker.attr('transform',d=>`translate(${d.__metrics.projection.x},${d.__metrics.projection.y})`);
+    }
+
     function render (islast){
         if (isneedCompute) {
             let p = points.geometry.attributes.position.array;
@@ -1813,12 +1848,12 @@ d3.TimeSpace = function () {
                 });
                 if (islast) {
                     let center = d3.nest().key(d => d.clusterName).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
-                    for (let c in clusterAnnotation){
-                        let newpos = position2Vector(center[c]);
-                        clusterAnnotation[c].position.x = newpos.x;
-                        clusterAnnotation[c].position.y = newpos.y;
-                        clusterAnnotation[c].position.z = newpos.z;
-                    }
+                    // for (let c in clusterAnnotation){
+                    //     let newpos = position2Vector(center[c]);
+                    //     clusterAnnotation[c].position.x = newpos.x;
+                    //     clusterAnnotation[c].position.y = newpos.y;
+                    //     clusterAnnotation[c].position.z = newpos.z;
+                    // }
                     solution.forEach(function (d, i) {
                         const target = datain[i];
                         const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
