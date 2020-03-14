@@ -948,7 +948,7 @@ d3.TimeSpace = function () {
             .join("path")
             .attr("d", hexbin.hexagon())
             .attr("transform", d => `translate(${d.x},${d.y})`)
-            .style("fill", '#c1c1c1')//d => color(d.length));
+            .style("fill", '#eeeeee')//d => color(d.length));
     }
     function updateforce(){
         count = 0;
