@@ -409,7 +409,7 @@ d3.TimeSpace = function () {
                     animateTrigger=false;
                     drawRadar(svgData);
                 }
-            }).stop();
+            }).on('end',()=>console.log('end')).stop();
         // prepare screen
         setTimeout(function(){
             isneedrender = false;
@@ -931,7 +931,10 @@ d3.TimeSpace = function () {
             }))
     }
     function updateforce(){
-        forceColider.force('tsne', function (alpha,e,f,g,h) {
+        count = 0;
+        forceColider.force('tsne', function (alpha) {
+            if (alpha<0.07||count>100)
+                forceColider.alphaMin(alpha);
             svgData.pos.forEach((d, i) => {
                 d.fx =  null;
                 d.fy =  null;
@@ -942,6 +945,7 @@ d3.TimeSpace = function () {
                 // const col = Math.round(d.x / radarSize/2);
                 // d.x = (col - row%2/2)*2*radarSize;
             });
+            count++;
         });
     }
     // function drawsvg(data,pos){
@@ -973,7 +977,7 @@ d3.TimeSpace = function () {
     let radarSize;
 
     function startCollide() {
-        forceColider.force('collide').radius(radarSize).iterations(10);
+        forceColider.alpha(0.1).force('collide').radius(radarSize).iterations(10);
         forceColider.force('charge').distanceMin(radarSize * 2);
         forceColider.nodes(svgData.pos).restart();
         updateforce();
@@ -1042,7 +1046,7 @@ d3.TimeSpace = function () {
                 cluster.forEach((d,i)=>d.__metrics.hide=!clusterGroup[i])
                 filterlabelCluster();
                 //
-                startCollide();
+                drawRadar(svgData);
 
                 // for (let i=0;i<100;i++) {
                 //     forceColider.tick();
@@ -2296,7 +2300,7 @@ d3.TimeSpace = function () {
         d3.select('#modelCompareMode').on('change',function(){
             graphicopt.iscompareMode=d3.select(this).property('checked')
         });
-        d3.select('#radarCollider').attr('value',0).on('click',function(){
+        d3.select('#radarCollider').attr('value',2).on('click',function(){
             const target = d3.select(this);
             const oldValue = target.attr('value');
             const newValue = (oldValue+1) %3;
@@ -2304,19 +2308,23 @@ d3.TimeSpace = function () {
             switch (newValue) {
                 case 0:
                     target.html(`<i class="icon-radarShape material-icons icon"></i> No detection`);
-                    svgData.pos = _.cloneDeep(svgData.posStatic);
-                    forceColider.stop();
-                    drawRadar(svgData);
+                    if (forceColider) {
+                        svgData.pos = _.cloneDeep(svgData.posStatic);
+                        forceColider.stop();
+                        drawRadar(svgData);
+                    }
                     break;
                 case 1:
                     target.html(`<i class="icon-radarShape material-icons icon"></i> Collision detection `);
-                    startCollide()
+                    startCollide();
                     break;
                 default:
                     target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon detection`);
+                    startCollide();
                     break;
             }
         })
+        d3.select('#radarCollider').dispatch('click')
     };
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
