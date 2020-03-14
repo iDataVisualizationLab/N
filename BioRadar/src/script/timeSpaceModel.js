@@ -953,7 +953,7 @@ d3.TimeSpace = function () {
                         const row = Math.round(d.y / (Math.sqrt(3)*3/4*radarSize));
                         d.y = row * (Math.sqrt(3)*3/4*radarSize);
                         const col = Math.round(d.x / radarSize / 2);
-                        d.x = (col - row % 2 / 2) * 2 * radarSize;
+                        d.x = (col + row % 2 / 2) * 2 * radarSize;
                     });
                     drawRadar(svgData)
                 }
