@@ -246,7 +246,7 @@ d3.TimeSpace = function () {
                     action: "initcanvas",
                     canvasopt: {width: graphicopt.widthG(), height: graphicopt.heightG()}
                 });
-                console.log(`----inint ${self.workerPath} with: `, graphicopt.opt)
+                console.log(`----inint ${self.workerPath} with: `, graphicopt.opt);
 
 
                 // modelWorker.postMessage({action: "colorscale", value: colorarr});
@@ -930,19 +930,19 @@ d3.TimeSpace = function () {
                 'marker-end':d=>`url(#arrow${d[1].cluster})`
             }))
     }
-    function updateforce(data){
+    function updateforce(){
         forceColider.force('tsne', function (alpha,e,f,g,h) {
-            data.pos.forEach((d, i) => {
+            svgData.pos.forEach((d, i) => {
                 d.fx =  null;
                 d.fy =  null;
-                d.x +=  alpha * (data.posStatic[i].x - d.x);
-                d.y +=  alpha * (data.posStatic[i].y - d.y);
+                d.x +=  alpha * (svgData.posStatic[i].x - d.x);
+                d.y +=  alpha * (svgData.posStatic[i].y - d.y);
                 // const row =  Math.round(d.y/(4/Math.sqrt(3)));
                 // d.y =row * (4/Math.sqrt(3));
                 // const col = Math.round(d.x / radarSize/2);
                 // d.x = (col - row%2/2)*2*radarSize;
             });
-        }).alphaTarget(0.1);
+        });
     }
     // function drawsvg(data,pos){
     //     let old = d3.select('#modelWorkerScreen_svg').selectAll('.timeSpaceR')
@@ -971,26 +971,34 @@ d3.TimeSpace = function () {
     let filterGroupsetting={timestep:undefined};
     let isdrawradar = false;
     let radarSize;
+
+    function startCollide() {
+        forceColider.force('collide').radius(radarSize).iterations(10);
+        forceColider.force('charge').distanceMin(radarSize * 2);
+        forceColider.nodes(svgData.pos).restart();
+        updateforce();
+    }
+
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
         isdrawradar = false;
         if (intersects.length){
             if (intersects.length<graphicopt.tableLimit) {
                 isdrawradar = true;
                 linesGroup.visible = true;
-                d3.select("#filterTable_wrapper").classed('hide',false);
+                d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',false);
                 try {
                     updateDataTableFiltered(intersects);
                 }catch(e){}
                 d3.select("p#filterList").classed('hide',true);
             }else {
                 linesGroup.visible = !!graphicopt.linkConnect;
-                d3.select("#filterTable_wrapper").classed('hide',true);
+                d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',true);
                 d3.select("p#filterList").classed('hide',false);
                 d3.select("p#filterList").text(intersects.join(', '));
                 // d3.select("p#filterList+.copybtn").classed('hide', false);
             }
         }else{
-            d3.select("#filterTable_wrapper").classed('hide',true);
+            d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',true)
             d3.select("p#filterList").text('');
             d3.select("p#filterList").classed('hide',true);
             // d3.select("p#filterList+.copybtn").classed('hide',true);
@@ -1034,11 +1042,7 @@ d3.TimeSpace = function () {
                 cluster.forEach((d,i)=>d.__metrics.hide=!clusterGroup[i])
                 filterlabelCluster();
                 //
-
-                forceColider.force('collide').radius(radarSize).iterations(10);
-                forceColider.force('charge').distanceMin(radarSize*2);
-                forceColider.nodes(svgData.pos).restart();
-                updateforce(svgData);
+                startCollide();
 
                 // for (let i=0;i<100;i++) {
                 //     forceColider.tick();
@@ -1153,7 +1157,6 @@ d3.TimeSpace = function () {
                     var geometry = points.geometry;
                     var attributes = geometry.attributes;
                     svgData.posStatic = svgData.posStatic.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
-                    updateforce(svgData);
                     // drawRadar(svgData);
                 }
             }
@@ -1760,10 +1763,10 @@ d3.TimeSpace = function () {
             var tr = $(this).closest('tr');
             var row = dataTableFiltered.row( tr );
             highlightNode([{index:path[ row.data()[0]][0].index}]);
-        })
+        });
         $('#filterTable tbody').on('mouseleave', function () {
             highlightNode([]);
-        })
+        });
 
         $('#search').on('input', searchHandler); // register for oninput
         $('#search').on('propertychange', searchHandler); // for IE8
@@ -2292,8 +2295,28 @@ d3.TimeSpace = function () {
         }
         d3.select('#modelCompareMode').on('change',function(){
             graphicopt.iscompareMode=d3.select(this).property('checked')
-
         });
+        d3.select('#radarCollider').attr('value',0).on('click',function(){
+            const target = d3.select(this);
+            const oldValue = target.attr('value');
+            const newValue = (oldValue+1) %3;
+            target.attr('value',newValue);
+            switch (newValue) {
+                case 0:
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> No detection`);
+                    svgData.pos = _.cloneDeep(svgData.posStatic);
+                    forceColider.stop();
+                    drawRadar(svgData);
+                    break;
+                case 1:
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> Collision detection `);
+                    startCollide()
+                    break;
+                default:
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon detection`);
+                    break;
+            }
+        })
     };
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
