@@ -991,6 +991,7 @@ d3.TimeSpace = function () {
                         .y(d => d.y)
                         .radius(radarSize)
                     bin = hexbin(svgData.pos);
+                    console.log(bin)
                     bin.forEach(b=>b.forEach(d=>{d.x = b.x;d.y = b.y;d.fx = b.x;d.fy = b.y}));
                     drawRadar(svgData);
                     draw_hexagon(bin,hexbin)
@@ -1873,7 +1874,7 @@ d3.TimeSpace = function () {
     }
     function updateDataTableFiltered(newDataName){
         let newDataArray = newDataName.map(n=>{
-            return _.flatten([n,graphicopt.radaropt.schema.map(s=>sampleS[n+'__wt'][s.text][0][0]),graphicopt.radaropt.schema.map(s=>sampleS[n+'__stop1'][s.text][0][0])]);
+            return _.flatten([n,graphicopt.radaropt.schema.map(s=>sampleS[n+'__wt']?sampleS[n+'__wt'][s.text][0][0]:undefined),graphicopt.radaropt.schema.map(s=>sampleS[n+'__stop1']?sampleS[n+'__stop1'][s.text][0][0]:undefined)]);
         });
         dataTableFiltered.clear();
         dataTableFiltered.rows.add(newDataArray);
