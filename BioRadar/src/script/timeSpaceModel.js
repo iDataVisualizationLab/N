@@ -920,13 +920,16 @@ d3.TimeSpace = function () {
             pos[i].cluster = d.clusterName;
             links[d.name].push(pos[i]);
         });
+        let g = svg.select('#modelWorkerScreen_svg_g').select('#modelWorkerScreen_grid')
+        if (g.empty())
+            g = svg.select('#modelWorkerScreen_svg_g').append('g').attr('id','modelWorkerScreen_grid');
         let old = d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
             .data(dataRadar,d=>d.name_or+'_'+d.timestep).attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`);
         old.exit().remove();
         old.enter().append('g').attr('class','timeSpaceR')
             .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
             .each(function(d){
-                createRadar(d3.select(this).select('.radar'), d3.select(this), d, {size:radarSize*2,colorfill: true});
+                createRadar(d3.select(this).select('.radar'), d3.select(this), d, {size:radarSize*1.25*2,colorfill: true});
             });
 
         let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
@@ -940,13 +943,12 @@ d3.TimeSpace = function () {
             }))
     }
     function draw_hexagon(data,hexbin){
-        svg.select('#modelWorkerScreen_grid').selectAll("*").remove();
         svg.select('#modelWorkerScreen_grid').selectAll("path")
             .data(data)
             .join("path")
             .attr("d", hexbin.hexagon())
             .attr("transform", d => `translate(${d.x},${d.y})`)
-            .attr("fill", 'gray')//d => color(d.length));
+            .style("fill", '#c1c1c1')//d => color(d.length));
     }
     function updateforce(){
         count = 0;
@@ -986,25 +988,26 @@ d3.TimeSpace = function () {
                     hexbin = d3.hexbin()
                         .x(d => d.x)
                         .y(d => d.y)
-                        .radius(2*radarSize/Math.sqrt(3))
+                        .radius(radarSize)
                     bin = hexbin(svgData.pos);
-                    bin.forEach(b=>b.forEach(d=>(d.x = b.x,d.y = b.y)))
+                    bin.forEach(b=>b.forEach(d=>{d.x = b.x;d.y = b.y;d.fx = b.x;d.fy = b.y}));
                     drawRadar(svgData);
                     draw_hexagon(bin,hexbin)
                 }
                 forceColider.stop();
                 return;
+            }else {
+                svgData.pos.forEach((d, i) => {
+                    d.fx = null;
+                    d.fy = null;
+                    d.x += alpha * (svgData.posStatic[i].x - d.x);
+                    d.y += alpha * (svgData.posStatic[i].y - d.y);
+                    // const row =  Math.round(d.y/(4/Math.sqrt(3)));
+                    // d.y =row * (4/Math.sqrt(3));
+                    // const col = Math.round(d.x / radarSize/2);
+                    // d.x = (col - row%2/2)*2*radarSize;
+                });
             }
-            svgData.pos.forEach((d, i) => {
-                d.fx =  null;
-                d.fy =  null;
-                d.x +=  alpha * (svgData.posStatic[i].x - d.x);
-                d.y +=  alpha * (svgData.posStatic[i].y - d.y);
-                // const row =  Math.round(d.y/(4/Math.sqrt(3)));
-                // d.y =row * (4/Math.sqrt(3));
-                // const col = Math.round(d.x / radarSize/2);
-                // d.x = (col - row%2/2)*2*radarSize;
-            });
             count++;
         });
     }
@@ -1038,9 +1041,10 @@ d3.TimeSpace = function () {
 
     function startCollide() {
         forceColider.alpha(0.1).force('collide').radius(radarSize).iterations(10);
-        forceColider.force('charge').distanceMin(radarSize * 2);
-        forceColider.nodes(svgData.pos).restart();
+        // forceColider.force('charge').distanceMin(radarSize * 2);
+        forceColider.nodes(svgData.pos);
         updateforce();
+        forceColider.restart()
     }
 
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
@@ -2420,8 +2424,8 @@ d3.TimeSpace = function () {
 
     function loadProjection(opt,calback){
         let totalTime_marker = performance.now();
-        d3.json(`data/${dataInformation.filename.replace('.csv','')}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`,function(error,sol){
-            if (!error) {
+        d3.json(`data/${dataInformation.filename.replace('.csv','')}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`).then(function(sol){
+
                 let xrange = d3.extent(sol, d => d[0]);
                 let yrange = d3.extent(sol, d => d[1]);
                 let xscale = d3.scaleLinear().range([0, graphicopt.widthG()]);
@@ -2443,8 +2447,9 @@ d3.TimeSpace = function () {
                     yscale: {domain: yscale.domain()},
                     sol: sol
                 })
-            }else
-                calback();
+
+        }).catch(function(e){
+            calback();
         })
         // solution = sol;
     }

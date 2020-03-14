@@ -519,18 +519,19 @@ function readFilecsv(filename) {
     let filePath = `data/${filename}.csv`;
     exit_warp();
     preloader(true);
-    d3.csv(filePath).on("progress", function(evt) {
-        if (evt.total) {
-            preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
-            dataInformation.size = evt.total;
-        }else{
-            preloader(true, 0, "File loaded: " +bytesToString(evt.loaded));
-            dataInformation.size = evt.loaded;
-        }
-        // console.log("Amount loaded: " + Math.round(evt.loaded/evt.total*100)+'%')
-    }).get(function (error, data) {
-        if (error) {
-        } else {
+    d3.csv(filePath)
+    //     .on("progress", function(evt) {
+    //     if (evt.total) {
+    //         preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
+    //         dataInformation.size = evt.total;
+    //     }else{
+    //         preloader(true, 0, "File loaded: " +bytesToString(evt.loaded));
+    //         dataInformation.size = evt.loaded;
+    //     }
+    //     // console.log("Amount loaded: " + Math.round(evt.loaded/evt.total*100)+'%')
+    // })
+        .then(function (data) {
+
             db = "csv";
             newdatatoFormat(data);
 
@@ -575,7 +576,7 @@ function readFilecsv(filename) {
 
             })
 
-        }
+
     })
 }
 // action when exit
@@ -990,20 +991,15 @@ let keyLeader //= "TF_DE";
 function initApp(){
     // load filter file
     preloader(true,undefined,'Read filter file...');
-    d3.json('data/STOP1_targets.json',function(d){
+    d3.json('data/STOP1_targets.json').then(function(d){
         globalFilter = d;
         // init read file
         readFilecsv(d3.select('#datacom').node().value);
     });
 }
 function loadPresetCluster(name,calback) {
-    return d3.csv(srcpath + `data/cluster_${name}.csv`, function (cluster) {
-        if (cluster==null) {
-            M.toast({html: 'Do not have preset major group information. Recalculate major groups'});
-            if (calback) {
-                calback(false);// status
-            }
-        }else {
+    return d3.csv(srcpath + `data/cluster_${name}.csv`).then(function (cluster) {
+
             updateClusterControlUI((cluster || []).length);
             cluster.forEach(d => {
                 d.radius = +d.radius;
@@ -1026,6 +1022,10 @@ function loadPresetCluster(name,calback) {
             if (calback) {
                 calback(true);// status
             }
+    }).catch(function(error){
+        M.toast({html: 'Do not have preset major group information. Recalculate major groups'});
+        if (calback) {
+            calback(false);// status
         }
     });
 }
