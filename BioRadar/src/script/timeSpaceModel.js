@@ -473,7 +473,7 @@ d3.TimeSpace = function () {
                 // console.log(controll_metrics.x)
                 if(isdrawradar&&svgData) {
                     const scale = controll_metrics.old.zoom/controll_metrics.zoom;
-                    d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${(-controll_metrics.x)*scale},${(controll_metrics.y)*scale}) scale(${scale})`);
+                    d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${(-controll_metrics.x)*scale-graphicopt.widthG()/2*(scale-1)},${(controll_metrics.y)*scale-graphicopt.heightG()/2*(scale-1)}) scale(${scale})`);
                 }
                 isneedrender = true;
                 freezemouseoverTrigger=true;
