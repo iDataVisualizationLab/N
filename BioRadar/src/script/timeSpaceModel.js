@@ -1040,6 +1040,7 @@ d3.TimeSpace = function () {
     let radarSize;
 
     function startCollide() {
+        d3.select('#modelWorkerScreen_svg').classed('white',true);
         forceColider.alpha(0.1).force('collide').radius(radarSize).iterations(10);
         // forceColider.force('charge').distanceMin(radarSize * 2);
         forceColider.nodes(svgData.pos);
@@ -2378,6 +2379,8 @@ d3.TimeSpace = function () {
             switch (newValue) {
                 case 0:
                     target.html(`<i class="icon-radarShape material-icons icon"></i> No detection`);
+                    svg.select('#modelWorkerScreen_grid').remove();
+                    svg.classed('white',false);
                     if (forceColider) {
                         svgData.pos = _.cloneDeep(svgData.posStatic);
                         forceColider.stop();
