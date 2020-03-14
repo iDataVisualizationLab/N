@@ -932,7 +932,6 @@ d3.TimeSpace = function () {
     }
     function updateforce(data){
         forceColider.force('tsne', function (alpha,e,f,g,h) {
-            console.log(e,f,g,h)
             data.pos.forEach((d, i) => {
                 d.fx =  null;
                 d.fy =  null;
@@ -1029,11 +1028,25 @@ d3.TimeSpace = function () {
             if(isdrawradar){
                 svgData = {data:radarData,posStatic:posArr,pos:_.cloneDeep(posArr)};
                 radarSize = Math.min(graphicopt.radaropt.w/2,Math.sqrt(graphicopt.widthG()*graphicopt.heightG()/Math.PI/radarData.length)*0.75);
+
+                // filter cluster by input data
+                const clusterGroup = d3.nest().key(d=>d.cluster).object(radarData);
+                cluster.forEach((d,i)=>d.__metrics.hide=!clusterGroup[i])
+                filterlabelCluster();
+                //
+
                 forceColider.force('collide').radius(radarSize).iterations(10);
                 forceColider.force('charge').distanceMin(radarSize*2);
                 forceColider.nodes(svgData.pos).restart();
                 updateforce(svgData);
+
+                // for (let i=0;i<100;i++) {
+                //     forceColider.tick();
+                // }
+                // forceColider.dispatch('tick');
                 // drawRadar(svgData);
+            }else{
+                forceColider.stop();
             }
         } else if (visibledata && visibledata.length || ishighlightUpdate) {
             visibledata = undefined;
@@ -1046,13 +1059,15 @@ d3.TimeSpace = function () {
                 lines[d.name].material.opacity = graphicopt.component.link.opacity;
                 lines[d.name].material.linewidth  = graphicopt.component.link.size;
             });
-
+            forceColider.stop();
             attributes.alpha.needsUpdate = true;
             INTERSECTED = [];
             removeBoxHelper();
 
             svgData=undefined;
             d3.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
+            cluster.forEach((d,i)=>d.__metrics.hide=false)
+            filterlabelCluster();
         }
         isneedrender = true;
     }
@@ -1812,12 +1827,18 @@ d3.TimeSpace = function () {
         const marker =  svg.select('#modelClusterLabel').selectAll('g.cluster').data(cluster)
             .enter().append('g').attr('class', 'cluster');
         const symbolGenerator = d3.symbol().type(d3.symbolCross).size(100);
-        marker.append('text').text(d=>d.text);
+        marker.append('text').attrs({"text-anchor":"middle",y:-10})
+            .styles({'stroke':'white',
+                'font-size':20,
+                'paint-order':'stroke'}).text(d=>d.text);
         marker.append('path').attr('d',symbolGenerator()).styles({'fill':'black','opacity':0.5});
         return marker;
     }
     function updatelabelCluster() {
         clusterMarker.attr('transform',d=>`translate(${d.__metrics.projection.x},${d.__metrics.projection.y})`);
+    }
+    function filterlabelCluster() {
+        clusterMarker.classed('hide',d=>d.__metrics.hide);
     }
 
     function render (islast){
