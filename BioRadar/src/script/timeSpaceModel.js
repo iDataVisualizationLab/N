@@ -956,6 +956,7 @@ d3.TimeSpace = function () {
             if (alpha<0.07||count>100) {
                 forceColider.alphaMin(alpha);
                 if (d3.select('#radarCollider').attr('value')==='2') {
+                    svg.select('#modelWorkerScreen_grid').classed('hide',false);
                     // svgData.pos.forEach((d, i) => {
                     //     // d.fx =  null;
                     //     // d.fy =  null;
@@ -2375,15 +2376,14 @@ d3.TimeSpace = function () {
         }).on('action',function(){
             const target = d3.select(this);
             const newValue = +target.attr('value');
-            console.log(newValue)
             switch (newValue) {
                 case 0:
                     target.html(`<i class="icon-radarShape material-icons icon"></i> No detection`);
-                    svg.select('#modelWorkerScreen_grid').remove();
-                    svg.classed('white',false);
                     if (forceColider) {
                         svgData.pos = _.cloneDeep(svgData.posStatic);
                         forceColider.stop();
+                        svg.classed('white',false);
+                        svg.select('#modelWorkerScreen_grid').classed('hide',true);
                         drawRadar(svgData);
                     }
                     break;
