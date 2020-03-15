@@ -964,6 +964,21 @@ d3.TimeSpace = function () {
     function updateforce(){
         count = 0;
         forceColider.force('tsne', function (alpha) {
+            function setNewPos(b, neighbor, empty_cell, r, leftover, binO) {
+                let newbin = [];
+                newbin.row = b.row + neighbor[empty_cell][0];
+                newbin.col = b.col + neighbor[empty_cell][1];
+                newbin.x = newbin.col * (radarSize * 2) + (newbin.row % 2) * radarSize
+                newbin.y = newbin.row * r * 3 / 2;
+                leftover.x = newbin.x;
+                leftover.fx = newbin.x;
+                leftover.y = newbin.y;
+                leftover.fy = newbin.y;
+                newbin.push(leftover);
+                bin.push(newbin);
+                binO[newbin.row + '|' + newbin.col] = newbin;
+            }
+
             if (alpha<0.07||count>100) {
                 forceColider.alphaMin(alpha);
                 if (d3.select('#radarCollider').attr('value')==='2') {
@@ -1019,7 +1034,8 @@ d3.TimeSpace = function () {
                         binO[b.row+'|'+b.col] = b;
                     });
                     const n = bin.length;
-                    console.log(n)
+                    let clusterQueeue = {};
+                    const neighbor = [[-1, 1], [0, 1], [1, 1], [1, 0], [0, -1], [-1, 0]];
                     for (let i=0;i<bin.length;i++){
                         let b = bin[i];
                         b[0].x = b.x;
@@ -1029,28 +1045,33 @@ d3.TimeSpace = function () {
                         while (b.length>1)
                         {
                             let leftover = b.pop();
-                            let empty_cell = undefined;
+                            let empty_cell = -1;
                             if (leftover.cluster===b[0].cluster) {
                                 // find placeholder
-                                let neighbor = [[-1, 1], [0, 1], [1, 1], [1, 0], [0, -1], [-1, 0]];
-                                empty_cell = neighbor.find(d => !binO[`${b.row + d[0]}|${b.col + d[1]}`]);
+                                empty_cell = neighbor.findIndex(d => !binO[`${b.row + d[0]}|${b.col + d[1]}`]);
                             }
-                            if (empty_cell===undefined){
+                            if (empty_cell===-1){
                                 // can't find placeholder
-                                bin[i+1].push(leftover)
+                                if (!bin[i+1]){
+                                    while (clusterQueeue[leftover.cluster].length || empty_cell!==-1) {
+                                        let bb = clusterQueeue[leftover.cluster][0];
+                                        empty_cell = neighbor.findIndex(d => !binO[`${bb.row + d[0]}|${bb.col + d[1]}`]);
+                                        if (empty_cell!==-1){
+                                            setNewPos(bb, neighbor, empty_cell, r, leftover, binO);
+                                        }
+                                        if (empty_cell===5||empty_cell===-1){
+                                            clusterQueeue[leftover.cluster].shift();
+                                        }
+                                    }
+                                }else
+                                    bin[i+1].push(leftover)
                             }else{
-                                let newbin = [];
-                                newbin.row = b.row+empty_cell[0];
-                                newbin.col = b.col+empty_cell[1];
-                                newbin.x = newbin.col*(radarSize*2) + (newbin.row%2)*radarSize
-                                newbin.y = newbin.row*r*3/2;
-                                leftover.x = newbin.x;
-                                leftover.fx = newbin.x;
-                                leftover.y = newbin.y;
-                                leftover.fy = newbin.y;
-                                newbin.push(leftover);
-                                bin.push(newbin);
-                                binO[newbin.row+'|'+newbin.col] = newbin;
+                                setNewPos(b, neighbor, empty_cell, r, leftover, binO);
+                                if (empty_cell<5){
+                                    if (clusterQueeue[b[0].cluster]===undefined)
+                                        clusterQueeue[b[0].cluster] = [];
+                                    clusterQueeue[b[0].cluster].push(b);
+                                }
                             }
                         }
                     }
