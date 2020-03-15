@@ -819,6 +819,8 @@ d3.TimeSpace = function () {
                         lines[d.name].visible = true;
                         lines[d.name].material.opacity = 1;
                         lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
+                        if (d.__metrics.radar)
+                            d.__metrics.radar.dispatch('highlight')
                         // radarData.push(d);
                         // posArr.push(getpos(attributes.position.array[i*3],attributes.position.array[i*3+1],attributes.position.array[i*3+2]));
                     } else{
@@ -829,6 +831,8 @@ d3.TimeSpace = function () {
                                 lines[d.name].visible = false;
                                 lines[d.name].material.opacity = graphicopt.component.link.opacity;
                                 lines[d.name].material.linewidth = graphicopt.component.link.size;
+                                if (d.__metrics.radar)
+                                    d.__metrics.radar.dispatch('fade')
                         }else{
                             attributes.alpha.array[i] = 0;
                             lines[d.name].visible = false;
@@ -883,6 +887,8 @@ d3.TimeSpace = function () {
                         lines[d.name].visible = filterGroupsetting.timestep===undefined;
                         lines[d.name].material.opacity = graphicopt.component.link.opacity;
                         lines[d.name].material.linewidth  = graphicopt.component.link.highlight.opacity;
+                        if (d.__metrics.radar)
+                            d.__metrics.radar.dispatch('highlight')
                     } else {
                         attributes.alpha.array[i] = 0;
                         lines[d.name].visible = false;
@@ -928,10 +934,13 @@ d3.TimeSpace = function () {
         old.exit().remove();
         old.enter().append('g').attr('class','timeSpaceR')
             .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
+            .on('highlight',d=>d.radar.classed('fade',false))
+            .on('fade',d=>d.radar.classed('fade',true))
             .on('mouseover',d=>highlightNode([{index:path[d.name_or][0].index}]))
             .on('mouseoleave',d=>highlightNode([]))
             .each(function(d){
-                createRadar(d3.select(this).select('.radar'), d3.select(this), d, {size:radarSize*1.25*2,colorfill: true});
+                d.radar = d3.select(this);
+                createRadar(d.radar.select('.radar'), d.radar, d, {size:radarSize*1.25*2,colorfill: true});
             });
 
         let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
