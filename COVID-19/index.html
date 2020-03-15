@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Human Computer Interaction - User Study</title>
+</head>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-analytics.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link href="https://surveyjs.azureedge.net/1.1.22/survey.css" type="text/css" rel="stylesheet"/>
+<!--<script src="js/survey.js"></script>-->
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyD1h3Fl210rYucQEdyURDLhfsIF71WQ7tA",
+        authDomain: "the-network-5111f.firebaseapp.com",
+        databaseURL: "https://the-network-5111f.firebaseio.com",
+        projectId: "the-network-5111f",
+        storageBucket: "the-network-5111f.appspot.com",
+        messagingSenderId: "307045227004",
+        appId: "1:307045227004:web:e195e1d7ccaf6f66963a79",
+        measurementId: "G-9FRCCV6WTX"
+    };
+    //     apiUrl: "http://localhost:8080",
+    //     hereConfig: {
+    //         restApiKey: "0pEiLucWpzJ-I-Bmd25nNc1NxnSmDT4klCp-gySLwEU",
+    //         jsApiKey: "yYYh2opT-Y52RrJWnNvkxxKtcONgCG_75IIuwyoKvqQ"
+    //     };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+</script>
+<style>
+    .sv_main .sv_container{
+        font-size: 18px;
+        color: black;
+    }
+</style>
+<body>
+<div id="surveyElement"></div>
+<div id="surveyResult"></div>
+
+</body>
+
+<!--generate data-->
+
+
+
+<script src="src/js/app.js"></script>
+</html>
