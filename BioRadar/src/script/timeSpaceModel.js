@@ -470,11 +470,12 @@ d3.TimeSpace = function () {
                 controll_metrics.x=controls.target.x;
                 controll_metrics.y=controls.target.y;
                 controll_metrics.zoom = controls.target.distanceTo( controls.object.position );
-                console.log(controll_metrics.old)
-                // if(isdrawradar&&svgData) {
+                if(isdrawradar&&svgData) {
                     const scale = controll_metrics.old.zoom/controll_metrics.zoom;
-                    d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${(-controll_metrics.x)*scale-graphicopt.widthG()/2*(scale-1)},${(controll_metrics.y)*scale-graphicopt.heightG()/2*(scale-1)}) scale(${scale})`);
-                // }
+                    const dx = -controll_metrics.x + controll_metrics.old.x;
+                    const dy = controll_metrics.y - controll_metrics.old.y;
+                    d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${dx*scale-graphicopt.widthG()/2*(scale-1)},${dy*scale-graphicopt.heightG()/2*(scale-1)}) scale(${scale})`);
+                }
                 isneedrender = true;
                 freezemouseoverTrigger=true;
                 iscameraMove = true;
@@ -1075,7 +1076,6 @@ d3.TimeSpace = function () {
                             }
                         }
                     }
-                    console.log(bin.length);
                     drawRadar(svgData);
                     draw_hexagon(bin,hexbin)
                 }
@@ -1139,6 +1139,8 @@ d3.TimeSpace = function () {
             if (intersects.length<graphicopt.tableLimit) {
                 isdrawradar = true;
                 linesGroup.visible = true;
+                controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom};
+                d3.select('#modelWorkerScreen_svg_g').attr('transform',`translate(0,0) scale(1)`);
                 d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',false);
                 try {
                     updateDataTableFiltered(intersects);
@@ -1765,11 +1767,7 @@ d3.TimeSpace = function () {
         // var initial_transform = d3.zoomIdentity.translate(graphicopt.width/2, graphicopt.height/2).scale(initial_scale);
         // zoom.transform(view, initial_transform);
         camera.position.set(0, 0, getZFromScale(1));
-        controll_metrics.x=controls.target.x;
-        controll_metrics.y=controls.target.y;
-        controll_metrics.zoom = controls.target.distanceTo( controls.object.position );
-
-        controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom};
+        controll_metrics
     }
     function zoomHandler(d3_transform) {
         let scale = d3_transform.k;
@@ -2466,7 +2464,7 @@ d3.TimeSpace = function () {
             const newValue = +target.attr('value');
             switch (newValue) {
                 case 0:
-                    target.html(`<i class="icon-radarShape material-icons icon"></i> No detection`);
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> No collision`);
                     if (forceColider) {
                         svgData.pos = _.cloneDeep(svgData.posStatic);
                         forceColider.stop();
@@ -2480,7 +2478,7 @@ d3.TimeSpace = function () {
                     startCollide();
                     break;
                 default:
-                    target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon detection`);
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon collision`);
                     // startCollide();
                     updateforce();
                     forceColider.tick();
