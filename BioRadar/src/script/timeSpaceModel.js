@@ -221,7 +221,7 @@ d3.TimeSpace = function () {
             setUpZoom();
             obitTrigger = false;
         }
-
+        controll_metrics.zoom_or = controls.target.distanceTo( controls.object.position );
         svg.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
         if(skipRecalculate) {
             render(true);
@@ -470,10 +470,12 @@ d3.TimeSpace = function () {
                 controll_metrics.x=controls.target.x;
                 controll_metrics.y=controls.target.y;
                 controll_metrics.zoom = controls.target.distanceTo( controls.object.position );
+                controll_metrics.scale = controll_metrics.zoom_or/controll_metrics.zoom;
                 if(isdrawradar&&svgData) {
                     const scale = controll_metrics.old.zoom/controll_metrics.zoom;
-                    const dx = -controll_metrics.x + controll_metrics.old.x;
-                    const dy = controll_metrics.y - controll_metrics.old.y;
+                    const dx = (-controll_metrics.x + controll_metrics.old.x)*controll_metrics.old.scale;
+                    const dy = (controll_metrics.y - controll_metrics.old.y)*controll_metrics.old.scale;
+                    controll_metrics.scale = scale;
                     d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${dx*scale-graphicopt.widthG()/2*(scale-1)},${dy*scale-graphicopt.heightG()/2*(scale-1)}) scale(${scale})`);
                 }
                 isneedrender = true;
@@ -1139,7 +1141,7 @@ d3.TimeSpace = function () {
             if (intersects.length<graphicopt.tableLimit) {
                 isdrawradar = true;
                 linesGroup.visible = true;
-                controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom};
+                controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom,scale:controll_metrics.scale};
                 d3.select('#modelWorkerScreen_svg_g').attr('transform',`translate(0,0) scale(1)`);
                 d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',false);
                 try {
