@@ -989,10 +989,58 @@ d3.TimeSpace = function () {
                     hexbin = d3.hexbin()
                         .x(d => d.x)
                         .y(d => d.y)
-                        .radius(radarSize)
+                        .radius(radarSize*2/Math.sqrt(3))
+                    let r  = radarSize*2/Math.sqrt(3);
+                    // let rangeY = (d3.extent(svgData.pos,d=>d.y));
+                    // let rangeX = (d3.extent(svgData.pos,d=>d.x));
+                    // let centers = hexbin.extent([[rangeX[0], rangeY[0]], [rangeX[1], rangeY[1]]]).centers().map(d=>({x:d[0],y:d[1]}));
+                    // bin = hexbin(_.flatten([centers,svgData.pos]));
                     bin = hexbin(svgData.pos);
-                    console.log(bin)
-                    bin.forEach(b=>b.forEach(d=>{d.x = b.x;d.y = b.y;d.fx = b.x;d.fy = b.y}));
+                    bin.sort((a,b)=>a.x-b.x);
+                    bin.sort((a,b)=>a.y-b.y);
+                    // bin.forEach(b=>b.forEach(d=>{d.x = b.x;d.y = b.y;d.fx = b.x;d.fy = b.y}));
+
+                    // console.log(bin)
+                    let binO = {};
+                    bin.forEach(b=>{
+                        b.row = Math.round(b.y/(r*3/2));
+                        b.col = Math.round((b.x-(b.row%2)*radarSize)/(radarSize*2));
+                        binO[b.row+'|'+b.col] = b;
+                    });
+                    const n = bin.length;
+                    console.log(n)
+                    for (let i=0;i<n;i++){
+                        let b = bin[i];
+                        b[0].x = b.x;
+                        b[0].y = b.y;
+                        b[0].fx = b.x;
+                        b[0].fy = b.y;
+                        while (b.length>1)
+                        {
+                            let leftover = b.pop();
+                            // find placeholder
+                            let neighbor = [[-1,1],[0,1],[1,1],[1,0],[0,-1],[-1,0]];
+                            let empty_cell= neighbor.find(d=>!binO[`${b.row+d[0]}|${b.col+d[1]}`]);
+                            if (empty_cell===undefined){
+                                // can't find placeholder
+                                bin[i+1].push(leftover)
+                            }else{
+                                let newbin = [];
+                                newbin.row = b.row+empty_cell[0];
+                                newbin.col = b.col+empty_cell[1];
+                                newbin.x = newbin.col*(radarSize*2) + (newbin.row%2)*radarSize
+                                newbin.y = newbin.row*r*3/2;
+                                leftover.x = newbin.x;
+                                leftover.fx = newbin.x;
+                                leftover.y = newbin.y;
+                                leftover.fy = newbin.y;
+                                newbin.push(leftover);
+                                bin.push(newbin);
+                                binO[newbin.row+'|'+newbin.col] = newbin;
+                            }
+                        }
+                    }
+                    console.log(bin.length);
                     drawRadar(svgData);
                     draw_hexagon(bin,hexbin)
                 }
