@@ -920,7 +920,7 @@ d3.TimeSpace = function () {
             pos[i].cluster = d.clusterName;
             links[d.name].push(pos[i]);
         });
-        let g = svg.select('#modelWorkerScreen_svg_g').select('#modelWorkerScreen_grid')
+        let g = svg.select('#modelWorkerScreen_svg_g').style('pointer-events','all').select('#modelWorkerScreen_grid')
         if (g.empty())
             g = svg.select('#modelWorkerScreen_svg_g').append('g').attr('id','modelWorkerScreen_grid');
         let old = d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
@@ -928,6 +928,8 @@ d3.TimeSpace = function () {
         old.exit().remove();
         old.enter().append('g').attr('class','timeSpaceR')
             .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
+            .on('mouseover',d=>highlightNode([{index:path[d.name_or][0].index}]))
+            .on('mouseoleave',d=>highlightNode([]))
             .each(function(d){
                 createRadar(d3.select(this).select('.radar'), d3.select(this), d, {size:radarSize*1.25*2,colorfill: true});
             });
@@ -1009,7 +1011,7 @@ d3.TimeSpace = function () {
                     });
                     const n = bin.length;
                     console.log(n)
-                    for (let i=0;i<n;i++){
+                    for (let i=0;i<bin.length;i++){
                         let b = bin[i];
                         b[0].x = b.x;
                         b[0].y = b.y;
@@ -1018,9 +1020,12 @@ d3.TimeSpace = function () {
                         while (b.length>1)
                         {
                             let leftover = b.pop();
-                            // find placeholder
-                            let neighbor = [[-1,1],[0,1],[1,1],[1,0],[0,-1],[-1,0]];
-                            let empty_cell= neighbor.find(d=>!binO[`${b.row+d[0]}|${b.col+d[1]}`]);
+                            let empty_cell = undefined;
+                            if (leftover.cluster===b[0].cluster) {
+                                // find placeholder
+                                let neighbor = [[-1, 1], [0, 1], [1, 1], [1, 0], [0, -1], [-1, 0]];
+                                empty_cell = neighbor.find(d => !binO[`${b.row + d[0]}|${b.col + d[1]}`]);
+                            }
                             if (empty_cell===undefined){
                                 // can't find placeholder
                                 bin[i+1].push(leftover)
@@ -1189,7 +1194,7 @@ d3.TimeSpace = function () {
             removeBoxHelper();
 
             svgData=undefined;
-            d3.select('#modelWorkerScreen_svg_g').attr('transform',`translate(0,0) scale(1)`).selectAll('*').remove();
+            d3.select('#modelWorkerScreen_svg_g').style('pointer-events','none').attr('transform',`translate(0,0) scale(1)`).selectAll('*').remove();
             cluster.forEach((d,i)=>d.__metrics.hide=false)
             filterlabelCluster();
         }
