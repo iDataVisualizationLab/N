@@ -342,7 +342,7 @@ d3.TimeSpace = function () {
             .select('path')
             .style('fill', d => colorCluster(d.name));
     }
-    let controll_metrics={};
+    let controll_metrics={old:{zoom:undefined}};
     master.init = function(arr,clusterin) {
         preloader(true,1,'Prepare rendering ...','#modelLoading');
 
@@ -473,10 +473,13 @@ d3.TimeSpace = function () {
                 controll_metrics.scale = controll_metrics.zoom_or/controll_metrics.zoom;
                 if(isdrawradar&&svgData) {
                     const scale = controll_metrics.old.zoom/controll_metrics.zoom;
-                    const dx = (-controll_metrics.x + controll_metrics.old.x)*controll_metrics.old.scale;
-                    const dy = (controll_metrics.y - controll_metrics.old.y)*controll_metrics.old.scale;
-                    controll_metrics.scale = scale;
-                    d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${dx*scale-graphicopt.widthG()/2*(scale-1)},${dy*scale-graphicopt.heightG()/2*(scale-1)}) scale(${scale})`);
+                    const dx = (-controll_metrics.x + controll_metrics.old.x)*controll_metrics.scale;//*controll_metrics.old.scale/controll_metrics.old.scale;
+                    const deltax = (-controll_metrics.x + controll_metrics.old.x)*controll_metrics.scale*(scale-1);//*controll_metrics.old.scale/controll_metrics.old.scale;
+                    const dy = (controll_metrics.y - controll_metrics.old.y)*controll_metrics.scale;//*controll_metrics.old.scale;
+                    const deltay = (controll_metrics.y - controll_metrics.old.y)*controll_metrics.scale*(scale-1);//*controll_metrics.old.scale;
+                    // controll_metrics.scale = scale;
+                   
+                    d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${dx*scale-graphicopt.widthG()/2*(scale-1)-deltax},${dy*scale-graphicopt.heightG()/2*(scale-1)-deltay}) scale(${scale})`);
                 }
                 isneedrender = true;
                 freezemouseoverTrigger=true;
@@ -962,7 +965,7 @@ d3.TimeSpace = function () {
             .join("path")
             .attr("d", hexbin.hexagon())
             .attr("transform", d => `translate(${d.x},${d.y})`)
-            .style("fill", '#eeeeee')//d => color(d.length));
+            .styles({"fill": '#eeeeee','stroke':'white','stroke-width':2})//d => color(d.length));
     }
     function updateforce(){
         count = 0;
@@ -986,35 +989,6 @@ d3.TimeSpace = function () {
                 forceColider.alphaMin(alpha);
                 if (d3.select('#radarCollider').attr('value')==='2') {
                     svg.select('#modelWorkerScreen_grid').classed('hide',false);
-                    // svgData.pos.forEach((d, i) => {
-                    //     // d.fx =  null;
-                    //     // d.fy =  null;
-                    //     // d.x +=  alpha * (svgData.posStatic[i].x - d.x);
-                    //     // d.y +=  alpha * (svgData.posStatic[i].y - d.y);
-                    //
-                    //     const gridHeight = (Math.sqrt(3)*radarSize);
-                    //     const gridWidth = 2*radarSize;
-                    //     const c = 1/Math.sqrt(3)*radarSize;
-                    //     const m = c / gridWidth*2;
-                    //     let row = Math.round(d.y / gridHeight);
-                    //     const relY = d.y - (row * gridHeight);
-                    //     let col = Math.round(d.x / radarSize / 2)+ row % 2 / 2;
-                    //     const relX = (x - col*gridWidth) + gridWidth/2;
-                    //     if (relY < (-m * relX) + c) // LEFT edge
-                    //     {
-                    //         row--;
-                    //         if (row % 2)
-                    //             col++;
-                    //     }
-                    //     else if (relY < (m * relX) - c) // RIGHT edge
-                    //     {
-                    //         row--;
-                    //         if (row % 2)
-                    //             col--;
-                    //     }
-                    //     d.y = row * (Math.sqrt(3)*radarSize);
-                    //     d.x = col* 2 * radarSize;
-                    // });
                     hexbin = d3.hexbin()
                         .x(d => d.x)
                         .y(d => d.y)
@@ -1141,8 +1115,8 @@ d3.TimeSpace = function () {
             if (intersects.length<graphicopt.tableLimit) {
                 isdrawradar = true;
                 linesGroup.visible = true;
-                controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom,scale:controll_metrics.scale};
-                d3.select('#modelWorkerScreen_svg_g').attr('transform',`translate(0,0) scale(1)`);
+                controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom,scale:controll_metrics.scale||1};
+                d3.select('#modelWorkerScreen_svg_g').attr('transform',`scale(1) translate(0,0)`);
                 d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',false);
                 try {
                     updateDataTableFiltered(intersects);
@@ -1769,7 +1743,6 @@ d3.TimeSpace = function () {
         // var initial_transform = d3.zoomIdentity.translate(graphicopt.width/2, graphicopt.height/2).scale(initial_scale);
         // zoom.transform(view, initial_transform);
         camera.position.set(0, 0, getZFromScale(1));
-        controll_metrics
     }
     function zoomHandler(d3_transform) {
         let scale = d3_transform.k;
