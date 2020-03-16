@@ -478,7 +478,7 @@ d3.TimeSpace = function () {
                     const dy = (controll_metrics.y - controll_metrics.old.y)*controll_metrics.scale;//*controll_metrics.old.scale;
                     const deltay = (controll_metrics.y - controll_metrics.old.y)*controll_metrics.scale*(scale-1);//*controll_metrics.old.scale;
                     // controll_metrics.scale = scale;
-                   
+
                     d3.select('#modelWorkerScreen_svg_g').attr('transform', `translate(${dx*scale-graphicopt.widthG()/2*(scale-1)-deltax},${dy*scale-graphicopt.heightG()/2*(scale-1)-deltay}) scale(${scale})`);
                 }
                 isneedrender = true;

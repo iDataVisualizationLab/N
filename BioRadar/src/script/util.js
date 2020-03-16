@@ -1001,7 +1001,7 @@ function updateDatainformation(timearray,filename){
     // dataInformation.timerange = millisecondsToStr(_.last(timearray)-timearray[0]);
     // dataInformation.interval = millisecondsToStr(timearray[1] - timearray[0]);
     // dataInformation.totalstep = timearray.length;
-    dataInformation.datanum = hosts.length/2;
+    dataInformation.datanum = d3.nest().key(d=>d.category).entries(hosts)[0].values.length;
     let dataholder = d3.select('#datainformation');
     for (key in dataInformation)
         dataholder.select(`.${key}`).text(dataInformation[key]);
