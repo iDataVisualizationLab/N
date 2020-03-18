@@ -110,7 +110,6 @@ d3.TimeSpace = function () {
     let drag = ()=>{
         function dragstarted(d) {
             isneedrender = true;
-            // do something
             mouseoverTrigger = false;
             let coordinator = d3.mouse(this);
             mouse.x = (coordinator[0]/graphicopt.width)*2- 1;
@@ -253,6 +252,7 @@ d3.TimeSpace = function () {
                 // adjust dimension -------------
 
                 // end - adjust dimension
+                datain.forEach(d=>delete d.__metrics.radar);
                 modelWorker.postMessage({
                     action: "initDataRaw",
                     opt: opt,
@@ -409,8 +409,7 @@ d3.TimeSpace = function () {
                     animateTrigger=false;
                     drawRadar(svgData);
                 }
-            })
-            // .on('end',()=>console.log('end')).stop();
+            });
         // prepare screen
         setTimeout(function(){
             isneedrender = false;
@@ -437,8 +436,6 @@ d3.TimeSpace = function () {
             lines = straightLines;
             linesGroup = straightLinesGroup;
             toggleLine();
-
-            // clusterAnnotation = clustername();
             gridHelper = new THREE.GridHelper( graphicopt.heightG(), 10 );
             gridHelper.position.z = scaleNormalTimestep.range()[0];
             gridHelper.rotation.x = -Math.PI / 2;
@@ -498,7 +495,7 @@ d3.TimeSpace = function () {
             d3.select('#modelWorkerInformation+.title').text(self.name);
             handle_selection_switch(graphicopt.isSelectionMode);
 
-            d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)})
+            d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)});
             d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
             // d3.select("p#filterList+.copybtn").on('click',()=>{
             //     var copyText = document.getElementById("filterList");
@@ -513,7 +510,7 @@ d3.TimeSpace = function () {
 
         drawSummaryRadar([],[],'#ffffff');
         start();
-            animate();
+        animate();
         needRecalculate = false;
         },1);
         return master;
@@ -677,7 +674,7 @@ d3.TimeSpace = function () {
         cluster = clusterin;
         cluster.forEach(d=>d.__metrics.projection = {x:0,y:0});
         let nesradar = d3.nest().key(d=>d.cluster).rollup(d=>d.length).entries(data);
-            nesradar.forEach(d=> {cluster[d.key].total_radar = d.value});
+            nesradar.forEach(d=> cluster[d.key].total_radar = d.value);
     }
     // Three.js render loop
     function createAxes(length){
@@ -811,12 +808,7 @@ d3.TimeSpace = function () {
                 targetIndex = targetfilter.index;
             if (INTERSECTED.indexOf(targetIndex) === -1) {
                 let target = datain[targetIndex];
-                // INTERSECTED.forEach((d, i) => {
-                //     attributes.size.array[d] = graphicopt.component.dot.size;
-                // });
                 INTERSECTED = [];
-                // let radarData =[];
-                // let posArr =[];
                 datain.forEach((d, i) => {
                     if (d.name === target.name) {
                         INTERSECTED.push(i);
@@ -847,21 +839,12 @@ d3.TimeSpace = function () {
                         }
                     }
                 });
-                // drawRadar(radarData,posArr);
 
                 attributes.size.needsUpdate = true;
                 attributes.alpha.needsUpdate = true;
                 // add box helper
                 scene.remove(scene.getObjectByName('boxhelper'));
                 var box = new THREE.BoxHelper(lines[target.name], 0x000000);
-                // var box3 = new THREE.Box3().setFromObject(lines[target.name]);
-                // var boxSize = box3.getSize(new THREE.Vector3());
-                // var boxPos = box3.getCenter(new THREE.Vector3());
-                // var geometry = new THREE.BoxGeometry(boxSize.x,boxSize.y,boxSize.z);
-                // var material = new THREE.MeshBasicMaterial( {color: 0xdddddd,side: THREE.BackSide} );
-                //
-                // var box = new THREE.Mesh( geometry, material );
-                // box.position.set(boxPos.x,boxPos.y,boxPos.z);
                 box.material = new THREE.LineDashedMaterial( {
                     color: 0xdddddd,
                     linewidth: 0.1,
@@ -1562,6 +1545,7 @@ d3.TimeSpace = function () {
     function renderRadarSummary(dataRadar,color,boxplot,isselectionMode) {
         const holder = d3.select(".radarTimeSpace").classed('hide',!dataRadar.length);
         d3.select("#modelSelectionTool .emptyScreen").classed('hide',dataRadar.length);
+        d3.select(".radarTimeSpace").classed('hide',!dataRadar.length);
         if (dataRadar.length) {
             radarChartclusteropt.color = function () {
                 return color
@@ -2004,12 +1988,6 @@ d3.TimeSpace = function () {
                 });
                 if (islast) {
                     let center = d3.nest().key(d => d.clusterName).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
-                    // for (let c in clusterAnnotation){
-                    //     let newpos = position2Vector(center[c]);
-                    //     clusterAnnotation[c].position.x = newpos.x;
-                    //     clusterAnnotation[c].position.y = newpos.y;
-                    //     clusterAnnotation[c].position.z = newpos.z;
-                    // }
                     solution.forEach(function (d, i) {
                         const target = datain[i];
                         const posPath = path[target.name].findIndex(e => e.timestep === target.timestep);
@@ -2090,7 +2068,6 @@ d3.TimeSpace = function () {
             d.__metrics.timestep = d.timestep;
         });
         let maxstep = sampleS.timespan.length - 1;
-        // let maxstep = sampleS.timespan.length - 1;
         scaleTime = d3.scaleTime().domain([sampleS.timespan[0], sampleS.timespan[maxstep]]).range([0, maxstep]);
         scaleNormalTimestep.domain([0, 1]);
     }
@@ -2389,7 +2366,6 @@ d3.TimeSpace = function () {
                             else
                                 start();
                         })
-                            // .node().checked = graphicopt[d.content.variable];
                     }else if (d.content.type === "selection") {
                         let div = d3.select(this).style('width', d.content.width)
                             .append('select')
@@ -2465,21 +2441,24 @@ d3.TimeSpace = function () {
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
         d3.select('#modelCompareMode').property('checked',graphicopt.iscompareMode)
-        try {
-            d3.values(self.controlPanel).forEach((d)=>{
-                if (graphicopt.opt[d.variable]) {
-                    // d3.select('.nNeighbors div').node().noUiSlider.updateOptions({
-                    //     range: {
-                    //         'min': 1,
-                    //         'max': Math.round(datain.length / 2),
-                    //     }
-                    // });
-                    d3.select(`.${d.variable} div`).node().noUiSlider.set(graphicopt.opt[d.variable]);
-                }
-            });
-        }catch(e){
 
-        }
+        d3.values(self.controlPanel).forEach((d)=>{
+            if (graphicopt.opt[d.variable]) {
+                try {
+                d3.select(`.${d.variable} div`).node().noUiSlider.set(graphicopt.opt[d.variable]);
+                }catch(e){
+                    switch (d.type) {
+                        case 'switch':
+                            d3.select(`.${d.variable} input`).node().checked = graphicopt.opt[d.variable];
+                            break;
+                        case 'selection':
+                            $(d3.select(`.${d.variable} selection`).node()).val( d.values.indexOf(graphicopt[d.variable]));
+                            break;
+                    }
+                }
+            }
+        });
+
     }
     function updateTableOutput(output){
         d3.entries(output).forEach(d=>{
@@ -2490,7 +2469,7 @@ d3.TimeSpace = function () {
 
     function loadProjection(opt,calback){
         let totalTime_marker = performance.now();
-        d3.json(`data/${dataInformation.filename.replace('.csv','')}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}.json`).then(function(sol){
+        d3.json(`data/${dataInformation.filename.replace('.csv','')}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}_${opt.supervisor}.json`).then(function(sol){
 
                 let xrange = d3.extent(sol, d => d[0]);
                 let yrange = d3.extent(sol, d => d[1]);
@@ -2600,6 +2579,7 @@ d3.umapTimeSpace  = _.bind(d3.TimeSpace,
     {name:'UMAP',controlPanel: {
             minDist:{text:"Minimum distance", range:[0,1], type:"slider", variable: 'minDist',width:'100px',step:0.1},
             nNeighbors:{text:"#Neighbors", range:[1,200], type:"slider", variable: 'nNeighbors',width:'100px'},
+            supervisor: {text: "Supervisor", type: "switch", variable: 'supervisor',labels:['off','on'],values:[false,true], width: '100px'},
         },workerPath:'src/script/worker/umapworker.js',outputSelection:[ {label:"#Iterations",content:'_',variable: 'iteration'},
             {label:"Time per step",content:'_',variable:'time'},
             {label:"Total time",content:'_',variable:'totalTime'},]});
@@ -2725,6 +2705,7 @@ function handle_data_umap(tsnedata) {
             // nNeighbors: 15, // The number of nearest neighbors to construct the fuzzy manifold (15 = default)
             dim: 2, // The number of components (dimensions) to project the data to (2 = default)
             minDist: 1, // The effective minimum distance between embedded points, used with spread to control the clumped/dispersed nature of the embedding (0.1 = default)
+            supervisor: true,
         };
         umapTS.graphicopt(umapopt).color(colorCluster).init(dataIn, cluster_info);
 

@@ -22,35 +22,31 @@ addEventListener('message',function ({data}){
             data.opt.nComponents = data.opt.dim;
             t0 = performance.now();
 
-            d3.json(`../../../data/processed_gene_data_normalized_category_umap_${data.opt.nNeighbors}_${data.opt.nComponents}_${data.opt.minDist}.json`,function(error,projection){
-                if (error){
-                    umap = new UMAP(data.opt);
-                    umap.setSupervisedProjection(labels);
-                    console.log('---init data UMAP-----')
-                    nEpochs = umap.initializeFit(dataIn);
-                    console.log('---initializeFit-----',performance.now()-totalTime_marker);
-                    nEpochs = Math.min(nEpochs,1000)
-                    for (let i = 0; i < nEpochs; i++) {
-                        // for (let i = 0; i < (data.opt.nEpochs|| nEpochs); i++) {
-                        count++;
-                        t0 = performance.now();
-                        umap.step();
-                        timeCalculation = performance.now()-t0;
-                        // if(timeCalculation>1000/30)
-                        //     render(umap.getEmbedding());
-                        if (i % 5 === 0)render(umap.getEmbedding());
-                    }
 
-                    // // Running without render
-                    // t0 = performance.now();
-                    // umap.fit(dataIn)
-                    // timeCalculation = performance.now()-t0;
-                    render(umap.getEmbedding(),true);
-                }else{
-                    timeCalculation = performance.now()-t0;
-                    render(projection,true);
-                }
-            });
+            umap = new UMAP(data.opt);
+            if (data.opt.supervisor)
+                umap.setSupervisedProjection(labels);
+            console.log('---init data UMAP-----')
+            nEpochs = umap.initializeFit(dataIn);
+            console.log('---initializeFit-----',performance.now()-totalTime_marker);
+            nEpochs = Math.min(nEpochs,1000)
+            for (let i = 0; i < nEpochs; i++) {
+                // for (let i = 0; i < (data.opt.nEpochs|| nEpochs); i++) {
+                count++;
+                t0 = performance.now();
+                umap.step();
+                timeCalculation = performance.now()-t0;
+                // if(timeCalculation>1000/30)
+                //     render(umap.getEmbedding());
+                if (i % 5 === 0)render(umap.getEmbedding());
+            }
+
+            // // Running without render
+            // t0 = performance.now();
+            // umap.fit(dataIn)
+            // timeCalculation = performance.now()-t0;
+            render(umap.getEmbedding(),true);
+
 
             break;
         case "initPartofData":

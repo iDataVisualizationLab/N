@@ -35,7 +35,8 @@ let radarController = function () {
     let colorLength = graphicopt.arrColor.length-1;
     var dif = 1 / (graphicopt.levels-2);
     var right = 1 + dif;
-    graphicopt.arrThresholds = [-dif];
+    // graphicopt.arrThresholds = [-dif];
+    graphicopt.arrThresholds = [-4/graphicopt.widthG()];
     for (var i=0;i<colorLength-1;i++)
         graphicopt.arrThresholds.push(i*dif);
     graphicopt.arrThresholds.push(right);
@@ -47,6 +48,7 @@ let radarController = function () {
         let colorLength = graphicopt.arrColor.length-1;
         var dif = 1 / (graphicopt.levels-2);
         var right = 1 + dif;
+        // graphicopt.arrThresholds = [-dif];
         graphicopt.arrThresholds = [-dif];
         for (var i=0;i<colorLength-1;i++)
             graphicopt.arrThresholds.push(i/(colorLength-1));
@@ -229,11 +231,11 @@ let radarController = function () {
             let table = tablediv.select("table");
             dataTable = $(table.node()).DataTable({
                 data: radarcomp.axisList,
-                "order": [[0, "asc"], [2, "asc"]],
+                "order": [[3, "desc"],[2, "asc"]],
                 "pageLength": 50,
                 "columnDefs": [
                     {   targets: 0,
-                        title: "Condition name",
+                        title: "Service name",
                         orderable: true,
                         "data": null,
                         className:'text',
@@ -294,12 +296,14 @@ let radarController = function () {
                 //     {"orderDataType": "dom-text-numeric"},
                 //     {"orderDataType": "dom-disablebtn"},
                 // ]
-                    "dom":'<"toolbar">frtip',
+                "dom":'<"toolbar">frtip',
                 fnInitComplete: function(){
-                    $("#RadarController_Table .toolbar").html(' <label class="col left-align" style="margin-top:6px"> <input id="dataRange_control" type="checkbox" class="filled-in"> <span>Min-max scale</span> </label>');
+                    $("#RadarController_Table .toolbar")
+                        .html(`<label class="col left-align" style="margin-top:6px"> <input id="dataRange_control" type="checkbox" class="filled-in"> <span>Min-max scale</span> </label>`);
+// <label class="col left-align" style="margin-top:6px"> <input id="dataRange_control" type="checkbox" class="filled-in"> <span>Remove isngle value</span> </label>`);
                     d3.select('#dataRange_control').on('change',function(){
                         console.log(this.checked)
-                            onChangeMinMaxFunc(this.checked);
+                        onChangeMinMaxFunc(this.checked);
                     });
                 }
             });
@@ -359,7 +363,7 @@ let radarController = function () {
                         displaytick = [0,sg.datum().data.range[1]];
                 }
                 violiin_chart.graphicopt({customrange:customrange});//fix range from 0
-                return violiin_chart.rangeY([0,d3.max(sg.datum().summary.arr,e=>e[1])]).data([ sg.datum().summary]).setTicksDisplay(displaytick).draw(selection)})})
+                return violiin_chart.data([ sg.datum().summary]).setTicksDisplay(displaytick).draw(selection)})})
 
     }
     function updateSummaryData (dSum){
@@ -426,7 +430,7 @@ let radarController = function () {
                 rScale.range([0,radius]);
                 //Draw the background circles
                 axisGrid.   selectAll(".gridCircle")
-                    .data(d3.range(0, (graphicopt.levels)).reverse())
+                    .data(d3.range(1, (graphicopt.levels)).reverse())
                     .enter()
                     .append("circle")
                     .attr("class", "gridCircle")
