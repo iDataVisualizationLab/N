@@ -616,7 +616,7 @@ function formatService(init){
 }
 function handle_dataRaw() {
     cluster_info.forEach(d => (d.arr = [],d.total=0, d.__metrics.forEach(e => (e.minval = undefined, e.maxval = undefined))));
-    let clusterNullIndex =cluster_info.findIndex(c=>d3.sum(c.__metrics.normalize)===0);
+    // let clusterNullIndex =cluster_info.findIndex(c=>d3.sum(c.__metrics.normalize)===0);
     hosts.forEach(h => {
         sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
             let nullkey = false;
@@ -634,10 +634,10 @@ function handle_dataRaw() {
                 if(val===0)
                     c.leadername = h.name;
                 if (minval > val) {
-                    if(i!==clusterNullIndex || (i===clusterNullIndex&&calculateMSE_numarray(c.__metrics.normalize, axis_arr)===0)) {
+                    // if(i!==clusterNullIndex || (i===clusterNullIndex&&calculateMSE_numarray(c.__metrics.normalize, axis_arr)===0)) {
                         index = i;
                         minval = val;
-                    }
+                    // }
                 }
             });
             cluster_info[index].total = 1 + cluster_info[index].total || 0;

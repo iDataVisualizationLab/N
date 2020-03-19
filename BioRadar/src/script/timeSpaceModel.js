@@ -1264,8 +1264,10 @@ d3.TimeSpace = function () {
                 renderer.render(scene, camera);
                 if (solution&&solution.length)
                     cluster.forEach(c=>{
-                        const pos = position2Vector( datain[c.__metrics.indexLeader].__metrics.position);
-                        c.__metrics.projection = getpos(pos.x,pos.y,pos.z);
+                        if (c.__metrics.indexLeader!==undefined) {
+                            const pos = position2Vector(datain[c.__metrics.indexLeader].__metrics.position);
+                            c.__metrics.projection = getpos(pos.x, pos.y, pos.z);
+                        }
                     });
                 updatelabelCluster();
                 // if(isdrawradar&&svgData&&iscameraMove) {
@@ -2417,11 +2419,13 @@ d3.TimeSpace = function () {
                 case 0:
                     target.html(`<i class="icon-radarShape material-icons icon"></i> No collision`);
                     if (forceColider) {
-                        svgData.pos = _.cloneDeep(svgData.posStatic);
                         forceColider.stop();
-                        svg.classed('white',false);
-                        svg.select('#modelWorkerScreen_grid').classed('hide',true);
-                        drawRadar(svgData);
+                        if(svgData) {
+                            svgData.pos = _.cloneDeep(svgData.posStatic);
+                            svg.classed('white', false);
+                            svg.select('#modelWorkerScreen_grid').classed('hide', true);
+                            drawRadar(svgData);
+                        }
                     }
                     break;
                 case 1:

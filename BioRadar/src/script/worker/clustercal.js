@@ -1,5 +1,6 @@
 window =self;
-importScripts("../../lib/d3.v4.js","../setting_theme.js","../../lib/lodash.min.js","../setting.js","../../lib/kmean.js","../../lib/binnerN.min.js","../../lib/scagnosticsnd.min.js","../../lib/simple-statistics.min.js");
+importScripts("../../lib/d3.v4.js","../setting_theme.js","../../lib/lodash.min.js","../setting.js","../../lib/kmean.js",
+    "../../lib/binnerN.min.js","../../lib/binarybin.min.js","../../lib/scagnosticsnd.min.js","../../lib/simple-statistics.min.js");
 
 addEventListener('message',function ({data}) {
     let binopt = data.binopt, sampleS = data.sampleS, hosts = data.hosts, timeMax = data.timeMax;
@@ -53,6 +54,9 @@ addEventListener('message',function ({data}) {
                     increase_coefficient: 2,
                     increase_offset: 0
                 }).data([]);
+                break;
+            case 'binarybin':
+                bin = binarybin([],{isNormalized:true});
                 break;
             default:
                 bin = kmeanCluster;
