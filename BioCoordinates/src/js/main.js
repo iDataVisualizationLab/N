@@ -558,23 +558,20 @@ function resetRequest() {
     brush();
 }
 function setColorsAndThresholds(s) {
-    for (var i=0; i<serviceList.length;i++){
-        if (s == serviceList[i]){
-            const dif = (thresholds[i][1]-thresholds[i][0])/levelStep;
-            const mid = thresholds[i][0]+(thresholds[i][1]-thresholds[i][0])/2;
-            let left = thresholds[i][0]-dif;
-            if (left<0 && i!=0) // Temperature can be less than 0
-                left=0;
-            arrThresholds = [left,thresholds[i][0], thresholds[i][0]+dif, thresholds[i][0]+2*dif, thresholds[i][0]+3*dif, thresholds[i][1], thresholds[i][1]+dif];
-            color = d3.scaleLinear()
-                .domain(arrThresholds)
-                .range(arrColor)
-                .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
-            opa = d3.scaleLinear()
-                .domain([left,thresholds[i][0],mid, thresholds[i][1], thresholds[i][1]+dif])
-                .range([1,1,0.1,1,1]);
-        }
-    }
+    serviceFullList.find(s=>{
+        const dif = (s.range[1]-s.range[0])/levelStep;
+        const mid = s.range[0]+(s.range[1]-s.range[0])/2;
+        let left = s.range[0]-dif;
+        arrThresholds = [left,s.range[0], s.range[0]+dif, s.range[0]+2*dif, s.range[0]+3*dif, s.range[1], s.range[1]+dif];
+        color = d3.scaleLinear()
+            .domain(arrThresholds)
+            .range(arrColor)
+            .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
+        opa = d3.scaleLinear()
+            .domain([left,s.range[0],mid, s.range[1], s.range[1]+dif])
+            .range([1,1,0.1,1,1]);
+    })
+
 }
 
 // copy one canvas to another, grayscale
