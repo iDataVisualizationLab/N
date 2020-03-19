@@ -14,11 +14,13 @@ function formatService(init){
     // if (runopt.minMax)
     //     calculateServiceRange();
     // else
-        if(!init)
-            serviceFullList.forEach((s,si)=>s.range = serviceFullList_Fullrange[si].range.slice());
-    if (init) {
-        serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
-    }
+    serviceLists.forEach(s=>{
+        if(s.text.split('-').length>1) {
+            s.enable = false;
+            s.sub[0].enable = false;
+        }
+    })
+    serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
     conf.serviceList = serviceList;
     conf.serviceLists = serviceLists;
     conf.serviceListattr = serviceListattr;
@@ -49,7 +51,7 @@ function readFilecsv(filename) {
             inithostResults();
             serviceListattrnest = serviceLists.map(d=>({
                 key:d.text,sub:d.sub.map(e=>e.text)
-            }))
+            }));
             selectedService = serviceLists[0].text;
             formatService(true);
             processResult = processResult_csv;
@@ -63,9 +65,9 @@ function readFilecsv(filename) {
             // .text("" + (sampleS['timespan'][0]).toDateString());
                 .text(dataInformation.filename);
 
-            if (!init)
-                resetRequest();
-            else
+            // if (!init)
+            //     resetRequest();
+            // else
                 init();
 
             preloader(false);

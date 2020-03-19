@@ -504,15 +504,16 @@ function init() {
         .attr("height", height)
         .append("svg:g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
+    svg.selectAll('*').remove()
     // Load the data and visualization
 
     // Convert quantitative scales to floats
     data = object2DataPrallel(sampleS);
 
     // Extract the list of numerical dimensions and create a scale for each.
-    xscale.domain(dimensions = d3.keys(data[0]).filter(function (k) {
-        return (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
+    xscale.domain(dimensions = serviceLists.filter(function (s) {
+        let k = s.text;
+        let xtempscale = (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
             .domain(d3.extent(data, function (d) {
                 return d[k];
             }))
@@ -521,6 +522,7 @@ function init() {
                 return +d[k];
             }))
             .range([h, 0]))));
+        return s.enable?xtempscale:false;
     }));
 
     // Add a group element for each dimension.
@@ -1156,7 +1158,7 @@ function actives() {
     var selected = [];
     data
         .filter(function(d) {
-            return !_.contains(excluded_groups, d.group);
+            return !excluded_groups.find(e=>e===d.group);
         })
         .map(function(d) {
             return actives.every(function(p, i) {
@@ -1340,45 +1342,7 @@ function changeVar(d){
     }
     brush();
 }
-function simulateResults2(hostname,iter, s){
-    var newService;
-    if (s == 'Temperature')
-        newService = sampleS[hostname].arrTemperature?sampleS[hostname].arrTemperature[iter]:[undefined,undefined,undefined];
-    else if (s == "Job_load")
-        newService = sampleS[hostname].arrCPU_load?sampleS[hostname].arrCPU_load[iter]:[undefined];
-    else if (s == "Memory_usage")
-        newService = sampleS[hostname].arrMemory_usage?sampleS[hostname].arrMemory_usage[iter]:[undefined];
-    else if (s == "Fans_speed")
-        newService = sampleS[hostname].arrFans_health?sampleS[hostname].arrFans_health[iter]:[undefined,undefined,un];
-    else if (s == "Power_consum") {
-        if (sampleS[hostname]["arrPower_usage"]== undefined && db!="influxdb") {
-            var simisval = handlemissingdata(hostname,iter);
-            sampleS[hostname]["arrPower_usage"] = [simisval];
-        }else if ((sampleS[hostname]["arrPower_usage"][iter]=== undefined || sampleS[hostname]["arrPower_usage"][iter][0]=== undefined || sampleS[hostname]["arrPower_usage"][iter][0]=== null)  && db!="influxdb"){
-            var simisval = handlemissingdata(hostname,iter);
-            sampleS[hostname]["arrPower_usage"][iter] = simisval;
-        }
-        newService = sampleS[hostname]["arrPower_usage"][iter];
-    }
-    if (newService === undefined){
-        // newService ={}
-        // newService.result = {};
-        // newService.result.query_time = query_time;
-        // newService.data = {};
-        // newService.data.service={};
-        // newService.data.service.host_name = hostname;
-        // newService.data.service.plugin_output = undefined;
-        newService = [undefined];
-    }else {
-        if (db === "influxdb")
-            try {
-                newService.result.query_time = d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(newService.result.query_time).getTime();
-            }catch(e){
 
-            }
-    }
-    return newService;
-}
 // action when exit
 function exit_warp () {
 
