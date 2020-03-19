@@ -380,3 +380,11 @@ td, th {
 table {
     word-break: break-all;
 }
+
+#mySidenav .collapsible .collapsible-body{
+    /*color: #e4e4e4b0;*/
+    color: #ffffffb0;
+    background-color: #ffffff3d;
+    padding: 6px 10px;
+    /*padding-right: 1rem;*/
+}

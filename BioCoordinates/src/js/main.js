@@ -101,6 +101,24 @@ Array.prototype.naturalSort= function(_){
 };
 
 
+function filterAxisbyDom(d) {
+    const pdata = d3.select(this.parentElement.parentElement).datum();
+    d.value = this.checked;
+    if (this.checked) {
+        add_axis(pdata.arr, g);
+        d3.select(this.parentElement.parentElement).classed('disable', false);
+    }
+    else {
+        remove_axis(pdata.arr, g);
+        d3.select(this.parentElement.parentElement).classed('disable', true);
+    }
+    // TODO required to avoid a bug
+    var extent = d3.brushSelection(svg.selectAll(".dimension").filter(d => d == pdata.arr));
+    if (extent)
+        extent = extent.map(yscale[d].invert).sort((a, b) => a - b);
+    update_ticks(pdata.arr, extent);
+}
+
 function drawFiltertable() {
     let listOption = d3.merge(conf.serviceLists.map(d => d.sub.map(e => {
         return {service: d.text, arr: conf.serviceListattrnest[d.id].sub[e.id], text: e.text, enable: e.enable}
@@ -134,30 +152,17 @@ function drawFiltertable() {
                 changeVar(d3.select(this.parentElement.parentElement).datum())
             });
             alltr.filter(d => d.type === "checkbox")
-                .append("input")
-                .attrs(function (d, i) {
-                    return {
-                        type: "checkbox",
-                        checked: d.value ? "checked" : null
-                    }
-                }).on('change', function (d) {
-                const pdata = d3.select(this.parentElement.parentElement).datum();
-                d.value = this.checked;
-                if (this.checked) {
-                    add_axis(pdata.arr, g);
-                    d3.select(this.parentElement.parentElement).classed('disable', false);
+            .append("input")
+            .attrs(function (d, i) {
+                return {
+                    type: "checkbox",
+                    checked: d.value ? "checked" : null
                 }
-                else {
-                    remove_axis(pdata.arr, g);
-                    d3.select(this.parentElement.parentElement).classed('disable', true);
-                }
-                // TODO required to avoid a bug
-                var extent = d3.brushSelection(svg.selectAll(".dimension").filter(d => d == pdata.arr));
-                if (extent)
-                    extent = extent.map(yscale[d].invert).sort((a, b) => a - b);
+            }).on('change', function (d) {
+                filterAxisbyDom.call(this, d);
+
 
                 xscale.domain(dimensions);
-                update_ticks(pdata.arr, extent);
 
                 // reorder list
                 // const disable_dims = _.difference(listMetric.toArray(),dimensions);
@@ -166,7 +171,7 @@ function drawFiltertable() {
                 // rerender
                 d3.select("#foreground").style("opacity", null);
                 brush();
-            });
+        });
             alltr.filter(d => d.type === undefined)
                 .text(d => d.value);
         });
@@ -271,7 +276,7 @@ $( document ).ready(function() {
 
 
     setTimeout(() => {
-        d3.select('#datacom').dispatch('change')
+        initApp();
     },0);
     // Spinner Stop ********************************************************************
 
@@ -692,6 +697,15 @@ function complex_data_table(sample) {
         // .key(d=>d.compute).sortKeys(collator.compare)
         // .sortValues((a,b)=>d.compute-d.compute)
         .entries(sample);
+    Object.keys(globalFilter).forEach(gf=>{
+        const values = _.intersectionWith(sample,globalFilter[gf],function(a,b){return a.compute===b});
+        if (values.length) {
+            samplenest.push({
+                key: gf,
+                values: values
+            });
+        }
+    })
     d3.select("#compute-list").html('');
     var table = d3.select("#compute-list")
         .attr('class','collapsible rack')
@@ -702,7 +716,7 @@ function complex_data_table(sample) {
             let lir = enter.append("li") .attr('class','rack');
             lir.append('div')
                 .attr('class','collapsible-header')
-                .text(d=>d.key);
+                .text(d=>`${d.key} (${d.values.length})`);
             const lic =  lir.append('div')
                 .attr('class','collapsible-body')
                 .append('div')

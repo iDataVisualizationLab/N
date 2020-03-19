@@ -4,9 +4,10 @@ let keyLeader //= "TF_DE";
 function initApp(){
     // load filter file
     preloader(true,undefined,'Read filter file...');
-    d3.json('data/STOP1_targets.json').then(function(d){
+    d3.json(srcpath+'data/STOP1_targets.json').then(function(d){
         globalFilter = d;
         // init read file
+        preloader(true,undefined,'Read data file...');
         readFilecsv(d3.select('#datacom').node().value);
     });
 }
@@ -15,7 +16,7 @@ function formatService(init){
     //     calculateServiceRange();
     // else
     serviceLists.forEach(s=>{
-        if(s.text.split('-').length>1) {
+        if(s.text.split('vs.').length>1) {
             s.enable = false;
             s.sub[0].enable = false;
         }
@@ -157,7 +158,7 @@ function object2DataPrallel(ob){
             if (validkey) {
                 // eachIn.Time = new Date(d3.timeFormat("%B %d %Y %H:%M")(com.value['arrTime'][i]));
                 eachIn.Category = rack;
-                eachIn.rack = namet.length>1?(rack==='wt'?'Wild type':'Stop 1'):'all';
+                eachIn.rack = namet.length>1?(rack==='wt'?'Wild type':'Stop 1'):'Genes';
                 eachIn.compute = host;
                 eachIn.group =  eachIn.rack;
                 eachIn.name = com.key;

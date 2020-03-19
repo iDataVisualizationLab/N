@@ -6,7 +6,8 @@ html, body {
 }
 body {
     font: small Arial;
-    background-color: #353535;
+    /*background-color: #353535;*/
+    background-color: #2d2d2d;
     color: white;
     overflow-x: hidden;
     line-height: 1.4em;
