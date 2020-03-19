@@ -256,3 +256,68 @@ function getsummaryservice(){
 function getsummaryRadar(){
     return _.flatten(_.values(tsnedata))//_.flatten(tsnedata[name].slice(startIndex,lastIndex+1));
 }
+function readFilecsv(filename) {
+    dataInformation.filename = filename+'.csv';
+    let filePath = srcpath+`data/${filename}.csv`;
+    exit_warp();
+    preloader(true);
+    d3.csv(filePath)
+    //     .on("progress", function(evt) {
+    //     if (evt.total) {
+    //         preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
+    //         dataInformation.size = evt.total;
+    //     }else{
+    //         preloader(true, 0, "File loaded: " +bytesToString(evt.loaded));
+    //         dataInformation.size = evt.loaded;
+    //     }
+    //     // console.log("Amount loaded: " + Math.round(evt.loaded/evt.total*100)+'%')
+    // })
+        .then(function (data) {
+
+            db = "csv";
+            newdatatoFormat(data);
+
+            inithostResults();
+            formatService(true);
+            processResult = processResult_csv;
+
+            // draw Metric summary on left panel
+            MetricController.axisSchema(serviceFullList, true).update();
+            MetricController.datasummary(getsummaryservice());
+            MetricController.data(getsummaryRadar()).drawSummary(hosts.length);
+
+            updateDatainformation(sampleS['timespan']);
+            sampleJobdata = [{
+                jobID: "1",
+                name: "1",
+                nodes: hosts.map(h=>h.name),
+                startTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                submitTime: new Date(_.last(sampleS.timespan)-100).toString(),
+                user: "dummyJob"
+            }];
+
+            d3.select(".currentDate")
+            // .text("" + (sampleS['timespan'][0]).toDateString());
+                .text(dataInformation.filename);
+            preloader(true, 0, 'Calculate clusters...');
+            loadPresetCluster(`${dataInformation.filename.replace('.csv','')}`,(status)=>{loadclusterInfo= status;
+
+                // // debug
+                //     loadclusterInfo = false;
+                if(loadclusterInfo){
+                    updateClusterControlUI(cluster_info.length)
+                    handle_dataRaw();
+                    if (!init)
+                        resetRequest();
+                    else
+                        setTimeout(main,0);
+                    preloader(false)
+                }else {
+                    onCalculateClusterAction();
+                }
+
+            })
+
+
+        })
+}
