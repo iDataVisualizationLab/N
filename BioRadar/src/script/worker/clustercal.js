@@ -38,25 +38,28 @@ addEventListener('message',function ({data}) {
 
         // remove outlying
         dataSpider3 = dataSpider3.filter(d => !d.outlier);
-        console.log(dataSpider3.length)
+
         postMessage({
             action: 'returnData',
             result: {message: `Binning process`, process: 40}
-        })
-        if (binopt.clusterMethod === 'leaderbin') {
-            let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
-            console.log('estimateSize: ' + estimateSize);
-            bin = binnerN().startBinGridSize(estimateSize).isNormalized(true).minNumOfBins(binopt.bin.range[0]).maxNumOfBins(binopt.bin.range[1]).distanceMethod(binopt.normMethod).coefficient({
-                reduce_coefficient: 0.3,
-                reduce_offset: 0,
-                increase_coefficient: 2,
-                increase_offset: 0
-            }).data([]);
-        } else {
-            bin = kmeanCluster;
-            bin.k(binopt.bin.k);
-            bin.distanceMethod(binopt.normMethod);
-            bin.iterations(binopt.bin.iterations);
+        });
+        switch (binopt.clusterMethod) {
+            case 'leaderbin':
+                let estimateSize = Math.max(2, Math.pow(binopt.bin.range[1], 1 / dataSpider3[0].length));
+                console.log('estimateSize: ' + estimateSize);
+                bin = binnerN().startBinGridSize(estimateSize).isNormalized(true).minNumOfBins(binopt.bin.range[0]).maxNumOfBins(binopt.bin.range[1]).distanceMethod(binopt.normMethod).coefficient({
+                    reduce_coefficient: 0.3,
+                    reduce_offset: 0,
+                    increase_coefficient: 2,
+                    increase_offset: 0
+                }).data([]);
+                break;
+            default:
+                bin = kmeanCluster;
+                bin.k(binopt.bin.k);
+                bin.distanceMethod(binopt.normMethod);
+                bin.iterations(binopt.bin.iterations);
+                break;
         }
         let process = 50;
         let w = 25;
