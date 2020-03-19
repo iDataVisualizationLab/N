@@ -133,8 +133,15 @@ function object2DataPrallel(ob){
     temp.forEach(com=>{
         var comlength = com.value[serviceListattrnest[0].key].length;
         var namet = com.key.split('_');
-        var rack = namet[2];
-        var host = namet[0];
+        var rack;
+        var host;
+        if (namet.length>1) {
+            rack = namet[1];
+            host = namet[0];
+        }else{
+            rack = com.key;
+            host = com.key;
+        }
         for (i = 0; i<comlength; i++){
             var eachIn = {};
             var validkey =true;
@@ -148,9 +155,9 @@ function object2DataPrallel(ob){
             if (validkey) {
                 // eachIn.Time = new Date(d3.timeFormat("%B %d %Y %H:%M")(com.value['arrTime'][i]));
                 eachIn.Category = rack;
-                eachIn.rack = rack==='wt'?'Wild type':'Stop 1';
+                eachIn.rack = namet.length>1?(rack==='wt'?'Wild type':'Stop 1'):'all';
                 eachIn.compute = host;
-                eachIn.group = rack==='wt'?'Wild type':'Stop 1';
+                eachIn.group =  eachIn.rack;
                 eachIn.name = com.key;
                 eachIn.id = com.key + "-" + count;
                 count++;
