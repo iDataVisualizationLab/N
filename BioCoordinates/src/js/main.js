@@ -523,7 +523,7 @@ function init() {
             }))
             .range([h, 0]))));
         return s.enable?xtempscale:false;
-    }));
+    }).map(s=>s.text));
 
     // Add a group element for each dimension.
     update_Dimension();
