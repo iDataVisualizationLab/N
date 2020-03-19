@@ -687,8 +687,8 @@ function data_table(sample) {
 function complex_data_table(sample) {
     var samplenest = d3.nest()
         .key(d=>d.rack).sortKeys(collator.compare)
-        .key(d=>d.compute).sortKeys(collator.compare)
-        .sortValues((a,b)=>a.Time-b.Time)
+        // .key(d=>d.compute).sortKeys(collator.compare)
+        // .sortValues((a,b)=>d.compute-d.compute)
         .entries(sample);
     d3.select("#compute-list").html('');
     var table = d3.select("#compute-list")
@@ -711,32 +711,32 @@ function complex_data_table(sample) {
                 .attr('class','collapsible compute')
                 .datum(d=> d.values)
                 .selectAll('li').data(d=>d)
-                .enter()
-                .append('li').attr('class','compute');
-            lic.append('div')
-                .attr('class','collapsible-header')
-                .text(d=>d.key);
-            const lit = lic
-                .append('div')
-                .attr('class','collapsible-body')
-                .append('div')
-                .attr('class','row marginBottom0')
-                .append('div')
-                .attr('class','col s12 m12')
-                .append('ul')
-                .datum(d=> d.values)
-                .selectAll('li').data(d=>d)
+            //     .enter()
+            //     .append('li').attr('class','compute');
+            // lic.append('div')
+            //     .attr('class','collapsible-header')
+            //     .text(d=>d.key);
+            // const lit = lic
+            //     .append('div')
+            //     .attr('class','collapsible-body')
+            //     .append('div')
+            //     .attr('class','row marginBottom0')
+            //     .append('div')
+            //     .attr('class','col s12 m12')
+            //     .append('ul')
+            //     .datum(d=> d.values)
+            //     .selectAll('li').data(d=>d)
                 .enter()
                 .append('li').attr('class','comtime')
                 .on("mouseover", highlight)
                 .on("mouseout", unhighlight);
 
-            lit.append("span")
+            lic.append("span")
                 .attr("class", "color-block")
                 .style("background", function(d) { return color(selectedService==null?d.group:d[selectedService]) })
                 .style("opacity",0.85);
-            lit.append("span")
-                .text(function(d) { return d3.timeFormat("%B %d %Y %H:%M")(d.Time); });
+            lic.append("span")
+                .text(function(d) { return d.compute; });
 
             return lir;
         }
