@@ -772,18 +772,18 @@ function complex_data_table(sample) {
         }
             brush();
         },
-        onCloseStart: function(evt){
-            const datum = d3.select(evt).datum();
-            if (datum.key!=="Genes") {
-                _.pull(presetdatatable,datum.key);
-                if(!presetdatatable.length)
-                    data = dataRaw;
-                else{
-                    data=_.intersectionWith(datain,_.flatten(presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
-                }
-                brush();
-            }
-        }
+        // onCloseStart: function(evt){
+        //     const datum = d3.select(evt).datum();
+        //     if (datum.key!=="Genes") {
+        //         _.pull(presetdatatable,datum.key);
+        //         if(!presetdatatable.length)
+        //             data = dataRaw;
+        //         else{
+        //             data=_.intersectionWith(datain,_.flatten(presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
+        //         }
+        //         brush();
+        //     }
+        // }
     });
     table.selectAll('.rack').classed('active',d=>_.includes(presetdatatable,d.key))
 }
