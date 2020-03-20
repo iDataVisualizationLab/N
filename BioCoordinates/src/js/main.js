@@ -513,7 +513,8 @@ function init() {
     // Load the data and visualization
 
     // Convert quantitative scales to floats
-    data = object2DataPrallel(sampleS);
+    dataRaw = object2DataPrallel(sampleS);
+    data = dataRaw;
 
     // Extract the list of numerical dimensions and create a scale for each.
     xscale.domain(dimensions = serviceLists.filter(function (s) {
@@ -548,7 +549,8 @@ function init() {
 function resetRequest() {
     // Convert quantitative scales to floats
     // animationtime = false;
-    data = object2DataPrallel(sampleS);
+    dataRaw = object2DataPrallel(sampleS);
+    data = dataRaw;
     d3.keys(data[0]).filter(function (k) {
         return (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
             .domain(d3.extent(data, function (d) {
@@ -691,6 +693,8 @@ function data_table(sample) {
         .text(function(d) { return d.name; })
 }
 // complex data table
+// let filteredData = undefined;
+let dataRaw;
 let presetdatatable = false;
 function complex_data_table(sample) {
     var samplenest = d3.nest()
@@ -762,9 +766,11 @@ function complex_data_table(sample) {
         const datum = d3.select(evt).datum();
         if (datum.key!=="Genes") {
             presetdatatable = datum.key;
-            redraw(datum.values);
+            data = datum.values;
+           brush();
         }else {
             presetdatatable = false;
+            data = dataRaw;
         }
     }});
 
