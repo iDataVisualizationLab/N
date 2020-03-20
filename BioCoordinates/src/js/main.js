@@ -566,20 +566,19 @@ function resetRequest() {
     update_Dimension();
     brush();
 }
-function setColorsAndThresholds(s) {
-    serviceFullList.find(s=>{
-        const dif = (s.range[1]-s.range[0])/levelStep;
-        const mid = s.range[0]+(s.range[1]-s.range[0])/2;
-        let left = s.range[0]-dif;
-        arrThresholds = [left,s.range[0], s.range[0]+dif, s.range[0]+2*dif, s.range[0]+3*dif, s.range[1], s.range[1]+dif];
-        color = d3.scaleLinear()
-            .domain(arrThresholds)
-            .range(arrColor)
-            .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
-        opa = d3.scaleLinear()
-            .domain([left,s.range[0],mid, s.range[1], s.range[1]+dif])
-            .range([1,1,0.1,1,1]);
-    })
+function setColorsAndThresholds(sin) {
+    let s = serviceFullList.find(d=>d.text===sin)
+    const dif = (s.range[1]-s.range[0])/levelStep;
+    const mid = s.range[0]+(s.range[1]-s.range[0])/2;
+    let left = s.range[0]-dif;
+    arrThresholds = [left,s.range[0], s.range[0]+dif, s.range[0]+2*dif, s.range[0]+3*dif, s.range[1], s.range[1]+dif];
+    color = d3.scaleLinear()
+        .domain(arrThresholds)
+        .range(arrColor)
+        .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
+    opa = d3.scaleLinear()
+        .domain([left,s.range[0],mid, s.range[1], s.range[1]+dif])
+        .range([1,1,0.1,1,1]);
 
 }
 
