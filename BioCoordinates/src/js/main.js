@@ -695,7 +695,7 @@ function data_table(sample) {
 // complex data table
 // let filteredData = undefined;
 let dataRaw;
-let presetdatatable = false;
+let presetdatatable = [];
 function complex_data_table(sample) {
     var samplenest = d3.nest()
         .key(d=>d.rack).sortKeys(collator.compare)
@@ -710,7 +710,7 @@ function complex_data_table(sample) {
                 values: values
             });
         }
-    })
+    });
     d3.select("#compute-list").html('');
     var table = d3.select("#compute-list")
         .attr('class','collapsible rack')
@@ -718,7 +718,7 @@ function complex_data_table(sample) {
         .data(samplenest,d=>d.value);
     var ulAll = table.join(
         enter=>{
-            let lir = enter.append("li") .attr('class','rack').classed('active',d=>d.key===presetdatatable);
+            let lir = enter.append("li") .attr('class','rack').classed('active',d=>_.includes(presetdatatable,d.key));
             lir.append('div')
                 .attr('class','collapsible-header')
                 .text(d=>`${d.key} (${d.values.length})`);
@@ -765,15 +765,28 @@ function complex_data_table(sample) {
     $('#compute-list.collapsible').collapsible({onOpenStart: function(evt){
         const datum = d3.select(evt).datum();
         if (datum.key!=="Genes") {
-            presetdatatable = datum.key;
+            presetdatatable.push(datum.key);
             data = datum.values;
-           brush();
         }else {
-            presetdatatable = false;
+            presetdatatable = [];
             data = dataRaw;
         }
-    }});
-
+            brush();
+        },
+        onCloseStart: function(evt){
+            const datum = d3.select(evt).datum();
+            if (datum.key!=="Genes") {
+                _.pull(presetdatatable,datum.key);
+                if(!presetdatatable.length)
+                    data = dataRaw;
+                else{
+                    data=_.intersectionWith(datain,_.flatten(presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
+                }
+                brush();
+            }
+        }
+    });
+    table.selectAll('.rack').classed('active',d=>_.includes(presetdatatable,d.key))
 }
 // Adjusts rendering speed
 function optimize(timer) {
