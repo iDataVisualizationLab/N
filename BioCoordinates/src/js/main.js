@@ -691,6 +691,7 @@ function data_table(sample) {
         .text(function(d) { return d.name; })
 }
 // complex data table
+let presetdatatable = false;
 function complex_data_table(sample) {
     var samplenest = d3.nest()
         .key(d=>d.rack).sortKeys(collator.compare)
@@ -713,7 +714,7 @@ function complex_data_table(sample) {
         .data(samplenest,d=>d.value);
     var ulAll = table.join(
         enter=>{
-            let lir = enter.append("li") .attr('class','rack');
+            let lir = enter.append("li") .attr('class','rack').classed('active',d=>d.key===presetdatatable);
             lir.append('div')
                 .attr('class','collapsible-header')
                 .text(d=>`${d.key} (${d.values.length})`);
@@ -757,7 +758,15 @@ function complex_data_table(sample) {
             return lir;
         }
     )
-    $('.collapsible').collapsible();
+    $('#compute-list.collapsible').collapsible({onOpenStart: function(evt){
+        const datum = d3.select(evt).datum();
+        if (datum.key!=="Genes") {
+            presetdatatable = datum.key;
+            redraw(datum.values);
+        }else {
+            presetdatatable = false;
+        }
+    }});
 
 }
 // Adjusts rendering speed
@@ -939,6 +948,32 @@ function position(d) {
 }
 
 // Handles a brush event, toggling the display of foreground lines.
+function redraw(selected) {
+    if (selected.length < data.length && selected.length > 0) {
+        d3.select("#keep-data").attr("disabled", null);
+        d3.select("#exclude-data").attr("disabled", null);
+    } else {
+        d3.select("#keep-data").attr("disabled", "disabled");
+        d3.select("#exclude-data").attr("disabled", "disabled");
+    }
+    ;
+
+    // total by food group
+    var tallies = _(selected)
+        .groupBy(function (d) {
+            return d.group;
+        });
+
+    // include empty groups
+    _(colors.domain()).each(function (v, k) {
+        tallies[v] = tallies[v] || [];
+    });
+
+
+    // Render selected lines
+    paths(selected, foreground, brush_count, true);
+}
+
 // TODO refactor
 function brush() {
     var actives = [],
@@ -1005,51 +1040,8 @@ function brush() {
         selected = search(selected, query);
     }
 
-    if (selected.length < data.length && selected.length > 0) {
-        d3.select("#keep-data").attr("disabled", null);
-        d3.select("#exclude-data").attr("disabled", null);
-    } else {
-        d3.select("#keep-data").attr("disabled", "disabled");
-        d3.select("#exclude-data").attr("disabled", "disabled");
-    };
-
-    // total by food group
-    var tallies = _(selected)
-        .groupBy(function(d) { return d.group; });
-
-    // include empty groups
-    _(colors.domain()).each(function(v,k) {tallies[v] = tallies[v] || []; });
-
-    /*
-    legend
-        .style("text-decoration", function(d) { return _.contains(excluded_groups,d) ? "line-through" : null; })
-        .attr("class", function(d) {
-            return (tallies[d].length > 0)
-                ? "row"
-                : "row off";
-        });
-    barScale.domain([0,data.length]);
-    if (selectedService){
-        legend.selectAll(".color-bar")
-            .style("width", function(d) {
-                return Math.ceil((barScale(tallies[d].length)));
-            });
-
-        legend.selectAll(".tally")
-            .text(function(d,i) { return tallies[d].length });
-    }else {
-        legend.selectAll(".color-bar")
-            .style("width", function(d) {
-                return Math.ceil((barScale(tallies[d].length))) + "px";
-            });
-
-        legend.selectAll(".tally")
-            .text(function(d,i) { return tallies[d].length });
-    }*/
-
-    // Render selected lines
-    paths(selected, foreground, brush_count, true);
-    Loadtostore();
+    redraw(selected);
+    // Loadtostore();
 }
 
 // render a set of polylines on a canvas
