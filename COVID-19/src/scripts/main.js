@@ -7,6 +7,8 @@ let width = 2000,
         limitTime: undefined, // change year limit in list ranking here
         time: {rate:1,unit:'Year'},
         timeformat: d3.timeYear.every(1),
+        // time: {rate:1,unit:'Month'},
+        // timeformat: d3.timeMonth.every(1),
         // limitYear: [1998,2001],
     },
     RadarMapopt  = {
