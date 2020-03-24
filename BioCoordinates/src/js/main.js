@@ -103,20 +103,22 @@ Array.prototype.naturalSort= function(_){
 
 function filterAxisbyDom(d) {
     const pdata = d3.select(this.parentElement.parentElement).datum();
-    d.value = this.checked;
-    if (this.checked) {
-        add_axis(pdata.arr, g);
-        d3.select(this.parentElement.parentElement).classed('disable', false);
+    if(d.value !== this.checked) {
+        d.value = this.checked;
+        if (this.checked) {
+            add_axis(pdata.arr, g);
+            d3.select(this.parentElement.parentElement).classed('disable', false);
+        }
+        else {
+            remove_axis(pdata.arr, g);
+            d3.select(this.parentElement.parentElement).classed('disable', true);
+        }
+        // TODO required to avoid a bug
+        var extent = d3.brushSelection(svg.selectAll(".dimension").filter(d => d == pdata.arr));
+        if (extent)
+            extent = extent.map(yscale[d].invert).sort((a, b) => a - b);
+        update_ticks(pdata.arr, extent);
     }
-    else {
-        remove_axis(pdata.arr, g);
-        d3.select(this.parentElement.parentElement).classed('disable', true);
-    }
-    // TODO required to avoid a bug
-    var extent = d3.brushSelection(svg.selectAll(".dimension").filter(d => d == pdata.arr));
-    if (extent)
-        extent = extent.map(yscale[d].invert).sort((a, b) => a - b);
-    update_ticks(pdata.arr, extent);
 }
 
 function drawFiltertable() {
@@ -150,6 +152,7 @@ function drawFiltertable() {
                 d3.select('tr.axisActive').classed('axisActive', false);
                 d3.select(this.parentElement.parentElement).classed('axisActive', true);
                 changeVar(d3.select(this.parentElement.parentElement).datum())
+                brush();
             });
             alltr.filter(d => d.type === "checkbox")
             .append("input")
@@ -1367,7 +1370,6 @@ function changeVar(d){
         d3.selectAll('.dimension.axisActive').classed('axisActive',false);
         d3.selectAll('.dimension').filter(e=>e===selectedService).classed('axisActive',true);
     }
-    brush();
 }
 
 // action when exit

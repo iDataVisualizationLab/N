@@ -1,0 +1,18 @@
+/*#messages_table .dataTable th:not(:first-child) {*/
+    /*width: unset !important;*/
+/*}*/
+
+#messages_table table.dataTable td{
+    line-height: 1.5rem;
+}
+
+#messages_table label select {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 1.5rem;
+    width:auto;
+    display: unset;
+}
+#lensingbtn:hover {
+    background-color: #fc8;
+}

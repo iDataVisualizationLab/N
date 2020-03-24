@@ -1,74 +1,475 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Human Computer Interaction - User Study</title>
+    <!--Import Google Icon Font-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="src/style/materialize.css"  media="screen,projection"/>
+    <link href="src/style/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="src/style/main.css"/>
+    <link type="text/css" rel="stylesheet" href="src/style/other.css"/>
+    <link type="text/css" rel="stylesheet" href="src/style/timarc.css"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-analytics.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<link href="https://surveyjs.azureedge.net/1.1.22/survey.css" type="text/css" rel="stylesheet"/>
-<!--<script src="js/survey.js"></script>-->
+<body class="light">
+<ul id="mc1_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/TTU-Vuong-MC1/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">Demo</a></li>
+</ul>
+<ul id="mc2_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/TTU-Vuong-MC2/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc2/index.html">Demo</a></li>
+</ul>
+<ul id="mc3_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/TTU-Vuong-MC3/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="#demo" onclick="disableIframe()">Demo</a></li>
+</ul>
+<ul id="gc_button" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/TTU-Vuong-GC/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/gc/index.html">Demo</a></li>
+</ul>
+<ul id="mc1_button_mobile" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/TTU-Vuong-MC1/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc1/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc1/index.html">Demo</a></li>
+</ul>
+<ul id="mc2_button_mobile" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/TTU-Vuong-MC2/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc2/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/mc2/index.html">Demo</a></li>
+</ul>
+<ul id="mc3_button_mobile" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/TTU-Vuong-MC3/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/mc3/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="#demo" onclick="disableIframe()">Demo</a></li>
+</ul>
+<ul id="gc_button_mobile" class="dropdown-content">
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/TTU-Vuong-GC/index.htm" onclick="enableIframe()">Report</a></li>
+    <li><a target="iframeResult" href="https://idatavisualizationlab.github.io/N/VAST19/gc/video.html" onclick="enableIframe()">Video</a></li>
+    <li><a href="https://idatavisualizationlab.github.io/N/VAST19/gc/index.html">Demo</a></li>
+</ul>
+<nav >
 
-<script>
-    // Your web app's Firebase configuration
-    var dbc = {
-        "firebaseConfig":{
-            "apiKey":"AIzaSyD1h3Fl210rYucQEdyURDLhfsIF71WQ7tA",
-            "authDomain":"the-network-5111f.firebaseapp.com",
-            "databaseURL":"https://the-network-5111f.firebaseio.com",
-            "projectId":"the-network-5111f",
-            "storageBucket":"the-network-5111f.appspot.com",
-            "messagingSenderId":"307045227004",
-            "appId":"1:307045227004:web:e195e1d7ccaf6f66963a79"
-        },
-        "apiUrl":"http:\/\/localhost:8080",
-        "hereConfig":{
-            "restApiKey":"0pEiLucWpzJ-I-Bmd25nNc1NxnSmDT4klCp-gySLwEU",
-            "jsApiKey":"yYYh2opT-Y52RrJWnNvkxxKtcONgCG_75IIuwyoKvqQ"
-        },
-        "giapEndpoint":"https:\/\/analytics-api.got-it.ai",
-        "giapToken":"covid19-dev-SSezLBmuAw2n5NXS"
-    };
-    var firebaseConfig = {
-        apiKey: "AIzaSyD1h3Fl210rYucQEdyURDLhfsIF71WQ7tA",
-        authDomain: "the-network-5111f.firebaseapp.com",
-        databaseURL: "https://the-network-5111f.firebaseio.com",
-        projectId: "the-network-5111f",
-        storageBucket: "the-network-5111f.appspot.com",
-        messagingSenderId: "307045227004",
-        appId: "1:307045227004:web:e195e1d7ccaf6f66963a79",
-        measurementId: "G-9FRCCV6WTX"
-    };
-    //     apiUrl: "http://localhost:8080",
-    //     hereConfig: {
-    //         restApiKey: "0pEiLucWpzJ-I-Bmd25nNc1NxnSmDT4klCp-gySLwEU",
-    //         jsApiKey: "yYYh2opT-Y52RrJWnNvkxxKtcONgCG_75IIuwyoKvqQ"
-    //     };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-</script>
-<style>
-    .sv_main .sv_container{
-        font-size: 18px;
-        color: black;
-    }
-</style>
-<body>
-<div id="surveyElement"></div>
-<div id="surveyResult"></div>
+    <div class="nav-wrapper" id="header">
+
+        <!--<div class="brand-logo center input-field col s12 inline" style="font-size: 1.5rem;">-->
+            <!--Mini chalenge 2-->
+        <!--</div>-->
+        <a href="#" data-target="navigationLinks" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <div class="row s5 left">
+            <ul class="nav-mobile hide-on-med-and-down" id="mainTab">
+                <li><a class="dropdown-trigger"  data-target="mc1_button">Mini-Challenge 1<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li ><a class="dropdown-trigger"  data-target="mc2_button">Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li id="demoTab" ><a  class="active dropdown-trigger"  data-target="mc3_button" >Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li ><a  class="dropdown-trigger"  data-target="gc_button">Grand Challenge<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+        </div>
+        <ul class="right">
+            <li><a href="#!" value="light" id = "DarkTheme" class="waves-effect waves-light">Dark</a></li>
+        </ul>
+    </div>
+</nav>
+<ul class="sidenav" id="navigationLinks">
+    <li><a class="dropdown-trigger"  data-target="mc1_button_mobile">Mini-Challenge 1<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li ><a class="dropdown-trigger"  data-target="mc2_button_mobile">Mini-Challenge 2<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li ><a  class="active dropdown-trigger"  data-target="mc3_button_mobile" >Mini-Challenge 3<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li ><a  class="dropdown-trigger"  data-target="gc_button_mobile">Grand Challenge<i class="material-icons right">arrow_drop_down</i></a></li>
+</ul>
+<div id="mySidenav" class="sidenavs">
+    <div class="row s12 active">
+        <!--<ul class="collapsible">-->
+            <!--<li>-->
+                <!--<div class="collapsible-header search-wrapper focused">-->
+                    <!--<input type="text" id="search" placeholder="Search ...">-->
+                    <!--<i class="material-icons">search</i>-->
+                <!--</div>-->
+                <!--<div class="collapsible-body"><span>Resevered for hierarchy.</span></div>-->
+            <!--</li>-->
+            <!--<li class="active">-->
+                <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Setting</div>-->
+        <div  class="row s12 valign-wrapper no_magrin">
+            <ul class="collapsible insideSetting expandable " style="width: 100%;box-shadow: none;">
+                <li class="settingContain active">
+                    <div class="collapsible-header" style="padding-top: 0px;"><span>Setting</span></div>
+                    <div class="collapsible-body">
+                        <div  class="row s12 valign-wrapper no_magrin list" style="display: none">
+                            <label for="datacom" class="col s4"> Dataset: </label>
+                            <select id="datacom" class="col s7">
+                                <!--<option value="EmploymentRate">Unemployment Rate</option>-->
+                                <!--<option value="EmploymentRate(updated)" >EmploymentRate dataset1 (1996-2019)</option>-->
+                                <!--<option value="EmploymentRate(updated)HIghDim" >EmploymentRate dataset2 (1996-2019)</option>-->
+                                <!--<option value="mc2-static-notlocation" data="csv" selected="selected" >Mini Challlenge 1</option>-->
+                                <!--<option value="raw\MobileSensorReadings" data="csv" selected="selected" >Mini Challlenge 1</option>-->
+                                <!--<option value="raw\YInt_test" data="csv" selected="selected" >Mini Challlenge 3</option>-->
+                                <!--<option value="raw\YInt" data="csv" selected="selected" >Mini Challlenge 3</option>-->
+                                <option value="raw\covid19_processed" data="csv" selected="selected" >Mini Challlenge 3</option>
+                                <!--<option value="UnemploymentRate" selected="selected">Unemployment Rate</option>-->
+                                <!--<option value="ustrafficfatalities">US traffic fatalities</option>-->
+                                <!--<option value="WorldTerrorism" >World Terrorism</option>-->
+                                <!--<option value="LifeExpectancy">Life Expectancy</option>-->
+                            </select>
+                        </div>
+                        <!--<div  class="row s12 valign-wrapper no_magrin list">-->
+                            <!--<label for="displaySymbol" class="col s4">Time unit: </label>-->
+                            <!--<p class="switch col s7" id ="timeUnit">-->
+
+                                <!--<label>-->
+                                    <!--<span class="true">Hour</span>-->
+                                    <!--<input type="checkbox" onchange="changeTimeunit(this)">-->
+                                    <!--<span class="lever"></span>-->
+                                    <!--<span class="false">Minute</span>-->
+                                <!--</label>-->
+
+                            <!--</p>-->
+                        <!--</div>-->
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displayArea" class="col s4">Area graph: </label>
+                            <p class="switch col s7" id ="displayArea">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" id="checkbox1" value="value2" onchange="TimeArc.update()">
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
+                        <div class="row s12 no_magrin">
+                            <ul class="collapsible insideSetting ">
+                                <li id="RadarColor" style="display: none">
+                                    <div class="collapsible-header">
+                                        <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
+                                            <label for="radarColorPicker" class="col s4"> Radar color: </label>
+                                            <div id = "radarColorPicker" class="colorscale-palette-container col s7">
+                                                <div class="colorscale-block">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div  class="row s12 valign-wrapper pickercontain">
+
+                                        </div>
+                                    </div>
+                                </li>
+                                <li id="ClusterColor" style="display: none">
+                                    <div class="collapsible-header">
+                                        <div  class="row s12 valign-wrapper pickercontain list" style="width: 100%;">
+                                            <label for="radarColorPicker" class="col s4"> Cluster color scheme: </label>
+                                            <div id="clusterColorPicker" class="colorscale-palette-container col s7">
+                                                <div class="colorscale-block">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div  class="row s12 valign-wrapper pickercontain">
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div  class="row s12 valign-wrapper no_magrin list">
+                            <label for="displaySymbol" class="col s4">Fit screen: </label>
+                            <p class="switch col s7">
+
+                                <label>
+                                    <span class="true">Off</span>
+                                    <input type="checkbox" onchange="changeFitscreen(this)">
+                                    <span class="lever"></span>
+                                    <span class="false">On</span>
+                                </label>
+
+                            </p>
+                        </div>
+                        <!--<div  class="row s12 valign-wrapper">-->
+                            <!--<label for="displaySymbol" class="col s4">Cluster mode: </label>-->
+                            <!--<p class="switch col s7" id ="displaySymbol">-->
+
+                                <!--<label>-->
+                                    <!--<span class="true">Outlier</span>-->
+                                    <!--<input type="checkbox" onchange="changeGroup_mode(this)">-->
+                                    <!--<span class="lever"></span>-->
+                                    <!--<span class="false">jLouvain</span>-->
+                                <!--</label>-->
+
+                            <!--</p>-->
+                        <!--</div>-->
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+                </div>
+
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">settings</i>  Advance</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<div  class="row s12 valign-wrapper">-->
+                        <!--<label for="detailLevel" class="col s4"> Perplexity: </label>-->
+                        <!--<p class="range-field col s7">-->
+                            <!--<input type="range" id="detailLevel" min="10" max="50" />-->
+                        <!--</p>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">help</i>Style</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<div class="row s12">-->
+                        <!--<ul class="collapsible">-->
+                            <!--<li id="RadarColor">-->
+                                <!--<div class="collapsible-header">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">-->
+                                        <!--<div class="colorscale-header">Radar</div>-->
+                                        <!--<div class="colorscale-palette-container">-->
+                                            <!--<div class="colorscale-block">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="collapsible-body">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li id="ClusterColor">-->
+                                <!--<div class="collapsible-header">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain" style="width: 100%;">-->
+                                        <!--<div class="colorscale-header">Cluster</div>-->
+                                        <!--<div class="colorscale-palette-container">-->
+                                            <!--<div class="colorscale-block">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="collapsible-body">-->
+                                    <!--<div  class="row s12 valign-wrapper pickercontain">-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">help</i>Controls</div>-->
+                <!--<div class="collapsible-body">-->
+                    <!--<strong>Zoom</strong>: Scroll mouse button to zoom.<br/>-->
+                    <!--<strong>Setting</strong>: Use tab setting to adjust the delay speed, zoom and change the visualization.<br/>-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
+    </div>
+</div>
+<div id="Maincontent" class="row s12">
+    <a href="javascript:void(0)" class="closebtn btn-floating btn waves-effect waves-light" onclick="closeNav()"><i class="material-icons">chevron_left</i></a>
+    <div class="overlaySide">
+        <a class="openbtn btn-floating btn waves-effect waves-light" id="sideNavbtn" onclick="openNav()">
+            <i class="material-icons">chevron_right</i></a>
+    </div>
+    <div id="video" class= "container mainContain video-container">
+            <iframe id="videoIn" src="https://www.youtube.com/embed/Yg0sAzb46EY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="height: 80%;"></iframe>
+    </div>
+    <iframe frameborder="0" id="iframeResult" name="iframeResult" class= "row mainContain"></iframe>
+    <div id="demo" class= "row mainContain active">
+        <div class="cover">
+            <div class="spinnerC center">
+                <h3>loading...</h3>
+                <div class="progress" id="load_data">
+                    <div class="determinate" style="width: 0%"></div>
+                </div>
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-yellow">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = 'row'>
+            <div class = 'col s3' style="margin-bottom: 0;">
+
+                <!--<div class = 'row s12'>-->
+                    <!--<label>-->
+                        <!--Number of messages:-->
+                    <!--</label>-->
+                    <!--<p class="range-field">-->
+                        <!--<input type="range" id="test5" min="0" max="100" />-->
+                    <!--</p>-->
+                <!--</div>-->
+
+                    <!--<div id="map" class="col s2">-->
+                        <!--<svg width = 100 height = 70 style="position: absolute">-->
+                            <!--<g class="legendGroup"></g>-->
+                        <!--</svg>-->
+                        <!--<svg width = 200 height = 70 id="legendColorGroup" style="position: absolute;right:30px;">-->
+                        <!--</svg>-->
+                        <!--<svg viewBox="0 0 550 450" width="100%" height="100%" class="map_main">-->
+                            <!--<defs>-->
+                                <!--<marker id='head' orient='auto' markerWidth='2' markerHeight='4'-->
+                                        <!--refX='0.1' refY='2'>-->
+                                    <!--<path d='M0,0 V4 L2,2 Z' fill='black' />-->
+                                <!--</marker>-->
+                            <!--</defs>-->
+                            <!--&lt;!&ndash;<div id="mapLegend">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                            <!--<g id="regMap"></g>-->
+                        <!--</svg>-->
+                    <!--</div>-->
+            </div>
+            <div class="col s12 overflowAuto marginBottom0" style="margin-bottom: 0px;">
+                <div class="col s12 m12" style="padding: 0;">
+                    <div class="col s12 m12">
+                        <div class="card-image center-align relative" id="tSNE">
+                            <div class = 'row s12 valign-wrapper' style="margin-bottom: 0;">
+                                <div class="input-field col" style="margin: 0px 5px;padding-left: 0px;">
+                                    <input type="text"  id="search" class="autocomplete inputHolder" placeholder="input here">
+                                </div>
+                                <button class="col" type="button" onclick="TimeArc.searchNode($('#search').val())">Search</button>
+
+                                <progress class="col" value="0" max="100" id="progBar">
+                                        <span id="downloadProgress">
+                                            <!-- Your fallback goes here -->
+                                        </span>
+                                </progress>
+                                <label id="progUpdate">
+                                    <!-- Success Message -->
+                                </label>
+                                <button class="col s1" style="width: fit-content;float:right" id = "lensingbtn">lensing</button>
+                            </div>
+                            <svg id="RadarMapcontent" class="active"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row s12 overflowAuto marginBottom0 tablediv" >
+            <!--<div class="row s12 m12">-->
+               <!--<svg id="minichart"></svg>-->
+            <!--</div>-->
+            <div class="col s12" id = 'messages_table'>
+            </div>
+        </div>
+
+    </div>
+    <!--<div id="tablelist" class= "row mainContain">-->
+        <!--<div class="row s12 m12 tablelistContain ">-->
+
+        <!--</div>-->
+
+    <!--</div>-->
+</div>
+
+<div id="savedialog_profile" class="modal custom">
+    <div class="modal-content">
+        <div class="input-field col s6">
+            <input placeholder="radar chart" id="savename_profile" type="text" class="validate">
+            <label for="savename_profile">File name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat teal" onclick="onSaveProfile()" style="color: rgba(255, 255, 255, 0.9);">Save</a>
+    </div>
+</div>
+
+
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="src/lib/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="https://unpkg.com/simple-statistics@2.2.0/dist/simple-statistics.min.js"></script>
+<script src="src/lib/geocoder.js"></script>
+<script src="src/lib/jquery.dataTables.min.js"></script>
+<script src="src/lib/FileSaver.min.js"></script>
+<script src="src/lib/TimerInterval.js"></script>
+<script src="src/lib/underscore-min.js"></script>
+
+
+<!--timearc zone-->
+<!--<script src="src/scripts/sliderRelationship.js"></script>-->
+<script src="src/scripts/streamGraph.js"></script>
+<script src="src/scripts/stopList.js"></script>
+<script src="src/scripts/TimeArc.js"></script>
+
+<!--timearc zone-->
+
+
+<!--<script src="src/scripts/circleChart.js"></script>-->
+<!--<script src="src/scripts/circleMap.js"></script>-->
+
+<script src="src/scripts/util2.js"></script>
+<script src="src/scripts/ulti.js"></script>
+<script src="src/scripts/setting.js"></script>
+<script src="src/scripts/store.js"></script>
+<!--<script src="src/scripts/radarController.js"></script>-->
+<script src="src/lib/d3.tip.js"></script>
+<script src="src/scripts/tooltip.js"></script>
+<script type="text/javascript" src="src/lib/sentimood.js"></script>
+<script src="src/scripts/processdata.js"></script>
+<script src="src/scripts/main.js"></script>
+<!--<script src="src/scripts/main-processdata.js"></script>-->
+
+<!--<script src="src/scripts/map.js"></script>-->
 
 </body>
-
-<!--generate data-->
-
-
-
-<script src="src/js/app.js"></script>
 </html>

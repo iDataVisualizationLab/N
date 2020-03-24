@@ -774,6 +774,13 @@ $( document ).ready(function() {
     // color scale create
     creatContain(d3.select('#RadarColor').select('.collapsible-body>.pickercontain'), colorScaleList, colorArr.Radar, onClickRadarColor);
 
+    d3.select('#enableVariableCorrelation').on('click',function(){
+        preloader(true,undefined,'Calculate variable correlation....')
+        orderByCorrelation();
+        MetricController.axisSchema(serviceFullList).datasummary(undefined).update();
+        preloader(false)
+    });
+
     d3.select('#clusterDisplay').on('change',function(){
         TsnePlotopt.runopt.clusterDisplay = this.value;
         TSneplot.runopt(TsnePlotopt.runopt);
