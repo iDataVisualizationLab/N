@@ -1,16 +1,18 @@
 
 var termsList = {
     'China': (()=>(d=(['China', 'Chinese']),d.category='GPE',d)) (),
-    'South Korea': (()=>(d=(['Korea', 'Korean']),d.category='GPE',d)) (),
-    'USA': (()=>(d=(['U.S','United States']),d.category='GPE',d)) (),
+    'South Korea': (()=>(d=(['Korea', 'Korean','Seoul']),d.category='GPE',d)) (),
+    'United States': (()=>(d=(['U.S','United States','USA']),d.category='GPE',d)) (),
     'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
     'Hubei': (()=>(d=(['Hubei']),d.category='GPE',d)) (),
     'Wuhan': (()=>(d=(['Wuhan']),d.category='LOC',d)) (),
+    'Intensive care unit': (()=>(d=(['ICU']),d.category='ORG',d)) (),
     'MERS-CoV': (()=>(d=(['MERS','MER-CoV','Middle East']),d.category='EVENT',d)) (),
     'SARS-CoV': (()=>(d=(['SARS','ZJ01']),d.category='EVENT',d)) (),
-    'Coronavirus': (()=>(d=(['Coronavir','CoV ','corona virus','Coronovirus']),d.category='EVENT',d)) (),
-    'COVID-19': (()=>(d=(['COVID-','Coronavirus Disease 2019','Coronavirus Disease','Corona Virus Disease','2019-nCoV']),d.category='EVENT',d)) (),
-    'WHO': (()=>(d=(['WHO',' World Health Organization']),d.category='ORG',d)) (),
+    'Coronavirus': (()=>(d=(['Coronavir','CoV ','PDCoV','corona virus','Coronovirus','CoVs']),d.category='COVID19',d)) (),
+    'COVID-19': (()=>(d=(['COVID-','Coronavirus Disease 2019','Coronavirus Disease','Corona Virus Disease','2019-nCoV','disease-2019']),d.category='EVENT',d)) (),
+    'WHO': (()=>(d=(['WHO','World Health Organization']),d.category='ORG',d)) (),
+    'Clinical': (()=>(d=(['Clinical']),d.category='ORG',d)) (),
 };
 var dictionary = {};
 termsList2dictionary()

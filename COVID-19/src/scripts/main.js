@@ -13,7 +13,7 @@ let width = 2000,
         timeformat: d3.timeDay.every(1),
         limitYear: [2019,2020],
         limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
-        termGroup:{'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4}
+        termGroup:{'Beijing':-1,'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4,'Coronavirus':5}
     },
     RadarMapopt  = {
         margin: {top: 10, right: 10, bottom: 0, left: 120},
@@ -31,7 +31,7 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                // yScale: d3.scaleLinear().domain([0,30]).range([0,10])
+                yScale: d3.scaleLinear().domain([0,30]).range([0.1,10])
             },
             links:{
                 'stroke-opacity':0.5
@@ -112,9 +112,13 @@ let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
 // filter aka blacklist
-let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT','WORK_OF_ART'];
+let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT','WORK_OF_ART','NORP'];
 let blackTerms = {'CoV':'PERSON'}
-
+let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis','Herein','p<0.001','ANOVA','Chi-squared',
+    'D68','RBD','ACE2','AST','LDH','Main Results','Markov','Monte Carlo','IgG','IgM','N95','IBV','Mtb','IVA','IVB','ILI',
+    'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
+    'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
+    'Europe','Han','Asia','Africa']
 const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
@@ -335,12 +339,12 @@ function init() {
                     t.category = {};
                     category.forEach((c,ci) => {
                         try {
-                            if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c) { // filtering
-                                const replaced = replaceTerm(term[ci]);
-                                if (replaced) {
-                                    c = replaced.category
-                                    term[ci] = replaced.term;
-                                }
+                            const replaced = replaceTerm(term[ci]);
+                            if (replaced) {
+                                c = replaced.category
+                                term[ci] = replaced.term;
+                            }
+                            if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c && !blacklist.find(e=>term[ci]==e)) { // filtering
                                 if (!catergogryList.find(e => e.key === c))
                                     catergogryList.push({key: c, value: {colororder: catergogryList.length}});
                                 if (!t.category[c])

@@ -289,23 +289,23 @@ d3.TimeArc = function () {
         //         return 1;
         // });
         //
-        // force.force('link').distance(function (l) {
-        //     if (searchTerm !== "") {
-        //         if (l.source.name == searchTerm || l.target.name == searchTerm) {
-        //             var order = isContainedInteger(listMonth, l.__timestep__)
-        //             return (12 * order);
-        //         }
-        //         else
-        //             return 0;
-        //     }
-        //     else {
-        //         if (l.value) {
-        //             return runopt.termGroup.find(t => t === l.source.name || t == l.target.name) ? 0 : 5;
-        //         }
-        //         else
-        //             return 12;
-        //     }
-        // });
+        force.force('link').distance(function (l) {
+            if (searchTerm !== "") {
+                if (l.source.name == searchTerm || l.target.name == searchTerm) {
+                    var order =  l.__timestep__;
+                    return (12 * order);
+                }
+                else
+                    return 0;
+            }
+            else {
+                if (l.source.name == 'COVID-19' || l.target.name == 'COVID-19') {
+                    return l.__timestep__*4;
+                }
+                else
+                    return 0;
+            }
+        });
 
         //Creates the graph data structure out of the json data
         force.nodes(nodes)
@@ -1127,12 +1127,14 @@ d3.TimeArc = function () {
     }
 
     timeArc.update = ()=> {
+        let marker;
         nodes.forEach(function (d) {
             // if (searchTerm!="")
             //    d.x += (xScale(d.month)-d.x)*0.1;
             //else
             //     d.x += (xScale(d.month)-d.x)*0.005;
-            d.x += (graphicopt.widthG() / 2 - d.x) * 0.005;
+
+            d.x += (graphicopt.widthG() / 2 - d.x) * 0.05;
 
             if (d.parentNode >= 0) {
                 d.y += (nodes[d.parentNode].y - d.y) * 0.5;
@@ -1148,6 +1150,12 @@ d3.TimeArc = function () {
                     yy = yy / d.childNodes.length; // average y coordinate
                     d.y += (yy - d.y) * 0.2;
                 }
+            }
+            if (runopt.termGroup[d.name]){
+                if (marker)
+                    d.y = marker
+                else
+                    marker =d.y
             }
         });
 
@@ -1844,7 +1852,7 @@ d3.TimeArc = function () {
     var xSlider = 150;
     var widthSlider = 180;
     var ySlider = 30;
-    var valueSlider = 3;
+    var valueSlider = 2;
     var valueMax = 11;
     function setupSliderScale(svg) {
         xScaleSlider = d3.scaleLinear()
