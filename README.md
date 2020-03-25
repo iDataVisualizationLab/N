@@ -2,6 +2,8 @@
 
 https://idatavisualizationlab.github.io/N/
 
+Covid-19: https://idatavisualizationlab.github.io/N/COVID-19/index.html
+
 BioRadar: https://idatavisualizationlab.github.io/N/BioRadar/index.html
 
 BioCoordinates: https://idatavisualizationlab.github.io/N/BioCoordinates/index.html
