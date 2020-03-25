@@ -735,10 +735,10 @@ d3.TimeArc = function () {
 
                             if (!nodes[i].connect)
                                 nodes[i].connect = new Array();
-                            nodes[i].connect.push(j)
+                            nodes[i].connect.push(j);
                             if (!nodes[j].connect)
                                 nodes[j].connect = new Array();
-                            nodes[j].connect.push(i)
+                            nodes[j].connect.push(i);
 
                             if (m != nodes[i].maxTimeIndex) {
                                 if (isContainedChild(nodes[i].childNodes, m) >= 0) {  // already have the child node for that month
@@ -1116,11 +1116,21 @@ d3.TimeArc = function () {
         }
         return -1;
     }
-
+    // function linkArc(d) {
+    //     var dx = d.target.x - d.source.x,
+    //         dy = d.target.y - d.source.y,
+    //         dr = Math.sqrt(dx * dx + dy * dy) / 2;
+    //
+    //     if (d.source.y < d.target.y)
+    //         return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+    //     else
+    //         return "M" + d.target.x + "," + d.target.y + "A" + dr + "," + dr + " 0 0,1 " + d.source.x + "," + d.source.y;
+    // }
     function linkArc(d) {
         var dx = d.target.x - d.source.x,
             dy = d.target.y - d.source.y,
             dr = Math.sqrt(dx * dx + dy * dy) / 2;
+
         if (d.source.y < d.target.y)
             return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
         else
