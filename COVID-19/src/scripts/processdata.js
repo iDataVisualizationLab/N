@@ -1,10 +1,14 @@
 
 var termsList = {
     'China': (()=>(d=(['China', 'Chinese']),d.category='GPE',d)) (),
+    'USA': (()=>(d=(['U.S','United States']),d.category='GPE',d)) (),
     'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
     'Hubei': (()=>(d=(['Hubei']),d.category='GPE',d)) (),
-    'MERS': (()=>(d=(['MERS']),d.category='EVENT',d)) (),
-    'COVID-19': (()=>(d=(['COVID-19','Coronavirus Disease 2019','Corona Virus','2019-nCoV']),d.category='EVENT',d)) (),
+    'Wuhan': (()=>(d=(['Wuhan']),d.category='LOC',d)) (),
+    'MERS-CoV': (()=>(d=(['MERS','MER-CoV','Middle East Respiratory Syndrome Corona Virus']),d.category='EVENT',d)) (),
+    'SARS-CoV': (()=>(d=(['SARS-CoV','SARS-CO-V-2']),d.category='EVENT',d)) (),
+    'Coronavirus': (()=>(d=(['Coronavir','CoV ','corona virus','Coronovirus']),d.category='EVENT',d)) (),
+    'COVID-19': (()=>(d=(['COVID-','Coronavirus Disease 2019','Coronavirus Disease','Corona Virus Disease','2019-nCoV']),d.category='EVENT',d)) (),
     'WHO': (()=>(d=(['WHO',' World Health Organization']),d.category='ORG',d)) (),
 };
 var dictionary = {};
@@ -155,7 +159,8 @@ function markWord (message,keys){
             });
         else {
             // const reg = new RegExp(maink.text,'g');
-            const reg = new RegExp(' '+maink.text+'|^'+maink.text+'|@'+maink.text,'gi');
+            let termfix = maink.text.replace(/%/g,'\\%');
+            const reg = new RegExp(' '+termfix+'|^'+termfix+'|@'+termfix,'gi');
             if(reg.test(message))
                 message = message.replace(reg, generatemark(maink));
         }

@@ -104,6 +104,8 @@ d3.TimeArc = function () {
     var coordinate = [0, 0];
     var XGAP_ = 12; // gap between months on xAxis
 
+    let minYdis = 4;
+
     let mouseover_dispath = ()=>{};
     let mouseout_dispath = ()=>{};
     // let mouseover_dispath = ()=>{};
@@ -1251,7 +1253,7 @@ d3.TimeArc = function () {
         if (graphicopt.fixscreence)
             var step = (maxheight - 25) / (numNode + 1);
         else {
-            var step = Math.min((maxheight - 25) / (numNode + 1), 20);
+            var step = Math.min(Math.max((maxheight - 25) / (numNode + 1),minYdis), 20);
             if (termArray.length>10)
                 graphicopt.height = termArray.length*step+20 +graphicopt.margin.top+graphicopt.margin.bottom;
             else {
@@ -1260,6 +1262,7 @@ d3.TimeArc = function () {
                     step = (step*10-20)/termArray.length;
             }
         }
+        // console.log('step: ',step)
         if (graphicopt.min_height){
             graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
         }
@@ -1805,7 +1808,7 @@ d3.TimeArc = function () {
     var slider;
     var handle;
     var xScaleSlider;
-    var xSlider = 200;
+    var xSlider = 150;
     var widthSlider = 180;
     var ySlider = 30;
     var valueSlider = 3;

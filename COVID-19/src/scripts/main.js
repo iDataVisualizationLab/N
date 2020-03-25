@@ -10,8 +10,8 @@ let width = 2000,
         time: {rate:1,unit:'Day'},
         timeformat: d3.timeDay.every(1),
         limitYear: [2019,2020],
-        limitTime: [new Date('12/1/2019'),new Date('6/30/2020')],
-        termGroup:{'Hubei':3,'Wuhan':2,'Wuhan University':1,'China':4,'COVID-19':5}
+        limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
+        termGroup:{'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4}
     },
     RadarMapopt  = {
         margin: {top: 10, right: 10, bottom: 0, left: 120},
@@ -105,6 +105,9 @@ let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
+// filter aka blacklist
+let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT','WORK_OF_ART'];
+let blackTerms = {'CoV':'PERSON'}
 
 const initialize = _.once(initDemo);
 $(document).ready(function(){
@@ -325,7 +328,7 @@ function init() {
                     let term = t.term.split('|');
                     t.category = {};
                     category.forEach((c,ci) => {
-                        if (term[ci].length>2 && !["CARDINAL",'ORDINAL','DATE'].find(e=>e===c)) { // filtering
+                        if (term[ci].length>2 && !blackCategory.find(e=>e===c) && blackTerms[term[ci]]!==c) { // filtering
                             const replaced = replaceTerm(term[ci]);
                             if (replaced){
                                 c = replaced.category

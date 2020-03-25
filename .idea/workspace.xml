@@ -5,124 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" beforeDir="false" afterPath="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/.tmp/" />
-    <ignored path="$PROJECT_DIR$/temp/" />
-    <ignored path="$PROJECT_DIR$/tmp/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="367669999">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="14" />
-          <entry key="project.open.time.0" value="3" />
-          <entry key="project.open.time.1" value="9" />
-          <entry key="project.open.time.2" value="2" />
-          <entry key="project.opened" value="14" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="CSS" value="1" />
-          <entry key="HTML" value="3" />
-          <entry key="JavaScript" value="12" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="HTML" value="27" />
-          <entry key="JavaScript" value="888" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/just4presentation/radarChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3689">
-              <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/just4presentation/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5202">
-              <caret line="306" column="65" selection-start-line="306" selection-start-column="65" selection-end-line="306" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/contour/volcano.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="20741" selection-start-column="20741" selection-end-column="20741" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ant-SNE/src/scripts/radarChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4607">
-              <caret line="276" column="39" selection-start-line="276" selection-start-column="29" selection-end-line="276" selection-end-column="39" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ant-SNE/src/scripts/tsnePlot.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5032">
-              <caret line="296" column="36" selection-start-line="296" selection-start-column="36" selection-end-line="296" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/index.htm">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/main.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/BioCoordinates/src/js/main.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/styles.css">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -132,185 +18,21 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>allaxis</find>
-      <find>gridCircle</find>
-      <find>axis</find>
-      <find>font-s</find>
-      <find>36</find>
-      <find>24</find>
-      <find>18px</find>
-      <find>bin</find>
-      <find>leader</find>
-      <find>leaderbin</find>
-      <find>radialGradient</find>
-      <find>rGradient2</find>
-      <find>delta</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/examples/main.js" />
-        <option value="$PROJECT_DIR$/contour/index.html" />
-        <option value="$PROJECT_DIR$/contour/volcano.json" />
-        <option value="$PROJECT_DIR$/just4presentation/main.js" />
-        <option value="$PROJECT_DIR$/just4presentation/radarChart.js" />
-        <option value="$PROJECT_DIR$/just4presentation/index.html" />
-        <option value="$PROJECT_DIR$/Scagnostic/scagnostics.min.js" />
-        <option value="$PROJECT_DIR$/Scagnostic/scagnostics3d.min.js" />
-        <option value="$PROJECT_DIR$/Scagnostic/scagnosticsnd.min.js" />
-        <option value="$PROJECT_DIR$/VAST19/mc3/index.html" />
-        <option value="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" />
-      </list>
-    </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/ClusteringExploration/node_modules" />
-    <handled-path value="$PROJECT_DIR$/bioVR/node_modules" />
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths>
-      <path value="$PROJECT_DIR$/BioCoordinates/package.json" />
-      <path value="$PROJECT_DIR$/ClusteringExploration/package.json" />
-      <path value="$PROJECT_DIR$/ParallelCoordinates/package.json" />
-      <path value="$PROJECT_DIR$/bioVR/package.json" />
-      <path value="$PROJECT_DIR$/untitled/package.json" />
-    </packageJsonPaths>
-  </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="692" />
     <option name="y" value="116" />
     <option name="width" value="1400" />
     <option name="height" value="1039" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="Ant-SNE" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="Ant-SNE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="Ant-SNE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="BioCoordinates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="BioCoordinates" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="BioCoordinates" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="contour" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="examples" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="just4presentation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="ParallelCoordinates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="ParallelCoordinates" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="ParallelCoordinates" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="Scagnostic" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="VAST19" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="VAST19" type="462c0819:PsiDirectoryNode" />
-              <item name="mc1" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="N" type="b2602c69:ProjectViewProjectNode" />
-              <item name="N" type="462c0819:PsiDirectoryNode" />
-              <item name="VAST19" type="462c0819:PsiDirectoryNode" />
-              <item name="mc1" type="462c0819:PsiDirectoryNode" />
-              <item name="TTU-Vuong-MC1" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
@@ -328,29 +50,14 @@
       <recent name="E:\nvtng\Projects\GitHub\N\just4presentation" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager" selected="JavaScript Debug.index.html (1)">
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost:64320/N/examples/">
+    <configuration default="true" type="JavascriptDebugType" uri="http://localhost:64320/N/examples/">
       <method v="2" />
     </configuration>
-    <configuration name="index.html (1)" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/Ant-SNE/index.html">
+    <configuration name="index.html (1)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/Ant-SNE/index.html">
       <method v="2" />
     </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
       <method v="2" />
     </configuration>
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
@@ -362,13 +69,16 @@
     <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
       <method v="2" />
     </configuration>
-    <configuration name="main.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/examples">
+    <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="main.js" type="NodeJSConfigurationType" temporary="true" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/examples">
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Node.js.main.js" />
-      <item itemvalue="JavaScript Debug.index.html" />
       <item itemvalue="JavaScript Debug.index.html (1)" />
+      <item itemvalue="JavaScript Debug.index.html" />
+      <item itemvalue="Node.js.main.js" />
     </list>
     <recent_temporary>
       <list>
@@ -377,6 +87,18 @@
         <item itemvalue="Node.js.main.js" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -422,38 +144,8 @@
     <option name="localTasksCounter" value="5" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24848000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="692" y="116" width="1400" height="1039" extended-state="0" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3119403" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.49963742" visible="true" weight="0.28074867" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4981871" weight="0.328877" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003626" side_tool="true" visible="true" weight="0.27924946" />
-      <window_info anchor="bottom" id="GraphQL" order="11" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="JSON Viewer" order="3" weight="0.32910448" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="updateUI" />
@@ -479,131 +171,5 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="288" column="4" selection-start-line="288" selection-start-column="4" selection-end-line="288" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/serviceWed26Sep.js">
-      <provider selected="true" editor-type-id="LargeFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/service.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/contour/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/jquery-3.2.1.min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/hostlist.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="http://localhost:64320/N/just4presentation/main.js">
-      <provider selected="true" editor-type-id="httpFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scagnostic/scagnosticsnd.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="4249" column="376872" selection-start-line="4249" selection-start-column="376872" selection-end-line="4249" selection-end-column="376872" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scagnostic/scagnostics3d.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ant-SNE/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scagnostic/scagnostics.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/radarChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3689">
-          <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/just4presentation/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5202">
-          <caret line="306" column="65" selection-start-line="306" selection-start-column="65" selection-end-line="306" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/contour/volcano.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="20741" selection-start-column="20741" selection-end-column="20741" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ant-SNE/src/scripts/radarChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4607">
-          <caret line="276" column="39" selection-start-line="276" selection-start-column="29" selection-end-line="276" selection-end-column="39" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ant-SNE/src/scripts/tsnePlot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5032">
-          <caret line="296" column="36" selection-start-line="296" selection-start-column="36" selection-end-line="296" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/styles.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/VAST19/mc1/TTU-Vuong-MC1/index.htm">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ParallelCoordinates/src/js/main.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BioCoordinates/src/js/main.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
   </component>
 </project>
