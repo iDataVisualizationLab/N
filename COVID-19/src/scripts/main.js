@@ -328,17 +328,21 @@ function init() {
                     let term = t.term.split('|');
                     t.category = {};
                     category.forEach((c,ci) => {
-                        if (term[ci].length>2 && !blackCategory.find(e=>e===c) && blackTerms[term[ci]]!==c) { // filtering
-                            const replaced = replaceTerm(term[ci]);
-                            if (replaced){
-                                c = replaced.category
-                                term[ci] = replaced.term;
+                        try {
+                            if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c) { // filtering
+                                const replaced = replaceTerm(term[ci]);
+                                if (replaced) {
+                                    c = replaced.category
+                                    term[ci] = replaced.term;
+                                }
+                                if (!catergogryList.find(e => e.key === c))
+                                    catergogryList.push({key: c, value: {colororder: catergogryList.length}});
+                                if (!t.category[c])
+                                    t.category[c] = {};
+                                t.category[c][term[ci]] = 1;
                             }
-                            if (!catergogryList.find(e => e.key === c))
-                                catergogryList.push({key: c, value: {colororder: catergogryList.length}});
-                            if (!t.category[c])
-                                t.category[c] = {};
-                            t.category[c][term[ci]] = 1;
+                        }catch (e) {
+                            console.log(e,category,term,ci,term[ci])
                         }
                     });
                     count++;
@@ -351,11 +355,6 @@ function init() {
             });
         });
         return Promise.all(queueProcess);
-        function filterYear(e){
-            let inrangecondition = listopt.limitTime===undefined || (new Date(e.publish_time)-listopt.limitTime[0]>=0&&new Date(e.publish_time)-listopt.limitTime[1]<=0);
-            let noneSingleYear = !(+e.publish_time);
-            return inrangecondition&&noneSingleYear;
-        }
     })
         .then ((d)=>{
             // const locationfilter= 'Old Town';
@@ -371,6 +370,11 @@ function init() {
             updateProcessBar(1);
         d3.select('.cover').classed('hidden',true);
     });
+}
+function filterYear(e){
+    let inrangecondition = listopt.limitTime===undefined || (new Date(e.publish_time)-listopt.limitTime[0]>=0&&new Date(e.publish_time)-listopt.limitTime[1]<=0);
+    let noneSingleYear = !(+e.publish_time);
+    return inrangecondition&&noneSingleYear;
 }
 function updateProcessBar(rate){
     d3.select('#load_data').select('.determinate').style('width',rate*100+'%');
