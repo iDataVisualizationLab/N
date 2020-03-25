@@ -7,8 +7,11 @@ let width = 2000,
         limitTime: undefined, // change year limit in list ranking here
         // time: {rate:1,unit:'Year'},
         // timeformat: d3.timeYear.every(1),
+        // time: {rate:1,unit:'Day'},
+        // timeformat: d3.timeDay.every(1),
         time: {rate:1,unit:'Day'},
-        timeformat: d3.timeDay.every(1),
+        timeLink: {rate:1,unit:'Week'},
+        timeformat: d3.timeWeek.every(1),
         limitYear: [2019,2020],
         limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
         termGroup:{'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4}
@@ -29,7 +32,7 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                yScale: d3.scaleLinear().domain([0,15]).range([0,10])
+                // yScale: d3.scaleLinear().domain([0,30]).range([0,10])
             },
             links:{
                 'stroke-opacity':0.5

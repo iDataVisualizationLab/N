@@ -276,6 +276,7 @@ d3.TimeArc = function () {
         drawLensingButton();
 
         computeNodes();
+        adjustStreamheight();
         computeLinks();
 
 
@@ -353,6 +354,7 @@ d3.TimeArc = function () {
         function alertFunc() {
             readTermsAndRelationships();
             computeNodes();
+            adjustStreamheight()
             computeLinks();
 
             force.force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2))
@@ -796,12 +798,13 @@ d3.TimeArc = function () {
         }
 
         // var linear = (150+numNode)/200;
-        var hhh = Math.min(Math.max(graphicopt.heightG() / numNode,20), 30);
+        // var hhh = Math.min(Math.max(graphicopt.height / numNode,20), 30);
+        var hhh = graphicopt.height / numNode;
         if (graphicopt.display&&graphicopt.display.stream&&graphicopt.display.stream.yScale){
             yScale = graphicopt.display.stream.yScale;
         }else {
             yScale = d3.scaleLinear()
-                .range([0, hhh * 1.25])
+                .range([0, hhh * 0.6])
                 .domain([0, termMaxMax2]);
         }
         // linkScale = d3.scaleLinear()
@@ -1218,6 +1221,36 @@ d3.TimeArc = function () {
         updateTimeBox(durationTime);
     }
     let maxheight;
+
+    function adjustStreamheight() {
+// var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
+        if (graphicopt.fixscreence)
+            step = (maxheight - 25) / (numNode + 1);
+        else {
+            step = Math.min(Math.max((maxheight - 25) / (numNode + 1), minYdis), 20);
+            if (numNode > 10)
+                graphicopt.height = numNode * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
+            else {
+                graphicopt.height = 10 * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
+                if (numNode)
+                    step = (step * 10 - 20) / numNode;
+            }
+        }
+        // adjust grid
+        timeLegend.selectAll(".timeLegendLine")
+            .attr("y2", function (d) {
+                return graphicopt.height;
+            });
+        // console.log('step: ',step)
+        if (graphicopt.min_height) {
+            graphicopt.height = Math.max(graphicopt.height, graphicopt.min_height + graphicopt.margin.top + graphicopt.margin.bottom);
+        }
+        svg.attr('height', graphicopt.height);
+        //var totalH = termArray.length*step;
+        offsetYStream = step;
+        return {step, step};
+    }
+    let step;
     function detactTimeSeries() {
         document.getElementById('progBar').value = 100;
         $('#progUpdate').empty().append("Done");
@@ -1249,30 +1282,8 @@ d3.TimeArc = function () {
             return a.y - b.y;
         });
 
-        // var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
-        if (graphicopt.fixscreence)
-            var step = (maxheight - 25) / (numNode + 1);
-        else {
-            var step = Math.min(Math.max((maxheight - 25) / (numNode + 1),minYdis), 20);
-            if (termArray.length>10)
-                graphicopt.height = termArray.length*step+20 +graphicopt.margin.top+graphicopt.margin.bottom;
-            else {
-                graphicopt.height = 10 * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
-                if  (termArray.length)
-                    step = (step*10-20)/termArray.length;
-            }
-        }
-        // adjust grid
-        timeLegend.selectAll(".timeLegendLine")
-            .attr("y2", function(d){ return graphicopt.height; });
-        // console.log('step: ',step)
-        if (graphicopt.min_height){
-            graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
-        }
-        svg.attr('height',graphicopt.height);
-        //var totalH = termArray.length*step;
-        offsetYStream = step;
         console.log(termArray.length)
+        adjustStreamheight()
         for (var i = 0; i < termArray.length; i++) {
             let currentNode = nodes[termArray[i].nodeId];
             if (graphicopt.display && graphicopt.display.customTerms &&graphicopt.display.customTerms[currentNode.name]) {
@@ -1628,7 +1639,7 @@ d3.TimeArc = function () {
                 "y":d=>yStreamoffset +yScale(0),
                 "dy":'0.25rem',
                 "dx":'2px',
-            }).text(d=>d.y);
+            }).text(d=>Math.round(d.y));
     }
     var buttonLensingWidth =80;
     var buttonheight =15;
