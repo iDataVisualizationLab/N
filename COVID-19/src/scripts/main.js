@@ -119,6 +119,8 @@ let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis',
     'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
     'Europe','Han','Asia','Africa']
+// change name of category
+let categoryname = {PERSON:'OTHER','GPE':'NATION'}
 const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
@@ -341,10 +343,11 @@ function init() {
                         try {
                             const replaced = replaceTerm(term[ci]);
                             if (replaced) {
-                                c = replaced.category
+                                c = replaced.category;
                                 term[ci] = replaced.term;
                             }
                             if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c && !blacklist.find(e=>term[ci]==e)) { // filtering
+                                c = categoryname[c]?categoryname[c]:c;
                                 if (!catergogryList.find(e => e.key === c))
                                     catergogryList.push({key: c, value: {colororder: catergogryList.length}});
                                 if (!t.category[c])
