@@ -1606,7 +1606,7 @@ d3.TimeArc = function () {
         if (streampath.empty())
             streampath = streamlegendg.append('path')
                 .attr('class','pathlegend');
-        let subscale = d3.scaleLinear().domain([0,ticknum/2]).range(yScale.domain());
+        let subscale = d3.scaleLinear().domain([0,ticknum/2]).range(yScale.domain().map((d,i)=>i?d/2:d));
         let streamdata = [{x:0,y:0}];
 
         d3.range(1,ticknum*4+2).forEach(d=>streamdata.push(d%4===0?{x:d/(ticknum*4),y:subscale(Math.ceil(d/4)+1),tick:true}:{x:d/(ticknum*4),y:subscale(Math.random()*1.5)}));
