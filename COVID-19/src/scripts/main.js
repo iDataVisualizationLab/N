@@ -5,11 +5,13 @@ let width = 2000,
         limitRows: 20,
         limitColums: [0,10],
         limitTime: undefined, // change year limit in list ranking here
-        time: {rate:1,unit:'Year'},
-        timeformat: d3.timeYear.every(1),
-        // time: {rate:1,unit:'Month'},
-        // timeformat: d3.timeMonth.every(1),
-        // limitYear: [1998,2001],
+        // time: {rate:1,unit:'Year'},
+        // timeformat: d3.timeYear.every(1),
+        time: {rate:1,unit:'Day'},
+        timeformat: d3.timeDay.every(1),
+        limitYear: [2019,2020],
+        limitTime: [new Date('12/1/2019'),new Date('6/30/2020')],
+        termGroup:{'Hubei':3,'Wuhan':2,'Wuhan University':1,'China':4,'COVID-19':5}
     },
     RadarMapopt  = {
         margin: {top: 10, right: 10, bottom: 0, left: 120},
@@ -27,7 +29,13 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                yScale: d3.scaleLinear().domain([0,30]).range([0,5])
+                yScale: d3.scaleLinear().domain([0,15]).range([0,10])
+            },
+            links:{
+                'stroke-opacity':0.5
+            },
+            customTerms:{
+                'COVID-19': {isConnectedmaxTimeIndex:function(node){return node.monthly[0].monthId}}
             }
         },
         top10:{
@@ -299,8 +307,9 @@ function init() {
         // ssss = statics.slice();
         //     var sentiment = new Sentimood();
         //     var analyze = sentiment.analyze;
+        //     listopt.limitYear =
             console.log('Data raw size: ',d.length);
-            d =d.filter(e=>e.term!==""&&e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&new Date(e.publish_time).getFullYear()>1900&&new Date(e.publish_time).getFullYear()<2021);
+            d =d.filter(e=>e.term!==""&&e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
             console.log('Removed none date and no term result size: ',d.length);
             // d=d.filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
             // d =d.filter(e=>!(new RegExp('^re: ')).test(e.message)).filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
@@ -316,7 +325,12 @@ function init() {
                     let term = t.term.split('|');
                     t.category = {};
                     category.forEach((c,ci) => {
-                        if (!["CARDINAL","DATE"].find(e=>e===c)) {
+                        if (term[ci].length>2 && !["CARDINAL",'ORDINAL','DATE'].find(e=>e===c)) { // filtering
+                            const replaced = replaceTerm(term[ci]);
+                            if (replaced){
+                                c = replaced.category
+                                term[ci] = replaced.term;
+                            }
                             if (!catergogryList.find(e => e.key === c))
                                 catergogryList.push({key: c, value: {colororder: catergogryList.length}});
                             if (!t.category[c])
@@ -334,6 +348,11 @@ function init() {
             });
         });
         return Promise.all(queueProcess);
+        function filterYear(e){
+            let inrangecondition = listopt.limitTime===undefined || (new Date(e.publish_time)-listopt.limitTime[0]>=0&&new Date(e.publish_time)-listopt.limitTime[1]<=0);
+            let noneSingleYear = !(+e.publish_time);
+            return inrangecondition&&noneSingleYear;
+        }
     })
         .then ((d)=>{
             // const locationfilter= 'Old Town';
@@ -344,7 +363,8 @@ function init() {
         formatTime =getformattime (listopt.time.rate,listopt.time.unit);
         listopt.limitTime = d3.extent(dataRaw,d=>d.date);
             updateProcessBar(0.8);
-        TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
+        // TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
+        TimeArc.runopt(listopt).data(dataRaw).draw();
             updateProcessBar(1);
         d3.select('.cover').classed('hidden',true);
     });
@@ -527,11 +547,7 @@ function changeShape(d){
     changeGroup_mode(d)
 }
 
-function changeMinMax(d){
-    let old = CircleMapplot.radaropt().summary;
-    old.minmax = d.checked;
-    CircleMapplot.radaropt({summary: old}).draw();
-}
+
 function changeQuantile(d){
     let old = CircleMapplot.radaropt().summary;
     old.quantile = d.checked;
@@ -545,7 +561,7 @@ function changeMean(d){
 }
 
 function changeFitscreen(d){
-    CircleMapplot.fitscreen(d.checked);
+    // CircleMapplot.fitscreen(d.checked);
 }
 
 function changeTimeunit(d){

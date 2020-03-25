@@ -1,58 +1,34 @@
 
 var termsList = {
-    'location_in_message': ['Palace Hills',
-        'Northwest',
-        'Old Town',
-        'Safe Town',
-        'Southwest',
-        'Downtown',
-        'Wilson Forest',
-        'Scenic Vista',
-        'Broadview',
-        'Chapparal',
-        'Terrapin Springs',
-        'Pepper Mill',
-        'Cheddarford',
-        'Easton',
-        'Weston',
-        'Southton',
-        'Oak Willow',
-        'East Parton',
-        'West Parton',
-    'Friday Bridge',
-    'Magritte Bridge',
-    '12th of July Bridge',
-    'Tranky Doo Bridge',
-    'Jade Bridge'],
-    'user':[],
-    'hashtag':[],
-    'Safe Town': ['Always Safe Power'],
-
-    "sewer": ["discharged", "discharge", "drain", "drainage", "hygiene", "irrigation", "pipes", "pump", "river", "sanitary", "sewage", "sewer", "stream", "underground"],
-
-    // "power/energy": ["valve", "heat", "gas", "power", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "nuclear", "fuel", "battery", "radiant"],
-    "power/energy": ["valve", "heat", "gas", "out of power", "power is out","power out", "no power","went off", "electric", "candle", "flashlight", "generator", "black out", "blackout", "dark", "radiation", "radio rays", "energy", "fuel", "battery", "radiant"],
-
-    "roads_and_bridges": ["airport", "avenue", "bridge", "bus", "congestion", "drive", "flight", "jam", "logistic", "metro", "mta", "road", "street", "subway", "traffic", "train", "transit", "transportation", "highway", "route", "lane"],
-
-    "medical": ["medical", "red cross", "emergency", "urgent","hurt", "evacuate", "evacuating", "evacuation", "protection", "ambulance", "escape", "first aid", "rescue", "rescuing", "dead", "death", "kill", "help", "help out", "help with", "volunteer", "volunteering", "explosion", "exploding", "explode", "victim", "fatalities","sick"],
-
-    "food": ["food","hungry",'eat'],
-
-    "water": ["water","thirst",'drink','dehydrate', 'reservoir'],
-
-    "shelter": ["collapse","shelter"],
-
-    "earthquake": ["seismic", "earthquake", "quake", "quaking", "shake", "shaking", "wobble", "wobbling", "quiver", "epicenter"],
-    
-    "aftershock": ["aftershock", 'after shock', 'shock'],
-
-    "grounds": ["mudslide", "rupture", "landslides", "liquefaction",  "liquifactjheion"],
-
-    "flooding": ["tsunami", "flood"],
-
-    "fire": ["fire((?! station))", "smoke",'burn','hydrant']
+    'China': (()=>(d=(['China', 'Chinese']),d.category='GPE',d)) (),
+    'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
+    'Hubei': (()=>(d=(['Hubei']),d.category='GPE',d)) (),
+    'MERS': (()=>(d=(['MERS']),d.category='EVENT',d)) (),
+    'COVID-19': (()=>(d=(['COVID-19','Coronavirus Disease 2019','Corona Virus','2019-nCoV']),d.category='EVENT',d)) (),
+    'WHO': (()=>(d=(['WHO',' World Health Organization']),d.category='ORG',d)) (),
 };
+var dictionary = {};
+termsList2dictionary()
+function termsList2dictionary(){
+    dictionary = {};
+    Object.keys(termsList).forEach(k=>{
+        termsList[k].forEach(d=>{
+            dictionary[d] = k;
+        })
+    })
+}
+function replaceTerm(t){
+    let dict = dictionary[t];
+    if (!dict){
+        dict = Object.keys(dictionary).find(d=>(new RegExp(d,'gi')).test(t));
+        if (dict)
+            dict = dictionary[dict];
+    }
+
+    if (dict)
+        return {term: dict, category: termsList[dict].category};
+    return undefined;
+}
 
 var collections = {
     'location_post': ['location_in_message'],
@@ -172,11 +148,13 @@ function markWord (message,keys){
     keys.forEach(maink=>{
         if (termsList[maink.text])
             termsList[maink.text].forEach(k=>{
-                const reg = new RegExp(' '+k+'|^'+k+'|@'+k,'gi');
+                const reg = new RegExp(k,'g');
+                // const reg = new RegExp(' '+k+'|^'+k+'|@'+k,'gi');
                 if(reg.test(message))
                     message = message.replace(reg,generatemark(maink,maink.text))
             });
         else {
+            // const reg = new RegExp(maink.text,'g');
             const reg = new RegExp(' '+maink.text+'|^'+maink.text+'|@'+maink.text,'gi');
             if(reg.test(message))
                 message = message.replace(reg, generatemark(maink));
