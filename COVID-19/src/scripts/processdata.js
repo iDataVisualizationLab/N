@@ -3,8 +3,10 @@ var termsList = {
     'China': (()=>(d=(['China', 'Chinese']),d.category='GPE',d)) (),
     'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
     'Hubei': (()=>(d=(['Hubei']),d.category='GPE',d)) (),
-    'MERS': (()=>(d=(['MERS']),d.category='EVENT',d)) (),
-    'COVID-19': (()=>(d=(['COVID-19','Coronavirus Disease 2019','Corona Virus','2019-nCoV']),d.category='EVENT',d)) (),
+    'MERS-CoV': (()=>(d=(['MERS','MER-CoV']),d.category='EVENT',d)) (),
+    'SARS-CoV': (()=>(d=(['SARS-CoV']),d.category='EVENT',d)) (),
+    'Coronavirus': (()=>(d=(['Coronavirus','CoV ']),d.category='EVENT',d)) (),
+    'COVID-19': (()=>(d=(['COVID-19','Coronavirus Disease 2019','Coronavirus Disease','2019-nCoV']),d.category='EVENT',d)) (),
     'WHO': (()=>(d=(['WHO',' World Health Organization']),d.category='ORG',d)) (),
 };
 var dictionary = {};

@@ -105,6 +105,9 @@ let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
+// filter
+let blackCategory = ["CARDINAL",'ORDINAL','DATE'];
+let blackTerms = {'CoV':'PERSON'}
 
 const initialize = _.once(initDemo);
 $(document).ready(function(){
@@ -325,7 +328,7 @@ function init() {
                     let term = t.term.split('|');
                     t.category = {};
                     category.forEach((c,ci) => {
-                        if (term[ci].length>2 && !["CARDINAL",'ORDINAL','DATE'].find(e=>e===c)) { // filtering
+                        if (term[ci].length>2 && !blackCategory.find(e=>e===c) && blackTerms[term[ci]]!==c) { // filtering
                             const replaced = replaceTerm(term[ci]);
                             if (replaced){
                                 c = replaced.category
