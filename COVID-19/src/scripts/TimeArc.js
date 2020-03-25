@@ -1262,6 +1262,9 @@ d3.TimeArc = function () {
                     step = (step*10-20)/termArray.length;
             }
         }
+        // adjust grid
+        timeLegend.selectAll(".timeLegendLine")
+            .attr("y2", function(d){ return graphicopt.height; });
         // console.log('step: ',step)
         if (graphicopt.min_height){
             graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
