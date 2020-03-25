@@ -11,7 +11,7 @@ let width = 2000,
         timeformat: d3.timeDay.every(1),
         limitYear: [2019,2020],
         limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
-        termGroup:{'Hubei':3,'Wuhan':2,'Wuhan University':1,'China':4,'COVID-19':5}
+        termGroup:{'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4}
     },
     RadarMapopt  = {
         margin: {top: 10, right: 10, bottom: 0, left: 120},
@@ -105,8 +105,8 @@ let simDuration =1000, timestep=0,maxtimestep,interval2,playing=true;
 let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
-// filter
-let blackCategory = ["CARDINAL",'ORDINAL','DATE'];
+// filter aka blacklist
+let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT'];
 let blackTerms = {'CoV':'PERSON'}
 
 const initialize = _.once(initDemo);
