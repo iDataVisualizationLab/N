@@ -106,7 +106,7 @@ let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
 // filter aka blacklist
-let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT'];
+let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT'];
 let blackTerms = {'CoV':'PERSON'}
 
 const initialize = _.once(initDemo);
