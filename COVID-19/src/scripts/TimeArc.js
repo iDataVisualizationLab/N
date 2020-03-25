@@ -1805,7 +1805,7 @@ d3.TimeArc = function () {
     var slider;
     var handle;
     var xScaleSlider;
-    var xSlider = 200;
+    var xSlider = 150;
     var widthSlider = 180;
     var ySlider = 30;
     var valueSlider = 3;
