@@ -29,15 +29,15 @@ function updateTable (data,list){
             .append('th').text(d => d);
 
         let rows = table.append('tbody').selectAll('tr')
-            .data(data, d => d.time+d.account)
+            .data(data, d => listopt.timeformat(d.date))
             .enter().append('tr');
-        rows.append('td').attr('class', 'text').style('max-width','150px').text(d => d.publish_time);
+        rows.append('td').attr('class', 'text').style('max-width','150px').text(d => multiFormat(listopt.timeformat(d.date)));
         // rows.append('td').attr('class', 'text').style('max-width','200px').html(d => d.location);
         rows.append('td').attr('class', 'text').html(d => d.title);
         rows.append('td').attr('class', 'text').html(d => d.abstract);
       let table_object = $(table.node()).DataTable({
                 "order": [[0, "asc"]],
-          "pageLength": 100,
+          "pageLength": 50,
           "deferRender": true,
           "columnDefs": [
               { "width": "120px", "targets": 0 },{ "width": "150px", "targets": 1 },

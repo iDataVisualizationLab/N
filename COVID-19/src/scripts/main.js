@@ -4,14 +4,13 @@ let width = 2000,
     listopt = {
         limitRows: 20,
         limitColums: [0,10],
-        limitTime: undefined, // change year limit in list ranking here
         // time: {rate:1,unit:'Year'},
         // timeformat: d3.timeYear.every(1),
         // time: {rate:1,unit:'Day'},
         // timeformat: d3.timeDay.every(1),
         time: {rate:1,unit:'Day'},
-        timeLink: {rate:1,unit:'Week'},
-        timeformat: d3.timeWeek.every(1),
+        // timeLink: {rate:1,unit:'Week'},
+        timeformat: d3.timeDay.every(1),
         limitYear: [2019,2020],
         limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
         termGroup:{'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4}

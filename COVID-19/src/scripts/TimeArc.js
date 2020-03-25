@@ -67,6 +67,8 @@ d3.TimeArc = function () {
         timeHigherUnit = UnitArray[UnitArray.indexOf(runopt.time.unit)+1];
         console.log('hiegher level: '+timeHigherUnit)
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
+        if(runopt.timeLink)
+            runopt.timeLinkformat = d3['time'+runopt.timeLink.unit].every(runopt.timeLink.rate);
         timeScaleIndex = d3.scaleTime().domain(runopt.limitTime);
         totalTimeSteps = timeScaleIndex.ticks(runopt.timeformat).length;
         timeScaleIndex.range([0, totalTimeSteps-1]);
@@ -724,6 +726,8 @@ d3.TimeArc = function () {
             for (var j = i + 1; j < numNode; j++) {
                 var term2 = nodes[j].name;
                 if (relationship[term1 + "__" + term2] && relationship[term1 + "__" + term2].max >= Math.round(valueSlider)) {
+                    let linkstack={};
+                    let currentLinkstack;
                     for (var m = 1; m < totalTimeSteps; m++) {
                         if (relationship[term1 + "__" + term2][m] && relationship[term1 + "__" + term2][m] >= Math.round(valueSlider)) {
                             var sourceNodeId = i;
@@ -780,16 +784,31 @@ d3.TimeArc = function () {
                                     nodes.push(nod);
                                 }
                             }
-
                             var l = new Object();
                             l.source = sourceNodeId;
                             l.target = targetNodeId;
                             l.__timestep__ = m;
-                            //l.value = linkScale(relationship[term1+"__"+term2][m]); 
-                            links.push(l);
-                            if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2) {
-                                relationshipMaxMax2 = relationship[term1 + "__" + term2][m];
-                                console.log(term1 + "__" + term2 +'.....'+m);
+                            //l.value = linkScale(relationship[term1+"__"+term2][m]);
+                            if (runopt.timeLink){
+                                const ml = Math.floor(timeScaleIndex(runopt.timeLinkformat(timeScaleIndex.invert(m))));
+                                if (!linkstack[ml]) {
+                                    l.__timestep__ = ml;
+                                    l.__totalVal__ = 0;
+                                    linkstack[ml] = [];
+                                    links.push(l);
+                                    currentLinkstack = l;
+                                }
+                                linkstack[ml].push(m);
+                                currentLinkstack.__totalVal__+= relationship[term1 + "__" + term2][m];
+                                currentLinkstack.__timestepList__= linkstack[ml];
+                                if (currentLinkstack.__totalVal__> relationshipMaxMax2) {
+                                    relationshipMaxMax2 = currentLinkstack.__totalVal__;
+                                }
+                            }else {
+                                links.push(l);
+                                if (relationship[term1 + "__" + term2][m] > relationshipMaxMax2) {
+                                    relationshipMaxMax2 = relationship[term1 + "__" + term2][m];
+                                }
                             }
                         }
                     }
@@ -820,8 +839,9 @@ d3.TimeArc = function () {
             var term1 = nodes[l.source].name;
             var term2 = nodes[l.target].name;
             var month = l.__timestep__;
-            l.value = linkScale(relationship[term1 + "__" + term2][month]);
-            l.message = data2.filter(d=>d.__timestep__===month).filter(d=>d.__terms__[term1]&&d.__terms__[term2]);
+
+            l.value = linkScale(l.__totalVal__?l.__totalVal__:relationship[term1 + "__" + term2][month]);
+            l.message = data2.filter(d=>(l.__timestepList__||[month]).find(e=>d.__timestep__===e)).filter(d=>d.__terms__[term1]&&d.__terms__[term2]);
         });
 
         console.log("DONE links relationshipMaxMax2=" + relationshipMaxMax2);
