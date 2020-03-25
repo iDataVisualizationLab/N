@@ -37,7 +37,11 @@ let width = 2000,
                 'stroke-opacity':0.5
             },
             customTerms:{
-                'COVID-19': {isConnectedmaxTimeIndex:function(node){return node.monthly[0].monthId}}
+                // 'COVID-19': {isConnectedmaxTimeIndex:function(node){console.log(node);return node.monthly[0].monthId}}
+                'COVID-19': {isConnectedmaxTimeIndex:function(node,nodes){return d3.min(node.childNodes.map(d=>nodes[d].month))}},
+                'Hubei': {isConnectedmaxTimeIndex:function(node,nodes){return d3.min(node.childNodes.map(d=>nodes[d].month))}},
+                'Wuhan': {isConnectedmaxTimeIndex:function(node,nodes){return d3.min(node.childNodes.map(d=>nodes[d].month))}},
+                'China': {isConnectedmaxTimeIndex:function(node,nodes){return d3.min(node.childNodes.map(d=>nodes[d].month))}},
             }
         },
         top10:{

@@ -1308,7 +1308,7 @@ d3.TimeArc = function () {
             if (graphicopt.display && graphicopt.display.customTerms &&graphicopt.display.customTerms[currentNode.name]) {
                 console.log(currentNode)
                 const customSetting = graphicopt.display.customTerms[currentNode.name];
-                Object.keys(customSetting).forEach(e=>currentNode[e] = _.isFunction(customSetting[e])?customSetting[e](currentNode):customSetting[e])
+                Object.keys(customSetting).forEach(e=>currentNode[e] = _.isFunction(customSetting[e])?customSetting[e](currentNode,nodes):customSetting[e])
             }
             currentNode.y = offsetYStream+20 + i * step;
         }
