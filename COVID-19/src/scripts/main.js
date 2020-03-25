@@ -10,7 +10,7 @@ let width = 2000,
         time: {rate:1,unit:'Day'},
         timeformat: d3.timeDay.every(1),
         limitYear: [2019,2020],
-        limitTime: [new Date('12/1/2019'),new Date('6/30/2020')],
+        limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
         termGroup:{'Hubei':3,'Wuhan':2,'Wuhan University':1,'China':4,'COVID-19':5}
     },
     RadarMapopt  = {

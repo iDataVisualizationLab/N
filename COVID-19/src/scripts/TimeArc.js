@@ -104,6 +104,8 @@ d3.TimeArc = function () {
     var coordinate = [0, 0];
     var XGAP_ = 12; // gap between months on xAxis
 
+    let minYdis = 20;
+
     let mouseover_dispath = ()=>{};
     let mouseout_dispath = ()=>{};
     // let mouseover_dispath = ()=>{};
@@ -1260,6 +1262,7 @@ d3.TimeArc = function () {
                     step = (step*10-20)/termArray.length;
             }
         }
+        console.log('step: ',step)
         if (graphicopt.min_height){
             graphicopt.height = Math.max(graphicopt.height,graphicopt.min_height+ graphicopt.margin.top + graphicopt.margin.bottom);
         }
