@@ -1,6 +1,7 @@
 
 var termsList = {
     'China': (()=>(d=(['China', 'Chinese']),d.category='GPE',d)) (),
+    'USA': (()=>(d=(['U.S','United States']),d.category='GPE',d)) (),
     'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
     'Hubei': (()=>(d=(['Hubei']),d.category='GPE',d)) (),
     'Wuhan': (()=>(d=(['Wuhan']),d.category='LOC',d)) (),
