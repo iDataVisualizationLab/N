@@ -69,7 +69,6 @@ d3.TimeArc = function () {
         let timek = Object.keys(formatTimeUlti);
         timeUnitMaster = timek[timek.indexOf(runopt.time.unit)+1];
         timeHigherUnit = UnitArray[UnitArray.indexOf(runopt.time.unit)+1];
-        console.log('hiegher level: '+timeHigherUnit)
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
         if(runopt.timeLink)
             runopt.timeLinkformat = d3['time'+runopt.timeLink.unit].every(runopt.timeLink.rate);
@@ -1465,13 +1464,17 @@ d3.TimeArc = function () {
     }
     let timeLegend;
     function drawTimeLegend() {
+        let major ={};
+        timeScaleIndex.ticks(d3['time'+timeUnitMaster].every(runopt.time.rate)).forEach(d=>major[multiFormat(d)]=1);
         listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
                 return {
                     x: xStep + xScale(i),
-                    year: t
+                    year: t,
+                    major: major[multiFormat(t)]
                 }
             }
         );
+
         timeLegend = svg.select('timeLegend');
         if (timeLegend.empty()) {
             timeLegend = svg.append('g').attr('class', 'timeLegend');
@@ -1514,19 +1517,23 @@ d3.TimeArc = function () {
     }
     let listX;
     function isMainGrid(d){
-        // let condition  = multiFormatUnit(d.year) == timeUnitMaster;
-        let condition  = multiFormat(d.year) !== formatTimeUlti[runopt.time.unit](d.year);
-        // console.log(timeUnitMaster)
-        if (timeUnitMaster)
-            condition = condition && multiFormat(d.year)===formatTimeUlti[timeUnitMaster](d.year)
-        return condition;
+        // // let condition  = multiFormatUnit(d.year) == timeUnitMaster;
+        // let condition  = multiFormat(d.year) !== formatTimeUlti[runopt.time.unit](d.year);
+        // // console.log(timeUnitMaster)
+        // if (timeUnitMaster)
+        //     condition = condition && multiFormat(d.year)===formatTimeUlti[timeUnitMaster](d.year)
+        // return condition;
+        return d.major;
     }
     function updateTimeLegend() {
         console.log("updateTimeLegend");
+        let major ={};
+        timeScaleIndex.ticks(d3['time'+timeUnitMaster].every(runopt.time.rate)).forEach(d=>major[multiFormat(d)]=1);
         listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
                 return {
                     x: xStep + xScale(i),
-                    year: t
+                    year: t,
+                    major: major[multiFormat(t)]
                 }
             }
         );
