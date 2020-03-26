@@ -8,7 +8,7 @@ var termsList = {
     'Wuhan': (()=>(d=(['Wuhan']),d.category='LOC',d)) (),
     'Intensive care unit': (()=>(d=(['ICU']),d.category='ORG',d)) (),
     'MERS-CoV': (()=>(d=(['MERS','MER-CoV','Middle East']),d.category='Virus',d)) (),
-    'SARS-CoV': (()=>(d=(['SARS','ZJ01']),d.category='Virus',d)) (),
+    'SARS-CoV': (()=>(d=(['SARS','ZJ01','Severe Acute Respiratory Syndrome']),d.category='Virus',d)) (),
     'Zika': (()=>(d=(['Zika']),d.category='Virus',d)) (),
     'Sarbecovirus': (()=>(d=(['Sarbecovirus']),d.category='Virus',d)) (),
     'H1N1': (()=>(d=(['H1N1']),d.category='Virus',d)) (),

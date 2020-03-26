@@ -121,7 +121,16 @@ let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
     'Europe','Han','Asia','Africa','Outbreak','Parallel'];
 let fixCategory = {
-    Catalonia:'LOC'
+    Catalonia:'LOC',
+    "Saharan Africa":'LOC',
+    "Taiwan":'LOC',
+    "Wenzhou":'LOC',
+    "Chongqing":'LOC',
+    "Zhejiang":'LOC',
+    "Hong Kong":'LOC',
+    "Angiotensin":'PERSON',
+    "Fujian":'LOC',
+    "Guangdong":'LOC',
 }
 // change name of category
 
@@ -399,6 +408,7 @@ function init() {
                                 term[ci] = replaced.term;
                             }
                             if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c && !blacklist.find(e=>term[ci]==e)) { // filtering
+                                c = fixCategory[term[ci]]?fixCategory[term[ci]]:c;
                                 if (!catergogryList.find(e => e.key === c))
                                     catergogryList.push({key: c, value: {colororder: catergogryList.length}});
                                 if (!t.category[c])
