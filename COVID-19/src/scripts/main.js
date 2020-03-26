@@ -119,7 +119,7 @@ let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis',
     'D68','RBD','ACE2','AST','LDH','Main Results','Markov','Monte Carlo','IgG','IgM','N95','IBV','Mtb','IVA','IVB','ILI',
     'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
-    'Europe','Han','Asia','Africa'];
+    'Europe','Han','Asia','Africa','Outbreak','Parallel'];
 
 // change name of category
 
