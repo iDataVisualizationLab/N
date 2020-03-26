@@ -12,7 +12,7 @@ let width = 2000,
         timeLink: {rate:1,unit:'Week'},
         timeformat: d3.timeDay.every(1),
         limitYear: [2019,2020],
-        limitTime: [new Date('12/1/2019'),new Date('3/31/2020')],
+        limitTime: [new Date('12/20/2019'),new Date('4/10/2020')],
         termGroup:{'Beijing':-1,'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4,'Coronavirus':5}
     },
     RadarMapopt  = {
