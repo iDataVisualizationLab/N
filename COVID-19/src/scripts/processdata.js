@@ -12,6 +12,7 @@ var termsList = {
     'Zika': (()=>(d=(['Zika']),d.category='Virus',d)) (),
     'Sarbecovirus': (()=>(d=(['Sarbecovirus']),d.category='Virus',d)) (),
     'H1N1': (()=>(d=(['H1N1']),d.category='Virus',d)) (),
+    'Influenza B': (()=>(d=(['Influenza','Yamagata']),d.category='Virus',d)) (),
     'Coronavirus': (()=>(d=(['Coronavir','CoV ','PDCoV','corona virus','Coronovirus','CoVs']),d.category='Virus',d)) (),
     'COVID-19': (()=>(d=(['COVID-','Coronavirus Disease 2019','Coronavirus Disease','Corona Virus Disease','2019-nCoV','disease-2019']),d.category='COVID-19',d)) (),
     'WHO': (()=>(d=(['WHO','World Health Organization']),d.category='ORG',d)) (),
