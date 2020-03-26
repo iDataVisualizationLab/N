@@ -6,7 +6,7 @@ var termsList = {
     'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
     'Hubei': (()=>(d=(['Hubei']),d.category='LOC',d)) (),
     'Wuhan': (()=>(d=(['Wuhan']),d.category='LOC',d)) (),
-    'Intensive care unit': (()=>(d=(['ICU']),d.category='ORG',d)) (),
+    'Intensive care unit': (()=>(d=(['ICU','Intensive care unit']),d.category='ORG',d)) (),
     'MERS-CoV': (()=>(d=(['MERS','MER-CoV','Middle East']),d.category='Virus',d)) (),
     'SARS-CoV': (()=>(d=(['SARS','ZJ01','Severe Acute Respiratory Syndrome']),d.category='Virus',d)) (),
     'Zika': (()=>(d=(['Zika']),d.category='Virus',d)) (),

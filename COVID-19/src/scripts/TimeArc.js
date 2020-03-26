@@ -246,7 +246,7 @@ d3.TimeArc = function () {
                     d.__terms__[term] = d.category[c][term];
                     if (!terms[term]) {
                         terms[term] = new Object();
-                        terms[term].max = 0;
+                        terms[term].frequency = 0;
                         terms[term].maxTimeIndex = -100;   // initialized negative
                         terms[term].category = c;
                     }
@@ -254,11 +254,11 @@ d3.TimeArc = function () {
                         terms[term][m] = d.__terms__[term];
                     else {
                         terms[term][m] += d.__terms__[term];
-                        if (terms[term][m] > terms[term].max) {
-                            terms[term].max = terms[term][m];
+                        if (terms[term][m] > terms[term].frequency) {
+                            terms[term].frequency = terms[term][m];
                             terms[term].maxTimeIndex = m;
-                            if (terms[term].max > termMaxMax)
-                                termMaxMax = terms[term].max;
+                            if (terms[term].frequency > termMaxMax)
+                                termMaxMax = terms[term].frequency;
                         }
                     }
                 }
@@ -427,6 +427,7 @@ d3.TimeArc = function () {
 
         termArray = [];
         for (var att in terms) {
+            terms[att].sudden ={};
             var e = {};
             e.term = att;
             if (catergogryObjectReject[terms[att].category]||removeList[e.term] || (searchTerm && searchTerm !== "" && !selected[e.term])) // remove list **************
@@ -440,12 +441,14 @@ d3.TimeArc = function () {
                     if (terms[att][m - 1])
                         previous = terms[att][m - 1];
                     var net = (terms[att][m] + 1) / (previous + 1); // compute sudden attention
+                    terms[att].sudden[m] = net;
                     if (net > maxNet) {
                         maxNet = net;
                         maxTimeIndex = m;
                     }
                 }
             }
+            // e.frequency = terms[att].frequency;
             e.max = maxNet;
             e.maxTimeIndex = maxTimeIndex;
             e.category = terms[att].category;
