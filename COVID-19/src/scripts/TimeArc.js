@@ -1572,6 +1572,7 @@ d3.TimeArc = function () {
     }
 
     function drawTimeBox(){
+
         const timeLegendbox = timeLegend.select('g.timebrush');
         timeLegendbox.append("rect")
             .attr("class", "timeBox")
@@ -1877,7 +1878,7 @@ d3.TimeArc = function () {
     var slider;
     var handle;
     var xScaleSlider;
-    var xSlider = 150;
+    var xSlider = 120;
     var widthSlider = 180;
     var ySlider = 30;
     var valueSlider = 2;

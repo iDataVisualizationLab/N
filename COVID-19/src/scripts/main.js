@@ -16,7 +16,7 @@ let width = 2000,
         termGroup:{'Beijing':-1,'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4,'Coronavirus':5}
     },
     RadarMapopt  = {
-        margin: {top: 10, right: 10, bottom: 0, left: 120},
+        margin: {top: 10, right: 10, bottom: 0, left: 100},
         offset: {top: 0},
         width: width,
         height: height,
@@ -534,7 +534,8 @@ function initTime (max){
 function initTimeArc () {
  RadarMapopt.width = width;
  RadarMapopt.height = height;
- RadarMapopt.margin.left = Math.max(width*2/12,400);
+ // RadarMapopt.margin.left = Math.max(width*2/12,400);
+ RadarMapopt.margin.left = 310;
  RadarMapopt.min_height = 200//+$('#map')[0].getClientRects()[0].height;
  RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
  RadarMapopt.svg.call(tool_tip);
