@@ -162,7 +162,7 @@ function markWord (message,keys){
                 const reg = new RegExp(k,'g');
                 // const reg = new RegExp(' '+k+'|^'+k+'|@'+k,'gi');
                 if(reg.test(message))
-                    message = message.replace(reg,generatemark(maink,maink.text))
+                    message = message.replace(reg,generatemark(maink,termsList[maink.text].length>1?maink.text:undefined))
             });
         else {
             // const reg = new RegExp(maink.text,'g');

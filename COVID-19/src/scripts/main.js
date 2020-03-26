@@ -120,7 +120,9 @@ let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis',
     'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
     'Europe','Han','Asia','Africa','Outbreak','Parallel'];
-
+let fixCategory = {
+    Catalonia:'LOC'
+}
 // change name of category
 
 const initialize = _.once(initDemo);

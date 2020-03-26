@@ -209,7 +209,7 @@ d3.TimeArc = function () {
     };
 
     var area = d3.area()
-        .curve(d3.curveCardinalOpen)
+        .curve(d3.curveCatmullRomOpen)
         .x(function (d) {
             return xStep + xScale(d.monthId);
         })
