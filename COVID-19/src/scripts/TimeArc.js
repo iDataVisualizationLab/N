@@ -63,7 +63,11 @@ d3.TimeArc = function () {
     var minYear = 2006;
     var maxYear = 2015;
     var timeScaleIndex
+
+    let timeUnitMaster = 'Year';
     function updateTimeScale() {
+        let timek = Object.keys(formatTimeUlti);
+        timeUnitMaster = timek[timek.indexOf(runopt.time.unit)+1];
         timeHigherUnit = UnitArray[UnitArray.indexOf(runopt.time.unit)+1];
         console.log('hiegher level: '+timeHigherUnit)
         runopt.timeformat = d3['time'+runopt.time.unit].every(runopt.time.rate);
@@ -958,7 +962,7 @@ d3.TimeArc = function () {
                 });
             mouseover_dispath([d,d3.keys(list).map(l=>{
                 let cat = termArray3.find(t=>t.term===l).category;
-                return{color:colorCatergory(cat), text:l, group:cat}})]);
+                return{color:getColor(cat), text:l, group:cat}})]);
             nodeG.style("fill-opacity", function (n) {
                 if (list[n.name])
                     return 1;
@@ -1033,7 +1037,7 @@ d3.TimeArc = function () {
                 .style("stroke-opacity", 1);
             let cat_source = termArray3.find(t=>t.term===d.source.name).category;
             let cat_target = termArray3.find(t=>t.term===d.target.name).category;
-            mouseover_dispath([d,[{color:colorCatergory(cat_source), text:d.source.name, group:cat_source},{color:colorCatergory(cat_target), text:d.target.name, group:cat_target}]]);
+            mouseover_dispath([d,[{color:getColor(cat_source), text:d.source.name, group:cat_source},{color:getColor(cat_target), text:d.target.name, group:cat_target}]]);
         }
     }
 
@@ -1065,7 +1069,7 @@ d3.TimeArc = function () {
             svg.selectAll(".linkArc")
                 .style("stroke-opacity", 0.1);
             d.messagearr = data.filter(m=>m.__terms__[d.name]);
-            mouseover_dispath([d,[{color:colorCatergory(d.group), text:d.name, group:d.group}]]);
+            mouseover_dispath([d,[{color:getColor(d.group), text:d.name, group:d.group}]]);
             // console.log(termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}}))
             // mouseover_dispath([d,termArray.map(t=>{return{color:colorCatergory(t.category), text:t.term, group:t.category}})]);
         }
@@ -1384,7 +1388,7 @@ d3.TimeArc = function () {
     //     return arguments.length ? (mouseout_dispath = _, timeArc) : mouseout_dispath;
     // };
     timeArc.catergogryList = function (_) {
-        return arguments.length ? (catergogryList = _, timeArc) : catergogryList;
+        return arguments.length ? (catergogryList = _,catergogryObject = {},catergogryList.forEach(c=>catergogryObject[c.key]=c.value), timeArc) : catergogryList;
     };
     timeArc.graphicopt = function (_) {
         if (arguments.length) {
@@ -1427,7 +1431,7 @@ d3.TimeArc = function () {
             .attr("cx", 0)
             .attr("cy", 0)
             .attr("r", rr)
-            .style("fill",d=>colorCatergory(d.key));
+            .style("fill",d=>getColor(d.key));
 
         legendg.append("text")
             .attr("x", xx+10)
@@ -1436,8 +1440,8 @@ d3.TimeArc = function () {
             // .attr("font-family", "sans-serif")
             // .attr("font-size", "11px")
             .style("text-anchor", "left")
-            .style("fill",d=>colorCatergory(d.key))
-            .text(d=>d.key);
+            .style("fill",d=>getColor(d.key))
+            .text(d=>d.value.text||d.key);
     }
     function onclickcategory(d) {
         if(d.disable){
@@ -1485,7 +1489,7 @@ d3.TimeArc = function () {
             .style("text-shadow", "1px 1px 0 rgba(255, 255, 255, 0.6")
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d,i) {
-                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+                if (isMainGrid(d))
                     return 12;
                 else
                     return 17;
@@ -1494,13 +1498,21 @@ d3.TimeArc = function () {
             // .attr("font-family", "sans-serif")
             // .attr("font-size", "12px")
             .text(function(d,i) {
-                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+                if (isMainGrid(d))
                     return multiFormat(d.year);
                 else
                     return formatTimeUlti[runopt.time.unit](d.year);
             });
     }
     let listX;
+    function isMainGrid(d){
+        // let condition  = multiFormatUnit(d.year) == timeUnitMaster;
+        let condition  = multiFormat(d.year) !== formatTimeUlti[runopt.time.unit](d.year);
+        // console.log(timeUnitMaster)
+        if (timeUnitMaster)
+            condition = condition && multiFormat(d.year)===formatTimeUlti[timeUnitMaster](d.year)
+        return condition;
+    }
     function updateTimeLegend() {
         console.log("updateTimeLegend");
         listX = timeScaleIndex.ticks(runopt.timeformat).map( (t,i)=>{
@@ -1517,7 +1529,7 @@ d3.TimeArc = function () {
                 else
                     return (formatTimeUlti[runopt.time.unit](d.year)<d.year) ? "2, 1" : "1, 3"})
             .style("stroke-opacity", function(d,i){
-                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+                if (isMainGrid(d))
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul) {
@@ -1531,7 +1543,7 @@ d3.TimeArc = function () {
             .attr("x2", function(d){ return d.x; });
         timeLegend.selectAll(".timeLegendText").data(listX).transition().duration(250)
             .style("fill-opacity", function(d,i){
-                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+                if (isMainGrid(d))
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
@@ -1578,7 +1590,7 @@ d3.TimeArc = function () {
         //     .attr("y", maxY+12);
         timeLegend.selectAll(".timeLegendText").transition().duration(durationTime)
             .style("fill-opacity", function(d,i){
-                if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+                if (isMainGrid(d))
                     return 1;
                 else {
                     if (isLensing && lMonth-lensingMul<=i && i<=lMonth+lensingMul)
@@ -1588,7 +1600,7 @@ d3.TimeArc = function () {
                 }
             })
             // .attr("y", function(d,i) {
-            //     if (multiFormat(d.year)!==formatTimeUlti[runopt.time.unit](d.year))
+            //     if (isMainGrid(d))
             //         return maxY+21;
             //     else
             //         return maxY+21;
@@ -1706,12 +1718,13 @@ d3.TimeArc = function () {
     }
     let colorCatergory = d3.scaleOrdinal(d3.schemeCategory10);
     function getColor(category, count) {
-        var minSat = 80;
-        var maxSat = 180;
-        var percent = count/maxCount[category];
-        var sat = minSat+Math.round(percent*(maxSat-minSat));
-
-        return colorCatergory(category)
+        // var minSat = 80;
+        // var maxSat = 180;
+        // var percent = count/maxCount[category];
+        // var sat = minSat+Math.round(percent*(maxSat-minSat));
+        if (catergogryObject[category].customcolor)
+            return catergogryObject[category].customcolor;
+        return  colorCatergory(category)
         // if (category=="person")
         //     return "rgb("+sat+", "+255+", "+sat+")" ; // leaf node
         // else if (category=="location")

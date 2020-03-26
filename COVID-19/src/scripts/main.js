@@ -112,15 +112,17 @@ let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
 // filter aka blacklist
-let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT','WORK_OF_ART','NORP'];
+let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT',
+    'WORK_OF_ART','NORP','EVENT'];
 let blackTerms = {'CoV':'PERSON'}
 let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis','Herein','p<0.001','ANOVA','Chi-squared',
     'D68','RBD','ACE2','AST','LDH','Main Results','Markov','Monte Carlo','IgG','IgM','N95','IBV','Mtb','IVA','IVB','ILI',
     'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
-    'Europe','Han','Asia','Africa']
+    'Europe','Han','Asia','Africa'];
+
 // change name of category
-let categoryname = {PERSON:'OTHER','GPE':'NATION'}
+
 const initialize = _.once(initDemo);
 $(document).ready(function(){
     //scatterConfig.scaleView = $('#mainPlot').width()/scatterConfig.width;
@@ -311,7 +313,55 @@ function initDemo(){
 }
 // let ssss;
 function init() {
-    initTimeArc();
+    catergogryList = [
+        {
+            "key":"COVID-19",
+            "value":{
+                "colororder":3
+            },
+            "order":0
+        },
+        {
+            "key":"Virus",
+            "value":{
+                "colororder":1
+            },
+            "order":1
+        },
+        {
+            "key":"ORG",
+            "value":{
+                "colororder":0,
+                "text":"Organization"
+            },
+            "order":3
+        },
+        {
+            "key":"GPE",
+            "value":{
+                "colororder":2,
+                "text":"Nation"
+            },
+            "order":2
+        },
+        {
+            "key":"LOC",
+            "value":{
+                "colororder":4,
+                "text":"Location"
+            },
+            "order":4
+        },
+        {
+            "key":"PERSON",
+            "value":{
+                "colororder":5,
+                "customcolor":'#aeaeae',
+                "text": "Other"
+            },
+            "order":5
+        }
+    ];
     const choice = d3.select('#datacom').node().value;
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
@@ -331,7 +381,7 @@ function init() {
         let count=0;
         let totalcount = d.length;
         let updatecondition = 0.1;
-            catergogryList = [];
+            // catergogryList = [];
         let queueProcess = d.map((t,i)=> {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -347,7 +397,6 @@ function init() {
                                 term[ci] = replaced.term;
                             }
                             if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c && !blacklist.find(e=>term[ci]==e)) { // filtering
-                                c = categoryname[c]?categoryname[c]:c;
                                 if (!catergogryList.find(e => e.key === c))
                                     catergogryList.push({key: c, value: {colororder: catergogryList.length}});
                                 if (!t.category[c])
@@ -379,6 +428,7 @@ function init() {
         listopt.limitTime = d3.extent(dataRaw,d=>d.date);
             updateProcessBar(0.8);
         // TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
+            initTimeArc();
         TimeArc.runopt(listopt).data(dataRaw).draw();
             updateProcessBar(1);
         d3.select('.cover').classed('hidden',true);
