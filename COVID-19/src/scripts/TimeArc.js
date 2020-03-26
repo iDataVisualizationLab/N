@@ -1255,16 +1255,17 @@ d3.TimeArc = function () {
 
     function adjustStreamheight() {
 // var step = Math.min((graphicopt.heightG() - 25) / (numNode + 1), 15);
+        const customNode = runopt.termGroup? d3.keys(runopt.termGroup).length + numNode:numNode;
         if (graphicopt.fixscreence)
-            step = (maxheight - 25) / (numNode + 1);
+            step = (maxheight - 25) / (customNode + 1);
         else {
-            step = Math.min(Math.max((maxheight - 25) / (numNode + 1), minYdis), 20);
+            step = Math.min(Math.max((maxheight - 25) / (customNode + 1), minYdis), 20);
             if (numNode > 10)
-                graphicopt.height = numNode * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
+                graphicopt.height = customNode * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
             else {
                 graphicopt.height = 10 * step + 20 + graphicopt.margin.top + graphicopt.margin.bottom;
                 if (numNode)
-                    step = (step * 10 - 20) / numNode;
+                    step = (step * 10 - 20) / customNode;
             }
         }
         // adjust grid
@@ -1313,8 +1314,9 @@ d3.TimeArc = function () {
             return a.y - b.y;
         });
 
-        console.log(termArray.length)
-        adjustStreamheight()
+        console.log(termArray.length);
+        adjustStreamheight();
+        let count = 0
         for (var i = 0; i < termArray.length; i++) {
             let currentNode = nodes[termArray[i].nodeId];
             if (graphicopt.display && graphicopt.display.customTerms &&graphicopt.display.customTerms[currentNode.name]) {
@@ -1322,7 +1324,12 @@ d3.TimeArc = function () {
                 const customSetting = graphicopt.display.customTerms[currentNode.name];
                 Object.keys(customSetting).forEach(e=>currentNode[e] = _.isFunction(customSetting[e])?customSetting[e](currentNode,nodes):customSetting[e])
             }
-            currentNode.y = offsetYStream+20 + i * step;
+            if(runopt.termGroup[currentNode.name])
+                count+=0.5
+            currentNode.y = offsetYStream+20 + count * step;
+            count++;
+            if(runopt.termGroup[currentNode.name])
+                count+=0.5
         }
         force.alpha(0);
         force.stop();
@@ -1390,6 +1397,7 @@ d3.TimeArc = function () {
     timeArc.catergogryList = function (_) {
         return arguments.length ? (catergogryList = _,catergogryObject = {},catergogryList.forEach(c=>catergogryObject[c.key]=c.value), timeArc) : catergogryList;
     };
+    timeArc.firstLink = function(node,nodes){return d3.min(node.childNodes.map(d=>nodes[d].month))};
     timeArc.graphicopt = function (_) {
         if (arguments.length) {
             for(var i in _){
