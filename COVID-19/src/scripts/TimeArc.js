@@ -144,11 +144,11 @@ d3.TimeArc = function () {
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
         svg.classed('timearc',true)
             .attrs({
-            width: graphicopt.width,
-            height: graphicopt.height,
-            // overflow: "visible",
+                width: graphicopt.width,
+                height: graphicopt.height,
+                // overflow: "visible",
 
-        });
+            });
 
         if (svg.select('g.linkHolder').empty())
             svg.append('g').attr('class','linkHolder');
@@ -197,8 +197,8 @@ d3.TimeArc = function () {
             .force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2))
             .force('x', d3.forceX(0).strength(0.015))
             .force('y',  d3.forceY(0).strength(0.015));
-            //.friction(0.95)
-            // .alphaTarget(0.9)
+        //.friction(0.95)
+        // .alphaTarget(0.9)
         force.stop();
         // .size([width, height]);
         catergogryList.forEach((d,i)=> d.order = i);
@@ -363,7 +363,7 @@ d3.TimeArc = function () {
             computeLinks();
 
             force.force("center", d3.forceCenter(graphicopt.widthG() / 2, graphicopt.heightG() / 2))
-            .nodes(nodes)
+                .nodes(nodes)
                 .force('link').links(links);
             force.alpha(1);
             force.restart();
@@ -463,7 +463,7 @@ d3.TimeArc = function () {
                 //   console.log("e.term = "+e.term+" e.max =" +e.max );
             }
 
-           termArray.push(e);
+            termArray.push(e);
         }
 
         termArray.sort(function (a, b) {
@@ -588,7 +588,7 @@ d3.TimeArc = function () {
         termArray2 = [];
         for (var i = 0; i < termArray.length; i++) {
             // if (termArray[i].isSearchTerm || termArray[i].isConnected > 0)
-                termArray2.push(termArray[i]);
+            termArray2.push(termArray[i]);
         }
         console.log("termArray2.length = " + termArray2.length);
 
@@ -601,13 +601,13 @@ d3.TimeArc = function () {
             //     return -1;
             // }
             // else {
-                if (a.max < b.max) {
-                    return 1;
-                }
-                if (a.max > b.max) {
-                    return -1;
-                }
-                return 0;
+            if (a.max < b.max) {
+                return 1;
+            }
+            if (a.max > b.max) {
+                return -1;
+            }
+            return 0;
             // }
         });
         termArray3 = [];
@@ -840,7 +840,7 @@ d3.TimeArc = function () {
         linkScale = d3.scaleLinear()
             .range([0.1, 4])
             .domain([1,relationshipMaxMax2]);
-            // .domain([1,15]);
+        // .domain([1,15]);
         links.forEach(function (l) {
             var term1 = nodes[l.source].name;
             var term2 = nodes[l.target].name;
@@ -954,7 +954,7 @@ d3.TimeArc = function () {
                             // if (l.count > list[name].count) {
                             //     list[name].linkcount = l.count;
                             //     list[name].year = l.__timestep__;
-                                d.messagearr =_.unique(_.flatten( [d.messagearr,l.message]));
+                            d.messagearr =_.unique(_.flatten( [d.messagearr,l.message]));
                             // }
                         }
                         return 1;
@@ -1030,8 +1030,8 @@ d3.TimeArc = function () {
             nodeG.filter(n=>n.name===d.target.name||n.name===d.source.name).style("fill-opacity", 1)
                 .style("font-weight", 'bold')
                 .transition().transition().duration(500).attr("transform", function (n) {
-                    var newX = xStep + xScale(d.__timestep__);
-                    return "translate(" + newX + "," + n.y + ")"});
+                var newX = xStep + xScale(d.__timestep__);
+                return "translate(" + newX + "," + n.y + ")"});
             svg.selectAll(".layer").filter(n=>n.name!==d.target.name&&n.name!==d.source.name)
                 .style("fill-opacity", 0.1)
                 .style("stroke-opacity",0);
@@ -1345,6 +1345,7 @@ d3.TimeArc = function () {
         return arguments.length ? (svg = _, timeArc) : svg;
 
     };
+    timeArc.totalTimeSteps = totalTimeSteps
 
     timeArc.stickyTerms = function (_) {
         return arguments.length ? (runopt.stickyTerms = _, timeArc) : runopt.stickyTerms;
@@ -1677,13 +1678,13 @@ d3.TimeArc = function () {
         lineold.enter().append('line').attr('class','arrow')
             .merge(lineold)
             .attrs({
-            "marker-start":"url(#arrowHeadstart)",
-            "marker-end":"url(#arrowHeadend)",
-            "x1":d=>xScale(d.x),
-            "y1":d=>yStreamoffset - yScale(d.y)+2,
-            "x2":d=>xScale(d.x),
-            "y2":d=>yStreamoffset +yScale(d.y)-2
-        }).styles({
+                "marker-start":"url(#arrowHeadstart)",
+                "marker-end":"url(#arrowHeadend)",
+                "x1":d=>xScale(d.x),
+                "y1":d=>yStreamoffset - yScale(d.y)+2,
+                "x2":d=>xScale(d.x),
+                "y2":d=>yStreamoffset +yScale(d.y)-2
+            }).styles({
             'stroke-width':1,
             'stroke': '#000'
         });

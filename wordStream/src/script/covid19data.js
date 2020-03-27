@@ -165,8 +165,8 @@ function wordCloud(selector,config) {
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
-        var max = 25;
+        var min = 15;
+        var max = 20;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -610,7 +610,7 @@ function ready (error, dataf){
     });
     data.sort((a,b)=> a.time-b.time);
 
-    // data = data.filter(d=> d.time> parseTime('Dec 27 2017'));
+    data = data.filter(d=> d.time< parseTime('Mar 23 2020'));
     termscollection_org = blacklist(data);
     forcegraph("#slide-out","#autocomplete-input");
     var listjson = {};
@@ -836,8 +836,9 @@ function handledata(data){
                 var preday = new Date(term.values[0].key);
                 term.values.forEach(day => {
                     preday["setDate"](preday.getDate() + daystep*2);
-                    if (preday != new Date(day.key))
-                        pre = 0;
+                    // if (preday != new Date(day.key))
+                    //     pre = 0;
+                    // pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
                     pre = day.values.length;
@@ -960,21 +961,21 @@ function fillData(endDate, startDate) {
     ArticleDay = dd;
     TermwDay = d;
 }
-
+let inclideList = ["WHO", "H1N1", "SEIR", "Zika", "FDA", "CDC", "COPD", "Iran"];
 function blacklist(data){
     var numterm =0;
     categories = Object.keys(categoriesgroup);
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =[];
+    var blackw =['27·2–37·5'];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
             numterm++;
-            var key = false;
+            var key = inclideList.find(d=>w.term===d);
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined;
+            key = key || w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined && ;
             if (!key)
                 console.log(w)
             return key;}).forEach( w => {

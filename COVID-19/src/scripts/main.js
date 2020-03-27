@@ -91,18 +91,18 @@ let width = 2000,
                     colors=  d3[`scheme${name}`][n].slice();
                 else
                     colors=  d3[`scheme${name}`].slice();
-                } else {
-                    const interpolate = d3[`interpolate${name}`];
-                    colors = [];
-                    for (let i = 0; i < n; ++i) {
-                        colors.push(d3.rgb(interpolate(i / (n - 1))).hex());
-                    }
+            } else {
+                const interpolate = d3[`interpolate${name}`];
+                colors = [];
+                for (let i = 0; i < n; ++i) {
+                    colors.push(d3.rgb(interpolate(i / (n - 1))).hex());
+                }
             }
             return colors;
         },
     },colorArr = {Radar: [
-        {val: 'rainbow',type:'custom',label: 'Rainbow'},
-        {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true},
+            {val: 'rainbow',type:'custom',label: 'Rainbow'},
+            {val: 'RdBu',type:'d3',label: 'Blue2Red',invert:true},
             {val: 'soil',type:'custom',label: 'RedYelBlu'},],
         Cluster: [{val: 'Category10',type:'d3',label: 'D3'},{val: 'Paired',type:'d3',label: 'Blue2Red'}]};
 let arrColor = colorScaleList.rainbow;
@@ -117,9 +117,11 @@ let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY'
 let blackTerms = {'CoV':'PERSON'}
 let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis','Herein','p<0.001','ANOVA','Chi-squared',
     'D68','RBD','ACE2','AST','LDH','Main Results','Markov','Monte Carlo','IgG','IgM','N95','IBV','Mtb','IVA','IVB','ILI',
-    'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
+    'MHC','HLA','EMBASE','IL6','TNF-α','IFN-β','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
-    'Europe','Han','Asia','Africa','Outbreak','Parallel'];
+    'Europe','Han','Asia','Africa','Outbreak','Parallel','PaO(2)/FiO(2','–0.3762','5‐year‐age‐group','DTR ≥','IPEC-J2',
+    'e.g','BIG','Q176','PaO(2)/FiO(2','13·0','the RT-LAMP','n=7','83.8','BALB/','Gram','27·2–37·5','GI-27','GI-9','‐19',
+    'FilmArray','mTLR9','‘CC’'];
 let fixCategory = {
     Catalonia:'LOC',
     "Saharan Africa":'LOC',
@@ -129,6 +131,8 @@ let fixCategory = {
     "Zhejiang":'LOC',
     "Hong Kong":'LOC',
     "Angiotensin":'PERSON',
+    'H5NX':'Virus',
+    'Tonsillitis':'Virus',
     "Fujian":'LOC',
     "Guangdong":'LOC',
 }
@@ -279,7 +283,7 @@ function RangechangeVal(val) {
 function _handleRangeMousedownTouchstart(t) {
     if ($(this.value).html(dataRaw.TimeMatch[this.$el.val()])||$(this.value).html(this.$el.val()))
         this._mousedown = !0;
-        this.$el.addClass("active");
+    this.$el.addClass("active");
     $(this.thumb).hasClass("active") || this._showRangeBubble();
     if ("input" !== t.type) {
         var e = this._calcRangeOffset();
@@ -380,71 +384,71 @@ function init() {
         readDatacsv(choice,'csv')
     ])
         .then(([d])=>{
-        // ssss = statics.slice();
-        //     var sentiment = new Sentimood();
-        //     var analyze = sentiment.analyze;
-        //     listopt.limitYear =
+            // ssss = statics.slice();
+            //     var sentiment = new Sentimood();
+            //     var analyze = sentiment.analyze;
+            //     listopt.limitYear =
             console.log('Data raw size: ',d.length);
             d =d.filter(e=>e.term!==""&&e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
             console.log('Removed none date and no term result size: ',d.length);
             // d=d.filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
             // d =d.filter(e=>!(new RegExp('^re: ')).test(e.message)).filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
-        let count=0;
-        let totalcount = d.length;
-        let updatecondition = 0.1;
+            let count=0;
+            let totalcount = d.length;
+            let updatecondition = 0.1;
             // catergogryList = [];
-        let queueProcess = d.map((t,i)=> {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    t.date = new Date(t.publish_time);
-                    let category = t.category.split('|');
-                    let term = t.term.split('|');
-                    t.category = {};
-                    category.forEach((c,ci) => {
-                        try {
-                            const replaced = replaceTerm(term[ci]);
-                            if (replaced) {
-                                c = replaced.category;
-                                term[ci] = replaced.term;
+            let queueProcess = d.map((t,i)=> {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        t.date = new Date(t.publish_time);
+                        let category = t.category.split('|');
+                        let term = t.term.split('|');
+                        t.category = {};
+                        category.forEach((c,ci) => {
+                            try {
+                                const replaced = replaceTerm(term[ci]);
+                                if (replaced) {
+                                    c = replaced.category;
+                                    term[ci] = replaced.term;
+                                }
+                                if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c && !blacklist.find(e=>term[ci]==e)) { // filtering
+                                    c = fixCategory[term[ci]]?fixCategory[term[ci]]:c;
+                                    if (!catergogryList.find(e => e.key === c))
+                                        catergogryList.push({key: c, value: {colororder: catergogryList.length}});
+                                    if (!t.category[c])
+                                        t.category[c] = {};
+                                    t.category[c][term[ci]] = 1;
+                                }
+                            }catch (e) {
+                                console.log(e,category,term,ci,term[ci])
                             }
-                            if (term[ci].length > 2 && !blackCategory.find(e => e === c) && blackTerms[term[ci]] !== c && !blacklist.find(e=>term[ci]==e)) { // filtering
-                                c = fixCategory[term[ci]]?fixCategory[term[ci]]:c;
-                                if (!catergogryList.find(e => e.key === c))
-                                    catergogryList.push({key: c, value: {colororder: catergogryList.length}});
-                                if (!t.category[c])
-                                    t.category[c] = {};
-                                t.category[c][term[ci]] = 1;
-                            }
-                        }catch (e) {
-                            console.log(e,category,term,ci,term[ci])
+                        });
+                        count++;
+                        if (count/totalcount>updatecondition){
+                            updateProcessBar(updatecondition);
+                            updatecondition+=0.1;
                         }
-                    });
-                    count++;
-                    if (count/totalcount>updatecondition){
-                        updateProcessBar(updatecondition);
-                        updatecondition+=0.1;
-                    }
-                    resolve(t);
-                },0);
+                        resolve(t);
+                    },0);
+                });
             });
-        });
-        return Promise.all(queueProcess);
-    })
+            return Promise.all(queueProcess);
+        })
         .then ((d)=>{
             // const locationfilter= 'Old Town';
-        // dataRaw = d.filter(d=>(d.category['location (of the message)']&&d.category['location (of the message)'][locationfilter])||(d.category['location (in the message)']&&d.category['location (in the message)'][locationfilter]));
-        dataRaw = d;
-        timestep = 0;
-        listopt.limitColums = [0,10];
-        formatTime =getformattime (listopt.time.rate,listopt.time.unit);
-        listopt.limitTime = d3.extent(dataRaw,d=>d.date);
+            // dataRaw = d.filter(d=>(d.category['location (of the message)']&&d.category['location (of the message)'][locationfilter])||(d.category['location (in the message)']&&d.category['location (in the message)'][locationfilter]));
+            dataRaw = d;
+            timestep = 0;
+            listopt.limitColums = [0,10];
+            formatTime =getformattime (listopt.time.rate,listopt.time.unit);
+            listopt.limitTime = d3.extent(dataRaw,d=>d.date);
             updateProcessBar(0.8);
-        // TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
+            // TimeArc.runopt(listopt).data(dataRaw).stickyTerms(['earthquake']).draw();
             initTimeArc();
-        TimeArc.runopt(listopt).data(dataRaw).draw();
+            TimeArc.runopt(listopt).data(dataRaw).draw();
             updateProcessBar(1);
-        d3.select('.cover').classed('hidden',true);
-    });
+            d3.select('.cover').classed('hidden',true);
+        });
 }
 function filterYear(e){
     let inrangecondition = listopt.limitTime===undefined || (new Date(e.publish_time)-listopt.limitTime[0]>=0&&new Date(e.publish_time)-listopt.limitTime[1]<=0);
@@ -544,15 +548,15 @@ function initTime (max){
     // root.style.setProperty('--steptime',(600/(max-1))+'px')
 }
 function initTimeArc () {
- RadarMapopt.width = width;
- RadarMapopt.height = height;
- // RadarMapopt.margin.left = Math.max(width*2/12,400);
- RadarMapopt.margin.left = 310;
- RadarMapopt.min_height = 200//+$('#map')[0].getClientRects()[0].height;
- RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
- RadarMapopt.svg.call(tool_tip);
- TimeArc.graphicopt(RadarMapopt);
- TimeArc.svg(RadarMapopt.svg).mouseover(onmouseoverRadar).mouseout(onmouseleaveRadar).catergogryList(catergogryList).init();
+    RadarMapopt.width = width;
+    RadarMapopt.height = height;
+    // RadarMapopt.margin.left = Math.max(width*2/12,400);
+    RadarMapopt.margin.left = 310;
+    RadarMapopt.min_height = 200//+$('#map')[0].getClientRects()[0].height;
+    RadarMapopt.svg = d3.select('#RadarMapcontent').attr("class", "T_sneSvg");
+    RadarMapopt.svg.call(tool_tip);
+    TimeArc.graphicopt(RadarMapopt);
+    TimeArc.svg(RadarMapopt.svg).mouseover(onmouseoverRadar).mouseout(onmouseleaveRadar).catergogryList(catergogryList).init();
 
 }
 
@@ -745,10 +749,10 @@ let schema;
 let globalScale = d3.scaleLinear().range([0,1]);
 function objecttoArrayRadar(o){
     return {value: globalScale(o.val),
-            minval: globalScale(o.minval),
-            maxval: globalScale(o.maxval),
-            q1: globalScale(o.q1),
-            q3: globalScale(o.q3)};
+        minval: globalScale(o.minval),
+        maxval: globalScale(o.maxval),
+        q1: globalScale(o.q1),
+        q3: globalScale(o.q3)};
 }
 // list html
 let tempStore ={};
@@ -794,7 +798,7 @@ function animationShift(index,g){
         });
     if (d3.select(g).datum()[index+1])
         instance.transition()
-        .on('start',function(){animationShift(index+1,g);});
+            .on('start',function(){animationShift(index+1,g);});
 }
 
 function onmouseleaveRadar (d) {
