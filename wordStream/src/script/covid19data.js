@@ -962,23 +962,21 @@ function fillData(endDate, startDate) {
     TermwDay = d;
 }
 let inclideList = ["WHO", "H1N1", "SEIR", "Zika", "FDA", "CDC", "COPD", "Iran"];
-let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|.|β|α|</gi);
 function blacklist(data){
     var numterm =0;
     categories = Object.keys(categoriesgroup);
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =['27·2–37·5'];
+    var blackw =['Functional','UnknownIndex'];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
+            let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|\.|β|α|<|{|}/gi);
             numterm++;
             var key = !!inclideList.find(d=>w.term===d);
-            console.log(key)
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || (!nonsenseCharacter.test(w.term) && w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ) ;
-            console.log(key)
+            key = key || ((!nonsenseCharacter.test(w.term)) && (w.term.length>4) && (blackw.find(d=>d===w.term)=== undefined) && categoriesmap[w.category]!== undefined ) ;
             return key;}).forEach( w => {
             w.maincategory = w.category;
             w.category = categoriesmap[w.category]||w.category;
