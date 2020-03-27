@@ -117,9 +117,11 @@ let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY'
 let blackTerms = {'CoV':'PERSON'}
 let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis','Herein','p<0.001','ANOVA','Chi-squared',
     'D68','RBD','ACE2','AST','LDH','Main Results','Markov','Monte Carlo','IgG','IgM','N95','IBV','Mtb','IVA','IVB','ILI',
-    'MHC','HLA','EMBASE','IL6','TNF-α','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
+    'MHC','HLA','EMBASE','IL6','TNF-α','IFN-β','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
     'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
-    'Europe','Han','Asia','Africa','Outbreak','Parallel'];
+    'Europe','Han','Asia','Africa','Outbreak','Parallel','PaO(2)/FiO(2','–0.3762','5‐year‐age‐group','DTR ≥','IPEC-J2',
+'e.g','BIG','Q176','PaO(2)/FiO(2','13·0','the RT-LAMP','n=7','83.8','BALB/','Gram','27·2–37·5','GI-27','GI-9','‐19',
+'FilmArray','mTLR9','‘CC’'];
 let fixCategory = {
     Catalonia:'LOC',
     "Saharan Africa":'LOC',
@@ -129,6 +131,8 @@ let fixCategory = {
     "Zhejiang":'LOC',
     "Hong Kong":'LOC',
     "Angiotensin":'PERSON',
+    'H5NX':'Virus',
+    'Tonsillitis':'Virus',
     "Fujian":'LOC',
     "Guangdong":'LOC',
 }

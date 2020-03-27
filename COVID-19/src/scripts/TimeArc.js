@@ -1345,6 +1345,7 @@ d3.TimeArc = function () {
         return arguments.length ? (svg = _, timeArc) : svg;
 
     };
+    timeArc.totalTimeSteps = totalTimeSteps
 
     timeArc.stickyTerms = function (_) {
         return arguments.length ? (runopt.stickyTerms = _, timeArc) : runopt.stickyTerms;

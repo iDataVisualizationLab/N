@@ -68,7 +68,7 @@ for (var m = 1; m < totalTimeSteps; m++) {
 }
 
 // generate data for finaviz
-let jsonD = data.map(d=>{
+let jsonD = TimeArc.data().map(d=>{
     let termsC = [];
     d3.entries(d.category).forEach(t=>{
         d3.keys(t.value).forEach(w=>{
