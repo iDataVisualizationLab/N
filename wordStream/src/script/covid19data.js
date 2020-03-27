@@ -968,11 +968,11 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =['Functional','UnknownIndex'];
+    var blackw =['Functional','UnknownIndex','Bluetooth','Android','Sudden'];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
-            let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|\.|β|α|<|{|}/gi);
+            let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|\.|β|α|<|{|}|+/gi);
             numterm++;
             var key = !!inclideList.find(d=>w.term===d);
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
