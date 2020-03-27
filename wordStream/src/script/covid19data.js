@@ -962,6 +962,7 @@ function fillData(endDate, startDate) {
     TermwDay = d;
 }
 let inclideList = ["WHO", "H1N1", "SEIR", "Zika", "FDA", "CDC", "COPD", "Iran"];
+let nonsenseCharacter = new RegExp(/\)|\(|&|\/|~|=|≥|[0-9]-[0-9]/gi);
 function blacklist(data){
     var numterm =0;
     categories = Object.keys(categoriesgroup);
@@ -975,9 +976,7 @@ function blacklist(data){
             numterm++;
             var key = inclideList.find(d=>w.term===d);
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined  ;
-            if (!key)
-                console.log(w)
+            key = key || w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined && !nonsenseCharacter.test(w.term) ;
             return key;}).forEach( w => {
             w.maincategory = w.category;
             w.category = categoriesmap[w.category]||w.category;
