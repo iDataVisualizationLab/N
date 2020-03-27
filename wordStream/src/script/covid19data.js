@@ -166,7 +166,7 @@ function wordCloud(selector,config) {
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
         var min = 15;
-        var max = 20;
+        var max = 25;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -781,7 +781,7 @@ function handledata(data){
             return d3.timeFormat('%b %d %Y')(d3.timeSunday(d))
         };
         daystep = 7;
-        svgHeight = 1000;
+        svgHeight = 600;
         mainconfig.wstep = 15;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
@@ -838,7 +838,7 @@ function handledata(data){
                     preday["setDate"](preday.getDate() + daystep*2);
                     // if (preday != new Date(day.key))
                     //     pre = 0;
-                        // pre = 0;
+                    // pre = 0;
                     var sudden  = (day.values.length+1)/(pre+1);
                     day.values.forEach(e=> e.sudden = sudden);
                     pre = day.values.length;
@@ -968,16 +968,15 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =['27·2–37·5'];
+    var blackw =['Functional','UnknownIndex','Bluetooth','Android','Sudden'];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
+            let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|\.|β|α|<|{|}|\+/gi);
             numterm++;
-            var key = inclideList.find(d=>w.term===d);
+            var key = !!inclideList.find(d=>w.term===d);
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined && ;
-            if (!key)
-                console.log(w)
+            key = key || ((!nonsenseCharacter.test(w.term)) && (w.term.length>4) && (blackw.find(d=>d===w.term)=== undefined) && categoriesmap[w.category]!== undefined ) ;
             return key;}).forEach( w => {
             w.maincategory = w.category;
             w.category = categoriesmap[w.category]||w.category;
