@@ -165,8 +165,8 @@ function wordCloud(selector,config) {
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 15;
-        var max = 20;
+        var min = 10;
+        var max = 25;
         lineColor.domain([min, max]);
         width = config.width;
         var height = config.height;
@@ -972,7 +972,7 @@ function blacklist(data){
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
-            let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|\.|β|α|<|{|}|+/gi);
+            let nonsenseCharacter = new RegExp(/\)|\(|&|\/|\~|=|≥|[0-9]–[0-9]|^–[0-9]|\.|β|α|<|{|}|\+/gi);
             numterm++;
             var key = !!inclideList.find(d=>w.term===d);
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
