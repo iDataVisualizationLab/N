@@ -165,7 +165,7 @@ function wordCloud(selector,config) {
         var offsetLegend = 50;
         var axisPadding = 10;
         var margins = {top: 0, right: 0, bottom: 0, left: 0};
-        var min = 10;
+        var min = 15;
         var max = 25;
         lineColor.domain([min, max]);
         width = config.width;
@@ -781,7 +781,7 @@ function handledata(data){
             return d3.timeFormat('%b %d %Y')(d3.timeSunday(d))
         };
         daystep = 7;
-        svgHeight = 1000;
+        svgHeight = 600;
         mainconfig.wstep = 15;
     }else {
         outputFormat =  d3.timeFormat('%b %d %Y');
