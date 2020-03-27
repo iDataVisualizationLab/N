@@ -975,7 +975,7 @@ function blacklist(data){
             numterm++;
             var key = inclideList.find(d=>w.term===d);
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
-            key = key || w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined && ;
+            key = key || w.term.length>4 && ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined  ;
             if (!key)
                 console.log(w)
             return key;}).forEach( w => {
