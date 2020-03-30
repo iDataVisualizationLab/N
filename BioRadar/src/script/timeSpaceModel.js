@@ -343,6 +343,9 @@ d3.TimeSpace = function () {
             .style('fill', d => colorCluster(d.name));
     }
     let controll_metrics={old:{zoom:undefined}};
+    function category2name(name,timestep){
+        return SUBJECTSob[""]===undefined?`${name}_${SUBJECTS[timestep]}`:name;
+    }
     master.init = function(arr,clusterin) {
         preloader(true,1,'Prepare rendering ...','#modelLoading');
 
@@ -366,7 +369,7 @@ d3.TimeSpace = function () {
         let euclideandistance_range = [+Infinity,0];
         datain.forEach(function (target, i) {
             target.__metrics.position = [0,0,0];
-            if ((target.name+'__'+(target.timestep?'stop1':'wt'))===cluster[target.cluster].leadername)
+            if (category2name(target.name,target.timestep)===cluster[target.cluster].leadername)
                 cluster[target.cluster].__metrics.indexLeader = i;
             if (!path[target.name]) {
                 path[target.name] = [];
@@ -385,9 +388,11 @@ d3.TimeSpace = function () {
                 cluster: target.cluster
             });
         });
-        euclideandistancerange.domain(euclideandistance_range);
-        euclideandistanceHis = getHistdata(Object.keys(path).map(kp=>path[kp].euclideandistance));
-        drawHis('#modelDistanceFilter_euclidean_svg',euclideandistanceHis,'euclideandistance')
+        if (SUBJECTS.length>1) {
+            euclideandistancerange.domain(euclideandistance_range);
+            euclideandistanceHis = getHistdata(Object.keys(path).map(kp => path[kp].euclideandistance));
+            drawHis('#modelDistanceFilter_euclidean_svg', euclideandistanceHis, 'euclideandistance')
+        }
         // console.log(datain.filter(d=>d[0]===-1))
         xscale.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
         yscale.range([-graphicopt.heightG()/2,graphicopt.heightG()/2]);
@@ -547,39 +552,43 @@ d3.TimeSpace = function () {
     }
     function handleFilter(key){
         d3.select('#distanceFilterHolder').classed('hide',true);
-        switch (key) {
-            case 'groups':
-                const lists = d3.keys(path).filter(d=>(path[d][0]||{cluster:undefined}).cluster!==(path[d][1]||{cluster:undefined}).cluster);
-                highlightGroupNode(lists);
-                break;
-            case "wt":
-                highlightGroupNode([],0);
-                break;
-            case "stop1":
-                highlightGroupNode([],1);
-                break;
-            case "umapDistance":
-                d3.selectAll('.modelDistanceFilter_svg').classed('hide',true);
-                d3.select('#modelDistanceFilter_projection_svg').classed('hide',false);
-                d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
-                let filteredumap =d3.keys(path).filter(d=>distancerange(path[d].distance)>=graphicopt.filter.distance);
-                d3.select('#distanceFilterHolder').select('span.num').text(filteredumap.length);
-                highlightGroupNode(filteredumap);
-                break;
-            case "euclideanDistance":
-                d3.selectAll('.modelDistanceFilter_svg').classed('hide',true);
-                d3.select('#modelDistanceFilter_euclidean_svg').classed('hide',false);
-                d3.select('#distanceFilterHolder').classed('hide',false); // reuse distance filter
-                let filteredeuclidean =d3.keys(path).filter(d=>euclideandistancerange(path[d].euclideandistance)>=graphicopt.filter.distance);
-                d3.select('#distanceFilterHolder').select('span.num').text(filteredeuclidean.length);
-                highlightGroupNode(filteredeuclidean);
-                break;
-            default:
-                if (globalFilter[key])
-                    highlightGroupNode(_.flatten([globalFilter[key],keyGenes]));
-                else
-                    highlightGroupNode([]);
-                break;
+        if (SUBJECTSob[key]){
+            highlightGroupNode([],SUBJECTSob[key]);
+        }else {
+            switch (key) {
+                case 'groups':
+                    const lists = d3.keys(path).filter(d => (path[d][0] || {cluster: undefined}).cluster !== (path[d][1] || {cluster: undefined}).cluster);
+                    highlightGroupNode(lists);
+                    break;
+                // case "wt":
+                //     highlightGroupNode([],0);
+                //     break;
+                // case "stop1":
+                //     highlightGroupNode([],1);
+                //     break;
+                case "umapDistance":
+                    d3.selectAll('.modelDistanceFilter_svg').classed('hide', true);
+                    d3.select('#modelDistanceFilter_projection_svg').classed('hide', false);
+                    d3.select('#distanceFilterHolder').classed('hide', false); // reuse distance filter
+                    let filteredumap = d3.keys(path).filter(d => distancerange(path[d].distance) >= graphicopt.filter.distance);
+                    d3.select('#distanceFilterHolder').select('span.num').text(filteredumap.length);
+                    highlightGroupNode(filteredumap);
+                    break;
+                case "euclideanDistance":
+                    d3.selectAll('.modelDistanceFilter_svg').classed('hide', true);
+                    d3.select('#modelDistanceFilter_euclidean_svg').classed('hide', false);
+                    d3.select('#distanceFilterHolder').classed('hide', false); // reuse distance filter
+                    let filteredeuclidean = d3.keys(path).filter(d => euclideandistancerange(path[d].euclideandistance) >= graphicopt.filter.distance);
+                    d3.select('#distanceFilterHolder').select('span.num').text(filteredeuclidean.length);
+                    highlightGroupNode(filteredeuclidean);
+                    break;
+                default:
+                    if (globalFilter[key])
+                        highlightGroupNode(_.flatten([globalFilter[key], keyGenes]));
+                    else
+                        highlightGroupNode([]);
+                    break;
+            }
         }
     }
     let keyGenes = "AT1G34370";
@@ -597,20 +606,22 @@ d3.TimeSpace = function () {
             .range([ height, 2 ]);
 
         let his = svg.select('path.his');
-        let marker = svg.select('line.marker');
-        if (his.empty()) {
-            his = svg.append('path').attr('class', 'his');
-            marker = svg.append('line')
-                .attr('class','marker')
-                .attrs({
-                    x2: 0,
-                    x1: 0,
-                    y2: y.range()[0],
-                    y1: y.range()[1],
-                }).style('stroke-dasharray',2)
-                .style('vector-effect','non-scaling-stroke')
-                .style('stroke','black');
-            ;
+        if(path[keyGenes]) {
+            let marker = svg.select('line.marker');
+            if (his.empty()) {
+                his = svg.append('path').attr('class', 'his');
+                marker = svg.append('line')
+                    .attr('class', 'marker')
+                    .attrs({
+                        x2: 0,
+                        x1: 0,
+                        y2: y.range()[0],
+                        y1: y.range()[1],
+                    }).style('stroke-dasharray', 2)
+                    .style('vector-effect', 'non-scaling-stroke')
+                    .style('stroke', 'black');
+                ;
+            }
         }
         his
             .datum(data.arr).attr('d',d3.area()
@@ -618,11 +629,14 @@ d3.TimeSpace = function () {
             .y0(y(0))
             .y1(function(d) { return y(d[1]) })
         ).style('fill','#dddddd');
-        marker.datum(path[keyGenes][key])
-            .attrs(d=>({
-                x2: x(d),
-                x1: x(d)
-            }))
+        if(path[keyGenes])
+        {
+            marker.datum(path[keyGenes][key])
+                .attrs(d => ({
+                    x2: x(d),
+                    x1: x(d)
+                }))
+        }
     }
     function handleTopSort(mode){
         let top =[];
@@ -856,7 +870,7 @@ d3.TimeSpace = function () {
                 scene.add(box);
 
                 // showMetrics(target.name);
-                d3.select('.radarTimeSpace .selectionNum').text(target.name+"|"+(target.timestep?'stop1':'wt'))
+                d3.select('.radarTimeSpace .selectionNum').text(category2name(target.name,target.timestep))
                 // showMetrics_plotly(target.name+"|"+(target.timestep?'stop1':'wt'));
                 renderRadarSummary(path[target.name].map(d=>datain[d.index].__metrics),colorarr[target.cluster].value,false)
             }
@@ -1833,13 +1847,12 @@ d3.TimeSpace = function () {
             d3.select('#filterTable').selectAll('*').remove();
         }
 
-        const columns = [{title: 'atID'}];
-        graphicopt.radaropt.schema.forEach(d => {
-            columns.push({title: 'wt' + d.text, render: renderData})
-        });
-        graphicopt.radaropt.schema.forEach(d => {
-            columns.push({title: 's1' + d.text, render: renderData})
-        });
+        const columns = [{title: IDkey}];
+        SUBJECTS.forEach(s=>{
+            graphicopt.radaropt.schema.forEach(d => {
+                columns.push({title: s + d.text, render: renderData})
+            });
+        })
         let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
             .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
         let textcolor = heatmaponTable.copy();
@@ -1920,7 +1933,7 @@ d3.TimeSpace = function () {
     }
     function updateDataTableFiltered(newDataName){
         let newDataArray = newDataName.map(n=>{
-            return _.flatten([n,graphicopt.radaropt.schema.map(s=>sampleS[n+'__wt']?sampleS[n+'__wt'][s.text][0][0]:undefined),graphicopt.radaropt.schema.map(s=>sampleS[n+'__stop1']?sampleS[n+'__stop1'][s.text][0][0]:undefined)]);
+            return _.flatten([n,_.flatten(SUBJECTS.map(category=>graphicopt.radaropt.schema.map(s=>sampleS[n]?sampleS[n][s.text][0][0]:sampleS[n+'__'+category][s.text][0][0])))]);
         });
         dataTableFiltered.clear();
         dataTableFiltered.rows.add(newDataArray);

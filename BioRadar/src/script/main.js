@@ -855,9 +855,9 @@ $( document ).ready(function() {
         preloader(true);
         exit_warp();
         const choice = this.value;
-        const choicetext = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-date');
+        const choicetext = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-split')==="none";
         let loadclusterInfo = false;
-        readFilecsv(choice)
+        readFilecsv(choice,choicetext)
 
     });
     $('#description_input_file').on('input',(evt)=>{
@@ -1332,7 +1332,11 @@ function recalculateCluster (option,calback,customCluster) {
     });
     clustercalWorker.addEventListener('message',({data})=>{
         if (data.action==='done') {
-            M.Toast.dismissAll();
+            try {
+                M.Toast.dismissAll();
+            }catch (e) {
+                
+            }
             data.result.forEach(c=>c.arr = c.arr.slice(0,lastIndex));
             cluster_info = data.result;
             if (!customCluster) {

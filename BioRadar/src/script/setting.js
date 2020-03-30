@@ -19,9 +19,9 @@ var serviceFullList_Fullrange = serviceLists2serviceFullList(serviceLists);
 srcpath = '';
 
 var variableCorrelation=[];
-const IDkey = 'atID';
-const SUBJECTS = ['wt','stop1'];
-
+let IDkey = 'atID';
+let SUBJECTS = ['wt','stop1'];
+let SUBJECTSob = {"wt":0,"stop1":1}
 let jobMap_opt = {
     margin:{top:90,bottom:20,left:20,right:20},
     width: 1000,
@@ -114,7 +114,7 @@ function systemFormat() {
     serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
 }
 
-function newdatatoFormat (data){
+function newdatatoFormat (data,notSplit){
     preloader(true, 0, 'reading file...');
     serviceList = [];
     serviceLists = [];
@@ -122,7 +122,14 @@ function newdatatoFormat (data){
     serviceAttr={};
     hosts =[];
 
-    const variables = _.without(Object.keys(data[0]),'atID');
+    let variables = Object.keys(data[0]);
+    IDkey = variables.shift()
+    let SUBJECTSob = {};
+    SUBJECTS = [];
+    if (notSplit){
+        SUBJECTSob[""] = 0;
+        SUBJECTS=[""];
+    }
     // TODO remove this function
     serviceQuery["csv"]= serviceQuery["csv"]||{};
     variables.forEach((k,i)=>{
@@ -157,29 +164,40 @@ function newdatatoFormat (data){
     tsnedata = {};
     sampleS['timespan'] = [new Date()];
 
+
     data.forEach(d=>{
         variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))// format number
         const name = d[IDkey];
         const fixname = name.replace('|','__');
-        const category = name.split('|')[1]==='wt'?0:1;
-        hosts.push({
-            name: fixname,
-            genese: fixname.split('__')[0],
-            category:category,
-            index : hosts.length,
-        });
-        serviceListattr.forEach((attr,i) => {
-            if (sampleS[fixname]===undefined) {
-                sampleS[fixname] = {};
-                tsnedata[fixname] = [[]];
-                tsnedata[fixname][0].name = fixname;
-                tsnedata[fixname][0].timestep =0;
-                tsnedata[fixname][0].category =category;
+        if (!sampleS[fixname]) {
+            let sub = name.split('|')[1] || "";
+            if (!notSplit) {
+                if (SUBJECTSob[sub] === undefined) {
+                    SUBJECTSob[sub] = SUBJECTS.length;
+                    SUBJECTS.push(sub);
+                }
             }
-            const value = d[variables[i]];
-            sampleS[fixname][attr]=[[value]];
-            tsnedata[fixname][0].push(value===null?0:scaleService[i](value)||0);
-        });
+            const category = SUBJECTSob[sub];
+            hosts.push({
+                name: fixname,
+                genese: notSplit ? fixname : fixname.split('__')[0],
+                category: category,
+                index: hosts.length,
+            });
+
+            serviceListattr.forEach((attr, i) => {
+                if (sampleS[fixname] === undefined) {
+                    sampleS[fixname] = {};
+                    tsnedata[fixname] = [[]];
+                    tsnedata[fixname][0].name = fixname;
+                    tsnedata[fixname][0].timestep = 0;
+                    tsnedata[fixname][0].category = category;
+                }
+                const value = d[variables[i]];
+                sampleS[fixname][attr] = [[value]];
+                tsnedata[fixname][0].push(value === null ? 0 : scaleService[i](value) || 0);
+            });
+        }
     }); // format number
     if (keyLeader&&globalFilter[keyLeader]){
         hosts.sort((a,b)=>-globalFilter[keyLeader].indexOf(a.genese)+globalFilter[keyLeader].indexOf(b.genese))
@@ -245,8 +263,8 @@ function getsummaryservice(){
     // let dataf = _.reduce(_.chunk(_.unzip(data),serviceFull_selected.length),function(memo, num){ return memo.map((d,i)=>{d.push(num[i]); return _.flatten(d); })});
     let dataf = _.unzip(_.flatten(_.values(tsnedata),1));
     let ob = {};
-    dataf.forEach((d,i)=>{
-        let r = getHistdata(d, serviceList_selected[i].text);
+    serviceList_selected.forEach((s,i)=>{
+        let r = getHistdata(dataf[i], s.text);
         ob[r.axis] = r;
 
     });
@@ -254,7 +272,7 @@ function getsummaryservice(){
 }
 function correlationCal(){
     let data =  _.unzip(_.flatten(_.values(tsnedata),1));
-    const n = data.length;
+    const n = serviceFullList.length;
     let simMatrix = [];
     for (let i = 0;i<n; i++){
         let temp_arr = [];
@@ -277,7 +295,7 @@ function correlationCal(){
 function getsummaryRadar(){
     return _.flatten(_.values(tsnedata))//_.flatten(tsnedata[name].slice(startIndex,lastIndex+1));
 }
-function readFilecsv(filename) {
+function readFilecsv(filename,notSplit) {
     dataInformation.filename = filename+'.csv';
     let filePath = srcpath+`data/${filename}.csv`;
     exit_warp();
@@ -296,7 +314,7 @@ function readFilecsv(filename) {
         .then(function (data) {
 
             db = "csv";
-            newdatatoFormat(data);
+            newdatatoFormat(data,notSplit);
 
             inithostResults();
             formatService(true);
