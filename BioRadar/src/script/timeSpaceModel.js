@@ -606,8 +606,8 @@ d3.TimeSpace = function () {
             .range([ height, 2 ]);
 
         let his = svg.select('path.his');
+        let marker = svg.select('line.marker');
         if(path[keyGenes]) {
-            let marker = svg.select('line.marker');
             if (his.empty()) {
                 his = svg.append('path').attr('class', 'his');
                 marker = svg.append('line')
