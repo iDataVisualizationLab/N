@@ -151,7 +151,9 @@ function drawFiltertable() {
                     }).on('change', function (d) {
                     d3.select('tr.axisActive').classed('axisActive', false);
                     d3.select(this.parentElement.parentElement).classed('axisActive', true);
-                    changeVar(d3.select(this.parentElement.parentElement).datum())
+                    console.log('radio')
+                    changeVar(d3.select(this.parentElement.parentElement).datum());
+                    brush();
                 });
                 alltr.filter(d => d.type === "checkbox")
                     .append("input")

@@ -2487,7 +2487,8 @@ d3.TimeSpace = function () {
     function loadProjection(opt,calback){
         let totalTime_marker = performance.now();
         d3.json(`data/${dataInformation.filename.replace('.csv','')}_${opt.projectionName}_${opt.nNeighbors}_${opt.dim}_${opt.minDist}_${opt.supervisor}.json`).then(function(sol){
-
+                if (sol.length!==datain.length)
+                    reject ("wrong file");
                 let xrange = d3.extent(sol, d => d[0]);
                 let yrange = d3.extent(sol, d => d[1]);
                 let xscale = d3.scaleLinear().range([0, graphicopt.widthG()]);
