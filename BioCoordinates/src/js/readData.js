@@ -1,15 +1,20 @@
 var query_time
 let globalFilter ={};
 let keyLeader //= "TF_DE";
-function initApp(){
+let isinit = true
+function initApp(file,isSplit,preloadFile){
     // load filter file
     preloader(true,undefined,'Read filter file...');
-    d3.json(srcpath+'data/STOP1_targets.json').then(function(d){
-        globalFilter = d;
-        // init read file
+    globalFilter={}
+
+    loadGlobalFilter(preloadFile).then(()=>{
         preloader(true,undefined,'Read data file...');
-        readFilecsv(d3.select('#datacom').node().value);
+        readFilecsv(file,isSplit);
     });
+}
+function loadGlobalFilter(preloadFile){
+    return preloadFile? d3.json(`${srcpath}data/${preloadFile}.json`).then(function(d){globalFilter = d;}) : new Promise(function(resolve, reject){
+        resolve(true);})
 }
 function formatService(init){
     // if (runopt.minMax)
@@ -28,26 +33,16 @@ function formatService(init){
     conf.serviceListattrnest = serviceListattrnest;
     drawFiltertable();
 }
-function readFilecsv(filename) {
+function readFilecsv(filename,notSplit) {
     dataInformation.filename = filename+'.csv';
     let filePath = srcpath+`data/${filename}.csv`;
     exit_warp();
     preloader(true);
     d3.csv(filePath)
-    //     .on("progress", function(evt) {
-    //     if (evt.total) {
-    //         preloader(true, 0, "File loaded: " + Math.round(evt.loaded/evt.total*100)+'%');
-    //         dataInformation.size = evt.total;
-    //     }else{
-    //         preloader(true, 0, "File loaded: " +bytesToString(evt.loaded));
-    //         dataInformation.size = evt.loaded;
-    //     }
-    //     // console.log("Amount loaded: " + Math.round(evt.loaded/evt.total*100)+'%')
-    // })
         .then(function (data) {
 
             db = "csv";
-            newdatatoFormat(data);
+            newdatatoFormat(data,notSplit);
 
             inithostResults();
             serviceListattrnest = serviceLists.map(d=>({
@@ -66,9 +61,9 @@ function readFilecsv(filename) {
             // .text("" + (sampleS['timespan'][0]).toDateString());
                 .text(dataInformation.filename);
 
-            // if (!init)
-            //     resetRequest();
-            // else
+            if (!isinit)
+                resetRequest();
+            else
                 init();
 
             preloader(false);

@@ -122,62 +122,75 @@ function filterAxisbyDom(d) {
 }
 
 function drawFiltertable() {
-    let listOption = d3.merge(conf.serviceLists.map(d => d.sub.map(e => {
-        return {service: d.text, arr: conf.serviceListattrnest[d.id].sub[e.id], text: e.text, enable: e.enable}
-    })));
+    let listOption = serviceFullList.map((e,ei) => {
+        return {service: e.text, arr: e.text,id:ei, text: e.text, enable: e.enable}
+    });
     // listOption.push({service: 'Rack', arr:'rack', text:'Rack'});
     let table = d3.select("#axisSetting").select('tbody');
     table
         .selectAll('tr').data(listOption)
         .join(enter => {
-            const tr = enter.append("tr");
-            tr.attr('data-id', d => d.arr);
-            const alltr = tr.selectAll('td')
-                .data(d => [{key: 'enable', value: d.enable, type: "checkbox"}, {
-                    key: 'colorBy',
-                    value: false,
-                    type: "radio"
-                }, {key: 'text', value: d.text}]).enter()
-                .append("td");
-            alltr.filter(d => d.type === "radio")
-                .append("input")
-                .attrs(function (d, i) {
-                    const pdata = d3.select(this.parentElement.parentElement).datum();
-                    return {
-                        type: "radio",
-                        name: "colorby",
-                        value: pdata.service
-                    }
+                const tr = enter.append("tr");
+                tr.attr('data-id', d => d.arr);
+                const alltr = tr.selectAll('td')
+                    .data(d => [{key: 'enable', value: d, type: "checkbox"}, {
+                        key: 'colorBy',
+                        value: false,
+                        type: "radio"
+                    }, {key: 'text', value: d.text}]).enter()
+                    .append("td");
+                alltr.filter(d => d.type === "radio")
+                    .append("input")
+                    .attrs(function (d, i) {
+                        const pdata = d3.select(this.parentElement.parentElement).datum();
+                        return {
+                            type: "radio",
+                            name: "colorby",
+                            value: pdata.service
+                        }
+                    }).on('change', function (d) {
+                    d3.select('tr.axisActive').classed('axisActive', false);
+                    d3.select(this.parentElement.parentElement).classed('axisActive', true);
+                    changeVar(d3.select(this.parentElement.parentElement).datum())
+                });
+                alltr.filter(d => d.type === "checkbox")
+                    .append("input")
+                    .attrs(function (d, i) {
+                        return {
+                            type: "checkbox",
+                            checked: serviceFullList[d.value.id].enable ? "checked" : null
+                        }
+                    }).on('adjustValue',function(d){
+                    d3.select(this).attr('checked',serviceFullList[d.value.id].enable ? "checked" : null)
                 }).on('change', function (d) {
-                d3.select('tr.axisActive').classed('axisActive', false);
-                d3.select(this.parentElement.parentElement).classed('axisActive', true);
-                changeVar(d3.select(this.parentElement.parentElement).datum())
-                brush();
-            });
-            alltr.filter(d => d.type === "checkbox")
-            .append("input")
-            .attrs(function (d, i) {
-                return {
-                    type: "checkbox",
-                    checked: d.value ? "checked" : null
-                }
-            }).on('change', function (d) {
-                filterAxisbyDom.call(this, d);
+                    filterAxisbyDom.call(this, d);
 
 
-                xscale.domain(dimensions);
+                    xscale.domain(dimensions);
 
-                // reorder list
-                // const disable_dims = _.difference(listMetric.toArray(),dimensions);
-                // listMetric.sort(_.union(dimensions,disable_dims));
+                    // reorder list
+                    // const disable_dims = _.difference(listMetric.toArray(),dimensions);
+                    // listMetric.sort(_.union(dimensions,disable_dims));
 
-                // rerender
-                d3.select("#foreground").style("opacity", null);
-                brush();
-        });
-            alltr.filter(d => d.type === undefined)
-                .text(d => d.value);
-        });
+                    // rerender
+                    d3.select("#foreground").style("opacity", null);
+                    brush();
+                });
+                alltr.filter(d => d.type === undefined)
+                    .text(d => d.value);
+            }, update =>{
+                const tr = update;
+                tr.attr('data-id', d => d.arr);
+                const alltr = tr.selectAll('td')
+                    .data(d => [{key: 'enable', value: d.enable, type: "checkbox"}, {
+                        key: 'colorBy',
+                        value: false,
+                        type: "radio"
+                    }, {key: 'text', value: d.text}]);
+                alltr.filter(d => d.type === undefined)
+                    .text(d => d.value);
+            }
+        );
     // comboBox
     //     .selectAll('li').data(listOption)
     //     .join(enter => enter.append("li") .attr('tabindex','0').append("a")
@@ -262,41 +275,26 @@ $( document ).ready(function() {
     d3.select("#DarkTheme").on("click",switchTheme);
 
     // data
-
     d3.select('#datacom').on("change", function () {
         preloader(true);
         exit_warp();
+        const choice = this.value;
+        const choicesplit = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-split')==="none";
+        const choicepreload = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-preload');
         setTimeout(() => {
-            preloader(true);
-            exit_warp();
-            const choice = this.value;
-            const choicetext = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-date');
-            let loadclusterInfo = false;
-            readFilecsv(choice)
+                initApp(choice,choicesplit,choicepreload);
         },0);
     });
     spinner = new Spinner(opts).spin(target);
 
 
-    setTimeout(() => {
-        initApp();
-    },0);
+    d3.select('#datacom').dispatch('change')
+
     // Spinner Stop ********************************************************************
 
     // init();
 });
 
-function realTimesetting (option,db,init){
-    isRealtime = option;
-    // getDataWorker.postMessage({action:'isRealtime',value:option,db: db});
-    if (option){
-        processData = eval('processData_'+db);
-    }else{
-        processData = db?eval('processData_'+db):processData_old;
-    }
-    if(!init)
-        resetRequest();
-}
 
 function getBrush(d) {
     return d3.brushY(yscale[d])
@@ -411,48 +409,48 @@ function multiFormat(date) {
 function update_Dimension() {
     g = svg.selectAll(".dimension")
         .data(dimensions,d=>d).join(enter => {
-            const new_dim = enter.append("svg:g")
-                .attr("class", "dimension")
-                .attr("transform", function (d) {
-                    return "translate(" + xscale(d) + ")";
-                })
-                .call(d3.drag()
-                    .on("start", dragstart)
-                    .on("drag", dragged)
-                    .on("end", dragend));
+                const new_dim = enter.append("svg:g")
+                    .attr("class", "dimension")
+                    .attr("transform", function (d) {
+                        return "translate(" + xscale(d) + ")";
+                    })
+                    .call(d3.drag()
+                        .on("start", dragstart)
+                        .on("drag", dragged)
+                        .on("end", dragend));
                 // Add an axis and title.
                 new_dim.append("svg:g")
-                .attr("class", "axis")
-                .attr("transform", "translate(0,0)")
-                .each(function (d) {
-                    return d3.select(this).call(axis.scale(yscale[d]));
-                })
-                .append("svg:text")
-                .attr("text-anchor", "middle")
-                // .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
-                .attr("y", -14)
-                .attr("x", 0)
-                .attr("class", "label")
-                .text(String)
-                .append("title")
-                .text("Click to invert. Drag to reorder");
+                    .attr("class", "axis")
+                    .attr("transform", "translate(0,0)")
+                    .each(function (d) {
+                        return d3.select(this).call(axis.scale(yscale[d]));
+                    })
+                    .append("svg:text")
+                    .attr("text-anchor", "middle")
+                    // .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
+                    .attr("y", -14)
+                    .attr("x", 0)
+                    .attr("class", "label")
+                    .text(String)
+                    .append("title")
+                    .text("Click to invert. Drag to reorder");
 
-            // Add and store a brush for each axis.
+                // Add and store a brush for each axis.
                 new_dim.append("svg:g")
-                .attr("class", "brush")
-                .each(function (d) {
-                    d3.select(this).call(yscale[d].brush = getBrush(d));
-                })
-                .selectAll("rect")
-                .style("visibility", null)
-                .attr("x", -23)
-                .attr("width", 36)
-                .append("title")
-                .text("Drag up or down to brush along this axis");
+                    .attr("class", "brush")
+                    .each(function (d) {
+                        d3.select(this).call(yscale[d].brush = getBrush(d));
+                    })
+                    .selectAll("rect")
+                    .style("visibility", null)
+                    .attr("x", -23)
+                    .attr("width", 36)
+                    .append("title")
+                    .text("Drag up or down to brush along this axis");
 
                 new_dim.selectAll(".extent")
-                .append("title")
-                .text("Drag or resize this filter");
+                    .append("title")
+                    .text("Drag or resize this filter");
                 return new_dim;
             },
             update =>{
@@ -462,12 +460,13 @@ function update_Dimension() {
                     .each(function (d) {
                         return d3.select(this).call(axis.scale(yscale[d]));
                     });
-            return  update.attr("transform", function (d) {
-                return "translate(" + xscale(d) + ")";});
+                return  update.attr("transform", function (d) {
+                    return "translate(" + xscale(d) + ")";});
             });
 }
 
 function init() {
+    console.log('init')
     width = $("#Maincontent").width()-10;
     height = d3.max([document.body.clientHeight-150, 300]);
     w = width - m[1] - m[3];
@@ -514,7 +513,7 @@ function init() {
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
     svg.selectAll('*').remove()
     // Load the data and visualization
-
+    isinit = false;
     // Convert quantitative scales to floats
     dataRaw = object2DataPrallel(sampleS);
     data = dataRaw;
@@ -552,10 +551,12 @@ function init() {
 function resetRequest() {
     // Convert quantitative scales to floats
     // animationtime = false;
+    console.log('requestreset')
     dataRaw = object2DataPrallel(sampleS);
     data = dataRaw;
-    d3.keys(data[0]).filter(function (k) {
-        return (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
+    xscale.domain(dimensions = _.flatten([{text:'Time',enable:true},serviceFullList]).filter(function (s) {
+        let k = s.text;
+        let xtempscale = (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
             .domain(d3.extent(data, function (d) {
                 return d[k];
             }))
@@ -564,9 +565,16 @@ function resetRequest() {
                 return +d[k];
             }))
             .range([h, 0]))));
-    });
+        return s.enable?xtempscale:false;
+    }).map(s=>s.text));
+    d3.select('#search').attr('placeholder',`Search host e.g ${data[0].compute}`);
     // Add a group element for each dimension.
     update_Dimension();
+    const selecteds = d3.select("#axisSetting")
+        .select('tbody')
+        .selectAll('tr')
+        .filter(d=>d.arr==selectedService).select('input[type="radio"]').property("checked", true);
+    _.bind(selecteds.on("change"),selecteds.node())();
     brush();
 }
 function setColorsAndThresholds(sin) {
@@ -1274,7 +1282,11 @@ function resetSize() {
 // scale to window size
 window.onresize = function() {
     // animationtime = false;
-    resetSize();
+    try {
+        resetSize();
+    }catch (e) {
+        
+    }
 };
 
 // Remove all but selected from the dataset
