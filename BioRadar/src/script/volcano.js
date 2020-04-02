@@ -229,7 +229,6 @@ d3.VolcanoPlot = function () {
         xscale.domain(axisData.xdomain);
         yscale.domain(axisData.ydomain);
         makesvgaxis();
-        mouseoverTrigger = false;
         freezemouseoverTrigger =false;
         render(true);
         reduceRenderWeight(true);
@@ -1181,13 +1180,9 @@ d3.VolcanoPlot = function () {
             animateTrigger=true;
             if (isneedrender) {
                 if (mouseoverTrigger && !freezemouseoverTrigger) { // not have filterbyClustername
-                    var intersects=[];
-                    if(!first) {
-                        raycaster.setFromCamera(mouse, camera);
-                        var intersects = overwrite || raycaster.intersectObject(points);
-                        //count and look after all objects in the diamonds group
-                    }
-                    first= false;
+                    raycaster.setFromCamera(mouse, camera);
+                    var intersects = overwrite || raycaster.intersectObject(points);
+                    //count and look after all objects in the diamonds group
                     highlightNode(intersects);
 
                 } else if (lassoTool && lassoTool.needRender) {
@@ -1905,7 +1900,7 @@ d3.VolcanoPlot = function () {
     // }
     let distancerange = d3.scaleLinear();
     let euclideandistancerange = d3.scaleLinear();
-    let first = true;
+
     function render (islast){
         if (isneedCompute) {
             let p = points.geometry.attributes.position.array;
@@ -1937,13 +1932,14 @@ d3.VolcanoPlot = function () {
                 points.geometry.boundingBox = null;
                 points.geometry.computeBoundingSphere();
                 isneedrender = true;
-                first = true;
+                highlightNode([]);
+                console.log('finish calculate')
+
                 // if (isradar && datain.length < 5000) {
                 //     renderSvgRadar();
                 // }
             }
             updateCluster();
-            mouseoverTrigger = true;
             isneedCompute = false;
         }
     }

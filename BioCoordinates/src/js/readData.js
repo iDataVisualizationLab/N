@@ -57,12 +57,36 @@ function readFilecsv(filename,notSplit) {
         .then(function (data) {
 
             db = "csv";
-            newdatatoFormat(data,notSplit);
-            loadVocano(filename,data).then(()=>{
-                newdatatoFormat(data,notSplit);
+            newdatatoFormat(data, notSplit);
+            loadVocano(filename, data).then(() => {
+                newdatatoFormat(data, notSplit);
                 inithostResults();
-                serviceListattrnest = serviceLists.map(d=>({
-                    key:d.text,sub:d.sub.map(e=>e.text)
+                serviceListattrnest = serviceLists.map(d => ({
+                    key: d.text, sub: d.sub.map(e => e.text)
+                }));
+                selectedService = serviceLists[0].text;
+                formatService(true);
+                processResult = processResult_csv;
+
+                // draw Metric summary on left panel
+
+
+                updateDatainformation(sampleS['timespan']);
+
+                d3.select(".currentDate")
+                    // .text("" + (sampleS['timespan'][0]).toDateString());
+                    .text(dataInformation.filename);
+
+                if (!isinit)
+                    resetRequest();
+                else
+                    init();
+
+                preloader(false);
+            }).catch(e => {
+                inithostResults();
+                serviceListattrnest = serviceLists.map(d => ({
+                    key: d.text, sub: d.sub.map(e => e.text)
                 }));
                 selectedService = serviceLists[0].text;
                 formatService(true);
