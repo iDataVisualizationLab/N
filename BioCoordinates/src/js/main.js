@@ -566,6 +566,7 @@ function resetRequest() {
     unhighlight()
     dataRaw = object2DataPrallel(sampleS);
     data = dataRaw;
+    yscale = {};
     xscale.domain(dimensions = _.flatten([{text:'Time',enable:true},serviceFullList]).filter(function (s) {
         let k = s.text;
         let xtempscale = (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()

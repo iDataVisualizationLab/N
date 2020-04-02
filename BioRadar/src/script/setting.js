@@ -203,7 +203,7 @@ function newdatatoFormat (data,notSplit){
         hosts.sort((a,b)=>-globalFilter[keyLeader].indexOf(a.genese)+globalFilter[keyLeader].indexOf(b.genese))
     }
     // find outliers
-    preloader(true, 0, 'Detect outliers...');
+    preloader(true, 0, 'Prepare data...');
     // outlyingList = outlier();
 }
 // summary metrics
