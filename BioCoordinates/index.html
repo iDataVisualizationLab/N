@@ -95,9 +95,9 @@
                     <label for="datacom" class="col s4"> Dataset: </label>
                     <div  class="row s12">
                         <select id="datacom" class="col s7">
-                            <option value="transcriptome_averaged_allmetrics" data-preload="STOP1_targets" selected>transcriptome cpm all expressed genes</option>
+                            <option value="transcriptome_averaged_allmetrics" data-preload="STOP1_targets">transcriptome cpm all expressed genes</option>
                             <option value="RKO PKO RPKO" data-split="none">cancer RKO PKO RPKO</option>
-                            <option value="RKO PKO RPKO_all" data-split="none">cancer RKO PKO RPKO all</option>
+                            <option value="RKO PKO RPKO_all" data-split="none" selected>cancer RKO PKO RPKO all</option>
 <!--                            <option value="transcriptome_averaged_all" >transcriptome cpm all expressed genes</option>-->
 <!--                            <option value="transcriptome_cpm_all_expressed_genes">transcriptome cpm all expressed genes</option>-->
 <!--                            <option value="transcriptome_averaged_subtractbyhp6">transcriptome different hp6</option>-->
@@ -106,18 +106,50 @@
                         </select>
                     </div>
                     </div>
-                        <table class="table table-striped table-hover row s12" id = "axisSetting">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th><input type="checkbox" checked="checked"></th>
-                                <th>Color by</th>
-                                <th>Metric</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                    <table class="table table-striped table-hover row s12" id = "axisSetting">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th><input type="checkbox" checked="checked"></th>
+                            <th>Color by</th>
+                            <th>Metric</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="row s12">
+                        <div id="volcano_contain" style="position: relative">
+<!--                            <div id="modelLoading" class="loading hidden">-->
+<!--                                <div class="progressDiv hidden">-->
+<!--                                    <h6 class="progressText spinnerC center" style="top: calc(50% - 15px);" >saving data...</h6>-->
+<!--                                    <div class="progress spinnerC center" style="width: 70%;">-->
+<!--                                        <div class="determinate" style="width: 0%"></div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="overlaySide horizontal">
+                                <a class="openbtn btn-floating btn waves-effect waves-light pulse" data-target=".sideHnavs" data-source="#Maincontent" data-class="sidehIn" data-link="#hNavbtn" id="hNavbtn" onclick="openNav(this)">
+                                    <i class="material-icons">keyboard_arrow_down</i></a>
+                            </div>
+                            <canvas id="volcanoScreen"></canvas>
+                            <!--<canvas id="volcanoScreen_fornt" style="position:absolute;top:0;left:0"></canvas>-->
+                            <svg id="volcanoScreen_svg" style="position:absolute;top:0;left:0; pointer-events: none">
+                                <defs>
 
+                                </defs>
+                                <g id="volcanoScreen_legend">
+
+                                </g>
+
+                                <g id="volcanoScreen_svg_g">
+
+                                </g>
+                                <g id="volcanoScreen_lassotool">
+
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
                     <!--<div id="colorContinuos"></div>-->
                     <!--<p id="legend" class="col s12">-->
                     <!--</p>-->
@@ -224,10 +256,60 @@
 </div>
 
 </body>
+<!--THREE js-->
+<script type="x-shader/x-vertex" id="vertexshader">
+
+        attribute float alpha;
+        attribute float size;
+        attribute vec3 customColor;
+
+        varying float vAlpha;
+        varying vec3 vColor;
+
+        void main() {
+
+            vAlpha = alpha;
+
+            vColor = customColor;
+
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+            gl_PointSize = size ;
+
+            gl_Position = projectionMatrix * mvPosition;
+
+        }
+
+    </script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+
+        uniform vec3 color;
+        uniform sampler2D pointTexture;
+
+        varying float vAlpha;
+        varying vec3 vColor;
+
+        void main() {
+
+            gl_FragColor = vec4( color * vColor, vAlpha );
+
+            gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
+
+        }
+
+    </script>
+<script src="../BioRadar/src/lib/three.min.js"></script>
+<script src="../BioRadar/src/lib/threejsPlugin/LassoTool.js"></script>
+<script src="../BioRadar/src/lib/threejsPlugin/SelectionHelper.js"></script>
+<script src="../BioRadar/src/lib/threejsPlugin/curve3D.js"></script>
+<script src="../BioRadar/src/lib/OrbitControls.js"></script>
 <!--data load-->
 <script src="../BioRadar/src/script/setting_theme.js"></script>
 <script src="../BioRadar/src/script/setting.js"></script>
 <script src="../BioRadar/src/script/util.js"></script>
+<script src="../BioRadar/src/lib/jquery.dataTables.min.js"></script>
+<script src="../BioRadar/src/script/volcano.js"></script>
 <!--<script src="src/data/serviceWed26Sep.js"></script>-->
 <!--<script src="http://mbostock.github.com/d3/d3.v2.js"></script>-->
 <!--<script src="src/js/ulti.js"></script>-->

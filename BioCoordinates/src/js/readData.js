@@ -1,6 +1,7 @@
 var query_time
 let globalFilter ={};
-let keyLeader //= "TF_DE";
+let keyLeader //=
+let vocanoData;
 let isinit = true
 function initApp(file,isSplit,preloadFile){
     // load filter file
@@ -15,6 +16,20 @@ function initApp(file,isSplit,preloadFile){
 function loadGlobalFilter(preloadFile){
     return preloadFile? d3.json(`${srcpath}data/${preloadFile}.json`).then(function(d){globalFilter = d;}) : new Promise(function(resolve, reject){
         resolve(true);})
+}
+function loadVocano(file,data){
+    return d3.csv(`${srcpath}data/${file}_FDR.csv`).then(d=>{
+        let keyInput = Object.keys(d[0]);
+        keyInput.shift();
+        d.sort((a,b)=>a[""]-b[""]).forEach(e=>(d3.keys(e).forEach(f=>e[f]=+e[f]),e.name = hosts[e[""]-1].name));
+        let logKey = Object.keys(d[0]).filter(k=>k.includes('log'))
+        logKey.forEach(k=>keyInput.push(`abs(${k})`))
+        d.forEach((e,i)=>{
+            logKey.forEach(k=>e[`abs(${k})`]=Math.abs(e[k]));
+            keyInput.forEach(k=>data[i][k]=e[k])
+        });
+        vocanoData = d
+    })
 }
 function formatService(init){
     // if (runopt.minMax)
@@ -43,30 +58,32 @@ function readFilecsv(filename,notSplit) {
 
             db = "csv";
             newdatatoFormat(data,notSplit);
+            loadVocano(filename,data).then(()=>{
+                newdatatoFormat(data,notSplit);
+                inithostResults();
+                serviceListattrnest = serviceLists.map(d=>({
+                    key:d.text,sub:d.sub.map(e=>e.text)
+                }));
+                selectedService = serviceLists[0].text;
+                formatService(true);
+                processResult = processResult_csv;
 
-            inithostResults();
-            serviceListattrnest = serviceLists.map(d=>({
-                key:d.text,sub:d.sub.map(e=>e.text)
-            }));
-            selectedService = serviceLists[0].text;
-            formatService(true);
-            processResult = processResult_csv;
-
-            // draw Metric summary on left panel
+                // draw Metric summary on left panel
 
 
-            updateDatainformation(sampleS['timespan']);
+                updateDatainformation(sampleS['timespan']);
 
-            d3.select(".currentDate")
-            // .text("" + (sampleS['timespan'][0]).toDateString());
-                .text(dataInformation.filename);
+                d3.select(".currentDate")
+                    // .text("" + (sampleS['timespan'][0]).toDateString());
+                    .text(dataInformation.filename);
 
-            if (!isinit)
-                resetRequest();
-            else
-                init();
+                if (!isinit)
+                    resetRequest();
+                else
+                    init();
 
-            preloader(false);
+                preloader(false);
+            })
         })
 }
 function readData() {
