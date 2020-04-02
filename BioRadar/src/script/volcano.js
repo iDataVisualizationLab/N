@@ -274,6 +274,7 @@ d3.VolcanoPlot = function () {
         return SUBJECTSob[""]===undefined?`${name}_${SUBJECTS[timestep]}`:name;
     }
     master.init = function(arr,clusterin) {
+        d3.select('#volcano_contain').classed('hide',false);
         preloader(true,1,'Prepare rendering ...','#modelLoading');
 
         // makeDataTableFiltered()
@@ -1965,12 +1966,17 @@ d3.VolcanoPlot = function () {
         terminateWorker();
         interuptAnimation()
         stop = true;
+        return master;
         // if (modelWorker) {
         //     modelWorker.terminate();
         //     plotlyWorker.terminate();
         //     stop = true;
         //     // renderSvgRadar();
         // }
+    };
+
+    master.hide = function(){
+        d3.select('#volcano_contain').classed('hide',true);
     };
 
     function terminateWorker() {

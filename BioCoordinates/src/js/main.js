@@ -552,6 +552,8 @@ function init() {
     // Render full foreground
     if (vocanoData)
         handle_data_volcanoplot(tsnedata);
+    else
+        volcanoPlot.stop().hide();
     brush();
 
 
@@ -560,7 +562,8 @@ function init() {
 function resetRequest() {
     // Convert quantitative scales to floats
     // animationtime = false;
-    console.log('requestreset')
+    console.log('requestreset');
+    unhighlight()
     dataRaw = object2DataPrallel(sampleS);
     data = dataRaw;
     xscale.domain(dimensions = _.flatten([{text:'Time',enable:true},serviceFullList]).filter(function (s) {
@@ -586,6 +589,8 @@ function resetRequest() {
     _.bind(selecteds.on("change"),selecteds.node())();
     if (vocanoData)
         handle_data_volcanoplot(tsnedata);
+    else
+        volcanoPlot.stop().hide();
     brush();
 }
 function setColorsAndThresholds(sin) {

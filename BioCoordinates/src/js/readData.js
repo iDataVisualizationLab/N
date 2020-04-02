@@ -84,7 +84,7 @@ function readFilecsv(filename,notSplit) {
 
                 preloader(false);
             }).catch(e => {
-                vocanoData = [];
+                vocanoData = undefined;
                 inithostResults();
                 serviceListattrnest = serviceLists.map(d => ({
                     key: d.text, sub: d.sub.map(e => e.text)
