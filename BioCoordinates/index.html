@@ -193,7 +193,7 @@
         <!--<h1>HPCC Explorer</h1>-->
         <button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>
         <button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>
-        <button title="Export data as CSV" id="export-data">Export</button>
+        <button type="submit" value = false class ="modal-trigger" title="Export data as CSV" id="export-data" href="#exportdialog">Export</button>
         <div class="controls">
             <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
             <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
@@ -254,7 +254,18 @@
         </div>
     </footer>
 </div>
-
+<div id="exportdialog" class="modal custom">
+    <div class="modal-content">
+        <div class="input-field col s6">
+            <input placeholder="radar chart" id="exportname" type="text" class="validate">
+            <label for="exportname">File name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat teal" onclick="export_csv()" style="color: rgba(255, 255, 255, 0.9);">Save</a>
+    </div>
+</div>
 </body>
 <!--THREE js-->
 <script type="x-shader/x-vertex" id="vertexshader">

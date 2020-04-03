@@ -1067,25 +1067,36 @@ function onSaveClusterInfo() {
         temp.push(d.mse);
         dataout.push(temp);
     });
-
-    download_csv();
-
-    function download_csv() {
-        var csv = csv_header.join(',') + '\n';
-        dataout.forEach(function (row) {
-            csv += row.join(',');
-            csv += "\n";
-        });
-
-        var filename = $('#savename_clusterInfo').val()+".csv";
-        var hiddenElement = document.createElement('a');
-        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-        hiddenElement.target = '_blank';
-        hiddenElement.download = filename;
-        hiddenElement.click();
-    }
+    var csv = csv_header.join(',') + '\n';
+    dataout.forEach(function (row) {
+        csv += row.join(',');
+        csv += "\n";
+    });
+    download_csv($('#savename_clusterInfo').val(),csv);
 }
+function make_downloadableDOM(varname,onClickfunction){
+    d3.select('body').append('div')
+        .attrs({id:`savedialog_${varname}`,class:"modal custom"})
+    .html(`<div class="modal-content">
+        <div class="input-field col s6">
+            <input placeholder="label_cluster" id="savename_${varname}" type="text" class="validate">
+            <label for="savename_${varname}">File name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat teal" onclick="${onClickfunction}()" style="color: rgba(255, 255, 255, 0.9);">Save</a>
+    </div>`);
+}
+function download_csv(filename_init,csv) {
 
+    var filename = filename_init+".csv";
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = filename;
+    hiddenElement.click();
+}
 // chart controll ------------------------------------
 let viztype='radar';
 let starChart_func, radarChart_func, roseChart_func, flowerChart_func;

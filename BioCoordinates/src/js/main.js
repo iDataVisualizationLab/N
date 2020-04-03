@@ -256,8 +256,8 @@ function drawFiltertable() {
 }
 
 $( document ).ready(function() {
-    console.log('ready');
     $('.tabs').tabs();
+    $('.modal').modal();
     $('.dropdown-trigger').dropdown();
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
@@ -1228,7 +1228,7 @@ function actives() {
         });
 
     // free text search
-    var query = d3.select("#search")[0][0].value;
+    var query = d3.select("#search").node().value;
     if (query > 0) {
         selected = search(selected, query);
     }
@@ -1238,13 +1238,13 @@ function actives() {
 
 // Export data
 function export_csv() {
-    var keys = d3.keys(data[0]);
+    var keys = _.flatten([['compute'],serviceFullList.map(s=>s.text)]);
     var rows = actives().map(function(row) {
         return keys.map(function(k) { return row[k]; })
     });
-    var csv = d3.csv.format([keys].concat(rows)).replace(/\n/g,"<br/>\n");
-    var styles = "<style>body { font-family: sans-serif; font-size: 12px; }</style>";
-    window.open("text/csv").document.write(styles + csv);
+    keys[0]=IDkey;
+    var csv = [keys].concat(rows).join('\n');
+    download_csv($('#exportname').val(),csv)
 }
 
 function resetSize() {
@@ -1355,7 +1355,7 @@ function remove_axis(d,g) {
 
 d3.select("#keep-data").on("click", keep_data);
 d3.select("#exclude-data").on("click", exclude_data);
-d3.select("#export-data").on("click", export_csv);
+// d3.select("#export-data").on("click", export_csv);
 d3.select("#search").on("keyup", brush);
 
 
