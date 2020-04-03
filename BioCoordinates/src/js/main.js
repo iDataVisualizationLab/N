@@ -799,7 +799,7 @@ function complex_data_table(sample) {
             const datum = d3.select(evt).datum();
             if (datum.key!=="Genes") {
                 presetdatatable.push(datum.key);
-                data = datum.values;
+                data=_.intersectionWith(dataRaw,_.intersection(presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
                 brush();
             }else {
                 if (presetdatatable.length!==0) {
@@ -818,7 +818,7 @@ function complex_data_table(sample) {
                 if(!presetdatatable.length)
                     data = dataRaw;
                 else{
-                    data=_.intersectionWith(dataRaw,_.flatten(presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
+                    data=_.intersectionWith(dataRaw,_.intersection(presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
                 }
                 brush();
             }
