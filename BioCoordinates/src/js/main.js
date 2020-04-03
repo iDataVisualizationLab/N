@@ -254,13 +254,18 @@ function drawFiltertable() {
         }
     });
 }
-
+let shuffled_data = [];
 $( document ).ready(function() {
     $('.tabs').tabs();
     $('.modal').modal();
     $('.dropdown-trigger').dropdown();
     $('.sidenav').sidenav();
-    $('.collapsible').collapsible();
+    $('#leftpanel.collapsible').collapsible({onOpenStart: function(evt){
+        console.log(evt)
+            if(d3.select(evt).classed('searchPanel')&&complex_data_table_render){
+                complex_data_table(shuffled_data,true)
+            }
+        }});
     discovery('#sideNavbtn');
     //$('.tap-target').tapTarget({onOpen: discovery});
 
@@ -723,108 +728,124 @@ function data_table(sample) {
 // let filteredData = undefined;
 let dataRaw;
 let presetdatatable = [];
-function complex_data_table(sample) {
-    var samplenest = d3.nest()
-        .key(d=>d.rack).sortKeys(collator.compare)
-        // .key(d=>d.compute).sortKeys(collator.compare)
-        // .sortValues((a,b)=>d.compute-d.compute)
-        .entries(sample);
-    Object.keys(globalFilter).forEach(gf=>{
-        const values = _.intersectionWith(sample,globalFilter[gf],function(a,b){return a.compute===b});
-        if (values.length) {
-            samplenest.push({
-                key: gf,
-                ordiginal: globalFilter[gf].length,
-                values: values
+// complex data table
+let complex_data_table_render = false;
+function complex_data_table(sample,render) {
+    if(complex_data_table_render && (render||!d3.select('.searchPanel.active').empty())) {
+        var samplenest = d3.nest()
+            .key(d => d.rack).sortKeys(collator.compare)
+            // .key(d=>d.compute).sortKeys(collator.compare)
+            // .sortValues((a,b)=>d.compute-d.compute)
+            .entries(sample);
+        Object.keys(globalFilter).forEach(gf => {
+            const values = _.intersectionWith(sample, globalFilter[gf], function (a, b) {
+                return a.compute === b
             });
-        }
-    });
-    let instance = M.Collapsible.getInstance('#compute-list');
-    if (instance)
-        instance.destroy()
-    d3.select("#compute-list").selectAll('*').remove();
-    var table = d3.select("#compute-list")
-        .attr('class','collapsible expandable rack')
-        .selectAll("li")
-        .data(samplenest,d=>d.value);
-    var ulAll = table.join(
-        enter=>{
-            let lir = enter.append("li") .attr('class','rack').classed('active',d=>_.includes(presetdatatable,d.key));
-            lir.append('div')
-                .attr('class','collapsible-header')
-                .html(d=>`${d.key} (${d.values.length}${d.ordiginal!==undefined?`<span style="font-size: x-small">/${d.ordiginal}</span>`:''})`);
-            const lic =  lir.append('div')
-                .attr('class','collapsible-body')
-                .append('div')
-                .attr('class','row marginBottom0')
-                .append('div')
-                .attr('class','col s12 m12')
-                .styles({'overflow-y':'auto','max-height':'400px'})
-                .append('ul')
-                .attr('class','collapsible compute expandable')
-                .datum(d=> d.values)
-                .selectAll('li').data(d=>d)
-            //     .enter()
-            //     .append('li').attr('class','compute');
-            // lic.append('div')
-            //     .attr('class','collapsible-header')
-            //     .text(d=>d.key);
-            // const lit = lic
-            //     .append('div')
-            //     .attr('class','collapsible-body')
-            //     .append('div')
-            //     .attr('class','row marginBottom0')
-            //     .append('div')
-            //     .attr('class','col s12 m12')
-            //     .append('ul')
-            //     .datum(d=> d.values)
-            //     .selectAll('li').data(d=>d)
-                .enter()
-                .append('li').attr('class','comtime')
-                .on("mouseover", highlight)
-                .on("mouseout", unhighlight);
+            if (values.length) {
+                samplenest.push({
+                    key: gf,
+                    ordiginal: globalFilter[gf].length,
+                    values: values
+                });
+            }
+        });
+        let instance = M.Collapsible.getInstance('#compute-list');
+        if (instance)
+            instance.destroy()
+        d3.select("#compute-list").selectAll('*').remove();
+        var table = d3.select("#compute-list")
+            .attr('class', 'collapsible expandable rack')
+            .selectAll("li")
+            .data(samplenest, d => d.value);
+        var ulAll = table.join(
+            enter => {
+                let lir = enter.append("li").attr('class', 'rack').classed('active', d => _.includes(presetdatatable, d.key));
+                lir.append('div')
+                    .attr('class', 'collapsible-header')
+                    .html(d => `${d.key} (${d.values.length}${d.ordiginal !== undefined ? `<span style="font-size: x-small">/${d.ordiginal}</span>` : ''})`);
+                const lic = lir.append('div')
+                    .attr('class', 'collapsible-body')
+                    .append('div')
+                    .attr('class', 'row marginBottom0')
+                    .append('div')
+                    .attr('class', 'col s12 m12')
+                    .styles({'overflow-y': 'auto', 'max-height': '400px'})
+                    .append('ul')
+                    .attr('class', 'collapsible compute expandable')
+                    .datum(d => d.values)
+                    .selectAll('li').data(d => d)
+                    //     .enter()
+                    //     .append('li').attr('class','compute');
+                    // lic.append('div')
+                    //     .attr('class','collapsible-header')
+                    //     .text(d=>d.key);
+                    // const lit = lic
+                    //     .append('div')
+                    //     .attr('class','collapsible-body')
+                    //     .append('div')
+                    //     .attr('class','row marginBottom0')
+                    //     .append('div')
+                    //     .attr('class','col s12 m12')
+                    //     .append('ul')
+                    //     .datum(d=> d.values)
+                    //     .selectAll('li').data(d=>d)
+                    .enter()
+                    .append('li').attr('class', 'comtime')
+                    .on("mouseover", highlight)
+                    .on("mouseout", unhighlight);
 
-            lic.append("span")
-                .attr("class", "color-block")
-                .style("background", function(d) { return color(selectedService==null?d.group:d[selectedService]) })
-                .style("opacity",0.85);
-            lic.append("span")
-                .text(function(d) { return d.compute; });
+                lic.append("span")
+                    .attr("class", "color-block")
+                    .style("background", function (d) {
+                        return color(selectedService == null ? d.group : d[selectedService])
+                    })
+                    .style("opacity", 0.85);
+                lic.append("span")
+                    .text(function (d) {
+                        return d.compute;
+                    });
 
-            return lir;
-        }
-    )
-    $('#compute-list.collapsible').collapsible({accordion: false,
-        onOpenEnd: function(evt){
-            const datum = d3.select(evt).datum();
-            if (datum.key!=="Genes") {
-                presetdatatable.push(datum.key);
-                data=_.intersectionWith(dataRaw,_.intersection(...presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
-                brush();
-            }else {
-                if (presetdatatable.length!==0) {
-                    presetdatatable = [];
-                    data = dataRaw;
+                return lir;
+            }
+        )
+        $('#compute-list.collapsible').collapsible({
+            accordion: false,
+            onOpenEnd: function (evt) {
+                const datum = d3.select(evt).datum();
+                if (datum.key !== "Genes") {
+                    presetdatatable.push(datum.key);
+                    data = _.intersectionWith(dataRaw, _.intersection(...presetdatatable.map(gf => globalFilter[gf])), function (a, b) {
+                        return a.compute === b
+                    });
+                    brush();
+                } else {
+                    if (presetdatatable.length !== 0) {
+                        presetdatatable = [];
+                        data = dataRaw;
+                        brush();
+                    }
+                }
+
+            },
+            onCloseEnd: function (evt) {
+                console.log(evt)
+                const datum = d3.select(evt).datum();
+                if (datum.key !== "Genes") {
+                    _.pull(presetdatatable, datum.key);
+                    if (!presetdatatable.length)
+                        data = dataRaw;
+                    else {
+                        data = _.intersectionWith(dataRaw, _.intersection(...presetdatatable.map(gf => globalFilter[gf])), function (a, b) {
+                            return a.compute === b
+                        });
+                    }
                     brush();
                 }
             }
-
-    },
-        onCloseEnd: function(evt){
-            console.log(evt)
-            const datum = d3.select(evt).datum();
-            if (datum.key!=="Genes") {
-                _.pull(presetdatatable,datum.key);
-                if(!presetdatatable.length)
-                    data = dataRaw;
-                else{
-                    data=_.intersectionWith(dataRaw,_.intersection(...presetdatatable.map(gf=>globalFilter[gf])),function(a,b){return a.compute===b});
-                }
-                brush();
-            }
-        }
-    });
-    table.selectAll('.rack').classed('active',d=>_.includes(presetdatatable,d.key))
+        });
+        table.selectAll('.rack').classed('active', d => _.includes(presetdatatable, d.key));
+        complex_data_table_render = false;
+    }
 }
 // Adjusts rendering speed
 function optimize(timer) {
@@ -1085,8 +1106,8 @@ function brush() {
     data
         .forEach(function(d) {
             if(!excluded_groups.find(e=>e===d.group))
-                actives.every(function(p, dimension) {
-                    return extents[dimension][0] <= d[p] && d[p] <= extents[dimension][1];
+                !actives.find(function(p, dimension) {
+                    return extents[dimension][0] > d[p] || d[p] > extents[dimension][1];
                 }) ? selected.push(d) : null;
         });
     // free text search
@@ -1094,7 +1115,8 @@ function brush() {
     if (query.length > 0) {
         selected = search(selected, query);
     }
-
+    complex_data_table_render = true;
+    complex_data_table(selected);
     redraw(selected);
     // Loadtostore();
 }
@@ -1112,7 +1134,6 @@ function paths(selected, ctx, count) {
 
     // complex_data_table(shuffled_data.slice(0,20));
     shuffled_data = selected;
-    complex_data_table(shuffled_data);
 
     ctx.clearRect(0,0,w+1,h+1);
 
@@ -1182,12 +1203,12 @@ function rescale() {
     // reset yscales, preserving inverted state
     dimensions.forEach(function(d,i) {
         if (yscale[d].inverted) {
-            yscale[d] = d3.scale.linear()
+            yscale[d] = d3.scaleLinear()
                 .domain(d3.extent(data, function(p) { return +p[d]; }))
                 .range([0, h]);
             yscale[d].inverted = true;
         } else {
-            yscale[d] = d3.scale.linear()
+            yscale[d] = d3.scaleLinear()
                 .domain(d3.extent(data, function(p) { return +p[d]; }))
                 .range([h, 0]);
         }
