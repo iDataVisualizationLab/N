@@ -471,7 +471,7 @@ function update_Dimension() {
                     });
                 return  update.attr("transform", function (d) {
                     return "translate(" + xscale(d) + ")";});
-            });
+            },exit => exit.remove());
 }
 
 function init() {
@@ -1176,7 +1176,7 @@ function update_ticks(d, extent) {
     show_ticks();
 
     // update axes
-    d3.selectAll(".axis")
+    d3.selectAll(".dimension .axis")
         .each(function(d,i) {
             // hide lines for better performance
             d3.select(this).selectAll('line').style("display", "none");
@@ -1314,7 +1314,7 @@ function resetSize() {
 
     // update axis placement
     axis = axis.ticks(1 + height / 50),
-        d3.selectAll(".axis")
+        d3.selectAll(".dimension .axis")
             .each(function (d) {
                 d3.select(this).call(axis.scale(yscale[d]));
             });
@@ -1386,7 +1386,7 @@ d3.select("#show-ticks").on("click", show_ticks);
 
 
 function hide_ticks() {
-    d3.selectAll(".axis g").style("display", "none");
+    d3.selectAll(".dimension .axis g").style("display", "none");
     //d3.selectAll(".axis path").style("display", "none");
     d3.selectAll(".background").style("visibility", "hidden");
     d3.selectAll("#hide-ticks").attr("disabled", "disabled");
@@ -1394,7 +1394,7 @@ function hide_ticks() {
 };
 
 function show_ticks() {
-    d3.selectAll(".axis g").style("display", null);
+    d3.selectAll(".dimension .axis g").style("display", null);
     //d3.selectAll(".axis path").style("display", null);
     d3.selectAll(".background").style("visibility", null);
     d3.selectAll("#show-ticks").attr("disabled", "disabled");
