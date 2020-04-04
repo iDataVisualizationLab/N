@@ -741,13 +741,13 @@ function complex_data_table(sample,render) {
             const values = _.intersectionWith(sample, globalFilter[gf], function (a, b) {
                 return a.compute === b
             });
-            if (values.length) {
+            // if (values.length) {
                 samplenest.push({
                     key: gf,
                     ordiginal: globalFilter[gf].length,
                     values: values
                 });
-            }
+            // }
         });
         let instance = M.Collapsible.getInstance('#compute-list');
         if (instance)
