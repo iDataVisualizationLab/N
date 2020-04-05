@@ -1419,6 +1419,7 @@ function recomendColor (clusterarr) {
     // clusterarr.filter(c=>!c.text.match('undefined'))
     clusterarr.filter(c=>c.text!=='undefined')
         .forEach(c=>{
+            // colorarray.push(colorcs(c.name));
             colorarray.push(colorcs(c.name));
             orderarray.push(c.name);
         });
