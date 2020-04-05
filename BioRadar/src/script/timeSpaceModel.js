@@ -1283,7 +1283,6 @@ d3.TimeSpace = function () {
                             c.__metrics.projection = getpos(pos.x, pos.y, pos.z);
                         }
                     });
-                updatelabelCluster();
                 // let testlinks = voronoi.links(_.chunk(points.geometry.attributes.position.array,3)).MAP;
                 // if(isdrawradar&&svgData&&iscameraMove) {
                 //     var geometry = points.geometry;
@@ -1291,6 +1290,7 @@ d3.TimeSpace = function () {
                 //     svgData.posStatic = svgData.posStatic.map(d=>getpos(attributes.position.array[d.index*3],attributes.position.array[d.index*3+1],attributes.position.array[d.index*3+2],d.index));
                 //     // drawRadar(svgData);
                 // }
+                updatelabelCluster();
             }
             iscameraMove = false;
             isneedrender = false;
@@ -1977,15 +1977,24 @@ d3.TimeSpace = function () {
                 bottom: text => text.attr("text-anchor", "middle").attr("dy", "0.71em").attr("y", 6),
                 left: text => text.attr("text-anchor", "end").attr("dy", "0.35em").attr("x", -6)
             });
-            let pointData = _.chunk(points.geometry.attributes.position.array,3).map(d => (p=getpos(d[0], d[1], d[2]),[p.x,p.y]));
+            let pointData = [];
+            points.geometry.attributes.alpha.array.forEach((p,pi)=>{
+                if (p) {
+                    let temp = getpos(points.geometry.attributes.position.array[pi * 3], points.geometry.attributes.position.array[pi * 3 + 1], points.geometry.attributes.position.array[pi * 3 + 2]);
+                    temp = [temp.x, temp.y];
+                    temp.index = pi;
+                    temp.name = datain[pi].name;
+                    pointData.push(temp);
+                }
+            })
             let voronoi = d3.Delaunay.from(pointData)
                 .voronoi([0, 0, graphicopt.widthG(), graphicopt.heightG()]);
 
-            let dataLabel = []
-            datain.forEach((d, i) => {
+            let dataLabel = [];
+            pointData.forEach((d, i) => {
                 const cell = voronoi.cellPolygon(i);
                 if (cell&&-d3.polygonArea(cell) > 2000)
-                    dataLabel.push([pointData[i], cell, d.name])
+                    dataLabel.push([d, cell, d.name])
             });
             svg.select('#modelNodeLabel').selectAll('.name').remove();
             svg.select('#modelNodeLabel').selectAll('.name').data(dataLabel).enter()
