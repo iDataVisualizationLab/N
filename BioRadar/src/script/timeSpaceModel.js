@@ -324,7 +324,6 @@ d3.TimeSpace = function () {
 
     let euclideandistanceHis=[];
     let umapdistanceHis=[];
-
     function makeArrowMarker() {
         let arrow = svg.select('defs').selectAll('marker.arrow').data(cluster_info);
         arrow.exit().remove();
@@ -333,10 +332,12 @@ d3.TimeSpace = function () {
             markerWidth: "10",
             markerHeight: "10",
             refX: "18",
+            // refX: "6",
             refY: "3",
             orient: "auto",
             markerUnits: "strokeWidth"
-        }).append('path').attr('d', "M0,0 L0,6 L9,3 z");
+        }).append('path')
+            .attr('d', "M0,0 L0,6 L9,3 z");
         svg.select('defs').selectAll('marker.arrow')
             .attr('id', d => "arrow" + d.name)
             .select('path')
@@ -945,16 +946,20 @@ d3.TimeSpace = function () {
                 d.radar = d3.select(this);
                 createRadar(d.radar.select('.radar'), d.radar, d, {size:radarSize*1.25*2,colorfill: true});
             });
-
+        let centers = d3.nest().key(d=>d.cluster).rollup(d=>[d3.mean(d,e=>e.x),d3.mean(d,e=>e.y)]).object(pos);
+        var line = d3.line().curve(d3.curveBundle.beta(0.95));
         let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
             .data(_.values(links).filter(d=>d.length===2));
         old_link.exit().remove();
-        old_link.enter().append('line').attr('class','link');
+        old_link.enter().append('path').attr('class','link');
         d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
             .attrs(d=>({
-                x1:d[0].x,x2:d[1].x,y1:d[0].y,y2:d[1].y,
+                d:line([[d[0].x,d[0].y],[(centers[d[0].cluster][0]+centers[d[1].cluster][0])/2,(centers[d[0].cluster][1]+centers[d[1].cluster][1])/2],[d[1].x,d[1].y]]),
+                // x1:d[0].x,x2:d[1].x,y1:d[0].y,y2:d[1].y,
                 'marker-end':d=>`url(#arrow${d[1].cluster})`
             }))
+            .style('opacity',0.3)
+            .style('stroke',d=>colorscale(d[1].cluster))
     }
     function draw_hexagon(data,hexbin){
         svg.select('#modelWorkerScreen_grid').selectAll("path")
