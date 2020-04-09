@@ -1189,20 +1189,20 @@ function update_ticks(d, extent) {
 // Rescale to new dataset domain
 function rescale() {
     // reset yscales, preserving inverted state
-    dimensions.forEach(function(d,i) {
-        if (yscale[d].inverted) {
-            yscale[d] = d3.scaleLinear()
-                .domain(d3.extent(data, function(p) { return +p[d]; }))
-                .range([0, h]);
-            yscale[d].inverted = true;
-        } else {
-            yscale[d] = d3.scaleLinear()
-                .domain(d3.extent(data, function(p) { return +p[d]; }))
-                .range([h, 0]);
-        }
-    });
-
-    update_ticks();
+    // dimensions.forEach(function(d,i) {
+    //     if (yscale[d].inverted) {
+    //         yscale[d] = d3.scaleLinear()
+    //             .domain(d3.extent(data, function(p) { return +p[d]; }))
+    //             .range([0, h]);
+    //         yscale[d].inverted = true;
+    //     } else {
+    //         yscale[d] = d3.scaleLinear()
+    //             .domain(d3.extent(data, function(p) { return +p[d]; }))
+    //             .range([h, 0]);
+    //     }
+    // });
+    //
+    // update_ticks();
 
     // Render selected data
     paths(data, foreground, brush_count);
@@ -1210,10 +1210,9 @@ function rescale() {
 
 // Get polylines within extents
 function actives() {
-    // var actives = dimensions.filter(function(p) { return !yscale[p].brush.empty(); }),
-    //     extents = actives.map(function(p) { return yscale[p].brush.extent(); });
     var actives = [],
         extents = [];
+
     svg.selectAll(".brush")
         .filter(function(d) {
             yscale[d].brushSelectionValue = d3.brushSelection(this);
@@ -1222,18 +1221,16 @@ function actives() {
         .each(function(d) {
             // Get extents of brush along each active selection axis (the Y axes)
             actives.push(d);
-            extents.push(d3.brushSelection(this).map(yscale[d].invert));
+            extents.push(d3.brushSelection(this).map(yscale[d].invert).sort((a,b)=>a-b));
         });
     // filter extents and excluded groups
     var selected = [];
     data
-        .filter(function(d) {
-            return !excluded_groups.find(e=>e===d.group);
-        })
-        .map(function(d) {
-            return actives.every(function(p, i) {
-                return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-            }) ? selected.push(d) : null;
+        .forEach(function(d) {
+            if(!excluded_groups.find(e=>e===d.group))
+                !actives.find(function(p, dimension) {
+                    return extents[dimension][0] > d[p] || d[p] > extents[dimension][1];
+                }) ? selected.push(d) : null;
         });
 
     // free text search
