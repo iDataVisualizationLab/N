@@ -153,7 +153,6 @@ function drawFiltertable() {
                     }).on('change', function (d) {
                     d3.select('tr.axisActive').classed('axisActive', false);
                     d3.select(this.parentElement.parentElement).classed('axisActive', true);
-                    console.log('radio')
                     changeVar(d3.select(this.parentElement.parentElement).datum());
                     brush();
                 });
@@ -267,20 +266,7 @@ $( document ).ready(function() {
             }
         }});
     discovery('#sideNavbtn');
-    //$('.tap-target').tapTarget({onOpen: discovery});
 
-    // let comboBox = d3.select("#listvar");
-    // d3.select("tbody").selectAll('tr').call(d3.drag()
-    //     .on("start", function (d) {
-    //         const currentAxis = d3.select(this).datum();
-    //         const chosenAxis = svg.selectAll(".dimension").filter(d=>d==currentAxis.arr);
-    //         _.bind(dragstart,chosenAxis.node(),chosenAxis.datum())();
-    //     })
-    //     .on("drag", function (){
-    //         const currentAxis = d3.select(this).datum();
-    //         const chosenAxis = svg.selectAll(".dimension").filter(d=>d==currentAxis.arr);
-    //         _.bind(dragged,chosenAxis.node(),chosenAxis.datum(),'table')();
-    //     }));
     d3.select("#DarkTheme").on("click",switchTheme);
 
     // data
@@ -295,7 +281,9 @@ $( document ).ready(function() {
         },0);
     });
     spinner = new Spinner(opts).spin(target);
-
+    d3.select('#enableCPM_control').on('change',function(){
+        onChangeValue($(this)[0].checked)
+    })
 
     d3.select('#datacom').dispatch('change')
 
@@ -525,7 +513,8 @@ function init() {
     // Load the data and visualization
     isinit = false;
     // Convert quantitative scales to floats
-    dataRaw = object2DataPrallel(sampleS);
+    // dataRaw = object2DataPrallel(sampleS);
+    // loadCPMData();
     data = dataRaw;
 
     // Extract the list of numerical dimensions and create a scale for each.
@@ -567,7 +556,7 @@ function resetRequest() {
     // animationtime = false;
     console.log('requestreset');
     unhighlight()
-    dataRaw = object2DataPrallel(sampleS);
+    // dataRaw = object2DataPrallel(sampleS);
     data = dataRaw;
     yscale = {};
     xscale.domain(dimensions = _.flatten([{text:'Time',enable:true},serviceFullList]).filter(function (s) {
@@ -725,7 +714,7 @@ function data_table(sample) {
 }
 // complex data table
 // let filteredData = undefined;
-let dataRaw;
+
 let presetdatatable = [];
 // complex data table
 let complex_data_table_render = false;
@@ -1345,7 +1334,7 @@ function keep_data() {
 
 // Exclude selected from the dataset
 function exclude_data() {
-    new_data = _.difference(data, actives());
+    let new_data = _.difference(data, actives());
     if (new_data.length == 0) {
         alert("I don't mean to be rude, but I can't let you remove all the data.\n\nTry selecting just a few data points then clicking 'Exclude'.");
         return false;
@@ -1430,4 +1419,47 @@ function changeVar(d){
 // action when exit
 function exit_warp () {
     vocanoData = undefined
+}
+
+function onChangeValue(condition) {
+    unhighlight();
+    if (condition){ // CPM
+        data = dataRaw;
+
+        d3.keys(data_second_service).forEach(k=>{
+            serviceFullList.find(d=>d.text===k).range =data_second_service[k].range;
+            data.forEach((d,i)=>d[k]=data_second[d.name][k])
+            if(_.isDate(data[0][k]))
+                yscale[k] = d3.scaleTime()
+                .domain(d3.extent(data, function (d) {
+                    return d[k];
+                }))
+                .range([h, 0])
+            else if(_.isNumber(data[0][k]))
+                yscale[k] = d3.scaleLinear()
+            .domain(data_second_service[k].range)
+            .range([h, 0])
+        });
+    }else{ // normalize
+        // dataRaw = object2DataPrallel(sampleS);
+        data = dataRaw;
+
+        d3.keys(data_second_service).forEach(k=>{
+            let si = serviceFullList.findIndex(d=>d.text===k);
+            serviceFullList[si].range =serviceFullList_Fullrange[si].range;
+            data.forEach((d,i)=>d[k]=sampleS[d.name][k][0][0])
+            if(_.isDate(data[0][k]))
+                yscale[k] = d3.scaleTime()
+                    .domain(d3.extent(data, function (d) {
+                        return d[k];
+                    }))
+                    .range([h, 0])
+            else if(_.isNumber(data[0][k]))
+                yscale[k] = d3.scaleLinear()
+                    .domain(serviceFullList[si].range)
+                    .range([h, 0])
+        });
+    }
+    update_Dimension();
+    d3.select('tr.axisActive').selectAll('td input[name=colorby]').dispatch('change')
 }

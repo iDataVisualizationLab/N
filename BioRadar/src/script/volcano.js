@@ -20,8 +20,8 @@ d3.VolcanoPlot = function () {
             opt: {
                 dim: 2, // dimensionality of the embedding (2 = default)
                 windowsSize: 1,
-                xaxis : {key:'logFC',value:0,Label:'log<tspan baseline-shift="sub">2</tspan>Fold-change'},
-                yaxis : {key:'FDR',value:0,transform:d=>-d,Label:'-log<tspan baseline-shift="sub">10</tspan>False Discovery Rate'},
+                xaxis : {key:'logFC',value:0.5,Label:'log<tspan baseline-shift="sub">2</tspan>Fold-change'},
+                yaxis : {key:'FDR',value:[0.1,Infinity],transform:d=>-d,Label:'-log<tspan baseline-shift="sub">10</tspan>False Discovery Rate'},
             },radaropt : {
                 // summary:{quantile:true},
                 mini:true,
@@ -237,8 +237,8 @@ d3.VolcanoPlot = function () {
     }
 
     function handle_solution(){
-        const tranformx = graphicopt.opt.xaxis.transform||(d=>d);
-        const tranformy = graphicopt.opt.yaxis.transform||(d=>d);
+        tranformx = graphicopt.opt.xaxis.transform||(d=>d);
+        tranformy = graphicopt.opt.yaxis.transform||(d=>d);
         const sol = datain.map(d=>[tranformx(d.volcano[graphicopt.opt.xaxis.key]),tranformy(d.volcano[graphicopt.opt.yaxis.key])])
         solution = sol;
         let xrange = d3.extent(sol, d => d[0]);
@@ -740,9 +740,11 @@ d3.VolcanoPlot = function () {
         });
     }
     let freezemouseoverTrigger = false;
+    let tranformx = graphicopt.opt.xaxis.transform||(d=>d);
+    let tranformy = graphicopt.opt.yaxis.transform||(d=>d);
     function updateCluster(){
         datain.forEach((d, i) => {
-            d.cluster = getClass(d.volcano[graphicopt.opt.xaxis.key],d.volcano[graphicopt.opt.yaxis.key])
+            d.cluster = getClass(tranformx(d.volcano[graphicopt.opt.xaxis.key]),tranformy(d.volcano[graphicopt.opt.yaxis.key]))
             currentColor = d3.color(colorarr[d.cluster].value);
             points.geometry.attributes.customColor.array[i * 3] = currentColor.r / 255;
             points.geometry.attributes.customColor.array[i * 3 + 1] = currentColor.g / 255;
@@ -751,9 +753,11 @@ d3.VolcanoPlot = function () {
         points.geometry.attributes.customColor.needsUpdate = true;
     }
     function getClass(x,y){
-        if (x>=graphicopt.opt.xaxis.value && y>=graphicopt.opt.yaxis.value)
+        let miny = Math.min(tranformy(graphicopt.opt.yaxis.value[0]),tranformy(graphicopt.opt.yaxis.value[1]));
+        let maxy = Math.max(tranformy(graphicopt.opt.yaxis.value[0]),tranformy(graphicopt.opt.yaxis.value[1]));
+        if (x>=tranformx(graphicopt.opt.xaxis.value) && (y>=miny||y<=maxy))
             return 1;
-        else if(x<=-graphicopt.opt.xaxis.value && y>=graphicopt.opt.yaxis.value)
+        else if(x<=-tranformx(graphicopt.opt.xaxis.value) && (y>=miny||y<=maxy))
             return 2;
         return 0;
     }

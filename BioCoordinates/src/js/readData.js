@@ -1,6 +1,8 @@
 var query_time
 let globalFilter ={};
 let keyLeader //=
+let data_second=[],data_second_service={};
+let dataRaw;
 let vocanoData;
 let isinit = true
 function initApp(file,isSplit,preloadFile){
@@ -16,6 +18,32 @@ function initApp(file,isSplit,preloadFile){
 function loadGlobalFilter(preloadFile){
     return preloadFile? d3.json(`${srcpath}data/${preloadFile}.json`).then(function(d){globalFilter = d;}) : new Promise(function(resolve, reject){
         resolve(true);})
+}
+function loadCPMData(file){
+    data_second=[],data_second_service={};
+    return d3.csv(`${srcpath}data/${file}_cpm.csv`).then(data=>{
+        preloader(true,undefined, 'reading cpm file...');
+        let variables = Object.keys(data[0]);
+        variables.shift();
+
+        data_second_service = {};
+        variables.forEach((k,i)=>{
+            data_second_service[k] = {text:k,range:d3.extent(data,d=>(d[k]=+d[k],d[k]))};
+        });
+        scaleService = d3.keys(data_second_service).map(k=>d3.scaleLinear().domain(data_second_service[k].range));
+        data_second = {};
+
+        data.forEach(d=>{
+            variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))// format number
+            const name = d[IDkey];
+            const fixname = name.replace('|','__');
+            data_second[fixname] = {};
+            variables.forEach((attr, i) => {
+                data_second[fixname][attr] =  d[variables[i]];
+            });
+        }); // format number
+        preloader(false);
+    })
 }
 function loadVocano(file,data){
     return d3.csv(`${srcpath}data/${file}_FDR.csv`).then(d=>{
@@ -53,6 +81,7 @@ function readFilecsv(filename,notSplit) {
     let filePath = srcpath+`data/${filename}.csv`;
     exit_warp();
     preloader(true);
+    $('#enableCPM_control')[0].checked = false;
     d3.csv(filePath)
         .then(function (data) {
 
@@ -60,6 +89,7 @@ function readFilecsv(filename,notSplit) {
             newdatatoFormat(data, notSplit);
             loadVocano(filename, data).then(() => {
                 newdatatoFormat(data, notSplit);
+
                 inithostResults();
                 serviceListattrnest = serviceLists.map(d => ({
                     key: d.text, sub: d.sub.map(e => e.text)
@@ -76,11 +106,20 @@ function readFilecsv(filename,notSplit) {
                 d3.select(".currentDate")
                     // .text("" + (sampleS['timespan'][0]).toDateString());
                     .text(dataInformation.filename);
-
-                if (!isinit)
-                    resetRequest();
-                else
-                    init();
+                dataRaw = object2DataPrallel(sampleS);
+                loadCPMData(filename).then(()=> {
+                    d3.select('#enableCPM_control').classed('hide',false);
+                    if (!isinit)
+                        resetRequest();
+                    else
+                        init();
+                }).catch(()=>{
+                    d3.select('#enableCPM_control').classed('hide',true);
+                    if (!isinit)
+                        resetRequest();
+                    else
+                        init();
+                })
 
                 preloader(false);
             }).catch(e => {
@@ -101,11 +140,20 @@ function readFilecsv(filename,notSplit) {
                 d3.select(".currentDate")
                     // .text("" + (sampleS['timespan'][0]).toDateString());
                     .text(dataInformation.filename);
-
-                if (!isinit)
-                    resetRequest();
-                else
-                    init();
+                dataRaw = object2DataPrallel(sampleS);
+                loadCPMData(filename).then(()=> {
+                    d3.select('#enableCPM_control').classed('hide',false);
+                    if (!isinit)
+                        resetRequest();
+                    else
+                        init();
+                }).catch(()=>{
+                    d3.select('#enableCPM_control').classed('hide',true);
+                    if (!isinit)
+                        resetRequest();
+                    else
+                        init();
+                })
 
                 preloader(false);
             })

@@ -1916,7 +1916,7 @@ d3.TimeSpace = function () {
         function renderData(data, type, row) {
             if (type === 'display') {
                 if (data%1==0)
-                    return `${data}<span style="opacity: 0">.00</span>`
+                    return `${data}<span style="opacity: 0">.00</span>`;
                 return d3.format('.2f')(data);
             }
             else if(type === 'export'){

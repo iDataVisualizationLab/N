@@ -557,9 +557,11 @@ function handle_dataRaw() {
         sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
             let nullkey = false;
             let axis_arr = tsnedata[h.name][i];
-            let outlierinstance = outlyingList.pointObject[h.name+'_'+i];
-            if (outlierinstance){
-                return outlierinstance.cluster;
+            if(axis_arr.cluster<0) {
+                let outlierinstance = outlyingList[-axis_arr.cluster + 1].pointObject[h.name + '_' + i];
+                if (outlierinstance) {
+                    return outlierinstance.cluster;
+                }
             }
             // reduce time step
 
