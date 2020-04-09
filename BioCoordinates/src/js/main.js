@@ -91,7 +91,8 @@ let db = 'nagios';
 // let animationtime = false ;
 const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
 
-let volcanoPlot = d3.VolcanoPlot();
+// // volcanoPlot
+// let volcanoPlot = d3.VolcanoPlot();
 Array.prototype.naturalSort= function(_){
     if (arguments.length) {
         return this.sort(function (as, bs) {
@@ -464,7 +465,7 @@ function update_Dimension() {
 
 function init() {
     console.log('init')
-    volcanoPlot.graphicopt({width:380,height:370,margin:{top:0,left:30,right:0,bottom:20}});
+    // volcanoPlot.graphicopt({width:380,height:370,margin:{top:0,left:30,right:0,bottom:20}});
     width = $("#Maincontent").width()-10;
     height = d3.max([document.body.clientHeight-150, 300]);
     w = width - m[1] - m[3];
@@ -542,10 +543,12 @@ function init() {
     _.bind(selecteds.on("change"),selecteds.node())();
     // changeVar(d3.select("#axisSetting").selectAll('tr').data().find(d=>d.arr==selectedService));
     // Render full foreground
-    if (vocanoData)
-        handle_data_volcanoplot(tsnedata);
-    else
-        volcanoPlot.stop().hide();
+
+    // disable volcano plot
+    // if (vocanoData)
+    //     handle_data_volcanoplot(tsnedata);
+    // else
+    //     volcanoPlot.stop().hide();
     brush();
 
 
@@ -581,10 +584,10 @@ function resetRequest() {
         .selectAll('tr')
         .filter(d=>d.arr==selectedService).select('input[type="radio"]').property("checked", true);
     _.bind(selecteds.on("change"),selecteds.node())();
-    if (vocanoData)
-        handle_data_volcanoplot(tsnedata);
-    else
-        volcanoPlot.stop().hide();
+    // if (vocanoData)
+    //     handle_data_volcanoplot(tsnedata);
+    // else
+    //     volcanoPlot.stop().hide();
     brush();
 }
 function setColorsAndThresholds(sin) {
