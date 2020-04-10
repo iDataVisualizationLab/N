@@ -151,7 +151,7 @@ function newdatatoFormat (data,notSplit){
         if (range[1]<=1)
             range[1] = 1;
         else{
-            if (range[1]>global_range[1])
+            if (range[0]>=0 && range[1]>global_range[1])
                 global_range[1]=range[1]
         }
         if (range[0]>=0)
@@ -164,7 +164,7 @@ function newdatatoFormat (data,notSplit){
         serviceLists.push(temp);
     });
     serviceLists.forEach(s=>{
-        if (s.sub[0].range[1]>1)
+        if (s.sub[0].range[1]>1&&s.sub[0].range[0]>=0)
             s.sub[0].range = global_range
     });
     serviceList_selected = serviceList.map((d,i)=>{return{text:d,index:i}});
