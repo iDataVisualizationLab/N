@@ -255,6 +255,13 @@ function drawFiltertable() {
 }
 let shuffled_data = [];
 $( document ).ready(function() {
+    try {
+        let dataName = window.location.search.substring(1).split("app=")[1].split('&')[0].replace(/%20/g,' ');
+        let inittarget = d3.selectAll(`#datacom option[value="${dataName}"]`);
+        if (!inittarget.empty()){
+            $('#datacom').val(dataName)
+        }
+    }catch(e){}
     $('.tabs').tabs();
     $('.modal').modal();
     $('.dropdown-trigger').dropdown();
