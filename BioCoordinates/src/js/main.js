@@ -103,7 +103,6 @@ Array.prototype.naturalSort= function(_){
     }
 };
 
-
 function filterAxisbyDom(d) {
     const pdata = d3.select(this.parentElement.parentElement).datum();
     if(d.value !== this.checked) {
@@ -165,7 +164,7 @@ function drawFiltertable() {
                             checked: serviceFullList[d.value.id].enable ? "checked" : null
                         }
                     }).on('adjustValue',function(d){
-                    d3.select(this).attr('checked',serviceFullList[d.value.id].enable ? "checked" : null)
+                    d3.select(this).attr('checked',serviceFullList[d.value.id]?serviceFullList[d.value.id].enable ? "checked" : null)
                 }).on('change', function (d) {
                     filterAxisbyDom.call(this, d);
 
@@ -464,6 +463,8 @@ function update_Dimension() {
 }
 
 function init() {
+    if(timel)
+        timel.stop();
     console.log('init')
     // volcanoPlot.graphicopt({width:380,height:370,margin:{top:0,left:30,right:0,bottom:20}});
     width = $("#Maincontent").width()-10;
@@ -536,10 +537,12 @@ function init() {
 
 
     // legend = create_legend(colors, brush);
+    if (!serviceFullList.find(d=>d.text===selectedService))
+        selectedService = serviceFullList[0].text;
     const selecteds = d3.select("#axisSetting")
         .select('tbody')
         .selectAll('tr')
-        .filter(d=>d.arr==selectedService).select('input[type="radio"]').property("checked", true);
+        .filter(d=>d.arr===selectedService).select('input[type="radio"]').property("checked", true);
     _.bind(selecteds.on("change"),selecteds.node())();
     // changeVar(d3.select("#axisSetting").selectAll('tr').data().find(d=>d.arr==selectedService));
     // Render full foreground
@@ -579,6 +582,8 @@ function resetRequest() {
     d3.select('#search').attr('placeholder',`Search host e.g ${data[0].compute}`);
     // Add a group element for each dimension.
     update_Dimension();
+    if (!serviceFullList.find(d=>d.text===selectedService))
+        selectedService = serviceFullList[0].text();
     const selecteds = d3.select("#axisSetting")
         .select('tbody')
         .selectAll('tr')
@@ -1140,8 +1145,9 @@ function paths(selected, ctx, count) {
         i = max;
         timer = optimize(timer);  // adjusts render_speed
     };
-
-    d3.timer(animloop);
+    if (timel)
+        timel.stop();
+    timel = d3.timer(animloop);
 }
 let timel
 // transition ticks for reordering, rescaling and inverting
@@ -1215,7 +1221,6 @@ function rescale() {
 function actives() {
     var actives = [],
         extents = [];
-
     svg.selectAll(".brush")
         .filter(function(d) {
             yscale[d].brushSelectionValue = d3.brushSelection(this);
@@ -1316,9 +1321,7 @@ window.onresize = function() {
     // animationtime = false;
     try {
         resetSize();
-    }catch (e) {
-        
-    }
+    }catch(e){}
 };
 
 // Remove all but selected from the dataset
