@@ -113,7 +113,7 @@ function systemFormat() {
     thresholds = [[3,98], [0,99], [1050,17850],[0,200] ];
     serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
 }
-
+let blackGenes=undefined;
 function newdatatoFormat (data,notSplit){
     preloader(true, 0, 'reading file...');
     serviceList = [];
@@ -121,9 +121,10 @@ function newdatatoFormat (data,notSplit){
     serviceListattr = [];
     serviceAttr={};
     hosts =[];
-
     let variables = Object.keys(data[0]);
-    IDkey = variables.shift()
+    IDkey = variables.shift();
+    // if(blackGenes)
+    //     data = data.filter(d=>!blackGenes.find(b=>new RegExp(b).test(d[IDkey])));
     let SUBJECTSob = {};
     SUBJECTS = [];
     if (notSplit){
@@ -132,6 +133,7 @@ function newdatatoFormat (data,notSplit){
     }
     // TODO remove this function
     serviceQuery["csv"]= serviceQuery["csv"]||{};
+    let global_range = [0,0];
     variables.forEach((k,i)=>{
         serviceQuery["csv"][k]={};
         serviceQuery["csv"][k][k]={
@@ -148,6 +150,10 @@ function newdatatoFormat (data,notSplit){
         range = d3.extent(data,d=>d[k]);
         if (range[1]<=1)
             range[1] = 1;
+        else{
+            if (range[1]>global_range[1])
+                global_range[1]=range[1]
+        }
         if (range[0]>=0)
             range[0] = 0;
         else if (range[0]>=-1)
@@ -156,6 +162,10 @@ function newdatatoFormat (data,notSplit){
         const temp = {"text":k,"id":i,"enable":true,"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(variables.length),"range":range}]};
         thresholds.push([0,1]);
         serviceLists.push(temp);
+    });
+    serviceLists.forEach(s=>{
+        if (s.sub[0].range[1]>1)
+            s.sub[0].range = global_range
     });
     serviceList_selected = serviceList.map((d,i)=>{return{text:d,index:i}});
     serviceFullList = serviceLists2serviceFullList(serviceLists);

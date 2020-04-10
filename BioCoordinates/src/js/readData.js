@@ -5,6 +5,9 @@ let data_second=[],data_second_service={};
 let dataRaw;
 let vocanoData;
 let isinit = true
+let disablelist = ['PValue','FDR','abs(logFC)','abs(logCPM)'];
+
+blackGenes = ["AT3G09260"]
 function initApp(file,isSplit,preloadFile){
     // load filter file
     preloader(true,undefined,'Read filter file...');
@@ -25,10 +28,17 @@ function loadCPMData(file){
         preloader(true,undefined, 'reading cpm file...');
         let variables = Object.keys(data[0]);
         variables.shift();
-
+        // if(blackGenes)
+        //     data = data.filter(d=>!blackGenes.find(b=>new RegExp(b).test(d[IDkey])));
         data_second_service = {};
+        global_range = [0,0];
         variables.forEach((k,i)=>{
             data_second_service[k] = {text:k,range:d3.extent(data,d=>(d[k]=+d[k],d[k]))};
+            if(global_range[1]<data_second_service[k].range[1])
+                global_range[1] = data_second_service[k].range[1];
+        });
+        variables.forEach(s=>{
+            data_second_service[s].range = global_range;
         });
         scaleService = d3.keys(data_second_service).map(k=>d3.scaleLinear().domain(data_second_service[k].range));
         data_second = {};
@@ -50,6 +60,7 @@ function loadVocano(file,data){
         let keyInput = Object.keys(d[0]);
         keyInput.shift();
         d.sort((a,b)=>a[""]-b[""]).forEach(e=>(d3.keys(e).forEach(f=>e[f]=+e[f]),e.name = hosts[e[""]-1].name));
+        console.log(d)
         let logKey = Object.keys(d[0]).filter(k=>k.includes('log'))
         logKey.forEach(k=>keyInput.push(`abs(${k})`))
         d.forEach((e,i)=>{
@@ -76,17 +87,19 @@ function formatService(init){
     conf.serviceListattrnest = serviceListattrnest;
     drawFiltertable();
 }
+let primaxis =[];
 function readFilecsv(filename,notSplit) {
     dataInformation.filename = filename+'.csv';
     let filePath = srcpath+`data/${filename}.csv`;
     exit_warp();
     preloader(true);
-    $('#enableCPM_control')[0].checked = false;
+    $('#enableCPM_control')[0].checked = true;
     d3.csv(filePath)
         .then(function (data) {
 
             db = "csv";
             newdatatoFormat(data, notSplit);
+            primaxis =serviceFullList.map(d=>d.text);
             loadVocano(filename, data).then(() => {
                 newdatatoFormat(data, notSplit);
 
@@ -94,6 +107,8 @@ function readFilecsv(filename,notSplit) {
                 serviceListattrnest = serviceLists.map(d => ({
                     key: d.text, sub: d.sub.map(e => e.text)
                 }));
+
+                serviceFullList.forEach(s=>disablelist.find(d=>d===s.text)?s.enable=false:null)
                 selectedService = serviceLists[0].text;
                 formatService(true);
                 processResult = processResult_csv;
@@ -113,6 +128,7 @@ function readFilecsv(filename,notSplit) {
                         resetRequest();
                     else
                         init();
+                    d3.select('#enableCPM_control').dispatch('change');
                 }).catch(()=>{
                     d3.select('#enableCPM_control').classed('hide',true);
                     if (!isinit)
@@ -147,6 +163,7 @@ function readFilecsv(filename,notSplit) {
                         resetRequest();
                     else
                         init();
+                    d3.select('#enableCPM_control').dispatch('change');
                 }).catch(()=>{
                     d3.select('#enableCPM_control').classed('hide',true);
                     if (!isinit)

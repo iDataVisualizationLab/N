@@ -520,7 +520,7 @@ function init() {
     data = dataRaw;
 
     // Extract the list of numerical dimensions and create a scale for each.
-    xscale.domain(dimensions = serviceLists.filter(function (s) {
+    xscale.domain(dimensions = serviceFullList.filter(function (s) {
         let k = s.text;
         let xtempscale = (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
             .domain(d3.extent(data, function (d) {
@@ -565,7 +565,7 @@ function resetRequest() {
     // dataRaw = object2DataPrallel(sampleS);
     data = dataRaw;
     yscale = {};
-    xscale.domain(dimensions = _.flatten([{text:'Time',enable:true},serviceFullList]).filter(function (s) {
+    xscale.domain(dimensions = serviceFullList.filter(function (s) {
         let k = s.text;
         let xtempscale = (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
             .domain(d3.extent(data, function (d) {
@@ -1197,6 +1197,19 @@ function update_ticks(d, extent) {
 
 // Rescale to new dataset domain
 function rescale() {
+    adjustRange(data);
+    xscale.domain(dimensions = serviceFullList.filter(function (s) {
+        let k = s.text;
+        let xtempscale = (((_.isDate(data[0][k])) && (yscale[k] = d3.scaleTime()
+            .domain(d3.extent(data, function (d) {
+                return d[k];
+            }))
+            .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3.scaleLinear()
+            .domain(serviceFullList.find(d=>d.text===k).range)
+            .range([h, 0]))));
+        return s.enable?xtempscale:false;
+    }).map(s=>s.text));
+    update_ticks();
     // reset yscales, preserving inverted state
     // dimensions.forEach(function(d,i) {
     //     if (yscale[d].inverted) {
@@ -1345,7 +1358,18 @@ function exclude_data() {
     data = new_data;
     rescale();
 }
-
+function adjustRange(data){
+    let globalRange = [0,0];
+    primaxis.forEach(p=>{
+        let range = d3.extent(data,d=>d[p]);
+        if (range[0]>=0 && range[1]>1&&range[1]>globalRange[1])
+            globalRange[1]=range[1];
+    });
+    primaxis.forEach((p,pi)=>{
+       if (range[0]>=0 && range[1])
+           serviceFullList[pi].range = globalRange;
+    })
+}
 function add_axis(d,g) {
     // dimensions.splice(dimensions.length-1, 0, d);
     dimensions.push(d);
@@ -1431,7 +1455,7 @@ function onChangeValue(condition) {
 
         d3.keys(data_second_service).forEach(k=>{
             serviceFullList.find(d=>d.text===k).range =data_second_service[k].range;
-            data.forEach((d,i)=>d[k]=data_second[d.name][k])
+            data.forEach((d,i)=>d[k]=data_second[d.name][k]);
             if(_.isDate(data[0][k]))
                 yscale[k] = d3.scaleTime()
                 .domain(d3.extent(data, function (d) {
