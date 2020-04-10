@@ -164,7 +164,7 @@ function drawFiltertable() {
                             checked: serviceFullList[d.value.id].enable ? "checked" : null
                         }
                     }).on('adjustValue',function(d){
-                    d3.select(this).attr('checked',serviceFullList[d.value.id]?serviceFullList[d.value.id].enable ? "checked" : null)
+                    d3.select(this).attr('checked',serviceFullList[d.value.id]&&serviceFullList[d.value.id].enable ? "checked" : null);
                 }).on('change', function (d) {
                     filterAxisbyDom.call(this, d);
 
@@ -240,7 +240,7 @@ function drawFiltertable() {
             // console.log(d3.event);
             const currentAxis = d3.select(evt.dragged).datum();
             const relatedtAxis = d3.select(evt.related).datum();
-            const chosenAxis = svg.selectAll(".dimension").filter(d => d == currentAxis.arr);
+            const chosenAxis = svg.selectAll(".dimension").filter(d => d === currentAxis.arr);
 
 
             d3.event = {};
