@@ -2,6 +2,8 @@
 
 https://idatavisualizationlab.github.io/N/
 
+# 2020
+
 Covid-19 wordstream: https://idatavisualizationlab.github.io/N/wordStream/covid19.html
 
 Covid-19: https://idatavisualizationlab.github.io/N/COVID-19/index.html
@@ -11,6 +13,8 @@ BioRadar: https://idatavisualizationlab.github.io/N/BioRadar/index.html
 BioCoordinates: https://idatavisualizationlab.github.io/N/BioCoordinates/index.html
 
 UMAP_cleanView: https://idatavisualizationlab.github.io/N/UMAP_cleanView/index.html
+
+# 2019
 
 https://idatavisualizationlab.github.io/N/wordStream
 
