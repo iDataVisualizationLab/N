@@ -679,6 +679,13 @@ function calculateServiceRange() {
 
 $( document ).ready(function() {
     console.log('ready');
+    try {
+        let dataName = window.location.search.substring(1).split("app=")[1].split('&')[0].replace(/%20/g,' ');
+        let inittarget = d3.selectAll(`#datacom option[value="${dataName}"]`);
+        if (!inittarget.empty()){
+            $('#datacom').val(dataName)
+        }
+    }catch(e){}
     // customSelect('select');
     $( "#modelWorkerInformation" ).resizable({ handles: 'w' });
     // set tooltip

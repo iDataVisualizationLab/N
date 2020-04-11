@@ -700,33 +700,33 @@ function render_range(selection, i, max, opacity) {
 };
 
 // simple data table
-function data_table(sample) {
-    // sort by first column
-    // var sample = sample.sort(function(a,b) {
-    //     var col = d3.keys(a)[0];
-    //     return a[col] < b[col] ? -1 : 1;
-    // });
-    // sort by Name
-    var sample = sample.naturalSort("name");
-
-    var table = d3.select("#compute-list")
-        .html("")
-        .selectAll("li")
-        .data(sample)
-        .enter().append("li")
-        .on("mouseover", highlight)
-        .on("mouseout", unhighlight);
-
-    table
-        .append("span")
-        .attr("class", "color-block")
-        .style("background", function(d) { return color(selectedService==null?d.group:d[selectedService]) })
-        .style("opacity",0.85);
-
-    table
-        .append("span")
-        .text(function(d) { return d.name; })
-}
+// function data_table(sample) {
+//     // sort by first column
+//     // var sample = sample.sort(function(a,b) {
+//     //     var col = d3.keys(a)[0];
+//     //     return a[col] < b[col] ? -1 : 1;
+//     // });
+//     // sort by Name
+//     var sample = sample.naturalSort("name");
+//
+//     var table = d3.select("#compute-list")
+//         .html("")
+//         .selectAll("li")
+//         .data(sample)
+//         .enter().append("li")
+//         .on("mouseover", highlight)
+//         .on("mouseout", unhighlight);
+//
+//     table
+//         .append("span")
+//         .attr("class", "color-block")
+//         .style("background", function(d) { return color(selectedService==null?d.group:d[selectedService]) })
+//         .style("opacity",0.85);
+//
+//     table
+//         .append("span")
+//         .text(function(d) { return d.name; })
+// }
 // complex data table
 // let filteredData = undefined;
 
@@ -735,26 +735,28 @@ let presetdatatable = [];
 let complex_data_table_render = false;
 function complex_data_table(sample,render) {
     if(complex_data_table_render && (render||!d3.select('.searchPanel.active').empty())) {
+        console.time('nest data')
         var samplenest = d3.nest()
             .key(d => d.rack).sortKeys(collator.compare)
-            // .key(d=>d.compute).sortKeys(collator.compare)
-            // .sortValues((a,b)=>d.compute-d.compute)
             .entries(sample);
         Object.keys(globalFilter).forEach(gf => {
-            const values = _.intersectionWith(sample, globalFilter[gf], function (a, b) {
-                return a.compute === b
+            let values = [];
+            globalFilter[gf].forEach(g=>{
+                const s = sample.find(s=>s.compute===g);
+                if(s)
+                    values.push(s)
             });
-            // if (values.length) {
-                samplenest.push({
-                    key: gf,
-                    ordiginal: globalFilter[gf].length,
-                    values: values
-                });
-            // }
+            samplenest.push({
+                key: gf,
+                ordiginal: globalFilter[gf].length,
+                values: values
+            });
         });
+        console.timeEnd('nest data');
         let instance = M.Collapsible.getInstance('#compute-list');
         if (instance)
-            instance.destroy()
+            instance.destroy();
+        console.time('render')
         d3.select("#compute-list").selectAll('*').remove();
         var table = d3.select("#compute-list")
             .attr('class', 'collapsible expandable rack')
@@ -775,42 +777,31 @@ function complex_data_table(sample,render) {
                     .styles({'overflow-y': 'auto', 'max-height': '400px'})
                     .append('ul')
                     .attr('class', 'collapsible compute expandable')
-                    .datum(d => d.values)
-                    .selectAll('li').data(d => d)
-                    //     .enter()
-                    //     .append('li').attr('class','compute');
-                    // lic.append('div')
-                    //     .attr('class','collapsible-header')
-                    //     .text(d=>d.key);
-                    // const lit = lic
-                    //     .append('div')
-                    //     .attr('class','collapsible-body')
-                    //     .append('div')
-                    //     .attr('class','row marginBottom0')
-                    //     .append('div')
-                    //     .attr('class','col s12 m12')
-                    //     .append('ul')
-                    //     .datum(d=> d.values)
-                    //     .selectAll('li').data(d=>d)
-                    .enter()
-                    .append('li').attr('class', 'comtime')
-                    .on("mouseover", highlight)
-                    .on("mouseout", unhighlight);
-
-                lic.append("span")
-                    .attr("class", "color-block")
-                    .style("background", function (d) {
-                        return color(selectedService == null ? d.group : d[selectedService])
-                    })
-                    .style("opacity", 0.85);
-                lic.append("span")
-                    .text(function (d) {
-                        return d.compute;
-                    });
-
+                    .datum(d => d.values);
                 return lir;
             }
-        )
+        );
+        d3.select("#compute-list").selectAll('.rack.active .collapsible.compute.expandable').call(updateComtime);
+        function updateComtime(p){
+            let lic = p.selectAll('li').data(d => d,e=>e.compute)
+                .enter()
+                .append('li').attr('class', 'comtime')
+                .on("mouseover", highlight)
+                    .on("mouseout", unhighlight);
+
+            lic.append("span")
+                .attr("class", "color-block")
+                .style("background", function (d) {
+                    return color(selectedService == null ? d.group : d[selectedService])
+                })
+                .style("opacity", 0.85);
+            lic.append("span")
+                .text(function (d) {
+                    return d.compute;
+                });
+            return p;
+        }
+
         $('#compute-list.collapsible').collapsible({
             accordion: false,
             onOpenEnd: function (evt) {
@@ -848,6 +839,7 @@ function complex_data_table(sample,render) {
         });
         table.selectAll('.rack').classed('active', d => _.includes(presetdatatable, d.key));
         complex_data_table_render = false;
+        console.timeEnd('render')
     }
 }
 // Adjusts rendering speed
