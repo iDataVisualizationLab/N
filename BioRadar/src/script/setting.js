@@ -217,11 +217,13 @@ function newdatatoFormat (data,notSplit){
     // outlyingList = outlier();
 }
 // summary metrics
-let histodram = {
-    resolution:20,
-    outlierMultiply: 3
-};
-
+// let histodram = {
+//     resolution:20,
+//     outlierMultiply: 3
+// };
+function inithostResults (worker) {
+    hostResults = sampleS;
+}
 function getHistdata(d, name, marker) {
     d = d.filter(e => e !== undefined).sort((a, b) => a - b);
     let r;

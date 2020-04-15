@@ -1,5 +1,11 @@
+// read variable
+const TIMEKEY = "Time";
+const TIMEFORMAT = d3.timeFormat("%B %d %Y %H:%M");
+
+var stickKey = TIMEKEY;
+var stickKeyFormat = TIMEFORMAT;
 // system variable
-var application_name ='BioRadar';
+var application_name ='HiperView';
 var jobList=[];
 var hostList;
 var serviceList = ["Temperature","Job_load","Memory_usage","Fans_speed","Power_consum","Job_scheduling"];
@@ -9,12 +15,12 @@ var serviceListattr = ["arrTemperature","arrCPU_load","arrMemory_usage","arrFans
 var serviceLists = [{"text":"Temperature","id":0,"enable":true,"sub":[{"text":"CPU1 Temp","id":0,"enable":true,"idroot":0,"angle":5.834386356666759,"range":[3,98]},{"text":"CPU2 Temp","id":1,"enable":true,"idroot":0,"angle":0,"range":[3,98]},{"text":"Inlet Temp","id":2,"enable":true,"idroot":0,"angle":0.4487989505128276,"range":[3,98]}]},{"text":"Job_load","id":1,"enable":true,"sub":[{"text":"Job load","id":0,"enable":true,"idroot":1,"angle":1.2566370614359172,"range":[0,10]}]},{"text":"Memory_usage","id":2,"enable":true,"sub":[{"text":"Memory usage","id":0,"enable":true,"idroot":2,"angle":1.8849555921538759,"range":[0,99]}]},{"text":"Fans_speed","id":3,"enable":true,"sub":[{"text":"Fan1 speed","id":0,"enable":true,"idroot":3,"angle":2.4751942119192307,"range":[1050,17850]},{"text":"Fan2 speed","id":1,"enable":true,"idroot":3,"angle":2.9239931624320583,"range":[1050,17850]},{"text":"Fan3 speed","id":2,"enable":true,"idroot":3,"angle":3.372792112944886,"range":[1050,17850]},{"text":"Fan4 speed","id":3,"enable":true,"idroot":3,"angle":3.8215910634577135,"range":[1050,17850]}]},{"text":"Power_consum","id":4,"enable":true,"sub":[{"text":"Power consumption","id":0,"enable":true,"idroot":4,"angle":4.71238898038469,"range":[0,200]}]}];
 var serviceLists_or = [{"text":"Temperature","id":0,"enable":true,"sub":[{"text":"CPU1 Temp","id":0,"enable":true,"idroot":0,"angle":5.834386356666759,"range":[3,98]},{"text":"CPU2 Temp","id":1,"enable":true,"idroot":0,"angle":0,"range":[3,98]},{"text":"Inlet Temp","id":2,"enable":true,"idroot":0,"angle":0.4487989505128276,"range":[3,98]}]},{"text":"Job_load","id":1,"enable":true,"sub":[{"text":"Job load","id":0,"enable":true,"idroot":1,"angle":1.2566370614359172,"range":[0,10]}]},{"text":"Memory_usage","id":2,"enable":true,"sub":[{"text":"Memory usage","id":0,"enable":true,"idroot":2,"angle":1.8849555921538759,"range":[0,99]}]},{"text":"Fans_speed","id":3,"enable":true,"sub":[{"text":"Fan1 speed","id":0,"enable":true,"idroot":3,"angle":2.4751942119192307,"range":[1050,17850]},{"text":"Fan2 speed","id":1,"enable":true,"idroot":3,"angle":2.9239931624320583,"range":[1050,17850]},{"text":"Fan3 speed","id":2,"enable":true,"idroot":3,"angle":3.372792112944886,"range":[1050,17850]},{"text":"Fan4 speed","id":3,"enable":true,"idroot":3,"angle":3.8215910634577135,"range":[1050,17850]}]},{"text":"Power_consum","id":4,"enable":true,"sub":[{"text":"Power consumption","id":0,"enable":true,"idroot":4,"angle":4.71238898038469,"range":[0,200]}]}];
 var serviceFullList = serviceLists2serviceFullList(serviceLists);
+var singleDataAxis=[];
 function serviceLists2serviceFullList (serviceLists){
     let temp = [];
     serviceLists.forEach(s=>s.sub.forEach(sub=>{
         sub.idroot = s.id;
         sub.enable = s.enable&&(sub.enable===undefined?true:sub.enable);
-        // sub.scale = d3.scaleLinear().range(sub.range);
         temp.push(sub);}));
     return temp;
 }
@@ -143,7 +149,8 @@ function systemFormat() {
         arrPower_usage:{key: "Power_consumption", val: ["arrPower_usage"]}};
     thresholds = [[3,98], [0,10], [0,99], [1050,17850],[0,200] ];
 }
-function newdatatoFormat (data){
+function newdatatoFormat (data,separate){
+    separate = separate||"-";
     serviceList = [];
     serviceLists = [];
     serviceListattr = [];
@@ -151,25 +158,32 @@ function newdatatoFormat (data){
     hostList ={data:{hostlist:{}}};
     // FIXME detect format
     const variables = _.without(Object.keys(data[0]),'timestamp','time');
-    data.forEach(d=>variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))); // format number
-    // data.forEach(d=>variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]<0.01)?(Math.round((+d[k])*10)/10):(+d[k]))) // format number
+    data.forEach(d=>variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))) // format number
     let keys ={};
+    if (variables.find(k=>k.split(separate).length>1)===undefined)
+        separate = "-";
     variables.forEach((k,ki)=>{
-        let split_string = k.split('-');
+        let split_string = k.split(separate);
         const nameh = split_string.shift();
         hostList.data.hostlist [nameh] = {
             rack: 1,//nameh.split('.')[2],
             node: 1,//.split('.')[3],
-            category:nameh.split('|')[1]==='wt'?0:1,
             id : nameh,
         };
-        let currentkey = split_string.join('-');
+        let currentkey = split_string.join(separate);
         const keys_replace =Object.keys(basic_service).map(k=>extractWordsCollection(getTermsArrayCollection(k),currentkey,k)).filter(d=>Object.keys(d).length);
         if(!keys[currentkey])
             keys[currentkey] = {r:undefined,vi:[]};
         if (keys_replace.length)
             keys[currentkey].r = Object.keys(keys_replace[0])[0]||0;
         keys[currentkey].vi.push(ki)
+    });
+    // check unionkeys
+    d3.keys(hostList.data.hostlist).forEach(hname=>{
+        Object.keys(keys).forEach((k,i)=>{
+            if (data.columns.find(c=>c===hname+separate+k)===undefined)
+                delete keys[k];
+        })
     });
 
     serviceQuery["csv"]= serviceQuery["csv"]||{};
@@ -193,28 +207,158 @@ function newdatatoFormat (data){
             if (temprange[1]>range[1])
                 range[1] = temprange[1];
         });
-        if (range[1]<=1)
-            range=[0,1]
         // let range = d3.extent(data,d=>d[variables[i]]);
-        if (keys[k].r)
-            range = serviceLists_or.find(d=>d.text===keys[k].r).sub[0].range;
-        const temp = {"text":k,"id":i,"enable":true,"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(Object.keys(keys).length),"range":range}]};
+        if (keys[k].r) {
+            let suggest_range = serviceLists_or.find(d => d.text === keys[k].r).sub[0].range;
+            if (suggest_range[0]<=range[0]&&suggest_range[1]>=range[1])
+                range = suggest_range;
+        }
+        const temp = {"text":k,"id":i,"enable":true,"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(Object.keys(keys).length-1),"range":range}]};
         thresholds.push(range);
         serviceLists.push(temp);
     });
     serviceList_selected = serviceList.map((d,i)=>{return{text:d,index:i}});
     serviceFullList = serviceLists2serviceFullList(serviceLists);
+    scaleService = serviceFullList.map(d=>d3.scaleLinear().domain(d.range));
 
     const host_name = Object.keys(hostList.data.hostlist);
     sampleS = {};
+    tsnedata = {};
     sampleS['timespan'] = data.map(d=>new Date(d.time||d.timestamp))
     data.forEach(d=>{
         host_name.forEach(h=> {
             serviceListattr.forEach(attr => {
-                 if (sampleS[h]===undefined)
-                     sampleS[h] = {};
+                if (sampleS[h]===undefined) {
+                    sampleS[h] = {};
+                    tsnedata[h] = [];
+                }
                 sampleS[h][attr] = sampleS[h][attr]||[];
-                sampleS[h][attr].push(processResult_csv(d[h+'-'+attr],attr));
+                let currentIndex = sampleS[h][attr].length;
+                if (tsnedata[h][currentIndex]===undefined){
+                    tsnedata[h][currentIndex] = [];
+                    tsnedata[h][currentIndex].name = h;
+                    tsnedata[h][currentIndex].timestep =currentIndex;
+                }
+                let retievedData = processResult_csv(d[h+separate+attr],attr);
+                sampleS[h][attr].push(retievedData);
+                tsnedata[h][currentIndex].push(retievedData===null?0:scaleService[i](retievedData)||0);
+            });
+        })
+    });
+}
+function newdatatoFormat_noSuggestion (data,separate){
+    separate = separate||"-";
+    serviceList = [];
+    serviceLists = [];
+    serviceListattr = [];
+    serviceAttr={};
+    hostList ={data:{hostlist:{}}};
+    // FIXME detect format
+    const variables = _.without(Object.keys(data[0]),'timestamp','time');
+    data.forEach(d=>variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))) // format number
+    // test sepatate
+
+    if (variables.find(k=>k.split(separate).length>1)===undefined)
+        separate = "-";
+
+
+    let keys ={};
+    variables.forEach((k,ki)=>{
+        let split_string = k.split(separate);
+        const nameh = split_string.shift();
+        hostList.data.hostlist [nameh] = {
+            rack: 1,//nameh.split('.')[2],
+            node: 1,//.split('.')[3],
+            id : nameh,
+        };
+        let currentkey = split_string.join(separate);
+        // const keys_replace =Object.keys(basic_service).map(k=>extractWordsCollection(getTermsArrayCollection(k),currentkey,k)).filter(d=>Object.keys(d).length);
+        if(!keys[currentkey])
+            keys[currentkey] = {r:undefined,vi:[]};
+        // if (keys_replace.length)
+        //     keys[currentkey].r = Object.keys(keys_replace[0])[0]||0;
+        keys[currentkey].vi.push(ki)
+    });
+    // check unionkeys
+    d3.keys(hostList.data.hostlist).forEach(hname=>{
+        Object.keys(keys).forEach((k,i)=>{
+            if (data.columns.find(c=>c===hname+separate+k)===undefined)
+                delete keys[k];
+        })
+    });
+
+    serviceQuery["csv"]= serviceQuery["csv"]||{};
+
+    let validAxis = 0;
+    Object.keys(keys).forEach((k,i)=>{
+        serviceQuery["csv"][k]={};
+        serviceQuery["csv"][k][k]={
+            type : 'number',
+            format : () =>k,
+            numberOfEntries: 1};
+        serviceAttr[k] = {
+            key: k,
+            val:[k]
+        };
+        serviceList.push(k);
+        serviceListattr.push(k);
+        let range =[+Infinity,-Infinity];
+        keys[k].vi.forEach(vi=>{
+            let temprange = d3.extent(data,d=>d[variables[vi]]);
+            if (temprange[0]<range[0])
+                range[0] = temprange[0];
+            if (temprange[1]>range[1])
+                range[1] = temprange[1];
+        });
+        // let range = d3.extent(data,d=>d[variables[i]]);
+        if (keys[k].r) {
+            let suggest_range = serviceLists_or.find(d => d.text === keys[k].r).sub[0].range;
+            if (suggest_range[0]<=range[0]&&suggest_range[1]>=range[1])
+                range = suggest_range;
+        }
+        if (range[0]!==range[1]){
+            validAxis++;
+        }else{
+            singleDataAxis.push(i);
+        }
+        const temp = {"text":k,"id":i,"enable":range[0]!==range[1],"sub":[{"text":k,"id":0,"enable":true,"idroot":i,"angle":i*2*Math.PI/(Object.keys(keys).length),"range":range}]};
+        thresholds.push(range);
+        serviceLists.push(temp);
+    });
+    serviceList_selected = serviceList.map((d,i)=>{return{text:d,index:i}});
+    serviceFullList = serviceLists2serviceFullList(serviceLists);
+    scaleService = serviceFullList.map(d=>d3.scaleLinear().domain(d.range));
+    let currentValidAxis = 0;
+    serviceFullList.forEach(d=>{
+        d.enable = d.range[0]!==d.range[1];
+        if (d.enable) {
+            d.angle = currentValidAxis * 2 * Math.PI / validAxis;
+            currentValidAxis++;
+        }else
+            d.angle = 0;
+    });
+    const host_name = Object.keys(hostList.data.hostlist);
+    sampleS = {};
+    tsnedata = {};
+    sampleS['timespan'] = data.map(d=>new Date(d.time||d.timestamp))
+    data.forEach(d=>{
+        host_name.forEach(h=> {
+            serviceListattr.forEach((attr,i) => {
+                if (sampleS[h]===undefined) {
+                    sampleS[h] = {};
+                    tsnedata[h] = [];
+                }
+                sampleS[h][attr] = sampleS[h][attr]||[];
+                let currentIndex = sampleS[h][attr].length;
+                if (tsnedata[h][currentIndex]===undefined){
+                    tsnedata[h][currentIndex] = [];
+                    tsnedata[h][currentIndex].name = h;
+                    tsnedata[h][currentIndex].timestep =currentIndex;
+                }
+                let retievedData = processResult_csv(d[h+separate+attr],attr);
+                // let retievedData = d[h+separate+attr];
+                sampleS[h][attr].push(retievedData);
+                tsnedata[h][currentIndex].push(retievedData[0]===null?0:scaleService[i](retievedData[0])||0);
             });
         })
     });
@@ -237,32 +381,32 @@ function getstringQueryAll_influx (ip){
 function getstringQuery_influx (ip,serviceI,timerange,timestep){
     const s = serviceList[serviceI];
     return d3.keys(serviceQuery.influxdb[s]).map(ser=>{
-            const subs = serviceQuery.influxdb[s][ser];
-            let str = "SELECT ";
-            if (timestep)
-                if(subs.type==="object")
-                    str +=  d3.range(subs.numberOfEntries).map(i=> i? ('"'+(subs.format2||subs.format)(i+1)+'"'):('DISTINCT("'+(subs.format2||subs.format)(i+1)+'") as "'+(subs.format2||subs.format)(i+1)+'"')).join(',');
-                else
-                    str +=  d3.range(subs.numberOfEntries).map(i=> i? ('"'+(subs.format2||subs.format)(i+1)+'"'):('MAX("'+(subs.format2||subs.format)(i+1)+'") as "'+(subs.format2||subs.format)(i+1)+'"')).join(',');
-            else
-                str +=  d3.range(subs.numberOfEntries).map(i=> '"'+(subs.format2||subs.format)(i+1)+'"').join(',');
+        const subs = serviceQuery.influxdb[s][ser];
+        let str = "SELECT ";
+        if (timestep)
             if(subs.type==="object")
-                str +=  ' FROM '+ser+' WHERE host=\''+ip+'\'';
+                str +=  d3.range(subs.numberOfEntries).map(i=> i? ('"'+(subs.format2||subs.format)(i+1)+'"'):('DISTINCT("'+(subs.format2||subs.format)(i+1)+'") as "'+(subs.format2||subs.format)(i+1)+'"')).join(',');
             else
-                str +=  ',"host","error" FROM '+ser+' WHERE host=\''+ip+'\'';
-            if (timerange){
-                str += 'AND time >= \''+timerange[0]+'\'';
-                if (timerange[1])
-                    str += ' AND time <= \''+timerange[1]+'\'';
-                else
-                    str += ' LIMIT 1';
-                if (timestep)
-                    str += ' GROUP BY time('+timestep+'),* SLIMIT 1';
-            }else {
-                str += ' ORDER BY time DESC LIMIT 1';
-            }
-            return str;
-        }).join('%3B');
+                str +=  d3.range(subs.numberOfEntries).map(i=> i? ('"'+(subs.format2||subs.format)(i+1)+'"'):('MAX("'+(subs.format2||subs.format)(i+1)+'") as "'+(subs.format2||subs.format)(i+1)+'"')).join(',');
+        else
+            str +=  d3.range(subs.numberOfEntries).map(i=> '"'+(subs.format2||subs.format)(i+1)+'"').join(',');
+        if(subs.type==="object")
+            str +=  ' FROM '+ser+' WHERE host=\''+ip+'\'';
+        else
+            str +=  ',"host","error" FROM '+ser+' WHERE host=\''+ip+'\'';
+        if (timerange){
+            str += 'AND time >= \''+timerange[0]+'\'';
+            if (timerange[1])
+                str += ' AND time <= \''+timerange[1]+'\'';
+            else
+                str += ' LIMIT 1';
+            if (timestep)
+                str += ' GROUP BY time('+timestep+'),* SLIMIT 1';
+        }else {
+            str += ' ORDER BY time DESC LIMIT 1';
+        }
+        return str;
+    }).join('%3B');
 }
 
 function processData_csv(result, serviceName) {
@@ -286,7 +430,7 @@ function processData_csv(result, serviceName) {
                         }
                         else return undefined;
                     });
-               else
+                else
                     return d3.range(serviceAttribute[s].numberOfEntries).map(d => undefined);
             } else {
                 return d3.range(serviceAttribute[s].numberOfEntries).map(d => undefined);
@@ -294,7 +438,7 @@ function processData_csv(result, serviceName) {
         }));
     }
     return d3.merge(query_return.map((s, i) => {
-            return d3.range(serviceAttribute[s].numberOfEntries).map(d => undefined);
+        return d3.range(serviceAttribute[s].numberOfEntries).map(d => undefined);
     }));
 }
 function processData_influxdb(result, serviceName) {
@@ -335,7 +479,7 @@ function processData_influxdb(result, serviceName) {
         }));
     }
     return d3.merge(query_return.map((s, i) => {
-            return d3.range(serviceAttribute[s].numberOfEntries).map(d => undefined);
+        return d3.range(serviceAttribute[s].numberOfEntries).map(d => undefined);
     }));
 }
 function string2JSON (str){
@@ -503,7 +647,7 @@ function handlemissingdata(hostname,iter){
 function getDataByName_withLabel (hostResults, name,startIndex, lastIndex,undefinedValue) {
     let data = getDataByName(hostResults, name,startIndex, lastIndex,undefined,undefinedValue);
     if (startIndex===lastIndex)
-        return serviceFullList.filter(d=>d).map((d,i)=>{return {axis: d.text, value:data[i]}});
+        return serviceFullList.map((d,i)=>{return {axis: d.text, value:data[i]}});
     else {
         return serviceFullList.map((d, i) => {
             return {axis: d.text, value: d3.range(0, lastIndex - startIndex + 1).map(inx => data[inx * +i])}
@@ -544,10 +688,10 @@ function getDataByName(hostResults, name,startIndex, lastIndex, isPredict,undefi
             // switch (indx) {
             //     case 0:
             //     case 3:
-                    arrServices = d3.merge([arrServices, a]);
-                //     break;
-                // default:
-                //     arrServices.push(a[0] ===0? 0: (a[0]|| undefinedValue))
+            arrServices = d3.merge([arrServices, a]);
+            //     break;
+            // default:
+            //     arrServices.push(a[0] ===0? 0: (a[0]|| undefinedValue))
             // }
         })
     }
@@ -565,14 +709,50 @@ function predict (arr,ser, notUsepastValue,undefinedValue){
         let service = serviceMain.sub[0];
         if (service) {
             average = undefinedValue? (service.undefinedValue ===undefined?((service.range[1]-service.range[0])/2+service.range[0]):service.undefinedValue):undefined;
-           return  d3.range(serviceMain.sub.length).map(a=>average);
+            return  d3.range(serviceMain.sub.length).map(a=>average);
         }
-            return [0,0,0];
+        return [0,0,0];
     }
 }
 
 function inithostResults (worker) {
-    hostResults = sampleS;
+
+    hosts = [];
+    const hostdata = hostList.data.hostlist;
+    hostResults ={};
+    for (var att in hostdata) {
+        var h = {};
+        h.name = att;
+        h.hpcc_rack = hostdata[att].rack?hostdata[att].rack:(+att.split("-")[1]);
+        h.hpcc_node = hostdata[att].node?hostdata[att].node:+att.split("-")[2].split(".")[0];
+        h.index = hosts.length;
+
+        // to contain the historical query results
+        if (!worker) {
+            hostResults[h.name] = {};
+            hostResults[h.name].index = h.index;
+            hostResults[h.name].arr = [];
+            serviceListattr.forEach(d => hostResults[att][d] = []);
+        }
+        hosts.push(h);
+    }
+    hostResults.timespan =[]
+    hosts.sort((a, b) => {
+
+        var rackx = a.hpcc_rack;
+        var racky = b.hpcc_rack;
+        var x = a.hpcc_node;
+        var y = b.hpcc_node;
+        if (rackx !== racky) {
+            return rackx - racky;
+        } else {
+            if (x % 2 - y % 2) {
+                return y % 2 - x % 2
+            } else {
+                return x - y
+            }
+        }
+    });
 }
 
 // Delete unnecessary files
@@ -665,19 +845,19 @@ let processData = processData_old;
 
 
 // // 2 functions needed for kernel density estimate
-    function kernelDensityEstimator(kernel, X) {
-        return function(V) {
-            return X.map(function(x) {
-                return [x, d3.mean(V, function(v) { return kernel(x - v); })];
-            });
-        };
-    }
+function kernelDensityEstimator(kernel, X) {
+    return function(V) {
+        return X.map(function(x) {
+            return [x, d3.mean(V, function(v) { return kernel(x - v); })];
+        });
+    };
+}
 
-    function kernelEpanechnikov(k) {
-        return function(v) {
-            return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-        };
-    }
+function kernelEpanechnikov(k) {
+    return function(v) {
+        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+    };
+}
 
 function getformattime (rate,unit){
     return d3["time"+unit].every(rate);
@@ -740,48 +920,282 @@ function current_userData () {
 function fixstr(s) {
     return s.replace(/ |#/gi,'');
 }
+let histodram = {
+    resolution:20,
+    outlierMultiply: 3
+};
 
-function getsummaryservice(data){
-    let dataf = _.reduce(_.chunk(_.unzip(data),serviceList_selected.length),function(memo, num){ return memo.map((d,i)=>{d.push(num[i]); return _.flatten(d); })});
-    let ob = {};
-    dataf.forEach((d,i)=>{
-        d=d.filter(e=>e!==undefined).sort((a,b)=>a-b);
-        let r;
-        if (d.length){
-            var x = d3.scaleLinear()
-                .domain(d3.extent(d));
-            var histogram = d3.histogram()
-                .domain(x.domain())
-                .thresholds(x.ticks(histodram.resolution))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
-                .value(d => d);
-            let hisdata = histogram(d);
+function getHistdata(d, name, marker) {
+    d = d.filter(e => e !== undefined).sort((a, b) => a - b);
+    let r;
+    if (d.length) {
+        var x = d3.scaleLinear()
+            .domain(d3.extent(d));
+        var histogram = d3.histogram()
+            .domain(x.domain())
+            .thresholds(x.ticks(histodram.resolution))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+            .value(d => d);
+        let hisdata = histogram(d);
 
-            let sumstat = hisdata.map((d,i)=>[d.x0+(d.x1-d.x0)/2,(d||[]).length]);
-            r = {
-                axis: serviceList_selected[i].text,
-                q1: ss.quantileSorted(d,0.25) ,
-                q3: ss.quantileSorted(d,0.75),
-                median: ss.medianSorted(d) ,
-                // outlier: ,
-                arr: sumstat};
-            if (d.length>4)
-            {
-                const iqr = r.q3-r.q1;
-                r.outlier = _.unique(d.filter(e=>e>(r.q3+outlierMultiply*iqr)||e<(r.q1-outlierMultiply*iqr)));
-            }else{
-                r.outlier =  _.unique(d);
+        let sumstat = hisdata.map(d => [d.x0 + (d.x1 - d.x0) / 2, (d || []).length]);
+        r = {
+            axis: name,
+            q1: ss.quantileSorted(d, 0.25),
+            q3: ss.quantileSorted(d, 0.75),
+            median: ss.medianSorted(d),
+            // outlier: ,
+            arr: sumstat
+        };
+        if (d.length > 4) {
+            const iqr = r.q3 - r.q1;
+            const lowLimit = r.q3 + histodram.outlierMultiply * iqr;
+            const upLimit = r.q1 - histodram.outlierMultiply * iqr;
+            r.outlier = _.uniq(d.filter(e => e > lowLimit || e < upLimit));
+            if (marker&&d.length>marker){
+                let sum = d.length;
+                let markerIndex = sumstat.findIndex(d=>(sum-=d[1],sum)<marker);
+                if (markerIndex!==-1)
+                    r.marker = markerIndex;
             }
-        }else{
-            r = {
-                axis: serviceList_selected[i].text,
-                q1: undefined ,
-                q3: undefined,
-                median: undefined ,
-                outlier: [],
-                arr: []};
+        } else {
+            r.outlier = _.uniq(d);
         }
-        ob[r.axis] = r;
-
+    } else {
+        r = {
+            axis: name,
+            q1: undefined,
+            q3: undefined,
+            median: undefined,
+            outlier: [],
+            arr: []
+        };
+    }
+    return r;
+}
+function orderByCorrelation(){
+    let simMatrix = variableCorrelation;
+    const orderMatrix = simMatrix.map(d=>d.index);
+    let mapIndex = [];
+    simMatrix.forEach((v,i)=>{
+        v.total =0;
+        mapIndex.push(i);
+        orderMatrix.forEach((j,jj)=>{
+            if (i!==j) {
+                if (j-i>0)
+                    v.total += v[j-i-1];
+                else
+                    v.total += simMatrix[jj][i-1-j];
+            }
+        })
     });
-    return ob;
+    mapIndex.sort((a,b)=> simMatrix[a].total-simMatrix[b].total);
+    // let undefinedposition = data.findIndex(d=>d[0].text.match(': undefined'))
+    // mapIndex.sort((a,b)=>
+    //     b===undefinedposition?1:(a===undefinedposition?-1:0)
+    // )
+    let current_index = mapIndex.pop();
+    let orderIndex = [simMatrix[current_index].index_s];
+
+    do{
+        let maxL = -Infinity;
+        let maxI = 0;
+        mapIndex.forEach((d)=>{
+            let temp;
+            if (orderMatrix[d]>simMatrix[current_index].index ){
+                temp = simMatrix[current_index][orderMatrix[d]-simMatrix[current_index].index -1];
+            }else{
+                temp = simMatrix[d][simMatrix[current_index].index -orderMatrix[d]-1]
+            }
+            if (maxL<temp){
+                maxL = temp;
+                maxI = d;
+            }
+        });
+        orderIndex.push(simMatrix[maxI].index_s);
+        current_index = maxI;
+        mapIndex = mapIndex.filter(d=>d!=maxI);
+    } while(mapIndex.length);
+    orderIndex.forEach((o,i)=>{
+        serviceFullList[o].angle = i*2*Math.PI/(orderIndex.length);
+    });
+}
+
+function enableVariableCorrelation(isenable){
+    d3.select('#enableVariableCorrelation').attr('disabled',!isenable?'':null)
+}
+
+function distanceL2(a, b){
+    let dsum = 0;
+    a.forEach((d,i)=> {dsum +=(d-b[i])*(d-b[i])});
+    return Math.round(Math.sqrt(dsum)*Math.pow(10, 10))/Math.pow(10, 10);
+}
+function distanceL1(a,b) {
+    let dsum = 0;
+    a.forEach((d,i)=> {dsum +=Math.abs(d-b[i])}); //modified
+    return Math.round(dsum*Math.pow(10, 10))/Math.pow(10, 10);
+}
+
+function handle_clusterinfo () {
+    let data_info = [['Grouping Method:',group_opt.clusterMethod]];
+    d3.select(`#${group_opt.clusterMethod}profile`).selectAll('label').each(function(d,i) {
+        data_info.push([d3.select(this).text(), group_opt.bin[Object.keys(group_opt.bin)[i]]])
+    });
+    data_info.push(['#group calculated:',cluster_info.length]);
+    let table = d3.select('#clusterinformation').select('table tbody');
+    let tr=table
+        .selectAll('tr')
+        .data(data_info);
+    tr.exit().remove();
+    let tr_new = tr.enter().append('tr');
+    let td = table.selectAll('tr').selectAll('td').data(d=>d);
+    td.exit().remove();
+    td.enter().append('td')
+        .merge(td)
+        .text(d=>d);
+}
+
+function recomendName (clusterarr,haveDescription){
+    clusterarr.forEach((c,i)=>{
+        c.index = i;
+        c.axis = [];
+        c.labels = ''+i;
+        c.name = `group_${i+1}`;
+        let zero_el = c.__metrics.filter(f=>!f.value);
+        let name='';
+        if (zero_el.length && zero_el.length<c.__metrics.normalize.length){
+            c.axis = zero_el.map(z=>{return{id:z.axis,description:'undefined'}});
+            name += `${zero_el.length} metric(s) undefined `;
+        }else if(zero_el.length===c.__metrics.normalize.length){
+            c.text = `undefined`;
+            if(!clusterDescription[c.name])
+                clusterDescription[c.name] = {};
+            clusterDescription[c.name].id = c.name;
+            clusterDescription[c.name].text = c.text;
+            return;
+        }
+        name += c.__metrics.filter(f=>f.value>0.75).map(f=>{
+            c.axis.push({id:f.axis,description:'high'});
+            return 'High '+f.axis;
+        }).join(', ');
+        name = name.trim();
+        if (name==='')
+            c.text = ``;
+        else
+            c.text = `${name}`;
+        if(!haveDescription || !clusterDescription[c.name]){
+            if(!clusterDescription[c.name])
+                clusterDescription[c.name] = {};
+            clusterDescription[c.name].id = c.name;
+            clusterDescription[c.name].text = c.text;
+        }
+    });
+}
+
+function recomendColor (clusterarr) {
+    let colorCa = colorScaleList['customschemeCategory'].slice();
+    if (clusterarr.length>10 && clusterarr.length<21)
+        colorCa = d3.schemeCategory20;
+    else if (clusterarr.length>20)
+        colorCa = clusterarr.map((d,i)=>d3.interpolateTurbo(i/(clusterarr.length-1)));
+    let colorcs = d3.scaleOrdinal().range(colorCa);
+    let colorarray = [];
+    let orderarray = [];
+    // clusterarr.filter(c=>!c.text.match('undefined'))
+    clusterarr.filter(c=>c.text!=='undefined')
+        .forEach(c=>{
+            colorarray.push(colorcs(c.name));
+            orderarray.push(c.name);
+        });
+    clusterarr.filter(c=>c.text==='undefined').forEach(c=>{
+        colorarray.push('gray');
+        orderarray.push(c.name);
+    });
+    colorCluster.range(colorarray).domain(orderarray)
+}
+
+function similarityCal(data){
+    const n = data.length;
+    let simMatrix = [];
+    let mapIndex = [];
+    for (let i = 0;i<n; i++){
+        let temp_arr = [];
+        temp_arr.total = 0;
+        for (let j=i+1; j<n; j++){
+            let tempval = similarity(data[i][0],data[j][0]);
+            temp_arr.total += tempval;
+            temp_arr.push(tempval)
+        }
+        for (let j=0;j<i;j++)
+            temp_arr.total += simMatrix[j][i-1-j];
+        temp_arr.name = data[i][0].name;
+        temp_arr.index = i;
+        mapIndex.push(i);
+        simMatrix.push(temp_arr)
+    }
+    mapIndex.sort((a,b)=> simMatrix[a].total-simMatrix[b].total);
+    // let undefinedposition = data.findIndex(d=>d[0].text.match(': undefined'))
+    // mapIndex.sort((a,b)=>
+    //     b===undefinedposition?1:(a===undefinedposition?-1:0)
+    // )
+    let current_index = mapIndex.pop();
+    let orderIndex = [simMatrix[current_index].index];
+
+    do{
+        let maxL = Infinity;
+        let maxI = 0;
+        mapIndex.forEach((d)=>{
+            let temp;
+            if (d>simMatrix[current_index].index ){
+                temp = simMatrix[current_index][d-current_index-1];
+            }else{
+                temp = simMatrix[d][current_index-d-1]
+            }
+            if (maxL>temp){
+                maxL = temp;
+                maxI = d;
+            }
+        });
+        orderIndex.push(simMatrix[maxI].index);
+        current_index = maxI;
+        mapIndex = mapIndex.filter(d=>d!=maxI);} while(mapIndex.length);
+    return orderIndex;
+    function similarity (a,b){
+        return Math.sqrt(d3.sum(a,(d,i)=>(d.value-b[i].value)*(d.value-b[i].value)));
+    }
+}
+
+function onClusterHistogram(){
+    let h = 50;
+    let w = radarChartclusteropt.w*0.85;
+    let interval = sampleS.timespan[1]-sampleS.timespan[0];
+    let violiin_chart = d3.histChart().graphicopt({width:w,height:h,opt:{dataformated:true},tick:{visibile:false},
+        formatx:(d)=>millisecondsToStr(d*sampleS.timespan.length*interval),
+        middleAxis:{'stroke-width':0.5},displayDetail:true});
+    var scale = d3.scaleTime().domain([interval,interval*sampleS.timespan.length]).range([1,sampleS.timespan.length]);
+    var histogram = d3.histogram()
+        .domain([1,sampleS.timespan.length])
+        // .thresholds(d3.range(0,20).map(d=>scale(d)))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+        .thresholds(scale.ticks(11).map(s=>scale(s)))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+        .value(d => d);
+    let nestCluster = d3.nest().key(d=>d['clusterName']).rollup(d=>getHist(d.map(e=>e.__deltaTimestep),d[0].clusterName,_.uniq(d.map(e=>e.name)).length)).object(timeSpacedata?timeSpacedata:handle_data_model(tsnedata,undefined,true));
+    const customrangeY = [0,d3.max(d3.values(nestCluster),e=>d3.max(e.arr,d=>d[1]))];
+
+    d3.select('#clusterDisplay').selectAll('.radarCluster').append('svg')
+        .attr('class','clusterHist')
+        .attrs({width: w,height:h})
+        .styles({
+            'transform':'translateY(-50%)',
+            'position': 'absolute',
+            'top':'50%',
+            'overflow':'visible'
+        })
+        .each(function(d){
+            violiin_chart.graphicopt({color:(i)=>colorCluster(d.id),title:[{text:`${nestCluster[d.id].total} state${nestCluster[d.id].total>1?'s':''}`}
+                    ,{text:`${nestCluster[d.id].extra} node${nestCluster[d.id].total>1?'s':''}`}]}).rangeY(customrangeY).data([nestCluster[d.id]]).draw(d3.select(this))
+        });
+    function getHist(v,name,nodes){
+        let hisdata = histogram(v);
+        let sumstat = hisdata.map((d, i) => [(d.x0 + (d.x1 - d.x0) / 2)/sampleS.timespan.length, (d || []).length]);
+        return {axis: name,arr:sumstat,total:v.length,extra:nodes};
+    }
 }
