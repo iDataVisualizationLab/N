@@ -630,7 +630,6 @@ function init() {
             .range([h, 0]))));
         return s.enable?xtempscale:false;
     }).map(s=>s.text));
-
     // Add a group element for each dimension.
     update_Dimension();
 
@@ -1224,6 +1223,7 @@ function brush() {
 }
 function plotViolin() {
     selected = shuffled_data;
+    violiin_chart.graphicopt({width:Math.min(w/dimensions.length,100),height:h});
     setTimeout(() => {
         let dimGlobal = [0, 0];
         let dimensiondata = {};
@@ -1448,7 +1448,6 @@ function resetSize() {
     height = d3.max([document.body.clientHeight-150, 300]);
     w = width - m[1] - m[3];
     h = height - m[0] - m[2];
-
     let chart = d3.select("#chart")
         .style("height", (h + m[0] + m[2]) + "px")
 
