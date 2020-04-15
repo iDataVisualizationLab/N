@@ -525,7 +525,11 @@ function update_Dimension() {
                     .text(String)
                     .append("title")
                     .text("Click to invert. Drag to reorder");
-
+                // Add violinplot holder
+                new_dim.append("svg:g")
+                    .attr("class", "plotHolder")
+                    .attr("transform", "translate(0,0)")
+                    .style('opacity',0.8);
                 // Add and store a brush for each axis.
                 new_dim.append("svg:g")
                     .attr("class", "brush")
@@ -545,6 +549,7 @@ function update_Dimension() {
                 return new_dim;
             },
             update =>{
+                isChangeData = true;
                 // Add an axis and title.
                 update.select(".axis")
                     .attr("transform", "translate(0,0)")
@@ -1217,8 +1222,49 @@ function brush() {
     redraw(selected);
     // Loadtostore();
 }
+function plotViolin() {
+    selected = shuffled_data;
+    setTimeout(() => {
+        let dimGlobal = [0, 0];
+        let dimensiondata = {};
+        dimensions.forEach(d => {
+            let s = serviceFullList.find(s => s.text === d);
+            let color = () => "#ffffff";
+            if (s) {
+                let value = [];
+                if (cluster_info.length) {
+                    let cs = {};
+                    cluster_info.forEach((c, ci) => cs[ci] = []);
+                    selected.forEach(e => cs[e.Cluster].push(e[d]));
+                    value = cluster_info.map((c, ci) => axisHistogram(c.name, s.range, cs[ci]));
+                    vMax = d3.max(value, d => d[1]);
+                    dimGlobal[1] = Math.max(vMax, dimGlobal[1]);
+                    color = colorCluster;
+                } else {
+                    value = [axisHistogram(s.text, s.range, selected.map(e => e[d]))];
+                    vMax = d3.max(value[0], d => d[1]);
+                    dimGlobal[1] = Math.max(vMax, dimGlobal[1]);
+                }
+                dimensiondata[d] = {key: s, value: value, color: color};
 
+            }
+        });
+        d3.selectAll('.dimension').select('.plotHolder')
+            .each(function (d) {
+                if (dimensiondata[d]) {
+                    let s = dimensiondata[d].key;
+                    violiin_chart.graphicopt({
+                        customrange: s.range,
+                        rangeY: dimGlobal,
+                        color: dimensiondata[d].color
+                    }).data(dimensiondata[d].value).draw(d3.select(this))
+                }
+            })
+    }, 0)
+}
 // render a set of polylines on a canvas
+let isChangeData=false;
+
 function paths(selected, ctx, count) {
     var n = selected.length,
         i = 0,
@@ -1249,7 +1295,32 @@ function paths(selected, ctx, count) {
     if (timel)
         timel.stop();
     timel = d3.timer(animloop);
+    if(isChangeData)
+        axisPlot.dispatch('plot',selected);
 }
+let axisPlot =  d3.select('#overlayPlot').on('change',function(){
+    switch ($(this).val()){
+        case 'none':
+            d3.selectAll('.dimension .plotHolder').selectAll('*').remove();
+            d3.select(this).on('plot',()=>{});
+            hide_ticks();
+            break;
+        case 'tick':
+            d3.selectAll('.dimension .plotHolder').selectAll('*').remove();
+            d3.select(this).on('plot',()=>{});
+            show_ticks();
+            break;
+        case 'violin':
+            d3.select(this).on('plot',plotViolin);
+            hide_ticks();
+            break;
+        case 'violin+tick':
+            d3.select(this).on('plot',plotViolin);
+            show_ticks();
+            break;
+    }
+    d3.select(this).dispatch('plot')
+});
 let timel
 // transition ticks for reordering, rescaling and inverting
 function update_ticks(d, extent) {
@@ -1413,7 +1484,7 @@ function resetSize() {
         .each(function (d) {
             d3.select(this).call(yscale[d].brush = d3.brushY(yscale[d])
                 .extent([[-10, 0], [10, h]])
-                .on("brush end", brush));
+                .on("brush end", function(){isChangeData = true; brush();}));
         });
 
     // update axis placement
@@ -1500,9 +1571,6 @@ d3.select("#exclude-data").on("click", exclude_data);
 d3.select("#search").on("keyup", brush);
 
 
-// Appearance toggles
-d3.select("#hide-ticks").on("click", hide_ticks);
-d3.select("#show-ticks").on("click", show_ticks);
 
 
 function hide_ticks() {
@@ -1660,6 +1728,7 @@ function onchangeCluster() {
     data = object2DataPrallel(sampleS);
     cluster_map(cluster_info);
     handle_clusterinfo();
+    axisPlot.dispatch('plot',selected);
 }
 let radarChartclusteropt  = {
     margin: {top: 0, right: 0, bottom: 0, left: 0},
@@ -1831,3 +1900,6 @@ function onChangeValue(condition) {
     update_Dimension();
     d3.select('tr.axisActive').selectAll('td input[name=colorby]').dispatch('change')
 }
+
+// violin
+let violiin_chart = d3.viiolinChart().graphicopt({width:160,height:25,opt:{dataformated:true},stroke:null,tick:false,showOutlier:false,direction:'v',margin: {top: 0, right: 0, bottom: 0, left: 0},middleAxis:{'stroke-width':0.5},ticks:{'stroke-width':0.5},tick:{visibile:false}});;
