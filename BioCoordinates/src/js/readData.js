@@ -6,7 +6,7 @@ let dataRaw;
 let vocanoData;
 let isinit = true;
 let disablelist = ['PValue','FDR','abs(logFC)','abs(logCPM)'];
-
+cluster_info = []
 blackGenes = ["AT3G09260"]
 function initApp(file,isSplit,preloadFile){
     // load filter file

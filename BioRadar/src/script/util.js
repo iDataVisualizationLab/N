@@ -275,7 +275,7 @@ function saveResults(){
         window.navigator.msSaveOrOpenBlob(file, filename+'.'+type);
     else { // Others
         var a = document.createElement("a"),
-                url = URL.createObjectURL(file);
+            url = URL.createObjectURL(file);
         a.href = url;
         a.download = filename+'.'+type;
         document.body.appendChild(a);
@@ -611,7 +611,7 @@ function openNav(e) {
         source = d3.select(e).attr('data-source') || source;
         customclass = d3.select(e).attr('data-class') ||customclass;
     }
-    d3.select(target).classed(customclass,true);
+    d3.select(target).classed(customclass,true).dispatch('change');
     d3.select(source).classed(customclass,true);
     // _.delay(resetSize, 500);
 }
@@ -864,11 +864,11 @@ function truncate (text,endsymbol) {
         }else{
             if (old_words!=='')
                 old_words = old_words.split('');
+            tspan.text(words.join(' ')+' '+old_words.join(''));
+            while (tspan.node().getComputedTextLength() > width && old_words.length) {
+                old_words.pop();
                 tspan.text(words.join(' ')+' '+old_words.join(''));
-                while (tspan.node().getComputedTextLength() > width && old_words.length) {
-                    old_words.pop();
-                    tspan.text(words.join(' ')+' '+old_words.join(''));
-                }
+            }
         }
     });
 }//wrap
@@ -997,14 +997,17 @@ function millisecondsToStr (milliseconds) {
 
 function updateDatainformation(timearray,filename){
     dataInformation.size = bytesToString(dataInformation.size);
-    dataInformation.metrics = serviceFullList.length;
-    // dataInformation.timerange = millisecondsToStr(_.last(timearray)-timearray[0]);
-    // dataInformation.interval = millisecondsToStr(timearray[1] - timearray[0]);
-    // dataInformation.totalstep = timearray.length;
-    dataInformation.datanum = d3.nest().key(d=>d.category).entries(hosts)[0].values.length;
+    dataInformation.hostsnum = hosts.length;
+    dataInformation.timerange = millisecondsToStr(_.last(timearray)-timearray[0]);
+    dataInformation.interval = millisecondsToStr(timearray[1] - timearray[0]);
+    dataInformation.totalstep = timearray.length;
+    dataInformation.datanum = d3.format(",.0f")(dataInformation.totalstep*dataInformation.hostsnum);
     let dataholder = d3.select('#datainformation');
     for (key in dataInformation)
         dataholder.select(`.${key}`).text(dataInformation[key]);
+    if(sampleS)
+        d3.select(".currentDate")
+            .text("" + (sampleS['timespan'][0]).toDateString());
 }
 function bytesToString (bytes) {
     // One way to write it, not the prettiest way to write it.
@@ -1047,8 +1050,9 @@ function onSaveClusterInfo() {
         csv_header.push(d.text + '_min');
         csv_header.push(d.text + '_max');
     });
-    // csv_header.push('radius');
     csv_header.push('mse');
+    csv_header.push('radius');
+    csv_header.push('description');
 
     dataout = [];
     serviceFullList.forEach(d => {
@@ -1063,40 +1067,30 @@ function onSaveClusterInfo() {
         });
         // if (binopt.clusterMethod ==='leaderbin')
         //     temp.push(d.bin.distance);
-        // temp.push(d.radius);
         temp.push(d.mse);
+        temp.push(d.radius);
+        temp.push(clusterDescription[d.name].text.replace(/,/g,' '));
         dataout.push(temp);
     });
-    var csv = csv_header.join(',') + '\n';
-    dataout.forEach(function (row) {
-        csv += row.join(',');
-        csv += "\n";
-    });
-    download_csv($('#savename_clusterInfo').val(),csv);
-}
-function make_downloadableDOM(varname,onClickfunction){
-    d3.select('body').append('div')
-        .attrs({id:`savedialog_${varname}`,class:"modal custom"})
-    .html(`<div class="modal-content">
-        <div class="input-field col s6">
-            <input placeholder="label_cluster" id="savename_${varname}" type="text" class="validate">
-            <label for="savename_${varname}">File name</label>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat teal" onclick="${onClickfunction}()" style="color: rgba(255, 255, 255, 0.9);">Save</a>
-    </div>`);
-}
-function download_csv(filename_init,csv) {
 
-    var filename = filename_init+".csv";
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = filename;
-    hiddenElement.click();
+    download_csv();
+
+    function download_csv() {
+        var csv = csv_header.join(',') + '\n';
+        dataout.forEach(function (row) {
+            csv += row.join(',');
+            csv += "\n";
+        });
+
+        var filename = $('#savename_clusterInfo').val()+".csv";
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = filename;
+        hiddenElement.click();
+    }
 }
+
 // chart controll ------------------------------------
 let viztype='radar';
 let starChart_func, radarChart_func, roseChart_func, flowerChart_func;
@@ -1113,7 +1107,7 @@ function createRadar_func(datapoint, bg, data, customopt,className,radaropt,colo
     className = className||"compute linkLineg ";
     let size_w = customopt?(customopt.size?customopt.size:radaropt.w):radaropt.w;
     let size_h = customopt?(customopt.size?customopt.size:radaropt.h):radaropt.h;
-    let colorfill = (customopt&&customopt.colorfill)?0.5:false;
+    let colorfill = (customopt&&customopt.colorfill)?(customopt.colorfill===true?0.5:customopt.colorfill):false;
     let radar_opt = {
         w: size_w,
         h: size_h,
@@ -1137,6 +1131,8 @@ function createRadar_func(datapoint, bg, data, customopt,className,radaropt,colo
     }
 
     // replace thumnail with radar mini
+    if(data)
+        datapoint.data([data])
     datapoint.each(function(d){
         d3.select(this).attr('transform',`translate(${-radar_opt.w/2},${-radar_opt.h/2})`)
         if (colorfill)
@@ -1158,4 +1154,61 @@ function ordinal_suffix_of(i,sep) {
         return sep?'rd': (i + "rd");
     }
     return sep?'th': (i + "th");
+}
+function axisHistogram(text,range,d){
+    d = d.filter(e=>e)
+    if (d.length) {
+        outlierMultiply = 3
+        var scale = d3.scaleLinear().domain(range);
+        var histogram = d3.histogram()
+            .domain(scale.domain())
+            // .thresholds(d3.range(0,20).map(d=>scale(d)))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+            .thresholds(scale.ticks(100))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+            .value(d => d);
+        let hisdata = histogram(d);
+
+        let start=-1,startcheck=true,end= hisdata.length-1;
+        let sumstat = hisdata.map((d, i) => {
+            let temp = [d.x0 + (d.x1 - d.x0) / 2, (d || []).length];
+            if (startcheck && temp[1]===0)
+                start = i;
+            else {
+                startcheck = false;
+                if (temp[1]!==0)
+                    end = i;
+            }
+            return temp});
+        if (start===end)
+            sumstat = [];
+        else
+            sumstat = sumstat.filter((d,i)=>i>start&&i<=end);
+        r = {
+            axis: text,
+            q1: ss.quantile(d, 0.25),
+            q3: ss.quantile(d, 0.75),
+            median: ss.median(d),
+            // outlier: ,
+            arr: sumstat
+        };
+        // if (d.length>4)
+        // {
+        //     const iqr = r.q3-r.q1;
+        //     console.log('Outliers: ',d.filter(e=>e>(r.q3+outlierMultiply*iqr)||e<(r.q1-outlierMultiply*iqr)).length);
+        //     r.outlier = _.unique(d.filter(e=>e>(r.q3+outlierMultiply*iqr)||e<(r.q1-outlierMultiply*iqr)));
+        //     console.log('Unquie points: ',r.outlier.length);
+        // }else{
+        //     r.outlier =  _.unique(d);
+        // }
+        r.outlier = []
+        return r;
+    }else{
+        return  {
+            axis: text,
+            q1: null,
+            q3: null,
+            median: null,
+            // outlier: ,
+            arr: []
+        };
+    }
 }
