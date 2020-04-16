@@ -261,7 +261,7 @@ function object2DataPrallel(ob){
             if (validkey) {
                 // eachIn.Time = new Date(d3.timeFormat("%B %d %Y %H:%M")(com.value['arrTime'][i]));
                 eachIn.Category = rack;
-                eachIn.rack = namet.length>1?(rack==='wt'?'Wild type':'Stop 1'):'Genes';
+                eachIn.rack = namet.length>1?(rack==='wt'?'Wild type':(rack ==='stop1'?'Stop 1':'Genes')):'Genes';
                 eachIn.compute = host;
                 eachIn.group =  eachIn.rack;
                 eachIn.name = com.key;

@@ -142,6 +142,7 @@ let legendh= 20;
 let barw = 300;
 let barScale = d3.scaleLinear();
 let db = 'nagios';
+let numScale = "scaleLinear";
 // let animationtime = false ;
 const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
 
@@ -203,7 +204,7 @@ function drawFiltertable() {
                     key: 'colorBy',
                     value: false,
                     type: "radio"
-                }, {key: 'text', value: d.text}]).enter()
+                },{key:"logScale",value:d,type:"checkbox"}, {key: 'text', value: d.text}]).enter()
                 .append("td");
             alltr.filter(d => d.type === "radio")
                 .append("input")
@@ -220,7 +221,7 @@ function drawFiltertable() {
                 changeVar(d3.select(this.parentElement.parentElement).datum());
                 brush();
             });
-            alltr.filter(d => d.type === "checkbox")
+            alltr.filter(d => d.key === "enable")
                 .append("input")
                 .attrs(function (d, i) {
                     return {
@@ -235,6 +236,21 @@ function drawFiltertable() {
                 d3.select("#foreground").style("opacity", null);
                 brush();
             });
+
+            alltr.filter(d => d.key === "logScale")
+                .append("input")
+                .attrs(function (d, i) {
+                    return {
+                        type: "checkbox",
+                        checked: serviceFullList_withExtra[d.value.order].islogScale ? "checked" : null
+                    }
+                }).on('adjustValue',function(d){
+                d3.select(this).attr('checked',serviceFullList_withExtra[d.value.order].islogScale ? "checked" : null)
+                }).on('change', function (d) {
+                    serviceFullList_withExtra[d.value.order].islogScale = this.checked;
+                    rescale();
+                    brush();
+                });
             alltr.filter(d => d.type === undefined)
                 .text(d => d.value);
         }, update =>{
@@ -247,10 +263,10 @@ function drawFiltertable() {
                     key: 'colorBy',
                     value: false,
                     type: "radio"
-                }, {key: 'text', value: d.text}]);
+                },{key:"logScale",value:d,type:"checkbox"}, {key: 'text', value: d.text}]);
             alltr.filter(d => d.type === undefined)
                 .text(d => d.value);
-            alltr.filter(d => d.type === "checkbox")
+            alltr.filter(d => d.key === "enable")
                 .select("input")
                 .each(function(d){this.checked = serviceFullList_withExtra[d.value.order].enable})
             }
@@ -1119,8 +1135,7 @@ function redraw(selected) {
     } else {
         d3.select("#keep-data").attr("disabled", "disabled");
         d3.select("#exclude-data").attr("disabled", "disabled");
-    }
-    ;
+    };
 
     // total by food group
     var tallies = _(selected)
@@ -1389,7 +1404,7 @@ function rescale() {
             .domain(d3.extent(data, function (d) {
                 return d[k];
             }))
-            .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3.scaleLinear()
+            .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
             .domain(serviceFullList.find(d=>d.text===k).range)
             .range([h, 0]))));
         return s.enable?xtempscale:false;
@@ -1576,16 +1591,12 @@ function hide_ticks() {
     d3.selectAll(".dimension .axis g").style("display", "none");
     //d3.selectAll(".axis path").style("display", "none");
     d3.selectAll(".background").style("visibility", "hidden");
-    d3.selectAll("#hide-ticks").attr("disabled", "disabled");
-    d3.selectAll("#show-ticks").attr("disabled", null);
 };
 
 function show_ticks() {
     d3.selectAll(".dimension .axis g").style("display", null);
     //d3.selectAll(".axis path").style("display", null);
     d3.selectAll(".background").style("visibility", null);
-    d3.selectAll("#show-ticks").attr("disabled", "disabled");
-    d3.selectAll("#hide-ticks").attr("disabled", null);
 };
 
 function search(selection,str) {
@@ -1687,7 +1698,6 @@ function onchangeCluster() {
         // tsnedata[h.name] = [];
         sampleS[h.name].arrcluster = sampleS.timespan.map((t, i) => {
             let nullkey = false;
-            // let axis_arr = _.flatten(serviceLists.map(a => d3.range(0, a.sub.length).map(vi => (v = sampleS[h.name][serviceListattr[a.id]][i][vi], d3.scaleLinear().domain(a.sub[0].range)(v === null ? (nullkey = true, undefined) : v) || 0))));
             let axis_arr = tsnedata[h.name][i];
             // axis_arr.name = h.name;
             // axis_arr.timestep = i;
