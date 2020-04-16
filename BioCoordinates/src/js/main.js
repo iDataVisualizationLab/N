@@ -18,7 +18,7 @@ var m = [40, 0, 10, 0],
     brush_count = 0,
     excluded_groups = [],
     svg,g,listMetric;
-
+var dataTableFiltered;
 
 //legend prt
 var arrColor = ['#000066','#0000ff', '#1a9850', '#ddee00','#ffcc44', '#ff0000', '#660000'];
@@ -650,7 +650,7 @@ function init() {
     // Add a group element for each dimension.
     update_Dimension();
 
-
+    makeDataTableFiltered ();
     // legend = create_legend(colors, brush);
     if (!serviceFullList.find(d=>d.text===selectedService))
         selectedService = serviceFullList[0].text;
@@ -697,6 +697,7 @@ function resetRequest() {
     d3.select('#search').attr('placeholder',`Search host e.g ${data[0].compute}`);
     // Add a group element for each dimension.
     update_Dimension();
+    makeDataTableFiltered ();
     if (!serviceFullList.find(d=>d.text===selectedService))
         selectedService = serviceFullList[0].text();
     const selecteds = d3.select("#axisSetting")
@@ -1236,6 +1237,7 @@ function brush() {
     _(colors.domain()).each(function(v,k) {tallies[v] = tallies[v] || []; });
     complex_data_table_render = true;
     complex_data_table(selected);
+    updateDataTableFiltered(selected)
     redraw(selected);
     // Loadtostore();
 }
@@ -1918,3 +1920,103 @@ function onChangeValue(condition) {
 
 // violin
 let violiin_chart = d3.viiolinChart().graphicopt({width:160,height:25,opt:{dataformated:true},stroke:null,tick:false,showOutlier:false,direction:'v',margin: {top: 0, right: 0, bottom: 0, left: 0},middleAxis:{'stroke-width':0.5},ticks:{'stroke-width':0.5},tick:{visibile:false}});;
+
+function makeDataTableFiltered () {
+    if ($.fn.DataTable.isDataTable('#filterTable')) {
+        $('#filterTable').DataTable().destroy();
+        d3.select('#filterTable').selectAll('*').remove();
+    }
+
+    const columns = [{title: IDkey,data:IDkey}];
+    SUBJECTS.forEach(s=>{
+        serviceFullList.forEach(d => {
+            columns.push({title: s + d.text,data:d.text, render: renderData,className: d.text})
+        });
+    });
+    let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
+        .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
+    let textcolor = heatmaponTable.copy();
+    textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff'])
+    dataTableFiltered = $('#filterTable').DataTable({
+        data: [],
+        "pageLength": 50,
+        // scrollY:        '50vh',
+        // scrollCollapse: true,
+        columns: columns,
+        "dom": '<"top"f<"clear">>rt<"bottom"ip>B',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                exportOptions: {orthogonal: 'export'}
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {orthogonal: 'export'}
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {orthogonal: 'export'}
+            }
+        ],
+        rowCallback: function(row, data, index){
+            serviceFullList.forEach((s,i)=>{
+                d=data[s.text];
+                    $(row).find(`td.${s.text}`)
+                        .css('background-color', heatmaponTable(Math.abs(d)))
+                        .css('color', textcolor(Math.abs(d)));
+            })
+        }
+    });
+    $.fn.DataTable.ext.pager.numbers_length = 4;
+
+    $('#filterTable tbody').on('mouseover', 'tr', function () {
+        var tr = $(this).closest('tr');
+        var row = dataTableFiltered.row( tr );
+        highlight(row.data());
+    });
+    $('#filterTable tbody').on('mouseleave', function () {
+        unhighlight();
+    });
+
+    $('#search').on('input', searchHandler); // register for oninput
+    $('#search').on('propertychange', searchHandler); // for IE8
+
+    // d3.select('#modelSampling').on('mouseover',()=>{
+    //     let data = _.sampleSize(datain, 500);
+    //     console.log(data)
+    //     // drawRadar({data: data,pos:})
+    // });
+    function renderData(data, type, row) {
+        if (type === 'display') {
+            if (data%1==0)
+                return `${data}<span style="opacity: 0">.00</span>`;
+            return d3.format('.2f')(data);
+        }
+        else if(type === 'export'){
+            return data;
+        }
+        return data%1==0?data:d3.format('.2f')(data);
+    }
+}
+function searchHandler (e){
+    if (e.target.value!=="") {
+        let results = shuffled_data.filter(h=>h.name.includes(e.target.value));
+        if(results.length<graphicopt.tableLimit)
+            highlight(results[0]);
+        else
+            unhighlight()
+    }else{
+        unhighlight()
+    }
+}
+function updateDataTableFiltered(data){
+    // let newDataArray = data.map(n=>{
+    //     return _.flatten([n.name,_.flatten(serviceFullList.map(s=>n[s.text]))]);
+    // });
+    setTimeout(()=>{
+        let newDataArray = data;
+        dataTableFiltered.clear();
+        dataTableFiltered.rows.add(newDataArray);
+        dataTableFiltered.draw();
+    },0);
+}
