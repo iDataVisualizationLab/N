@@ -239,6 +239,7 @@ function drawFiltertable() {
 
             alltr.filter(d => d.key === "logScale")
                 .append("input")
+                .classed('hide',function(d){return serviceFullList_withExtra[d.value.order].id<0})
                 .attrs(function (d, i) {
                     return {
                         type: "checkbox",
@@ -1385,12 +1386,15 @@ function getScale(d) {
     let axisrender =  axis.scale(yscale[d]);
     if(yscale[d].axisCustom) {
         if (yscale[d].axisCustom.ticks)
-            axisrender = axisrender.ticks(yscale[d].axisCustom.ticks)
+            axisrender = axisrender.ticks(yscale[d].axisCustom.ticks);
         if (yscale[d].axisCustom.tickFormat)
             axisrender = axisrender.tickFormat(yscale[d].axisCustom.tickFormat)
     }else{
         axisrender = axisrender.ticks(1 + height / 50);
-        axisrender = axisrender.tickFormat(undefined)
+        if (yscale[d].islogScale)
+            axisrender = axisrender.tickFormat(yscale[d].tickFormat(10, ""));
+        else
+            axisrender = axisrender.tickFormat(undefined);
     }
     return axisrender;
 }
@@ -1406,7 +1410,7 @@ function rescale() {
             }))
             .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
             .domain(serviceFullList.find(d=>d.text===k).range)
-            .range([h, 0]))));
+            .range([h, 0]),yscale[k].islogScale=s.islogScale,yscale[k])));
         return s.enable?xtempscale:false;
     }).map(s=>s.text));
     update_ticks();
