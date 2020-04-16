@@ -925,6 +925,8 @@ function complex_data_table(sample,render) {
                         presetdatatable = [];
                         data = dataRaw;
                         brush();
+                    }else{
+                        d3.select("#compute-list").selectAll('.rack.active .collapsible.compute.expandable').call(updateComtime);
                     }
                 }
 
