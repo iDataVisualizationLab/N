@@ -613,3 +613,7 @@ nav ul li.active a{
 table .disable {
     color: rgba(255, 255, 255, 0.39);
 }
+
+table td.id{
+    color: black;
+}
