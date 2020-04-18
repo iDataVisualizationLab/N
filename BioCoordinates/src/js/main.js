@@ -1422,7 +1422,10 @@ function getScale(d) {
             axisrender = axisrender.tickFormat(yscale[d].axisCustom.tickFormat)
     }else{
         axisrender = axisrender.ticks(1 + height / 50);
-        axisrender = axisrender.tickFormat(undefined);
+        if (yscale[d].islogScale)
+            axisrender = axisrender.tickFormat(d=>d%1?'':d3.format("~s")(Math.pow(10,d)));
+        else
+            axisrender = axisrender.tickFormat(undefined);
     }
     return axisrender;
 }
