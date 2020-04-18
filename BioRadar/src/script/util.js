@@ -1155,20 +1155,23 @@ function ordinal_suffix_of(i,sep) {
     }
     return sep?'th': (i + "th");
 }
+function getlogScale(islogScale){
+    return islogScale?'scaleSymlog':'scaleLinear'
+}
 function axisHistogram(text,range,d){
-    d = d.filter(e=>e)
+    d = d.filter(e=>e!=null&&e!=undefined);
     if (d.length) {
-        outlierMultiply = 3
+        outlierMultiply = 3;
         var scale = d3.scaleLinear().domain(range);
         var histogram = d3.histogram()
             .domain(scale.domain())
             // .thresholds(d3.range(0,20).map(d=>scale(d)))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
-            .thresholds(scale.ticks(100))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+            .thresholds(scale.ticks(50))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
             .value(d => d);
         let hisdata = histogram(d);
-
         let start=-1,startcheck=true,end= hisdata.length-1;
-        let sumstat = hisdata.map((d, i) => {
+        let sumstat = [[]];
+        hisdata.map((d, i) => {
             let temp = [d.x0 + (d.x1 - d.x0) / 2, (d || []).length];
             if (startcheck && temp[1]===0)
                 start = i;
@@ -1177,11 +1180,16 @@ function axisHistogram(text,range,d){
                 if (temp[1]!==0)
                     end = i;
             }
-            return temp});
+            sumstat.push(temp)
+        });
+
         if (start===end)
             sumstat = [];
-        else
-            sumstat = sumstat.filter((d,i)=>i>start&&i<=end);
+        else {
+            sumstat = sumstat.filter((d, i) => i+1 > start && i+1 <= end);
+            sumstat[0] = sumstat[1];
+            sumstat[0][0] =hisdata[start+1].x0;
+        }
         r = {
             axis: text,
             q1: ss.quantile(d, 0.25),

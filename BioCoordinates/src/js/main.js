@@ -249,11 +249,12 @@ function drawFiltertable() {
                 d3.select(this).attr('checked',serviceFullList_withExtra[d.value.order].islogScale ? "checked" : null)
                 }).on('change', function (d) {
                     serviceFullList_withExtra[d.value.order].islogScale = this.checked;
+                    adjustdata(d.value.service);
+                    rescale(true);
                     updateColorsAndThresholds(d.value.text);
                     if (selectedService===d.value.service){
                         setColorsAndThresholds(d.value.service);
                     }
-                    rescale();
                     brush();
                 });
             alltr.filter(d => d.type === undefined)
@@ -740,11 +741,11 @@ function updateColorsAndThresholds(sin){
     const mid = s.range[0]+(s.range[1]-s.range[0])/2;
     let left = s.range[0]-dif;
     let arrThresholds = [left,s.range[0], s.range[0]+dif, s.range[0]+2*dif, s.range[0]+3*dif, s.range[1], s.range[1]+dif];
-    coloraxis[sin] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
+    coloraxis[sin] = d3.scaleLinear()
         .domain(arrThresholds)
         .range(arrColor)
         .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
-    opaaxis[sin] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
+    opaaxis[sin] = d3.scaleLinear()
         .domain([left,s.range[0],mid, s.range[1], s.range[1]+dif])
         .range([1,1,0.1,1,1]);
 }
@@ -1282,12 +1283,12 @@ function plotViolin() {
                     let cs = {};
                     cluster_info.forEach((c, ci) => cs[ci] = []);
                     selected.forEach(e => cs[e.Cluster].push(e[d]));
-                    value = cluster_info.map((c, ci) => axisHistogram(c.name, s.range, cs[ci]));
+                    value = cluster_info.map((c, ci) => axisHistogram(c.name, s.range, cs[ci],s.islogScale));
                     vMax = d3.max(value, d => d[1]);
                     dimGlobal[1] = Math.max(vMax, dimGlobal[1]);
                     color = colorCluster;
                 } else {
-                    value = [axisHistogram(s.text, s.range, selected.map(e => e[d]))];
+                    value = [axisHistogram(s.text, s.range, selected.map(e => e[d]),s.islogScale)];
                     vMax = d3.max(value[0], d => d[1]);
                     dimGlobal[1] = Math.max(vMax, dimGlobal[1]);
                 }
@@ -1421,18 +1422,23 @@ function getScale(d) {
             axisrender = axisrender.tickFormat(yscale[d].axisCustom.tickFormat)
     }else{
         axisrender = axisrender.ticks(1 + height / 50);
-        if (yscale[d].islogScale) {
-            console.log('log on')
-            axisrender = axisrender.ticks(20)
-            // axisrender = axisrender.tickFormat(d3.scaleLinear().range(yscale[d].range()).domain(yscale[d].domain().map(e => yscale(e))));
-        }else
-            axisrender = axisrender.tickFormat(undefined);
+        axisrender = axisrender.tickFormat(undefined);
     }
     return axisrender;
 }
 
 // Rescale to new dataset domain
-function rescale() {
+function adjustdata(s){
+    let islog = serviceFullList.find(d=>d.text===s).islogScale;
+    dataRaw.forEach(d=>{
+        d[s] = sampleS[d.name][s][0];
+        if (islog){
+            d[s] = d3.scaleLog()(d[s]);
+            d[s]=d[s]!==-Infinity?d[s]:null;
+        }
+    })
+}
+function rescale(skipRender) {
     adjustRange(data);
     xscale.domain(dimensions = serviceFullList.filter(function (s) {
         let k = s.text;
@@ -1440,14 +1446,15 @@ function rescale() {
             .domain(d3.extent(data, function (d) {
                 return d[k];
             }))
-            .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
+            .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3.scaleLinear()
             .domain(serviceFullList.find(d=>d.text===k).range)
             .range([h, 0]),yscale[k].islogScale=s.islogScale,yscale[k])));
         return s.enable?xtempscale:false;
     }).map(s=>s.text));
     update_ticks();
     // Render selected data
-    paths(data, foreground, brush_count);
+    if(!skipRender)
+        paths(data, foreground, brush_count);
 }
 
 // Get polylines within extents
@@ -1580,13 +1587,22 @@ function exclude_data() {
 function adjustRange(data){
     let globalRange = [0,0];
     primaxis.forEach(p=>{
-        let range = d3.extent(data,d=>d[p]);
+        let islog = serviceFullList.find(s=>s.text===p).islogScale;
+        let range;
+        if (islog) {
+            range = d3.extent(data, d => d3.scaleLog().invert(d[p]));
+        }else
+            range = d3.extent(data,d=>d[p]);
         if (range[0]>=0 && range[1]>1&&range[1]>globalRange[1])
             globalRange[1]=range[1];
     });
     primaxis.forEach((p,pi)=>{
-       if (range[0]>=0 && range[1])
-           serviceFullList[pi].range = globalRange;
+       if (range[0]>=0 && range[1]) {
+           if(serviceFullList[pi].islogScale){
+               serviceFullList[pi].range = [d3.min(data,d=>d[p]),d3.scaleLog()(globalRange[1])];
+           }else
+                serviceFullList[pi].range = globalRange;
+       }
     })
 }
 function add_axis(d,g) {
@@ -1991,7 +2007,11 @@ function makeDataTableFiltered () {
         rowCallback: function(row, data, index){
             serviceFullList.forEach((s,i)=>{
                 d=data[s.text];
-                let currentColor = d3.color(coloraxis[s.text](d));
+                if (s.islogScale) {
+                    d = d3.scaleLog()(d);
+                    d = d!== -Infinity ? d:null
+                }
+                let currentColor = d3.color(coloraxis[s.text](d)||'white');
                 currentColor.opacity = opaaxis[s.text];
                 $(row).find(`td.${s.text}`)
                     .css('background-color',currentColor+'')
@@ -2004,9 +2024,10 @@ function makeDataTableFiltered () {
     $('#filterTable tbody').on('mouseover', 'tr', function () {
         var tr = $(this).closest('tr');
         var row = dataTableFiltered.row( tr );
-        highlight(row.data());
+        var d = row.data();
+        highlight(d.__index!==undefined?shuffled_data[d.__index]:d);
     });
-    $('#filterTable tbody').on('mouseleave', function () {
+    $('#filterTable tbody').on('mouseleave', 'tr', function () {
         unhighlight();
     });
 
@@ -2046,7 +2067,25 @@ function updateDataTableFiltered(data){
     //     return _.flatten([n.name,_.flatten(serviceFullList.map(s=>n[s.text]))]);
     // });
     setTimeout(()=>{
-        let newDataArray = data;
+        let newDataArray = _.cloneDeep(data);
+        serviceFullList.forEach((s,si)=>{
+            if(s.islogScale)
+                newDataArray.forEach((d,i)=>{
+                    newDataArray[i].__index = i;
+                    newDataArray[i][s.text] = sampleS[d.name][s.text][0];
+                })
+        });
+        dataTableFiltered.clear();
+        dataTableFiltered.rows.add(newDataArray);
+        dataTableFiltered.draw();
+    },0);
+}
+function updateDataTableFiltered_full(data){
+    // let newDataArray = data.map(n=>{
+    //     return _.flatten([n.name,_.flatten(serviceFullList.map(s=>n[s.text]))]);
+    // });
+    setTimeout(()=>{
+        let newDataArray = data.slice();
         dataTableFiltered.clear();
         dataTableFiltered.rows.add(newDataArray);
         dataTableFiltered.draw();

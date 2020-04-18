@@ -81,7 +81,7 @@ function formatService(init){
     conf.serviceLists = serviceLists;
     conf.serviceListattr = serviceListattr;
     conf.serviceListattrnest = serviceListattrnest;
-    service_custom_added = [{text:'Time',id:-1,enable:true,class:"sorting_disabled"},{text:'Cluster',id:-2,enable:false,hide:true,
+    service_custom_added = [{text:'Cluster',id:-2,enable:false,hide:true,
         color:colorCluster,
         axisCustom:{ticks:0,tickFormat:d=> `Group ${cluster_info[d].orderG+1}`,tickInvert:d=> cluster_info.find(c=>c.name===d).index}}];
     serviceFullList_withExtra = _.flatten([service_custom_added,serviceFullList]);
@@ -345,6 +345,7 @@ function newdatatoFormat (data,notSplit){
         serviceListattr.push(k);
 
         range = d3.extent(data,d=>+d[k]);
+        // rangelog = d3.extent(data.filter(d=>d),d=>+d[k]);
         if (range[1]<=1)
             range[1] = 1;
         else{
