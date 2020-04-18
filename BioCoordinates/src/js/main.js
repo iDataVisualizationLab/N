@@ -239,17 +239,18 @@ function drawFiltertable() {
 
             alltr.filter(d => d.key === "logScale")
                 .append("input")
-                .classed('hide',function(d){return serviceFullList_withExtra[d.value.order].id<0})
+                .classed('hide',function(d){return !serviceFullList_withExtra[d.value.order].primaxis})
                 .attrs(function (d, i) {
                     return {
                         type: "checkbox",
                         checked: serviceFullList_withExtra[d.value.order].islogScale ? "checked" : null
                     }
                 }).on('adjustValue',function(d){
-                d3.select(this).attr('checked',serviceFullList_withExtra[d.value.order].islogScale ? "checked" : null)
+                    this.checked = serviceFullList_withExtra[d.value.order].islogScale;
                 }).on('change', function (d) {
                     serviceFullList_withExtra[d.value.order].islogScale = this.checked;
-                    adjustdata(d.value.service);
+                    adjustdata([{key:d.value.service,value:this.checked}]);
+                    d3.select('#ToggeleLog').dispatch('adjustValue')
                     rescale(true);
                     updateColorsAndThresholds(d.value.text);
                     if (selectedService===d.value.service){
@@ -394,6 +395,15 @@ $( document ).ready(function() {
                 break;
         }
     });
+    d3.select('#ToggeleLog').on('adjustValue',function(){
+        let logaxisTotal = serviceFullList_withExtra.filter(s=>s.islogScale).length;
+        if (logaxisTotal === primaxis.length)
+            d3.select(this).attr('value','full');
+        else if (logaxisTotal===0)
+            d3.select(this).attr('value','empty');
+        else
+            d3.select(this).attr('value','half');
+    })
     // init();
 });
 
@@ -1435,14 +1445,17 @@ function getScale(d) {
 }
 
 // Rescale to new dataset domain
-function adjustdata(s){
-    let islog = serviceFullList.find(d=>d.text===s).islogScale;
+function adjustdata(sers){
     dataRaw.forEach(d=>{
-        d[s] = sampleS[d.name][s][0];
-        if (islog){
-            d[s] = d3.scaleLog()(d[s]);
-            d[s]=d[s]!==-Infinity?d[s]:null;
-        }
+        sers.forEach(ser=>{
+            s = ser.key;
+            islog = ser.value;
+            d[s] = sampleS[d.name][s][0][0];
+            if (islog){
+                d[s] = d3.scaleLog()(d[s]);
+                d[s]=d[s]!==-Infinity?d[s]:null;
+            }
+        })
     })
 }
 function rescale(skipRender) {
@@ -2089,14 +2102,38 @@ function updateDataTableFiltered(data){
         dataTableFiltered.draw();
     },0);
 }
-function updateDataTableFiltered_full(data){
-    // let newDataArray = data.map(n=>{
-    //     return _.flatten([n.name,_.flatten(serviceFullList.map(s=>n[s.text]))]);
-    // });
-    setTimeout(()=>{
-        let newDataArray = data.slice();
-        dataTableFiltered.clear();
-        dataTableFiltered.rows.add(newDataArray);
-        dataTableFiltered.draw();
-    },0);
+function triggerLogScale(isenable){
+    serviceFullList.forEach(d=>{
+        if (d.primaxis)
+            d.islogScale = isenable;
+    });
+    d3.select('#axisSetting tbody').selectAll('tr td').filter(d => d.key === "logScale").select('input').each(function(d){
+        let target = d3.select(this)
+        if(!target.classed('hide'))
+        {
+            target.dispatch('adjustValue')
+        }
+    });
+    adjustdata(serviceFullList.filter(d=>d.primaxis).map(d=>({key:d.text,value:d.islogScale})));
+    rescale(true);
+    serviceFullList.forEach(d=>{
+        if (d.primaxis) {
+            updateColorsAndThresholds(d.text);
+        }
+    });
+    setColorsAndThresholds(selectedService);
+    brush();
+}
+function onToggeleLog(evt) {
+    switch(d3.select(evt).attr('value')){
+        case 'empty':
+        case 'half':
+            triggerLogScale(true);
+            d3.select(evt).attr('value','full');
+            break;
+        case 'full':
+            triggerLogScale(false);
+            d3.select(evt).attr('value','empty')
+            break;
+    }
 }
