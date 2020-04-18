@@ -331,6 +331,7 @@ function drawFiltertable() {
     });
 }
 let shuffled_data = [];
+let isdatachange = false;
 $( document ).ready(function() {
     console.log('ready');
     try {
@@ -367,6 +368,7 @@ $( document ).ready(function() {
     });
     spinner = new Spinner(opts).spin(target);
     d3.select('#enableCPM_control').on('change',function(){
+        isdatachange = $(this)[0].checked;
         onChangeValue($(this)[0].checked)
     })
 
@@ -1450,7 +1452,7 @@ function adjustdata(sers){
         sers.forEach(ser=>{
             s = ser.key;
             islog = ser.value;
-            d[s] = sampleS[d.name][s][0][0];
+            d[s] = isdatachange? data_second[d.name][s]:sampleS[d.name][s][0][0];
             if (islog){
                 d[s] = d3.scaleLog()(d[s]);
                 d[s]=d[s]!==-Infinity?d[s]:null;
