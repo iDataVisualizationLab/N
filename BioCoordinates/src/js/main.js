@@ -553,7 +553,6 @@ function update_Dimension() {
                     })
                     .append("svg:text")
                     .attr("text-anchor", "middle")
-                    // .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
                     .attr("y", -14)
                     .attr("x", 0)
                     .attr("class", "label")
@@ -1275,7 +1274,6 @@ function brush(isreview) {
     console.timeEnd('tallies')
     // include empty groups
     _(colors.domain()).each(function(v,k) {tallies[v] = tallies[v] || []; });
-    console.log(isreview)
     if(!isreview) {
         complex_data_table_render = true;
         complex_data_table(selected);
