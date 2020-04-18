@@ -1171,7 +1171,7 @@ function axisHistogram(text,range,d){
         let hisdata = histogram(d);
         let start=-1,startcheck=true,end= hisdata.length-1;
         let sumstat = [[]];
-        hisdata.map((d, i) => {
+        hisdata.forEach((d, i) => {
             let temp = [d.x0 + (d.x1 - d.x0) / 2, (d || []).length];
             if (startcheck && temp[1]===0)
                 start = i;
@@ -1182,13 +1182,20 @@ function axisHistogram(text,range,d){
             }
             sumstat.push(temp)
         });
-
+        range = d3.extent(d)
         if (start===end)
             sumstat = [];
         else {
-            sumstat = sumstat.filter((d, i) => i+1 > start && i+1 <= end);
-            sumstat[0] = sumstat[1];
-            sumstat[0][0] =hisdata[start+1].x0;
+            sumstat = sumstat.filter((d, i) => i+1 >= start && i+1 <= end+1);
+            if (sumstat.length!=1)
+                sumstat[0] = sumstat[1].slice();
+            else
+                sumstat = [ sumstat[0], sumstat[0]];
+            sumstat[0][0] =range[0];
+            if (end!==hisdata.length-1)
+             sumstat.push([range[1],hisdata[end].length]);
+            else
+             sumstat.push([range[1],hisdata[end].length]);
         }
         r = {
             axis: text,
