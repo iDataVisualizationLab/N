@@ -627,3 +627,92 @@ option {
     height:10px;
     padding: 0px;
 }
+
+#filterTable thead th, #filterTable td{
+    padding: 2px;
+    white-space: nowrap;
+}
+#filterTable thead th {
+    padding: 2px;
+    padding-right: 5px;
+}
+#filterTable td{
+    text-align: right;
+}
+#filterTable td>first{
+    text-align: left;
+}
+#modelFilter .dataTables_filter{
+    float: none;
+    text-align: unset;
+    width: 70%;
+}
+#modelFilter .dataTables_filter input {
+    height: 1.1rem;
+}
+.dt-buttons{
+    display: flex;
+    width: 100%;
+}
+th.rotate {
+    /* Something you can count on */
+    height: 140px;
+    white-space: nowrap;
+}
+
+th.rotate > div {
+    transform:
+        /* Magic Numbers */
+            translate(25px, 51px)
+                /* 45 is really 360 - 45 */
+            rotate(315deg);
+    width: 30px;
+}
+th.rotate > div > span {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+}
+
+#modelSetting tbody > tr:first-child{
+    background-color: #eaeaea;
+}
+
+#modelDistanceFilter_holder svg{
+    overflow: visible;
+}
+#modelDistanceFilter_holder .noUi-target{
+    margin-top: -3px;
+}
+
+.noUi-handle span.num {
+    position: absolute;
+    top:0;
+    left: 0;
+    transform: translate(-50%,-100%);
+    text-align: center;
+}
+.noUi-handle.noUi-active span.num{
+    display: none;
+}
+
+.noUi-handle span.num::after{
+    content: ' genes';
+}
+
+#search {
+    border: #7b7b7b solid 0.5px;
+    font-size: 12px;
+    height: 1.5rem;
+    margin-bottom: 1px;
+    border-radius: 10px;
+    background-color: white;
+    padding: 0 5px;
+}
+
+#search:hover, #search:focus{
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 10px 10px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+table.dataTable tbody td {
+    white-space: nowrap;
+}

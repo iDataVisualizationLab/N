@@ -249,6 +249,10 @@ function drawFiltertable() {
                 d3.select(this).attr('checked',serviceFullList_withExtra[d.value.order].islogScale ? "checked" : null)
                 }).on('change', function (d) {
                     serviceFullList_withExtra[d.value.order].islogScale = this.checked;
+                    updateColorsAndThresholds(d.value.text);
+                    if (selectedService===d.value.service){
+                        setColorsAndThresholds(d.value.service);
+                    }
                     rescale();
                     brush();
                 });
@@ -648,6 +652,7 @@ function init() {
         return s.enable?xtempscale:false;
     }).map(s=>s.text));
     // Add a group element for each dimension.
+    setColorsAndThresholds_full();
     update_Dimension();
 
     makeDataTableFiltered ();
@@ -696,6 +701,7 @@ function resetRequest() {
     }).map(s=>s.text));
     d3.select('#search').attr('placeholder',`Search host e.g ${data[0].compute}`);
     // Add a group element for each dimension.
+    setColorsAndThresholds_full();
     update_Dimension();
     makeDataTableFiltered ();
     if (!serviceFullList.find(d=>d.text===selectedService))
@@ -711,20 +717,40 @@ function resetRequest() {
     //     volcanoPlot.stop().hide();
     brush();
 }
-function setColorsAndThresholds(sin) {
-    let s = serviceFullList.find(d=>d.text===sin)
+let coloraxis ={};
+let opaaxis ={};
+function setColorsAndThresholds_full() {
+    serviceFullList.forEach(s=> {
+        const dif = (s.range[1] - s.range[0]) / levelStep;
+        const mid = s.range[0] + (s.range[1] - s.range[0]) / 2;
+        let left = s.range[0] - dif;
+        arrThresholds = [left, s.range[0], s.range[0] + dif, s.range[0] + 2 * dif, s.range[0] + 3 * dif, s.range[1], s.range[1] + dif];
+        coloraxis[s.text] = d3.scaleLinear()
+            .domain(arrThresholds)
+            .range(arrColor)
+            .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
+        opaaxis[s.text] = d3.scaleLinear()
+            .domain([left, s.range[0], mid, s.range[1], s.range[1] + dif])
+            .range([1, 1, 0.1, 1, 1]);
+    })
+}
+function updateColorsAndThresholds(sin){
+    let s = serviceFullList.find(d=>d.text===sin);
     const dif = (s.range[1]-s.range[0])/levelStep;
     const mid = s.range[0]+(s.range[1]-s.range[0])/2;
     let left = s.range[0]-dif;
-    arrThresholds = [left,s.range[0], s.range[0]+dif, s.range[0]+2*dif, s.range[0]+3*dif, s.range[1], s.range[1]+dif];
-    color = d3.scaleLinear()
+    let arrThresholds = [left,s.range[0], s.range[0]+dif, s.range[0]+2*dif, s.range[0]+3*dif, s.range[1], s.range[1]+dif];
+    coloraxis[sin] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
         .domain(arrThresholds)
         .range(arrColor)
         .interpolate(d3.interpolateHcl); //interpolateHsl interpolateHcl interpolateRgb
-    opa = d3.scaleLinear()
+    opaaxis[sin] = d3[s.islogScale?'scaleSymlog':'scaleLinear']()
         .domain([left,s.range[0],mid, s.range[1], s.range[1]+dif])
         .range([1,1,0.1,1,1]);
-
+}
+function setColorsAndThresholds(sin) {
+    color = coloraxis[sin];
+    opa = opaaxis[sin];
 }
 
 // copy one canvas to another, grayscale
@@ -1395,9 +1421,11 @@ function getScale(d) {
             axisrender = axisrender.tickFormat(yscale[d].axisCustom.tickFormat)
     }else{
         axisrender = axisrender.ticks(1 + height / 50);
-        if (yscale[d].islogScale)
-            axisrender = axisrender.tickFormat(yscale[d].tickFormat(10, ""));
-        else
+        if (yscale[d].islogScale) {
+            console.log('log on')
+            axisrender = axisrender.ticks(20)
+            // axisrender = axisrender.tickFormat(d3.scaleLinear().range(yscale[d].range()).domain(yscale[d].domain().map(e => yscale(e))));
+        }else
             axisrender = axisrender.tickFormat(undefined);
     }
     return axisrender;
@@ -1936,9 +1964,11 @@ function makeDataTableFiltered () {
     let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
         .range(['#ffffff','#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000']);
     let textcolor = heatmaponTable.copy();
-    textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff'])
+    textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff']);
+
     dataTableFiltered = $('#filterTable').DataTable({
         data: [],
+        "deferRender": true,
         "pageLength": 50,
         // scrollY:        '50vh',
         // scrollCollapse: true,
@@ -1961,9 +1991,11 @@ function makeDataTableFiltered () {
         rowCallback: function(row, data, index){
             serviceFullList.forEach((s,i)=>{
                 d=data[s.text];
-                    $(row).find(`td.${s.text}`)
-                        .css('background-color', heatmaponTable(Math.abs(d)))
-                        .css('color', textcolor(Math.abs(d)));
+                let currentColor = d3.color(coloraxis[s.text](d));
+                currentColor.opacity = opaaxis[s.text];
+                $(row).find(`td.${s.text}`)
+                    .css('background-color',currentColor+'')
+                    .css('color', 'black');
             })
         }
     });
