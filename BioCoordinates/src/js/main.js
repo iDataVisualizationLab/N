@@ -412,7 +412,8 @@ function realTimesetting (option,db,init){
 function getBrush(d) {
     return d3.brushY(yscale[d])
         .extent([[-10, 0], [10, h]])
-        .on("brush end", brush);
+        .on("brush", ()=>brush(true))
+        .on("end", ()=>brush());
 }
 function dragstart (d) {
     dragging[d] = this.__origin__ = xscale(d);
@@ -1185,7 +1186,7 @@ function redraw(selected) {
 }
 
 // TODO refactor
-function brush() {
+function brush(isreview) {
     var actives = [],
         extents = [];
 
@@ -1262,9 +1263,12 @@ function brush() {
     console.timeEnd('tallies')
     // include empty groups
     _(colors.domain()).each(function(v,k) {tallies[v] = tallies[v] || []; });
-    complex_data_table_render = true;
-    complex_data_table(selected);
-    updateDataTableFiltered(selected)
+    console.log(isreview)
+    if(!isreview) {
+        complex_data_table_render = true;
+        complex_data_table(selected);
+        updateDataTableFiltered(selected)
+    }
     redraw(selected);
     // Loadtostore();
 }
@@ -1544,7 +1548,9 @@ function resetSize() {
         .each(function (d) {
             d3.select(this).call(yscale[d].brush = d3.brushY(yscale[d])
                 .extent([[-10, 0], [10, h]])
-                .on("brush end", function(){isChangeData = true; brush();}));
+                .on("brush", function(){isChangeData = true; brush(true);})
+                .on("end", function(){isChangeData = true; brush();})
+            );
         });
 
     // update axis placement
