@@ -1981,6 +1981,8 @@ function onChangeValue(condition) {
         });
     }
     update_Dimension();
+    adjustdata(serviceFullList.filter(d=>d.primaxis).map(d=>({key:d.text,value:d.islogScale})));
+    rescale(true);
     d3.select('tr.axisActive').selectAll('td input[name=colorby]').dispatch('change')
 }
 

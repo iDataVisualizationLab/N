@@ -391,7 +391,7 @@ function newdatatoFormat (data,notSplit){
 
 
     data.forEach(d=>{
-        variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]))// format number
+        variables.forEach(k=>d[k] = d[k]===""?null:(+d[k]));// format number
         const name = d[IDkey];
         const fixname = name.replace('|','__');
         if (!sampleS[fixname]) {
@@ -410,7 +410,8 @@ function newdatatoFormat (data,notSplit){
                 index: hosts.length,
             });
 
-            serviceListattr.forEach((attr, i) => {
+            serviceFullList.forEach((s, i) => {
+                let attr = s.text;
                 if (sampleS[fixname] === undefined) {
                     sampleS[fixname] = {};
                     tsnedata[fixname] = [[]];
@@ -418,7 +419,9 @@ function newdatatoFormat (data,notSplit){
                     tsnedata[fixname][0].timestep = 0;
                     tsnedata[fixname][0].category = category;
                 }
-                const value = d[variables[i]];
+                let value = d[variables[i]]; // 4 19 2020 adjust data near 0
+                if (s.primaxis)
+                    value = value<1?0:value;
                 sampleS[fixname][attr] = [[value]];
                 tsnedata[fixname][0].push(value === null ? 0 : scaleService[i](value) || 0);
             });
@@ -431,7 +434,9 @@ function newdatatoFormat (data,notSplit){
             d3.keys(data_second_service).forEach(k=>d['pc_'+k] = d['pc_'+k]===""?null:(+d['pc_'+k]))// format number
             data_second[fixname] = {};
             d3.keys(data_second_service).forEach((attr, i) => {
-                data_second[fixname][attr] =  d['pc_'+attr];
+                let value = d['pc_'+attr]; // 4 19 2020 adjust data near 0
+                value = value<1?0:value;
+                data_second[fixname][attr] =  value;
             });
 
         }
