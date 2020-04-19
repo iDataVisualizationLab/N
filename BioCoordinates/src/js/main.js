@@ -2111,7 +2111,8 @@ function updateDataTableFiltered(data){
             if(s.islogScale)
                 newDataArray.forEach((d,i)=>{
                     newDataArray[i].__index = i;
-                    newDataArray[i][s.text] = sampleS[d.name][s.text][0];
+                    // newDataArray[i][s.text] = sampleS[d.name][s.text][0];
+                    newDataArray[i][s.text] = (isdatachange&&data_second_service[s.text])? data_second[d.name][s.text]:sampleS[d.name][s.text][0][0];
                 })
         });
         dataTableFiltered.clear();
