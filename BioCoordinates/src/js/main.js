@@ -714,8 +714,8 @@ function resetRequest() {
     }).map(s=>s.text));
     d3.select('#search').attr('placeholder',`Search host e.g ${data[0].compute}`);
     // Add a group element for each dimension.
-    setColorsAndThresholds_full();
     update_Dimension();
+    setColorsAndThresholds_full();
     makeDataTableFiltered ();
     if (!serviceFullList.find(d=>d.text===selectedService))
         selectedService = serviceFullList[0].text();
@@ -728,11 +728,13 @@ function resetRequest() {
     //     handle_data_volcanoplot(tsnedata);
     // else
     //     volcanoPlot.stop().hide();
-    brush();
+    // brush();
 }
 let coloraxis ={};
 let opaaxis ={};
 function setColorsAndThresholds_full() {
+    coloraxis ={};
+    opaaxis ={};
     serviceFullList.forEach(s=> {
         const dif = (s.range[1] - s.range[0]) / levelStep;
         const mid = s.range[0] + (s.range[1] - s.range[0]) / 2;
@@ -972,7 +974,6 @@ function complex_data_table(sample,render) {
 
             },
             onCloseEnd: function (evt) {
-                console.log(evt)
                 const datum = d3.select(evt).datum();
                 if (datum.key !== "Genes") {
                     _.pull(presetdatatable, datum.key);
@@ -1284,7 +1285,8 @@ function brush(isreview) {
 }
 function plotViolin() {
     selected = shuffled_data;
-    violiin_chart.graphicopt({width:Math.min(w/dimensions.length,100),height:h});
+    let violin_w = Math.min(w/dimensions.length/(cluster_info.length||1),50);
+    violiin_chart.graphicopt({width:violin_w*(cluster_info.length||1),height:h, single_w:violin_w});
     setTimeout(() => {
         let dimGlobal = [0, 0];
         let dimensiondata = {};
@@ -1607,7 +1609,7 @@ function exclude_data() {
     rescale();
 }
 function adjustRange(data){
-    let globalRange = [0,0];
+    let globalRange = [0,1];
     let minLog = Infinity;
     primaxis.forEach(p=>{
         let islog = serviceFullList.find(s=>s.text===p).islogScale;
@@ -1624,7 +1626,7 @@ function adjustRange(data){
     });
     minLog = minLog<1?0:minLog;
     primaxis.forEach((p,pi)=>{
-       if (range[0]>=0 && range[1]) {
+       if (serviceFullList[pi].range[0]>=0 && serviceFullList[pi].range[1]) {
            if(serviceFullList[pi].islogScale){
                serviceFullList[pi].range = [minLog,d3.scaleLog()(globalRange[1])];
            }else
@@ -1988,6 +1990,7 @@ function onChangeValue(condition) {
     update_Dimension();
     adjustdata(serviceFullList.filter(d=>d.primaxis).map(d=>({key:d.text,value:d.islogScale})));
     rescale(true);
+    setColorsAndThresholds_full();
     d3.select('tr.axisActive').selectAll('td input[name=colorby]').dispatch('change')
 }
 
@@ -2003,7 +2006,7 @@ function makeDataTableFiltered () {
     const columns = [{title: IDkey,data:'name',className:'id'}];
     SUBJECTS.forEach(s=>{
         serviceFullList.forEach(d => {
-            columns.push({title: s + d.text,data:d.text, render: renderData,className: d.text})
+            columns.push({title: s + d.text,data:d.text, render: renderData,className: fixName2Class(d.text)})
         });
     });
     let heatmaponTable = d3.scaleQuantize().domain(d3.range(0,10))
@@ -2042,7 +2045,7 @@ function makeDataTableFiltered () {
                 }
                 let currentColor = d3.color(coloraxis[s.text](d)||'white');
                 currentColor.opacity = opaaxis[s.text];
-                $(row).find(`td.${s.text}`)
+                $(row).find(`td.${fixName2Class(s.text)}`)
                     .css('background-color',currentColor+'')
                     .css('color', 'black');
             })
@@ -2054,6 +2057,7 @@ function makeDataTableFiltered () {
         var tr = $(this).closest('tr');
         var row = dataTableFiltered.row( tr );
         var d = row.data();
+        debugger
         highlight(d.__index!==undefined?shuffled_data[d.__index]:d);
     });
     $('#filterTable tbody').on('mouseleave', 'tr', function () {
@@ -2070,14 +2074,16 @@ function makeDataTableFiltered () {
     // });
     function renderData(data, type, row) {
         if (type === 'display') {
-            if (data%1==0)
+            if (data%1===0)
                 return `${data}<span style="opacity: 0">.00</span>`;
+            if (_.isNaN(d3.format('.2f')(data)))
+            console.log(data,row.data(),d3.format('.2f')(data))
             return d3.format('.2f')(data);
         }
         else if(type === 'export'){
             return data;
         }
-        return data%1==0?data:d3.format('.2f')(data);
+        return data%1===0?data:d3.format('.2f')(data);
     }
 }
 function searchHandler (e){
