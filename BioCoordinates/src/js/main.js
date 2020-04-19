@@ -1608,10 +1608,14 @@ function exclude_data() {
 }
 function adjustRange(data){
     let globalRange = [0,0];
+    let minLog = 0;
     primaxis.forEach(p=>{
         let islog = serviceFullList.find(s=>s.text===p).islogScale;
         let range;
         if (islog) {
+            min= d3.min(data,d=>d[p]);
+            if(minLog>min)
+                minLog = min
             range = d3.extent(data, d => d3.scaleLog().invert(d[p]));
         }else
             range = d3.extent(data,d=>d[p]);
@@ -1621,7 +1625,7 @@ function adjustRange(data){
     primaxis.forEach((p,pi)=>{
        if (range[0]>=0 && range[1]) {
            if(serviceFullList[pi].islogScale){
-               serviceFullList[pi].range = [d3.min(data,d=>d[p]),d3.scaleLog()(globalRange[1])];
+               serviceFullList[pi].range = [minLog,d3.scaleLog()(globalRange[1])];
            }else
                 serviceFullList[pi].range = globalRange;
        }
