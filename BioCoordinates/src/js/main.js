@@ -723,7 +723,6 @@ function resetRequest() {
     updateDimension();
     setColorsAndThresholds_full();
     makeDataTableFiltered ();
-    d3.select('#ToggeleLog').dispatch('adjustValue')
     if (!serviceFullList.find(d=>d.text===selectedService))
         selectedService = serviceFullList[0].text();
     const selecteds = d3.select("#axisSetting")
@@ -731,7 +730,7 @@ function resetRequest() {
         .selectAll('tr')
         .filter(d=>d.arr==selectedService).select('input[type="radio"]').property("checked", true);
     _.bind(selecteds.on("change"),selecteds.node())();
-
+    d3.select('#ToggeleLog').dispatch('adjustValue')
     // if (vocanoData)
     //     handle_data_volcanoplot(tsnedata);
     // else
