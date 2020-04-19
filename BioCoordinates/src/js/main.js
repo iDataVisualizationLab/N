@@ -2093,10 +2093,7 @@ function makeDataTableFiltered () {
 function searchHandler (e){
     if (e.target.value!=="") {
         let results = shuffled_data.filter(h=>h.name.includes(e.target.value));
-        if(results.length<graphicopt.tableLimit)
-            highlight(results[0]);
-        else
-            unhighlight()
+        highlight(results[0]);
     }else{
         unhighlight()
     }
