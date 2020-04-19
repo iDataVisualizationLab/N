@@ -1452,7 +1452,7 @@ function adjustdata(sers){
         sers.forEach(ser=>{
             s = ser.key;
             islog = ser.value;
-            d[s] = isdatachange? data_second[d.name][s]:sampleS[d.name][s][0][0];
+            d[s] = (isdatachange&&data_second_service[s])? data_second[d.name][s]:sampleS[d.name][s][0][0];
             if (islog){
                 d[s] = d3.scaleLog()(d[s]);
                 d[s]=d[s]!==-Infinity?d[s]:null;
@@ -1952,7 +1952,6 @@ function onChangeValue(condition) {
     unhighlight();
     if (condition){ // CPM
         data = dataRaw;
-
         d3.keys(data_second_service).forEach(k=>{
             serviceFullList.find(d=>d.text===k).range =data_second_service[k].range;
             data.forEach((d,i)=>d[k]=data_second[d.name][k]);
@@ -2057,7 +2056,6 @@ function makeDataTableFiltered () {
         var tr = $(this).closest('tr');
         var row = dataTableFiltered.row( tr );
         var d = row.data();
-        debugger
         highlight(d.__index!==undefined?shuffled_data[d.__index]:d);
     });
     $('#filterTable tbody').on('mouseleave', 'tr', function () {
@@ -2074,6 +2072,7 @@ function makeDataTableFiltered () {
     // });
     function renderData(data, type, row) {
         if (type === 'display') {
+            console.log(row)
             if (data%1===0)
                 return `${data}<span style="opacity: 0">.00</span>`;
             if (_.isNaN(d3.format('.2f')(data)))
