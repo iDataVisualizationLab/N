@@ -2072,7 +2072,6 @@ function makeDataTableFiltered () {
     // });
     function renderData(data, type, row) {
         if (type === 'display') {
-            console.log(row)
             if (data%1===0)
                 return `${data}<span style="opacity: 0">.00</span>`;
             if (_.isNaN(d3.format('.2f')(data)))
@@ -2101,7 +2100,7 @@ function updateDataTableFiltered(data){
     //     return _.flatten([n.name,_.flatten(serviceFullList.map(s=>n[s.text]))]);
     // });
     setTimeout(()=>{
-        let newDataArray = _.cloneDeep(data);
+        let newDataArray = _.cloneDeep(data).slice(0,1000);
         serviceFullList.forEach((s,si)=>{
             if(s.islogScale)
                 newDataArray.forEach((d,i)=>{

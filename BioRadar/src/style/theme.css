@@ -716,3 +716,9 @@ th.rotate > div > span {
 table.dataTable tbody td {
     white-space: nowrap;
 }
+
+[type="checkbox"].material:not(:checked), [type="checkbox"].material:checked {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
