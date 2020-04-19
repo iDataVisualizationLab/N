@@ -275,7 +275,11 @@ function drawFiltertable() {
                 .text(d => d.value);
             alltr.filter(d => d.key === "enable")
                 .select("input")
-                .each(function(d){this.checked = serviceFullList_withExtra[d.value.order].enable})
+                .each(function(d){this.checked = serviceFullList_withExtra[d.value.order].enable});
+            alltr.filter(d => d.key === "logScale")
+                .select("input")
+                .classed('hide',function(d){return !serviceFullList_withExtra[d.value.order].primaxis})
+                .dispatch('adjustValue');
             }
         );
     listMetric = Sortable.create($('tbody')[0], {
@@ -534,7 +538,7 @@ function multiFormat(date) {
                             : formatYear)(date);
 }
 
-function update_Dimension() {
+function updateDimension() {
     g = svg.selectAll(".dimension")
         .data(dimensions,d=>d).join(enter => {
                 const new_dim = enter.append("svg:g")
@@ -668,7 +672,7 @@ function init() {
     }).map(s=>s.text));
     // Add a group element for each dimension.
     setColorsAndThresholds_full();
-    update_Dimension();
+    updateDimension();
 
     makeDataTableFiltered ();
     // legend = create_legend(colors, brush);
@@ -716,7 +720,7 @@ function resetRequest() {
     }).map(s=>s.text));
     d3.select('#search').attr('placeholder',`Search host e.g ${data[0].compute}`);
     // Add a group element for each dimension.
-    update_Dimension();
+    updateDimension();
     setColorsAndThresholds_full();
     makeDataTableFiltered ();
     if (!serviceFullList.find(d=>d.text===selectedService))
@@ -1645,7 +1649,7 @@ function add_axis(d,g) {
         dimensions = _.intersection(listMetric.toArray(), dimensions);
         xscale.domain(dimensions);
         // g.attr("transform", function(p) { return "translate(" + position(p) + ")"; });
-        update_Dimension();
+        updateDimension();
         update_ticks();
     }
 }
@@ -1988,7 +1992,7 @@ function onChangeValue(condition) {
                     .range([h, 0])
         });
     }
-    update_Dimension();
+    updateDimension();
     adjustdata(serviceFullList.filter(d=>d.primaxis).map(d=>({key:d.text,value:d.islogScale})));
     rescale(true);
     setColorsAndThresholds_full();
