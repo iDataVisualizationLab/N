@@ -2000,7 +2000,7 @@ function makeDataTableFiltered () {
         d3.select('#filterTable').selectAll('*').remove();
     }
 
-    const columns = [{title: IDkey,data:IDkey,className:'id'}];
+    const columns = [{title: IDkey,data:'name',className:'id'}];
     SUBJECTS.forEach(s=>{
         serviceFullList.forEach(d => {
             columns.push({title: s + d.text,data:d.text, render: renderData,className: d.text})
