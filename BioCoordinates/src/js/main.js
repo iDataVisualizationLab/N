@@ -400,11 +400,13 @@ $( document ).ready(function() {
     d3.select('#ToggeleLog').on('adjustValue',function(){
         let logaxisTotal = serviceFullList_withExtra.filter(s=>s.islogScale).length;
         if (logaxisTotal === primaxis.length)
-            d3.select(this).attr('value','full');
+            this.checked = true;
         else if (logaxisTotal===0)
-            d3.select(this).attr('value','empty');
-        else
-            d3.select(this).attr('value','half');
+            this.checked = false;
+        else {
+            this.checked = false;
+            this.indeterminate = true;
+        }
     })
     // init();
 });
@@ -2136,15 +2138,11 @@ function triggerLogScale(isenable){
     brush();
 }
 function onToggeleLog(evt) {
-    switch(d3.select(evt).attr('value')){
-        case 'empty':
-        case 'half':
-            triggerLogScale(true);
-            d3.select(evt).attr('value','full');
-            break;
-        case 'full':
-            triggerLogScale(false);
-            d3.select(evt).attr('value','empty')
-            break;
+    if(evt.checked){
+        triggerLogScale(true);
+        d3.select(evt).attr('value','full');
+    }else{
+        triggerLogScale(false);
+        d3.select(evt).attr('value','empty')
     }
 }
