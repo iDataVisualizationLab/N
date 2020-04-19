@@ -1608,7 +1608,7 @@ function exclude_data() {
 }
 function adjustRange(data){
     let globalRange = [0,0];
-    let minLog = 0;
+    let minLog = Infinity;
     primaxis.forEach(p=>{
         let islog = serviceFullList.find(s=>s.text===p).islogScale;
         let range;
