@@ -1466,7 +1466,7 @@ function rescale(skipRender) {
             .domain(d3.extent(data, function (d) {
                 return d[k];
             }))
-            .range([h, 0])) || (_.isNumber(data[0][k])) && (yscale[k] = d3.scaleLinear()
+            .range([h, 0])) || (_.isNumber(data[0][k])||_.isNull(data[0][k])) && (yscale[k] = d3.scaleLinear()
             .domain(serviceFullList.find(d=>d.text===k).range)
             .range([h, 0]),yscale[k].islogScale=s.islogScale,yscale[k])));
         return s.enable?xtempscale:false;
@@ -1615,13 +1615,14 @@ function adjustRange(data){
         if (islog) {
             min= d3.min(data,d=>d[p]);
             if(minLog>min)
-                minLog = min
+                minLog = min;
             range = d3.extent(data, d => d3.scaleLog().invert(d[p]));
         }else
             range = d3.extent(data,d=>d[p]);
         if (range[0]>=0 && range[1]>1&&range[1]>globalRange[1])
             globalRange[1]=range[1];
     });
+    minLog = minLog<1?0:minLog;
     primaxis.forEach((p,pi)=>{
        if (range[0]>=0 && range[1]) {
            if(serviceFullList[pi].islogScale){
