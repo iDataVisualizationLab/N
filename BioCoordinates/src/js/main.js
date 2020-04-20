@@ -856,36 +856,7 @@ function render_range(selection, i, max, opacity) {
     });
 };
 
-// simple data table
-// function data_table(sample) {
-//     // sort by first column
-//     // var sample = sample.sort(function(a,b) {
-//     //     var col = d3.keys(a)[0];
-//     //     return a[col] < b[col] ? -1 : 1;
-//     // });
-//     // sort by Name
-//     var sample = sample.naturalSort("name");
-//
-//     var table = d3.select("#compute-list")
-//         .html("")
-//         .selectAll("li")
-//         .data(sample)
-//         .enter().append("li")
-//         .on("mouseover", highlight)
-//         .on("mouseout", unhighlight);
-//
-//     table
-//         .append("span")
-//         .attr("class", "color-block")
-//         .style("background", function(d) { return color(selectedService==null?d.group:d[selectedService]) })
-//         .style("opacity",0.85);
-//
-//     table
-//         .append("span")
-//         .text(function(d) { return d.name; })
-// }
-// complex data table
-// let filteredData = undefined;
+
 
 let presetdatatable = [];
 // complex data table
@@ -2050,7 +2021,7 @@ function makeDataTableFiltered () {
                     d = d!== -Infinity ? d:null
                 }
                 let currentColor = d3.color(coloraxis[s.text](d)||'white');
-                currentColor.opacity = opaaxis[s.text];
+                currentColor.opacity = opaaxis[s.text](d);
                 $(row).find(`td.${fixName2Class(s.text)}`)
                     .css('background-color',currentColor+'')
                     .css('color', 'black');
