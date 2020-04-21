@@ -10,6 +10,27 @@ d3.csv("src/data/raw/metadata.csv").then(function(data){
 });
 
 
+var d1,d2;
+const choice = d3.select('#datacom').node().value;
+const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
+d3.select('#currentData').text(choicetext);
+Promise.all([
+    readDatacsv(choice,'csv')
+])
+    .then(([d])=>{d1 = d;})
+
+d3.csv("src/data/raw/covid19_processed_short_v2.csv").then(function(data){
+    d2=data;
+});
+
+var d5=[];
+d1.forEach(d=>{temp={};Object.keys(d1[0]).forEach(k=>temp[k]=d[k]); d5.push(temp)})
+d2.forEach(d=>{temp={};Object.keys(d1[0]).forEach(k=>temp[k]=d[k]); d5.push(temp)})
+data = d5
+csv =Object.keys(data[0]).join(',');
+csv+= '\n'+data.map(e=>d3.values(e).map(f=>`"${(f||'').replace(/"/gi,'')}"`).join(',')).join('\n');
+console.log(csv)
+
 d3.csv('src/data/raw/covid19_processed_short.csv').then(d=>{
     d=d.filter(e=>e.term!==""&&e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
     csv = d3.keys(d[0]).join(',');
