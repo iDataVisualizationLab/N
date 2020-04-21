@@ -1,3 +1,14 @@
+d3.csv("src/data/raw/metadata.csv").then(function(data){
+    data.filter(e=>e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
+    key = Object.keys(data[0]);
+    csv =Object.keys(data[0]).join(',');
+    data = data.filter(d=>d3.values(d).length===key.length);
+
+    csv+= '\n'+data.map(e=>d3.values(e).map(f=>`"${f.replace(/"/gi,'')}"`).join(',')).join('\n');
+    console.log(csv)
+});
+
+
 d3.csv('src/data/raw/covid19_processed_short.csv').then(d=>{
     d=d.filter(e=>e.term!==""&&e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
     csv = d3.keys(d[0]).join(',');
