@@ -1,5 +1,6 @@
 d3.csv("src/data/raw/metadata.csv").then(function(data){
-    data.filter(e=>e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
+    data = data.filter(e=>e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
+    data.forEach(d=>delete d['cord_uid'])
     key = Object.keys(data[0]);
     csv =Object.keys(data[0]).join(',');
     data = data.filter(d=>d3.values(d).length===key.length);
