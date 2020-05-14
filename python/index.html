@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="src/lib/jquery-3.3.1.js"></script>
+</head>
+<body>
+<p id="result"></p>
+
+<script>
+    function postData(input) {
+        $.ajax({
+            type: "POST",
+            url: "/getdata",
+            data: { mydata: input },
+            success: callbackFunc
+        });
+    }
+
+    function callbackFunc(response) {
+        // do something with the response
+        console.log(response);
+    }
+
+    postData('test.xlsx');
+</script>
+</body>
+</html>

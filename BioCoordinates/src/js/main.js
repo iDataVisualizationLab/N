@@ -478,6 +478,7 @@ function reorderDimlist() {
         swap(order_list, pre, next);
         listMetric.sort(order_list);
     }
+    d3.selectAll('#axisSetting tbody input[type="checkbox"]').dispatch('adjustValue')
 }
 
 function dragend(d) {
@@ -863,7 +864,7 @@ let presetdatatable = [];
 let complex_data_table_render = false;
 function complex_data_table(sample,render) {
     if(complex_data_table_render && (render||!d3.select('.searchPanel.active').empty())) {
-        console.time('nest data')
+        console.time('nest data');
         var samplenest = d3.nest()
             .key(d => d.rack).sortKeys(collator.compare)
             .entries(sample);

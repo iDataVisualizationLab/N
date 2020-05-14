@@ -41,16 +41,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/BioRadar/src/lib" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\STORE\nvtngan\project\github\N\python" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\STORE\nvtngan\project\github\N\BioRadar\src\lib" />
-      <recent name="E:\nvtng\Projects\GitHub\N" />
-      <recent name="E:\nvtng\Projects\GitHub\N\just4presentation" />
+      <recent name="C:\STORE\nvtngan\project\github\N\wordStream\src\script" />
+      <recent name="C:\STORE\nvtngan\project\github\N\wordStream" />
+      <recent name="C:\STORE\nvtngan\project\github\N\python\src" />
+      <recent name="C:\STORE\nvtngan\project\github\N\python" />
+      <recent name="C:\STORE\nvtngan\project\github\N\python\src\lib" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.index.html (2)">
@@ -143,7 +148,17 @@
       <workItem from="1586878793245" duration="721000" />
       <workItem from="1586966311687" duration="3397000" />
       <workItem from="1587009200860" duration="78078000" />
-      <workItem from="1587404879733" duration="599000" />
+      <workItem from="1587404879733" duration="8368000" />
+      <workItem from="1587670885182" duration="2449000" />
+      <workItem from="1587836431014" duration="1980000" />
+      <workItem from="1587916095214" duration="4066000" />
+      <workItem from="1588434860913" duration="599000" />
+      <workItem from="1588549255427" duration="2444000" />
+      <workItem from="1588705023587" duration="4507000" />
+      <workItem from="1588714836122" duration="1985000" />
+      <workItem from="1588886019966" duration="598000" />
+      <workItem from="1589075572598" duration="1198000" />
+      <workItem from="1589479066215" duration="599000" />
     </task>
     <task id="LOCAL-00003" summary="updateUI">
       <created>1563117491587</created>
@@ -170,22 +185,22 @@
     <option name="LAST_COMMIT_MESSAGE" value="updateUI" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1586632944681">
+    <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog" timestamp="1588709639483">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586632944681" />
-    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1586631900907">
+    <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588709639483" />
+    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1588709237721">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586631900907" />
-    <state x="646" y="242" width="627" height="556" key="find.popup" timestamp="1587068044502">
+    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588709237721" />
+    <state x="646" y="242" width="627" height="556" key="find.popup" timestamp="1587777655567">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="646" y="242" width="627" height="556" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587068044502" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587331220573">
+    <state x="646" y="242" width="627" height="556" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587777655567" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587498537610">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587331220573" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587498537610" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
