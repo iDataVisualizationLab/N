@@ -149,8 +149,8 @@ function handle_data(data) {
 
 function draw(links, nodes) {
     var svg = d3.select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
+        width = 1200,
+        height = 800;
 
     var link = svg.append("g")
         .attr("class", "links")
