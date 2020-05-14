@@ -50,7 +50,7 @@ function handle_data(data) {
         links.push({source: d['ISA'], target: current});
 
         let children = d['Fields'].map(r => {
-            let currentName = r['FieldName'];
+            let currentName = r['Field'];
             let node =  {
                 name: currentName,
                 level:'FieldName',
