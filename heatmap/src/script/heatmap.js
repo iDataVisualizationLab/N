@@ -188,6 +188,7 @@ let HeatMap = function(){
     }
     const RECT_draw = function(d, ctx, color) {
         ctx.fillRect(scheme.x.scale(d[scheme.x.key]),scheme.y.scale(d[scheme.y.key]),scheme.x.scale.bandwidth(),scheme.y.scale.bandwidth());
+        // ctx.fillRect(scheme.x.scale(d[scheme.x.key]),scheme.y.scale(d[scheme.y.key]),1,scheme.y.scale.bandwidth());
         if (color){
             ctx.fillStyle = color;
             ctx.fill()

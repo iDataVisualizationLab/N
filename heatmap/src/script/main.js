@@ -51,4 +51,15 @@ d3.json("data/influxdb0424-0427.json").then(dataRaw=> {
         color:{key:"key",type:"Category",opacity:0.7}
     }
     hpcc_ridgeline_plot.scheme(scheme_2).draw();
+
+    // build scheme
+    // const hpcc_line_plot = new HeatMap().graphicopt({width:800,height:600,margin:{top: 100, right: 100, bottom: 50, left: 0},contain:'#ridgeline_plot_canvas'});
+    // let scheme_2 = {
+    //     data:{value:data.filter(d=>hostfilter.find(h=>d.compute===h))},
+    //     x: {key:'timestep',type:'Time'},
+    //     y: {key:'compute',type:'Band'},
+    //     mark:{type:"area",key:"y",value:selectedService},
+    //     color:{key:"key",type:"Category",opacity:0.7}
+    // }
+    // hpcc_line_plot.scheme(scheme_2).draw();
 })

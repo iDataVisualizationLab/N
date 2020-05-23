@@ -48,6 +48,7 @@ d3.TimeSpace = function () {
             component:{
                 dot:{size:5,opacity:0.9},
                 link:{size:1,opacity:0.2, highlight:{opacity:3}},
+                label:{enable:false}
             },
             serviceIndex: 0,
             tableLimit: 1500,
@@ -60,6 +61,8 @@ d3.TimeSpace = function () {
                 callback:()=>{visiableLine(graphicopt.linkConnect); graphicopt.isCurve = graphicopt.linkConnect==='curve';toggleLine();render(!isBusy);isneedrender = true;}},
             linkOpacity:{text:"Link opacity", range:[0.1,1],id:'Link_opacity', type:"slider", variableRoot: graphicopt.component.link,variable: 'opacity',width:'100px',step:0.1,
                 callback:onlinkopacity},
+            labelMarker:{text: "Display label", type: "selection", variableRoot: graphicopt.component.label,variable: 'enable',labels:['OFF','ON'],values:[false,true], width: '100px',
+                callback:triggerlabelCluster},
             dim: {text: "Dimension", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{
                     preloader(true,10,'Change dimension projection...','#modelLoading');
                     obitTrigger=true;
@@ -1974,49 +1977,54 @@ d3.TimeSpace = function () {
         marker.append('path').attr('d',symbolGenerator()).styles({'fill':'black','opacity':0.5});
         return marker;
     }
+    function triggerlabelCluster(){
+        svg.select('#modelNodeLabel').classed('hide',!graphicopt.component.label.enable);
+    }
     function updatelabelCluster() {
         if(points.geometry) {
-            let orient = ({
-                top: text => text.attr("text-anchor", "middle").attr("y", -6),
-                right: text => text.attr("text-anchor", "start").attr("dy", "0.35em").attr("x", 6),
-                bottom: text => text.attr("text-anchor", "middle").attr("dy", "0.71em").attr("y", 6),
-                left: text => text.attr("text-anchor", "end").attr("dy", "0.35em").attr("x", -6)
-            });
-            let pointData = [];
-            points.geometry.attributes.alpha.array.forEach((p,pi)=>{
-                if (p) {
-                    let temp = getpos(points.geometry.attributes.position.array[pi * 3], points.geometry.attributes.position.array[pi * 3 + 1], points.geometry.attributes.position.array[pi * 3 + 2]);
-                    temp = [temp.x, temp.y];
-                    temp.index = pi;
-                    temp.name = datain[pi].name;
-                    pointData.push(temp);
-                }
-            })
-            let voronoi = d3.Delaunay.from(pointData)
-                .voronoi([0, 0, graphicopt.widthG(), graphicopt.heightG()]);
-
-            let dataLabel = [];
-            pointData.forEach((d, i) => {
-                const cell = voronoi.cellPolygon(i);
-                if (cell&&-d3.polygonArea(cell) > 2000)
-                    dataLabel.push([d, cell, d.name])
-            });
             svg.select('#modelNodeLabel').selectAll('.name').remove();
-            svg.select('#modelNodeLabel').selectAll('.name').data(dataLabel).enter()
-                .append('text').attr('class', 'name')
-                .each(function ([[x, y], cell]) {
-                    const [cx, cy] = d3.polygonCentroid(cell);
-                    const angle = (Math.round(Math.atan2(cy - y, cx - x) / Math.PI * 2) + 4) % 4;
-                    d3.select(this).call(angle === 0 ? orient.right
-                        : angle === 3 ? orient.top
-                            : angle === 1 ? orient.bottom
-                                : orient.left);
-                })
-                .attr("transform", ([d]) => `translate(${d})`)
-                .style('opacity',0.6)
-                .text(([, , name]) => name);
+            if (graphicopt.component.label.enable) {
+                let orient = ({
+                    top: text => text.attr("text-anchor", "middle").attr("y", -6),
+                    right: text => text.attr("text-anchor", "start").attr("dy", "0.35em").attr("x", 6),
+                    bottom: text => text.attr("text-anchor", "middle").attr("dy", "0.71em").attr("y", 6),
+                    left: text => text.attr("text-anchor", "end").attr("dy", "0.35em").attr("x", -6)
+                });
+                let pointData = [];
+                points.geometry.attributes.alpha.array.forEach((p, pi) => {
+                    if (p) {
+                        let temp = getpos(points.geometry.attributes.position.array[pi * 3], points.geometry.attributes.position.array[pi * 3 + 1], points.geometry.attributes.position.array[pi * 3 + 2]);
+                        temp = [temp.x, temp.y];
+                        temp.index = pi;
+                        temp.name = datain[pi].name;
+                        pointData.push(temp);
+                    }
+                });
+                let voronoi = d3.Delaunay.from(pointData)
+                    .voronoi([0, 0, graphicopt.widthG(), graphicopt.heightG()]);
 
-            clusterMarker.attr('transform', d => `translate(${d.__metrics.projection.x},${d.__metrics.projection.y})`);
+                let dataLabel = [];
+                pointData.forEach((d, i) => {
+                    const cell = voronoi.cellPolygon(i);
+                    if (cell && -d3.polygonArea(cell) > 2000)
+                        dataLabel.push([d, cell, d.name])
+                });
+                svg.select('#modelNodeLabel').selectAll('.name').data(dataLabel).enter()
+                    .append('text').attr('class', 'name')
+                    .each(function ([[x, y], cell]) {
+                        const [cx, cy] = d3.polygonCentroid(cell);
+                        const angle = (Math.round(Math.atan2(cy - y, cx - x) / Math.PI * 2) + 4) % 4;
+                        d3.select(this).call(angle === 0 ? orient.right
+                            : angle === 3 ? orient.top
+                                : angle === 1 ? orient.bottom
+                                    : orient.left);
+                    })
+                    .attr("transform", ([d]) => `translate(${d})`)
+                    .style('opacity', 0.6)
+                    .text(([, , name]) => name);
+
+                clusterMarker.attr('transform', d => `translate(${d.__metrics.projection.x},${d.__metrics.projection.y})`);
+            }
         }
     }
 
