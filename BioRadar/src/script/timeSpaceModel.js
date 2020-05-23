@@ -2753,13 +2753,13 @@ function handle_data_model(tsnedata,isKeepUndefined) {
                         currentData.push(d);
                     });
                 }
-                if (isKeepUndefined)
-                {
-                    for (let i = 0; i< currentData.length; i++){
-                        if (currentData[i]===0)
-                            currentData[i] = -1;
-                    }
-                }
+                // if (isKeepUndefined)
+                // {
+                //     for (let i = 0; i< currentData.length; i++){
+                //         if (currentData[i]===0)
+                //             currentData[i] = -1;
+                //     }
+                // }
                 dataIn.push(currentData);
             }
             return index;
