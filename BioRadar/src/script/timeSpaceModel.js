@@ -20,6 +20,7 @@ d3.TimeSpace = function () {
             opt: {
                 // dim: 2, // dimensionality of the embedding (2 = default)
                 windowsSize: 1,
+                keyGenes: 'AT1G34370'
             },radaropt : {
                 // summary:{quantile:true},
                 mini:true,
@@ -588,14 +589,13 @@ d3.TimeSpace = function () {
                     break;
                 default:
                     if (globalFilter[key])
-                        highlightGroupNode(_.flatten([globalFilter[key], keyGenes]));
+                        highlightGroupNode(_.flatten([globalFilter[key], graphicopt.opt.keyGenes]));
                     else
                         highlightGroupNode([]);
                     break;
             }
         }
     }
-    let keyGenes = "AT1G34370";
     function drawHis(div,data,key){
         let height = 10;
         let width = 20;
@@ -611,7 +611,7 @@ d3.TimeSpace = function () {
 
         let his = svg.select('path.his');
         let marker = svg.select('line.marker');
-        if(path[keyGenes]) {
+        if(path[graphicopt.opt.keyGenes]) {
             if (his.empty()) {
                 his = svg.append('path').attr('class', 'his');
                 marker = svg.append('line')
@@ -633,9 +633,9 @@ d3.TimeSpace = function () {
             .y0(y(0))
             .y1(function(d) { return y(d[1]) })
         ).style('fill','#dddddd');
-        if(path[keyGenes])
+        if(path[graphicopt.opt.keyGenes])
         {
-            marker.datum(path[keyGenes][key])
+            marker.datum(path[graphicopt.opt.keyGenes][key])
                 .attrs(d => ({
                     x2: x(d),
                     x1: x(d)
@@ -1807,7 +1807,7 @@ d3.TimeSpace = function () {
             pos[i*3+1]= 0;
             pos[i*3+2]= 0;
             // let color = new THREE.Color(d3.color(colorarr[target.cluster].value)+'');
-            let color = d3.color(target.name ===keyGenes?'black': colorarr[target.cluster].value);
+            let color = d3.color(target.name ===graphicopt.opt.keyGenes?'black': colorarr[target.cluster].value);
             colors[i*3+0]= color.r/255;
             colors[i*3+1]= color.g/255;
             colors[i*3+2]= color.b/255;
@@ -2615,6 +2615,7 @@ d3.TimeSpace = function () {
         return solution;
     };
 
+
     master.color = function (_) {
         return arguments.length ? (colorscale = _, master) : colorscale;
     };
@@ -2783,6 +2784,7 @@ function handle_data_umap(tsnedata) {
             dim: 2, // The number of components (dimensions) to project the data to (2 = default)
             minDist: 1, // The effective minimum distance between embedded points, used with spread to control the clumped/dispersed nature of the embedding (0.1 = default)
             supervisor: true,
+            keyGenes: keyGenes
         };
         umapTS.graphicopt(umapopt).color(colorCluster).init(dataIn, cluster_info);
 
@@ -2796,6 +2798,7 @@ function handle_data_tsne(tsnedata) {
             // perplexity: Math.round(dataIn.length / cluster_info.length), // roughly how many neighbors each point influences (30 = default)
             perplexity: 20, // roughly how many neighbors each point influences (30 = default)
             dim: 2, // dimensionality of the embedding (2 = default)
+            keyGenes: keyGenes
         }
     tsneTS.graphicopt(TsneTSopt).color(colorCluster).init(dataIn, cluster_info);
 }
@@ -2805,6 +2808,7 @@ function handle_data_pca(tsnedata) {
         PCAopt.opt = {
             projectionName:'pca',
             dim: 2, // dimensionality of the embedding (2 = default)
+            keyGenes: keyGenes
         };
     pcaTS.graphicopt(PCAopt).color(colorCluster).init(dataIn, cluster_info);
 }

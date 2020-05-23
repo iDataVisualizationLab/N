@@ -114,7 +114,10 @@ function systemFormat() {
     serviceFullList_Fullrange = _.cloneDeep(serviceFullList);
 }
 let blackGenes=undefined;
+let keyGenes = 'AT1G34370';
+let listpossibleKey = ['AT1G34370','Trp53']
 function newdatatoFormat (data,notSplit){
+    keyGenes = undefined;
     preloader(true, 0, 'reading file...');
     serviceList = [];
     serviceLists = [];
@@ -194,6 +197,8 @@ function newdatatoFormat (data,notSplit){
                 category: category,
                 index: hosts.length,
             });
+            if (!keyGenes)
+                keyGenes = listpossibleKey.find(k=>k===(notSplit ? fixname : fixname.split('__')[0]));
 
             serviceListattr.forEach((attr, i) => {
                 if (sampleS[fixname] === undefined) {
