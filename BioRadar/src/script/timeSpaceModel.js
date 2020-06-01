@@ -2482,7 +2482,7 @@ d3.TimeSpace = function () {
                     }
                 }
             });
-
+        
 
         let div = d3.select('#modelDistanceFilter').node();
         if (!div.noUiSlider) {
@@ -2504,69 +2504,40 @@ d3.TimeSpace = function () {
         d3.select('#modelCompareMode').on('change',function(){
             graphicopt.iscompareMode=d3.select(this).property('checked')
         });
-        d3.select('#radarOpacity').on('change',function(){
-            if (svgData) {
-                drawRadar(svgData,true);
-                if ($('#radarCollider').val()==='3')
-                    draw_grid_hexagon(svgData);
-            }
-        });
-        d3.select('#radarSize').on('change',function(){
-            if (svgData) {
-                d3.select('#radarCollider').dispatch('action');
-            }
-        });
-        d3.select('#radarCollider').on('change',function(){
-            d3.select(this).dispatch('action')
+        d3.select('#radarCollider').attr('value',0).on('click',function(){
+            const target = d3.select(this);
+            const oldValue = target.attr('value');
+            const newValue = (oldValue+1) %3;
+            target.attr('value',newValue);
+            target.dispatch('action')
         }).on('action',function(){
-            const newValue = +$('#radarCollider').val();
-            if (newValue) {
-                computesvgData();
-                d3.select   ('.specialLayout').attr('disabled','').classed('hide',false)
-                    .select('#radarOpacity').attr('disabled','');
-            }
-            d3.select('.hexagonLayout').classed('hide',false);
-            if (svg)
-                svg.select('#modelWorkerScreen_grid').classed('hide',true);
+            const target = d3.select(this);
+            const newValue = +target.attr('value');
             switch (newValue) {
-                case 1:
-                    // target.html(`<i class="icon-radarShape material-icons icon"></i> Radar layout`);
-                    if (forceColider&&svgData&&svgData.posStatic) {
-                        $('#radarOpacity').val(0);
-                        d3.select('#radarOpacity').dispatch('change');
-                        svgData.pos = _.cloneDeep(svgData.posStatic);
+                case 0:
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> No collision`);
+                    if (forceColider) {
                         forceColider.stop();
-                        svg.classed('white',false);
-                        svg.select('#modelWorkerScreen_grid').classed('hide',true);
-                        drawRadar(svgData);
+                        if(svgData) {
+                            svgData.pos = _.cloneDeep(svgData.posStatic);
+                            svg.classed('white', false);
+                            svg.select('#modelWorkerScreen_grid').classed('hide', true);
+                            drawRadar(svgData);
+                        }
                     }
                     break;
-                case 2:
-                    // target.html(`<i class="icon-radarShape material-icons icon"></i> Force layout `);
-                    $('#radarOpacity').val(0);
-                    d3.select('#radarOpacity').dispatch('change');
+                case 1:
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> Collision detection `);
                     startCollide();
-                    break;
-                case 3:
-                    // target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon layout`);
-                    d3.select('.specialLayout').attr('disabled',null).select('#radarOpacity').attr('disabled',null);
-                    startCollide();
-                    // updateforce();
-                    // forceColider.tick();
                     break;
                 default:
-                    d3.select('.hexagonLayout').classed('hide',true);
-                    d3.select('.specialLayout').classed('hide',true);
-                    if (svg)
-                        svg.classed('white',false);
-                    if (forceColider&&svgData&&svgData.posStatic) {
-                        forceColider.stop();
-                        svgData = undefined;
-                        removeRadar();
-                    }
+                    target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon collision`);
+                    // startCollide();
+                    updateforce();
+                    forceColider.tick();
                     break;
             }
-        });
+        })
         d3.select('#radarCollider').dispatch('action');
     };
     function removeRadar(){
