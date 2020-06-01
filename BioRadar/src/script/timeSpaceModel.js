@@ -2482,7 +2482,7 @@ d3.TimeSpace = function () {
                     }
                 }
             });
-        
+
 
         let div = d3.select('#modelDistanceFilter').node();
         if (!div.noUiSlider) {
@@ -2525,12 +2525,15 @@ d3.TimeSpace = function () {
                             drawRadar(svgData);
                         }
                     }
+                    triggerlabelCluster();
                     break;
                 case 1:
+                    svg.select('#modelNodeLabel').classed('hide',true);
                     target.html(`<i class="icon-radarShape material-icons icon"></i> Collision detection `);
                     startCollide();
                     break;
                 default:
+                    svg.select('#modelNodeLabel').classed('hide',true);
                     target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon collision`);
                     // startCollide();
                     updateforce();
