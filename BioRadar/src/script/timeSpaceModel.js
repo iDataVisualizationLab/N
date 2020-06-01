@@ -1978,7 +1978,8 @@ d3.TimeSpace = function () {
         return marker;
     }
     function  triggerlabelCluster(){
-        svg.select('#modelNodeLabel').classed('hide',!graphicopt.component.label.enable);
+        if (svg)
+            svg.select('#modelNodeLabel').classed('hide',!graphicopt.component.label.enable);
     }
     function updatelabelCluster() {
         if(points.geometry) {
