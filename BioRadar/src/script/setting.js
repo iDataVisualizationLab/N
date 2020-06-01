@@ -116,6 +116,7 @@ function systemFormat() {
 let blackGenes=undefined;
 let keyGenes = 'AT1G34370';
 let listpossibleKey = ['AT1G34370','Trp53']
+let totalgenes = 0;
 function newdatatoFormat (data,notSplit){
     keyGenes = undefined;
     preloader(true, 0, 'reading file...');
@@ -217,6 +218,7 @@ function newdatatoFormat (data,notSplit){
     if (keyLeader&&globalFilter[keyLeader]){
         hosts.sort((a,b)=>-globalFilter[keyLeader].indexOf(a.genese)+globalFilter[keyLeader].indexOf(b.genese))
     }
+    totalgenes = d3.nest().key(d=>d.genese).entries(hosts).length;
     // find outliers
     preloader(true, 0, 'Prepare data...');
     // outlyingList = outlier();
@@ -322,7 +324,8 @@ function readFilecsv(filename,notSplit) {
 
             db = "csv";
             newdatatoFormat(data,notSplit);
-
+            globalFilter[idAll] = hosts.map(d=>d.name);
+            draw_venn(create_sets_obj_for_venn(globalFilter));
             inithostResults();
             formatService(true);
             processResult = processResult_csv;

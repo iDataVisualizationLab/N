@@ -144,13 +144,13 @@
                     <div  class="row valign-wrapper">
                         <label for="datacom" class="col s4"> Dataset</label>
                         <select id="datacom" class="col s7">
-                            <option value="transcriptome_averaged_all" data-split="none">transcriptome cpm all expressed genes (12 axis)</option>
-                            <option value="transcriptome_cpm_all_expressed_genes" >transcriptome cpm all expressed genes (6 axis)</option>
+                            <option value="transcriptome_averaged_all" data-split="none" ven="read_data_for_venn">transcriptome cpm all expressed genes (12 axis)</option>
+                            <option value="transcriptome_cpm_all_expressed_genes" ven="read_data_for_venn">transcriptome cpm all expressed genes (6 axis)</option>
                             <!--<option value="transcriptome_averaged_subtractbyhp6_abs">transcriptome all genes base on hp6 (abs)</option>-->
-                            <option value="transcriptome_averaged_subtractbyhp6">transcriptome different hp6</option>
-                            <option value="transcriptome_cpm_all_expressed_genes_wt" selected>transcriptome wild types</option>
-                            <option value="transcriptome_averaged_subtractbyhp6_wt">transcriptome different hp6 wild types</option>
-                            <option value="RKO PKO RPKO" data-split="none">cancer RKO PKO RPKO</option>
+                            <option value="transcriptome_averaged_subtractbyhp6" ven="read_data_for_venn">transcriptome different hp6</option>
+                            <option value="transcriptome_cpm_all_expressed_genes_wt" ven="read_data_for_venn" selected >transcriptome wild types</option>
+                            <option value="transcriptome_averaged_subtractbyhp6_wt" ven="read_data_for_venn">transcriptome different hp6 wild types</option>
+                            <option value="RKO PKO RPKO" data-split="none" ven="read_data_for_venn_with_upload_file">cancer RKO PKO RPKO</option>
                             <!--<option value="influxdbThus21Mar_1400_1630"  data-date="21 Mar 2019">HPC data - 21 Mar 2019 (Chill water)</option>-->
                             <!--<option value="influxdbSun23June2019" data-date="23 Jun 2019">HPC data - 23 Jun 2019 (overheat compute-6-2)</option>-->
                             <!--<option value="influxdbSat27Apr_removemetric" data-date="26 Apr 2019">HPC data - 26 Apr 2019 (with job data)</option>-->
@@ -748,6 +748,7 @@
                                 <li class="tab col s3"><a class="active" href="#modelSetting">Setting</a></li>
                                 <li class="tab col s5"><a href="#modelSelectionTool">Group selection</a></li>
                                 <!--<li class="tab col s3"><a href="#modelRanking">Ranking</a></li>-->
+                                <li class="tab col s3"><a href="#modelVenn">Venn</a></li>
                                 <li class="tab col s3"><a href="#modelFilter">Filter</a></li>
                             </ul>
                             <div id="modelSetting" class="tabHolder">
@@ -794,6 +795,11 @@
 
                                     </tbody>
                                 </table>
+                                </div>
+                            </div>
+                            <div id="modelVenn" class="tabHolder">
+                                <div  class="row valign-wrapper no_magrin">
+                                    <svg id="vennChart"></svg>
                                 </div>
                             </div>
                             <div id="modelFilter" class="tabHolder">
@@ -1046,6 +1052,7 @@
 <script src="src/script/graphic/radarChartCompare.js"></script>
 <script src="src/script/graphic/radarChart_v1.js"></script>
 <script src="src/script/graphic/roseChart.js"></script>
+<script src="src/lib/venn.js"></script>
 <script src="src/script/util.js"></script>
 <!--<script src="myscripts/hostlist.js"></script>-->
 <!--<script src="myscripts/service.js"></script>-->
@@ -1055,6 +1062,7 @@
 <script src="src/script/saveImages.js"></script>
 <script src="src/lib/outliagnostics.min.js"></script>
 <script src="src/lib/scagnosticsnd.min.js"></script>
+<script src="src/lib/combinations.js"></script>
 <script src="src/lib/fisheye.js"></script>
 
 
@@ -1078,7 +1086,7 @@
 <script src="src/script/setting.js"></script>
 <script src="src/script/radarController_v2.js"></script>
 <script src="src/script/tooltipv2.js"></script>
-<!--<script src="src/script/radarController.js"></script>-->
+<script src="src/script/graphic/ven.js"></script>
 <script src="src/script/main.js"></script>
 <script src="src/script/tooltip_new.js"></script>
 

@@ -1977,7 +1977,7 @@ d3.TimeSpace = function () {
         marker.append('path').attr('d',symbolGenerator()).styles({'fill':'black','opacity':0.5});
         return marker;
     }
-    function triggerlabelCluster(){
+    function  triggerlabelCluster(){
         svg.select('#modelNodeLabel').classed('hide',!graphicopt.component.label.enable);
     }
     function updatelabelCluster() {
@@ -2333,8 +2333,16 @@ d3.TimeSpace = function () {
             mouseoverTrigger = true;
         }
     };
+    master.filter = function(name){
+        highlightGroupNode(name);
+        isneedrender = true;
+        mouseoverTrigger = true;
+    };
     let ishighlightUpdate;
-    master.unhighlight = function() {
+    master.unhighlight = function(nothighlight) {
+        if (nothighlight){
+
+        }
         filterbyClustername = [];
         ishighlightUpdate = true;
         isneedrender = true;
@@ -2355,7 +2363,7 @@ d3.TimeSpace = function () {
         d3.select('#modelWorkerInformation table').selectAll('*').remove();
         table_info = d3.select('#modelWorkerInformation table')
             .html(` <colgroup><col span="1" style="width: 40%;"><col span="1" style="width: 60%;"></colgroup>`);
-            // .styles({'width':tableWidth+'px'});
+        // .styles({'width':tableWidth+'px'});
         let tableData = [
             [
                 {text:"Input",type:"title"},
@@ -2369,11 +2377,12 @@ d3.TimeSpace = function () {
             ]
         ];
         d3.values(self.controlPanel).forEach(d=>{
-            tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable})
+            tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable,class:d.class})
         });
         d3.values(controlPanelGeneral).forEach(d=>{
-            tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable,variableRoot: d.variableRoot,id:d.id})
+            tableData[1].push({label:d.text,type:d.type,content:d,variable: d.variable,variableRoot: d.variableRoot,id:d.id,class:d.class})
         });
+        d3.keys(self.formatTable).forEach(k=>formatTable[k]=self.formatTable[k]);
         tableData[2] = _.concat(tableData[2],self.outputSelection);
         let tbodys = table_info.selectAll('tbody').data(tableData);
         tbodys
@@ -2381,6 +2390,7 @@ d3.TimeSpace = function () {
             .selectAll('tr').data(d=>d)
             .enter().append('tr')
             .attr('id',d=>d.id?d.id:null)
+            .attr('class',d=>d.class?d.class:null)
             .selectAll('td').data(d=>d.type==="title"?[d]:[{text:d.label},d.type?{content:d.content,variable:d.variable,variableRoor: d.variableRoot}:{text:d.content,variable:d.variable}])
             .enter().append('td')
             .attr('colspan',d=>d.type?"2":null)
@@ -2411,8 +2421,10 @@ d3.TimeSpace = function () {
                                 d.content.variableRoot[d.content.variable] = +this.get();
                             if (d.content.callback)
                                 d.content.callback();
-                            else
+                            else{
+                                obitTrigger=true;
                                 start();
+                            }
                         });
                     }else if (d.content.type === "checkbox") {
                         let div = d3.select(this).style('width', d.content.width).append('label').attr('class', 'valign-wrapper left-align');
@@ -2435,22 +2447,38 @@ d3.TimeSpace = function () {
                             graphicopt.opt[d.content.variable]  =  d.content.values[+this.checked];
                             if (d.content.callback)
                                 d.content.callback();
-                            else
+                            else {
+                                obitTrigger=true;
                                 start();
+                            }
                         })
                     }else if (d.content.type === "selection") {
+                        let label = _.isFunction(d.content.labels)?d.content.labels():d.content.labels;
+                        let values = _.isFunction(d.content.values)?d.content.values():d.content.values;
                         let div = d3.select(this).style('width', d.content.width)
                             .append('select')
                             .on('change',function(){
-                                graphicopt[d.content.variable]  =  d.content.values[this.value];
+                                setValue(d.content,values[this.value])
+                                // if (!d.content.variableRoot) {
+                                //     graphicopt[d.content.variable]  =  d.content.values[this.value];
+                                // }else
+                                //     graphicopt[d.content.variableRoot][d.content.variable] = d.content.values[this.value];
                                 if (d.content.callback)
                                     d.content.callback();
+                                else {
+                                    obitTrigger=true;
+                                    start();
+                                }
                             });
                         div
-                            .selectAll('option').data(d.content.labels)
+                            .selectAll('option').data(label)
                             .enter().append('option')
                             .attr('value',(e,i)=>i).text((e,i)=>e);
-                        $(div.node()).val( d.content.values.indexOf(graphicopt[d.content.variable]));
+                        // let default_val = graphicopt[d.content.variable];
+                        // // if (d.content.variableRoot)
+                        // //     default_val = graphicopt[d.content.variableRoot][d.content.variable];
+                        // console.log(getValue(d.content))
+                        $(div.node()).val( values.indexOf( getValue(d.content)));
                     }
                 }
             });
@@ -2476,63 +2504,112 @@ d3.TimeSpace = function () {
         d3.select('#modelCompareMode').on('change',function(){
             graphicopt.iscompareMode=d3.select(this).property('checked')
         });
-        d3.select('#radarCollider').attr('value',0).on('click',function(){
-            const target = d3.select(this);
-            const oldValue = target.attr('value');
-            const newValue = (oldValue+1) %3;
-            target.attr('value',newValue);
-            target.dispatch('action')
+        d3.select('#radarOpacity').on('change',function(){
+            if (svgData) {
+                drawRadar(svgData,true);
+                if ($('#radarCollider').val()==='3')
+                    draw_grid_hexagon(svgData);
+            }
+        });
+        d3.select('#radarSize').on('change',function(){
+            if (svgData) {
+                d3.select('#radarCollider').dispatch('action');
+            }
+        });
+        d3.select('#radarCollider').on('change',function(){
+            d3.select(this).dispatch('action')
         }).on('action',function(){
-            const target = d3.select(this);
-            const newValue = +target.attr('value');
+            const newValue = +$('#radarCollider').val();
+            if (newValue) {
+                computesvgData();
+                d3.select   ('.specialLayout').attr('disabled','').classed('hide',false)
+                    .select('#radarOpacity').attr('disabled','');
+            }
+            d3.select('.hexagonLayout').classed('hide',false);
+            if (svg)
+                svg.select('#modelWorkerScreen_grid').classed('hide',true);
             switch (newValue) {
-                case 0:
-                    target.html(`<i class="icon-radarShape material-icons icon"></i> No collision`);
-                    if (forceColider) {
+                case 1:
+                    // target.html(`<i class="icon-radarShape material-icons icon"></i> Radar layout`);
+                    if (forceColider&&svgData&&svgData.posStatic) {
+                        $('#radarOpacity').val(0);
+                        d3.select('#radarOpacity').dispatch('change');
+                        svgData.pos = _.cloneDeep(svgData.posStatic);
                         forceColider.stop();
-                        if(svgData) {
-                            svgData.pos = _.cloneDeep(svgData.posStatic);
-                            svg.classed('white', false);
-                            svg.select('#modelWorkerScreen_grid').classed('hide', true);
-                            drawRadar(svgData);
-                        }
+                        svg.classed('white',false);
+                        svg.select('#modelWorkerScreen_grid').classed('hide',true);
+                        drawRadar(svgData);
                     }
                     break;
-                case 1:
-                    target.html(`<i class="icon-radarShape material-icons icon"></i> Collision detection `);
+                case 2:
+                    // target.html(`<i class="icon-radarShape material-icons icon"></i> Force layout `);
+                    $('#radarOpacity').val(0);
+                    d3.select('#radarOpacity').dispatch('change');
                     startCollide();
                     break;
+                case 3:
+                    // target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon layout`);
+                    d3.select('.specialLayout').attr('disabled',null).select('#radarOpacity').attr('disabled',null);
+                    startCollide();
+                    // updateforce();
+                    // forceColider.tick();
+                    break;
                 default:
-                    target.html(`<i class="icon-radarShape material-icons icon"></i> Hexagon collision`);
-                    // startCollide();
-                    updateforce();
-                    forceColider.tick();
+                    d3.select('.hexagonLayout').classed('hide',true);
+                    d3.select('.specialLayout').classed('hide',true);
+                    if (svg)
+                        svg.classed('white',false);
+                    if (forceColider&&svgData&&svgData.posStatic) {
+                        forceColider.stop();
+                        svgData = undefined;
+                        removeRadar();
+                    }
                     break;
             }
-        })
+        });
         d3.select('#radarCollider').dispatch('action');
     };
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
         d3.select('#modelCompareMode').property('checked',graphicopt.iscompareMode)
-
         d3.values(self.controlPanel).forEach((d)=>{
-            if (graphicopt.opt[d.variable]) {
+            if (graphicopt.opt[d.variable]!==undefined) {
                 try {
-                d3.select(`.${d.variable} div`).node().noUiSlider.set(graphicopt.opt[d.variable]);
+                    d3.select(`#modelWorkerInformation .${d.variable} div`).node().noUiSlider.set(graphicopt.opt[d.variable]);
                 }catch(e){
                     switch (d.type) {
                         case 'switch':
-                            d3.select(`.${d.variable} input`).node().checked = graphicopt.opt[d.variable];
+                            d3.select(`#modelWorkerInformation .${d.variable} input`).node().checked = graphicopt.opt[d.variable];
                             break;
-                        case 'selection':
-                            $(d3.select(`.${d.variable} selection`).node()).val( d.values.indexOf(graphicopt[d.variable]));
+                        case "selection":
+                            // if (d.variable==='var1')
+                            //     values = _.isFunction(d.values)?d.values():d.values;
+                            $(d3.select(`#modelWorkerInformation .${d.variable} select`).node()).val( getValue(d));
                             break;
                     }
                 }
             }
         });
-
+    }
+    function setValue(content,value){
+        if (_.isString(content.variableRoot))
+            graphicopt[content.variableRoot][content.variable] = value;
+        else{
+            if (content.variableRoot===undefined)
+                graphicopt[content.variable] = value;
+            else
+                content.variableRoot[content.variable] = value;
+        }
+    }
+    function getValue(content){
+        if (_.isString(content.variableRoot))
+            return graphicopt[content.variableRoot][content.variable];
+        else{
+            if (content.variableRoot===undefined)
+                return graphicopt[content.variable];
+            else
+                return content.variableRoot[content.variable];
+        }
     }
     function updateTableOutput(output){
         d3.entries(output).forEach(d=>{

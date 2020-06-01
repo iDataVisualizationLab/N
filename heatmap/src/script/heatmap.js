@@ -59,13 +59,13 @@ let HeatMap = function(){
                 .style('position','absolute')
                 .style('top',0)
                 .style('left',0);
-            foreground = foreground_obj.node().getContext('2d');
-            foreground.globalCompositeOperation = "destination-over";
-            foreground.strokeStyle = "rgba(0,100,160,0.1)";
-            foreground.lineWidth = 1.7;
-            foreground.fillText("Loading...", graphicopt.width / 2, graphicopt.height / 2);
         }
-        foreground_obj.attr('width',graphicopt.width).attr('height',graphicopt.height)
+        foreground = foreground_obj.node().getContext('2d');
+        foreground.globalCompositeOperation = "destination-over";
+        foreground_obj.attr('width',graphicopt.width).attr('height',graphicopt.height);
+        foreground.strokeStyle = "rgba(0,100,160,0.1)";
+        foreground.lineWidth = 1.7;
+        foreground.fillText("Loading...", graphicopt.width / 2, graphicopt.height / 2);
     // Highlight canvas for temporary interactions
         let highlighted_obj = container.select('canvas.highlighted');
         if (container.select('canvas.highlighted').empty()) {
@@ -73,11 +73,11 @@ let HeatMap = function(){
                 .style('position','absolute')
                 .style('top',0)
                 .style('left',0);
-            highlighted = highlighted_obj.node().getContext('2d');
-            highlighted.strokeStyle = "rgba(0,100,160,1)";
-            highlighted.lineWidth = 4;
         }
-        highlighted_obj.attr('width',graphicopt.width).attr('height',graphicopt.height)
+        highlighted = highlighted_obj.node().getContext('2d');
+        highlighted_obj.attr('width',graphicopt.width).attr('height',graphicopt.height);
+        highlighted.strokeStyle = "rgba(0,100,160,1)";
+        highlighted.lineWidth = 4;
     // Background canvas
         let background_obj = container.select('canvas.background');
         if (background_obj.empty()) {
@@ -85,11 +85,11 @@ let HeatMap = function(){
                 .style('position','absolute')
                 .style('top',0)
                 .style('left',0);
-            background = background_obj.node().getContext('2d');
-            background.strokeStyle = "rgba(0,100,160,0.1)";
-            background.lineWidth = 1.7;
         }
         background_obj.attr('width',graphicopt.width).attr('height',graphicopt.height);
+        background = background_obj.node().getContext('2d');
+        background.strokeStyle = "rgba(0,100,160,0.1)";
+        background.lineWidth = 1.7;
 
         svg = container.select("svg.chart");
         if (svg.empty()) {
@@ -99,16 +99,24 @@ let HeatMap = function(){
         }
         svg.selectAll('*').remove();
         g = svg.append("svg:g")
-            .attr("transform", "translate(" + graphicopt.margin.left + "," + graphicopt.margin.top + ")");
+            // .attr("transform", "translate(" + graphicopt.margin.left + "," + graphicopt.margin.top + ")");
         let axis_g = g.append('g').attr('class','axis');
         axis_g.append('g').attr('class','xaxis');
         axis_g.append('g').attr('class','yaxis');
     }
     function make_axis(){
-        g.select('.xaxis').attr('transform',`translate(${0},${graphicopt.heightG()})`)
-            .call(d3.axisBottom(scheme.x.scale));
+        let axisx = d3.axisBottom(scheme.x.scale);
+        const ticksx = (scheme.x.scale.ticks||scheme.x.scale.domain)().length;
+        if (scheme.x.axis && scheme.x.axis.tickValues){
+            let filterFunc = new Function('datum','index',scheme.x.axis.tickValues)
+            axisx.tickValues(scheme.x.scale.domain().filter(filterFunc))
+        }else
+            if (ticksx > 20)
+                axisx.tickValues(scheme.x.scale.domain().filter((d,i)=>!(i%Math.round(ticksx/20))));
+        g.select('.xaxis').attr('transform',`translate(${0},${graphicopt.heightG()+graphicopt.margin.top})`)
+            .call(axisx);
         if (scheme.y.visible===undefined||scheme.y.visible==true)
-            g.select('.yaxis').attr('transform',`translate(${graphicopt.widthG()},${-graphicopt.margin.top})`)
+            g.select('.yaxis').attr('transform',`translate(${graphicopt.margin.left},${0})`)
                 .call(d3.axisRight(scheme.y.scale)).selectAll('.domain, line').style('display','none');
     }
     master.draw = function (){

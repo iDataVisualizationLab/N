@@ -866,7 +866,10 @@ $( document ).ready(function() {
         const choice = this.value;
         const choicetext = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-split')==="none";
         let loadclusterInfo = false;
-        readFilecsv(choice,choicetext)
+        eval(d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('ven'))().then((setfilter)=> {
+            globalFilter = setfilter;
+            readFilecsv(choice, choicetext)
+        })
 
     });
     $('#description_input_file').on('input',(evt)=>{
@@ -943,11 +946,10 @@ let keyLeader //= "TF_DE";
 function initApp(){
     // load filter file
     preloader(true,undefined,'Read filter file...');
-    d3.json('data/STOP1_targets.json').then(function(d){
-        globalFilter = d;
-        // init read file
+    eval(d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('ven'))().then((setfilter)=>{
+        globalFilter = setfilter;
         readFilecsv(d3.select('#datacom').node().value);
-    });
+    })
 }
 function loadPresetCluster(name,calback) {
     return d3.csv(srcpath + `data/cluster_${name}.csv`).then(function (cluster) {
