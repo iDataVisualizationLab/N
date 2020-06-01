@@ -2569,6 +2569,9 @@ d3.TimeSpace = function () {
         });
         d3.select('#radarCollider').dispatch('action');
     };
+    function removeRadar(){
+        svg.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
+    }
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
         d3.select('#modelCompareMode').property('checked',graphicopt.iscompareMode)
