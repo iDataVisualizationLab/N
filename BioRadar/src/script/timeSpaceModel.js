@@ -52,7 +52,7 @@ d3.TimeSpace = function () {
                 label:{enable:false}
             },
             serviceIndex: 0,
-            tableLimit: 20000,
+            tableLimit: 1000,
             iscompareMode: false
         },
         controlPanelGeneral = {
