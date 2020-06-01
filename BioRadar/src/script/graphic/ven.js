@@ -247,11 +247,11 @@ function draw_venn(sets_venn) {
 
             // trivial code.
             if (d.sets[0]==="ALL"&&d.sets.length===1) {
-                console.log("it's the current Data => return, nothing change!")
-                return;
+                console.log("it's the current Data => return, nothing change!");
+                mainviz.filter([]);
 
             }else{
-                mainviz.filter(d.data_list)
+                mainviz.filter(d.data_list);
             }
 
             //filter
