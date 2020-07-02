@@ -45,7 +45,7 @@ class UserStudy {
             if (sender.currentPage.isReadOnly) {
                 options.text = '';
             } else {
-                options.text = `Remaining time in seconds: ${180 -_this.survey.currentPage.timeSpent} `;
+                options.text = `Remaining time in seconds: ${300 -_this.survey.currentPage.timeSpent} `;
             }
         });
 
@@ -61,7 +61,7 @@ class UserStudy {
 
     json() {
         let startPage ={
-            maxTimeToFinish: 180,
+            maxTimeToFinish: 300,
             questions: [
                 {
                     type: "html",
@@ -76,7 +76,7 @@ class UserStudy {
             ]
         }
         let finishPage ={
-            maxTimeToFinish: 180,
+            maxTimeToFinish: 300,
             questions: [
                 {
                     type: "comment",
@@ -194,8 +194,8 @@ class UserStudy {
 }
 
 const params = {
-    maxTimeToFinishPage: 180, //in seconds
-    maxTimeToFinish: 180000 //in seconds
+    maxTimeToFinishPage: 300, //in seconds
+    maxTimeToFinish: 300000 //in seconds
 }
 
 let userstudy = new UserStudy(params);
