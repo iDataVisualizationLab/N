@@ -14,7 +14,7 @@ class UserStudy {
         let h = d.getHours();
         let m = d.getMinutes();
         let second = d.getSeconds();
-        let time = `${month}_${day}_${h}_${m}_${second}`
+        let time = `${month}_${day}_${h}_${m}_${second}`;
         let uuid = this.uuidv4();
         let json = this.json();
         let renderqueue = json.pages.filter(p=>p.questions[1].extraData).map(d=>d.questions[1].extraData);
@@ -66,7 +66,7 @@ class UserStudy {
                 {
                     type: "html",
                     html: "You are about to start user study by evaluating color filter for color blinding. " +
-                        "<br/>There are 23 questions in total. You will have about 3 minutes per question." +
+                        "<br/>There are 23 questions in total. You will have about 5 minutes per question." +
                         "<br/>Please click on <b>'Start Survey'</b> button when you are ready."},
                 {
                     type: "html",
