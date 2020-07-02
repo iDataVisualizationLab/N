@@ -157,13 +157,13 @@ class UserStudy {
                     type: "html",
                     name: "colorblindtest",
                     locationquestion:1,
-                    html: `<p>Please complete the test below and fill your <b>Test Result</b> below</p>
+                    html: `<p>Please complete the test below</p>
 <iframe style="width: 500px;height: 428px" src="https://www.color-blindness.com/ishihara_cvd_test/ishihara_cvd_test.html?iframe=true&width=500&height=428"></iframe>`,
                 },
                 {
                     type: "dropdown",
                     name: "0_Normal_colorblindResult",
-                    title: "Please select your corresponding result from the given test above",
+                    title: "Please select your corresponding result from the given test above (in <b>Test Result</b>)",
                     choices: ['none','weak','moderate','strong'],
                     correctAnswer: 'none'
                 }
