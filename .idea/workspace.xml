@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="updateUI">
+      <change afterPath="$PROJECT_DIR$/colorblind/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/colorblind/js/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/colorblind/js/survey.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/drone/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/drone/src/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/drone/src/music/LSD - Thunderclouds (NoCtrl Remix) ft. Sia, Diplo, Labrinth.mp3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" beforeDir="false" afterPath="$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,28 +46,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../d3-lasso-0.0.5" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\STORE\nvtngan\project\github\N\colorblind\js" />
+      <recent name="C:\STORE\nvtngan\project\github\N\drone\src\music" />
+      <recent name="C:\STORE\nvtngan\project\github\N\BioRadar\src\lib" />
+      <recent name="C:\STORE\nvtngan\project\github\N\BioRadar\data" />
+      <recent name="C:\STORE\nvtngan\project\github\N\heatmap\data" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\STORE\nvtngan\project\github\N\python" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\STORE\nvtngan\project\github\N\wordStream\src\script" />
-      <recent name="C:\STORE\nvtngan\project\github\N\wordStream" />
-      <recent name="C:\STORE\nvtngan\project\github\N\python\src" />
-      <recent name="C:\STORE\nvtngan\project\github\N\python" />
-      <recent name="C:\STORE\nvtngan\project\github\N\python\src\lib" />
-    </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html (3)">
+  <component name="RunManager" selected="JavaScript Debug.index.html (4)">
     <configuration default="true" type="JavascriptDebugType" uri="http://localhost:64320/N/examples/">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html (1)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/Ant-SNE/index.html">
       <method v="2" />
     </configuration>
     <configuration name="index.html (2)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/BioCoordinates/index.html" useBuiltInWebServerPort="true">
@@ -71,7 +73,13 @@
     <configuration name="index.html (3)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/BasicRISC/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
+    <configuration name="index.html (4)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/heatmap/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="index.html (5)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/BioRadar/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="index.html (6)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/VAST19/mc1/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
@@ -84,28 +92,23 @@
       <method v="2" />
     </configuration>
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <configuration name="main.js" type="NodeJSConfigurationType" temporary="true" path-to-js-file="main.js" working-dir="$PROJECT_DIR$/examples">
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JavaScript Debug.index.html (1)" />
       <item itemvalue="JavaScript Debug.index.html" />
       <item itemvalue="JavaScript Debug.index.html (2)" />
-      <item itemvalue="Node.js.main.js" />
       <item itemvalue="JavaScript Debug.index.html (3)" />
+      <item itemvalue="JavaScript Debug.index.html (4)" />
+      <item itemvalue="JavaScript Debug.index.html (5)" />
+      <item itemvalue="JavaScript Debug.index.html (6)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.index.html (4)" />
+        <item itemvalue="JavaScript Debug.index.html (6)" />
+        <item itemvalue="JavaScript Debug.index.html (5)" />
         <item itemvalue="JavaScript Debug.index.html (3)" />
         <item itemvalue="JavaScript Debug.index.html (2)" />
-        <item itemvalue="JavaScript Debug.index.html (1)" />
-        <item itemvalue="JavaScript Debug.index.html" />
-        <item itemvalue="Node.js.main.js" />
       </list>
     </recent_temporary>
   </component>
@@ -163,7 +166,22 @@
       <workItem from="1588714836122" duration="1985000" />
       <workItem from="1588886019966" duration="598000" />
       <workItem from="1589075572598" duration="1198000" />
-      <workItem from="1589479066215" duration="1000000" />
+      <workItem from="1589479066215" duration="1713000" />
+      <workItem from="1589519017901" duration="23250000" />
+      <workItem from="1589837349851" duration="2187000" />
+      <workItem from="1589923297261" duration="2554000" />
+      <workItem from="1589932499536" duration="22247000" />
+      <workItem from="1590031017779" duration="24541000" />
+      <workItem from="1590286721602" duration="599000" />
+      <workItem from="1590369991121" duration="23025000" />
+      <workItem from="1590572014160" duration="32000" />
+      <workItem from="1590607013541" duration="1352000" />
+      <workItem from="1590648891887" duration="23629000" />
+      <workItem from="1592691218498" duration="7429000" />
+      <workItem from="1593107479975" duration="1083000" />
+      <workItem from="1593421005577" duration="5944000" />
+      <workItem from="1593552511476" duration="1158000" />
+      <workItem from="1593707507010" duration="2352000" />
     </task>
     <task id="LOCAL-00003" summary="updateUI">
       <created>1563117491587</created>
@@ -190,69 +208,76 @@
     <option name="LAST_COMMIT_MESSAGE" value="updateUI" />
   </component>
   <component name="WindowStateProjectService">
+    <state width="497" height="618" key="DebuggerActiveHint" timestamp="1589968238256">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="497" height="618" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1589968238256" />
     <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog" timestamp="1588709639483">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588709639483" />
-    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1588709237721">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="592" y="219" key="FileChooserDialogImpl" timestamp="1593553068589">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="592" y="219" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1593553068589" />
     <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588709237721" />
-    <state width="1515" height="239" key="GridCell.Tab.0.bottom" timestamp="1589500124930">
+    <state width="1515" height="49" key="GridCell.Tab.0.bottom" timestamp="1589958062395">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589500124930" />
-    <state width="1515" height="239" key="GridCell.Tab.0.center" timestamp="1589500124930">
+    <state width="1515" height="49" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589958062395" />
+    <state width="1515" height="49" key="GridCell.Tab.0.center" timestamp="1589958062394">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589500124930" />
-    <state width="1515" height="239" key="GridCell.Tab.0.left" timestamp="1589500124930">
+    <state width="1515" height="49" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589958062394" />
+    <state width="1515" height="49" key="GridCell.Tab.0.left" timestamp="1589958062394">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589500124930" />
-    <state width="1515" height="239" key="GridCell.Tab.0.right" timestamp="1589500124930">
+    <state width="1515" height="49" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589958062394" />
+    <state width="1515" height="49" key="GridCell.Tab.0.right" timestamp="1589958062394">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589500124930" />
-    <state width="1515" height="239" key="GridCell.Tab.1.bottom" timestamp="1589500124995">
+    <state width="1515" height="49" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589958062394" />
+    <state width="1515" height="49" key="GridCell.Tab.1.bottom" timestamp="1589958068311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589500124995" />
-    <state width="1515" height="239" key="GridCell.Tab.1.center" timestamp="1589500124995">
+    <state width="1515" height="49" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
+    <state width="1515" height="49" key="GridCell.Tab.1.center" timestamp="1589958068311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1589500124995" />
-    <state width="1515" height="239" key="GridCell.Tab.1.left" timestamp="1589500124995">
+    <state width="1515" height="49" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
+    <state width="1515" height="49" key="GridCell.Tab.1.left" timestamp="1589958068311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1589500124995" />
-    <state width="1515" height="239" key="GridCell.Tab.1.right" timestamp="1589500124995">
+    <state width="1515" height="49" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
+    <state width="1515" height="49" key="GridCell.Tab.1.right" timestamp="1589958068311">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1589500124995" />
-    <state width="1515" height="239" key="GridCell.Tab.2.bottom" timestamp="1589500124858">
+    <state width="1515" height="49" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
+    <state width="1515" height="49" key="GridCell.Tab.2.bottom" timestamp="1589958062340">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589500124858" />
-    <state width="1515" height="239" key="GridCell.Tab.2.center" timestamp="1589500124858">
+    <state width="1515" height="49" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
+    <state width="1515" height="49" key="GridCell.Tab.2.center" timestamp="1589958062340">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1589500124858" />
-    <state width="1515" height="239" key="GridCell.Tab.2.left" timestamp="1589500124858">
+    <state width="1515" height="49" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
+    <state width="1515" height="49" key="GridCell.Tab.2.left" timestamp="1589958062340">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1589500124858" />
-    <state width="1515" height="239" key="GridCell.Tab.2.right" timestamp="1589500124858">
+    <state width="1515" height="49" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
+    <state width="1515" height="49" key="GridCell.Tab.2.right" timestamp="1589958062340">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="239" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1589500124858" />
-    <state x="646" y="242" width="627" height="556" key="find.popup" timestamp="1587777655567">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1515" height="49" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
+    <state x="517" y="0" width="631" height="824" key="find.popup" timestamp="1590998445711">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="517" y="0" width="631" height="824" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1590998445711" />
     <state x="646" y="242" width="627" height="556" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587777655567" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587498537610">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup" timestamp="1590144778007">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590144778007" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587498537610" />
   </component>
   <component name="XDebuggerManager">
@@ -276,20 +301,12 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/BasicRISC/src/script/main.js</url>
           <line>155</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/BasicRISC/src/script/main.js</url>
           <line>152</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/BasicRISC/src/script/main_tree.js</url>
-          <line>150</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
