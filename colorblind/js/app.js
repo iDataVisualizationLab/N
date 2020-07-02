@@ -151,6 +151,7 @@ class UserStudy {
         questions.push(generateobject(3,'given graph','Normal', 4,'image/graphNormal.png'));
         questions.push(generateobject('3.2','given graph','Normal', 3,'image/graphNormal_2.png'));
         questions.unshift({
+            maxTimeToFinish: 1200,
             questions: [
                 {
                     type: "html",
@@ -193,8 +194,8 @@ class UserStudy {
 }
 
 const params = {
-    maxTimeToFinishPage: 60, //in seconds
-    maxTimeToFinish: 2500 //in seconds
+    maxTimeToFinishPage: 180, //in seconds
+    maxTimeToFinish: 180000 //in seconds
 }
 
 let userstudy = new UserStudy(params);
