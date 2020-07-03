@@ -226,6 +226,7 @@ function renderColorBlindTest(time){
         .attr('width','225px')
         .attr('src',d=>d.img);
     div.append('input')
+        .attr('placeHolder','Type your answer here')
         .attr('type','number');
     const result = contain.append('b');
     contain
