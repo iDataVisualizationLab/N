@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="updateUI">
-      <change afterPath="$PROJECT_DIR$/colorblind/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/colorblind/js/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/colorblind/js/survey.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/drone/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/drone/src/js/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/drone/src/music/LSD - Thunderclouds (NoCtrl Remix) ft. Sia, Diplo, Labrinth.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/colorblind/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colorblind/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/colorblind/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colorblind/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/colorblind/js/app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +17,7 @@
       <list>
         <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -47,6 +45,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../d3-lasso-0.0.5" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
@@ -181,7 +180,8 @@
       <workItem from="1593107479975" duration="1083000" />
       <workItem from="1593421005577" duration="5944000" />
       <workItem from="1593552511476" duration="1158000" />
-      <workItem from="1593707507010" duration="2352000" />
+      <workItem from="1593707507010" duration="6825000" />
+      <workItem from="1593759100780" duration="8758000" />
     </task>
     <task id="LOCAL-00003" summary="updateUI">
       <created>1563117491587</created>
@@ -274,10 +274,10 @@
     </state>
     <state x="517" y="0" width="631" height="824" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1590998445711" />
     <state x="646" y="242" width="627" height="556" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587777655567" />
-    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup" timestamp="1590144778007">
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup" timestamp="1593766846949">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590144778007" />
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1593766846949" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587498537610" />
   </component>
   <component name="XDebuggerManager">

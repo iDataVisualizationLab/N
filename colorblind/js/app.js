@@ -37,7 +37,11 @@ class UserStudy {
                 let qname =key;
                 let qanwer = val[qname];
                 // let locationquestion = _this.survey.currentPage.questions[0].locationquestion||0;
-                database.ref(`${time}/${qname}`).set({answer: qanwer, timespent:_this.survey.currentPage.timeSpent});
+                const correct = _this.survey.getQuestionByName(qname).correctAnswer;
+                let answer = {answer: qanwer, timespent:_this.survey.currentPage.timeSpent};
+                if (correct!==undefined)
+                    answer.correctAnswer = correct;
+                database.ref(`${time}/${qname}`).set(answer);
                 // console.log({answer: qanwer, timespent:_this.survey.currentPage.timeSpent, correct: _this.survey.currentPage.questions[0].correctAnswer})
             })
         });
@@ -50,9 +54,19 @@ class UserStudy {
         });
 
         _this.survey.onAfterRenderQuestion.add(function(survey, options){
-            // if (options.question.name.match("graphHolder"))
+            if (options.question.name==='colorblind_start')
+            {
+                renderColorBlindTest(time);
+            }
             //     renderdata(renderqueue[+options.question.name.split("_")[1]],'#chartRadar')
         });
+        // _this.survey.onAfterRenderPage.add(function(survey, options){
+        //     debugger
+        //     // if (options.page.data.isFirstPage)
+        //     // {
+        //     //     renderColorBlindTest();
+        //     // }
+        // });
 
         $("#surveyElement").Survey({
             model: _this.survey
@@ -61,13 +75,23 @@ class UserStudy {
 
     json() {
         let startPage ={
+            name:'start',
             maxTimeToFinish: 300,
             questions: [
                 {
                     type: "html",
-                    html: "You are about to start user study by evaluating color filter for color blinding. " +
-                        "<br/>There are 23 questions in total. You will have about 5 minutes per question." +
-                        "<br/>Please click on <b>'Start Survey'</b> button when you are ready."},
+                    html: `You are about to start user study by evaluating color filter for color blinding.
+                        <br/>There are 22 questions in total. You will have about 5 minutes per question.
+                        <br/>Before start please complete the color blindness test below`},
+
+                {
+                    name:'colorblind_start',
+                    type: "html",
+                    html: "<b id='colorblind_i'>For each image you have to enter the number you can see. If you don't see anything just leave the input field empty.</b><br/><div id='colorblind_start'></div>"},
+                {
+                    name:'instruction',
+                    type: "html",
+                    html: "<p id='instrunction' >Please click on <b>'Start Survey'</b> button when you are ready.</p>"},
                 {
                     type: "html",
                     html: "Consent notice: The purpose of this study is to gather user's feedback to evaluate a visualization design. No personal information is collected and all user's reponses are confidential and anonymous"
@@ -149,7 +173,7 @@ class UserStudy {
         questions.push(generateobject(3,'this','graph','Tritanopia', 3,'image/graphTritanopia.png'));
         questions.push(generateobject(3,'this','graph','Tritanopia', 3,'image/graphTritanopia_filtered.png'));
         questions.push(generateobject(3,'this','graph','Normal', 4,'image/graphNormal.png'));
-        questions.push(generateobject('3_2','this','graph','Normal', 3,'image/graphNormal_2.png'));
+        questions.push(generateobject('3','this','graph_2','Normal', 3,'image/graphNormal_2.png'));
         questions.unshift({
             maxTimeToFinish: 1200,
             questions: [
@@ -191,6 +215,59 @@ class UserStudy {
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }
+}
+function renderColorBlindTest(time){
+    const contain = d3.select('#colorblind_start');
+    const qholder= contain.append('div').attr('class','cQuestion').style('display','none');
+    contain
+        .append('input')
+        .attr('type','button')
+        .attr('value','Start colorblind test')
+        .style('margin-left','50%')
+        .style('transform','translateX(-50%)')
+        .on('click',function(){
+            d3.select(this).style('display','none');
+            d3.select('input[value=Submit]').style('display','block');
+            qholder.style('display','flex');
+        });
+
+    const div = qholder.selectAll('div.colorblind')
+        .data([{img:'image/c1.jpg',correctAnswer:8},
+            {img:'image/c2.jpg',correctAnswer:12},
+            {img:'image/c3.jpg',correctAnswer:5},
+            {img:'image/c4.jpg',correctAnswer:2},
+            {img:'image/c5.jpg',correctAnswer:73},
+            {img:'image/c6.jpg',correctAnswer:42}]).enter()
+        .append('div')
+        .attr('class','colorblind')
+        .style('width','225px');
+    div.append('img')
+        .attr('width','225px')
+        .attr('src',d=>d.img);
+    div.append('input')
+        .attr('type','number');
+    const result = contain.append('b');
+    contain
+        .append('input')
+        .attr('type','button')
+        .attr('value','Submit')
+        .style('margin-left','50%')
+        .style('transform','translateX(-50%)')
+        .style('display','none')
+        .on('click',function(){
+            d3.select(this).style('display','none');
+            d3.select('#colorblind_i').style('display','none');
+            qholder.style('display','none');
+            let correct = 0;
+            div.select('input').each(function(d){
+                if (+$(this).val()===d.correctAnswer)
+                    correct++;
+            });
+            database.ref(`${time}/0_Normal_colorblind`).set({answer: correct, timespent:0, correctAnswer:6});
+            result.text(`Thank you for finish the color blind test. Correct answer ${correct}/6`).style('display','block');
+            d3.select('#instrunction').classed('show',true);
+            d3.select('input[value="Start Survey"]').classed('show',true);
+        });
 }
 
 const params = {
