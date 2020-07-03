@@ -173,7 +173,7 @@ class UserStudy {
         questions.unshift(startPage);
         questions.push(finishPage);
         return {
-            title: "Timeline visualization - User study",
+            title: "Color - User study",
             showProgressBar: "bottom",
             showTimerPanel: "top",
             showTimerPanelMode: "page",
