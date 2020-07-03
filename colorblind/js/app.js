@@ -174,25 +174,6 @@ class UserStudy {
         questions.push(generateobject(3,'this','graph','Tritanopia', 3,'image/graphTritanopia_filtered.png'));
         questions.push(generateobject(3,'this','graph','Normal', 4,'image/graphNormal.png'));
         questions.push(generateobject('3','this','graph_2','Normal', 3,'image/graphNormal_2.png'));
-        questions.unshift({
-            maxTimeToFinish: 1200,
-            questions: [
-                {
-                    type: "html",
-                    name: "colorblindtest",
-                    locationquestion:1,
-                    html: `<p>Please complete the test below</p>
-<iframe style="width: 500px;height: 428px" src="https://www.color-blindness.com/ishihara_cvd_test/ishihara_cvd_test.html?iframe=true&width=500&height=428"></iframe>`,
-                },
-                {
-                    type: "dropdown",
-                    name: "0_Normal_colorblindResult",
-                    title: "Please select your corresponding result from the given test above (in Test Result)",
-                    choices: ['none','weak','moderate','strong'],
-                    correctAnswer: 'none'
-                }
-            ]
-        });
         // questions.forEach((q,i)=>q.questions[1].name = "graphHolder_"+i);
         questions.unshift(startPage);
         questions.push(finishPage);
