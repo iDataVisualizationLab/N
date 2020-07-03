@@ -102,7 +102,7 @@ class UserStudy {
 
         }
 
-        function generateobject(useCaseNumber,category,type,correct,img) {
+        function generateobject(useCaseNumber,prefix,category,type,correct,img) {
             const choice =[]
             for (let i=0;i<=correct+1;i++)
                 choice.push(i);
@@ -111,7 +111,7 @@ class UserStudy {
                     {
                         type: "dropdown",
                         name: `${useCaseNumber}_${type}`,
-                        title: `How many colors are presented in this ${category}?`,
+                        title: `How many colors are presented in ${prefix} ${category}?`,
                         choices: choice,
                         correctAnswer: correct,
                     },
@@ -126,30 +126,30 @@ class UserStudy {
 
 
         var questions = [];
-        questions.push(generateobject(1,'traffic lights','Potanopia', 3,'image/traficPotanopia.png'));
-        questions.push(generateobject(1,'traffic lights','Potanopia', 3,'image/traficPotanopia_filtered.png'));
-        questions.push(generateobject(1,'traffic lights','Deuteranopia', 3,'image/traficDeuteranopia.png'));
-        questions.push(generateobject(1,'traffic lights','Deuteranopia', 3,'image/traficDeuteranopia_filtered.png'));
-        questions.push(generateobject(1,'traffic lights','Tritanopia', 3,'image/traficTritanopia.png'));
-        questions.push(generateobject(1,'traffic lights','Tritanopia', 3,'image/traficTritanopia_filtered.png'));
-        questions.push(generateobject(1,'traffic lights','Normal', 3,'image/traficNormal.png'));
+        questions.push(generateobject(1,'these','lights','Potanopia', 3,'image/traficPotanopia.png'));
+        questions.push(generateobject(1,'these','lights','Potanopia', 3,'image/traficPotanopia_filtered.png'));
+        questions.push(generateobject(1,'these','lights','Deuteranopia', 3,'image/traficDeuteranopia.png'));
+        questions.push(generateobject(1,'these','lights','Deuteranopia', 3,'image/traficDeuteranopia_filtered.png'));
+        questions.push(generateobject(1,'these','lights','Tritanopia', 3,'image/traficTritanopia.png'));
+        questions.push(generateobject(1,'these','lights','Tritanopia', 3,'image/traficTritanopia_filtered.png'));
+        questions.push(generateobject(1,'these','lights','Normal', 3,'image/traficNormal.png'));
 
-        questions.push(generateobject(2,'fruits','Potanopia', 4,'image/applePotanopia.png'));
-        questions.push(generateobject(2,'fruits','Potanopia', 4,'image/applePotanopia_filtered.png'));
-        questions.push(generateobject(2,'fruits','Deuteranopia', 4,'image/appleDeuteranopia.png'));
-        questions.push(generateobject(2,'fruits','Deuteranopia', 4,'image/appleDeuteranopia_filtered.png'));
-        questions.push(generateobject(2,'fruits','Tritanopia', 4,'image/appleTritanopia.png'));
-        questions.push(generateobject(2,'fruits','Tritanopia', 4,'image/appleTritanopia_filtered.png'));
-        questions.push(generateobject(2,'fruits','Normal', 4,'image/appleNormal.png'));
+        questions.push(generateobject(2,'these','fruits','Potanopia', 4,'image/applePotanopia.png'));
+        questions.push(generateobject(2,'these','fruits','Potanopia', 4,'image/applePotanopia_filtered.png'));
+        questions.push(generateobject(2,'these','fruits','Deuteranopia', 4,'image/appleDeuteranopia.png'));
+        questions.push(generateobject(2,'these','fruits','Deuteranopia', 4,'image/appleDeuteranopia_filtered.png'));
+        questions.push(generateobject(2,'these','fruits','Tritanopia', 4,'image/appleTritanopia.png'));
+        questions.push(generateobject(2,'these','fruits','Tritanopia', 4,'image/appleTritanopia_filtered.png'));
+        questions.push(generateobject(2,'these','fruits','Normal', 4,'image/appleNormal.png'));
 
-        questions.push(generateobject(3,'given graph','Potanopia', 4,'image/graphPotanopia.png'));
-        questions.push(generateobject(3,'given graph','Potanopia', 4,'image/graphPotanopia_filtered.png'));
-        questions.push(generateobject(3,'given graph','Deuteranopia', 4,'image/graphDeuteranopia.png'));
-        questions.push(generateobject(3,'given graph','Deuteranopia', 4,'image/graphDeuteranopia_filtered.png'));
-        questions.push(generateobject(3,'given graph','Tritanopia', 3,'image/graphTritanopia.png'));
-        questions.push(generateobject(3,'given graph','Tritanopia', 3,'image/graphTritanopia_filtered.png'));
-        questions.push(generateobject(3,'given graph','Normal', 4,'image/graphNormal.png'));
-        questions.push(generateobject('3_2','given graph','Normal', 3,'image/graphNormal_2.png'));
+        questions.push(generateobject(3,'this','graph','Potanopia', 4,'image/graphPotanopia.png'));
+        questions.push(generateobject(3,'this','graph','Potanopia', 4,'image/graphPotanopia_filtered.png'));
+        questions.push(generateobject(3,'this','graph','Deuteranopia', 4,'image/graphDeuteranopia.png'));
+        questions.push(generateobject(3,'this','graph','Deuteranopia', 4,'image/graphDeuteranopia_filtered.png'));
+        questions.push(generateobject(3,'this','graph','Tritanopia', 3,'image/graphTritanopia.png'));
+        questions.push(generateobject(3,'this','graph','Tritanopia', 3,'image/graphTritanopia_filtered.png'));
+        questions.push(generateobject(3,'this','graph','Normal', 4,'image/graphNormal.png'));
+        questions.push(generateobject('3_2','this','graph','Normal', 3,'image/graphNormal_2.png'));
         questions.unshift({
             maxTimeToFinish: 1200,
             questions: [
