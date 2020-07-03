@@ -10,7 +10,7 @@ class UserStudy {
         let _this = this;
         let d = new Date();
         let month = d.getMonth()+1;
-        let day = d.getDay()+1;
+        let day = d.getDate()+1;
         let h = d.getHours();
         let m = d.getMinutes();
         let second = d.getSeconds();
