@@ -163,7 +163,7 @@ class UserStudy {
                 {
                     type: "dropdown",
                     name: "0_Normal_colorblindResult",
-                    title: "Please select your corresponding result from the given test above (in <b>Test Result</b>)",
+                    title: "Please select your corresponding result from the given test above (in Test Result)",
                     choices: ['none','weak','moderate','strong'],
                     correctAnswer: 'none'
                 }
