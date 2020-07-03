@@ -149,7 +149,7 @@ class UserStudy {
         questions.push(generateobject(3,'given graph','Tritanopia', 3,'image/graphTritanopia.png'));
         questions.push(generateobject(3,'given graph','Tritanopia', 3,'image/graphTritanopia_filtered.png'));
         questions.push(generateobject(3,'given graph','Normal', 4,'image/graphNormal.png'));
-        questions.push(generateobject('3.2','given graph','Normal', 3,'image/graphNormal_2.png'));
+        questions.push(generateobject('3_2','given graph','Normal', 3,'image/graphNormal_2.png'));
         questions.unshift({
             maxTimeToFinish: 1200,
             questions: [
