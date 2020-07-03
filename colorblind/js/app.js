@@ -245,7 +245,7 @@ function renderColorBlindTest(time){
                     correct++;
             });
             database.ref(`${time}/0_Normal_colorblind`).set({answer: correct, timespent:0, correctAnswer:6});
-            result.text(`Thank you for finish the color blind test. Correct answer ${correct}/6`).style('display','block');
+            result.text(`Thank you for finishing the color blind test. Correct answer ${correct}/6`).style('display','block');
             d3.select('#instrunction').classed('show',true);
             d3.select('input[value="Start Survey"]').classed('show',true);
         });
