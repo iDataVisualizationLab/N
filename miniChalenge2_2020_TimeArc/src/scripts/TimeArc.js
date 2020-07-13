@@ -663,19 +663,31 @@ d3.TimeArc = function () {
         termMaxMax2 = 0;
         for (var i = 0; i < numNode; i++) {
             nodes[i].monthly = [];
+            let isStart = false;
+            let endIndex = 0;
             for (var m = 0; m < totalTimeSteps; m++) {
                 var mon = new Object();
                 if (terms[nodes[i].name][m]) {
+                    isStart = true;
                     mon.value = terms[nodes[i].name][m];
                     if (mon.value > termMaxMax2)
                         termMaxMax2 = mon.value;
                     mon.monthId = m;
                     mon.yNode = nodes[i].y;
                     nodes[i].monthly.push(mon);
+                    endIndex = nodes[i].monthly.length;
+                }else{
+                    if (isStart){
+                        mon.value = 0;
+                        mon.monthId = m;
+                        mon.yNode = nodes[i].y;
+                        nodes[i].monthly.push(mon);
+                    }
                 }
             }
             // Add another item to first
             if (nodes[i].monthly.length > 0) {
+                nodes[i].monthly = nodes[i].monthly.slice(0,endIndex)
                 var firstObj = nodes[i].monthly[0];
                 if (firstObj.monthId > 0) {
                     var mon = new Object();

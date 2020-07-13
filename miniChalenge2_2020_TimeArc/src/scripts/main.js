@@ -31,7 +31,8 @@ let width = 2000,
         group_mode: 'outlier',
         display:{
             stream:{
-                yScale: d3.scaleLinear().domain([0,30]).range([0.1,10])
+                // yScale: d3.scaleLinear().domain([0,30]).range([0,10])
+                yScale: d3.scaleLinear().domain([0,3]).range([0,10])
             },
             links:{
                 'stroke-opacity':0.5
