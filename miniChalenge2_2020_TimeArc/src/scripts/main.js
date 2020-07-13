@@ -113,7 +113,7 @@ let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
 // filter aka blacklist
-let blackCategory = [];
+let blackCategory = [''];
 let blackTerms = {}
 let blacklist =[];
 let fixCategory = {}

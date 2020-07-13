@@ -207,12 +207,18 @@ d3.TimeArc = function () {
         catergogryList.sort((a,b)=>a.order-b.order);
 //---Insert-------
     };
-    function circlePath(cx, cy, r){
-        return 'M '+cx+' '+cy+' m -'+r+', 0 a '+r+','+r+' 0 1,0 '+(r*2)+',0 a '+r+','+r+' 0 1,0 -'+(r*2)+',0';
-    }
-    var area = function(e){
-        return e.map(d=>circlePath(xStep + xScale(d.monthId),d.yNode,yScale(d.value))).join('')
-    };
+
+    var area = d3.area()
+        .curve(d3.curveCatmullRomOpen)
+        .x(function (d) {
+            return xStep + xScale(d.monthId);
+        })
+        .y0(function (d) {
+            return d.yNode - yScale(d.value);
+        })
+        .y1(function (d) {
+            return d.yNode + yScale(d.value);
+        });
 
 
     var numberInputTerms = 0;
