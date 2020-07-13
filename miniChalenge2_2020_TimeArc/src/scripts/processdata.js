@@ -1,25 +1,5 @@
 
-var termsList = {
-    'China': (()=>(d=(['China', 'Chinese']),d.category='GPE',d)) (),
-    'South Korea': (()=>(d=(['Korea', 'Korean','Seoul']),d.category='GPE',d)) (),
-    'United States': (()=>(d=(['U.S','United States','USA']),d.category='GPE',d)) (),
-    'Portugal': (()=>(d=(['Portugal', 'Portuguese']),d.category='GPE',d)) (),
-    'Hubei': (()=>(d=(['Hubei']),d.category='LOC',d)) (),
-    'Wuhan': (()=>(d=(['Wuhan']),d.category='LOC',d)) (),
-    'Intensive care unit': (()=>(d=(['ICU','Intensive care unit']),d.category='ORG',d)) (),
-    'MERS-CoV': (()=>(d=(['MERS','MER-CoV','Middle East']),d.category='Virus',d)) (),
-    'SARS-CoV': (()=>(d=(['SARS','ZJ01','Severe Acute Respiratory Syndrome']),d.category='Virus',d)) (),
-    'Zika': (()=>(d=(['Zika']),d.category='Virus',d)) (),
-    'Sarbecovirus': (()=>(d=(['Sarbecovirus']),d.category='Virus',d)) (),
-    'H1N1': (()=>(d=(['H1N1']),d.category='Virus',d)) (),
-    'Nipah': (()=>(d=(['Nipah']),d.category='Virus',d)) (),
-    'Influenza': (()=>(d=(['influenza']),d.category='Virus',d)) (),
-    'Influenza B': (()=>(d=(['Yamagata']),d.category='Virus',d)) (),
-    'Coronavirus': (()=>(d=(['Coronavir','CoV ','PDCoV','corona virus','Coronovirus','CoVs']),d.category='Virus',d)) (),
-    'COVID-19': (()=>(d=(['COVID-','Coronavirus Disease 2019','Coronavirus Disease','Corona Virus Disease','2019-nCoV','COVID‐19','disease-2019']),d.category='COVID-19',d)) (),
-    'WHO': (()=>(d=(['WHO','World Health Organization']),d.category='ORG',d)) (),
-    'Clinical': (()=>(d=(['Clinical']),d.category='ORG',d)) (),
-};
+var termsList = {};
 var dictionary = {};
 termsList2dictionary()
 function termsList2dictionary(){

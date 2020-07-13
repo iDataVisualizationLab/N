@@ -9,9 +9,9 @@ let width = 2000,
         // time: {rate:1,unit:'Day'},
         // timeformat: d3.timeDay.every(1),
         time: {rate:1,unit:'Day'},
-        timeLink: {rate:1,unit:'Week'},
+        timeLink: {rate:1,unit:'Day'},
         timeformat: d3.timeDay.every(1),
-        limitYear: [2019,2020],
+        // limitYear: [2019,2020],
         limitTime: [new Date('12/20/2019'),new Date('4/21/2020')],
         termGroup:{'Beijing':-1,'Hubei':2,'Wuhan':1,'China':3,'COVID-19':4,'Coronavirus':5}
     },
@@ -112,30 +112,10 @@ let dataRaw,dataBytime,currentService =0;
 let TimeArc  = d3.TimeArc();
 
 // filter aka blacklist
-let blackCategory = ["CARDINAL",'ORDINAL','DATE','LANGUAGE','PERCENT','QUANTITY','TIME','LAW','MONEY','FAC','PRODUCT',
-    'WORK_OF_ART','NORP','EVENT'];
-let blackTerms = {'CoV':'PERSON'}
-let blacklist =['MATERIALS','Multivariate','METHODS','Method','View','Analysis','Herein','p<0.001','ANOVA','Chi-squared',
-    'D68','RBD','ACE2','AST','LDH','Main Results','Markov','Monte Carlo','IgG','IgM','N95','IBV','Mtb','IVA','IVB','ILI',
-    'MHC','HLA','EMBASE','IL6','TNF-α','IFN-β','Bayesian','African','GAD-7','PCT','ARDS','NHS','EEA','CK-MB','Nature','TCM',
-    'Funding None','PEDV','NCP','AUC','Vero','IL-6','CFR','Cox','the General Population','RNA','RT-LAMP','ROC','Western',
-    'Europe','Han','Asia','Africa','Outbreak','Parallel','PaO(2)/FiO(2','–0.3762','5‐year‐age‐group','DTR ≥','IPEC-J2',
-    'e.g','BIG','Q176','PaO(2)/FiO(2','13·0','the RT-LAMP','n=7','83.8','BALB/','Gram','27·2–37·5','GI-27','GI-9','‐19',
-    'FilmArray','mTLR9','‘CC’'];
-let fixCategory = {
-    Catalonia:'LOC',
-    "Saharan Africa":'LOC',
-    "Taiwan":'LOC',
-    "Wenzhou":'LOC',
-    "Chongqing":'LOC',
-    "Zhejiang":'LOC',
-    "Hong Kong":'LOC',
-    "Angiotensin":'PERSON',
-    'H5NX':'Virus',
-    'Tonsillitis':'Virus',
-    "Fujian":'LOC',
-    "Guangdong":'LOC',
-}
+let blackCategory = [];
+let blackTerms = {}
+let blacklist =[];
+let fixCategory = {}
 // change name of category
 
 const initialize = _.once(initDemo);
@@ -328,55 +308,7 @@ function initDemo(){
 }
 // let ssss;
 function init() {
-    catergogryList = [
-        {
-            "key":"COVID-19",
-            "value":{
-                "colororder":3
-            },
-            "order":0
-        },
-        {
-            "key":"Virus",
-            "value":{
-                "colororder":1
-            },
-            "order":1
-        },
-        {
-            "key":"ORG",
-            "value":{
-                "colororder":2,
-                "text":"Organization"
-            },
-            "order":3
-        },
-        {
-            "key":"GPE",
-            "value":{
-                "colororder":0,
-                "text":"Nation"
-            },
-            "order":2
-        },
-        {
-            "key":"LOC",
-            "value":{
-                "colororder":4,
-                "text":"Location"
-            },
-            "order":4
-        },
-        {
-            "key":"PERSON",
-            "value":{
-                "colororder":5,
-                "customcolor":'#aeaeae',
-                "text": "Other"
-            },
-            "order":5
-        }
-    ];
+    catergogryList = [];
     const choice = d3.select('#datacom').node().value;
     const choicetext = d3.select('#datacom').node().selectedOptions[0].text;
     d3.select('#currentData').text(choicetext);
@@ -389,10 +321,6 @@ function init() {
             //     var analyze = sentiment.analyze;
             //     listopt.limitYear =
             console.log('Data raw size: ',d.length);
-            d =d.filter(e=>e.term!==""&&e.publish_time!==""&&!_.isNaN(+new Date(e.publish_time))&&filterYear(e));
-            console.log('Removed none date and no term result size: ',d.length);
-            // d=d.filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
-            // d =d.filter(e=>!(new RegExp('^re: ')).test(e.message)).filter(e=>e.account!=="Opportunities2").filter(e=>analyze(e.message).score<0);
             let count=0;
             let totalcount = d.length;
             let updatecondition = 0.1;
@@ -400,7 +328,7 @@ function init() {
             let queueProcess = d.map((t,i)=> {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        t.date = new Date(t.publish_time);
+                        t.date = new Date(t.person_as_time);
                         let category = t.category.split('|');
                         let term = t.term.split('|');
                         t.category = {};
