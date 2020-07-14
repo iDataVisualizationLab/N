@@ -104,7 +104,6 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
     let svg_ = d3.select('#violinMatrix_svg')
         .attr("width", graphicopt.width)
         .attr("height", graphicopt.height)
-        .style('overflow','visible');
     let svg = svg_
         .select("g.content");
     let isfirst = false;
@@ -122,7 +121,8 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
                 const func = isFreeze;
                 isFreeze = false;
                 func();
-            }});
+            }})
+            .style('clip-path','url(#rectHolder)');
         isfirst = true;
     }
 
@@ -183,9 +183,20 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
         axis = svg_.append('g')
             .attr('class','axis')
             // .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
+        axis
+            .append('rect')
+            .attr('fill','white')
+            .attr('y',graphicopt.heightG())
+            .attr('width',graphicopt.width)
+            .attr('height',graphicopt.margin.bottom);
         axis.append('g')
             .attr('class','Xaxis')
-            .attr('transform',`translate(0,${graphicopt.heightG()})`);;
+            .attr('transform',`translate(0,${graphicopt.heightG()})`);
+        axis
+            .append('rect')
+            .attr('fill','white')
+            .attr('width',graphicopt.margin.left)
+            .attr('height',graphicopt.height);
         axis.append('g')
             .attr('class','Yaxis');
     }
@@ -196,6 +207,7 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
     gX.call(d3.axisBottom(x));
     gY = axis.select('g.Yaxis').attr('transform',`translate(${graphicopt.margin.left},0)`);
     gY.call(d3.axisLeft(y));
+
     if (isfirst)
         svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
     function zoomed(){
