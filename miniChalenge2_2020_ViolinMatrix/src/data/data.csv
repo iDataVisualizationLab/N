@@ -1,4 +1,4 @@
-Person,Image,Label,Scorce
+Person,Image,Label,Score
 1,Person1_1,birdCall,0.33860999999999997
 1,Person1_1,eyeball,0.28139000000000003
 1,Person1_1,pinkCandle,0.34569
