@@ -1,5 +1,5 @@
 .violin .violin path {
-    fill: rgba(0, 0, 0, 0.65)!important;
+    fill: rgba(102, 0, 0, 0.5)!important;
 }
 .violin.total .violin path{
     fill: steelblue !important;

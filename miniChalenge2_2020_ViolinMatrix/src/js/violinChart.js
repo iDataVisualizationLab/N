@@ -49,7 +49,7 @@ d3.viiolinChart = function () {
         .x1(function(d){ return(xNum(d[1])) } )
         .y(function(d){ return(h(d[0])) } )
         // .curve(d3.curveLinear)
-        .curve(d3.curveCardinal.tension(0.3))
+        .curve(d3.curveCardinal.tension(0.5))
     ;
     let circleoption = function (d){
         return {
@@ -125,7 +125,8 @@ d3.viiolinChart = function () {
             y: -2,
         }).style('fill','black')
 
-        let median_rect = viol_chart.selectAll('rect.median').data(d=>d.median!=undefined?[d.median]:[]);
+        // let median_rect = viol_chart.selectAll('rect.median').data(d=>d.median!=undefined?[d.median]:[]);
+        let median_rect = viol_chart.selectAll('rect.median').data(d=>d.mean!=undefined?[d.mean]:[]);
         median_rect.exit().remove();
         median_rect.enter().append('rect').attrs({
             class: 'median',
@@ -133,7 +134,7 @@ d3.viiolinChart = function () {
             height: 6,
             x: d=>h(d),
             y: -3,
-        }).style('fill','red')
+        }).style('fill','black')
 
         const circledata =  arr[0].outlier.map(d=>{return d.x?d:{x:d}});
 
@@ -297,6 +298,11 @@ d3.viiolinChart = function () {
     };
     viiolinplot.setkernel = function (_) {
         return arguments.length ? (kernel = _, viiolinplot) : kernel;
+
+    };
+
+    viiolinplot.distributionScale = function (_) {
+        return arguments.length ? (xNum = d3[`scale${_}`]().range(xNum.range()).domain(xNum.domain()), viiolinplot) : kernel;
 
     };
 

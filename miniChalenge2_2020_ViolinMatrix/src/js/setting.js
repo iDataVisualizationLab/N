@@ -1,7 +1,7 @@
 const filepath = 'data';
 
 let graphicopt = {
-    margin: {top: 0, right: 0, bottom: 0, left: 0},
+    margin: {top: 0, right: 50, bottom: 20, left: 100},
     width: window.innerWidth,
     height: window.innerHeight,
     scalezoom: 1,

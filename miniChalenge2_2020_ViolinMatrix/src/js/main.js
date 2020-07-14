@@ -28,7 +28,8 @@ function handleDate(data){
     let maxSum = 0
     let nestByLabel = d3.nest().key(d=>d['Label']).rollup(d=>{
         d.summary = hist(d.map(e=>e.Score),range,d[0].Label);
-        d.summary.data={Person: 'Total', Label : d[0].Label,q1:d.summary.q1,median:d.summary.median};
+        d.summary.data={Person: 'Total', Label : d[0].Label,q1:d.summary.q1,
+            median:d.summary.median,mean:d.summary.mean};
         d.summary.q1=undefined;
         // d.summary.median=undefined;
         let maxValue = d3.max(d.summary.arr,e=>e[1]);
@@ -36,11 +37,12 @@ function handleDate(data){
             maxSum = maxValue;
         return d;
     }).entries(data);
-    nestByLabel.sort((a,b)=>a.value.summary.data.median-b.value.summary.data.median)
+    nestByLabel.sort((a,b)=>a.value.summary.data.mean-b.value.summary.data.mean)
     nestByLabel.domain = [0,maxSum];
     let nestByPerson = d3.nest().key(d=>d['Person']).rollup(d=>{
         d.summary = hist(d.map(e=>e.Score),range,d[0].Label);
-        d.summary.data={Person: d[0].Person, Label : 'Total',q1:d.summary.q1,median:d.summary.median};
+        d.summary.data={Person: d[0].Person, Label : 'Total',q1:d.summary.q1,
+            median:d.summary.median,mean:d.summary.mean};
         d.summary.q1=undefined;
         // d.summary.median=undefined;
         let maxValue = d3.max(d.summary.arr,e=>e[1]);
@@ -49,6 +51,7 @@ function handleDate(data){
         return d;
     }).entries(data);
     nestByPerson.domain = [0,maxSum];
+    nestByPerson.sort((a,b)=>a.value.summary.data.mean-b.value.summary.data.mean)
     let summary = {y:{domain:[0,maxDist/2]},x:{domain:range}};
     return {nestData,nestByLabel,nestByPerson,summary};
 }
@@ -61,7 +64,7 @@ function hist(d,range,key) {
             .domain(range);
         var histogram = d3.histogram()
             .domain(x.domain())
-            .thresholds(x.ticks(20))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+            .thresholds(x.ticks(10))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
             .value(d => d);
         let hisdata = histogram(d);
 
@@ -71,6 +74,7 @@ function hist(d,range,key) {
             q1: ss.quantileSorted(d,0.25) ,
             q3: ss.quantileSorted(d,0.75),
             median: ss.medianSorted(d) ,
+            mean: ss.mean(d) ,
             // outlier: ,
             arr: sumstat};
         r.outlier = []
@@ -87,6 +91,7 @@ function hist(d,range,key) {
             q1: undefined ,
             q3: undefined,
             median: undefined ,
+            mean: undefined ,
             outlier: [],
             arr: []};
     }
@@ -145,7 +150,7 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
         customrange:summary.x.domain,
         opt:{dataformated:true},
         tick:{visibile:false}});
-    violiin_chart.rangeY(summary.y.domain);
+    violiin_chart.rangeY(summary.y.domain).distributionScale('Sqrt');
 
     let data = _.flatten(nestData.map(d=>d.values.map(d=>d.value.summary)));
     nestByPerson.forEach(n=>data.push(n.value.summary));
@@ -177,7 +182,7 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
     if (axis.empty()){
         axis = svg_.append('g')
             .attr('class','axis')
-            .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
+            // .attr('transform',`translate(${graphicopt.margin.left},${graphicopt.margin.top})`);
         axis.append('g')
             .attr('class','Xaxis')
             .attr('transform',`translate(0,${graphicopt.heightG()})`);;
@@ -189,18 +194,18 @@ function update({nestData,nestByLabel,nestByPerson,summary}){
     var yAxis = d3.axisLeft(y);
     gX = axis.select('g.Xaxis');
     gX.call(d3.axisBottom(x));
-    gY = axis.select('g.Yaxis');
+    gY = axis.select('g.Yaxis').attr('transform',`translate(${graphicopt.margin.left},0)`);
     gY.call(d3.axisLeft(y));
     if (isfirst)
         svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
     function zoomed(){
-        // svg.attr("transform", d3.event.transform);
-        
+        svg.attr("transform", d3.event.transform);
+
         x.range([0, graphicopt.widthG()].map(d => d3.event.transform.applyX(d)));
         y.range([graphicopt.heightG(),0].map(d => d3.event.transform.applyY(d)));
-        person_g
-            .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
-
+        // person_g
+        //     .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
+        //
         gX.call(xAxis);
         gY.call(yAxis);
     }
