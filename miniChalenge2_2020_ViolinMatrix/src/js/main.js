@@ -77,9 +77,7 @@ function update({nestByPerson,nestByLabel,summary}){
         .style('overflow','visible');
     let svg = svg_
         .select("g.content");
-    function zoomed(){
-        svg.attr("transform", d3.event.transform);
-    }
+    let isfirst = false;
     if (svg.empty()){
         let startZoom = d3.zoomIdentity;
         startZoom.x = graphicopt.margin.left;
@@ -94,8 +92,8 @@ function update({nestByPerson,nestByLabel,summary}){
                 const func = isFreeze;
                 isFreeze = false;
                 func();
-            }})
-        svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
+            }});
+        isfirst = true;
     }
 
     graphicopt.el = svg;
@@ -125,16 +123,10 @@ function update({nestByPerson,nestByLabel,summary}){
 
     let person_g = svg.selectAll('g.violin')
         .data(data);
-    person_g
-        .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
-        .each(function(d){
-            setTimeout(()=>{
-                violiin_chart.data([d]).draw(d3.select(this))
-            },0);
-    });
     person_g.exit().remove();
-    person_g.enter().append('g')
-        .attr('class','violin')
+    person_g = person_g.enter().append('g')
+        .attr('class','violin').merge(person_g);
+    person_g
         .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
         .each(function(d){
             setTimeout(()=>{
@@ -153,6 +145,24 @@ function update({nestByPerson,nestByLabel,summary}){
         axis.append('g')
             .attr('class','Yaxis');
     }
-    axis.select('g.Xaxis').call(d3.axisBottom(x));
-    axis.select('g.Yaxis').call(d3.axisLeft(y));
+    var xAxis = d3.axisBottom(x);
+
+    var yAxis = d3.axisLeft(y);
+    gX = axis.select('g.Xaxis');
+    gX.call(d3.axisBottom(x));
+    gY = axis.select('g.Yaxis');
+    gY.call(d3.axisLeft(y));
+    if (isfirst)
+        svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
+    function zoomed(){
+        // svg.attr("transform", d3.event.transform);
+        
+        x.range([0, graphicopt.widthG()].map(d => d3.event.transform.applyX(d)));
+        y.range([0, graphicopt.heightG()].map(d => d3.event.transform.applyY(d)));
+        person_g
+            .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
+
+        gX.call(xAxis);
+        gY.call(yAxis);
+    }
 }
