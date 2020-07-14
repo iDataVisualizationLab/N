@@ -11,21 +11,46 @@ function readFile(){
 }
 function handleDate(data){
     let maxDist = 0;
-    let range = d3.extent(data,d=>d.Score);
-    let nestByPerson = d3.nest().key(d=>d['Person']).key(d=>d['Label']).rollup(d=>{
+    // let range = d3.extent(data,d=>d.Score);
+    let range = [0,1];
+    let nestData = d3.nest().key(d=>d['Person']).key(d=>d['Label']).rollup(d=>{
         d.summary = hist(d.map(e=>e.Score),range,d[0].Label);
         d.summary.q1=undefined;
-        d.summary.median=undefined;
+        // d.summary.median=undefined;
         d.summary.data={Person: d[0].Person, Label : d[0].Label};
         let maxValue = d3.max(d.summary.arr,e=>e[1]);
         if(maxValue>maxDist)
             maxDist = maxValue;
         return d;
     }).entries(data);
-    nestByPerson.sort((a,b)=>+a.key-(+b.key))
-    let nestByLabel = d3.nest().key(d=>d['Label']).entries(data);
-    let summary = {y:{domain:[0,maxDist]},x:{domain:range}};
-    return {nestByPerson,nestByLabel,summary};
+    nestData.sort((a,b)=>+a.key-(+b.key));
+
+    let maxSum = 0
+    let nestByLabel = d3.nest().key(d=>d['Label']).rollup(d=>{
+        d.summary = hist(d.map(e=>e.Score),range,d[0].Label);
+        d.summary.data={Person: 'Total', Label : d[0].Label,q1:d.summary.q1,median:d.summary.median};
+        d.summary.q1=undefined;
+        // d.summary.median=undefined;
+        let maxValue = d3.max(d.summary.arr,e=>e[1]);
+        if(maxValue>maxSum)
+            maxSum = maxValue;
+        return d;
+    }).entries(data);
+    nestByLabel.sort((a,b)=>a.value.summary.data.median-b.value.summary.data.median)
+    nestByLabel.domain = [0,maxSum];
+    let nestByPerson = d3.nest().key(d=>d['Person']).rollup(d=>{
+        d.summary = hist(d.map(e=>e.Score),range,d[0].Label);
+        d.summary.data={Person: d[0].Person, Label : 'Total',q1:d.summary.q1,median:d.summary.median};
+        d.summary.q1=undefined;
+        // d.summary.median=undefined;
+        let maxValue = d3.max(d.summary.arr,e=>e[1]);
+        if(maxValue>maxSum)
+            maxSum = maxValue;
+        return d;
+    }).entries(data);
+    nestByPerson.domain = [0,maxSum];
+    let summary = {y:{domain:[0,maxDist/2]},x:{domain:range}};
+    return {nestData,nestByLabel,nestByPerson,summary};
 }
 function hist(d,range,key) {
     let outlierMultiply = 1.5;
@@ -67,7 +92,7 @@ function hist(d,range,key) {
     }
     return r;
 }
-function update({nestByPerson,nestByLabel,summary}){
+function update({nestData,nestByLabel,nestByPerson,summary}){
     isFreeze= false;
     graphicopt.width = document.getElementById('violinMatrixHolder').getBoundingClientRect().width;
     graphicopt.height = document.getElementById('violinMatrixHolder').getBoundingClientRect().height;
@@ -97,18 +122,21 @@ function update({nestByPerson,nestByLabel,summary}){
     }
 
     graphicopt.el = svg;
-    let radio = nestByPerson.length/nestByLabel.length
-    const width = Math.min(graphicopt.widthG()/radio,graphicopt.heightG())
+    let radio = nestData.length/nestByLabel.length
+    const width = Math.min(graphicopt.widthG()/radio,graphicopt.heightG());
+    const xList = nestByPerson.map(d=>d.key);
+    xList.push('Total');
     let x = d3.scaleBand()
         .range([0, graphicopt.widthG()])
         .paddingInner(0.1)
         .paddingOuter(0.5)
-        .domain(nestByPerson.map(d=>d.key));
-
+        .domain(xList);
+    const yList = nestByLabel.map(d=>d.key);
+    yList.push('Total');
     let y = d3.scaleBand()
         .range([graphicopt.heightG(),0])
         .paddingInner(0.1)
-        .domain(nestByLabel.map(d=>d.key));
+        .domain(yList);
     console.log(x.bandwidth())
     let violiin_chart = d3.viiolinChart().graphicopt({width:x.bandwidth(),height:y.bandwidth(),
         margin: {top: 0, right: 0, bottom: 0, left: 0},
@@ -119,7 +147,9 @@ function update({nestByPerson,nestByLabel,summary}){
         tick:{visibile:false}});
     violiin_chart.rangeY(summary.y.domain);
 
-    let data = _.flatten(nestByPerson.map(d=>d.values.map(d=>d.value.summary)));
+    let data = _.flatten(nestData.map(d=>d.values.map(d=>d.value.summary)));
+    nestByPerson.forEach(n=>data.push(n.value.summary));
+    nestByLabel.forEach(n=>data.push(n.value.summary));
 
     let person_g = svg.selectAll('g.violin')
         .data(data);
@@ -130,7 +160,16 @@ function update({nestByPerson,nestByLabel,summary}){
         .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
         .each(function(d){
             setTimeout(()=>{
-                violiin_chart.data([d]).draw(d3.select(this))
+                if (d.data.Person!=='Total' && d.data.Label!=='Total') {
+                    d3.select(this).classed('total',false);
+                    violiin_chart.rangeY(summary.y.domain).data([d]).draw(d3.select(this))
+                }else if (d.data.Person==='Total') {
+                    d3.select(this).classed('total',true);
+                    violiin_chart.rangeY(nestByPerson.domain).data([d]).draw(d3.select(this))
+                }else {
+                    d3.select(this).classed('total',true);
+                    violiin_chart.rangeY(nestByLabel.domain).data([d]).draw(d3.select(this))
+                }
             },0);
         });
 
@@ -158,7 +197,7 @@ function update({nestByPerson,nestByLabel,summary}){
         // svg.attr("transform", d3.event.transform);
         
         x.range([0, graphicopt.widthG()].map(d => d3.event.transform.applyX(d)));
-        y.range([0, graphicopt.heightG()].map(d => d3.event.transform.applyY(d)));
+        y.range([graphicopt.heightG(),0].map(d => d3.event.transform.applyY(d)));
         person_g
             .attr('transform',d=>`translate(${x(d.data.Person)},${y(d.data.Label)})`)
 
