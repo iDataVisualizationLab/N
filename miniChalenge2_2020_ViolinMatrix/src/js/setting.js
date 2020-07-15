@@ -1,6 +1,6 @@
 const filepath = 'data';
 const filepath2 = 'data_manualCorrect';
-const labelLimit = ['canadaPencil','rubiksCube','lavenderDie','blueSunglasses','metalKey','pinkEraser','miniCards','rainbowPens','noisemaker']
+const labelLimit =[]//= ['canadaPencil','rubiksCube','lavenderDie','blueSunglasses','metalKey','pinkEraser','miniCards','rainbowPens','noisemaker']
 
 
 let graphicopt = {
