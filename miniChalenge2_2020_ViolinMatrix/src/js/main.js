@@ -301,6 +301,7 @@ function update({nestData,nestByLabel,nestByPerson,personList,labelList,dataCorr
     function triggerImages(istrigger,label){
         d3.select('#close').classed('hide',!istrigger);
         if (istrigger){
+            svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
             svg.selectAll('g.violin').style('display','none');
             svg.selectAll('g.corrected').style('display','none');
             let stackUser ={};
@@ -326,7 +327,6 @@ function update({nestData,nestByLabel,nestByPerson,personList,labelList,dataCorr
                 .append('image')
                 .attr('width',x.bandwidth())
                 .attr('href',d=>`../miniChalenge2_2020_TimeArc/src/data/MC2-Image-Data/Person${d.value[0].Person}/${d.key}.jpg`);
-            svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
         }
         else{
             x.domain(xList);
