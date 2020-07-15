@@ -286,7 +286,6 @@ function update({nestData,nestByLabel,nestByPerson,personList,labelList,dataCorr
         svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
     function zoomed(){
         svg.attr("transform", d3.event.transform);
-
         x.range([0, graphicopt.widthG()].map(d => d3.event.transform.applyX(d)));
         y.range([graphicopt.heightG(),0].map(d => d3.event.transform.applyY(d)));
         // person_g
@@ -325,8 +324,9 @@ function update({nestData,nestByLabel,nestByPerson,personList,labelList,dataCorr
                 .attr('transform',d=>`translate(${x(d.value[0].Person)-d3.zoomIdentity.x},${x.bandwidth()*4/3*(d.value.imageIndex)})`);
             gimage
                 .append('image')
-                .attr('width',x.bandwidth())
+                .attr('width',100)
                 .attr('href',d=>`../miniChalenge2_2020_TimeArc/src/data/MC2-Image-Data/Person${d.value[0].Person}/${d.key}.jpg`);
+            svg.call(graphicopt.zoom.transform, d3.zoomIdentity);
         }
         else{
             x.domain(xList);
