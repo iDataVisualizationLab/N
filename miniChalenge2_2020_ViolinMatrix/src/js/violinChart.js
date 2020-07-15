@@ -136,6 +136,18 @@ d3.viiolinChart = function () {
             y: -3,
         }).style('fill','black')
 
+        let median_number = viol_chart.selectAll('g.textmedian').data(d=>d.mean!=undefined?[d.mean]:[]);
+        median_number.exit().remove();
+        median_number.enter().append('g')
+            .attr('transform',d=>`translate(${h(d)},${-4})`)
+            .attr('class','textmedian')
+            .append('text').attrs({
+            class: 'median',
+        }).style('color','black')
+            .style('text-anchor','middle')
+            .attr('transform','scale(0.4)')
+            .text(d=>d3.format('.2f')(d));
+
         const circledata =  arr[0].outlier.map(d=>{return d.x?d:{x:d}});
 
     //     var simulation = d3.forceSimulation(circledata)
