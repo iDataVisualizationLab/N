@@ -319,10 +319,11 @@ function update({nestData,nestByLabel,nestByPerson,personList,labelList,dataCorr
             x.domain(d3.keys(stackUser).sort((b,a)=>stackUser[b]-stackUser[a]));
             gX.call(xAxis);
             gY.style('display','none');
-            svg.selectAll('g.image').data(_data).enter()
+            const gimage = svg.selectAll('g.image').data(_data).enter()
                 .append('g')
                 .attr('class','image')
-                .attr('transform',d=>`translate(${x(d.value[0].Person)-graphicopt.margin.left},${x.bandwidth()*4/3*(d.value.imageIndex)})`)
+                .attr('transform',d=>`translate(${x(d.value[0].Person)-d3.zoomIdentity.x},${x.bandwidth()*4/3*(d.value.imageIndex)})`);
+            gimage
                 .append('image')
                 .attr('width',x.bandwidth())
                 .attr('href',d=>`../miniChalenge2_2020_TimeArc/src/data/MC2-Image-Data/Person${d.value[0].Person}/${d.key}.jpg`);
