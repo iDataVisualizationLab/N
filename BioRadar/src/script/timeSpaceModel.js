@@ -370,7 +370,7 @@ d3.TimeSpace = function () {
         updateTableInput();
         path = {};
         BubbleChart();
-        ProteinForceDirectedGraph();
+        ProteinForceDirectedGraph({onChoose:master.filter});
 
         // make path object and compute euclideandistance
         let euclideandistance_range = [+Infinity,0];
@@ -2793,8 +2793,11 @@ let timeSpacedata;
 function handle_data_model(tsnedata,isKeepUndefined) {
     proteinarr.forEach((p,pi)=>{
         let key = Object.keys(tsnedata).find(k=>k.toLowerCase()===p);
-        if (key)
+        if (key){
+            debugger
+            globalProtein.nodes.find(d=>d.label.toLowerCase()===p.toLowerCase()).referenceName = key;
             tsnedata[key].netadata = {node:globalProtein.nodes[pi],id:pi};
+        }
     });
     preloader(true,1,'preprocess data','#modelLoading');
     windowsSize = windowsSize||1;

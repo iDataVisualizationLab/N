@@ -218,9 +218,9 @@ function classes(root) {
     return {children: classes};
 }
 
-function ProteinForceDirectedGraph() {
+function ProteinForceDirectedGraph({onChoose,onRelease}) {
     debugger
-    d3.select("#svgprotein").remove()
+    d3.select("#svgprotein").remove();
     var width = 650,
         height = 650;
     var radius=2;
@@ -281,30 +281,30 @@ function ProteinForceDirectedGraph() {
             if(e.data.protein.indexOf(d.label)>=0) return 1;
             else return 0.05;
         });
-        var bars1 = d3.select("#svg1").selectAll("rect");
-        bars1.style("fill-opacity",function (bar) {
-            if(bar.symbol.toUpperCase()==d.label) return 1;
-            else return 0.05;
-
-        });
-        var bars2 = d3.select("#svg2").selectAll("rect");
-        bars2.style("fill-opacity",function (bar) {
-            if(bar.symbol.toUpperCase()==d.label) return 1;
-            else return 0.05;
-
-        });
-        var bars3 = d3.select("#svg3").selectAll("rect");
-        bars3.style("fill-opacity",function (bar) {
-            if(bar.symbol.toUpperCase()==d.label) return 1;
-            else return 0.05;
-
-        });
-        var bars4 = d3.select("#svg4").selectAll("rect");
-        bars4.style("fill-opacity",function (bar) {
-            if(bar.symbol.toUpperCase()==d.label) return 1;
-            else return 0.05;
-
-        });
+        // var bars1 = d3.select("#svg1").selectAll("rect");
+        // bars1.style("fill-opacity",function (bar) {
+        //     if(bar.symbol.toUpperCase()==d.label) return 1;
+        //     else return 0.05;
+        //
+        // });
+        // var bars2 = d3.select("#svg2").selectAll("rect");
+        // bars2.style("fill-opacity",function (bar) {
+        //     if(bar.symbol.toUpperCase()==d.label) return 1;
+        //     else return 0.05;
+        //
+        // });
+        // var bars3 = d3.select("#svg3").selectAll("rect");
+        // bars3.style("fill-opacity",function (bar) {
+        //     if(bar.symbol.toUpperCase()==d.label) return 1;
+        //     else return 0.05;
+        //
+        // });
+        // var bars4 = d3.select("#svg4").selectAll("rect");
+        // bars4.style("fill-opacity",function (bar) {
+        //     if(bar.symbol.toUpperCase()==d.label) return 1;
+        //     else return 0.05;
+        //
+        // });
     })
     node.append("text")
         .attr("class","texts")
@@ -356,45 +356,55 @@ function ProteinForceDirectedGraph() {
             d3.select("#svgbubble").selectAll("g").classed("selected", false);
         }
         d3.select(this).classed("selected", !isSelected);
-
+        // to do release
         d3.select("#svgbubble").selectAll("g").style("opacity",0.1)
-        d3.select("#svgbubble").selectAll(".selected").style("opacity",1)
-
-
-        node.style("opacity",function (d) {
-            if(b.data.protein.indexOf(d.label)>=0) return 1;
-            else return 0.05;
-        });
-        link.style("opacity",function (d) {
-            if(b.data.protein.indexOf(d.source.label)>=0&&b.data.protein.indexOf(d.target.label)>=0) return 1;
-            else return 0.05;
-        })
-
-        var bars1 = d3.select("#svg1").selectAll("rect");
-        bars1.style("fill-opacity",function (bar) {
-            if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
-            else return 0.05;
-
-        });
-
-        var bars2 = d3.select("#svg2").selectAll("rect");
-        bars2.style("fill-opacity",function (bar) {
-            if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
-            else return 0.05;
-
-        });
-        var bars3 = d3.select("#svg3").selectAll("rect");
-        bars3.style("fill-opacity",function (bar) {
-            if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
-            else return 0.05;
-
-        });
-        var bars4 = d3.select("#svg4").selectAll("rect");
-        bars4.style("fill-opacity",function (bar) {
-            if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
-            else return 0.05;
-
-        });
+        let selectedItems = d3.select("#svgbubble").selectAll(".selected").style("opacity",1);
+        let nodesList = [];
+        if (!selectedItems.empty())
+        {
+            node.style("opacity",function (d) {
+                if(b.data.protein.indexOf(d.label)>=0){
+                    nodesList.push(d.referenceName)
+                    return 1;
+                }
+                else return 0.05;
+            });
+            link.style("opacity",function (d) {
+                if(b.data.protein.indexOf(d.source.label)>=0&&b.data.protein.indexOf(d.target.label)>=0) return 1;
+                else return 0.05;
+            });
+        }else{
+            d3.select("#svgbubble").selectAll("g").style("opacity",1);
+            node.style("opacity",1);
+            link.style("opacity",1);
+        }
+        if (onChoose)
+            onChoose(nodesList)
+        // var bars1 = d3.select("#svg1").selectAll("rect");
+        // bars1.style("fill-opacity",function (bar) {
+        //     if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
+        //     else return 0.05;
+        //
+        // });
+        //
+        // var bars2 = d3.select("#svg2").selectAll("rect");
+        // bars2.style("fill-opacity",function (bar) {
+        //     if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
+        //     else return 0.05;
+        //
+        // });
+        // var bars3 = d3.select("#svg3").selectAll("rect");
+        // bars3.style("fill-opacity",function (bar) {
+        //     if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
+        //     else return 0.05;
+        //
+        // });
+        // var bars4 = d3.select("#svg4").selectAll("rect");
+        // bars4.style("fill-opacity",function (bar) {
+        //     if(b.data.protein.indexOf(bar.symbol.toUpperCase())>=0) return 1;
+        //     else return 0.05;
+        //
+        // });
 
     });
 
