@@ -943,10 +943,18 @@ $( document ).ready(function() {
 
 let globalFilter ={};
 let keyLeader //= "TF_DE";
+let globalProtein,netdata,proteinarr;
 function initApp(){
     // load filter file
     preloader(true,undefined,'Read filter file...');
-    eval(d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('ven'))().then((setfilter)=>{
+    let choice = d3.select('#datacom').node().selectedOptions[0];
+    (choice.getAttribute('value') === 'RKO PKO RPKO'? getNet_cancer(): async function(){
+        return {globalProtein: {}, netdata:{}, proteinarr:[]};}())
+        .then(d=>{
+            globalProtein = d.globalProtein;
+            netdata=d.netdata;
+            proteinarr=d.proteinarr;
+        }).then(eval(d3.select(choice).attr('ven'))).then((setfilter)=>{
         globalFilter = setfilter;
         readFilecsv(d3.select('#datacom').node().value);
     })

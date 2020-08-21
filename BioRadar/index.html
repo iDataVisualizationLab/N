@@ -42,6 +42,7 @@
     <script src="src/lib/jquery.dataTables.min.js"></script>
     <!--<script src="js/select.js"></script>-->
     <script src="src/lib/TimerInterval.js"></script>
+    <script src="src/script/kegg.js"></script>
 
     <!--<link rel="preload" href="https://idatavisualizationlab.github.io/HPCC/HPCViz/images/TTUlogo.png" as="image" media="(height:16%)">-->
 </head>
@@ -749,6 +750,7 @@
                                 <li class="tab col s5"><a href="#modelSelectionTool">Group selection</a></li>
                                 <!--<li class="tab col s3"><a href="#modelRanking">Ranking</a></li>-->
                                 <li class="tab col s2"><a href="#modelVenn">Venn</a></li>
+                                <li class="tab col s2"><a href="#modelNet">Net</a></li>
                                 <li class="tab col s2"><a href="#modelFilter">Filter</a></li>
                             </ul>
                             <div id="modelSetting" class="tabHolder">
@@ -800,6 +802,12 @@
                             <div id="modelVenn" class="tabHolder">
                                 <div  class="row valign-wrapper no_magrin">
                                     <svg id="vennChart"></svg>
+                                </div>
+                            </div>
+                            <div id="modelNet" class="tabHolder">
+                                <div  class="row valign-wrapper no_magrin" id="bubble">
+                                </div>
+                                <div  class="row valign-wrapper no_magrin" id="protein">
                                 </div>
                             </div>
                             <div id="modelFilter" class="tabHolder">

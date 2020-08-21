@@ -369,6 +369,8 @@ d3.TimeSpace = function () {
         handle_data(datain);
         updateTableInput();
         path = {};
+        BubbleChart();
+        ProteinForceDirectedGraph();
 
         // make path object and compute euclideandistance
         let euclideandistance_range = [+Infinity,0];
@@ -922,6 +924,47 @@ d3.TimeSpace = function () {
                 renderRadarSummary([]);
         }
         isneedrender = true;
+    }
+    function drawNet({data,pos,posStatic}){
+        let dataRadar = [];
+        let links = {};
+        data.forEach((d,i)=>{
+            dataRadar.push(d.__metrics);
+            if(!links[d.name])
+                links[d.name]=[];
+            pos[i].cluster = d.clusterName;
+            links[d.name].push(pos[i]);
+        });
+        let g = svg.select('#modelWorkerScreen_svg_g').style('pointer-events','all').select('#modelWorkerScreen_grid')
+        if (g.empty())
+            g = svg.select('#modelWorkerScreen_svg_g').append('g').attr('id','modelWorkerScreen_grid');
+        let old = d3.select('#modelWorkerScreen_svg_g').selectAll('.timeSpaceR')
+            .data(dataRadar,d=>d.name_or+'_'+d.timestep).attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`);
+        old.exit().remove();
+        old.enter().append('g').attr('class','timeSpaceR')
+            .attr('transform',(d,i)=>`translate(${pos[i].x},${pos[i].y})`)
+            .on('highlight',d=>d.radar.classed('fade',false))
+            .on('fade',d=>d.radar.classed('fade',true))
+            .on('mouseover',d=>highlightNode([{index:path[d.name_or][0].index}]))
+            .on('mouseoleave',d=>highlightNode([]))
+            .each(function(d){
+                d.radar = d3.select(this);
+                createRadar(d.radar.select('.radar'), d.radar, d, {size:radarSize*1.25*2,colorfill: true});
+            });
+        let centers = d3.nest().key(d=>d.cluster).rollup(d=>[d3.mean(d,e=>e.x),d3.mean(d,e=>e.y)]).object(pos);
+        var line = d3.line().curve(d3.curveBundle.beta(0.95));
+        let old_link = d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
+            .data(_.values(links).filter(d=>d.length===2));
+        old_link.exit().remove();
+        old_link.enter().append('path').attr('class','link');
+        d3.select('#modelWorkerScreen_svg_g').selectAll('.link')
+            .attrs(d=>({
+                d:line([[d[0].x,d[0].y],[(centers[d[0].cluster][0]+centers[d[1].cluster][0])/2,(centers[d[0].cluster][1]+centers[d[1].cluster][1])/2],[d[1].x,d[1].y]]),
+                // x1:d[0].x,x2:d[1].x,y1:d[0].y,y2:d[1].y,
+                'marker-end':d=>`url(#arrow${d[1].cluster})`
+            }))
+            .style('opacity',0.3)
+            .style('stroke',d=>colorscale(d[1].cluster))
     }
     function drawRadar({data,pos,posStatic}){
         let dataRadar = [];
@@ -2139,7 +2182,9 @@ d3.TimeSpace = function () {
             d.__metrics.name = d.clusterName;
             d.__metrics.name_or = d.name;
             d.__metrics.timestep = d.timestep;
+            d.__metrics.netadata = d.netadata;
         });
+        debugger
         let maxstep = sampleS.timespan.length - 1;
         scaleTime = d3.scaleTime().domain([sampleS.timespan[0], sampleS.timespan[maxstep]]).range([0, maxstep]);
         scaleNormalTimestep.domain([0, 1]);
@@ -2545,7 +2590,10 @@ d3.TimeSpace = function () {
         d3.select('#radarCollider').dispatch('action');
     };
     function removeRadar(){
-        svg.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
+        svg.select('#modelWorkerScreen_svg_g')
+            .selectAll('g.timeSpaceR')
+            .selectAll('g.modelWorkerScreen_grid')
+            .remove();
     }
     function updateTableInput(){
         table_info.select(`.datain`).text(e=>datain.length);
@@ -2743,6 +2791,11 @@ let windowsSize = 1;
 // let timeWeight = 0;
 let timeSpacedata;
 function handle_data_model(tsnedata,isKeepUndefined) {
+    proteinarr.forEach((p,pi)=>{
+        let key = Object.keys(tsnedata).find(k=>k.toLowerCase()===p);
+        if (key)
+            tsnedata[key].netadata = {node:globalProtein.nodes[pi],id:pi};
+    });
     preloader(true,1,'preprocess data','#modelLoading');
     windowsSize = windowsSize||1;
     // get windown surrounding
@@ -2762,6 +2815,7 @@ function handle_data_model(tsnedata,isKeepUndefined) {
             currentData.name = axis_arr[i].name.split('__')[0];
             // currentData.name = axis_arr[i].name;
             currentData.__timestep = axis_arr[i].timestep;
+            currentData.netadata = axis_arr.netadata;
             let index = currentData.cluster;
             currentData.clusterName = cluster_info[index].name;
             let appendCondition = !cluster_info[currentData.cluster].hide;
