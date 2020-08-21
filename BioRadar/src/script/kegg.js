@@ -225,7 +225,7 @@ function ProteinForceDirectedGraph() {
         height = 650;
     var radius=2;
     var svg = d3.select("#protein").append("svg").attr("id","svgprotein")
-        .attr("width", '100%').attr("height", 300)
+        .attr("width", '100%').attr("height", '100%')
         .attr('viewBox',`0 0 ${width} ${height}`)
         .style("background", "#fff");
     var simulation = d3.forceSimulation()
