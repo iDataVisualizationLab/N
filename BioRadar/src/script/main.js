@@ -865,11 +865,21 @@ $( document ).ready(function() {
         exit_warp();
         const choice = this.value;
         const choicetext = d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('data-split')==="none";
-        let loadclusterInfo = false;
-        eval(d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('ven'))().then((setfilter)=> {
-            globalFilter = setfilter;
-            readFilecsv(choice, choicetext)
-        })
+        (choice === 'RKO PKO RPKO'? getNet_cancer(): async function(){
+            d3.select('#bubble').selectAll('*').remove();
+            d3.select('#protein').selectAll('*').remove();
+            return {globalProtein: {}, netdata:{}, proteinarr:[]};
+        }())
+            .then(d=>{
+                globalProtein = d.globalProtein;
+                netdata=d.netdata;
+                proteinarr=d.proteinarr;
+                eval(d3.select(d3.select('#datacom').node().selectedOptions[0]).attr('ven'))().then((setfilter)=> {
+                    globalFilter = setfilter;
+                    readFilecsv(choice, choicetext)
+                })
+
+            });
 
     });
     $('#description_input_file').on('input',(evt)=>{
