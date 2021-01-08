@@ -369,8 +369,8 @@ d3.TimeSpace = function () {
         handle_data(datain);
         updateTableInput();
         path = {};
-        BubbleChart();
-        ProteinForceDirectedGraph({onChoose:master.filter});
+        // BubbleChart();
+        // ProteinForceDirectedGraph({onChoose:master.filter,onHighLight:(name)=>{searchHandler({target:{value:name}})}});
 
         // make path object and compute euclideandistance
         let euclideandistance_range = [+Infinity,0];

@@ -438,6 +438,7 @@ function init() {
             // const locationfilter= 'Old Town';
             // dataRaw = d.filter(d=>(d.category['location (of the message)']&&d.category['location (of the message)'][locationfilter])||(d.category['location (in the message)']&&d.category['location (in the message)'][locationfilter]));
             dataRaw = d;
+            debugger
             timestep = 0;
             listopt.limitColums = [0,10];
             formatTime =getformattime (listopt.time.rate,listopt.time.unit);
