@@ -11,7 +11,8 @@ let Layout = {
 };
 
 // let getDataVis = getDataVis_vispaper;
-let getDataVis = getDataVis_imbd;
+// let getDataVis = getDataVis_imbd;
+let getDataVis = getDataVis_pub;
 
 $(document).ready(function(){
 
@@ -23,7 +24,8 @@ $(document).ready(function(){
     // getDataVis('src/data/IEEE VIS papers 1990-2020 - Main dataset.csv').then(initTimeElement);
     // getDataVis('src/data/imdb85_50.tsv').then(initTimeElement);
     // getDataVis('src/data/imdb1.tsv').then(initTimeElement);
-    getDataVis('src/data/pcCombined3.tsv').then(initTimeElement);
+    // getDataVis('src/data/pcCombined3.tsv').then(initTimeElement);
+    getDataVis('src/data/corpus_ner_geo.tsv').then(initTimeElement);
 });
 
 function initTimeElement(data){
@@ -261,6 +263,128 @@ function getDataVis_imbd(url){
         drawObject.graphicopt({type1:'author',type2:'author'});
         Layout.color = color;
         console.log('#item ',dataIn.root_nodes.length)
+        return dataIn;
+    });
+}
+
+function getDataVis_pub(url){
+    const TIME = 'time';
+    const timeformat = d3.timeFormat('%Y-%m-1');
+    return d3.tsv(url).then(__data=>{
+        _data = __data//.filter(d=>(+d['Year'])>=1980);
+        _data.sort((a,b)=>(+new Date(a[TIME]) - (+new Date(b[TIME]))));
+        const GROUPS = __data.columns.filter(d=>(d!=='source')&&(d!==TIME));
+        debugger
+        console.log('Percent data = ',_data.length);
+        console.log('Percent data = ',_data.length/__data.length*100);
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
+        const time_stamp_ob = {};
+        const time_stamp = d3.scaleTime().domain([new Date(timeformat(new Date(_data[0][TIME]))), new Date(timeformat(new Date(_data[_data.length-1][TIME])))]).ticks(d3.timeMonth.every(1))
+        time_stamp
+            .forEach((t,ti)=>{
+                time_stamp_ob[timeformat(t)] = ti;
+            });
+        // _data.forEach(r=>{
+        //     r[TIME] = new Date(r[TIME]);
+        //     time_stamp_ob[timeformat(r[TIME])] = Object.keys(time_stamp_ob).length-1;
+        // });
+        const linksObj = time_stamp.map(t=>new Map());
+        dataIn = {
+            root_nodes: [],
+            net: time_stamp.map((d, ti) => ({nodes: [], links: [], time: d, ti})),
+            datamap: {},
+            time_stamp: time_stamp
+        };
+        debugger
+        let objs = {};
+        _data.forEach(r=>{
+            r[TIME] = new Date(r[TIME]);
+            const i = time_stamp_ob[timeformat(r[TIME])];
+            const terms= [];
+            GROUPS.forEach(k=>{
+                r[k].split('|').forEach(a=>terms.push({key:k,value:a.trim()}));
+            });
+            r.terms = terms;
+            terms.forEach((v,ai)=>{
+                const a = v.value;
+                if (!objs[a]){
+                    let item = {
+                        id: a,
+                        type: 'term',
+                        category:v.key,
+                        name: a,
+                        data:{},
+                        timeArr:[],
+                        freq:1
+                    };
+                    objs[a]=item;
+                    dataIn.root_nodes.push(item);
+                }
+                if (!objs[a].timeArr[i]) {
+                    objs[a].timeArr[i] = {
+                        id: a,
+                        name: a,
+                        type: 'term',
+                        category:v.key,
+                        data: {name: a, isNew: []},
+                        parent: objs[a],
+                        ti: i
+                    };
+                    objs[a].freq++;
+                    objs[a].timeArr[i]._index = dataIn.net[i].nodes.length;
+                    dataIn.net[i].nodes.push(objs[a].timeArr[i]);
+                };
+            });
+        });
+        // reduce data
+        console.log('#terms raw ',dataIn.root_nodes.length);
+        const numNode = Math.min(120, dataIn.root_nodes.length);
+        const numNode2 = Math.min(numNode*10, dataIn.root_nodes.length);
+        dataIn.root_nodes.sort((a,b)=>b.freq-a.freq);
+        objs = {};
+        for (let i=0;i<numNode2;i++){
+            objs[dataIn.root_nodes[i].id] = dataIn.root_nodes[i];
+        }
+        dataIn.root_nodes = Object.values(objs);
+
+        _data.forEach(r=>{
+            const i = time_stamp_ob[timeformat(r[TIME])];
+
+            const terms=  r.terms.filter(t=>objs[t.value]);
+            terms.forEach((v,ai)=>{
+                // pair
+                const a = v.value;
+                for (let aj =0; aj < ai ;aj++){
+                    const key1 = terms[aj].value+'__'+a;
+                    const key2 = a+'__'+terms[aj].value;
+                    let key = linksObj[i].has(key1)?key1:(linksObj[i].has(key2)?key2:key1);
+                    // let key = dataIn.net[i].linksObj[key1]?key1:(dataIn.net[i].linksObj[key2]?key2:key1);
+                    if (!linksObj[i].has(key)){
+                        // link
+                        const link = {
+                            source: terms[aj].value,
+                            target: a,
+                            value: 1,
+                            color: (terms[aj].key===v.key)?color(v.key):'black',
+                            _index: dataIn.net[i].links.length
+                        };
+                        linksObj[i].set(key,link);
+                        dataIn.net[i].links.push(link);
+                    }else{
+                        linksObj[i].get(key).value++;
+                    }
+                }
+            });
+        });
+        const min = 20;
+        dataIn.net.forEach((n,i)=>{
+            n.links=n.links.filter(l=>l.value>=min);
+        });
+
+        drawObject.graphicopt({type1:'term',type2:'term'});
+        Layout.color = color;
+        console.log('#terms ',dataIn.root_nodes.length);
+        console.log('#links',d3.sum(dataIn.net,d=>d.links.length));
         return dataIn;
     });
 }

@@ -105,6 +105,16 @@ let DynamicNet3D = function () {
             //         isneedrender = true;
             //     }
             // },
+            forceType: {
+                text: "Order by Force",
+                type: "checkbox",
+                variable: 'usingForce',
+                values: false,
+                width: '100px',
+                callback: () => {
+                    start();
+                }
+            },
             showLineConnect: {
                 text: "Show timelines",
                 type: "checkbox",
@@ -140,29 +150,15 @@ let DynamicNet3D = function () {
                     isneedrender = true;
                 }
             },
-            filterLine: {
-                text: `Link period ≥ <span class='Link_period'>${graphicopt.filterLine}</span>`,
-                range: [1, 10],
-                id: 'Link_period',
-                type: "slider",
-                variableRoot: graphicopt,
-                variable: 'filterLine',
+            labelMarker: {
+                text: "Show Labels",
+                type: "checkbox",
+                variable: 'label_enable',
+                values: true,
                 width: '100px',
-                step: 1,
-                callback: ()=>{
-                    d3.select('.Link_period').text(graphicopt.filterLine);
-                    onFilterLine();
-                }
+                callback: ()=>{svg.select('#modelNodeLabel').selectAll('.name').remove();
+                updatelabelCluster();}
             },
-            // labelMarker: {
-            //     text: "Show Labels",
-            //     type: "checkbox",
-            //     variableRoot: graphicopt.component.label,
-            //     variable: 'label_enable',
-            //     values: true,
-            //     width: '100px',
-            //     callback: updatelabelCluster
-            // },
             // linkConnect: {
             //     text: "Link type",
             //     type: "selection",
@@ -214,6 +210,7 @@ let DynamicNet3D = function () {
                 }
             },
             connectType: {
+                content:'graphic',
                 text: "Connection Type",
                 type: "selection",
                 variable: 'connectType',
@@ -226,6 +223,21 @@ let DynamicNet3D = function () {
                     else
                         createLineData = createLineData_se;
 
+                    onFilterLine();
+                }
+            },
+            filterLine: {
+                content:'graphic',
+                text: `Link period ≥ <span class='Link_period'>${graphicopt.filterLine}</span>`,
+                range: [1, 10],
+                id: 'Link_period',
+                type: "slider",
+                variableRoot: graphicopt,
+                variable: 'filterLine',
+                width: '100px',
+                step: 1,
+                callback: ()=>{
+                    d3.select('.Link_period').text(graphicopt.filterLine);
                     onFilterLine();
                 }
             }
@@ -261,7 +273,7 @@ let DynamicNet3D = function () {
         runopt = {},
         isBusy = false,
         stop = false;
-    let xScale,yScale, colorscale, reset;
+    let xScale,yScale, rScale, reset;
     let solution, datain = [], filterbyClustername = [], visibledata, table_info, path, cluster = [], scaleTime;
     let scaleNormalTimestep = d3.scaleLinear();
     // grahic
@@ -423,8 +435,10 @@ let DynamicNet3D = function () {
         // reduceRenderWeight();
         mouseoverTrigger = false;
         // terminateWorker();
-        updateProcess({percentage: 10, text: 'Transfer data to projection function'})
-        forceFunc(data.net,(data) => {
+        updateProcess({percentage: 10, text: 'Transfer data to projection function'});
+
+        if (graphicopt.usingForce){
+        forceFunc(data,(data) => {
                     switch (data.action) {
                         case "stable":
                             debugger
@@ -458,10 +472,11 @@ let DynamicNet3D = function () {
                             break;
                     }
                 })
-        // updateProcess();
-        // isneedCompute = true;
-        // // render(true);
-        // onFilterLine();
+        }else{
+        updateProcess();
+        isneedCompute = true;
+        // render(true);
+        onFilterLine();}
     }
 
     let controll_metrics = {old: {zoom: undefined}};
@@ -911,8 +926,9 @@ let DynamicNet3D = function () {
             colors[i * 3 + 2] = color.b / 255;
             alpha[i] = target.filterd ? graphicopt.component.dot.filter.opacity : graphicopt.component.dot.opacity;
             _alpha[i] = (target.color || colorIn)?graphicopt.component.dot.opacity:0;
-            texIndex[i] = mapType[target.type];
-            sizes[i] = (graphicopt.component.dot[target.type] ?? graphicopt.component.dot).size;
+            texIndex[i] = mapType[target.type]??0;
+            // sizes[i] = (graphicopt.component.dot[target.type] ?? graphicopt.component.dot).size;
+            sizes[i] = rScale(target.value);
         }
         pointsGeometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
         pointsGeometry.setAttribute('customColor', new THREE.BufferAttribute(colors, 3));
@@ -964,9 +980,9 @@ let DynamicNet3D = function () {
     }
 
     function updatelabelCluster() {
-        svg.select('#modelNodeLabel').selectAll('.name').remove();
-        if (dynamicVizs[0]) {
-            if (graphicopt.label_enable) {
+        if (graphicopt.label_enable){
+            svg.select('#modelNodeLabel').selectAll('.name').remove();
+            if (dynamicVizs[0]) {
                 let orient = ({
                     top: text => text.attr("text-anchor", "middle").attr("y", -3),
                     right: text => text.attr("text-anchor", "start").attr("dy", "0.35em").attr("x", 3),
@@ -1355,11 +1371,11 @@ let DynamicNet3D = function () {
         var frustum = new THREE.Frustum();
         frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
         dynamicVizs.forEach((net, ni) => {
-            net.nodes._alpha.forEach((d, i) => {
+            net.nodes.geometry.attributes.alpha.array.forEach((d, i) => {
                 if (d > 0.1) {
-                    data.net[ni].links[i].inscreen = frustum.containsPoint(new THREE.Vector3(net.nodes.geometry.attributes.position.array[i * 3], net.nodes.geometry.attributes.position.array[i * 3 + 1], net.nodes.geometry.attributes.position.array[i * 3 + 2]))
+                    net.nodes.data.arr[i].inscreen = frustum.containsPoint(new THREE.Vector3(net.nodes.geometry.attributes.position.array[i * 3], net.nodes.geometry.attributes.position.array[i * 3 + 1], net.nodes.geometry.attributes.position.array[i * 3 + 2]))
                 } else {
-                    data.net[ni].links[i].inscreen = false;
+                    net.nodes.data.arr[i].inscreen = false;
                 }
             })
         });
@@ -1494,7 +1510,7 @@ let DynamicNet3D = function () {
                 //         }
                 //     });
 
-                // updatelabelCluster();
+                updatelabelCluster();
 
                 // console.log(controll_metrics.zoom)
                 if (iscameraMove || onrendercalled) {
@@ -1567,7 +1583,10 @@ let DynamicNet3D = function () {
 
         xScale = d3.scaleBand().domain(type1List.map(d=>d.id)).range([-(bandwidth*type1List.length)/2,(bandwidth*type1List.length)/2]);
         yScale = d3.scalePoint().domain(type2List.map(d=>d.id)).range([(bandwidth*type2List.length)/2,-(bandwidth*type2List.length)/2]);
+        rScale = d3.scaleSqrt().domain([d3.min(data.net,n=>d3.min(n.links,d=>d.value)),d3.max(data.net,n=>d3.max(n.links,d=>d.value))]).range([3,25]);
+
         dynamicVizs.links = {};
+
         data.net.forEach((net, ni) => {
             // time slice generate
             net.links.forEach(l=>{
@@ -1684,21 +1703,35 @@ let DynamicNet3D = function () {
             ],
             [
                 {text: "Output", type: "title"},
+            ],
+            [
+                {text: "Graphic", type: "title"},
             ]
         ];
         d3.values(self.controlPanel).forEach(d => {
             tableData[1].push({label: d.text, type: d.type, content: d, variable: d.variable, class: d.class})
         });
         d3.values(controlPanelGeneral).forEach(d => {
-            tableData[1].push({
-                label: d.text,
-                type: d.type,
-                content: d,
-                variable: d.variable,
-                variableRoot: d.variableRoot,
-                id: d.id,
-                class: d.class
-            })
+            if (d.content==='graphic'){
+                tableData[3].push({
+                    label: d.text,
+                    type: d.type,
+                    content: d,
+                    variable: d.variable,
+                    variableRoot: d.variableRoot,
+                    id: d.id,
+                    class: d.class
+                })
+            }else
+                tableData[1].push({
+                    label: d.text,
+                    type: d.type,
+                    content: d,
+                    variable: d.variable,
+                    variableRoot: d.variableRoot,
+                    id: d.id,
+                    class: d.class
+                })
         });
         d3.keys(self.formatTable).forEach(k => formatTable[k] = self.formatTable[k]);
         tableData[2] = [...tableData[2], ...self.outputSelection];
@@ -2082,30 +2115,25 @@ function forceFunc(data,postMessage) {
     postMessage({action: 'message', value: {'percentage': 20, 'message': 'Data received. Process data...'}});
     totalTime_marker = performance.now();
 
-    const net = data;
-    const root_nodes = {};
+    const net = data.net;
+    const root_nodes = data.root_nodes;
+    root_nodes.forEach(d=>{
+        delete d.x;
+        delete d.vx;
+        delete d.y;
+        delete d.vy;
+        d.fy =0;
+    });
     const linksObjs={};
     if (net.length) {
         net.forEach(function (n, ni) {
-            const nodes = n.nodes;
-            if (ni) {
-                nodes.forEach(n => {
-                    root_nodes[n.id] = n.parent;
-                    delete n.parent.x;
-                    delete n.parent.vx;
-                    delete n.parent.y;
-                    delete n.parent.vy;
-                })
-            } else {
-                nodes.forEach(n => {
-                    root_nodes[n.id] = n.parent;
-                    n.parent.fy=0;
-                });
-            }
-            n.links.forEach(l=>{
-                linksObjs[l.source+l.target] = {source: root_nodes[l.source],
-                target: root_nodes[l.target]};
-            });
+            n.links.forEach(l=> {
+                if (!linksObjs[l.source + l.target])
+                    linksObjs[l.source + l.target] = {
+                        source: l.source,
+                        target: l.target
+                    };
+            })
         });
 
 
@@ -2127,6 +2155,8 @@ function forceFunc(data,postMessage) {
                 });
             });
 
+        console.log('#nodes ',nodes.length);
+        console.log('#nodes ',Object.values(linksObjs).length);
         force.nodes(nodes);
         force.force("link").links(Object.values(linksObjs));
     } else {
