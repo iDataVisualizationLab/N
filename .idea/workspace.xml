@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="updateUI">
+      <change afterPath="$PROJECT_DIR$/Dymatrix3D/src/data/PopCha.tsv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/colorblind/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/colorblind/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dymatrix3D/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Dymatrix3D/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dynet3D/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Dynet3D/src/js/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +16,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -30,6 +32,9 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectId" id="1aDdE59O5ywH2UM6H1FRTO2P1nu" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -42,22 +47,22 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../d3-lasso-0.0.5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Dynet3D" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\STORE\nvtngan\project\github\N\colorblind\js" />
-      <recent name="C:\STORE\nvtngan\project\github\N\drone\src\music" />
-      <recent name="C:\STORE\nvtngan\project\github\N\BioRadar\src\lib" />
-      <recent name="C:\STORE\nvtngan\project\github\N\BioRadar\data" />
-      <recent name="C:\STORE\nvtngan\project\github\N\heatmap\data" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\STORE\nvtngan\project\github\N\python" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_ViolinMatrix\src\js" />
+      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_ViolinMatrix\src\style" />
+      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_ViolinMatrix\src\lib" />
+      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_TimeArc\src\scripts" />
+      <recent name="C:\STORE\nvtngan\project\github\N" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.index.html (4)">
@@ -92,12 +97,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JavaScript Debug.index.html" />
       <item itemvalue="JavaScript Debug.index.html (2)" />
       <item itemvalue="JavaScript Debug.index.html (3)" />
       <item itemvalue="JavaScript Debug.index.html (4)" />
       <item itemvalue="JavaScript Debug.index.html (5)" />
       <item itemvalue="JavaScript Debug.index.html (6)" />
+      <item itemvalue="JavaScript Debug.index.html" />
     </list>
     <recent_temporary>
       <list>
@@ -179,7 +184,14 @@
       <workItem from="1593421005577" duration="5944000" />
       <workItem from="1593552511476" duration="1158000" />
       <workItem from="1593707507010" duration="6825000" />
-      <workItem from="1593759100780" duration="9141000" />
+      <workItem from="1593759100780" duration="13539000" />
+      <workItem from="1594186460879" duration="603000" />
+      <workItem from="1594228716491" duration="782000" />
+      <workItem from="1594621990214" duration="51381000" />
+      <workItem from="1594916668092" duration="4002000" />
+      <workItem from="1595050238358" duration="766000" />
+      <workItem from="1597822923691" duration="47000" />
+      <workItem from="1616828089422" duration="16000" />
     </task>
     <task id="LOCAL-00003" summary="updateUI">
       <created>1563117491587</created>
@@ -206,77 +218,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="updateUI" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="497" height="618" key="DebuggerActiveHint" timestamp="1589968238256">
+    <state x="549" y="168" key="FileChooserDialogImpl" timestamp="1616828103220">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="497" height="618" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1589968238256" />
-    <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog" timestamp="1588709639483">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588709639483" />
-    <state x="592" y="219" key="FileChooserDialogImpl" timestamp="1593553068589">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="592" y="219" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1593553068589" />
-    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588709237721" />
-    <state width="1515" height="49" key="GridCell.Tab.0.bottom" timestamp="1589958062395">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589958062395" />
-    <state width="1515" height="49" key="GridCell.Tab.0.center" timestamp="1589958062394">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589958062394" />
-    <state width="1515" height="49" key="GridCell.Tab.0.left" timestamp="1589958062394">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589958062394" />
-    <state width="1515" height="49" key="GridCell.Tab.0.right" timestamp="1589958062394">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589958062394" />
-    <state width="1515" height="49" key="GridCell.Tab.1.bottom" timestamp="1589958068311">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
-    <state width="1515" height="49" key="GridCell.Tab.1.center" timestamp="1589958068311">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
-    <state width="1515" height="49" key="GridCell.Tab.1.left" timestamp="1589958068311">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
-    <state width="1515" height="49" key="GridCell.Tab.1.right" timestamp="1589958068311">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1589958068311" />
-    <state width="1515" height="49" key="GridCell.Tab.2.bottom" timestamp="1589958062340">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
-    <state width="1515" height="49" key="GridCell.Tab.2.center" timestamp="1589958062340">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
-    <state width="1515" height="49" key="GridCell.Tab.2.left" timestamp="1589958062340">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
-    <state width="1515" height="49" key="GridCell.Tab.2.right" timestamp="1589958062340">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="49" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1589958062340" />
-    <state x="517" y="0" width="631" height="824" key="find.popup" timestamp="1590998445711">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="517" y="0" width="631" height="824" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1590998445711" />
-    <state x="646" y="242" width="627" height="556" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587777655567" />
-    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup" timestamp="1593766846949">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1593766846949" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587498537610" />
+    <state x="549" y="168" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1616828103220" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

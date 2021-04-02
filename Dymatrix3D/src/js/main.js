@@ -10,9 +10,9 @@ let Layout = {
     data:{},
 };
 
-// let getDataVis = getDataVis_vispaper;
+let getDataVis = getDataVis_vispaper;
 // let getDataVis = getDataVis_imbd;
-let getDataVis = getDataVis_pub;
+// let getDataVis = getDataVis_pub;
 
 $(document).ready(function(){
 
@@ -21,11 +21,12 @@ $(document).ready(function(){
     initClusterUI();
     updateProcess({percentage:15,text:'Preprocess data...'});
     initdraw();
-    // getDataVis('src/data/IEEE VIS papers 1990-2020 - Main dataset.csv').then(initTimeElement);
+    getDataVis('src/data/IEEE VIS papers 1990-2020 - Main dataset.csv').then(initTimeElement);
     // getDataVis('src/data/imdb85_50.tsv').then(initTimeElement);
     // getDataVis('src/data/imdb1.tsv').then(initTimeElement);
     // getDataVis('src/data/pcCombined3.tsv').then(initTimeElement);
-    getDataVis('src/data/corpus_ner_geo.tsv').then(initTimeElement);
+    // getDataVis('src/data/PopCha.tsv').then(initTimeElement);
+    // getDataVis('src/data/corpus_ner_geo.tsv').then(initTimeElement);
 });
 
 function initTimeElement(data){
@@ -147,6 +148,7 @@ function getDataVis_vispaper(url){
                         name: a,
                         data:{},
                         timeArr:[],
+                        freq:0,
                     };
                     objs[a]=item;
                     dataIn.root_nodes.push(item);
@@ -158,11 +160,15 @@ function getDataVis_vispaper(url){
                         type: 'author',
                         data: {name: a, isNew: []},
                         parent: objs[a],
+                        freq:1,
                         ti: i
                     };
                     objs[a].timeArr[i]._index = dataIn.net[i].nodes.length;
                     dataIn.net[i].nodes.push(objs[a].timeArr[i]);
-                };
+                }else{
+                    objs[a].timeArr[i].freq++;
+                    objs[a].freq++;
+                };;
                 // pair
                 for (let aj =0; aj < ai ;aj++){
                     const key1 = authors[aj]+'__'+a;
@@ -190,9 +196,9 @@ function getDataVis_vispaper(url){
     });
 }
 
-function getDataVis_imbd(url){
+function getDataVis_imbd(url,filterFunc){
     return d3.tsv(url).then(__data=>{
-        _data = __data//.filter(d=>(+d['Year'])>=1980);
+        _data = __data.filter(r=>r['Author Names'])//.filter(d=>(+d['Year'])>=1980);
         _data.sort((a,b)=>((+a.Year)- (+b.Year)));
         debugger
         console.log('Percent data = ',_data.length);
@@ -211,18 +217,22 @@ function getDataVis_imbd(url){
             time_stamp: time_stamp
         };
         debugger
-        const objs = {};
+        const linksObj = time_stamp.map(t=>new Map());
+        let objs = {};
         _data.forEach(r=>{
             const i = time_stamp_ob[r.Year];
-            const authors= r['Author Names'].split(';').map(a=>a.trim());
-            authors.forEach((a,ai)=>{
+            const terms= r['Author Names'].split(';').map(a=>a.trim());
+            r.terms = terms;
+            terms.forEach((a,ai)=>{
                 if (!objs[a]){
                     let item = {
                         id: a,
                         type: 'author',
                         name: a,
                         data:{},
+                        color:color(r['Conference']),
                         timeArr:[],
+                        freq:0
                     };
                     objs[a]=item;
                     dataIn.root_nodes.push(item);
@@ -233,36 +243,97 @@ function getDataVis_imbd(url){
                         name: a,
                         type: 'author',
                         data: {name: a, isNew: []},
+                        color:color(r['Conference']),
                         parent: objs[a],
+                        freq:1,
                         ti: i
                     };
                     objs[a].timeArr[i]._index = dataIn.net[i].nodes.length;
                     dataIn.net[i].nodes.push(objs[a].timeArr[i]);
-                };
+                }else{
+                    objs[a].timeArr[i].freq++;
+                    objs[a].freq++;
+                };;
+                // pair
+                // for (let aj =0; aj < ai ;aj++){
+                //     const key1 = authors[aj]+'__'+a;
+                //     const key2 = a+'__'+authors[aj];
+                //     let key = dataIn.net[i].linksObj[key1]?key1:(dataIn.net[i].linksObj[key2]?key2:key1);
+                //     if (!dataIn.net[i].linksObj[key]){
+                //         // link
+                //         dataIn.net[i].linksObj[key] = {
+                //             source: authors[aj],
+                //             target: a,
+                //             value: 1,
+                //             color: color(r['Conference']),
+                //             _index: dataIn.net[i].links.length
+                //         };
+                //         dataIn.net[i].links.push(dataIn.net[i].linksObj[key]);
+                //     }else{
+                //         dataIn.net[i].linksObj[key].value++;
+                //     }
+                // }
+            });
+        });
+        // reduce data
+        console.log('#terms raw ',dataIn.root_nodes.length);
+        const numNode = Math.min(120, dataIn.root_nodes.length);
+        const numNode2 = Math.min(numNode*10, dataIn.root_nodes.length);
+        dataIn.root_nodes.sort((a,b)=>b.freq-a.freq);
+        objs = {};
+        for (let i=0;i<numNode2;i++){
+            objs[dataIn.root_nodes[i].id] = dataIn.root_nodes[i];
+        }
+
+        _data.forEach(r=>{
+            const i = time_stamp_ob[r.Year];
+
+            const terms=  r.terms.filter(t=>objs[t]);
+            terms.forEach((a,ai)=>{
                 // pair
                 for (let aj =0; aj < ai ;aj++){
-                    const key1 = authors[aj]+'__'+a;
-                    const key2 = a+'__'+authors[aj];
-                    let key = dataIn.net[i].linksObj[key1]?key1:(dataIn.net[i].linksObj[key2]?key2:key1);
-                    if (!dataIn.net[i].linksObj[key]){
+                    const key1 = terms[aj]+'__'+a;
+                    const key2 = a+'__'+terms[aj];
+                    let key = linksObj[i].has(key1)?key1:(linksObj[i].has(key2)?key2:key1);
+                    // let key = dataIn.net[i].linksObj[key1]?key1:(dataIn.net[i].linksObj[key2]?key2:key1);
+                    if (!linksObj[i].has(key)){
                         // link
-                        dataIn.net[i].linksObj[key] = {
-                            source: authors[aj],
+                        objs[terms[aj]].hasLink = true;
+                        objs[a].hasLink = true;
+                        const link = {
+                            source: terms[aj],
                             target: a,
                             value: 1,
                             color: color(r['Conference']),
                             _index: dataIn.net[i].links.length
                         };
-                        dataIn.net[i].links.push(dataIn.net[i].linksObj[key]);
+                        linksObj[i].set(key,link);
+                        dataIn.net[i].links.push(link);
                     }else{
-                        dataIn.net[i].linksObj[key].value++;
+                        linksObj[i].get(key).value++;
                     }
                 }
             });
         });
+        debugger
+        const min = 0;
+        let objs_2 = {};
+        dataIn.net.forEach((n,i)=>{
+            n.links=n.links.filter(l=>{
+                if(l.value>=min){
+                    objs_2[l.source] = objs[l.source];
+                    objs_2[l.target] = objs[l.target];
+                    return true
+                }
+                return false;
+            });
+        });
+        dataIn.root_nodes = Object.values(objs_2);
+
         drawObject.graphicopt({type1:'author',type2:'author'});
         Layout.color = color;
-        console.log('#item ',dataIn.root_nodes.length)
+        console.log('#terms ',dataIn.root_nodes.length);
+        console.log('#links',d3.sum(dataIn.net,d=>d.links.length));
         return dataIn;
     });
 }
@@ -270,6 +341,7 @@ function getDataVis_imbd(url){
 function getDataVis_pub(url){
     const TIME = 'time';
     const timeformat = d3.timeFormat('%Y-%m-1');
+    const blackList = {};//{'iraq':1,'barack obama':1}
     return d3.tsv(url).then(__data=>{
         _data = __data//.filter(d=>(+d['Year'])>=1980);
         _data.sort((a,b)=>(+new Date(a[TIME]) - (+new Date(b[TIME]))));
@@ -302,7 +374,11 @@ function getDataVis_pub(url){
             const i = time_stamp_ob[timeformat(r[TIME])];
             const terms= [];
             GROUPS.forEach(k=>{
-                r[k].split('|').forEach(a=>terms.push({key:k,value:a.trim()}));
+                r[k].split('|').forEach(a=>{
+                    if (!blackList[a]){
+                        terms.push({key:k,value:a.trim()})
+                    }
+                });
             });
             r.terms = terms;
             terms.forEach((v,ai)=>{
@@ -312,6 +388,7 @@ function getDataVis_pub(url){
                         id: a,
                         type: 'term',
                         category:v.key,
+                        color: color(v.key),
                         name: a,
                         data:{},
                         timeArr:[],
@@ -326,13 +403,18 @@ function getDataVis_pub(url){
                         name: a,
                         type: 'term',
                         category:v.key,
+                        color: color(v.key),
                         data: {name: a, isNew: []},
                         parent: objs[a],
+                        freq: 1,
                         ti: i
                     };
                     objs[a].freq++;
                     objs[a].timeArr[i]._index = dataIn.net[i].nodes.length;
                     dataIn.net[i].nodes.push(objs[a].timeArr[i]);
+                }else{
+                    objs[a].timeArr[i].freq++;
+                    objs[a].freq++;
                 };
             });
         });
@@ -345,7 +427,6 @@ function getDataVis_pub(url){
         for (let i=0;i<numNode2;i++){
             objs[dataIn.root_nodes[i].id] = dataIn.root_nodes[i];
         }
-        dataIn.root_nodes = Object.values(objs);
 
         _data.forEach(r=>{
             const i = time_stamp_ob[timeformat(r[TIME])];
@@ -361,11 +442,13 @@ function getDataVis_pub(url){
                     // let key = dataIn.net[i].linksObj[key1]?key1:(dataIn.net[i].linksObj[key2]?key2:key1);
                     if (!linksObj[i].has(key)){
                         // link
+                        objs[terms[aj].value].hasLink = true;
+                        objs[a].hasLink = true;
                         const link = {
                             source: terms[aj].value,
                             target: a,
                             value: 1,
-                            color: (terms[aj].key===v.key)?color(v.key):'black',
+                            color: (terms[aj].key===v.key)?color(v.key):'gray',
                             _index: dataIn.net[i].links.length
                         };
                         linksObj[i].set(key,link);
@@ -376,10 +459,20 @@ function getDataVis_pub(url){
                 }
             });
         });
-        const min = 20;
+        debugger
+        const min = 30;
+        let objs_2 = {};
         dataIn.net.forEach((n,i)=>{
-            n.links=n.links.filter(l=>l.value>=min);
+            n.links=n.links.filter(l=>{
+                if(l.value>=min){
+                    objs_2[l.source] = objs[l.source];
+                    objs_2[l.target] = objs[l.target];
+                    return true
+                }
+                return false;
+            });
         });
+        dataIn.root_nodes = Object.values(objs_2);
 
         drawObject.graphicopt({type1:'term',type2:'term'});
         Layout.color = color;
