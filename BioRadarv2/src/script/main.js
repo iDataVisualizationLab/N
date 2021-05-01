@@ -333,7 +333,7 @@ var TsnePlotopt  = {
 var TsneTSopt = {width:width,height:height};
 var PCAopt = {width:width,height:height};
 var umapopt = {width:width,height:height};
-var vizMode = 0; // 0 timeradar, 1 tsne, 2 pca, 3 umap
+var vizMode = 'pca'; // 0 tsne, 1 pca, 2 umap
 var runopt ={ // run opt global
     suddenGroup:0,
     minMax: 0,
@@ -407,7 +407,7 @@ var gaphost = 7;
 function main() {
 
     let control_jobdisplay = d3.select('#compDisplay_control');
-        control_jobdisplay.node().options.selectedIndex = 2;
+        control_jobdisplay.node().options.selectedIndex = 1;
         control_jobdisplay.dispatch('change');
     // MetricController.data(data.result.arr).drawSummary(data.result.hindex);
     init = false;
@@ -818,7 +818,6 @@ $( document ).ready(function() {
     });
     d3.select('#compDisplay_control').on("change", function () {
         var sect = document.getElementById("compDisplay_control");
-
         vizMode = sect.options[sect.selectedIndex].getAttribute('value2');
         d3.select('#modelWorkerContent').classed('hide',false);
         d3.select('.mainsvg').classed('hide',true);

@@ -24,16 +24,22 @@ addEventListener('message',function ({data}){
             let pc = pca.pca(matrix, data.opt.dim);
 
             let A = pc[0];  // this is the U matrix from SVD
-            // let B = pc[1];  // this is the dV matrix from SVD
+            let B = pc[1];  // this is the dV matrix from SVD
             let chosenPC = pc[2];   // this is the most value of PCA
             let solution = dataIn.map((d,i)=>d3.range(0,data.opt.dim).map(dim=>A[i][chosenPC[dim]]));
-            render(solution);
-            postMessage({action:'stable', status:"done"});
+
+            const axis=[];
+            data.feature.map(function (key, i) {
+                let brand = d3.range(0,data.opt.dim).map(dim=>B[i][chosenPC[dim]]);
+                axis.push({x1:0,y1:0,z1:0,x2:brand[0],y2:brand[1],z2:brand[2]??0,name:key.text,scale:10})
+            });
+            render(solution,axis);
+            postMessage({action:'stable',axis, status:"done"});
             break;
     }
 });
 
-function render(sol){
+function render(sol,axis){
     let xrange = d3.extent(sol, d => d[0]);
     let yrange = d3.extent(sol, d => d[1]);
     let xscale = d3.scaleLinear().range([0, canvasopt.width]);
@@ -48,6 +54,10 @@ function render(sol){
         let delta = ((xrange[1] - xrange[0]) * ratio - (yrange[1] - yrange[0])) / 2;
         yscale.domain([yrange[0] - delta, yrange[1] + delta])
     }
+    // xaxis
+    axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[1],y2:yrange[0],z2:0,name:'PC1',scale:1});
+    axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[0],y2:yrange[1],z2:0,name:'PC2',scale:1});
+
     postMessage({action:'render',value:{totalTime:performance.now()-totalTime_marker},xscale:{domain:xscale.domain()}, yscale:{domain:yscale.domain()}, sol:sol});
     solution = sol;
 }

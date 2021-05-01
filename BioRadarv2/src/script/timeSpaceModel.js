@@ -97,7 +97,7 @@ d3.TimeSpace = function () {
     let master={},solution,datain=[],filterbyClustername=[],visibledata,table_info,path,cluster=[],scaleTime;
     let xscale=d3.scaleLinear(),yscale=d3.scaleLinear(), scaleNormalTimestep=d3.scaleLinear();
     // grahic
-    let camera,isOrthographic=false,scene,axesHelper,axesTime,gridHelper,clusterAnnotation,controls,raycaster,INTERSECTED =[] ,mouse ,
+    let camera,isOrthographic=false,metricPlot,scene,axesHelper,axesTime,gridHelper,clusterAnnotation,controls,raycaster,INTERSECTED =[] ,mouse ,
         points,lines,linesGroup,curveLines,curveLinesGroup,straightLines,straightLinesGroup,curves,updateLine,
         scatterPlot,colorarr,renderer,view,zoom,background_canvas,background_ctx,front_canvas,front_ctx,svg,clusterMarker;
     let fov = 100,
@@ -262,11 +262,13 @@ d3.TimeSpace = function () {
                     opt: opt,
                     value: datain,
                     labels: datain.map(d => d.cluster),
+                    feature:serviceFullList.map((s,si)=>({text:s.text,id:si})),
                     clusterarr: cluster.map(d => d.__metrics.normalize)
                 });
                 // let labelsInput = [];initDataRawinitDataRaw
                 // datain.forEach(d=>{if(d.timestep===0) labelsInput.push(d.cluster)});
                 // modelWorker.postMessage({action: "initPartofData",opt:opt, value: datain,labels: labelsInput, clusterarr: cluster.map(d=>d.__metrics.normalize)});
+                debugger
                 modelWorker.addEventListener('message', ({data}) => {
                     switch (data.action) {
                         case "render":
@@ -300,6 +302,15 @@ d3.TimeSpace = function () {
                             freezemouseoverTrigger = false;
                             solution = data.sol || solution;
                             isneedCompute = true;
+                            debugger
+                            draw_axis((data.axis??[]).map(d=>{
+                                const val = {...d};
+                                val.x1 = xscale(d.x1);
+                                val.y1 = yscale(d.y1);
+                                val.x2 = xscale(d.x2);
+                                val.y2 = yscale(d.y2);
+                                return val;
+                            }));
                             render(true);
                             reduceRenderWeight(true);
                             break;
@@ -455,6 +466,10 @@ d3.TimeSpace = function () {
             gridHelper.rotation.x = -Math.PI / 2;
             scene.add( new THREE.Object3D().add(gridHelper ));
             scene.add(scatterPlot);
+
+            // Add plot
+            metricPlot = new THREE.Object3D();
+            scene.add(metricPlot);
 
             // Add canvas
             renderer = new THREE.WebGLRenderer({canvas: document.getElementById("modelWorkerScreen")});
@@ -762,6 +777,98 @@ d3.TimeSpace = function () {
         scene.add( arrowGroup );
         arrowGroup.visible = false;
         return arrowGroup;
+    }
+    function draw_axis(axis) {
+        scene.remove(metricPlot);
+        const origin = [0, 0, 0];
+        let zdir = 0;
+        if (graphicopt.opt.dim > 2) {
+            zdir = scaleNormalTimestep(0);
+            // d[2] = xscale.invert(p[pointIndex * 3 + 2]);
+        }
+        origin[2] = zdir;
+        metricPlot = new THREE.Object3D();
+        metricPlot.position.x = origin[0];
+        metricPlot.position.y = origin[1];
+        metricPlot.position.z = origin[2];
+
+        const holderPlot = new THREE.Object3D();
+        holderPlot.name = "lineChartHolder";
+        metricPlot.add(holderPlot);
+
+        axis.forEach(a=>{
+            metricPlot.add(makeaxis(a));
+        });
+        scene.add(metricPlot);
+
+
+        isneedrender = true;
+
+        function makeaxis({x1,y1,z1,x2,y2,z2,name,scale}) {
+            x2 = x1+(x2-x1)*scale;
+            y2 = y1+(y2-y1)*scale;
+            z2 = z1+(z2-z1)*scale;
+            var dir = new THREE.Vector3(x2-x1, y2-y1, z2-z1);
+            dir.normalize();
+            var length = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+            var hex = 0x000000;
+            var yaxisGroup = new THREE.Object3D();
+            var arrowHelper = new THREE.ArrowHelper(dir, new THREE.Vector3(x1, y1, z1), length, hex, 20, 10);
+            arrowHelper.line.material.linewidth = 4;
+            yaxisGroup.add(arrowHelper);
+            let axis = yscale.copy();
+            // axis.domain(graphicopt.service[graphicopt.plotMetric].range);
+            var loader = new THREE.FontLoader();
+
+            loader.load('src/fonts/optimer_regular.typeface.json', function (font) {
+                var textGeo = new THREE.TextGeometry(name, {
+                    font: font,
+                    size: 15,
+                    height: 1,
+                    curveSegments: 12,
+                    bevelEnabled: false
+                });
+                textGeo.computeBoundingBox();
+                textGeo.computeVertexNormals();
+                textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
+
+                // let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshPhongMaterial({color: 0x0000ff, flatShading: true}));
+                let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({color: 0x000000}));
+                textMesh1.name = name;
+                textMesh1.position.x = x2;
+                textMesh1.position.y = y2;
+                textMesh1.position.z = z2;
+                // textMesh1.rotation.x = 0;
+                // textMesh1.rotation.y = Math.PI / 2;
+                textMesh1.quaternion.copy(camera.quaternion);
+                yaxisGroup.add(textMesh1)
+                // axis.ticks(5).forEach(t => {
+                //
+                //     var textGeo = new THREE.TextGeometry(axis.tickFormat()(t), {
+                //         font: font,
+                //         size: 20,
+                //         height: 1,
+                //         curveSegments: 12,
+                //         bevelEnabled: false
+                //     });
+                //     textGeo.computeBoundingBox();
+                //     textGeo.computeVertexNormals();
+                //     textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
+                //
+                //     // let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshPhongMaterial({color: 0x0000ff, flatShading: true}));
+                //     let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({color: 0x000000}));
+                //     textMesh1.name = 'TimeText';
+                //     textMesh1.position.x = -Math.log10(axis.domain()[1]) * 20;
+                //     textMesh1.position.y = axis(t);
+                //     textMesh1.position.z = scaleNormalTimestep(0);
+                //     // textMesh1.rotation.x = 0;
+                //     // textMesh1.rotation.y = Math.PI / 2;
+                //     textMesh1.quaternion.copy(camera.quaternion);
+                //     yaxisGroup.add(textMesh1)
+                // });
+            });
+            return yaxisGroup;
+        }
     }
     function clustername(){
         var loader = new THREE.FontLoader();
