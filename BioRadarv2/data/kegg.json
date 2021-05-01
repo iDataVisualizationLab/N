@@ -1,0 +1,7584 @@
+{
+  "nodes": [
+    {
+      "id": 0,
+      "comment": [
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "CAMK2A",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:815+hsa:816+hsa:817+hsa:818",
+      "index": 0,
+      "weight": 2,
+      "x": 423.61515522359736,
+      "y": 206.8205871119662,
+      "px": 423.61515522359736,
+      "py": 206.8205871119662,
+      "betweenness": 0.018584419163090973,
+      "ref": "3742",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "comment": [
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "CALML6",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:163688+hsa:51806+hsa:801+hsa:805+hsa:808+hsa:810",
+      "index": 1,
+      "weight": 2,
+      "x": 76.6197376043648,
+      "y": 404.9634809237383,
+      "px": 76.6197376043648,
+      "py": 404.9634809237383,
+      "betweenness": 0.00011022320198401764,
+      "ref": "3741",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "comment": [
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "PDGFRA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5156+hsa:5159",
+      "index": 2,
+      "weight": 4,
+      "x": 174.03847532537512,
+      "y": 346.9988678067156,
+      "px": 174.03847532537512,
+      "py": 346.9988678067156,
+      "betweenness": 0.024878557548056852,
+      "ref": "3740",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "comment": [
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "PDGFA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5154+hsa:5155",
+      "index": 3,
+      "weight": 1,
+      "x": 234.72789060847612,
+      "y": 162.32407321709965,
+      "px": 234.72789060847612,
+      "py": 162.32407321709965,
+      "betweenness": 0,
+      "ref": "3739",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "comment": [
+        "ENDO"
+      ],
+      "type": "circle",
+      "label": "ELK1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2002",
+      "index": 4,
+      "weight": 1,
+      "x": 126.25021195965007,
+      "y": 36.669046106028055,
+      "px": 126.25021195965007,
+      "py": 36.669046106028055,
+      "betweenness": 0,
+      "ref": "3737",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "comment": [
+        "ENDO"
+      ],
+      "type": "circle",
+      "label": "ILK",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3611",
+      "index": 5,
+      "weight": 2,
+      "x": 265.7578288478313,
+      "y": 323.93518925136584,
+      "px": 265.7578288478313,
+      "py": 323.93518925136584,
+      "betweenness": 0,
+      "ref": "3736",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "comment": [
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "BAX",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:581",
+      "index": 6,
+      "weight": 1,
+      "x": 195.0120663057777,
+      "y": 469.634512151033,
+      "px": 195.0120663057777,
+      "py": 469.634512151033,
+      "betweenness": 0,
+      "ref": "3732",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "comment": [
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "BIRC5",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:332",
+      "index": 7,
+      "weight": 1,
+      "x": 229.19936029735535,
+      "y": 216.28257771951357,
+      "px": 229.19936029735535,
+      "py": 216.28257771951357,
+      "betweenness": 0,
+      "ref": "3730",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "comment": [
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "RHOA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:387+hsa:5879+hsa:5880+hsa:5881",
+      "index": 8,
+      "weight": 2,
+      "x": 256.7452653498255,
+      "y": 305.14941849445916,
+      "px": 256.7452653498255,
+      "py": 305.14941849445916,
+      "betweenness": 0.004251948107004601,
+      "ref": "3729",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "comment": [
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "APPL1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:26060",
+      "index": 9,
+      "weight": 2,
+      "x": 100.39643612248386,
+      "y": 18.950543116421706,
+      "px": 100.39643612248386,
+      "py": 18.950543116421706,
+      "betweenness": 0.00980986497657757,
+      "ref": "3726",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "comment": [
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "CASP3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:836",
+      "index": 10,
+      "weight": 2,
+      "x": 234.20901938599386,
+      "y": 266.08123421634826,
+      "px": 234.20901938599386,
+      "py": 266.08123421634826,
+      "betweenness": 0.00005511160099200882,
+      "ref": "3725",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "comment": [
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "DCC",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1630",
+      "index": 11,
+      "weight": 2,
+      "x": 389.7828714768424,
+      "y": 32.84058248987223,
+      "px": 389.7828714768424,
+      "py": 32.84058248987223,
+      "betweenness": 0.00980986497657757,
+      "ref": "3724",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "comment": [
+        "PANC"
+      ],
+      "type": "diamond",
+      "label": "C00416",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00416",
+      "index": 12,
+      "weight": 1,
+      "x": 463.03047094315144,
+      "y": 207.06932433627438,
+      "px": 463.03047094315144,
+      "py": 207.06932433627438,
+      "betweenness": 0,
+      "ref": "3722",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "RAD51",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5888",
+      "index": 13,
+      "weight": 1,
+      "x": 36.66975431115955,
+      "y": 172.78892551183,
+      "px": 36.66975431115955,
+      "py": 172.78892551183,
+      "betweenness": 0,
+      "ref": "3721",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "comment": [
+        "PANC",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "SMAD2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4087+hsa:4088",
+      "index": 14,
+      "weight": 3,
+      "x": 49.90019143875502,
+      "y": 395.5200175553777,
+      "px": 49.90019143875502,
+      "py": 395.5200175553777,
+      "betweenness": 0.01956461835216313,
+      "ref": "3720",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "STAT1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6772",
+      "index": 15,
+      "weight": 2,
+      "x": 517.2223908832901,
+      "y": 499.28022571677093,
+      "px": 517.2223908832901,
+      "py": 499.28022571677093,
+      "betweenness": 0.002156811682851916,
+      "ref": "3719",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "JAK1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3716",
+      "index": 16,
+      "weight": 3,
+      "x": 395.57835755645175,
+      "y": 231.27450563272254,
+      "px": 395.57835755645175,
+      "py": 231.27450563272254,
+      "betweenness": 0.011571057765601722,
+      "ref": "3718",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "comment": [
+        "COLO",
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "MAPK8",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5599+hsa:5601+hsa:5602",
+      "index": 17,
+      "weight": 2,
+      "x": 582.0506692092114,
+      "y": 270.46983658808887,
+      "px": 582.0506692092114,
+      "py": 270.46983658808887,
+      "betweenness": 0.008830628053554479,
+      "ref": "3717",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "PLD1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5337",
+      "index": 18,
+      "weight": 2,
+      "x": 556.9654961695469,
+      "y": 105.32662466025421,
+      "px": 556.9654961695469,
+      "py": 105.32662466025421,
+      "betweenness": 0.019729953155139156,
+      "ref": "3716",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "RALBP1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10928",
+      "index": 19,
+      "weight": 2,
+      "x": 111.63390250392688,
+      "y": 437.45432972127793,
+      "px": 111.63390250392688,
+      "py": 437.45432972127793,
+      "betweenness": 0.02943169441929431,
+      "ref": "3715",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "RALA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5898+hsa:5899",
+      "index": 20,
+      "weight": 3,
+      "x": 580.31671685105,
+      "y": 129.3667232883676,
+      "px": 580.31671685105,
+      "py": 129.3667232883676,
+      "betweenness": 0.04312396357103425,
+      "ref": "3714",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "comment": [
+        "PANC",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "RALGDS",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5900",
+      "index": 21,
+      "weight": 3,
+      "x": 458.49245668439283,
+      "y": 365.10564696601824,
+      "px": 458.49245668439283,
+      "py": 365.10564696601824,
+      "betweenness": 0.04669970108174009,
+      "ref": "3713",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "comment": [
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "ARHGEF6",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:9459",
+      "index": 22,
+      "weight": 2,
+      "x": 170.9255873791749,
+      "y": 172.63524663949346,
+      "px": 170.9255873791749,
+      "py": 172.63524663949346,
+      "betweenness": 0.013148531614677982,
+      "ref": "3712",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "FLT4",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2324",
+      "index": 23,
+      "weight": 1,
+      "x": 540.3520327328039,
+      "y": 285.66181663670267,
+      "px": 540.3520327328039,
+      "py": 285.66181663670267,
+      "betweenness": 0,
+      "ref": "3710",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "HEY1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:23462+hsa:23493+hsa:26508",
+      "index": 24,
+      "weight": 6,
+      "x": 85.17157532172045,
+      "y": 125.33635353538062,
+      "px": 85.17157532172045,
+      "py": 125.33635353538062,
+      "betweenness": 0.05484990222501713,
+      "ref": "3709",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "HES1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3280+hsa:388585",
+      "index": 25,
+      "weight": 6,
+      "x": 129.5716461122825,
+      "y": 409.0686191201373,
+      "px": 129.5716461122825,
+      "py": 409.0686191201373,
+      "betweenness": 0.05484990222501713,
+      "ref": "3708",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "FGF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2246+hsa:2247+hsa:2248+hsa:2249+hsa:2250+hsa:2251+hsa:2252+hsa:2253+hsa:2254+hsa:2255+hsa:2256+hsa:2257+hsa:2258+hsa:2259+hsa:26281+hsa:26291+hsa:27006+hsa:8074+hsa:8817+hsa:8822+hsa:8823+hsa:9965",
+      "index": 26,
+      "weight": 1,
+      "x": 275.6433729918274,
+      "y": 256.5217409102858,
+      "px": 275.6433729918274,
+      "py": 256.5217409102858,
+      "betweenness": 0,
+      "ref": "3707",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "comment": [
+        "BRCA",
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "BRCA2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:675",
+      "index": 27,
+      "weight": 1,
+      "x": 574.386253699096,
+      "y": 344.6856822512742,
+      "px": 574.386253699096,
+      "py": 344.6856822512742,
+      "betweenness": 0,
+      "ref": "3706",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "TNFSF11",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:8600",
+      "index": 28,
+      "weight": 1,
+      "x": 258.4182675466099,
+      "y": 310.5238921234269,
+      "px": 258.4182675466099,
+      "py": 310.5238921234269,
+      "betweenness": 0,
+      "ref": "3704",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "WNT4",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:54361+hsa:7471",
+      "index": 29,
+      "weight": 1,
+      "x": 490.66196190798934,
+      "y": 30.845202702649132,
+      "px": 490.66196190798934,
+      "py": 30.845202702649132,
+      "betweenness": 0,
+      "ref": "3703",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "FGFR1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2260",
+      "index": 30,
+      "weight": 3,
+      "x": 40.08312756645259,
+      "y": 125.91273105171314,
+      "px": 40.08312756645259,
+      "py": 125.91273105171314,
+      "betweenness": 0.0207690691674194,
+      "ref": "3702",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "NFKB2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4791",
+      "index": 31,
+      "weight": 2,
+      "x": 16.189242345636956,
+      "y": 145.16701639477904,
+      "px": 16.189242345636956,
+      "py": 145.16701639477904,
+      "betweenness": 0.000018370533664002937,
+      "ref": "3701",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "LRP6",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4040+hsa:4041",
+      "index": 32,
+      "weight": 2,
+      "x": 187.1972883263591,
+      "y": 380.0556849246048,
+      "px": 187.1972883263591,
+      "py": 380.0556849246048,
+      "betweenness": 0,
+      "ref": "3700",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "FRAT1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10023+hsa:23401",
+      "index": 33,
+      "weight": 1,
+      "x": 405.39085845512733,
+      "y": 154.78115787302153,
+      "px": 405.39085845512733,
+      "py": 154.78115787302153,
+      "betweenness": 0,
+      "ref": "3699",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "CSNK1A1L",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:122011+hsa:1452",
+      "index": 34,
+      "weight": 1,
+      "x": 107.23152504672915,
+      "y": 259.5807280137157,
+      "px": 107.23152504672915,
+      "py": 259.5807280137157,
+      "betweenness": 0,
+      "ref": "3698",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "PGR",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5241",
+      "index": 35,
+      "weight": 4,
+      "x": 486.5519359099107,
+      "y": 488.93165170189826,
+      "px": 486.5519359099107,
+      "py": 488.93165170189826,
+      "betweenness": 0.039349683108294294,
+      "ref": "3697",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "diamond",
+      "label": "C00410",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00410",
+      "index": 36,
+      "weight": 2,
+      "x": 343.32061098463254,
+      "y": 307.38006167353154,
+      "px": 343.32061098463254,
+      "py": 307.38006167353154,
+      "betweenness": 0,
+      "ref": "3696",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "DLL3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10683+hsa:28514+hsa:54567",
+      "index": 37,
+      "weight": 1,
+      "x": 11.521910232753406,
+      "y": 122.47515752706903,
+      "px": 11.521910232753406,
+      "py": 122.47515752706903,
+      "betweenness": 0,
+      "ref": "3694",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "comment": [
+        "COLO",
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "FOS",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2353",
+      "index": 38,
+      "weight": 4,
+      "x": 123.43250254992125,
+      "y": 265.95763956586757,
+      "px": 123.43250254992125,
+      "py": 265.95763956586757,
+      "betweenness": 0.053375433624015936,
+      "ref": "3693",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "comment": [
+        "GLIO",
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "IGF1R",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3480",
+      "index": 39,
+      "weight": 4,
+      "x": 360.87742722354704,
+      "y": 424.6137367435702,
+      "px": 360.87742722354704,
+      "py": 424.6137367435702,
+      "betweenness": 0.02487855754805686,
+      "ref": "3692",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "comment": [
+        "BRCA",
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "IGF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3479",
+      "index": 40,
+      "weight": 1,
+      "x": 34.78289682392782,
+      "y": 534.6271986236824,
+      "px": 34.78289682392782,
+      "py": 534.6271986236824,
+      "betweenness": 0,
+      "ref": "3691",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "NOTCH1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4851+hsa:4853+hsa:4854+hsa:4855",
+      "index": 41,
+      "weight": 6,
+      "x": 513.8288499044247,
+      "y": 305.7314776104598,
+      "px": 513.8288499044247,
+      "py": 305.7314776104598,
+      "betweenness": 0.05887756039312942,
+      "ref": "3690",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "JAG1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:182+hsa:3714",
+      "index": 42,
+      "weight": 1,
+      "x": 32.64378216352949,
+      "y": 408.20250197082294,
+      "px": 32.64378216352949,
+      "py": 408.20250197082294,
+      "betweenness": 0,
+      "ref": "3689",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "NCOA3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:8202+hsa:8648",
+      "index": 43,
+      "weight": 5,
+      "x": 112.6496697642253,
+      "y": 302.7784586809324,
+      "px": 112.6496697642253,
+      "py": 302.7784586809324,
+      "betweenness": 0.07763387526407643,
+      "ref": "3687",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "diamond",
+      "label": "C00951",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00951",
+      "index": 44,
+      "weight": 3,
+      "x": 497.4790856984588,
+      "y": 491.18732590625535,
+      "px": 497.4790856984588,
+      "py": 491.18732590625535,
+      "betweenness": 0.000036741067328005875,
+      "ref": "3686",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "comment": [
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "ESR1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2099+hsa:2100",
+      "index": 45,
+      "weight": 4,
+      "x": 100.72742817103234,
+      "y": 145.88275416679875,
+      "px": 100.72742817103234,
+      "py": 145.88275416679875,
+      "betweenness": 0.06103625003539438,
+      "ref": "3685",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "HGF",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3082",
+      "index": 46,
+      "weight": 1,
+      "x": 172.1172565837736,
+      "y": 145.0414624358509,
+      "px": 172.1172565837736,
+      "py": 145.0414624358509,
+      "betweenness": 0,
+      "ref": "3679",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "comment": [
+        "COLO",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "JUN",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3725",
+      "index": 47,
+      "weight": 2,
+      "x": 38.28642614062966,
+      "y": 179.12727166639098,
+      "px": 38.28642614062966,
+      "py": 179.12727166639098,
+      "betweenness": 0,
+      "ref": "3678",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "ETS1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2113",
+      "index": 48,
+      "weight": 1,
+      "x": 410.9706997966074,
+      "y": 487.77849576191545,
+      "px": 410.9706997966074,
+      "py": 487.77849576191545,
+      "betweenness": 0,
+      "ref": "3677",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "CDC42",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:998",
+      "index": 49,
+      "weight": 1,
+      "x": 333.12479168311194,
+      "y": 490.1679694777593,
+      "px": 333.12479168311194,
+      "py": 490.1679694777593,
+      "betweenness": 0,
+      "ref": "3676",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "RAP1A",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5906+hsa:5908",
+      "index": 50,
+      "weight": 1,
+      "x": 408.23424429554933,
+      "y": 230.33681736948253,
+      "px": 408.23424429554933,
+      "py": 230.33681736948253,
+      "betweenness": 0,
+      "ref": "3675",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "PAK4",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10298+hsa:106821730+hsa:5058+hsa:5062+hsa:5063+hsa:56924+hsa:57144",
+      "index": 51,
+      "weight": 2,
+      "x": 611.4704165888138,
+      "y": 307.0955116366032,
+      "px": 611.4704165888138,
+      "py": 307.0955116366032,
+      "betweenness": 0.019729953155139156,
+      "ref": "3674",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "GAB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2549",
+      "index": 52,
+      "weight": 5,
+      "x": 328.5874044517678,
+      "y": 420.2284315972618,
+      "px": 328.5874044517678,
+      "py": 420.2284315972618,
+      "betweenness": 0.040603213445026896,
+      "ref": "3673",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "MET",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4233",
+      "index": 53,
+      "weight": 3,
+      "x": 101.16769041278019,
+      "y": 35.22828216184907,
+      "px": 101.16769041278019,
+      "py": 35.22828216184907,
+      "betweenness": 0.019729953155139156,
+      "ref": "3672",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "RAPGEF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2889",
+      "index": 54,
+      "weight": 2,
+      "x": 221.45970158615745,
+      "y": 455.7571764312829,
+      "px": 221.45970158615745,
+      "py": 455.7571764312829,
+      "betweenness": 0.019729953155139156,
+      "ref": "3671",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "comment": [
+        "PANC",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "RAC1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5879+hsa:5880+hsa:5881",
+      "index": 55,
+      "weight": 4,
+      "x": 424.24348919545724,
+      "y": 278.34490203376765,
+      "px": 424.24348919545724,
+      "py": 278.34490203376765,
+      "betweenness": 0.09048851439526022,
+      "ref": "3670",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "PDGFB",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5155",
+      "index": 56,
+      "weight": 1,
+      "x": 437.59627536076755,
+      "y": 356.9085828934416,
+      "px": 437.59627536076755,
+      "py": 356.9085828934416,
+      "betweenness": 0,
+      "ref": "3667",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "comment": [
+        "RENA"
+      ],
+      "type": "diamond",
+      "label": "C00122",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00122",
+      "index": 57,
+      "weight": 1,
+      "x": 529.2566523540614,
+      "y": 198.18910406142757,
+      "px": 529.2566523540614,
+      "py": 198.18910406142757,
+      "betweenness": 0,
+      "ref": "3666",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "EPAS1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2034+hsa:3091",
+      "index": 58,
+      "weight": 8,
+      "x": 87.15621574858551,
+      "y": 69.27517633988388,
+      "px": 87.15621574858551,
+      "py": 69.27517633988388,
+      "betweenness": 0.22363198572347104,
+      "ref": "3663",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "EGLN2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:112398+hsa:112399+hsa:54583",
+      "index": 59,
+      "weight": 2,
+      "x": 429.9066403070462,
+      "y": 235.47583860804892,
+      "px": 429.9066403070462,
+      "py": 235.47583860804892,
+      "betweenness": 0.019729953155139156,
+      "ref": "3662",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "ARNT",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:405+hsa:9915",
+      "index": 60,
+      "weight": 1,
+      "x": 232.2276519592995,
+      "y": 247.35920141878793,
+      "px": 232.2276519592995,
+      "py": 247.35920141878793,
+      "betweenness": 0,
+      "ref": "3656",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "comment": [
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "SLC2A1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6513",
+      "index": 61,
+      "weight": 1,
+      "x": 15.330914023149663,
+      "y": 213.13782886500468,
+      "px": 15.330914023149663,
+      "py": 213.13782886500468,
+      "betweenness": 0,
+      "ref": "3655",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "comment": [
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "ALK",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:238+hsa:27436",
+      "index": 62,
+      "weight": 2,
+      "x": 291.5028122617952,
+      "y": 389.6827277048223,
+      "px": 291.5028122617952,
+      "py": 389.6827277048223,
+      "betweenness": 0.000780747680720125,
+      "ref": "3654",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "comment": [
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "PIK3CA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5290+hsa:5291+hsa:5293+hsa:5294",
+      "index": 63,
+      "weight": 4,
+      "x": 258.0861776371073,
+      "y": 442.7045815316563,
+      "px": 258.0861776371073,
+      "py": 442.7045815316563,
+      "betweenness": 0.010079011626216494,
+      "ref": "3651",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "comment": [
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "RASSF5",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:83593",
+      "index": 64,
+      "weight": 2,
+      "x": 532.1255508903353,
+      "y": 483.07717215074683,
+      "px": 532.1255508903353,
+      "py": 483.07717215074683,
+      "betweenness": 0.004875014762035981,
+      "ref": "3650",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "comment": [
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "STK4",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6789",
+      "index": 65,
+      "weight": 1,
+      "x": 74.55854957386393,
+      "y": 444.63804751167993,
+      "px": 74.55854957386393,
+      "py": 444.63804751167993,
+      "betweenness": 0,
+      "ref": "3649",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "comment": [
+        "GLIO",
+        "PANC",
+        "RENA",
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "TGFA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7039",
+      "index": 66,
+      "weight": 3,
+      "x": 407.32441194084595,
+      "y": 236.60685770028442,
+      "px": 407.32441194084595,
+      "py": 236.60685770028442,
+      "betweenness": 0.08481531052762797,
+      "ref": "3648",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "comment": [
+        "GLIO",
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "PLCG1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5335+hsa:5336",
+      "index": 67,
+      "weight": 7,
+      "x": 292.2874505012275,
+      "y": 28.80190321515955,
+      "px": 292.2874505012275,
+      "py": 28.80190321515955,
+      "betweenness": 0.026849608359376147,
+      "ref": "3647",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "comment": [
+        "nSCLC",
+        "ENDO"
+      ],
+      "type": "circle",
+      "label": "FOXO3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2309",
+      "index": 68,
+      "weight": 1,
+      "x": 281.4268575201228,
+      "y": 13.673591379234054,
+      "px": 281.4268575201228,
+      "py": 13.673591379234054,
+      "betweenness": 0,
+      "ref": "3646",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 6
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "comment": [
+        "GLIO",
+        "nSCLC"
+      ],
+      "type": "diamond",
+      "label": "C01245",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C01245",
+      "index": 69,
+      "weight": 2,
+      "x": 285.09655619511983,
+      "y": 330.5230156791247,
+      "px": 285.09655619511983,
+      "py": 330.5230156791247,
+      "betweenness": 0,
+      "ref": "3645",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "comment": [
+        "GLIO",
+        "nSCLC"
+      ],
+      "type": "diamond",
+      "label": "C00165",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00165",
+      "index": 70,
+      "weight": 3,
+      "x": 290.36075463908946,
+      "y": 158.24568964584068,
+      "px": 290.36075463908946,
+      "py": 158.24568964584068,
+      "betweenness": 0.004784211838496766,
+      "ref": "3644",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "comment": [
+        "GLIO",
+        "nSCLC"
+      ],
+      "type": "diamond",
+      "label": "C00076",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00076",
+      "index": 71,
+      "weight": 2,
+      "x": 166.72354588367327,
+      "y": 25.72442478143211,
+      "px": 166.72354588367327,
+      "py": 25.72442478143211,
+      "betweenness": 0.0010353107900641658,
+      "ref": "3643",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "comment": [
+        "nSCLC",
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "PRKCA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5578+hsa:5579+hsa:5582",
+      "index": 72,
+      "weight": 4,
+      "x": 548.5928707277045,
+      "y": 46.651608597490274,
+      "px": 548.5928707277045,
+      "py": 46.651608597490274,
+      "betweenness": 0.023557032564878715,
+      "ref": "3642",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "CDKN2B",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1030",
+      "index": 73,
+      "weight": 2,
+      "x": 4.073837968817378,
+      "y": 410.9297636880586,
+      "px": 4.073837968817378,
+      "py": 410.9297636880586,
+      "betweenness": 0.003223503785642118,
+      "ref": "3641",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "SKP2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6502",
+      "index": 74,
+      "weight": 2,
+      "x": 345.82655144726726,
+      "y": 493.3834031579389,
+      "px": 345.82655144726726,
+      "py": 493.3834031579389,
+      "betweenness": 0.0042530859422565135,
+      "ref": "3640",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "TRAF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7185+hsa:7186+hsa:7187+hsa:7188+hsa:7189+hsa:9618",
+      "index": 75,
+      "weight": 1,
+      "x": 598.6012190140381,
+      "y": 151.28824983118008,
+      "px": 598.6012190140381,
+      "py": 151.28824983118008,
+      "betweenness": 0,
+      "ref": "3639",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "PTGS2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5743",
+      "index": 76,
+      "weight": 1,
+      "x": 152.02293019782473,
+      "y": 452.70150108299975,
+      "px": 152.02293019782473,
+      "py": 452.70150108299975,
+      "betweenness": 0,
+      "ref": "3638",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "NOS2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4843",
+      "index": 77,
+      "weight": 1,
+      "x": 514.5108280587912,
+      "y": 71.32601597355321,
+      "px": 514.5108280587912,
+      "py": 71.32601597355321,
+      "betweenness": 0,
+      "ref": "3637",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "BIRC8",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:112401+hsa:329+hsa:330+hsa:331+hsa:79444",
+      "index": 78,
+      "weight": 1,
+      "x": 556.6102126634571,
+      "y": 163.4275544441192,
+      "px": 556.6102126634571,
+      "py": 163.4275544441192,
+      "betweenness": 0,
+      "ref": "3636",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "LAMC3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10319+hsa:1282+hsa:1284+hsa:1285+hsa:1286+hsa:1287+hsa:1288+hsa:22798+hsa:2335+hsa:284217+hsa:3908+hsa:3909+hsa:3910+hsa:3911+hsa:3912+hsa:3913+hsa:3914+hsa:3915+hsa:3918",
+      "index": 79,
+      "weight": 1,
+      "x": 12.047569545896959,
+      "y": 25.574653519332696,
+      "px": 12.047569545896959,
+      "py": 25.574653519332696,
+      "betweenness": 0,
+      "ref": "3634",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "comment": [
+        "COLO",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "CYCS",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:54205",
+      "index": 80,
+      "weight": 1,
+      "x": 319.3909152385623,
+      "y": 250.01487660938767,
+      "px": 319.3909152385623,
+      "py": 250.01487660938767,
+      "betweenness": 0,
+      "ref": "3633",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "PTK2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5747",
+      "index": 81,
+      "weight": 2,
+      "x": 256.6414850821738,
+      "y": 516.2681809033135,
+      "px": 256.6414850821738,
+      "py": 516.2681809033135,
+      "betweenness": 0.05852852025351335,
+      "ref": "3631",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "MAX",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4149",
+      "index": 82,
+      "weight": 1,
+      "x": 294.0211608677294,
+      "y": 156.02612264433475,
+      "px": 294.0211608677294,
+      "py": 156.02612264433475,
+      "betweenness": 0,
+      "ref": "3630",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "APAF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:317",
+      "index": 83,
+      "weight": 1,
+      "x": 69.86980488933776,
+      "y": 395.35509834048764,
+      "px": 69.86980488933776,
+      "py": 395.35509834048764,
+      "betweenness": 0,
+      "ref": "3629",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "CKS1B",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1163+hsa:1164",
+      "index": 84,
+      "weight": 2,
+      "x": 247.06766552128727,
+      "y": 539.295155944635,
+      "px": 247.06766552128727,
+      "py": 539.295155944635,
+      "betweenness": 0.007397071560753016,
+      "ref": "3628",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "comment": [
+        "nSCLC",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "RARB",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5915",
+      "index": 85,
+      "weight": 3,
+      "x": 573.9358447969374,
+      "y": 518.3296447158232,
+      "px": 573.9358447969374,
+      "py": 518.3296447158232,
+      "betweenness": 0,
+      "ref": "3627",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "comment": [
+        "SCLC",
+        "nSCLC"
+      ],
+      "type": "diamond",
+      "label": "C00777",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00777+C15493",
+      "index": 86,
+      "weight": 2,
+      "x": 520.3772243674637,
+      "y": 51.16177680141514,
+      "px": 520.3772243674637,
+      "py": 51.16177680141514,
+      "betweenness": 0,
+      "ref": "3626",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "PIAS2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:9063",
+      "index": 87,
+      "weight": 2,
+      "x": 473.73477217320107,
+      "y": 180.14268424040696,
+      "px": 473.73477217320107,
+      "py": 180.14268424040696,
+      "betweenness": 0.0007207464468417899,
+      "ref": "3625",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "ITGA6",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3655+hsa:3673+hsa:3674+hsa:3675+hsa:3685",
+      "index": 88,
+      "weight": 2,
+      "x": 554.6783645880561,
+      "y": 71.82281416478422,
+      "px": 554.6783645880561,
+      "py": 71.82281416478422,
+      "betweenness": 0.039239459906310274,
+      "ref": "3624",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "comment": [
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "ITGB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3688",
+      "index": 89,
+      "weight": 2,
+      "x": 440.5423845747995,
+      "y": 397.85244536487096,
+      "px": 440.5423845747995,
+      "py": 397.85244536487096,
+      "betweenness": 0.019729953155139153,
+      "ref": "3623",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "EIF4EBP1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1978",
+      "index": 90,
+      "weight": 1,
+      "x": 13.557671607297165,
+      "y": 21.49972157742296,
+      "px": 13.557671607297165,
+      "py": 21.49972157742296,
+      "betweenness": 0,
+      "ref": "3619",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "comment": [
+        "BRCA",
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "KIT",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3815",
+      "index": 91,
+      "weight": 4,
+      "x": 328.03811315917886,
+      "y": 227.3271051472821,
+      "px": 328.03811315917886,
+      "py": 227.3271051472821,
+      "betweenness": 0.017230201790691207,
+      "ref": "3618",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "comment": [
+        "BRCA",
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "RPS6KB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6198+hsa:6199",
+      "index": 92,
+      "weight": 1,
+      "x": 492.9592994919308,
+      "y": 299.39111986275066,
+      "px": 492.9592994919308,
+      "py": 299.39111986275066,
+      "betweenness": 0,
+      "ref": "3617",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "PIM2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:11040",
+      "index": 93,
+      "weight": 1,
+      "x": 502.3399598573877,
+      "y": 309.30275065286946,
+      "px": 502.3399598573877,
+      "py": 309.30275065286946,
+      "betweenness": 0,
+      "ref": "3616",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "PIM1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5292",
+      "index": 94,
+      "weight": 1,
+      "x": 196.54505914138463,
+      "y": 107.8459377419699,
+      "px": 196.54505914138463,
+      "py": 107.8459377419699,
+      "betweenness": 0,
+      "ref": "3615",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "PML",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5371+hsa:5914",
+      "index": 95,
+      "weight": 3,
+      "x": 546.1997057882804,
+      "y": 92.01854721733073,
+      "px": 546.1997057882804,
+      "py": 92.01854721733073,
+      "betweenness": 0.016073931057802804,
+      "ref": "3614",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "CCNA1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:8900",
+      "index": 96,
+      "weight": 2,
+      "x": 492.7250219284197,
+      "y": 20.714389309788423,
+      "px": 492.7250219284197,
+      "py": 20.714389309788423,
+      "betweenness": 0.0002472956454769626,
+      "ref": "3613",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "JUP",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3728",
+      "index": 97,
+      "weight": 7,
+      "x": 228.80425549007808,
+      "y": 12.307953270195267,
+      "px": 228.80425549007808,
+      "py": 12.307953270195267,
+      "betweenness": 0.08881943135164734,
+      "ref": "3612",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "comment": [
+        "AMLE",
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "STAT3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6774+hsa:6776+hsa:6777",
+      "index": 98,
+      "weight": 6,
+      "x": 529.4241706072615,
+      "y": 477.8025147903025,
+      "px": 529.4241706072615,
+      "py": 477.8025147903025,
+      "betweenness": 0.05543486136662603,
+      "ref": "3611",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "PPARD",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5467",
+      "index": 99,
+      "weight": 1,
+      "x": 279.3195424242426,
+      "y": 409.4317795325214,
+      "px": 279.3195424242426,
+      "py": 409.4317795325214,
+      "betweenness": 0,
+      "ref": "3610",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "RUNX1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:861+hsa:862",
+      "index": 100,
+      "weight": 3,
+      "x": 298.88619054930285,
+      "y": 291.5521749536379,
+      "px": 298.88619054930285,
+      "py": 291.5521749536379,
+      "betweenness": 0.009498184552728833,
+      "ref": "3607",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "CEBPA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1050",
+      "index": 101,
+      "weight": 2,
+      "x": 88.5648252685896,
+      "y": 46.638725669447034,
+      "px": 88.5648252685896,
+      "py": 46.638725669447034,
+      "betweenness": 0.004152618544040584,
+      "ref": "3606",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "SPI1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6688",
+      "index": 102,
+      "weight": 3,
+      "x": 81.91882852783077,
+      "y": 301.5186213698181,
+      "px": 81.91882852783077,
+      "py": 301.5186213698181,
+      "betweenness": 0.016226083578781633,
+      "ref": "3605",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "FLT3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2322",
+      "index": 103,
+      "weight": 5,
+      "x": 14.98618157806956,
+      "y": 352.11713444688,
+      "px": 14.98618157806956,
+      "py": 352.11713444688,
+      "betweenness": 0.060898748307814124,
+      "ref": "3604",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "comment": [
+        "nSCLC",
+        "COLO",
+        "PANC",
+        "AMLE",
+        "ENDO"
+      ],
+      "type": "circle",
+      "label": "KRAS",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3845",
+      "index": 104,
+      "weight": 4,
+      "x": 334.6772609860945,
+      "y": 489.19431147488626,
+      "px": 334.6772609860945,
+      "py": 489.19431147488626,
+      "betweenness": 0.07413928363567907,
+      "ref": "3603",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 6
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "comment": [
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "RARA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5914+hsa:7704",
+      "index": 105,
+      "weight": 2,
+      "x": 4.996783514545216,
+      "y": 154.61341181898004,
+      "px": 4.996783514545216,
+      "py": 154.61341181898004,
+      "betweenness": 0.007178130953275621,
+      "ref": "3602",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "SMAD3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4088",
+      "index": 106,
+      "weight": 2,
+      "x": 54.79273330615555,
+      "y": 250.12024293467243,
+      "px": 54.79273330615555,
+      "py": 250.12024293467243,
+      "betweenness": 0.00005511160099200882,
+      "ref": "3600",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "CBLC",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:23624+hsa:867+hsa:868",
+      "index": 107,
+      "weight": 2,
+      "x": 181.6804664015925,
+      "y": 277.0884543899844,
+      "px": 181.6804664015925,
+      "py": 277.0884543899844,
+      "betweenness": 0,
+      "ref": "3599",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "comment": [
+        "RENA",
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "CRK",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1398+hsa:1399",
+      "index": 108,
+      "weight": 6,
+      "x": 570.0950304205917,
+      "y": 191.86283906960645,
+      "px": 570.0950304205917,
+      "py": 191.86283906960645,
+      "betweenness": 0.06504157426725629,
+      "ref": "3598",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 109,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "GAB2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:9846",
+      "index": 109,
+      "weight": 3,
+      "x": 368.9763882496092,
+      "y": 83.16369163297695,
+      "px": 368.9763882496092,
+      "py": 83.16369163297695,
+      "betweenness": 0.014887615549765221,
+      "ref": "3597",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "comment": [
+        "CMLE",
+        "GLIO",
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "SHC2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:25759+hsa:399694+hsa:53358+hsa:6464",
+      "index": 110,
+      "weight": 8,
+      "x": 394.51999338916124,
+      "y": 456.29010246408353,
+      "px": 394.51999338916124,
+      "py": 456.29010246408353,
+      "betweenness": 0.03228911405631106,
+      "ref": "3596",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "comment": [
+        "PANC",
+        "COLO",
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "SMAD4",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4089",
+      "index": 111,
+      "weight": 2,
+      "x": 497.32013812132107,
+      "y": 173.9293402700983,
+      "px": 497.32013812132107,
+      "py": 173.9293402700983,
+      "betweenness": 0.00005511160099200882,
+      "ref": "3595",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "STAT5A",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6776+hsa:6777",
+      "index": 112,
+      "weight": 2,
+      "x": 30.367892700967026,
+      "y": 240.01817140029576,
+      "px": 30.367892700967026,
+      "py": 240.01817140029576,
+      "betweenness": 0.0033621945753120265,
+      "ref": "3594",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 113,
+      "comment": [
+        "PANC",
+        "COLO",
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "TGFBR1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7046",
+      "index": 113,
+      "weight": 4,
+      "x": 426.5676545261253,
+      "y": 495.57787963154084,
+      "px": 426.5676545261253,
+      "py": 495.57787963154084,
+      "betweenness": 0.01956461835216313,
+      "ref": "3593",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "comment": [
+        "CMLE",
+        "PANC",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "TGFBR2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7048",
+      "index": 114,
+      "weight": 4,
+      "x": 249.24125233901592,
+      "y": 310.50836693658863,
+      "px": 249.24125233901592,
+      "py": 310.50836693658863,
+      "betweenness": 0.07759713419674842,
+      "ref": "3592",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 115,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "CTBP1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1487+hsa:1488",
+      "index": 115,
+      "weight": 1,
+      "x": 91.5509553291958,
+      "y": 550.0304993940532,
+      "px": 91.5509553291958,
+      "py": 550.0304993940532,
+      "betweenness": 0,
+      "ref": "3591",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "HDAC1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3065+hsa:3066",
+      "index": 116,
+      "weight": 2,
+      "x": 384.28792320912873,
+      "y": 231.6699355538883,
+      "px": 384.28792320912873,
+      "py": 231.6699355538883,
+      "betweenness": 0.00011022320198401764,
+      "ref": "3590",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 117,
+      "comment": [
+        "PANC",
+        "CMLE",
+        "RENA",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "TGFB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7040+hsa:7042+hsa:7043",
+      "index": 117,
+      "weight": 2,
+      "x": 139.5950695052394,
+      "y": 385.2773859329517,
+      "px": 139.5950695052394,
+      "py": 385.2773859329517,
+      "betweenness": 0.09644530173601543,
+      "ref": "3589",
+      "pie": [
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "ABL1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:25+hsa:613",
+      "index": 118,
+      "weight": 5,
+      "x": 253.0585848455064,
+      "y": 539.0009634536318,
+      "px": 253.0585848455064,
+      "py": 539.0009634536318,
+      "betweenness": 0.06173761675389215,
+      "ref": "3587",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 119,
+      "comment": [
+        "CMLE",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "PTPN11",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5781",
+      "index": 119,
+      "weight": 3,
+      "x": 469.8318423811071,
+      "y": 293.794149080502,
+      "px": 469.8318423811071,
+      "py": 293.794149080502,
+      "betweenness": 0.03174916176456061,
+      "ref": "3586",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 120,
+      "comment": [
+        "CMLE",
+        "PANC",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "BCL2L1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:598",
+      "index": 120,
+      "weight": 4,
+      "x": 293.83422719380843,
+      "y": 196.91735944640806,
+      "px": 293.83422719380843,
+      "py": 196.91735944640806,
+      "betweenness": 0.014516388961801813,
+      "ref": "3585",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 121,
+      "comment": [
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "MECOM",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2122",
+      "index": 121,
+      "weight": 1,
+      "x": 597.9567293324686,
+      "y": 442.20975985897906,
+      "px": 597.9567293324686,
+      "py": 442.20975985897906,
+      "betweenness": 0,
+      "ref": "3584",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 122,
+      "comment": [
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "RPS6KA5",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:9252",
+      "index": 122,
+      "weight": 1,
+      "x": 452.33850743706483,
+      "y": 180.45709546877256,
+      "px": 452.33850743706483,
+      "py": 180.45709546877256,
+      "betweenness": 0,
+      "ref": "3578",
+      "pie": [
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "comment": [
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "FGFR3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2261",
+      "index": 123,
+      "weight": 1,
+      "x": 275.6639351966417,
+      "y": 101.02128009664787,
+      "px": 275.6639351966417,
+      "py": 101.02128009664787,
+      "betweenness": 0,
+      "ref": "3577",
+      "pie": [
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 124,
+      "comment": [
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "DAPK1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1612+hsa:1613+hsa:23604",
+      "index": 124,
+      "weight": 1,
+      "x": 498.71836955627253,
+      "y": 140.3579321935642,
+      "px": 498.71836955627253,
+      "py": 140.3579321935642,
+      "betweenness": 0,
+      "ref": "3576",
+      "pie": [
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 125,
+      "comment": [
+        "BLAD",
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "RASSF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:11186",
+      "index": 125,
+      "weight": 4,
+      "x": 509.46716725952484,
+      "y": 155.45455551676667,
+      "px": 509.46716725952484,
+      "py": 155.45455551676667,
+      "betweenness": 0.07619069913065565,
+      "ref": "3575",
+      "pie": [
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 126,
+      "comment": [
+        "BRCA",
+        "PANC",
+        "nSCLC",
+        "BLAD",
+        "ENDO"
+      ],
+      "type": "circle",
+      "label": "ERBB2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2064",
+      "index": 126,
+      "weight": 11,
+      "x": 452.16158475843446,
+      "y": 244.75734911804366,
+      "px": 452.16158475843446,
+      "py": 244.75734911804366,
+      "betweenness": 0.1418343795992182,
+      "ref": "3574",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 6
+        }
+      ]
+    },
+    {
+      "id": 127,
+      "comment": [
+        "RENA",
+        "PANC",
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "VEGFA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7422",
+      "index": 127,
+      "weight": 4,
+      "x": 26.89976960702904,
+      "y": 520.9210766124493,
+      "px": 26.89976960702904,
+      "py": 520.9210766124493,
+      "betweenness": 0.14675312058513315,
+      "ref": "3571",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "comment": [
+        "CMLE",
+        "MELA",
+        "BLAD",
+        "GLIO",
+        "PANC",
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "CDKN2A",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1029",
+      "index": 128,
+      "weight": 3,
+      "x": 9.157659914601293,
+      "y": 251.42899226815857,
+      "px": 9.157659914601293,
+      "py": 251.42899226815857,
+      "betweenness": 0.004847196525344775,
+      "ref": "3565",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 129,
+      "comment": [
+        "nSCLC",
+        "MELA",
+        "CMLE",
+        "PANC",
+        "GLIO",
+        "BRCA",
+        "SCLC",
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "CDK4",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1019+hsa:1021",
+      "index": 129,
+      "weight": 6,
+      "x": 283.0862568900975,
+      "y": 65.65449316917457,
+      "px": 283.0862568900975,
+      "py": 65.65449316917457,
+      "betweenness": 0.02153733930256389,
+      "ref": "3563",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 130,
+      "comment": [
+        "MELA",
+        "AMLE"
+      ],
+      "type": "circle",
+      "label": "NRAS",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4893",
+      "index": 130,
+      "weight": 2,
+      "x": 323.7042224845657,
+      "y": 382.8484644775691,
+      "px": 323.7042224845657,
+      "py": 382.8484644775691,
+      "betweenness": 0.004938478134950995,
+      "ref": "3562",
+      "pie": [
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 131,
+      "comment": [
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "HHIP",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:64399",
+      "index": 131,
+      "weight": 1,
+      "x": 560.2457154301621,
+      "y": 232.9439514242955,
+      "px": 560.2457154301621,
+      "py": 232.9439514242955,
+      "betweenness": 0,
+      "ref": "3558",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "comment": [
+        "BASA",
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "FZD10",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:11211+hsa:2535+hsa:7855+hsa:7976+hsa:8321+hsa:8322+hsa:8323+hsa:8324+hsa:8325+hsa:8326",
+      "index": 132,
+      "weight": 3,
+      "x": 351.1359905299128,
+      "y": 325.47656113908937,
+      "px": 351.1359905299128,
+      "py": 325.47656113908937,
+      "betweenness": 0.13348029760264535,
+      "ref": "3554",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        },
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 133,
+      "comment": [
+        "BASA",
+        "BRCA"
+      ],
+      "type": "circle",
+      "label": "DVL1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1855+hsa:1856+hsa:1857",
+      "index": 133,
+      "weight": 3,
+      "x": 580.2879896169368,
+      "y": 286.30007176430223,
+      "px": 580.2879896169368,
+      "py": 286.30007176430223,
+      "betweenness": 0.1705152934692753,
+      "ref": "3553",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        },
+        {
+          "value": 1,
+          "study": 3
+        }
+      ]
+    },
+    {
+      "id": 134,
+      "comment": [
+        "COLO",
+        "ENDO",
+        "BRCA",
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "AXIN1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:8312+hsa:8313",
+      "index": 134,
+      "weight": 4,
+      "x": 188.46722792161543,
+      "y": 546.2422871512291,
+      "px": 188.46722792161543,
+      "py": 546.2422871512291,
+      "betweenness": 0.019729953155139156,
+      "ref": "3552",
+      "pie": [
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 135,
+      "comment": [
+        "BRCA",
+        "ENDO",
+        "COLO",
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "APC2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10297+hsa:324",
+      "index": 135,
+      "weight": 2,
+      "x": 38.99529514273971,
+      "y": 224.54222831514534,
+      "px": 38.99529514273971,
+      "py": 224.54222831514534,
+      "betweenness": 0,
+      "ref": "3550",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 136,
+      "comment": [
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "SHH",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6469",
+      "index": 136,
+      "weight": 1,
+      "x": 112.6377660547021,
+      "y": 394.1569243069124,
+      "px": 112.6377660547021,
+      "py": 394.1569243069124,
+      "betweenness": 0,
+      "ref": "3549",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 137,
+      "comment": [
+        "BRCA",
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "WNT16",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:51384+hsa:54361+hsa:7471+hsa:7472+hsa:7473+hsa:7474+hsa:7475+hsa:7476+hsa:7477+hsa:7478+hsa:7479+hsa:7480+hsa:7481+hsa:7482+hsa:7483+hsa:7484+hsa:80326+hsa:81029+hsa:89780",
+      "index": 137,
+      "weight": 3,
+      "x": 119.38626869744371,
+      "y": 424.3923558156903,
+      "px": 119.38626869744371,
+      "py": 424.3923558156903,
+      "betweenness": 0.09644530173601543,
+      "ref": "3548",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 138,
+      "comment": [
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "BMP2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:650+hsa:652",
+      "index": 138,
+      "weight": 1,
+      "x": 248.60514616766395,
+      "y": 461.89881351876096,
+      "px": 248.60514616766395,
+      "py": 461.89881351876096,
+      "betweenness": 0,
+      "ref": "3547",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 139,
+      "comment": [
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "PTCH1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5727+hsa:8643",
+      "index": 139,
+      "weight": 2,
+      "x": 370.34359693211894,
+      "y": 68.3905629670996,
+      "px": 370.34359693211894,
+      "py": 68.3905629670996,
+      "betweenness": 0.019729953155139156,
+      "ref": "3546",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 140,
+      "comment": [
+        "BASA"
+      ],
+      "type": "circle",
+      "label": "GLI1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2735",
+      "index": 140,
+      "weight": 6,
+      "x": 527.2636661432492,
+      "y": 541.6880289681322,
+      "px": 527.2636661432492,
+      "py": 541.6880289681322,
+      "betweenness": 0.0781482502066685,
+      "ref": "3545",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        }
+      ]
+    },
+    {
+      "id": 141,
+      "comment": [
+        "THYR"
+      ],
+      "type": "circle",
+      "label": "TFG",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10342+hsa:4914+hsa:7170+hsa:7175",
+      "index": 141,
+      "weight": 1,
+      "x": 95.98551971832919,
+      "y": 287.30030484263915,
+      "px": 95.98551971832919,
+      "py": 287.30030484263915,
+      "betweenness": 0,
+      "ref": "3539",
+      "pie": [
+        {
+          "value": 1,
+          "study": 14
+        }
+      ]
+    },
+    {
+      "id": 142,
+      "comment": [
+        "THYR"
+      ],
+      "type": "circle",
+      "label": "RET",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5979+hsa:8030+hsa:8031",
+      "index": 142,
+      "weight": 1,
+      "x": 75.23313555156143,
+      "y": 480.2073480893672,
+      "px": 75.23313555156143,
+      "py": 480.2073480893672,
+      "betweenness": 0,
+      "ref": "3538",
+      "pie": [
+        {
+          "value": 1,
+          "study": 14
+        }
+      ]
+    },
+    {
+      "id": 143,
+      "comment": [
+        "ENDO",
+        "BLAD",
+        "THYR",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "CDH1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:999",
+      "index": 143,
+      "weight": 1,
+      "x": 117.29759979163661,
+      "y": 469.3331601272114,
+      "px": 117.29759979163661,
+      "py": 469.3331601272114,
+      "betweenness": 0,
+      "ref": "3536",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 144,
+      "comment": [
+        "BRCA",
+        "CMLE",
+        "BLAD",
+        "COLO",
+        "THYR",
+        "ENDO",
+        "AMLE",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "MYC",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4609",
+      "index": 144,
+      "weight": 11,
+      "x": 536.892687576603,
+      "y": 134.66606437010051,
+      "px": 536.892687576603,
+      "py": 134.66606437010051,
+      "betweenness": 0.1526888872808662,
+      "ref": "3535",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 145,
+      "comment": [
+        "SCLC",
+        "THYR",
+        "nSCLC"
+      ],
+      "type": "circle",
+      "label": "RXRA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6256+hsa:6257+hsa:6258",
+      "index": 145,
+      "weight": 4,
+      "x": 307.1337161746557,
+      "y": 469.34207446967196,
+      "px": 307.1337161746557,
+      "py": 469.34207446967196,
+      "betweenness": 0.00022044640396803528,
+      "ref": "3534",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 9
+        }
+      ]
+    },
+    {
+      "id": 146,
+      "comment": [
+        "THYR",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "BRAF",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:673",
+      "index": 146,
+      "weight": 2,
+      "x": 564.0600179419539,
+      "y": 511.3994804942643,
+      "px": 564.0600179419539,
+      "py": 511.3994804942643,
+      "betweenness": 0.008116522343582141,
+      "ref": "3533",
+      "pie": [
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 147,
+      "comment": [
+        "THYR"
+      ],
+      "type": "circle",
+      "label": "PPARG",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5468",
+      "index": 147,
+      "weight": 1,
+      "x": 447.6512791493067,
+      "y": 100.17574026152298,
+      "px": 447.6512791493067,
+      "py": 100.17574026152298,
+      "betweenness": 0,
+      "ref": "3532",
+      "pie": [
+        {
+          "value": 1,
+          "study": 14
+        }
+      ]
+    },
+    {
+      "id": 148,
+      "comment": [
+        "ENDO",
+        "nSCLC",
+        "PROS",
+        "BRCA",
+        "AMLE",
+        "BLAD",
+        "COLO",
+        "GLIO",
+        "RENA",
+        "PANC",
+        "CMLE",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "ARAF",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:369+hsa:5894+hsa:673",
+      "index": 148,
+      "weight": 5,
+      "x": 243.41841694429914,
+      "y": 345.53745793306746,
+      "px": 243.41841694429914,
+      "py": 345.53745793306746,
+      "betweenness": 0.031645782616617,
+      "ref": "3530",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 149,
+      "comment": [
+        "ENDO",
+        "nSCLC",
+        "COLO",
+        "PROS",
+        "BRCA",
+        "AMLE",
+        "BLAD",
+        "GLIO",
+        "THYR",
+        "RENA",
+        "PANC",
+        "CMLE",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "MAP2K1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5604+hsa:5605",
+      "index": 149,
+      "weight": 4,
+      "x": 270.2279806428544,
+      "y": 341.5753765341927,
+      "px": 270.2279806428544,
+      "py": 341.5753765341927,
+      "betweenness": 0.05318167270858308,
+      "ref": "3529",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 150,
+      "comment": [
+        "ENDO",
+        "nSCLC",
+        "COLO",
+        "BRCA",
+        "PROS",
+        "AMLE",
+        "GLIO",
+        "BLAD",
+        "THYR",
+        "PANC",
+        "RENA",
+        "CMLE",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "MAPK1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5594+hsa:5595",
+      "index": 150,
+      "weight": 12,
+      "x": 59.968977758287664,
+      "y": 192.15138643093826,
+      "px": 59.968977758287664,
+      "py": 192.15138643093826,
+      "betweenness": 0.24013522510229912,
+      "ref": "3528",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 151,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "GSTP1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2950",
+      "index": 151,
+      "weight": 1,
+      "x": 506.847716595332,
+      "y": 195.7772812925981,
+      "px": 506.847716595332,
+      "py": 195.7772812925981,
+      "betweenness": 0,
+      "ref": "3526",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 152,
+      "comment": [
+        "BRCA",
+        "CMLE",
+        "MELA",
+        "PANC",
+        "nSCLC",
+        "ENDO",
+        "SCLC",
+        "PROS",
+        "GLIO",
+        "AMLE",
+        "COLO",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "PIK3R5",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503",
+      "index": 152,
+      "weight": 17,
+      "x": 194.03601325983536,
+      "y": 127.35921012447622,
+      "px": 194.03601325983536,
+      "py": 127.35921012447622,
+      "betweenness": 0.5046310870617764,
+      "ref": "3525",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 153,
+      "comment": [
+        "RENA",
+        "PANC",
+        "CMLE",
+        "MELA",
+        "nSCLC",
+        "ENDO",
+        "PROS",
+        "GLIO",
+        "SCLC",
+        "BRCA",
+        "AMLE",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "AKT3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10000+hsa:207+hsa:208",
+      "index": 153,
+      "weight": 17,
+      "x": 239.94223075200807,
+      "y": 261.92051768185314,
+      "px": 239.94223075200807,
+      "py": 261.92051768185314,
+      "betweenness": 0.5806195192961141,
+      "ref": "3524",
+      "pie": [
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 154,
+      "comment": [
+        "BRCA",
+        "PROS",
+        "AMLE",
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "MTOR",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2475",
+      "index": 154,
+      "weight": 3,
+      "x": 165.99157078103377,
+      "y": 297.9556409008965,
+      "px": 165.99157078103377,
+      "py": 297.9556409008965,
+      "betweenness": 0.039349683108294294,
+      "ref": "3522",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 155,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "HSP90AA1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3320+hsa:3326+hsa:7184",
+      "index": 155,
+      "weight": 2,
+      "x": 259.0920638202934,
+      "y": 115.5862053834669,
+      "px": 259.0920638202934,
+      "py": 115.5862053834669,
+      "betweenness": 0,
+      "ref": "3521",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 156,
+      "comment": [
+        "BASA",
+        "BRCA",
+        "ENDO",
+        "PROS",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "GSK3B",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2932",
+      "index": 156,
+      "weight": 6,
+      "x": 128.03350427403623,
+      "y": 302.643039241764,
+      "px": 128.03350427403623,
+      "py": 302.643039241764,
+      "betweenness": 0.26193050756842456,
+      "ref": "3520",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 157,
+      "comment": [
+        "GLIO",
+        "BRCA",
+        "nSCLC",
+        "MELA",
+        "CMLE",
+        "PANC",
+        "ENDO",
+        "PROS",
+        "SCLC",
+        "AMLE"
+      ],
+      "type": "diamond",
+      "label": "C05981",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C05981",
+      "index": 157,
+      "weight": 8,
+      "x": 8.136400443354221,
+      "y": 524.1717272653137,
+      "px": 8.136400443354221,
+      "py": 524.1717272653137,
+      "betweenness": 0.06275487732187796,
+      "ref": "3519",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 0
+        }
+      ]
+    },
+    {
+      "id": 158,
+      "comment": [
+        "nSCLC",
+        "GLIO",
+        "ENDO",
+        "CMLE",
+        "BRCA",
+        "PROS",
+        "AMLE",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "GRB2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2885",
+      "index": 158,
+      "weight": 10,
+      "x": 509.52825622963,
+      "y": 141.08557947045514,
+      "px": 509.52825622963,
+      "py": 141.08557947045514,
+      "betweenness": 0.046039390222906734,
+      "ref": "3518",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 159,
+      "comment": [
+        "GLIO",
+        "nSCLC",
+        "ENDO",
+        "CMLE",
+        "BRCA",
+        "PROS",
+        "AMLE",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "SOS1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:6654+hsa:6655",
+      "index": 159,
+      "weight": 2,
+      "x": 602.5159157020054,
+      "y": 109.38816333529101,
+      "px": 602.5159157020054,
+      "py": 109.38816333529101,
+      "betweenness": 0.0020464774501699275,
+      "ref": "3517",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 160,
+      "comment": [
+        "nSCLC",
+        "ENDO",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "PDPK1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5170",
+      "index": 160,
+      "weight": 2,
+      "x": 341.87740858293097,
+      "y": 233.4531978397097,
+      "px": 341.87740858293097,
+      "py": 233.4531978397097,
+      "betweenness": 0,
+      "ref": "3516",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 161,
+      "comment": [
+        "nSCLC",
+        "PANC",
+        "GLIO",
+        "SCLC",
+        "MELA",
+        "BRCA",
+        "CMLE",
+        "PROS",
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "RB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5925",
+      "index": 161,
+      "weight": 6,
+      "x": 11.682716038586369,
+      "y": 526.1239419271144,
+      "px": 11.682716038586369,
+      "py": 526.1239419271144,
+      "betweenness": 0.03859805483393249,
+      "ref": "3515",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 162,
+      "comment": [
+        "MELA",
+        "GLIO",
+        "PANC",
+        "nSCLC",
+        "BLAD",
+        "ENDO",
+        "BRCA",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "EGF",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1950+hsa:2246+hsa:2247+hsa:2248+hsa:2249+hsa:2250+hsa:2251+hsa:2252+hsa:2253+hsa:2254+hsa:2255+hsa:2256+hsa:2257+hsa:2258+hsa:2259+hsa:26281+hsa:26291+hsa:27006+hsa:3082+hsa:3479+hsa:5154+hsa:5155+hsa:56034+hsa:80310+hsa:8074+hsa:8817+hsa:8822+hsa:8823+hsa:9965",
+      "index": 162,
+      "weight": 2,
+      "x": 230.31642141193183,
+      "y": 373.8862585215213,
+      "px": 230.31642141193183,
+      "py": 373.8862585215213,
+      "betweenness": 0,
+      "ref": "3514",
+      "pie": [
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 163,
+      "comment": [
+        "SCLC",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "CCNE1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:898+hsa:9134",
+      "index": 163,
+      "weight": 4,
+      "x": 351.47380235284464,
+      "y": 227.358228405066,
+      "px": 351.47380235284464,
+      "py": 227.358228405066,
+      "betweenness": 0.002677863454937028,
+      "ref": "3513",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 164,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "CREB3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:10488+hsa:1385+hsa:148327+hsa:468+hsa:64764+hsa:84699+hsa:90993+hsa:9586",
+      "index": 164,
+      "weight": 2,
+      "x": 399.9291262096512,
+      "y": 155.236377747693,
+      "px": 399.9291262096512,
+      "py": 155.236377747693,
+      "betweenness": 0.011012085186788962,
+      "ref": "3512",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 165,
+      "comment": [
+        "SCLC",
+        "nSCLC",
+        "COLO",
+        "PANC",
+        "ENDO",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "CASP9",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:842",
+      "index": 165,
+      "weight": 5,
+      "x": 346.81159254220415,
+      "y": 194.86975235957675,
+      "px": 346.81159254220415,
+      "py": 194.86975235957675,
+      "betweenness": 0.09727197575089556,
+      "ref": "3511",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 166,
+      "comment": [
+        "CMLE",
+        "nSCLC",
+        "COLO",
+        "ENDO",
+        "PANC",
+        "MELA",
+        "AMLE",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "BAD",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:572",
+      "index": 166,
+      "weight": 2,
+      "x": 54.31213383848843,
+      "y": 217.65648460031977,
+      "px": 54.31213383848843,
+      "py": 217.65648460031977,
+      "betweenness": 0,
+      "ref": "3510",
+      "pie": [
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 167,
+      "comment": [
+        "AMLE",
+        "PANC",
+        "PROS",
+        "CMLE",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "CHUK",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1147+hsa:3551+hsa:8517",
+      "index": 167,
+      "weight": 3,
+      "x": 543.4181142149531,
+      "y": 22.902662544044066,
+      "px": 543.4181142149531,
+      "py": 22.902662544044066,
+      "betweenness": 0.002828429645734687,
+      "ref": "3509",
+      "pie": [
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 168,
+      "comment": [
+        "MELA",
+        "BRCA",
+        "PROS",
+        "GLIO",
+        "BLAD",
+        "PANC",
+        "nSCLC",
+        "ENDO"
+      ],
+      "type": "circle",
+      "label": "EGFR",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1956+hsa:2260+hsa:3480+hsa:4233+hsa:5156+hsa:5159",
+      "index": 168,
+      "weight": 13,
+      "x": 8.866642755604804,
+      "y": 25.587267649525756,
+      "px": 8.866642755604804,
+      "py": 25.587267649525756,
+      "betweenness": 0.11466960386541401,
+      "ref": "3507",
+      "pie": [
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 6
+        }
+      ]
+    },
+    {
+      "id": 169,
+      "comment": [
+        "nSCLC",
+        "BLAD",
+        "COLO",
+        "PROS",
+        "ENDO",
+        "CMLE",
+        "MELA",
+        "GLIO",
+        "BASA",
+        "BRCA",
+        "SCLC",
+        "THYR",
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "TP53",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:7157",
+      "index": 169,
+      "weight": 3,
+      "x": 523.9915326125592,
+      "y": 297.84368402641667,
+      "px": 523.9915326125592,
+      "py": 297.84368402641667,
+      "betweenness": 0.010205605300672814,
+      "ref": "3506",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 1
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 170,
+      "comment": [
+        "nSCLC",
+        "AMLE",
+        "THYR",
+        "PROS",
+        "ENDO",
+        "BRCA",
+        "BLAD",
+        "GLIO",
+        "RENA",
+        "CMLE",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "HRAS",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:3265+hsa:3845+hsa:4893",
+      "index": 170,
+      "weight": 12,
+      "x": 128.22553522442308,
+      "y": 316.13845991638675,
+      "px": 128.22553522442308,
+      "py": 316.13845991638675,
+      "betweenness": 0.19226656808886122,
+      "ref": "3505",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 12
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 171,
+      "comment": [
+        "nSCLC",
+        "PANC",
+        "PROS",
+        "GLIO",
+        "BRCA",
+        "MELA",
+        "CMLE",
+        "SCLC",
+        "BLAD"
+      ],
+      "type": "circle",
+      "label": "E2F1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1869+hsa:1870+hsa:1871",
+      "index": 171,
+      "weight": 2,
+      "x": 143.03414497829365,
+      "y": 543.6237887001018,
+      "px": 143.03414497829365,
+      "py": 543.6237887001018,
+      "betweenness": 0,
+      "ref": "3504",
+      "pie": [
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 2
+        }
+      ]
+    },
+    {
+      "id": 172,
+      "comment": [
+        "ENDO",
+        "BASA",
+        "BRCA",
+        "PROS",
+        "THYR",
+        "COLO"
+      ],
+      "type": "circle",
+      "label": "CTNNB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1499",
+      "index": 172,
+      "weight": 5,
+      "x": 503.45323904413505,
+      "y": 40.03955676823328,
+      "px": 503.45323904413505,
+      "py": 40.03955676823328,
+      "betweenness": 0.09661332146314233,
+      "ref": "3503",
+      "pie": [
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 1
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 5
+        }
+      ]
+    },
+    {
+      "id": 173,
+      "comment": [
+        "SCLC",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "CDK2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1017",
+      "index": 173,
+      "weight": 4,
+      "x": 242.69517725945994,
+      "y": 343.2457811580949,
+      "px": 242.69517725945994,
+      "py": 343.2457811580949,
+      "betweenness": 0.002677863454937028,
+      "ref": "3502",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 174,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "FOXO1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:2308",
+      "index": 174,
+      "weight": 1,
+      "x": 564.2097084504572,
+      "y": 399.804158618661,
+      "px": 564.2097084504572,
+      "py": 399.804158618661,
+      "betweenness": 0,
+      "ref": "3501",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 175,
+      "comment": [
+        "BRCA",
+        "GLIO",
+        "CMLE",
+        "BLAD",
+        "PROS",
+        "MELA"
+      ],
+      "type": "circle",
+      "label": "CDKN1A",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1026",
+      "index": 175,
+      "weight": 6,
+      "x": 39.76849547392182,
+      "y": 397.38353904505976,
+      "px": 39.76849547392182,
+      "py": 397.38353904505976,
+      "betweenness": 0.09709253157488779,
+      "ref": "3500",
+      "pie": [
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 8
+        }
+      ]
+    },
+    {
+      "id": 176,
+      "comment": [
+        "BLAD",
+        "CMLE",
+        "PROS",
+        "MELA",
+        "GLIO"
+      ],
+      "type": "circle",
+      "label": "MDM2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4193",
+      "index": 176,
+      "weight": 3,
+      "x": 42.27009237616275,
+      "y": 104.35647841012167,
+      "px": 42.27009237616275,
+      "py": 104.35647841012167,
+      "betweenness": 0.01200107598840032,
+      "ref": "3499",
+      "pie": [
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 7
+        }
+      ]
+    },
+    {
+      "id": 177,
+      "comment": [
+        "PROS"
+      ],
+      "type": "diamond",
+      "label": "C16038",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C16038",
+      "index": 177,
+      "weight": 1,
+      "x": 533.900747469084,
+      "y": 519.7817421756899,
+      "px": 533.900747469084,
+      "py": 519.7817421756899,
+      "betweenness": 0,
+      "ref": "3498",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 178,
+      "comment": [
+        "PROS"
+      ],
+      "type": "diamond",
+      "label": "C00535",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00535",
+      "index": 178,
+      "weight": 1,
+      "x": 274.0048957889475,
+      "y": 322.8261519889854,
+      "px": 274.0048957889475,
+      "py": 322.8261519889854,
+      "betweenness": 0,
+      "ref": "3496",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 179,
+      "comment": [
+        "PROS"
+      ],
+      "type": "diamond",
+      "label": "C03917",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C03917",
+      "index": 179,
+      "weight": 1,
+      "x": 111.14600520844515,
+      "y": 492.02905555286503,
+      "px": 111.14600520844515,
+      "py": 492.02905555286503,
+      "betweenness": 0,
+      "ref": "3495",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 180,
+      "comment": [
+        "PROS"
+      ],
+      "type": "diamond",
+      "label": "C00951",
+      "tag": "compound",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?C00951+C00410+C07653+C01227+C00280+C00735+C00762",
+      "index": 180,
+      "weight": 1,
+      "x": 493.91000334108423,
+      "y": 249.5063158858684,
+      "px": 493.91000334108423,
+      "py": 249.5063158858684,
+      "betweenness": 0,
+      "ref": "3494",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 181,
+      "comment": [
+        "PROS",
+        "RENA"
+      ],
+      "type": "circle",
+      "label": "CREBBP",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1387+hsa:2033",
+      "index": 181,
+      "weight": 4,
+      "x": 240.71233279240312,
+      "y": 183.15952310297362,
+      "px": 240.71233279240312,
+      "py": 183.15952310297362,
+      "betweenness": 0.04444739180479054,
+      "ref": "3493",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 12
+        }
+      ]
+    },
+    {
+      "id": 182,
+      "comment": [
+        "BASA",
+        "COLO",
+        "PROS",
+        "ENDO",
+        "BRCA",
+        "AMLE",
+        "THYR"
+      ],
+      "type": "circle",
+      "label": "LEF1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:51176+hsa:6932+hsa:6934+hsa:83439",
+      "index": 182,
+      "weight": 5,
+      "x": 116.16152694137051,
+      "y": 508.46125638514155,
+      "px": 116.16152694137051,
+      "py": 508.46125638514155,
+      "betweenness": 0.08323204978481909,
+      "ref": "3492",
+      "pie": [
+        {
+          "value": 1,
+          "study": 1
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 14
+        }
+      ]
+    },
+    {
+      "id": 183,
+      "comment": [
+        "SCLC",
+        "nSCLC",
+        "BRCA",
+        "CMLE",
+        "MELA",
+        "AMLE",
+        "COLO",
+        "GLIO",
+        "ENDO",
+        "PROS",
+        "THYR",
+        "BLAD",
+        "PANC"
+      ],
+      "type": "circle",
+      "label": "CCND1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:595",
+      "index": 183,
+      "weight": 17,
+      "x": 598.9050807017994,
+      "y": 286.66459800740137,
+      "px": 598.9050807017994,
+      "py": 286.66459800740137,
+      "betweenness": 0.42068557025921377,
+      "ref": "3491",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 9
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 14
+        },
+        {
+          "value": 1,
+          "study": 2
+        },
+        {
+          "value": 1,
+          "study": 11
+        }
+      ]
+    },
+    {
+      "id": 184,
+      "comment": [
+        "SCLC",
+        "COLO",
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "BCL2",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:596",
+      "index": 184,
+      "weight": 2,
+      "x": 549.7466148017791,
+      "y": 437.1022264628873,
+      "px": 549.7466148017791,
+      "py": 437.1022264628873,
+      "betweenness": 0.019729953155139156,
+      "ref": "3490",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 5
+        },
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 185,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "KLK3",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:354",
+      "index": 185,
+      "weight": 1,
+      "x": 290.5786423315801,
+      "y": 284.2512579145857,
+      "px": 290.5786423315801,
+      "py": 284.2512579145857,
+      "betweenness": 0,
+      "ref": "3489",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 186,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "NKX3-1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4824",
+      "index": 186,
+      "weight": 1,
+      "x": 195.07643274472932,
+      "y": 208.4950840176736,
+      "px": 195.07643274472932,
+      "py": 208.4950840176736,
+      "betweenness": 0,
+      "ref": "3488",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    },
+    {
+      "id": 187,
+      "comment": [
+        "GLIO",
+        "BRCA",
+        "MELA",
+        "ENDO",
+        "PROS",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "PTEN",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:5728",
+      "index": 187,
+      "weight": 1,
+      "x": 153.2812261471152,
+      "y": 223.68180325135606,
+      "px": 153.2812261471152,
+      "py": 223.68180325135606,
+      "betweenness": 0,
+      "ref": "3487",
+      "pie": [
+        {
+          "value": 1,
+          "study": 7
+        },
+        {
+          "value": 1,
+          "study": 3
+        },
+        {
+          "value": 1,
+          "study": 8
+        },
+        {
+          "value": 1,
+          "study": 6
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 188,
+      "comment": [
+        "PROS",
+        "SCLC",
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "CDKN1B",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:1027",
+      "index": 188,
+      "weight": 4,
+      "x": 187.4716400924075,
+      "y": 425.2483357468848,
+      "px": 187.4716400924075,
+      "py": 425.2483357468848,
+      "betweenness": 0.040769927846257416,
+      "ref": "3486",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 189,
+      "comment": [
+        "PROS",
+        "CMLE",
+        "SCLC"
+      ],
+      "type": "circle",
+      "label": "NFKBIA",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4792",
+      "index": 189,
+      "weight": 3,
+      "x": 128.2443630546145,
+      "y": 134.93934488863013,
+      "px": 128.2443630546145,
+      "py": 134.93934488863013,
+      "betweenness": 0,
+      "ref": "3485",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 4
+        },
+        {
+          "value": 1,
+          "study": 13
+        }
+      ]
+    },
+    {
+      "id": 190,
+      "comment": [
+        "SCLC",
+        "PROS",
+        "PANC",
+        "AMLE",
+        "CMLE"
+      ],
+      "type": "circle",
+      "label": "NFKB1",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:4790+hsa:5970",
+      "index": 190,
+      "weight": 13,
+      "x": 448.6328058989171,
+      "y": 166.69859070548193,
+      "px": 448.6328058989171,
+      "py": 166.69859070548193,
+      "betweenness": 0.3767830786725458,
+      "ref": "3484",
+      "pie": [
+        {
+          "value": 1,
+          "study": 13
+        },
+        {
+          "value": 1,
+          "study": 10
+        },
+        {
+          "value": 1,
+          "study": 11
+        },
+        {
+          "value": 1,
+          "study": 0
+        },
+        {
+          "value": 1,
+          "study": 4
+        }
+      ]
+    },
+    {
+      "id": 191,
+      "comment": [
+        "PROS"
+      ],
+      "type": "circle",
+      "label": "AR",
+      "tag": "gene",
+      "url": "http://www.kegg.jp/dbget-bin/www_bget?hsa:367",
+      "index": 191,
+      "weight": 9,
+      "x": 231.04476136050434,
+      "y": 159.15251601230648,
+      "px": 231.04476136050434,
+      "py": 159.15251601230648,
+      "betweenness": 0.0975475337558556,
+      "ref": "3483",
+      "pie": [
+        {
+          "value": 1,
+          "study": 10
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 1,
+      "target": 0,
+      "value": 1
+    },
+    {
+      "source": 2,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 2,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 2,
+      "target": 67,
+      "value": 1
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "value": 1
+    },
+    {
+      "source": 5,
+      "target": 153,
+      "value": 1
+    },
+    {
+      "source": 6,
+      "target": 184,
+      "value": 1
+    },
+    {
+      "source": 8,
+      "target": 17,
+      "value": 1
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "value": 1
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "value": 1
+    },
+    {
+      "source": 11,
+      "target": 165,
+      "value": 1
+    },
+    {
+      "source": 14,
+      "target": 111,
+      "value": 1
+    },
+    {
+      "source": 15,
+      "target": 127,
+      "value": 1
+    },
+    {
+      "source": 16,
+      "target": 15,
+      "value": 1
+    },
+    {
+      "source": 16,
+      "target": 98,
+      "value": 1
+    },
+    {
+      "source": 18,
+      "target": 12,
+      "value": 1
+    },
+    {
+      "source": 19,
+      "target": 55,
+      "value": 1
+    },
+    {
+      "source": 20,
+      "target": 18,
+      "value": 1
+    },
+    {
+      "source": 20,
+      "target": 19,
+      "value": 1
+    },
+    {
+      "source": 21,
+      "target": 8,
+      "value": 1
+    },
+    {
+      "source": 21,
+      "target": 20,
+      "value": 1
+    },
+    {
+      "source": 22,
+      "target": 55,
+      "value": 1
+    },
+    {
+      "source": 24,
+      "target": 126,
+      "value": 1
+    },
+    {
+      "source": 24,
+      "target": 31,
+      "value": 1
+    },
+    {
+      "source": 24,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 24,
+      "target": 175,
+      "value": 1
+    },
+    {
+      "source": 24,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 25,
+      "target": 126,
+      "value": 1
+    },
+    {
+      "source": 25,
+      "target": 31,
+      "value": 1
+    },
+    {
+      "source": 25,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 25,
+      "target": 175,
+      "value": 1
+    },
+    {
+      "source": 25,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 26,
+      "target": 30,
+      "value": 1
+    },
+    {
+      "source": 27,
+      "target": 13,
+      "value": 1
+    },
+    {
+      "source": 30,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 30,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 32,
+      "target": 132,
+      "value": 1
+    },
+    {
+      "source": 35,
+      "target": 28,
+      "value": 1
+    },
+    {
+      "source": 35,
+      "target": 29,
+      "value": 1
+    },
+    {
+      "source": 35,
+      "target": 36,
+      "value": 1
+    },
+    {
+      "source": 36,
+      "target": 43,
+      "value": 1
+    },
+    {
+      "source": 37,
+      "target": 41,
+      "value": 1
+    },
+    {
+      "source": 38,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 38,
+      "target": 43,
+      "value": 1
+    },
+    {
+      "source": 39,
+      "target": 67,
+      "value": 1
+    },
+    {
+      "source": 39,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 39,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 40,
+      "target": 39,
+      "value": 1
+    },
+    {
+      "source": 41,
+      "target": 23,
+      "value": 1
+    },
+    {
+      "source": 41,
+      "target": 24,
+      "value": 1
+    },
+    {
+      "source": 41,
+      "target": 25,
+      "value": 1
+    },
+    {
+      "source": 41,
+      "target": 126,
+      "value": 1
+    },
+    {
+      "source": 42,
+      "target": 41,
+      "value": 1
+    },
+    {
+      "source": 43,
+      "target": 35,
+      "value": 1
+    },
+    {
+      "source": 43,
+      "target": 45,
+      "value": 1
+    },
+    {
+      "source": 44,
+      "target": 43,
+      "value": 1
+    },
+    {
+      "source": 44,
+      "target": 38,
+      "value": 1
+    },
+    {
+      "source": 44,
+      "target": 45,
+      "value": 1
+    },
+    {
+      "source": 45,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 45,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 46,
+      "target": 53,
+      "value": 1
+    },
+    {
+      "source": 47,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 49,
+      "target": 51,
+      "value": 1
+    },
+    {
+      "source": 52,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 52,
+      "target": 119,
+      "value": 1
+    },
+    {
+      "source": 52,
+      "target": 108,
+      "value": 1
+    },
+    {
+      "source": 52,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 53,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 53,
+      "target": 52,
+      "value": 1
+    },
+    {
+      "source": 54,
+      "target": 50,
+      "value": 1
+    },
+    {
+      "source": 55,
+      "target": 190,
+      "value": 1
+    },
+    {
+      "source": 55,
+      "target": 51,
+      "value": 1
+    },
+    {
+      "source": 57,
+      "target": 59,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 60,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 181,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 66,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 56,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 117,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 127,
+      "value": 1
+    },
+    {
+      "source": 58,
+      "target": 61,
+      "value": 1
+    },
+    {
+      "source": 59,
+      "target": 58,
+      "value": 1
+    },
+    {
+      "source": 62,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 62,
+      "target": 63,
+      "value": 1
+    },
+    {
+      "source": 63,
+      "target": 157,
+      "value": 1
+    },
+    {
+      "source": 66,
+      "target": 126,
+      "value": 1
+    },
+    {
+      "source": 66,
+      "target": 168,
+      "value": 1
+    },
+    {
+      "source": 67,
+      "target": 69,
+      "value": 1
+    },
+    {
+      "source": 67,
+      "target": 70,
+      "value": 1
+    },
+    {
+      "source": 69,
+      "target": 67,
+      "value": 1
+    },
+    {
+      "source": 70,
+      "target": 72,
+      "value": 1
+    },
+    {
+      "source": 70,
+      "target": 168,
+      "value": 1
+    },
+    {
+      "source": 71,
+      "target": 72,
+      "value": 1
+    },
+    {
+      "source": 71,
+      "target": 1,
+      "value": 1
+    },
+    {
+      "source": 72,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 72,
+      "target": 148,
+      "value": 1
+    },
+    {
+      "source": 73,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 74,
+      "target": 188,
+      "value": 1
+    },
+    {
+      "source": 79,
+      "target": 89,
+      "value": 1
+    },
+    {
+      "source": 80,
+      "target": 165,
+      "value": 1
+    },
+    {
+      "source": 81,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 82,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 83,
+      "target": 165,
+      "value": 1
+    },
+    {
+      "source": 84,
+      "target": 74,
+      "value": 1
+    },
+    {
+      "source": 85,
+      "target": 145,
+      "value": 1
+    },
+    {
+      "source": 86,
+      "target": 85,
+      "value": 1
+    },
+    {
+      "source": 86,
+      "target": 145,
+      "value": 1
+    },
+    {
+      "source": 87,
+      "target": 73,
+      "value": 1
+    },
+    {
+      "source": 88,
+      "target": 81,
+      "value": 1
+    },
+    {
+      "source": 89,
+      "target": 88,
+      "value": 1
+    },
+    {
+      "source": 91,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 91,
+      "target": 98,
+      "value": 1
+    },
+    {
+      "source": 91,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 91,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 95,
+      "target": 102,
+      "value": 1
+    },
+    {
+      "source": 95,
+      "target": 97,
+      "value": 1
+    },
+    {
+      "source": 95,
+      "target": 96,
+      "value": 1
+    },
+    {
+      "source": 97,
+      "target": 182,
+      "value": 1
+    },
+    {
+      "source": 97,
+      "target": 99,
+      "value": 1
+    },
+    {
+      "source": 97,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 97,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 98,
+      "target": 127,
+      "value": 1
+    },
+    {
+      "source": 98,
+      "target": 93,
+      "value": 1
+    },
+    {
+      "source": 98,
+      "target": 94,
+      "value": 1
+    },
+    {
+      "source": 100,
+      "target": 97,
+      "value": 1
+    },
+    {
+      "source": 100,
+      "target": 102,
+      "value": 1
+    },
+    {
+      "source": 100,
+      "target": 101,
+      "value": 1
+    },
+    {
+      "source": 103,
+      "target": 102,
+      "value": 1
+    },
+    {
+      "source": 103,
+      "target": 101,
+      "value": 1
+    },
+    {
+      "source": 103,
+      "target": 98,
+      "value": 1
+    },
+    {
+      "source": 103,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 103,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 104,
+      "target": 21,
+      "value": 1
+    },
+    {
+      "source": 104,
+      "target": 64,
+      "value": 1
+    },
+    {
+      "source": 104,
+      "target": 148,
+      "value": 1
+    },
+    {
+      "source": 104,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 105,
+      "target": 97,
+      "value": 1
+    },
+    {
+      "source": 105,
+      "target": 96,
+      "value": 1
+    },
+    {
+      "source": 106,
+      "target": 111,
+      "value": 1
+    },
+    {
+      "source": 107,
+      "target": 108,
+      "value": 1
+    },
+    {
+      "source": 108,
+      "target": 54,
+      "value": 1
+    },
+    {
+      "source": 108,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 108,
+      "target": 107,
+      "value": 1
+    },
+    {
+      "source": 109,
+      "target": 119,
+      "value": 1
+    },
+    {
+      "source": 109,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 110,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 112,
+      "target": 120,
+      "value": 1
+    },
+    {
+      "source": 113,
+      "target": 14,
+      "value": 1
+    },
+    {
+      "source": 113,
+      "target": 114,
+      "value": 1
+    },
+    {
+      "source": 113,
+      "target": 106,
+      "value": 1
+    },
+    {
+      "source": 114,
+      "target": 14,
+      "value": 1
+    },
+    {
+      "source": 114,
+      "target": 113,
+      "value": 1
+    },
+    {
+      "source": 116,
+      "target": 115,
+      "value": 1
+    },
+    {
+      "source": 117,
+      "target": 114,
+      "value": 1
+    },
+    {
+      "source": 118,
+      "target": 108,
+      "value": 1
+    },
+    {
+      "source": 118,
+      "target": 112,
+      "value": 1
+    },
+    {
+      "source": 118,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 118,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 118,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 119,
+      "target": 150,
+      "value": 1
+    },
+    {
+      "source": 121,
+      "target": 116,
+      "value": 1
+    },
+    {
+      "source": 123,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 124,
+      "target": 150,
+      "value": 1
+    },
+    {
+      "source": 125,
+      "target": 65,
+      "value": 1
+    },
+    {
+      "source": 125,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 125,
+      "target": 64,
+      "value": 1
+    },
+    {
+      "source": 125,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 126,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 126,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 126,
+      "target": 67,
+      "value": 1
+    },
+    {
+      "source": 126,
+      "target": 63,
+      "value": 1
+    },
+    {
+      "source": 126,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 128,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 128,
+      "target": 129,
+      "value": 1
+    },
+    {
+      "source": 128,
+      "target": 176,
+      "value": 1
+    },
+    {
+      "source": 129,
+      "target": 161,
+      "value": 1
+    },
+    {
+      "source": 129,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 130,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 130,
+      "target": 148,
+      "value": 1
+    },
+    {
+      "source": 132,
+      "target": 133,
+      "value": 1
+    },
+    {
+      "source": 133,
+      "target": 33,
+      "value": 1
+    },
+    {
+      "source": 133,
+      "target": 156,
+      "value": 1
+    },
+    {
+      "source": 134,
+      "target": 156,
+      "value": 1
+    },
+    {
+      "source": 134,
+      "target": 135,
+      "value": 1
+    },
+    {
+      "source": 135,
+      "target": 134,
+      "value": 1
+    },
+    {
+      "source": 136,
+      "target": 139,
+      "value": 1
+    },
+    {
+      "source": 137,
+      "target": 32,
+      "value": 1
+    },
+    {
+      "source": 137,
+      "target": 132,
+      "value": 1
+    },
+    {
+      "source": 140,
+      "target": 137,
+      "value": 1
+    },
+    {
+      "source": 140,
+      "target": 139,
+      "value": 1
+    },
+    {
+      "source": 140,
+      "target": 140,
+      "value": 1
+    },
+    {
+      "source": 140,
+      "target": 131,
+      "value": 1
+    },
+    {
+      "source": 140,
+      "target": 138,
+      "value": 1
+    },
+    {
+      "source": 141,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 142,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 144,
+      "target": 84,
+      "value": 1
+    },
+    {
+      "source": 144,
+      "target": 87,
+      "value": 1
+    },
+    {
+      "source": 144,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 145,
+      "target": 85,
+      "value": 1
+    },
+    {
+      "source": 146,
+      "target": 149,
+      "value": 1
+    },
+    {
+      "source": 147,
+      "target": 145,
+      "value": 1
+    },
+    {
+      "source": 148,
+      "target": 149,
+      "value": 1
+    },
+    {
+      "source": 149,
+      "target": 17,
+      "value": 1
+    },
+    {
+      "source": 149,
+      "target": 150,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 4,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 38,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 47,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 48,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 122,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 129,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 150,
+      "target": 191,
+      "value": 1
+    },
+    {
+      "source": 151,
+      "target": 177,
+      "value": 1
+    },
+    {
+      "source": 152,
+      "target": 153,
+      "value": 1
+    },
+    {
+      "source": 152,
+      "target": 157,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 190,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 120,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 68,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 156,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 188,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 175,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 174,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 166,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 165,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 154,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 167,
+      "value": 1
+    },
+    {
+      "source": 153,
+      "target": 176,
+      "value": 1
+    },
+    {
+      "source": 154,
+      "target": 90,
+      "value": 1
+    },
+    {
+      "source": 154,
+      "target": 92,
+      "value": 1
+    },
+    {
+      "source": 155,
+      "target": 191,
+      "value": 1
+    },
+    {
+      "source": 156,
+      "target": 134,
+      "value": 1
+    },
+    {
+      "source": 156,
+      "target": 172,
+      "value": 1
+    },
+    {
+      "source": 156,
+      "target": 164,
+      "value": 1
+    },
+    {
+      "source": 157,
+      "target": 5,
+      "value": 1
+    },
+    {
+      "source": 157,
+      "target": 22,
+      "value": 1
+    },
+    {
+      "source": 157,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 157,
+      "target": 153,
+      "value": 1
+    },
+    {
+      "source": 157,
+      "target": 160,
+      "value": 1
+    },
+    {
+      "source": 158,
+      "target": 109,
+      "value": 1
+    },
+    {
+      "source": 158,
+      "target": 159,
+      "value": 1
+    },
+    {
+      "source": 159,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 160,
+      "target": 153,
+      "value": 1
+    },
+    {
+      "source": 161,
+      "target": 171,
+      "value": 1
+    },
+    {
+      "source": 162,
+      "target": 126,
+      "value": 1
+    },
+    {
+      "source": 162,
+      "target": 168,
+      "value": 1
+    },
+    {
+      "source": 163,
+      "target": 173,
+      "value": 1
+    },
+    {
+      "source": 163,
+      "target": 161,
+      "value": 1
+    },
+    {
+      "source": 164,
+      "target": 181,
+      "value": 1
+    },
+    {
+      "source": 165,
+      "target": 9,
+      "value": 1
+    },
+    {
+      "source": 166,
+      "target": 120,
+      "value": 1
+    },
+    {
+      "source": 167,
+      "target": 190,
+      "value": 1
+    },
+    {
+      "source": 167,
+      "target": 189,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 168,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 126,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 16,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 110,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 67,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 63,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 170,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 158,
+      "value": 1
+    },
+    {
+      "source": 168,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 169,
+      "target": 175,
+      "value": 1
+    },
+    {
+      "source": 170,
+      "target": 152,
+      "value": 1
+    },
+    {
+      "source": 170,
+      "target": 146,
+      "value": 1
+    },
+    {
+      "source": 170,
+      "target": 148,
+      "value": 1
+    },
+    {
+      "source": 171,
+      "target": 161,
+      "value": 1
+    },
+    {
+      "source": 172,
+      "target": 34,
+      "value": 1
+    },
+    {
+      "source": 172,
+      "target": 143,
+      "value": 1
+    },
+    {
+      "source": 172,
+      "target": 182,
+      "value": 1
+    },
+    {
+      "source": 172,
+      "target": 181,
+      "value": 1
+    },
+    {
+      "source": 173,
+      "target": 161,
+      "value": 1
+    },
+    {
+      "source": 173,
+      "target": 163,
+      "value": 1
+    },
+    {
+      "source": 175,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 175,
+      "target": 129,
+      "value": 1
+    },
+    {
+      "source": 176,
+      "target": 169,
+      "value": 1
+    },
+    {
+      "source": 178,
+      "target": 191,
+      "value": 1
+    },
+    {
+      "source": 179,
+      "target": 191,
+      "value": 1
+    },
+    {
+      "source": 180,
+      "target": 191,
+      "value": 1
+    },
+    {
+      "source": 181,
+      "target": 169,
+      "value": 1
+    },
+    {
+      "source": 182,
+      "target": 7,
+      "value": 1
+    },
+    {
+      "source": 182,
+      "target": 144,
+      "value": 1
+    },
+    {
+      "source": 182,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 183,
+      "target": 129,
+      "value": 1
+    },
+    {
+      "source": 183,
+      "target": 161,
+      "value": 1
+    },
+    {
+      "source": 186,
+      "target": 153,
+      "value": 1
+    },
+    {
+      "source": 187,
+      "target": 157,
+      "value": 1
+    },
+    {
+      "source": 188,
+      "target": 163,
+      "value": 1
+    },
+    {
+      "source": 188,
+      "target": 173,
+      "value": 1
+    },
+    {
+      "source": 189,
+      "target": 190,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 127,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 77,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 76,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 75,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 120,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 78,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 183,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 184,
+      "value": 1
+    },
+    {
+      "source": 190,
+      "target": 189,
+      "value": 1
+    },
+    {
+      "source": 191,
+      "target": 155,
+      "value": 1
+    },
+    {
+      "source": 191,
+      "target": 185,
+      "value": 1
+    },
+    {
+      "source": 191,
+      "target": 191,
+      "value": 1
+    }
+  ]
+}
