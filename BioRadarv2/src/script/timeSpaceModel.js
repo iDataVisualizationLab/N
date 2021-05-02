@@ -1287,7 +1287,7 @@ d3.TimeSpace = function () {
     function highlightGroupNode(intersects,timestep) { // INTERSECTED
         isdrawradar = false;
         if (intersects.length){
-            if (intersects.length<graphicopt.tableLimit) {
+            if (intersects.length < graphicopt.tableLimit) {
                 isdrawradar = true;
                 linesGroup.visible = true;
                 controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom,scale:controll_metrics.scale||1};
@@ -1357,6 +1357,7 @@ d3.TimeSpace = function () {
                 // forceColider.dispatch('tick');
                 // drawRadar(svgData);
             }else{
+                d3.select('#modelWorkerScreen_svg_g').selectAll('*').remove();
                 forceColider.stop();
             }
         } else if (visibledata && visibledata.length || ishighlightUpdate) {
