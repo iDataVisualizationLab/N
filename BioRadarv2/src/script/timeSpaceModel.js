@@ -417,7 +417,7 @@ d3.TimeSpace = function () {
         // console.log(datain.filter(d=>d[0]===-1))
         xscale.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
         yscale.range([-graphicopt.heightG()/2,graphicopt.heightG()/2]);
-        scaleNormalTimestep.range([-graphicopt.widthG()/2,graphicopt.widthG()/2]);
+        scaleNormalTimestep.range([-graphicopt.heightG()/2,graphicopt.heightG()/2]);
         colorarr = colorscale.domain().map((d, i) => ({name: d, order: +d.split('_')[1], value: colorscale.range()[i]}))
         colorarr.sort((a, b) => a.order - b.order);
         //----------------------color----------------------
@@ -577,7 +577,7 @@ d3.TimeSpace = function () {
     }
     function handleFilter(key){
         d3.select('#distanceFilterHolder').classed('hide',true);
-        if (SUBJECTSob[key]){
+        if (SUBJECTSob[key]!==undefined){
             highlightGroupNode([],SUBJECTSob[key]);
         }else {
             switch (key) {
@@ -781,12 +781,24 @@ d3.TimeSpace = function () {
     }
     let draw_axis = ()=>{};
     function _draw_axis(axis) {
-
+        let zdir = 0;
+        if (graphicopt.opt.dim > 2) {
+            zdir = scaleNormalTimestep(0);
+        }
         const _axis = axis.map((p, pi) => {
-            const v1 = getpos(p.x1,p.y1,p.z1);
-            const v2 = getpos(p.x1 +(p.x2-p.x1)*p.scale,p.y1 +(p.y2-p.y1)*p.scale,p.z1 +(p.z2-p.z1)*p.scale);
+            const v1 = getpos(p.x1,p.y1,zdir);
+            const v2 = getpos(p.x1 +(p.x2-p.x1)*p.scale,p.y1 +(p.y2-p.y1)*p.scale,zdir);
             return {x1:v1.x,y1:v1.y,x2:v2.x,y2:v2.y,name:p.name}
         });
+        // const _axis = axis.map((p, pi) => {
+        //     const v1 = getpos(p.x1,p.y1,zdir);
+        //     const v2 = getpos(p.x2,p.y2,zdir);
+        //
+        //     return {x1:v1.x,
+        //             y1:v1.y,
+        //             x2:v1.x+((p.x2-p.x1)/Math.abs(v2.x-v1.x))*graphicopt.heightG()/4,
+        //             y2:v2.y+((p.y2-p.y1)/Math.abs(v2.y-v1.y))*graphicopt.heightG()/4,name:p.name}
+        // });
 
         const axisg = svg.select('#modelAxis')
             .selectAll('g.axis')
