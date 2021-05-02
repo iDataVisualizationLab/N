@@ -303,14 +303,15 @@ d3.TimeSpace = function () {
                             solution = data.sol || solution;
                             isneedCompute = true;
                             debugger
-                            draw_axis((data.axis??[]).map(d=>{
+                            draw_axis = _.partial(_draw_axis,((data.axis??[]).map(d=>{
                                 const val = {...d};
                                 val.x1 = xscale(d.x1);
                                 val.y1 = yscale(d.y1);
                                 val.x2 = xscale(d.x2);
                                 val.y2 = yscale(d.y2);
                                 return val;
-                            }));
+                            })));
+                            draw_axis();
                             render(true);
                             reduceRenderWeight(true);
                             break;
@@ -778,97 +779,102 @@ d3.TimeSpace = function () {
         arrowGroup.visible = false;
         return arrowGroup;
     }
-    function draw_axis(axis) {
-        scene.remove(metricPlot);
-        const origin = [0, 0, 0];
-        let zdir = 0;
-        if (graphicopt.opt.dim > 2) {
-            zdir = scaleNormalTimestep(0);
-            // d[2] = xscale.invert(p[pointIndex * 3 + 2]);
-        }
-        origin[2] = zdir;
-        metricPlot = new THREE.Object3D();
-        metricPlot.position.x = origin[0];
-        metricPlot.position.y = origin[1];
-        metricPlot.position.z = origin[2];
+    let draw_axis = ()=>{};
+    function _draw_axis(axis) {
 
-        const holderPlot = new THREE.Object3D();
-        holderPlot.name = "lineChartHolder";
-        metricPlot.add(holderPlot);
-
-        axis.forEach(a=>{
-            metricPlot.add(makeaxis(a));
+        const _axis = axis.map((p, pi) => {
+            const v1 = getpos(p.x1,p.y1,p.z1);
+            const v2 = getpos(p.x1 +(p.x2-p.x1)*p.scale,p.y1 +(p.y2-p.y1)*p.scale,p.z1 +(p.z2-p.z1)*p.scale);
+            return {x1:v1.x,y1:v1.y,x2:v2.x,y2:v2.y,name:p.name}
         });
-        scene.add(metricPlot);
+
+        const axisg = svg.select('#modelAxis')
+            .selectAll('g.axis')
+            .data(_axis, d=>d.name)
+                .join('g')
+                .attr('class','axis');
+
+        axisg.selectAll('line').data(d=>[d])
+            .join('line')
+            .attr('marker-end','url(#arrowhead)')
+            .attr('x1',d=>d.x1)
+            .attr('x2',d=>d.x2)
+            .attr('y1',d=>d.y1)
+            .attr('y2',d=>d.y2);
+        axisg.selectAll('text').data(d=>[d])
+            .join('text')
+                .attr('x',d=>d.x2)
+                .attr('y',d=>d.y2)
+                .text(d=>d.name);
 
 
-        isneedrender = true;
 
-        function makeaxis({x1,y1,z1,x2,y2,z2,name,scale}) {
-            x2 = x1+(x2-x1)*scale;
-            y2 = y1+(y2-y1)*scale;
-            z2 = z1+(z2-z1)*scale;
-            var dir = new THREE.Vector3(x2-x1, y2-y1, z2-z1);
-            dir.normalize();
-            var length = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-            var hex = 0x000000;
-            var yaxisGroup = new THREE.Object3D();
-            var arrowHelper = new THREE.ArrowHelper(dir, new THREE.Vector3(x1, y1, z1), length, hex, 20, 10);
-            arrowHelper.line.material.linewidth = 4;
-            yaxisGroup.add(arrowHelper);
-            let axis = yscale.copy();
-            // axis.domain(graphicopt.service[graphicopt.plotMetric].range);
-            var loader = new THREE.FontLoader();
-
-            loader.load('src/fonts/optimer_regular.typeface.json', function (font) {
-                var textGeo = new THREE.TextGeometry(name, {
-                    font: font,
-                    size: 15,
-                    height: 1,
-                    curveSegments: 12,
-                    bevelEnabled: false
-                });
-                textGeo.computeBoundingBox();
-                textGeo.computeVertexNormals();
-                textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
-
-                // let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshPhongMaterial({color: 0x0000ff, flatShading: true}));
-                let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({color: 0x000000}));
-                textMesh1.name = name;
-                textMesh1.position.x = x2;
-                textMesh1.position.y = y2;
-                textMesh1.position.z = z2;
-                // textMesh1.rotation.x = 0;
-                // textMesh1.rotation.y = Math.PI / 2;
-                textMesh1.quaternion.copy(camera.quaternion);
-                yaxisGroup.add(textMesh1)
-                // axis.ticks(5).forEach(t => {
-                //
-                //     var textGeo = new THREE.TextGeometry(axis.tickFormat()(t), {
-                //         font: font,
-                //         size: 20,
-                //         height: 1,
-                //         curveSegments: 12,
-                //         bevelEnabled: false
-                //     });
-                //     textGeo.computeBoundingBox();
-                //     textGeo.computeVertexNormals();
-                //     textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
-                //
-                //     // let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshPhongMaterial({color: 0x0000ff, flatShading: true}));
-                //     let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({color: 0x000000}));
-                //     textMesh1.name = 'TimeText';
-                //     textMesh1.position.x = -Math.log10(axis.domain()[1]) * 20;
-                //     textMesh1.position.y = axis(t);
-                //     textMesh1.position.z = scaleNormalTimestep(0);
-                //     // textMesh1.rotation.x = 0;
-                //     // textMesh1.rotation.y = Math.PI / 2;
-                //     textMesh1.quaternion.copy(camera.quaternion);
-                //     yaxisGroup.add(textMesh1)
-                // });
-            });
-            return yaxisGroup;
-        }
+        // scene.remove(metricPlot);
+        // const origin = [0, 0, 0];
+        // let zdir = 0;
+        // if (graphicopt.opt.dim > 2) {
+        //     zdir = scaleNormalTimestep(0);
+        //     // d[2] = xscale.invert(p[pointIndex * 3 + 2]);
+        // }
+        // origin[2] = zdir;
+        // metricPlot = new THREE.Object3D();
+        // metricPlot.position.x = origin[0];
+        // metricPlot.position.y = origin[1];
+        // metricPlot.position.z = origin[2];
+        //
+        // const holderPlot = new THREE.Object3D();
+        // holderPlot.name = "lineChartHolder";
+        // metricPlot.add(holderPlot);
+        //
+        // axis.forEach(a=>{
+        //     metricPlot.add(makeaxis(a));
+        // });
+        // scene.add(metricPlot);
+        //
+        //
+        // isneedrender = true;
+        //
+        // function makeaxis({x1,y1,z1,x2,y2,z2,name,scale}) {
+        //     x2 = x1+(x2-x1)*scale;
+        //     y2 = y1+(y2-y1)*scale;
+        //     z2 = z1+(z2-z1)*scale;
+        //     var dir = new THREE.Vector3(x2-x1, y2-y1, z2-z1);
+        //     dir.normalize();
+        //     var length = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+        //     var hex = 0x000000;
+        //     var yaxisGroup = new THREE.Object3D();
+        //     var arrowHelper = new THREE.ArrowHelper(dir, new THREE.Vector3(x1, y1, z1), length, hex, 20, 10);
+        //     arrowHelper.line.material.linewidth = 4;
+        //     yaxisGroup.add(arrowHelper);
+        //     let axis = yscale.copy();
+        //     // axis.domain(graphicopt.service[graphicopt.plotMetric].range);
+        //     var loader = new THREE.FontLoader();
+        //
+        //     loader.load('src/fonts/optimer_regular.typeface.json', function (font) {
+        //         var textGeo = new THREE.TextGeometry(name, {
+        //             font: font,
+        //             size: 15,
+        //             height: 1,
+        //             curveSegments: 12,
+        //             bevelEnabled: false
+        //         });
+        //         textGeo.computeBoundingBox();
+        //         textGeo.computeVertexNormals();
+        //         textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
+        //
+        //         // let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshPhongMaterial({color: 0x0000ff, flatShading: true}));
+        //         let textMesh1 = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({color: 0x000000}));
+        //         textMesh1.name = name;
+        //         textMesh1.position.x = x2;
+        //         textMesh1.position.y = y2;
+        //         textMesh1.position.z = z2;
+        //         // textMesh1.rotation.x = 0;
+        //         // textMesh1.rotation.y = Math.PI / 2;
+        //         textMesh1.quaternion.copy(camera.quaternion);
+        //         yaxisGroup.add(textMesh1)
+        //     });
+        //     return yaxisGroup;
+        // }
     }
     function clustername(){
         var loader = new THREE.FontLoader();
@@ -1444,6 +1450,7 @@ d3.TimeSpace = function () {
                                 c.__metrics.projection = getpos(pos.x, pos.y, pos.z);
                             }
                         });
+                    draw_axis();
                     // let testlinks = voronoi.links(_.chunk(points.geometry.attributes.position.array,3)).MAP;
                     // if(isdrawradar&&svgData&&iscameraMove) {
                     //     var geometry = points.geometry;
