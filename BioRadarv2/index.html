@@ -731,6 +731,11 @@
                         <g id="modelWorkerScreen_svg_g">
 
                         </g>
+
+                        <g id="modelAxis" style="pointer-events: none">
+
+                        </g>
+
                         <g id="modelWorkerScreen_lassotool">
 
                         </g>
@@ -974,44 +979,62 @@
 
 <script type="x-shader/x-vertex" id="vertexshader">
 
-    attribute float alpha;
-    attribute float size;
-    attribute vec3 customColor;
+        attribute float alpha;
+        attribute float size;
+        attribute vec3 customColor;
+        attribute float texIndex;
 
-    varying float vAlpha;
-    varying vec3 vColor;
+        varying float vAlpha;
+        varying vec3 vColor;
+        varying float vTexIndex;
 
-    void main() {
+        void main() {
 
-        vAlpha = alpha;
+            vAlpha = alpha;
 
-        vColor = customColor;
+            vColor = customColor;
+            vTexIndex = texIndex;
 
-        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 
-        gl_PointSize = size ;
+            gl_PointSize = size ;
 
-        gl_Position = projectionMatrix * mvPosition;
+            gl_Position = projectionMatrix * mvPosition;
 
-    }
+        }
+
 
 </script>
 
 <script type="x-shader/x-fragment" id="fragmentshader">
 
-    uniform vec3 color;
-    uniform sampler2D pointTexture;
+        uniform vec3 color;
+        uniform sampler2D textures[3];
 
-    varying float vAlpha;
-    varying vec3 vColor;
+        varying float vAlpha;
+        varying vec3 vColor;
+        varying float vTexIndex;
 
-    void main() {
+        void main() {
 
-        gl_FragColor = vec4( color * vColor, vAlpha );
+            gl_FragColor = vec4( color * vColor, vAlpha );
+            if (vAlpha<0.001){
+                gl_FragColor.a = 0.0;
+            }else {
+                vec4 finalColor;
 
-        gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
+                if (vTexIndex < 0.5) {
+                    finalColor = texture2D(textures[0], gl_PointCoord);
+                } else if (vTexIndex < 1.5) {
+                    finalColor = texture2D(textures[1], gl_PointCoord);
+                } else {
+                    finalColor = texture2D(textures[2], gl_PointCoord);
+                }
 
-    }
+                gl_FragColor = gl_FragColor * finalColor;
+            }
+        }
+
 
 </script>
 

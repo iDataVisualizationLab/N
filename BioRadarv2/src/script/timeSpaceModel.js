@@ -449,7 +449,7 @@ d3.TimeSpace = function () {
             scatterPlot = new THREE.Object3D();
             scatterPlot.add( axesHelper );
             scatterPlot.rotation.y = 0;
-            points = createpoints(scatterPlot);
+            points = createpoints(scatterPlot, mapIndex.map(i=>datain[i]));
             straightLinesGroup = new THREE.Object3D();
             curveLinesGroup = new THREE.Object3D();
             scatterPlot.add( straightLinesGroup );
@@ -525,9 +525,7 @@ d3.TimeSpace = function () {
             handle_selection_switch(graphicopt.isSelectionMode);
 
             d3.select('#modelSortBy').on("change", function () {handleTopSort(this.value)});
-            d3.select('#modelFilterBy').on("change", function(){
-                debugger
-                handleFilter(this.value)});
+            d3.select('#modelFilterBy').on("change", function(){handleFilter(this.value)});
             // d3.select("p#filterList+.copybtn").on('click',()=>{
             //     var copyText = document.getElementById("filterList");
             //     var textArea = document.createElement("textarea");
@@ -1950,57 +1948,57 @@ d3.TimeSpace = function () {
         return angle * (Math.PI / 180);
     }
 
-    function createpoints(g){
+    function createpoints(g, datafiltered) {
         let pointsGeometry = new THREE.BufferGeometry();
 
-        let datafiltered = mapIndex.map(i=>datain[i]);
-        let colors =  new Float32Array( datafiltered.length * 3 );
-        let pos =  new Float32Array( datafiltered.length * 3 );
-        let alpha =  new Float32Array( datafiltered.length );
-        let sizes =  new Float32Array( datafiltered.length);
-        for (let i=0; i< datafiltered.length;i++) {
+        let colors = new Float32Array(datafiltered.length * 3);
+        let pos = new Float32Array(datafiltered.length * 3);
+        let alpha = new Float32Array(datafiltered.length);
+        let _alpha = new Float32Array(datafiltered.length);
+        let sizes = new Float32Array(datafiltered.length);
+        let texIndex = new Float32Array(datafiltered.length);
+        for (let i = 0; i < datafiltered.length; i++) {
             let target = datafiltered[i];
             // Set vector coordinates from data
             // let vertex = new THREE.Vector3(0, 0, 0);
-            pos[i*3+0]= 0;
-            pos[i*3+1]= 0;
-            pos[i*3+2]= 0;
+            pos[i * 3 + 0] = 0;
+            pos[i * 3 + 1] = 0;
+            pos[i * 3 + 2] = 0;
             // let color = new THREE.Color(d3.color(colorarr[target.cluster].value)+'');
             let color = d3.color(target.name ===graphicopt.opt.keyGenes?'black': colorarr[target.cluster].value);
-            colors[i*3+0]= color.r/255;
-            colors[i*3+1]= color.g/255;
-            colors[i*3+2]= color.b/255;
-            alpha[i]= 1;
-            sizes[i] = graphicopt.component.dot.size;
+            colors[i * 3 + 0] = color.r / 255;
+            colors[i * 3 + 1] = color.g / 255;
+            colors[i * 3 + 2] = color.b / 255;
+            alpha[i] = 1;
+
+            texIndex[i] = target.__timestep;
+            sizes[i] = (graphicopt.component.dot[target.type] ?? graphicopt.component.dot).size;
         }
-        pointsGeometry.setAttribute( 'position', new THREE.BufferAttribute( pos, 3 ) );
-        pointsGeometry.setAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
-        pointsGeometry.setAttribute( 'size', new THREE.BufferAttribute( sizes, 1 ) );
-        pointsGeometry.setAttribute( 'alpha', new THREE.BufferAttribute( alpha, 1 ) );
+        pointsGeometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        pointsGeometry.setAttribute('customColor', new THREE.BufferAttribute(colors, 3));
+        pointsGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+        pointsGeometry.setAttribute('alpha', new THREE.BufferAttribute(alpha, 1));
+        pointsGeometry.setAttribute('texIndex', new THREE.BufferAttribute(texIndex, 1));
         pointsGeometry.boundingBox = null;
         pointsGeometry.computeBoundingSphere();
-        // pointsGeometry.colors = colors;
 
-        // let pointsMaterial = new THREE.PointsMaterial({
-        //     size: graphicopt.component.dot.size,
-        //     sizeAttenuation: false,
-        //     map: new THREE.TextureLoader().load("src/images/circle.png"),
-        //     vertexColors: THREE.VertexColors,
-        //     transparent: true
-        // });
-        let pointsMaterial = new THREE.ShaderMaterial( {
+        let pointsMaterial = new THREE.ShaderMaterial({
 
-            uniforms:       {
-                color: { value: new THREE.Color( 0xffffff ) },
-                pointTexture: { value: new THREE.TextureLoader().load( "src/images/circle.png" ) }
+            uniforms: {
+                color: {value: new THREE.Color(0xffffff)},
+                // pointTexture: {value: new THREE.TextureLoader().load("src/images/circle.png")}
+                textures: {
+                    type: "t",
+                    value: [new THREE.TextureLoader().load("src/images/o.png"),
+                        new THREE.TextureLoader().load("src/images/x.png")]
+                }
 
             },
-            vertexShader:   document.getElementById( 'vertexshader' ).textContent,
-            fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-            transparent:    true
-
+            vertexShader: document.getElementById('vertexshader').textContent,
+            fragmentShader: document.getElementById('fragmentshader').textContent,
+            depthTest: false
         });
-
+        pointsMaterial.transparent = true;
         let p = new THREE.Points(pointsGeometry, pointsMaterial);
         p.frustumCulled = false;
         g.add(p);
