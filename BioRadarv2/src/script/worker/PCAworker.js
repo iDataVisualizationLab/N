@@ -26,6 +26,8 @@ addEventListener('message',function ({data}){
             let A = pc[0];  // this is the U matrix from SVD
             let B = pc[1];  // this is the dV matrix from SVD
             let chosenPC = pc[2];   // this is the most value of PCA
+            console.log('----------------------------',data.opt.dim)
+            console.log(A[0])
             let solution = dataIn.map((d,i)=>d3.range(0,data.opt.dim).map(dim=>A[i][chosenPC[dim]]));
 
             const axis=[];
@@ -33,13 +35,13 @@ addEventListener('message',function ({data}){
                 let brand = d3.range(0,data.opt.dim).map(dim=>B[i][chosenPC[dim]]);
                 axis.push({x1:0,y1:0,z1:0,x2:brand[0],y2:brand[1],z2:brand[2]??0,name:key.text,scale:10})
             });
-            render(solution,axis);
+            render(solution,axis,data.opt.dim);
             postMessage({action:'stable',axis, status:"done"});
             break;
     }
 });
 
-function render(sol,axis){
+function render(sol,axis,dim){
     let xrange = d3.extent(sol, d => d[0]);
     let yrange = d3.extent(sol, d => d[1]);
     let xscale = d3.scaleLinear().range([0, canvasopt.width]);
@@ -55,9 +57,10 @@ function render(sol,axis){
         yscale.domain([yrange[0] - delta, yrange[1] + delta])
     }
     // xaxis
-    axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[1],y2:yrange[0],z2:0,name:'PC1',scale:1});
-    axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[0],y2:yrange[1],z2:0,name:'PC2',scale:1});
-
+    if (dim<3){
+        axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[1],y2:yrange[0],z2:0,name:'PC1',scale:1});
+        axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[0],y2:yrange[1],z2:0,name:'PC2',scale:1});
+    }
     postMessage({action:'render',value:{totalTime:performance.now()-totalTime_marker},xscale:{domain:xscale.domain()}, yscale:{domain:yscale.domain()}, sol:sol});
     solution = sol;
 }

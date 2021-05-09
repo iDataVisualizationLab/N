@@ -44,17 +44,14 @@ var svg = d3.select(".mainsvg"),
     heightdevice = window.innerHeight,
 
     svg = svg
-        .attrs({
-            width: width,
-            height: height,
-        })
+        .attr('width', width)
+        .attr('height', height)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
-d3.select('#modelWorkerScreen').attrs({
-    width: width,
-    height: height,
-})
+d3.select('#modelWorkerScreen')
+    .attr('width', width)
+    .attr('height', height)
 jobMap_opt.width = width;
 jobMap_opt.height = height;
 
@@ -1221,8 +1218,13 @@ function cluster_map (dataRaw) {
             parent.select('span.clusterlabel').classed('hide',active);
             parent.select('input.clusterlabel').classed('hide',!active);
         });
-        r_new.append('span').attrs({'class':'clusterlabel truncate left-align col s11','type':'text'});
-        r_new.append('input').attrs({'class':'clusterlabel browser-default hide truncate center-align col s11','type':'text'}).on('change',function(d){
+        r_new.append('span')
+            .attr('class','clusterlabel truncate left-align col s11')
+            .attr('type','text');
+        r_new.append('input')
+            .attr('class','clusterlabel browser-default hide truncate center-align col s11')
+            .attr('type','text')
+            .on('change',function(d){
             clusterDescription[d.id].text = $(this).val();
             d3.select(this).classed('hide',true);
             const parent = d3.select(this.parentNode);
@@ -1287,7 +1289,9 @@ function outlier_map (data) {
         //     parent.select('span.clusterlabel').classed('hide',active);
         //     parent.select('input.clusterlabel').classed('hide',!active);
         // });
-        r_new.append('span').attrs({'class':'outlierLabel truncate left-align col s11','type':'text'});
+        r_new.append('span')
+            .attr('class','outlierLabel truncate left-align col s11')
+            .attr('type','text');
         r_new.append('span').attr('class','clusternum center-align col s12');
         // r_new.append('input').attrs({'class':'clusterlabel browser-default hide truncate center-align col s11','type':'text'}).on('change',function(d){
         //     clusterDescription[d.id].text = $(this).val();

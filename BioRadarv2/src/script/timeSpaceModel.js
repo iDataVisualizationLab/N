@@ -64,11 +64,12 @@ d3.TimeSpace = function () {
                 callback:onlinkopacity},
             labelMarker:{text: "Display label", type: "selection", variableRoot: graphicopt.component.label,variable: 'enable',labels:['OFF','ON'],values:[false,true], width: '100px',
                 callback:triggerlabelCluster},
-            dim: {text: "Dimension", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,2.5], width: '100px',callback:()=>{
+            dim: {text: "Dimension", type: "switch", variable: 'dim',labels:['2D','3D'],values:[2,3], width: '100px',callback:()=>{
                     preloader(true,10,'Change dimension projection...','#modelLoading');
                     obitTrigger=true;
                     setTimeout(()=>{
-                        start(!needRecalculate || graphicopt.opt.dim===2.5);
+                        start(false);
+                        // start(!needRecalculate || graphicopt.opt.dim===2.5);
                         preloader(false,undefined,undefined,'#modelLoading');
                     })
             }},
@@ -238,7 +239,7 @@ d3.TimeSpace = function () {
         let firstReturn = true;
 
         let opt = JSON.parse(JSON.stringify(graphicopt.opt)); // clone option
-        opt.dim = Math.floor(opt.dim);
+        // opt.dim = Math.floor(opt.dim);
 
         loadProjection(opt,function (data){
             if (!data) {
@@ -257,6 +258,7 @@ d3.TimeSpace = function () {
 
                 // end - adjust dimension
                 datain.forEach(d=>delete d.__metrics.radar);
+
                 modelWorker.postMessage({
                     action: "initDataRaw",
                     opt: opt,
@@ -300,15 +302,17 @@ d3.TimeSpace = function () {
                             }
                             modelWorker.terminate();
                             freezemouseoverTrigger = false;
-                            solution = data.sol || solution;
+                            // solution = data.sol || solution;
                             isneedCompute = true;
-                            debugger
+
                             draw_axis = _.partial(_draw_axis,((data.axis??[]).map(d=>{
                                 const val = {...d};
                                 val.x1 = xscale(d.x1);
                                 val.y1 = yscale(d.y1);
+                                val.z1 = xscale(d.z1);
                                 val.x2 = xscale(d.x2);
                                 val.y2 = yscale(d.y2);
+                                val.z2 = xscale(d.z2);
                                 return val;
                             })));
                             draw_axis();
@@ -722,7 +726,7 @@ d3.TimeSpace = function () {
             new THREE.Vector3( 0, 0, 0), new THREE.Vector3( 0, length, 0),
             new THREE.Vector3( 0, 0, 0), new THREE.Vector3( 0, 0, length)]);
         let axesHelper = new THREE.LineSegments( geometry, material );
-        axesHelper.toggleDimension = function (dim){
+        axesHelper.toggleDimension = function (dim,iscenter){
             axesTime.visible = false;
             if (dim===2.5){
                 axesHelper.visible = false;
@@ -730,10 +734,18 @@ d3.TimeSpace = function () {
             }else if (dim===3){
                 axesHelper.visible = true;
                 axesHelper.geometry.dispose();
-                axesHelper.geometry = new THREE.BufferGeometry().setFromPoints( [
-                    new THREE.Vector3( 0, 0, 0), new THREE.Vector3( length, 0, 0),
-                    new THREE.Vector3( 0, 0, 0), new THREE.Vector3( 0, length, 0),
-                    new THREE.Vector3( 0, 0, 0), new THREE.Vector3( 0, 0, length)]);
+                if(iscenter)
+                {
+                    axesHelper.geometry = new THREE.BufferGeometry().setFromPoints( [
+                        new THREE.Vector3( xscale(0), yscale(0), xscale(0)), new THREE.Vector3( xscale(0) +length, yscale(0), xscale(0)),
+                        new THREE.Vector3( xscale(0), yscale(0), xscale(0)), new THREE.Vector3(xscale(0), yscale(0) + length, xscale(0)),
+                        new THREE.Vector3( xscale(0), yscale(0), xscale(0)), new THREE.Vector3( xscale(0), yscale(0), xscale(0) +length)]);
+                }else{
+                    axesHelper.geometry = new THREE.BufferGeometry().setFromPoints( [
+                        new THREE.Vector3( 0, 0, 0), new THREE.Vector3( length, 0, 0),
+                        new THREE.Vector3( 0, 0, 0), new THREE.Vector3( 0, length, 0),
+                        new THREE.Vector3( 0, 0, 0), new THREE.Vector3( 0, 0, length)]);
+                }
             }else if(dim===2){
                 // axesHelper.geometry.dispose();
                 axesHelper.visible = false;
@@ -782,12 +794,16 @@ d3.TimeSpace = function () {
     let draw_axis = ()=>{};
     function _draw_axis(axis) {
         let zdir = 0;
-        if (graphicopt.opt.dim > 2) {
+        if (graphicopt.opt.dim > 2.5) {
+            zdir = undefined;
+        }else if (graphicopt.opt.dim > 2){
             zdir = scaleNormalTimestep(0);
         }
         const _axis = axis.map((p, pi) => {
-            const v1 = getpos(p.x1,p.y1,zdir);
-            const v2 = getpos(p.x1 +(p.x2-p.x1)*p.scale,p.y1 +(p.y2-p.y1)*p.scale,zdir);
+            const z1 = zdir??p.z1;
+            const z2 = zdir??p.z2;
+            const v1 = getpos(p.x1,p.y1,z1);
+            const v2 = getpos(p.x1 +(p.x2-p.x1)*p.scale,p.y1 +(p.y2-p.y1)*p.scale,z1 +(z2-z1)*p.scale);
             return {x1:v1.x,y1:v1.y,x2:v2.x,y2:v2.y,name:p.name}
         });
         // const _axis = axis.map((p, pi) => {
@@ -2226,7 +2242,9 @@ d3.TimeSpace = function () {
 
                         // 3rd dimension as time step
                         // p[pointIndex*3+2] = xscale(d[2])||0;
-                        if (graphicopt.opt.dim > 2) {
+                        if (graphicopt.opt.dim > 2.5) {
+                            p[pointIndex * 3 + 2] = xscale(d[2]);
+                        } else if(graphicopt.opt.dim > 2){
                             p[pointIndex * 3 + 2] = scaleNormalTimestep(target.__timestep);
                             d[2] = xscale.invert(p[pointIndex * 3 + 2]);
                         } else {
@@ -2236,7 +2254,9 @@ d3.TimeSpace = function () {
                         }
                     }
                 });
+                debugger
                 if (islast) {
+                    axesHelper.toggleDimension(graphicopt.opt.dim,true)
                     let center = d3.nest().key(d => d.clusterName).rollup(d => [d3.mean(d.map(e => e.__metrics.position[0])), d3.mean(d.map(e => e.__metrics.position[1])), d3.mean(d.map(e => e.__metrics.position[2]))]).object(datain);
                     solution.forEach(function (d, i) {
                         const target = datain[i];
