@@ -444,9 +444,10 @@ d3.TimeSpace = function () {
         setTimeout(function(){
             isneedrender = false;
             far = graphicopt.width/2 /Math.tan(fov/180*Math.PI/2)*10;
-            camera = new THREE.PerspectiveCamera(fov, graphicopt.width/graphicopt.height, near, far + 1);
-            // far = graphicopt.width/2*10;
-            // camera = new THREE.OrthographicCamera(graphicopt.width / - 2, graphicopt.width / 2, graphicopt.height / 2, graphicopt.height / - 2, near, far + 1);
+            // camera = new THREE.PerspectiveCamera(fov, graphicopt.width/graphicopt.height, near, far + 1);
+            far = graphicopt.width / 2 * 100;
+            near = 1;
+            camera = new THREE.OrthographicCamera(graphicopt.width / -2, graphicopt.width / 2, graphicopt.height / 2, graphicopt.height / -2, near, far + 1);
             scene = new THREE.Scene();
             axesHelper = createAxes( graphicopt.width/4 );
             axesTime = createTimeaxis();
@@ -1940,11 +1941,8 @@ d3.TimeSpace = function () {
     }
 
     function setUpZoom() {
-        // view.call(zoom);
         let initial_scale = 1;
-        // var initial_transform = d3.zoomIdentity.translate(graphicopt.width/2, graphicopt.height/2).scale(initial_scale);
-        // zoom.transform(view, initial_transform);
-        camera.position.set(0, 0, getZFromScale(1));
+        camera.position.set(0, 0, getZFromScale(initial_scale));
     }
     function zoomHandler(d3_transform) {
         let scale = d3_transform.k;
@@ -1963,22 +1961,22 @@ d3.TimeSpace = function () {
         }
         camera.lookAt(new THREE.Vector3(0, 0, 0));
     }
-    function getScaleFromZ (camera_z_position) {
-        let half_fov = fov/2;
-        let half_fov_radians = toRadians(half_fov);
-        let half_fov_height = Math.tan(half_fov_radians) * camera_z_position;
-        let fov_height = half_fov_height * 2;
-        let scale = graphicopt.height / fov_height; // Divide visualization height by height derived from field of view
-        return scale;
-    }
-
     function getZFromScale(scale) {
-        let half_fov = fov/2;
+        let half_fov = fov / 2;
         let half_fov_radians = toRadians(half_fov);
         let scale_height = graphicopt.height / scale;
-        let camera_z_position = scale_height / (2 * Math.tan(half_fov_radians));
+        let camera_z_position = scale_height;
+        console.log('camera_z_position', camera_z_position)
         return camera_z_position;
     }
+
+    // function getZFromScale(scale) {
+    //     let half_fov = fov / 2;
+    //     let half_fov_radians = toRadians(half_fov);
+    //     let scale_height = graphicopt.height / scale;
+    //     let camera_z_position = scale_height / (2 * Math.tan(half_fov_radians));
+    //     return camera_z_position;
+    // }
 
     function toRadians (angle) {
         return angle * (Math.PI / 180);
