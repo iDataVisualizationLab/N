@@ -242,9 +242,11 @@ function draw_venn(sets_venn) {
             selection.select("path")
                 .style("fill-opacity", d.sets.length === 1 ? .25 : .0)
                 .style("stroke-opacity", d.sets[0] === keyGenes_rename && d.sets.length===1 ? 1:0);
+            selection.select("path.selected").style("stroke-opacity",1);
         })
-        .on("click", (d) => {
-
+        .on("click", function(d) {
+            _cur_venn_div.selectAll("g path.selected").classed('selected',false).style('stroke',null)
+            d3.select(this).select('path').classed('selected',true).style('stroke','#a0a0a0')
             // trivial code.
             if (d.sets[0]==="ALL"&&d.sets.length===1) {
                 console.log("it's the current Data => return, nothing change!");

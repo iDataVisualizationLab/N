@@ -1305,7 +1305,7 @@ d3.TimeSpace = function () {
         isdrawradar = false;
         if (intersects.length){
             if (intersects.length < graphicopt.tableLimit) {
-                isdrawradar = true;
+                isdrawradar = false;
                 linesGroup.visible = true;
                 controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom,scale:controll_metrics.scale||1};
                 d3.select('#modelWorkerScreen_svg_g').attr('transform',`scale(1) translate(0,0)`);
