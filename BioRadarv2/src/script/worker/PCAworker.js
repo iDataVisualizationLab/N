@@ -60,6 +60,10 @@ function render(sol,axis,dim){
     if (dim<3){
         axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[1],y2:yrange[0],z2:0,name:'PC1',scale:1});
         axis.push({x1:xrange[0],y1:yrange[0],z1:0,x2: xrange[0],y2:yrange[1],z2:0,name:'PC2',scale:1});
+    }else{
+        axis.push({x1:0,y1:0,z1:0,x2: (xrange[1]-xrange[0])/2,y2:0,z2:0,name:'PC1',scale:1});
+        axis.push({x1:0,y1:0,z1:0,x2: 0,y2:(yrange[1]-yrange[0])/2,z2:0,name:'PC2',scale:1});
+        axis.push({x1:0,y1:0,z1:0,x2: 0,y2:0,z2:(xrange[1]-xrange[0])/2,name:'PC3',scale:1});
     }
     postMessage({action:'render',value:{totalTime:performance.now()-totalTime_marker},xscale:{domain:xscale.domain()}, yscale:{domain:yscale.domain()}, sol:sol});
     solution = sol;
