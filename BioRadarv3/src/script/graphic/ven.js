@@ -27,53 +27,18 @@ async function read_data_for_venn() {
     set_data["STOP1"] = [keyGenes];
 
 
-    await d3.csv("data/Targets_differentially_expressed.csv").then(data => {
-        const id_set_data = "UpDown";
-        set_data[id_set_data] = [];
-        data.forEach(d=>{
-            Object.keys(d).forEach(k=>{if (d[k]) set_data[id_set_data].push(d[k])})
+    await d3.csv("data/filter_custom5921.csv").then(data => {
+        let keys = Object.keys(data[0]);
+        keys.shift();
+        keys.forEach(id_set_data=>{
+            set_data[id_set_data] = [];
+            data.forEach(d=>{
+                if (d[id_set_data]!=="0")
+                    set_data[id_set_data].push(d["atID"]);
+            });
         });
     });
 
-
-    await d3.csv("data/STOP1_targets_EckerLab_filter.csv").then(data => {
-        const id_set_data = "Ecker";
-        set_data[id_set_data] = [];
-        data.forEach(d=>{
-            Object.keys(d).forEach(k=>{if (d[k]) set_data[id_set_data].push(d[k])})
-        });
-    });
-
-    await d3.csv("data/Transcription_factors.csv").then(data => {
-        let id_set_data = "EXP";
-        set_data[id_set_data] = [];
-        data.forEach(d=>{
-            if (d["TF_EXP"])
-                set_data[id_set_data].push(d["TF_EXP"]);
-        });
-
-        id_set_data = "DE";
-        set_data[id_set_data] = [];
-        data.forEach(d=>{
-            if (d["TF_DE"])
-                set_data[id_set_data].push(d["TF_DE"]);
-        });
-    });
-
-    await d3.csv("data/filter_nonexpressed.csv").then(data => {
-        let id_set_data = "LowCPM";
-        set_data[id_set_data] = [];
-        data.forEach(d=>{
-            if (d["filter_low_cpm"]==="0")
-                set_data[id_set_data].push(d["atID"]);
-        });
-        id_set_data = "LowLog2Fold";
-        set_data[id_set_data] = [];
-        data.forEach(d=>{
-            if (d["wt_low_log2fold"]==="1")
-                set_data[id_set_data].push(d["atID"]);
-        });
-    });
 
 
     console.log("time running = ", (new Date - tick) / 1000);
@@ -172,9 +137,9 @@ function get_all_subsets_id(arr) {
 
 }
 
-function draw_venn(sets_venn) {
+function draw_venn(sets_venn,div) {
 
-    let _cur_venn_div = d3.select("#vennChart");
+    let _cur_venn_div = d3.select(div);
     if (_cur_venn_div.empty()) {
         return false;
     }
@@ -204,7 +169,11 @@ function draw_venn(sets_venn) {
         .style("stroke-opacity", 1)
         .style("stroke", "black")
         .style("stroke-width", 10);
-    _cur_venn_div.selectAll(".venn-area.venn-circle").filter(d=>d.sets[0]==="ALL")
+    let ALL = _cur_venn_div.selectAll(".venn-area.venn-circle")
+        .filter(d=>d.sets[0]==="ALL");
+    ALL.select('path')
+        .style('opacity','0.1')
+    ALL
         .select('text.label tspan').text(d=>`${d.size} genes`);
 
     _cur_venn_div.selectAll("g")

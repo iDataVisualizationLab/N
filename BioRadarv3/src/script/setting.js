@@ -334,7 +334,8 @@ function readFilecsv(filename,notSplit) {
                 globalFilter[k] = globalFilter[k].filter(d=>obj[d]);
             })
             globalFilter[idAll] = hosts.map(d=>d.genese);
-            draw_venn(create_sets_obj_for_venn(globalFilter));
+            draw_venn(create_sets_obj_for_venn(globalFilter),'#vennChart');
+            // if (globalFilter2)
             inithostResults();
             formatService(true);
             processResult = processResult_csv;

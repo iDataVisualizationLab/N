@@ -53,3 +53,19 @@ d3.csv('data/datatraw/differentially_expressed_genes_all.csv').then(_data=>{
     csv+=''+Object.keys(ob).map(k=>k+','+ Object.keys(keyob).map(d=>ob[k][d]).join(',')).join('\n')
     console.log(csv);
 })
+
+//forven
+d3.csv('data/datatraw/differentially_expressed_genes_all.csv').then(_data=>{
+    keyob={};
+    ob = {};
+    let max = 0;
+    ob={};
+    _data.forEach(d=>{
+        if(!keyob[d.type]) keyob[d.type]={}; keyob[d.type][d.atID]=1;
+        if(!ob[d.atID]) ob[d.atID]={};
+        ob[d.atID][d.type] = 1;
+    });
+    csv='atID,'+Object.keys(keyob).join(',')+'\n';
+    csv+=''+Object.keys(ob).map(k=>k+','+ Object.keys(keyob).map(d=>ob[k][d]??0).join(',')).join('\n')
+    console.log(csv);
+})
