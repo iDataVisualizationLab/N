@@ -335,6 +335,12 @@ function readFilecsv(filename,notSplit) {
             })
             globalFilter[idAll] = hosts.map(d=>d.genese);
             draw_venn(create_sets_obj_for_venn(globalFilter),'#vennChart');
+            d3.select('#expFilter').selectAll('option')
+                .data(Object.keys(globalFilter).filter(d=>d!==idAll))
+                .join('option')
+                .attr('value',d=>d)
+                .text(d=>d);
+
             // if (globalFilter2)
             inithostResults();
             formatService(true);
