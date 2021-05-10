@@ -2133,7 +2133,7 @@ d3.TimeSpace = function () {
     }
     function updateDataTableFiltered(newDataName){
         let newDataArray = newDataName.map(n=>{
-            return _.flatten([n,_.flatten(SUBJECTS.map(category=>graphicopt.radaropt.schema.map(s=>sampleS[n]?sampleS[n][s.text][0][0]:sampleS[n+'__'+category][s.text][0][0])))]);
+            return _.flatten([n,_.flatten(SUBJECTS.map(category=>graphicopt.radaropt.schema.map(s=>sampleS[n]?sampleS[n][s.text][0][0]:(sampleS[n+'__'+category]?sampleS[n+'__'+category][s.text][0][0]:''))))]);
         });
         dataTableFiltered.clear();
         dataTableFiltered.rows.add(newDataArray);
