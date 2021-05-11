@@ -1310,15 +1310,15 @@ d3.TimeSpace = function () {
                 controll_metrics.old = {x:controll_metrics.x,y:controll_metrics.y,zoom:controll_metrics.zoom,scale:controll_metrics.scale||1};
                 d3.select('#modelWorkerScreen_svg_g').attr('transform',`scale(1) translate(0,0)`);
                 d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',false);
-                try {
-                    updateDataTableFiltered(intersects);
-                }catch(e){}
                 d3.select("p#filterList").classed('hide',true);
             }else {
                 linesGroup.visible = !!graphicopt.linkConnect;
                 d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',true);
-                d3.select("p#filterList").classed('hide',false);
-                d3.select("p#filterList").text(intersects.join(', '));
+                d3.selectAll(".filterLimit, #filterTable_wrapper").classed('hide',false);
+                d3.select("p#filterList").classed('hide',true);
+
+                // d3.select("p#filterList").classed('hide',false);
+                // d3.select("p#filterList").text(intersects.join(', '));
                 // d3.select("p#filterList+.copybtn").classed('hide', false);
             }
         }else{
@@ -1327,6 +1327,9 @@ d3.TimeSpace = function () {
             d3.select("p#filterList").classed('hide',true);
             // d3.select("p#filterList+.copybtn").classed('hide',true);
         }
+        try {
+            updateDataTableFiltered(intersects);
+        }catch(e){}
         filterGroupsetting.timestep = timestep;
         var geometry = points.geometry;
         var attributes = geometry.attributes;
@@ -2059,6 +2062,7 @@ d3.TimeSpace = function () {
         textcolor.range(['#000000','#000000','#000000','#000000','#000000','#000000','#000000','#000000','#ffffff','#ffffff'])
         dataTableFiltered = $('#filterTable').DataTable({
             data: [],
+            deferRender:true,
             "pageLength": 50,
             // scrollY:        '50vh',
             // scrollCollapse: true,
