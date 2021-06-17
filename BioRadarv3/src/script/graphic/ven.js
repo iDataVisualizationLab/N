@@ -176,14 +176,13 @@ function draw_venn(sets_venn,div) {
     ALL
         .select('text.label tspan').text(d=>`${d.size} genes`);
 
-    _cur_venn_div.selectAll("g")
+    const vg = _cur_venn_div.selectAll("g")
         .on("mouseover", function (d, i) {
             // sort all the areas relative to the current item
             venn.sortAreas(_cur_venn_div, d);
 
             // Display a tooltip with the current size
             tooltip.transition().duration(1).style("opacity", .9);
-
 
             if (d.sets[0]==="ALL"&&d.sets.length===1) {
                 tooltip.text(d.size + ` from ${totalgenes} genes`);
@@ -198,6 +197,17 @@ function draw_venn(sets_venn,div) {
             selection.select("path")
                 .style("fill-opacity", d.sets.length === 1 ? .4 : .1)
                 .style("stroke-opacity", 1);
+            const sets = d.sets.filter(e=>e!=='ALL');
+            if (d.label==='ALL'){
+                _cur_venn_div.selectAll('text.label').style('opacity',0).filter(e=>e.label==='ALL')
+                    .style('opacity',1);
+
+            }else{
+                _cur_venn_div.selectAll('text.label').style('opacity',0).filter(e=>e.label&&sets.find(f=>f===e.label))
+                    .style('opacity',1);
+                vg.style('opacity',0.1).filter(e=>e.label&&sets.find(f=>f===e.label))
+                    .style('opacity',1);
+            }
         })
 
         .on("mousemove", function () {
@@ -212,6 +222,8 @@ function draw_venn(sets_venn,div) {
                 .style("fill-opacity", d.sets.length === 1 ? .25 : .0)
                 .style("stroke-opacity", d.sets[0] === keyGenes_rename && d.sets.length===1 ? 1:0);
             selection.select("path.selected").style("stroke-opacity",1);
+            _cur_venn_div.selectAll('text.label').style('opacity',1);
+            vg.style('opacity',1);
         })
         .on("click", function(d) {
             _cur_venn_div.selectAll("g path.selected").classed('selected',false).style('stroke',null)
