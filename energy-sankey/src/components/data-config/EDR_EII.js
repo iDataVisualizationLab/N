@@ -10,12 +10,20 @@ const selectRow = 'Category';
 const adjustCol = 'M BTU/D';
 const adjustFunc = (d)=>Math.ceil(d/50);
 const numberCol = ['M BTU/D','TIC','EII Reduction Estimate','CO2 Reduction (Metric Ton/yr)','Savings USD/YR'];
+
+export const columnsDisplay = [
+    // { field: 'col1', headerName: 'Column 1', width: 150 },
+    // { field: 'col2', headerName: 'Column 2', width: 150 },
+];
+
 export const getData = csv(EDR_EII);
 export function handleNodeLink(data){
 
     let nodesObj = {};
     let linksObj = {};
-    data.forEach(d=>{
+    Object.keys(data[0]).forEach(k=>columnsDisplay.push({ field: k, headerName: k }))
+
+    data.forEach((d,i)=>{
         Object.keys(d).forEach(k=>d[k]=d[k].trim());
         d._value = {};
         updateNodes(d,selectRow);
@@ -28,6 +36,7 @@ export function handleNodeLink(data){
             if(isNaN(d._value[col]))
                 d._value[col] = 0;
         })
+        d.id=d.id??i;
     });
     debugger
     const nodes = Object.values(nodesObj);

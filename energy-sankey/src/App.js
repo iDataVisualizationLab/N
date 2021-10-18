@@ -11,9 +11,10 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {makeStyles} from "@material-ui/styles";
-
+import { DataGrid } from '@mui/x-data-grid';
 
 import {getData,handleNodeLink,valueCol} from "./components/data-config/EDR_EII_normal";
+import Table from "./components/table";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -23,12 +24,15 @@ const useStyles = makeStyles((theme) => ({
 function App() {
     const [nodes, setNodes] = React.useState([]);
     const [links, setLinks] = React.useState([]);
+    const [columnsDisplay, setColumnsDisplay] = React.useState([]);
+    const [currentSelectedRow, setCurrentSelectedRow] = React.useState([]);
     const [selectedValue, setSelectedValue] = React.useState(valueCol[0]);
     useEffect(() => {
-        getData.then(handleNodeLink).then(({nodes,links})=>{
+        getData.then(handleNodeLink).then(({nodes,links,columnsDisplay})=>{
             onChangeValue(nodes,links)
             setNodes(nodes);
             setLinks(links);
+            setColumnsDisplay(columnsDisplay);
         })
     },[getData]);
     useEffect(()=>{
@@ -77,7 +81,8 @@ function App() {
                     {/*<div className={classes.grow}/>*/}
                 </Toolbar>
             </AppBar>
-            <Sankey nodes={nodes} links={links} width={1200} height={500}/>
+            <Sankey nodes={nodes} links={links} width={1200} height={500} mouseOver={(d)=>setCurrentSelectedRow(d.element)} mouseLeave={()=>setCurrentSelectedRow([])}/>
+            <Table data={currentSelectedRow} columns={columnsDisplay}/>
         </div>
     );
 }
