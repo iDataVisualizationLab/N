@@ -35,13 +35,7 @@ function App() {
             setColumnsDisplay(columnsDisplay);
         })
     },[getData]);
-    useEffect(()=>{
-        const _nodes = nodes.slice();
-        const _links = links.slice();
-        onChangeValue(_nodes,_links);
-        setNodes(_nodes);
-        setLinks(_links);
-    },[selectedValue])
+
     const onChangeValue = (nodes,links)=>{
         debugger
         links.forEach(l=>{
@@ -81,7 +75,9 @@ function App() {
                     {/*<div className={classes.grow}/>*/}
                 </Toolbar>
             </AppBar>
+            <div style={{width:'100%'}}>
             <Sankey nodes={nodes} links={links} width={1200} height={500} mouseOver={(d)=>setCurrentSelectedRow(d.element)} mouseLeave={()=>setCurrentSelectedRow([])}/>
+            </div>
             <Table data={currentSelectedRow} columns={columnsDisplay}/>
         </div>
     );

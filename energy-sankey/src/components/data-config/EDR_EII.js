@@ -37,6 +37,7 @@ export function handleNodeLink(data){
                 d._value[col] = 0;
         })
         d.id=d.id??i;
+        d['Adjust '+adjustCol] = adjustFunc(d[adjustCol]);
     });
     debugger
     const nodes = Object.values(nodesObj);
