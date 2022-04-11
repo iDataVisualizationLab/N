@@ -84,7 +84,7 @@ function update_data_for_venn() {
 
 function calc_overlapping_number_for_venn(set_venn, sub_set_id, set_data) {
     let res = {}, tmp;
-
+    debugger
     res["sets"] = sub_set_id;
 
     if (sub_set_id.length === 1) {
@@ -138,7 +138,6 @@ function get_all_subsets_id(arr) {
 }
 
 function draw_venn(sets_venn,div) {
-
     let _cur_venn_div = d3.select(div);
     if (_cur_venn_div.empty()) {
         return false;

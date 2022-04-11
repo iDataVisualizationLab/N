@@ -151,7 +151,6 @@ class Sankey extends React.Component {
                 .nodePadding(nodePadding)
                 .extent([[0, 0], [width, height]])
                 ({nodes, links});
-            debugger
         }
         // Compute titles and labels using layout nodes, so as to access aggregate values.
         if (typeof format !== "function") format = d3.format(format);
@@ -261,7 +260,7 @@ class Sankey extends React.Component {
                                           paintOrder={'stroke'}
                                           stroke={'white'} strokeWidth={3}
                                           fill={'black'}
-                                    >{d.name??d.id }</text>
+                                    >{d.id }</text>
                                     <rect height={(d.y1-d.y0)??0} width={(d.x1-d.x0)??0} fill={this._getColorScale_byName(d)}/>
                                 </g>)}
                             </g>
@@ -369,9 +368,7 @@ Sankey.defaultProps = {
     nodeGroups:null, // an array of ordinal values representing the node groups
     nodeLabel:null, // given d in (computed) nodes, text to label the associated rect
     nodeTitle : (format,d) => `${d.id}\n${format(d.value)}`, // given d in (computed) nodes, hover text
-    nodeAlign : (node) => {
-        return node.layer;
-    }, // Sankey node alignment strategy
+    nodeAlign : sankeyJustify, // Sankey node alignment strategy
     nodeWidth : 15, // width of node rects
     nodePadding : 10, // vertical separation between adjacent nodes
     nodeLabelPadding : 6, // horizontal separation between node and label

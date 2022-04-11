@@ -13,7 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import {makeStyles} from "@material-ui/styles";
 import { DataGrid } from '@mui/x-data-grid';
 
-import {getData,handleNodeLink,valueCol} from "./components/data-config/EDR_EII_normal";
+import {getData,handleNodeLink,valueCol} from "./components/data-config/EDR_EII";
 import Table from "./components/table";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +78,7 @@ function App() {
             <div style={{width:'100%'}}>
             <Sankey nodes={nodes} links={links} width={1200} height={500} mouseOver={(d)=>setCurrentSelectedRow(d.element)} mouseLeave={()=>setCurrentSelectedRow([])}/>
             </div>
-            <Table data={currentSelectedRow} columns={columnsDisplay}/>
+            {/*<Table data={currentSelectedRow} columns={columnsDisplay}/>*/}
         </div>
     );
 }
