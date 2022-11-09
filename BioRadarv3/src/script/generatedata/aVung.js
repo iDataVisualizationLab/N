@@ -26,7 +26,6 @@ d3.json('data/processed_gene_data_normalized.json',function(error,data){
         str = d3.keys(sampleS[type]).map(id=>sampleS[type][id].map(d=>d.GENE_VALUE_NORMALIZED).join(',')).join(',');
         return str;
     }).join(',');
-    console.log(csv);
 });
 function getType(d){
     if(d.treatment_counter<12)

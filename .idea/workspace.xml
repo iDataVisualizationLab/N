@@ -1,257 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="updateUI">
-      <change afterPath="$PROJECT_DIR$/Dymatrix3D/src/data/PopCha.tsv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dymatrix3D/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Dymatrix3D/src/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dynet3D/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Dynet3D/src/js/main.js" afterDir="false" />
-    </list>
+    <list default="true" id="fc4a8258-4b12-4235-b79f-2865f64d00ba" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="HTML File" />
-        <option value="CSS File" />
-        <option value="JavaScript File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
-  <component name="JsFlowSettings">
-    <service-enabled>true</service-enabled>
-    <exe-path />
-    <other-services-enabled>true</other-services-enabled>
-    <auto-save>true</auto-save>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="1aDdE59O5ywH2UM6H1FRTO2P1nu" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2HIngDPxnMhmGSbOSZHSFlXEe2M" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Dynet3D" />
-    <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../HPCC/ParallelCoordinates/src/script/main.js" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\STORE\nvtngan\project\github\N\python" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_ViolinMatrix\src\js" />
-      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_ViolinMatrix\src\style" />
-      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_ViolinMatrix\src\lib" />
-      <recent name="C:\STORE\nvtngan\project\github\N\miniChalenge2_2020_TimeArc\src\scripts" />
-      <recent name="C:\STORE\nvtngan\project\github\N" />
-    </key>
-  </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html (4)">
-    <configuration default="true" type="JavascriptDebugType" uri="http://localhost:64320/N/examples/">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html (2)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/BioCoordinates/index.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html (3)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/BasicRISC/index.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html (4)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/heatmap/index.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html (5)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/BioRadar/index.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html (6)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/N/VAST19/mc1/index.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:64320/N/just4presentation/index.html">
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="JavaScript Debug.index.html (2)" />
-      <item itemvalue="JavaScript Debug.index.html (3)" />
-      <item itemvalue="JavaScript Debug.index.html (4)" />
-      <item itemvalue="JavaScript Debug.index.html (5)" />
-      <item itemvalue="JavaScript Debug.index.html (6)" />
-      <item itemvalue="JavaScript Debug.index.html" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JavaScript Debug.index.html (4)" />
-        <item itemvalue="JavaScript Debug.index.html (6)" />
-        <item itemvalue="JavaScript Debug.index.html (5)" />
-        <item itemvalue="JavaScript Debug.index.html (3)" />
-        <item itemvalue="JavaScript Debug.index.html (2)" />
-      </list>
-    </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/STORE/project/N/BioCoordinatesv2",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="8a46e3ea-dac2-4988-a88f-0328ced74284" name="Default" comment="" />
-      <created>1536682666874</created>
+      <changelist id="fc4a8258-4b12-4235-b79f-2865f64d00ba" name="Changes" comment="" />
+      <created>1667981573565</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1536682666874</updated>
-      <workItem from="1536682668846" duration="9321000" />
-      <workItem from="1538458908215" duration="538000" />
-      <workItem from="1552004595238" duration="10713000" />
-      <workItem from="1555956660128" duration="18000" />
-      <workItem from="1555958257144" duration="782000" />
-      <workItem from="1557002280482" duration="840000" />
-      <workItem from="1557100909225" duration="75000" />
-      <workItem from="1557448696603" duration="126000" />
-      <workItem from="1559445713199" duration="9000" />
-      <workItem from="1559445740081" duration="16000" />
-      <workItem from="1560436141577" duration="43000" />
-      <workItem from="1562338811972" duration="1016000" />
-      <workItem from="1562357260503" duration="39000" />
-      <workItem from="1563013776701" duration="1238000" />
-      <workItem from="1583361515463" duration="10000" />
-      <workItem from="1584631927619" duration="64000" />
-      <workItem from="1586273986205" duration="599000" />
-      <workItem from="1586317490370" duration="8948000" />
-      <workItem from="1586445069732" duration="50660000" />
-      <workItem from="1586878793245" duration="721000" />
-      <workItem from="1586966311687" duration="3397000" />
-      <workItem from="1587009200860" duration="78078000" />
-      <workItem from="1587404879733" duration="8368000" />
-      <workItem from="1587670885182" duration="2449000" />
-      <workItem from="1587836431014" duration="1980000" />
-      <workItem from="1587916095214" duration="4066000" />
-      <workItem from="1588434860913" duration="599000" />
-      <workItem from="1588549255427" duration="2444000" />
-      <workItem from="1588705023587" duration="4507000" />
-      <workItem from="1588714836122" duration="1985000" />
-      <workItem from="1588886019966" duration="598000" />
-      <workItem from="1589075572598" duration="1198000" />
-      <workItem from="1589479066215" duration="1713000" />
-      <workItem from="1589519017901" duration="23250000" />
-      <workItem from="1589837349851" duration="2187000" />
-      <workItem from="1589923297261" duration="2554000" />
-      <workItem from="1589932499536" duration="22247000" />
-      <workItem from="1590031017779" duration="24541000" />
-      <workItem from="1590286721602" duration="599000" />
-      <workItem from="1590369991121" duration="23025000" />
-      <workItem from="1590572014160" duration="32000" />
-      <workItem from="1590607013541" duration="1352000" />
-      <workItem from="1590648891887" duration="23629000" />
-      <workItem from="1592691218498" duration="7429000" />
-      <workItem from="1593107479975" duration="1083000" />
-      <workItem from="1593421005577" duration="5944000" />
-      <workItem from="1593552511476" duration="1158000" />
-      <workItem from="1593707507010" duration="6825000" />
-      <workItem from="1593759100780" duration="13539000" />
-      <workItem from="1594186460879" duration="603000" />
-      <workItem from="1594228716491" duration="782000" />
-      <workItem from="1594621990214" duration="51381000" />
-      <workItem from="1594916668092" duration="4002000" />
-      <workItem from="1595050238358" duration="766000" />
-      <workItem from="1597822923691" duration="47000" />
-      <workItem from="1616828089422" duration="16000" />
+      <updated>1667981573565</updated>
+      <workItem from="1667981574730" duration="174000" />
     </task>
-    <task id="LOCAL-00003" summary="updateUI">
-      <created>1563117491587</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1563117491587</updated>
-    </task>
-    <task id="LOCAL-00004" summary="updateUI">
-      <created>1563117896980</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1563117896980</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="updateUI" />
-    <option name="LAST_COMMIT_MESSAGE" value="updateUI" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="549" y="168" key="FileChooserDialogImpl" timestamp="1616828103220">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="549" y="168" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1616828103220" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/contour/index.html</url>
-          <line>17</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/just4presentation/main.js</url>
-          <line>304</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/VAST19/mc3/src/scripts/TimeArc.js</url>
-          <line>1230</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/BasicRISC/src/script/main.js</url>
-          <line>155</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/BasicRISC/src/script/main.js</url>
-          <line>152</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <option name="version" value="3" />
   </component>
 </project>
