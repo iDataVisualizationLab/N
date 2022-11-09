@@ -13,7 +13,7 @@
   "author": "Ngan Nguyen, Tommy Dang",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "rollup-plugin-multi-input": "^1.1.1",
     "sortablejs": "^1.8.4"
   },
