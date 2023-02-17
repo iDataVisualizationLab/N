@@ -1,6 +1,8 @@
 # 
 
 https://idatavisualizationlab.github.io/N/
+# 2023
+Simple Dashboard: https://zipexpo.github.io/f1-dashboard/
 
 # 2020
 
